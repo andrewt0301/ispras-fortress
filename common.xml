@@ -17,5 +17,10 @@ Please, prepare build environment:
   </fail>
 
   <import file="${buildbase.dir}/buildbase.xml"/>
-
+  
+  <target name="init.project">
+    <!-- common properties -->
+    <property prefix="fortress" file="${common.basedir}/version.properties"/>
+    <property prefix="fortress" file="${common.basedir}/module.properties"/>
+  </target>
 </project>
