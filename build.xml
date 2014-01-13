@@ -7,8 +7,8 @@
   <!-- Product Information -->
   <property name="name"      value="fortress"/>
   <property name="ver_major" value="0"/>
-  <property name="ver_minor" value="1"/>
-  <property name="ver_build" value="1"/>
+  <property name="ver_minor" value="3"/>
+  <property name="ver_build" value="0"/>
   <property name="ver_tag"   value="-beta"/>
   <property name="fullname"  value="${name}-${ver_major}.${ver_minor}.${ver_build}${ver_tag}"/>
 
