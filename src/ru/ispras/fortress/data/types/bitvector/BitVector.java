@@ -67,6 +67,12 @@ public abstract class BitVector implements Comparable<BitVector>
 
     public abstract void setByte(int index, byte value);
 
+    public final boolean getBit(int index)
+    {
+        rangeCheck(index, getBitSize());
+        return (getByte(index / BITS_IN_BYTE) & (1 << (index % BITS_IN_BYTE))) != 0;
+    }
+
     /**
      * Resets (set to zero) all bytes in the bit vector.
      */

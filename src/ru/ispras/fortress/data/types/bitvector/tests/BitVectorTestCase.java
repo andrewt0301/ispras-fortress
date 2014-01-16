@@ -760,4 +760,17 @@ public class BitVectorTestCase
     {
         checkComparison(BitVector.valueOf("00000001"), BitVector.valueOf("10000000"), -1);
     }
+
+    @Test
+    public void bitExtractionTest()
+    {
+        boolean value = true;
+        final BitVector bv = BitVector.valueOf("01010101010101010101");
+        for (int i = 0; i < bv.getBitSize(); ++i)
+        {
+            Assert.assertTrue("Bit extracted doesn't match expected", value == bv.getBit(i));
+            value = !value;
+        }
+
+    }
 }
