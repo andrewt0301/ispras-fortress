@@ -67,6 +67,15 @@ public abstract class BitVector implements Comparable<BitVector>
 
     public abstract void setByte(int index, byte value);
 
+    /**
+     * Returns a boolean flag that corresponds to the value of the specified bit.
+     * 
+     * @param index Bit index.
+     * @return true if the bit is set to 1 or false otherwise. 
+     * 
+     * @throws IndexOutOfBoundsException if the index is out of range.  
+     */
+
     public final boolean getBit(int index)
     {
         rangeCheck(index, getBitSize());
