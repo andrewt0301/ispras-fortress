@@ -188,8 +188,10 @@ final class SMTTextBuilder implements Visitor
     }
 
     @Override
-    public void onExprBegin(Enum<?> op, int operands)
+    public void onExprBegin(NodeExpr expr)
     {
+        final Enum<?> op = expr.getOperationId();
+        
         if (!operations.containsKey(op))
             throw new IllegalArgumentException("Unsupported operation: " + op);
 
@@ -200,7 +202,7 @@ final class SMTTextBuilder implements Visitor
 
         appendToCurrent(sSPACE);
 
-        if (operands > 0)
+        if (expr.getOperandCount() > 0)
             appendToCurrent(sBRACKET_OPEN);
 
         if (StandardOperation.isParametric(op))
@@ -214,45 +216,50 @@ final class SMTTextBuilder implements Visitor
     }
 
     @Override
-    public void onExprEnd(Enum<?> op, int operands)
+    public void onExprEnd(NodeExpr expr)
     {
-        if (operands > 0)
+        if (expr.getOperandCount() > 0)
             appendToCurrent(sBRACKET_CLOSE);
     }
 
     @Override
-    public void onOperandBegin(Enum<?> op, Node node, int index)
+    public void onOperandBegin(NodeExpr expr, Node node, int index)
     {
         // Do nothing.
     }
 
     @Override
-    public void onOperandEnd(Enum<?> op, Node node, int index)
+    public void onOperandEnd(NodeExpr expr, Node node, int index)
     {
-        if ((0 == index) && StandardOperation.isParametric(op))
+        if ((0 == index) && StandardOperation.isParametric(expr.getOperationId()))
             appendToCurrent(sBRACKET_CLOSE);
     }
 
     @Override
-    public void onValue(Data data)
+    public void onValue(NodeValue value)
+    {
+        onValue(value.getData());
+    }
+
+    private void onValue(Data data)
     {
         appendToCurrent(sSPACE);
         appendToCurrent(textForData(data));
     }
 
     @Override
-    public void onVariable(String name, Data data)
+    public void onVariable(NodeVariable variable)
     {
-        addVariableDeclaration(name, data);
+        addVariableDeclaration(variable.getName(), variable.getData());
 
-        if (data.hasValue())
+        if (variable.getData().hasValue())
         {
-            onValue(data);
+            onValue(variable.getData());
         }
         else
         {
             appendToCurrent(sSPACE);
-            appendToCurrent(name);
+            appendToCurrent(variable.getName());
         }
     }
 }

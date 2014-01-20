@@ -243,23 +243,25 @@ class XMLBuilderForExprs implements Visitor
     }
 
     @Override
-    public void onExprBegin(Enum<?> op, int operands)
+    public void onExprBegin(NodeExpr expr)
     {
+        final Enum<?> op = expr.getOperationId();
+
         assert !elements.isEmpty();
 
-        final Element expr = document.createElement(XMLConst.NODE_EXPRESSION);
-        elements.getLast().appendChild(expr);
-        elements.addLast(expr);
+        final Element expression = document.createElement(XMLConst.NODE_EXPRESSION);
+        elements.getLast().appendChild(expression);
+        elements.addLast(expression);
         
         final Element operation = document.createElement(XMLConst.NODE_OPERATION);
-        expr.appendChild(operation);
+        expression.appendChild(operation);
 
         operation.setAttribute(XMLConst.ATTR_OPERATION_ID, op.name());
         operation.setAttribute(XMLConst.ATTR_OPERATION_FAMILY, op.getClass().getName());
     }
 
     @Override
-    public void onExprEnd(Enum<?> op, int operands)
+    public void onExprEnd(NodeExpr expr)
     {
         assert !elements.isEmpty();
 
@@ -267,38 +269,40 @@ class XMLBuilderForExprs implements Visitor
     }
 
     @Override
-    public void onOperandBegin(Enum<?> op, Node node, int index)
+    public void onOperandBegin(NodeExpr expr, Node node, int index)
     {
         // Do nothing.
     }
 
     @Override
-    public void onOperandEnd(Enum<?> op, Node node, int index)
+    public void onOperandEnd(NodeExpr expr, Node node, int index)
     {
         // Do nothing.
     }
 
     @Override
-    public void onValue(Data data)
+    public void onValue(NodeValue value)
     {
+        final Data data = value.getData();
+        
         assert !elements.isEmpty();
 
-        final Element value = document.createElement(XMLConst.NODE_VALUE);
-        elements.getLast().appendChild(value);
+        final Element valueElement = document.createElement(XMLConst.NODE_VALUE);
+        elements.getLast().appendChild(valueElement);
 
-        value.setAttribute(XMLConst.ATTR_TYPE_ID, data.getType().getTypeId().toString());
-        value.setAttribute(XMLConst.ATTR_DATA_LENGTH, Integer.toString(data.getType().getSize()));
-        value.setAttribute(XMLConst.ATTR_VALUE, data.getValue().toString());
+        valueElement.setAttribute(XMLConst.ATTR_TYPE_ID, data.getType().getTypeId().toString());
+        valueElement.setAttribute(XMLConst.ATTR_DATA_LENGTH, Integer.toString(data.getType().getSize()));
+        valueElement.setAttribute(XMLConst.ATTR_VALUE, data.getValue().toString());
     }
 
     @Override
-    public void onVariable(String name, Data data)
+    public void onVariable(NodeVariable variable)
     {
         assert !elements.isEmpty();
 
         final Element variableRef = document.createElement(XMLConst.NODE_VARIABLE_REF);
         elements.getLast().appendChild(variableRef);
 
-        variableRef.setAttribute(XMLConst.ATTR_VARIABLE_NAME, name);
+        variableRef.setAttribute(XMLConst.ATTR_VARIABLE_NAME, variable.getName());
     }
 }

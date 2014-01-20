@@ -12,8 +12,6 @@
 
 package ru.ispras.fortress.expression;
 
-import ru.ispras.fortress.data.Data;
-
 /**
  * Interface to be implemented by all visitor objects applied to an expression
  * tree to collect information or to build another representation of the expression.   
@@ -38,55 +36,52 @@ public interface Visitor
     /**
      * Starts visiting an expression node.
      * 
-     * @param op Identifier of the operation used by the expression.
-     * @param operands Number of expression operands.
+     * @param expr Expression node.
      */
 
-    void onExprBegin(Enum<?> op, int operands);
+    void onExprBegin(NodeExpr expr);
 
     /**
      * Finishes visiting an expression node.
      * 
-     * @param op Identifier of the operation used by the expression.
-     * @param operands Number of expression operands.
+     * @param op Expression node.
      */
 
-    void onExprEnd(Enum<?> op, int operands);
+    void onExprEnd(NodeExpr expr);
 
     /**
      * Notifies that visiting an expression operand has started. 
      * 
-     * @param op Operation identifier.
+     * @param expr Expression node.
      * @param operand Operand node.
      * @param index Operand index.
      */
 
-    void onOperandBegin(Enum<?> op, Node operand, int index);
+    void onOperandBegin(NodeExpr expr, Node operand, int index);
 
     /**
      * Notifies that visiting an expression operand has finished.
      * 
-     * @param op Operation identifier.
+     * @param expr Expression node.
      * @param operand Operand node.
      * @param index Operand index.
      */
 
-    void onOperandEnd(Enum<?> op, Node operand, int index);
+    void onOperandEnd(NodeExpr expr, Node operand, int index);
 
     /**
      * Notifies that a value node has been visited. 
      * 
-     * @param data Data associated with the node.
+     * @param value Value node.
      */
 
-    void onValue(Data data);
+    void onValue(NodeValue value);
 
     /**
      * Notifies that a variable node has been visited.
      * 
-     * @param name Variable name.
-     * @param data Variable type and value description. 
+     * @param variable Variable node.
      */
 
-    void onVariable(String name, Data data);
+    void onVariable(NodeVariable variable);
 }

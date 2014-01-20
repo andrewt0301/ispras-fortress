@@ -121,17 +121,17 @@ public final class Walker
         if (null == node)
             throw new NullPointerException();
 
-        visitor.onExprBegin(node.getOperationId(), node.getOperandCount());
+        visitor.onExprBegin(node);
 
         for (int index = 0; index < node.getOperandCount(); index++)
         {
             final Node operand = node.getOperand(index);
-            visitor.onOperandBegin(node.getOperationId(), operand, index);
+            visitor.onOperandBegin(node, operand, index);
             visit(operand);
-            visitor.onOperandEnd(node.getOperationId(), operand, index);
+            visitor.onOperandEnd(node, operand, index);
         }
 
-        visitor.onExprEnd(node.getOperationId(), node.getOperandCount());
+        visitor.onExprEnd(node);
     }
 
     private void visitValue(NodeValue node)
@@ -139,7 +139,7 @@ public final class Walker
         if (null == node)
             throw new NullPointerException();
 
-        visitor.onValue(node.getData());
+        visitor.onValue(node);
     }
 
     private void visitVariable(NodeVariable node)
@@ -147,6 +147,6 @@ public final class Walker
         if (null == node)
             throw new NullPointerException();
 
-        visitor.onVariable(node.getName(), node.getData());
+        visitor.onVariable(node);
     }
 }
