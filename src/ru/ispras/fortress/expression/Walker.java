@@ -91,7 +91,7 @@ public final class Walker
      * @throws IllegalArgumentException if the node or any of its child nodes has a unknown type. 
      */
 
-    public void visit(Node node)
+    public void visitNode(Node node)
     {
         if (null == node)
             throw new NullPointerException();
@@ -127,7 +127,7 @@ public final class Walker
         {
             final Node operand = node.getOperand(index);
             visitor.onOperandBegin(node, operand, index);
-            visit(operand);
+            visitNode(operand);
             visitor.onOperandEnd(node, operand, index);
         }
 

@@ -163,7 +163,7 @@ final class SMTTextBuilder implements Visitor
         functionCallDepth++;
 
         final Walker walker = new Walker(this);
-        walker.visit(function.getBody());
+        walker.visitNode(function.getBody());
 
         functionCallDepth--;
 
