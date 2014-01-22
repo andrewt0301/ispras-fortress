@@ -22,36 +22,84 @@ import ru.ispras.fortress.logic.*;
 
 public class DnfTestCase
 {
-    @Test
-    public void run()
+    protected NormalForm createDnf()
     {
         NormalForm a = new NormalForm(NormalForm.Type.DNF);
 
+        Clause x0 = new Clause();
+
+        for(int i = 0; i < 100; i++)
+        {
+            x0.add(i + 100, false);            
+        }
+
         Clause x = new Clause();
         x.add(0, false);
+
+        Clause x1 = new Clause();
+        x1.add(0, false);
 
         Clause y = new Clause();
         y.add(0, true);
         y.add(1, false);
         y.add(2, false);
+        y.add(3, false);
 
         Clause z = new Clause();
         z.add(0, true);
         z.add(1, false);
-        z.add(3, true);
-        z.add(4, false);
+        z.add(4, true);
+        z.add(5, false);
 
         Clause u = new Clause();
-        u.add(1, true);
-        u.add(5, false);
+        u.add(1, false);
+        u.add(6, false);
 
+        a.add(x0);
         a.add(x);
+        a.add(x1);
         a.add(y);
         a.add(z);
         a.add(u);
 
-        NormalForm b = DNF.orthogonalize(a);
+        for(int i = 0; i < 1000; i++)
+        {
+            a.add(y);
+        }
 
+        for(int i = 0; i < 1000; i++)
+        {
+            z.add(i, (i & 1) == 0);
+        }
+        a.add(z);
+
+        for(int i = 0; i < 1000; i += 4)
+        {
+            u.add(i, (i & 1) == 0);
+        }
+        a.add(u);
+
+        return a;
+    }
+
+    @Test
+    public void run1()
+    {
+        NormalForm x = createDnf();
+        NormalForm y = DNF.orthogonalize(x);
+
+        System.out.println("TEST 1");
+        System.out.println(x);
+        System.out.println(y);
+    }
+
+    @Test
+    public void run2()
+    {
+        NormalForm a = createDnf();
+        NormalForm b = DNF.orthogonalize1(a);
+
+        System.out.println("TEST 2");
         System.out.println(a);
         System.out.println(b);
     }

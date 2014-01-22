@@ -16,6 +16,11 @@
 
 package ru.ispras.fortress.logic;
 
-public class CNF
+/**
+ * This class contains a set of utils dealing with disjunctive normal forms.
+ *
+ * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
+ */ 
+public final class CNF
 {
 }

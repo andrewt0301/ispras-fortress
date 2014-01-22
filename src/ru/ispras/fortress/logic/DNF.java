@@ -17,17 +17,35 @@
 package ru.ispras.fortress.logic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Set;
 
-public class DNF
+/**
+ * This class contains a set of utils dealing with disjunctive normal forms.
+ *
+ * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
+ */ 
+public final class DNF
 {
+    /**
+     * Checks whether two clauses (conjuncts), <code>lhs</code> and <code>rhs</code>,
+     * are disjoint (mutually exclusive or orthogonal).
+     *
+     * @param lhs the left-hand-side clause.
+     * @param rhs the right-hand-side clause.
+     * @return true iff the clauses are disjoint.
+     */
     public static boolean areDisjoint(final Clause lhs, final Clause rhs)
     {
         final Set<Integer> common = lhs.getCommonVars(rhs);
 
+        // Iterate over all common variables.
         for(final int var: common)
         {
+            // For each of them check whether it occurs with different signs.
             if(lhs.getSign(var) != rhs.getSign(var))
                 { return true; }
         }
@@ -35,78 +53,102 @@ public class DNF
         return false;
     }
 
-    public static int orthogonalize(final Clause lhs, final Clause rhs, NormalForm lnf, NormalForm rhf)
+    /**
+     * Splits one of the clauses, <code>lhs</code> or <code>rhs</code>, so as
+     * to make them disjoint.
+     *
+     * @return the index of the index clause or -1 if no one has been index.
+     */
+    private static int orthogonalize(final Clause lhs, final Clause rhs, NormalForm LHS, NormalForm RHS)
     {
-        NormalForm result = new NormalForm(NormalForm.Type.DNF);
-
-        // The clauses are disjoint (orthogonal).
+        // The specified clauses are disjoint.
         if(areDisjoint(lhs, rhs))
         {
-            lnf.add(lhs); // TODO: do not copy if unchanged
-            rhf.add(rhs);
+            // They are added to the corresponding normal forms without changes.
+            LHS.add(lhs);
+            RHS.add(rhs);
             return -1;
         }
 
-        int split = 1;
-        Set<Integer> vars = lhs.getUniqueVars(rhs);
+        // Try to split the right-hand-side clause (#1).
+        int index = 1;
+        // To do it, the left-hand-side clause should have unique variables.
+        Set<Integer> unique = lhs.getUniqueVars(rhs);
 
-        if(vars.isEmpty())
+        // If it does not.
+        if(unique.isEmpty())
         {
-            split = 0;
-            vars = rhs.getUniqueVars(lhs);
+            // Try to split the left-hand-side clause (#0).
+            index = 0;
+            // To do it, the right-hand-side clause should have unique variables.
+            unique = rhs.getUniqueVars(lhs);
 
-            // The clauses are equal.
-            if(vars.isEmpty())
+            // If it does not, the clauses are equal.
+            if(unique.isEmpty())
             {
-                lhs.add(new Clause(lhs));
+                // The right-hand-side clause is removed (#1).
+                LHS.add(lhs);
                 return 1;
             }
         }
 
         // The clauses are neither equal nor disjoint.
-        final Clause x = split == 1 ? lhs : rhs;
-        final Clause y = split == 1 ? rhs : lhs;
+        final Clause fixed = (index == 1 ? lhs : rhs);
+        final Clause split = (index == 1 ? rhs : lhs);
+        NormalForm   FIXED = (index == 1 ? LHS : RHS);
+        NormalForm   SPLIT = (index == 1 ? RHS : LHS);
         
-        NormalForm a = split == 1 ? lnf : rhf;
-        NormalForm b = split == 1 ? rhf : lnf;
-        
-        // The x clause stays unchanged.
-        a.add(x);
+        // One of the clauses is fixed (the other one is split).
+        FIXED.add(fixed);
 
+        int     prev = -1;
+        boolean sign = false;
+
+        // Additional literals to be added to the splitting clause.
         Clause factor = new Clause();
-            
-        int v = -1;
-        boolean s = false;
 
-        // The y clause is split.
-        for(final int var: vars)
+        // Iterate over the unique variables of the fixed clause.
+        for(final int var: unique)
         {
-            Clause z = new Clause(y);
+            // One of the new clauses to be added.
+            Clause clause = new Clause(split);
             
-            if(v != -1)
-                { factor.add(v, s); }
+            if(prev != -1) { factor.add(prev, sign); }
 
-            factor.add((v = var), !(s = x.getSign(var)));
-            z.add(factor);
-            
-            b.add(z);
+            factor.add((prev = var), !(sign = fixed.getSign(var)));
+            clause.add(factor);
+            SPLIT.add(clause);
         }
-        
-        return split;
+
+        // Return the index of the split clause.
+        return index;
     }
 
+    /**
+     * Replaces the i-th clause of the list with the specified set of clauses.
+     *
+     * @param clauses the list of clauses.
+     * @param i the index of the clause to be replaced.
+     * @param form the set of clauses to be substituted.
+     */
     private static void replace(List<Clause> clauses, int i, final NormalForm form)
     {
-        if(form.size() == 1)
-        {
-            final Clause clause = form.getClauses().get(0);
-            clauses.set(i, clause);
-        }
-        else
+        if(form.isEmpty())
         {
             clauses.remove(i);
-            clauses.addAll(i, form.getClauses());
+            return;
         }
+
+        final List<Clause> list = form.getClauses();
+        
+        if(form.size() == 1)
+        {
+            clauses.set(i, list.get(0));
+            return;
+        }
+        
+        clauses.set(i, list.get(list.size() - 1));
+        clauses.addAll(i, list.subList(0, list.size() - 1));
     }
     
     public static NormalForm orthogonalize(final NormalForm form)
@@ -116,28 +158,112 @@ public class DNF
         for(int i = 1; i < clauses.size(); i++)
         for(int j = 0; j < i; j++)
         {
-            NormalForm a = new NormalForm(NormalForm.Type.DNF);
-            NormalForm b = new NormalForm(NormalForm.Type.DNF);
+            NormalForm LHS = new NormalForm(NormalForm.Type.DNF);
+            NormalForm RHS = new NormalForm(NormalForm.Type.DNF);
 
-            int target = orthogonalize(clauses.get(j), clauses.get(i), a, b);
+            // Split one of the clauses to make them disjoint.
+            int index = orthogonalize(clauses.get(j), clauses.get(i), LHS, RHS);
 
-            // The left clause is rewritten.
-            if(target == 0)
+            // The left-hand-side clause is rewritten (#0).
+            if(index == 0)
             {
-                replace(clauses, j, a);
+                replace(clauses, j, LHS);
                 
-                i += (a.size() - 1);
-                j += (a.size() - 1);
+                i += (LHS.size() - 1);
+                j += (LHS.size() - 1);
             }
-            else if(target == 1)
+            // The right-hand-side clause is rewritten (#1).
+            else if(index == 1)
             {
-                replace(clauses, i, b);
+                replace(clauses, i, RHS);
                 
-                if(b.isEmpty())
-                    { j = -1; }
+                if(RHS.isEmpty())
+                    { j = (i >= clauses.size() ? i : -1); }
             }
         }
 
         return new NormalForm(NormalForm.Type.DNF, clauses);
+    }
+
+    private static void replace(ArrayList<Clause> clauses, HashMap<Integer, Integer> branches, int pre_i, int i, final NormalForm form)
+    {
+        if(form.isEmpty())
+        {
+            branches.put(pre_i, next(branches, i));
+            return;
+        }
+
+        final List<Clause> list = form.getClauses();
+
+        if(form.size() == 1)
+        {
+            clauses.set(i, list.get(0));
+            return;
+        }
+
+        int return_i = next(branches, i);
+        int branch_i = clauses.size();
+
+        clauses.set(i, list.get(0));
+        clauses.addAll(list.subList(1, list.size()));
+
+        branches.put(i, branch_i);
+        branches.put(clauses.size() - 1, return_i);
+    }
+    
+    private static int next(final HashMap<Integer, Integer> branches, int i)
+    {
+        if(i == -1) { return 0; }
+
+        final Integer j = branches.get(i);
+        return (j == null ? i + 1 : j);
+    }
+
+    private static NormalForm construct(final HashMap<Integer, Integer> branches, final ArrayList<Clause> clauses)
+    {
+        NormalForm form = new NormalForm(NormalForm.Type.DNF);
+
+        for(int i = 0; i != -1; i = next(branches, i))
+            { form.add(clauses.get(i)); }
+            
+        return form;
+    }
+
+    public static NormalForm orthogonalize1(final NormalForm form)
+    {
+        ArrayList<Clause> clauses = new ArrayList<Clause>(form.getClauses());
+        clauses.ensureCapacity(2 * clauses.size());
+
+        if(clauses.isEmpty())
+            { return new NormalForm(NormalForm.Type.DNF); }
+
+        HashMap<Integer, Integer> branches = new HashMap<Integer, Integer>(2 * clauses.size());
+        branches.put(clauses.size() - 1, -1);
+        
+        for(int pre_i, i = next(branches, pre_i =  0); i != -1; i = next(branches, pre_i = i))
+        for(int pre_j, j = next(branches, pre_j = -1); j !=  i; j = next(branches, pre_j = j))
+        {
+            //System.out.println(pre_i + " " + i + " " + pre_j + " " + j);
+            NormalForm LHS = new NormalForm(NormalForm.Type.DNF);
+            NormalForm RHS = new NormalForm(NormalForm.Type.DNF);
+
+            // Split one of the clauses to make them disjoint.
+            int index = orthogonalize(clauses.get(j), clauses.get(i), LHS, RHS);
+
+            // The left-hand-side clause is rewritten (#0).
+            if(index == 0)
+            {
+                replace(clauses, branches, pre_j, j, LHS);
+                if(LHS.isEmpty()) { j = pre_j; }
+            }
+            // The right-hand-side clause is rewritten (#1).
+            else if(index == 1)
+            {
+                replace(clauses, branches, pre_i, i, RHS);
+                if(RHS.isEmpty()) { i = pre_i; break; }
+            }
+        }
+        
+        return construct(branches, clauses);
     }
 }
