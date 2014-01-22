@@ -23,7 +23,6 @@ import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintBuilder;
-import ru.ispras.fortress.solver.constraint.ConstraintKind;
 import ru.ispras.fortress.solver.constraint.Formulas;
 
 import java.util.ArrayList;
@@ -50,8 +49,6 @@ public class NoNameArithmetic implements ISampleConstraint {
     @Override
     public Constraint getConstraint() {
         final ConstraintBuilder builder = new ConstraintBuilder();
-
-        builder.setKind(ConstraintKind.FORMULA_BASED);
 
         final NodeVariable x = new NodeVariable(builder.addVariable("x", intType));
 
