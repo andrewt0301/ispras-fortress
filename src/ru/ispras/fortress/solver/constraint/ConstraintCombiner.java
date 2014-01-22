@@ -12,7 +12,7 @@
 
 package ru.ispras.fortress.solver.constraint;
 
-import ru.ispras.fortress.expression.NodeExpr;
+import ru.ispras.fortress.expression.Node;
 
 /**
  * The ConstraintCombiner class provides methods to create new constraints by combining
@@ -50,8 +50,8 @@ public final class ConstraintCombiner
         final Formulas formulas = new Formulas();
         builder.setInnerRep(formulas);
 
-        final NodeExpr sourceExpr = ((Formulas) a.getInnerRep()).asSingleExpr();
-        formulas.add(NodeExpr.NOT(sourceExpr));
+        final Node sourceExpr = ((Formulas) a.getInnerRep()).asSingleExpr();
+        formulas.add(Node.NOT(sourceExpr));
 
         builder.addVariableCopies(a.getVariables());
         return builder.build();
@@ -112,9 +112,9 @@ public final class ConstraintCombiner
         final Formulas formulas = new Formulas();
         builder.setInnerRep(formulas);
 
-        final NodeExpr sourceExprA = ((Formulas) a.getInnerRep()).asSingleExpr();
-        final NodeExpr sourceExprB = ((Formulas) b.getInnerRep()).asSingleExpr();
-        formulas.add(NodeExpr.OR(sourceExprA, sourceExprB));
+        final Node sourceExprA = ((Formulas) a.getInnerRep()).asSingleExpr();
+        final Node sourceExprB = ((Formulas) b.getInnerRep()).asSingleExpr();
+        formulas.add(Node.OR(sourceExprA, sourceExprB));
 
         builder.addVariableCopies(a.getVariables());
         builder.addVariableCopies(b.getVariables());

@@ -40,24 +40,24 @@ public final class Walker
     }
 
     /**
-     * Visits a sequence of expressions. Each expression is considered
-     * a root of an expression tree and the visitor is notified about
-     * it by calls to the onRootBegin and onRootEnd methods. 
+     * Visits a sequence of expression trees. Each node in the sequence 
+     * is considered a root of an expression tree and the visitor is
+     * notified about it by calls to the onRootBegin and onRootEnd methods. 
      * 
-     * @param exprs A sequence of expressions to be visited.
+     * @param trees A sequence of expression trees to be visited.
      * 
      * @throws NullPointerException if the parameter equals null.
-     * IllegalArgumentException if any of the child nodes of the expression
-     * nodes in the sequence has a unknown type.
+     * IllegalArgumentException if any of the child nodes of the
+     * expression nodes in the sequence has a unknown type.
      */
 
-    public void visit(Iterable<NodeExpr> exprs)
+    public void visit(Iterable<Node> trees)
     {
-        if (null == exprs)
+        if (null == trees)
             throw new NullPointerException();
 
-        for (NodeExpr expr : exprs)
-            visit(expr);
+        for (Node tree : trees)
+            visit(tree);
     }
 
     /**
@@ -65,20 +65,20 @@ public final class Walker
      * a root of an expression tree and the visitor is notified about it by
      * calls to the onRootBegin and onRootEnd methods. 
      * 
-     * @param expr Expression node to be visited.
+     * @param tree Expression tree to be visited.
      * 
      * @throws NullPointerException if the parameter equals null.
-     * @throws IllegalArgumentException if any of the child nodes of the expression
-     * node has a unknown type.
+     * @throws IllegalArgumentException if any of the expression
+     * tree nodes has a unknown type.
      */
 
-    public void visit(NodeExpr expr)
+    public void visit(Node tree)
     {
-        if (null == expr)
+        if (null == tree)
             throw new NullPointerException();
 
         visitor.onRootBegin();
-        visitExpr(expr);
+        visitNode(tree);
         visitor.onRootEnd();
     }
     
@@ -112,7 +112,7 @@ public final class Walker
 
         default:
             throw new IllegalArgumentException(
-                "Unknown node kind: " + node.getKind());
+                String.format("Unknown node kind: %s.", node.getKind()));
         }
     }
 

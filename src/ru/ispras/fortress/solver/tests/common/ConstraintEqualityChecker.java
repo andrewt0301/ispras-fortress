@@ -46,8 +46,8 @@ public class ConstraintEqualityChecker
         Assert.assertNotNull(actual.exprs());
         Assert.assertFalse("The same object", expected.exprs() == actual.exprs());
 
-        Iterator<NodeExpr> expectedIterator = expected.exprs().iterator();
-        Iterator<NodeExpr> actualIterator = actual.exprs().iterator();
+        final Iterator<Node> expectedIterator = expected.exprs().iterator();
+        final Iterator<Node> actualIterator = actual.exprs().iterator();
 
         while (expectedIterator.hasNext() && actualIterator.hasNext())
             check(expectedIterator.next(), actualIterator.next());
@@ -119,8 +119,10 @@ public class ConstraintEqualityChecker
     {
         Assert.assertNotNull(expected);
         Assert.assertNotNull(actual);
+
         Assert.assertFalse("The same object", expected == actual);
         Assert.assertTrue("Different element IDs.", expected.getKind() == actual.getKind());
+
         switch(expected.getKind())
         {
         case VALUE:
@@ -145,6 +147,7 @@ public class ConstraintEqualityChecker
     {
         Assert.assertNotNull(expected);
         Assert.assertNotNull(actual);
+
         Assert.assertTrue("Data type IDs do not match.", expected.getTypeId() == actual.getTypeId());
         Assert.assertTrue("Data type sizes do not match.", expected.getSize() == actual.getSize());
     }

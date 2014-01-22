@@ -13,10 +13,10 @@ public class ConstraintNegation extends BVUGTOperation
     public Constraint getConstraint()
     {
         final Constraint constraint = super.getConstraint();
-        final NodeExpr formula = ((Formulas)constraint.getInnerRep()).exprs().iterator().next();
+        final Node formula = ((Formulas)constraint.getInnerRep()).exprs().iterator().next();
 
         final Constraint neg = ConstraintCombiner.makeNegation(constraint);
-        final NodeExpr negFormula = ((Formulas)neg.getInnerRep()).exprs().iterator().next();
+        final Node negFormula = ((Formulas)neg.getInnerRep()).exprs().iterator().next();
 
         final ConstraintBuilder builder = new ConstraintBuilder();
 

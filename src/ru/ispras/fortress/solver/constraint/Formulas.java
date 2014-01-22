@@ -15,22 +15,22 @@ package ru.ispras.fortress.solver.constraint;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.ispras.fortress.expression.NodeExpr;
+import ru.ispras.fortress.expression.Node;
 
 /**
- * The Formulas class serves as a container for formula expressions (assertions)
- * that specify the invariants for a taken constraint
+ * The Formulas class serves as a container for formula expressions
+ * (assertions) that specify the invariants for a taken constraint.
  *
  * @author Andrei Tatarnikov
  */
 
 public final class Formulas
 {
-    private final List<NodeExpr> formulas;
+    private final List<Node> exprs;
 
     public Formulas()
     {
-        this.formulas = new ArrayList<NodeExpr>();
+        this.exprs = new ArrayList<Node>();
     }
 
     public Formulas(Formulas formulas)
@@ -38,29 +38,29 @@ public final class Formulas
         if (null == formulas)
             throw new NullPointerException();
 
-        this.formulas = new ArrayList<NodeExpr>(formulas.formulas);
+        this.exprs = new ArrayList<Node>(formulas.exprs);
     }
 
     /**
-     * Adds a new formula expression to the collection
+     * Adds a new formula expression to the collection.
      * 
-     * @param formula A formula expression
+     * @param expr A formula expression.
      */
     
-    public void add(NodeExpr formula)
+    public void add(Node formula)
     {
         if (null == formula)
             throw new NullPointerException();
 
-        formulas.add(formula);
+        exprs.add(formula);
     }
 
-    public void addAll(Iterable<NodeExpr> formulas)
+    public void addAll(Iterable<Node> formulas)
     {
         if (null == formulas)
             throw new NullPointerException();
 
-        for (NodeExpr formula : formulas)
+        for (Node formula : formulas)
             add(formula);
     }
 
@@ -78,17 +78,17 @@ public final class Formulas
      * @return Iterable for the collection of formula expressions
      */
 
-    public Iterable<NodeExpr> exprs()
+    public Iterable<Node> exprs()
     {
-        return formulas;
+        return exprs;
     }
     
-    public NodeExpr asSingleExpr()
+    public Node asSingleExpr()
     {
-        NodeExpr root = null;
+        Node root = null;
 
-        for (NodeExpr item : exprs())
-            root = (null == root) ? item : NodeExpr.AND(root, item); 
+        for (Node item : exprs())
+            root = (null == root) ? item : Node.AND(root, item); 
 
         return root;
     }
@@ -96,7 +96,7 @@ public final class Formulas
     @Override
     public int hashCode()
     {
-        return formulas.hashCode();
+        return exprs.hashCode();
     }
 
     @Override
@@ -110,7 +110,7 @@ public final class Formulas
 
         final Formulas other = (Formulas) obj;
 
-        if (!formulas.equals(other.formulas))
+        if (!exprs.equals(other.exprs))
             return false;
 
         return true;
@@ -119,6 +119,6 @@ public final class Formulas
     @Override
     public String toString()
     {
-        return formulas.toString();
+        return exprs.toString();
     }
 }

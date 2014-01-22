@@ -87,4 +87,57 @@ public abstract class Node
     {
         return userData;
     }
+    
+    /**
+     * Creates an expression by performing logic conjunction on two existing expressions.
+     * 
+     * @param left An existing expression.
+     * @param right An existing expression.
+     * @return A new expression.
+     */
+
+    public static Node AND(Node left, Node right)
+    {
+        if (null == left)
+            throw new NullPointerException();
+
+        if (null == right)
+            throw new NullPointerException();
+
+        return new NodeExpr(StandardOperation.AND, left, right);
+    }
+
+    /**
+     * Creates a new expression by performing logic disjunction on two existing expressions.
+     * 
+     * @param left An existing expression.
+     * @param right An existing expression.
+     * @return A new expression.
+     */
+
+    public static Node OR(Node left, Node right)
+    {
+        if (null == left)
+            throw new NullPointerException();
+
+        if (null == right)
+            throw new NullPointerException();
+
+        return new NodeExpr(StandardOperation.OR, left, right);
+    }
+
+    /**
+     * Creates a new expression by performing logical negation on an existing expression.
+     * 
+     * @param expr An existing expression.
+     * @return A new expression.
+     */
+
+    public static Node NOT(Node expr)
+    {
+        if (null == expr)
+            throw new NullPointerException();
+
+        return new NodeExpr(StandardOperation.NOT, expr);
+    }
 }

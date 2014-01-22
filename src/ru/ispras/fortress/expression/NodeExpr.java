@@ -26,59 +26,6 @@ public final class NodeExpr extends Node
     private final Node[]   operands;
 
     /**
-     * Creates an expression by performing logic conjunction on two existing expressions.
-     * 
-     * @param left An existing expression.
-     * @param right An existing expression.
-     * @return A new expression.
-     */
-
-    public static NodeExpr AND(NodeExpr left, NodeExpr right)
-    {
-        if (null == left)
-            throw new NullPointerException();
-
-        if (null == right)
-            throw new NullPointerException();
-
-        return new NodeExpr(StandardOperation.AND, left, right);
-    }
-
-    /**
-     * Creates a new expression by performing logic disjunction on two existing expressions.
-     * 
-     * @param left An existing expression.
-     * @param right An existing expression.
-     * @return A new expression.
-     */
-
-    public static NodeExpr OR(NodeExpr left, NodeExpr right)
-    {
-        if (null == left)
-            throw new NullPointerException();
-
-        if (null == right)
-            throw new NullPointerException();
-
-        return new NodeExpr(StandardOperation.OR, left, right);
-    }
-
-    /**
-     * Creates a new expression by performing logical negation on an existing expression.
-     * 
-     * @param expr An existing expression.
-     * @return A new expression.
-     */
-
-    public static NodeExpr NOT(NodeExpr expr)
-    {
-        if (null == expr)
-            throw new NullPointerException();
-
-        return new NodeExpr(StandardOperation.NOT, expr);
-    }
-
-    /**
      * Creates an expression node that has a variable number of operands (from 0 to infinity).
      * 
      * @param operation Operation identifier.
