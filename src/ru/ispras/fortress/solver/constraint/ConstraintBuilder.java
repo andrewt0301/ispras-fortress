@@ -14,6 +14,7 @@ package ru.ispras.fortress.solver.constraint;
 
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.UUID;
 
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
@@ -28,15 +29,16 @@ import ru.ispras.fortress.data.Variable;
 public final class ConstraintBuilder
 {
     private String                           name;
-    private ConstraintKind                   kind;
     private String                    description;
+    private ConstraintKind                   kind;
     private final Map<String, Variable> variables;
     private Object                 representation;
 
     /**
      * Constructs a ConstraintBuilder object with default values.
      * 
-     * Default name and description are represented by an empty string.
+     * Default name is a pseudo random UUID (see java.util.UUID.randomUUID()).
+     * Default description is an empty string.
      * Default constraint type is formula-based (ConstraintKind.FORMULA_BASED).
      */
 
@@ -48,16 +50,17 @@ public final class ConstraintBuilder
     /**
      * Constructs a ConstraintBuilder object using the provided constraint type.
      * 
-     * Default name and description are represented by an empty string.
+     * Default name is a pseudo random UUID (see java.util.UUID.randomUUID()).
+     * Default description is an empty string.
      * 
      * @param kind Constraint type.
      */
 
     public ConstraintBuilder(ConstraintKind kind)
     {
-        this.name           = "";
-        this.kind           = kind;
+        this.name           = UUID.randomUUID().toString();
         this.description    = "";
+        this.kind           = kind;
         this.variables      = new TreeMap<String, Variable>();
         this.representation = null;
     }
