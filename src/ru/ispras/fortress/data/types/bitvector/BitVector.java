@@ -104,7 +104,7 @@ public abstract class BitVector implements Comparable<BitVector>
         if (null == src)
             throw new NullPointerException();
 
-        copy(src, this);
+        BitVectorAlgorithm.copy(src, this);
     }
 
     /***
@@ -169,7 +169,7 @@ public abstract class BitVector implements Comparable<BitVector>
      * @return A copy of the current bit vector.
      */
 
-    public final BitVector createCopy()
+    public final BitVector copy()
     {
         return new BitVectorStore(this);
     }
@@ -182,12 +182,12 @@ public abstract class BitVector implements Comparable<BitVector>
      * @return A copy of the specified bit vector.
      */
 
-    public static BitVector createCopy(BitVector src)
+    public static BitVector copyOf(BitVector src)
     {
         if (null == src)
             throw new NullPointerException();
 
-        return src.createCopy();
+        return src.copy();
     }
 
     /**
@@ -197,7 +197,7 @@ public abstract class BitVector implements Comparable<BitVector>
      * @return A new bit vector.
      */
 
-    public static BitVector createEmpty(int bitSize)
+    public static BitVector newEmpty(int bitSize)
     {
         sizeCheck(bitSize);
         return new BitVectorStore(bitSize);
@@ -213,7 +213,7 @@ public abstract class BitVector implements Comparable<BitVector>
      * @return A bit vector mapping.
      */
 
-    public static BitVector createMapping(BitVector src, int startBitPos, int bitSize)
+    public static BitVector newMapping(BitVector src, int startBitPos, int bitSize)
     {
         if (null == src)
             throw new NullPointerException();
@@ -233,7 +233,7 @@ public abstract class BitVector implements Comparable<BitVector>
      * @return A bit vector mapping.
      */
 
-    public static BitVector createMapping(BitVector ... sources)
+    public static BitVector newMapping(BitVector ... sources)
     {
         if (null == sources)
             throw new NullPointerException();

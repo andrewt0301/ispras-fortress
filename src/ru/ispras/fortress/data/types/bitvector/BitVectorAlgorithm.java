@@ -78,8 +78,8 @@ public final class BitVectorAlgorithm
         if ((src == dest) && (srcPos == destPos))
             return;
 
-        final BitVector  srcMapping = BitVector.createMapping(src,   srcPos, bitSize);
-        final BitVector destMapping = BitVector.createMapping(dest, destPos, bitSize);
+        final BitVector  srcMapping = BitVector.newMapping(src,   srcPos, bitSize);
+        final BitVector destMapping = BitVector.newMapping(dest, destPos, bitSize);
 
         copy(srcMapping, destMapping);
     }

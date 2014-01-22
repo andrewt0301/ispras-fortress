@@ -27,7 +27,7 @@ public class BitVectorMultiMappingTestCase
         final BitVector rd2 = BitVector.valueOf("00110011");
         final BitVector rd3 = BitVector.valueOf("11000000");
 
-        final BitVector  rd = BitVector.createMapping(rd1, rd2, rd3);
+        final BitVector  rd = BitVector.newMapping(rd1, rd2, rd3);
 
         checkBitVector(
             rd,
@@ -65,7 +65,7 @@ public class BitVectorMultiMappingTestCase
         final BitVector rd1 = BitVector.valueOf("0110");
         final BitVector rd2 = BitVector.valueOf("1001");
 
-        final BitVector  rd = BitVector.createMapping(rd1, rd2);
+        final BitVector  rd = BitVector.newMapping(rd1, rd2);
 
         checkBitVector(
             rd,
@@ -98,7 +98,7 @@ public class BitVectorMultiMappingTestCase
         final BitVector rd1 = BitVector.valueOf("011");
         final BitVector rd2 = BitVector.valueOf("1001");
 
-        final BitVector rd = BitVector.createMapping(rd1, rd2);
+        final BitVector rd = BitVector.newMapping(rd1, rd2);
 
         checkBitVector(
             rd,
@@ -133,7 +133,7 @@ public class BitVectorMultiMappingTestCase
     {
         final BitVector rd1 = BitVector.valueOf("0010000110");
         final BitVector rd2 = BitVector.valueOf("00001001");
-        final BitVector  rd = BitVector.createMapping(rd1, rd2);
+        final BitVector  rd = BitVector.newMapping(rd1, rd2);
 
         System.out.println(rd.toBinString());
 
@@ -170,7 +170,7 @@ public class BitVectorMultiMappingTestCase
         final BitVector rd2 = BitVector.valueOf("00");
         final BitVector rd3 = BitVector.valueOf("111");
         final BitVector rd4 = BitVector.valueOf("1100011100");
-        final BitVector  rd = BitVector.createMapping(rd1, rd2, rd3, rd4);
+        final BitVector  rd = BitVector.newMapping(rd1, rd2, rd3, rd4);
 
         System.out.println(rd.toBinString());
 
@@ -188,7 +188,7 @@ public class BitVectorMultiMappingTestCase
         final BitVector rd3 = BitVector.valueOf("0");
         final BitVector rd4 = BitVector.valueOf("1");
         final BitVector rd5 = BitVector.valueOf("1");
-        final BitVector  rd = BitVector.createMapping(rd1, rd2, rd3, rd4, rd5);
+        final BitVector  rd = BitVector.newMapping(rd1, rd2, rd3, rd4, rd5);
 
         System.out.println(rd.toBinString());
 
@@ -221,7 +221,7 @@ public class BitVectorMultiMappingTestCase
         final BitVector rd3 = BitVector.valueOf("00110110101");
         final BitVector rd4 = BitVector.valueOf("11110000");
         final BitVector rd5 = BitVector.valueOf("111");
-        final BitVector  rd = BitVector.createMapping(rd1, rd2, rd3, rd4, rd5);
+        final BitVector  rd = BitVector.newMapping(rd1, rd2, rd3, rd4, rd5);
 
         System.out.println(rd.toBinString());
 

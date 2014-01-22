@@ -31,7 +31,7 @@ public class BitVectorTestCase
         /////////////////////////////////////////////////////////////////////////////////////
         // Tests for createEmpty(int bitSize)
 
-        checkBitVector(BitVector.createEmpty(11), "00000000000");
+        checkBitVector(BitVector.newEmpty(11), "00000000000");
 
         /////////////////////////////////////////////////////////////////////////////////////
         // Tests for valueOf(final int value, final int bitSize)
@@ -88,7 +88,7 @@ public class BitVectorTestCase
         //////////////////////////////////////////////////////////
         // Test case 0: creates an empty data array and assigns data to it.
         
-        final BitVector rd01 = BitVector.createEmpty(35);
+        final BitVector rd01 = BitVector.newEmpty(35);
 
         checkBitVector(
             rd01,
@@ -173,7 +173,7 @@ public class BitVectorTestCase
         // Test case 2: the copy constructor
 
         final BitVector rd21 = BitVector.valueOf(Long.valueOf(SAMPLE_35BIT, 2), 35);
-        final BitVector rd22 = BitVector.createCopy(rd21);
+        final BitVector rd22 = BitVector.copyOf(rd21);
         
         checkBitVector(
             rd21,
@@ -264,12 +264,12 @@ public class BitVectorTestCase
         Trace(BitVector.valueOf(0xFF00FF00, 32).toBinString());
 
         checkBitVector(
-           BitVector.createMapping(BitVector.valueOf(-1, 32), 0, 32),
+           BitVector.newMapping(BitVector.valueOf(-1, 32), 0, 32),
            -1
         );
 
         checkBitVector(
-            BitVector.createMapping(BitVector.valueOf(0xFF00FF00, 32), 0, 32),
+            BitVector.newMapping(BitVector.valueOf(0xFF00FF00, 32), 0, 32),
             0xFF00FF00
         );
 
@@ -283,43 +283,43 @@ public class BitVectorTestCase
         // Test for multiple of 8 data arrays (no incomplete bytes).
 
         checkBitVector(
-            BitVector.createMapping(BitVector.valueOf(0xFF00FF00, 32), 0, 8),
+            BitVector.newMapping(BitVector.valueOf(0xFF00FF00, 32), 0, 8),
             0x00
         );
 
         checkBitVector(
-            BitVector.createMapping(BitVector.valueOf(0xFF00FF00, 32), 8, 8),
+            BitVector.newMapping(BitVector.valueOf(0xFF00FF00, 32), 8, 8),
             0xFF
         );
         
         checkBitVector(
-            BitVector.createMapping(BitVector.valueOf(0xFF00FF00, 32), 16, 8),
+            BitVector.newMapping(BitVector.valueOf(0xFF00FF00, 32), 16, 8),
             0x00
         );
         
         checkBitVector(
-            BitVector.createMapping(BitVector.valueOf(0xFF00FF00, 32), 24, 8),
+            BitVector.newMapping(BitVector.valueOf(0xFF00FF00, 32), 24, 8),
             0xFF
         );
         
         
         checkBitVector(
-            BitVector.createMapping(BitVector.valueOf(0xFF00FF00, 32), 4, 8),
+            BitVector.newMapping(BitVector.valueOf(0xFF00FF00, 32), 4, 8),
             0xF0
         );
         
         checkBitVector(
-            BitVector.createMapping(BitVector.valueOf(0xFF00FF00, 32), 20, 8),
+            BitVector.newMapping(BitVector.valueOf(0xFF00FF00, 32), 20, 8),
             0xF0
         );
        
         checkBitVector(
-            BitVector.createMapping(BitVector.valueOf(0xFF00FF00, 32), 4, 16),
+            BitVector.newMapping(BitVector.valueOf(0xFF00FF00, 32), 4, 16),
             0x0FF0
         );
         
         checkBitVector(
-            BitVector.createMapping(BitVector.valueOf(0xFF00FF00, 32), 12, 16),
+            BitVector.newMapping(BitVector.valueOf(0xFF00FF00, 32), 12, 16),
             0xF00F
         );
         
@@ -327,57 +327,57 @@ public class BitVectorTestCase
         // Test for data arrays with an incomplete high byte (size is not multiple of 8)
 
         checkBitVector(
-            BitVector.createMapping(BitVector.valueOf(-1L, 35), 0, 35),
+            BitVector.newMapping(BitVector.valueOf(-1L, 35), 0, 35),
             -1L
         );
 
         checkBitVector(
-            BitVector.createMapping(BitVector.valueOf(Long.valueOf("11" + SAMPLE_35BIT_BIN_STR, 2), 35), 0, 35),
+            BitVector.newMapping(BitVector.valueOf(Long.valueOf("11" + SAMPLE_35BIT_BIN_STR, 2), 35), 0, 35),
             SAMPLE_35BIT_BIN_STR 
         );
 
         checkBitVector(
-            BitVector.createMapping(BitVector.valueOf(Long.valueOf(SAMPLE_35BIT_BIN_STR, 2), 35), 27, 8),
+            BitVector.newMapping(BitVector.valueOf(Long.valueOf(SAMPLE_35BIT_BIN_STR, 2), 35), 27, 8),
             "101"+"10101" 
         );
 
         checkBitVector(
-            BitVector.createMapping(BitVector.valueOf(Long.valueOf(SAMPLE_35BIT_BIN_STR, 2), 35), 24, 11),
+            BitVector.newMapping(BitVector.valueOf(Long.valueOf(SAMPLE_35BIT_BIN_STR, 2), 35), 24, 11),
             "101"+"10101010" 
         );
 
         checkBitVector(
-            BitVector.createMapping(BitVector.valueOf(Long.valueOf(SAMPLE_35BIT_BIN_STR, 2), 35), 23, 11),
+            BitVector.newMapping(BitVector.valueOf(Long.valueOf(SAMPLE_35BIT_BIN_STR, 2), 35), 23, 11),
             "01"+"101010101" 
         );
 
         checkBitVector(
-            BitVector.createMapping(BitVector.valueOf(Long.valueOf("11" + SAMPLE_35BIT_BIN_STR, 2), 35), 1, 5),
+            BitVector.newMapping(BitVector.valueOf(Long.valueOf("11" + SAMPLE_35BIT_BIN_STR, 2), 35), 1, 5),
             "10101" 
         );
 
         checkBitVector(
-            BitVector.createMapping(BitVector.valueOf(Long.valueOf("11" + SAMPLE_35BIT_BIN_STR, 2), 35), 2, 15),
+            BitVector.newMapping(BitVector.valueOf(Long.valueOf("11" + SAMPLE_35BIT_BIN_STR, 2), 35), 2, 15),
             "0"+"10101010"+"101010" 
         );
         
         checkBitVector(
-            BitVector.createMapping(BitVector.valueOf(Long.valueOf("11" + SAMPLE_35BIT_BIN_STR, 2), 35), 8, 4),
+            BitVector.newMapping(BitVector.valueOf(Long.valueOf("11" + SAMPLE_35BIT_BIN_STR, 2), 35), 8, 4),
             "1010" 
         );
         
         checkBitVector(
-            BitVector.createMapping(BitVector.valueOf(0xFF00FF00, 29), 5, 23),
+            BitVector.newMapping(BitVector.valueOf(0xFF00FF00, 29), 5, 23),
             "11110000000011111111000"
         );
         
         checkBitVector(
-            BitVector.createMapping(BitVector.valueOf(Long.valueOf("11" + SAMPLE_35BIT_BIN_STR, 2), 35), 25, 10),
+            BitVector.newMapping(BitVector.valueOf(Long.valueOf("11" + SAMPLE_35BIT_BIN_STR, 2), 35), 25, 10),
             "101"+"1010101" 
         );
         
         checkBitVector(
-            BitVector.createMapping(BitVector.valueOf(0x00FFFFFF, 32), 22, 10),
+            BitVector.newMapping(BitVector.valueOf(0x00FFFFFF, 32), 22, 10),
             "0000000011" 
         );        
     }
@@ -413,7 +413,7 @@ public class BitVectorTestCase
             0xF0F00F 
         );
         
-        final BitVector rdm01 = BitVector.createMapping(rd01, 0, rd01.getBitSize());
+        final BitVector rdm01 = BitVector.newMapping(rd01, 0, rd01.getBitSize());
         
         checkBitVector(
             rdm01,
@@ -489,7 +489,7 @@ public class BitVectorTestCase
             0xFF 
         );
         
-        final BitVector rdm11 = BitVector.createMapping(rd11, 8, 8);
+        final BitVector rdm11 = BitVector.newMapping(rd11, 8, 8);
         
         checkBitVector(
             rdm11,
@@ -526,7 +526,7 @@ public class BitVectorTestCase
             0xFFFF 
         );
         
-        final BitVector rdm31 = BitVector.createMapping(rd31, 3, 11);
+        final BitVector rdm31 = BitVector.newMapping(rd31, 3, 11);
         
         checkBitVector(
             rdm31,
@@ -586,7 +586,7 @@ public class BitVectorTestCase
             0xFF 
         );
 
-        final BitVector rdm41 = BitVector.createMapping(rd41, 8, 5);
+        final BitVector rdm41 = BitVector.newMapping(rd41, 8, 5);
 
         checkBitVector(
             rdm41,
@@ -646,7 +646,7 @@ public class BitVectorTestCase
             0 
         );
 
-        final BitVector rdm51 = BitVector.createMapping(rd51, 8, 5);
+        final BitVector rdm51 = BitVector.newMapping(rd51, 8, 5);
 
         checkBitVector(
             rdm51,
@@ -701,7 +701,7 @@ public class BitVectorTestCase
             0xFF 
         );
 
-        final BitVector rdm61 = BitVector.createMapping(rd61, 1, 5);
+        final BitVector rdm61 = BitVector.newMapping(rd61, 1, 5);
 
         checkBitVector(
             rdm61,
