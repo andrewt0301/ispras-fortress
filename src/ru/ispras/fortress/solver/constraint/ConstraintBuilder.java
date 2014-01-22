@@ -35,24 +35,27 @@ public final class ConstraintBuilder
 
     /**
      * Constructs a ConstraintBuilder object with default values.
+     * 
+     * Default name and description are represented by an empty string.
+     * Default constraint type is formula-based (ConstraintKind.FORMULA_BASED).
      */
 
     public ConstraintBuilder()
     {
-        this(null, null);
+        this(ConstraintKind.FORMULA_BASED);
     }
 
     /**
-     * Constructs a ConstraintBuilder object using the provided
-     * constraint name and type.
+     * Constructs a ConstraintBuilder object using the provided constraint type.
      * 
-     * @param name Constraint name.
+     * Default name and description are represented by an empty string.
+     * 
      * @param kind Constraint type.
      */
 
-    public ConstraintBuilder(String name, ConstraintKind kind)
+    public ConstraintBuilder(ConstraintKind kind)
     {
-        this.name           = name;
+        this.name           = "";
         this.kind           = kind;
         this.description    = "";
         this.variables      = new TreeMap<String, Variable>();

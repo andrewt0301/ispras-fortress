@@ -44,8 +44,10 @@ public final class ConstraintCombiner
     {
         formulaBasedCheck(a);
 
+        final ConstraintBuilder builder = new ConstraintBuilder(a.getKind());
+
         final String name = String.format(NEGATION, a.getName());
-        final ConstraintBuilder builder = new ConstraintBuilder(name, a.getKind());
+        builder.setName(name);
 
         final Formulas formulas = new Formulas();
         builder.setInnerRep(formulas);
@@ -74,8 +76,10 @@ public final class ConstraintCombiner
         formulaBasedCheck(a);
         formulaBasedCheck(b);
 
+        final ConstraintBuilder builder = new ConstraintBuilder(a.getKind());
+
         final String name = String.format(CONJUNCTION, a.getName(), b.getName());
-        final ConstraintBuilder builder = new ConstraintBuilder(name, a.getKind());
+        builder.setName(name);
 
         final Formulas formulas = new Formulas();
         builder.setInnerRep(formulas);
@@ -106,8 +110,10 @@ public final class ConstraintCombiner
         formulaBasedCheck(a);
         formulaBasedCheck(b);
 
+        final ConstraintBuilder builder = new ConstraintBuilder(a.getKind());
+
         final String name = String.format(DISJUNCTION, a.getName(), b.getName());
-        final ConstraintBuilder builder = new ConstraintBuilder(name, a.getKind());
+        builder.setName(name);
 
         final Formulas formulas = new Formulas();
         builder.setInnerRep(formulas);
