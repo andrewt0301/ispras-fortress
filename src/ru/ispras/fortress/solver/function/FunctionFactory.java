@@ -12,7 +12,6 @@
 
 package ru.ispras.fortress.solver.function;
 
-
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataTypeId;
 import ru.ispras.fortress.data.Variable;
@@ -44,7 +43,7 @@ public final class FunctionFactory
                 break;
             default:
                 throw new IllegalArgumentException(
-                    "Type " + operand.getData().getType() + " is not supported here.");
+                    String.format(ERR_UNSUPPORTED_TYPE, operand.getData().getType()));
         }
 
         final Variable parameter = new Variable("x", data);
@@ -72,9 +71,8 @@ public final class FunctionFactory
         //check whether both operands are INT or REAL
         if (!areLogic(left, right))
         {
-            throw new IllegalArgumentException(
-                String.format("Unsupported argument types: %s and %s",
-                    left.getData().getType(), right.getData().getType()));
+            throw new IllegalArgumentException(String.format(
+                ERR_UNSUPPORTED_ARG_TYPES, left.getData().getType(), right.getData().getType()));
         }
 
         final Variable  leftParameter = new Variable("x", data);
@@ -103,9 +101,8 @@ public final class FunctionFactory
         //check whether both operands are INT or REAL
         if (!areLogic(left, right))
         {
-            throw new IllegalArgumentException(
-                String.format("Unsupported argument types: %s and %s",
-                   left.getData().getType(), right.getData().getType()));
+            throw new IllegalArgumentException(String.format(
+                ERR_UNSUPPORTED_ARG_TYPES, left.getData().getType(), right.getData().getType()));
         }
 
         final Variable leftParameter  = new Variable("x", data);
@@ -133,4 +130,7 @@ public final class FunctionFactory
 
         return true;
     }
+
+    private static final String      ERR_UNSUPPORTED_TYPE = "Type %s is not supported here.";
+    private static final String ERR_UNSUPPORTED_ARG_TYPES = "Unsupported argument types: %s and %s.";
 }
