@@ -35,7 +35,7 @@ public final class Data
      * @return New data object.
      */
 
-    public static Data createInteger(int value)
+    public static Data newInteger(int value)
     {
         return new Data(DataType.INTEGER, value);
     }
@@ -47,7 +47,7 @@ public final class Data
      * @return An new data object.
      */
 
-    public static Data createReal(double value)
+    public static Data newReal(double value)
     {
         return new Data(DataType.REAL, value);
     }
@@ -59,7 +59,7 @@ public final class Data
      * @return A new data object.
      */
 
-    public static Data createBoolean(boolean value)
+    public static Data newBoolean(boolean value)
     {
         return new Data(DataType.BOOLEAN, value);
     }
@@ -72,7 +72,7 @@ public final class Data
      * @return New data object.
      */
 
-    public static Data createData(Object value)
+    public static Data newUnknown(Object value)
     {
         return new Data(DataType.UNKNOWN, value);
     }
@@ -85,7 +85,7 @@ public final class Data
      * @return A new data object.
      */
 
-    public static Data createBitVector(BigInteger value, int size)
+    public static Data newBitVector(BigInteger value, int size)
     {
         if (null == value)
             throw new NullPointerException();
@@ -105,7 +105,7 @@ public final class Data
      * @return A new data object.
      */
 
-    public static Data createBitVector(String s, int radix, int size)
+    public static Data newBitVector(String s, int radix, int size)
     {
         if (null == s)
             throw new NullPointerException();
@@ -124,9 +124,9 @@ public final class Data
      * @return A new data object.
      */
 
-    public static Data createBitVector(int value, int size)
+    public static Data newBitVector(int value, int size)
     {
-        return createBitVector((long) value, size);
+        return newBitVector((long) value, size);
     }
 
     /**
@@ -137,7 +137,7 @@ public final class Data
      * @return A new data object.
      */
 
-    public static Data createBitVector(long value, int size)
+    public static Data newBitVector(long value, int size)
     {
         final DataType dt = DataType.BIT_VECTOR(size);
         final Object    v = BitVector.unmodifiable(BitVector.valueOf(value, size));

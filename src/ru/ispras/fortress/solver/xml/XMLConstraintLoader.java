@@ -360,7 +360,7 @@ class XMLConstraintHandler extends DefaultHandler
         final String  valueString = getAttribute(nodeName, attributes, XMLConst.ATTR_VALUE);
         final DataTypeId   typeId = DataTypeId.valueOf(typeIdString);
         final int          length = Integer.valueOf(lengthString);
-        final DataType   typeInfo = DataType.createDataType(typeId, length);
+        final DataType   typeInfo = DataType.newDataType(typeId, length);
 
         return typeInfo.valueOf(valueString, typeInfo.getTypeRadix());
     }
@@ -375,7 +375,7 @@ class XMLConstraintHandler extends DefaultHandler
 
         final DataTypeId typeId = DataTypeId.valueOf(typeIdString);
         final int        length = Integer.valueOf(lengthString);
-        final DataType typeInfo = DataType.createDataType(typeId, length);
+        final DataType typeInfo = DataType.newDataType(typeId, length);
 
         return valueString.isEmpty() ?
             new Variable(variableName, typeInfo) :

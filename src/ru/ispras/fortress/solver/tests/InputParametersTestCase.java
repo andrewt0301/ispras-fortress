@@ -24,8 +24,8 @@ public class InputParametersTestCase extends GenericSolverSampleTestBase
     {
         final Constraint constraint = super.getConstraint();
 
-        constraint.setVariableValue("b", Data.createBitVector(2, 16));
-        constraint.setVariableValue("c", Data.createBitVector(5, 16));
+        constraint.setVariableValue("b", Data.newBitVector(2, 16));
+        constraint.setVariableValue("c", Data.newBitVector(5, 16));
 
         return constraint;
     }

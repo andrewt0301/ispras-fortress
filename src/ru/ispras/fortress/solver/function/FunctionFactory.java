@@ -37,10 +37,10 @@ public final class FunctionFactory
         switch (operand.getData().getType().getTypeId())
         {
             case LOGIC_INTEGER:
-                data = Data.createInteger(0);
+                data = Data.newInteger(0);
                 break;
             case LOGIC_REAL:
-                data = Data.createReal(0);
+                data = Data.newReal(0);
                 break;
             default:
                 throw new IllegalArgumentException(
@@ -67,7 +67,7 @@ public final class FunctionFactory
         if (null == right)
             throw new NullPointerException();
 
-        final Data data = Data.createReal(0);
+        final Data data = Data.newReal(0);
 
         //check whether both operands are INT or REAL
         if (!areLogic(left, right))
@@ -98,7 +98,7 @@ public final class FunctionFactory
         if (null == right)
             throw new NullPointerException();
 
-        final Data data = Data.createReal(0);
+        final Data data = Data.newReal(0);
 
         //check whether both operands are INT or REAL
         if (!areLogic(left, right))

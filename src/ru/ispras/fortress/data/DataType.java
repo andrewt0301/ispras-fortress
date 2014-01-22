@@ -40,16 +40,16 @@ public final class DataType
     public static final int LOGIC_TYPE_SIZE = 0;
 
     /** Predefined logic integer type. */
-    public static final DataType INTEGER = createDataType(DataTypeId.LOGIC_INTEGER, LOGIC_TYPE_SIZE);
+    public static final DataType INTEGER = newDataType(DataTypeId.LOGIC_INTEGER, LOGIC_TYPE_SIZE);
 
     /** Predefined logic real type. */
-    public static final DataType REAL = createDataType(DataTypeId.LOGIC_REAL, LOGIC_TYPE_SIZE);
+    public static final DataType REAL = newDataType(DataTypeId.LOGIC_REAL, LOGIC_TYPE_SIZE);
 
     /** Predefined logic boolean type. */
-    public static final DataType BOOLEAN = createDataType(DataTypeId.LOGIC_BOOLEAN, LOGIC_TYPE_SIZE);
+    public static final DataType BOOLEAN = newDataType(DataTypeId.LOGIC_BOOLEAN, LOGIC_TYPE_SIZE);
 
     /** Predefined unknown type. */
-    public static final DataType UNKNOWN = createDataType(DataTypeId.UNKNOWN, LOGIC_TYPE_SIZE);
+    public static final DataType UNKNOWN = newDataType(DataTypeId.UNKNOWN, LOGIC_TYPE_SIZE);
 
     /**
      * Returns a type describing a bit vector of the specified size.
@@ -63,7 +63,7 @@ public final class DataType
         if (size <= 0)
             throw new IllegalArgumentException("Illegal bit vector size: " + size);
 
-        return createDataType(DataTypeId.BIT_VECTOR, size);
+        return newDataType(DataTypeId.BIT_VECTOR, size);
     }
 
     /**
@@ -75,7 +75,7 @@ public final class DataType
      * @return A data type object
      */
 
-    public static DataType createDataType(DataTypeId typeId, int size)
+    public static DataType newDataType(DataTypeId typeId, int size)
     {
         if (null == typeId)
             throw new NullPointerException();

@@ -67,7 +67,7 @@ enum StandardOperationsInt implements Operation<StandardOperation>
         public Data calculate(Data operand)
         {
             final int value = extractInteger(operand);
-            return Data.createInteger(- value);
+            return Data.newInteger(- value);
         }
 
         @Override
@@ -91,7 +91,7 @@ enum StandardOperationsInt implements Operation<StandardOperation>
             final int value1 = extractInteger(operand1);
             final int value2 = extractInteger(operand2);
 
-            return Data.createInteger(value1 + value2);
+            return Data.newInteger(value1 + value2);
         }
     },
 
@@ -109,7 +109,7 @@ enum StandardOperationsInt implements Operation<StandardOperation>
             final int value1 = extractInteger(operand1);
             final int value2 = extractInteger(operand2);
 
-            return Data.createInteger(value1 - value2);
+            return Data.newInteger(value1 - value2);
         }
     },
 
@@ -127,7 +127,7 @@ enum StandardOperationsInt implements Operation<StandardOperation>
             final int value1 = extractInteger(operand1);
             final int value2 = extractInteger(operand2);
 
-            return Data.createInteger(value1 * value2);
+            return Data.newInteger(value1 * value2);
         }
     },
 
@@ -145,7 +145,7 @@ enum StandardOperationsInt implements Operation<StandardOperation>
             final int value1 = extractInteger(operand1);
             final int value2 = extractInteger(operand2);
 
-            return Data.createInteger(value1 / value2);
+            return Data.newInteger(value1 / value2);
         }
     },
 
@@ -163,7 +163,7 @@ enum StandardOperationsInt implements Operation<StandardOperation>
             final int value1 = extractInteger(operand1);
             final int value2 = extractInteger(operand2);
 
-            return Data.createInteger(value1 % value2);
+            return Data.newInteger(value1 % value2);
         }
     },
 
@@ -181,7 +181,7 @@ enum StandardOperationsInt implements Operation<StandardOperation>
             final int value1 = extractInteger(operand1);
             final int value2 = extractInteger(operand2);
 
-            return Data.createInteger(value1 % value2);
+            return Data.newInteger(value1 % value2);
         }
     }
     ;
