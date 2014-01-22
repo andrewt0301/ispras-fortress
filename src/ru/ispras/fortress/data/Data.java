@@ -97,6 +97,26 @@ public final class Data
     }
 
     /**
+     * Creates a data object that has the BIT_VECTOR type from a string.
+     * 
+     * @param s Textual representation of the bit vector.
+     * @param radix Radix to be used for parsing.
+     * @param size Size of the resulting bit vector in bits.
+     * @return A new data object.
+     */
+
+    public static Data createBitVector(String s, int radix, int size)
+    {
+        if (null == s)
+            throw new NullPointerException();
+
+        final DataType dt = DataType.BIT_VECTOR(size);
+        final Object    v = BitVector.unmodifiable(BitVector.valueOf(s, radix, size));
+
+        return new Data(dt, v);
+    }
+
+    /**
      * Creates a data object that has the BIT_VECTOR type from an integer value.
      * 
      * @param value Integer value to be converted.
