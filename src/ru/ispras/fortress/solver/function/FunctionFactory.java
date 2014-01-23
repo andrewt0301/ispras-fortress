@@ -105,10 +105,8 @@ public final class FunctionFactory
         checkNotNull(operand);
         checkBitVector(operand);
 
-        final NodeVariable operandNode = new NodeVariable(operand);
-
         final NodeExpr body = new NodeExpr(
-            StandardOperation.ITE, makeBVEqualsAllOnes(operandNode), BIT_TRUE, BIT_FALSE);
+            StandardOperation.ITE, makeBVEqualsAllOnes(operand), BIT_TRUE, BIT_FALSE);
 
         return new Function(BIT_BOOL, body, operand);
     }
@@ -118,10 +116,8 @@ public final class FunctionFactory
         checkNotNull(operand);
         checkBitVector(operand);
 
-        final NodeVariable operandNode = new NodeVariable(operand);
-
         final NodeExpr body = new NodeExpr(
-            StandardOperation.ITE, makeBVEqualsAllOnes(operandNode), BIT_FALSE, BIT_TRUE);
+            StandardOperation.ITE, makeBVEqualsAllOnes(operand), BIT_FALSE, BIT_TRUE);
 
         return new Function(BIT_BOOL, body, operand);
     }
@@ -131,10 +127,8 @@ public final class FunctionFactory
         checkNotNull(operand);
         checkBitVector(operand);
 
-        final NodeVariable operandNode = new NodeVariable(operand);
-
         final NodeExpr body = new NodeExpr(
-            StandardOperation.ITE, makeBVEqualsAllZeros(operandNode), BIT_FALSE, BIT_TRUE);
+            StandardOperation.ITE, makeBVEqualsAllZeros(operand), BIT_FALSE, BIT_TRUE);
 
         return new Function(BIT_BOOL, body, operand);
     }
@@ -144,38 +138,34 @@ public final class FunctionFactory
         checkNotNull(operand);
         checkBitVector(operand);
 
-        final NodeVariable operandNode = new NodeVariable(operand);
-
         final NodeExpr body = new NodeExpr(
-            StandardOperation.ITE, makeBVEqualsAllZeros(operandNode), BIT_TRUE, BIT_FALSE);
+            StandardOperation.ITE, makeBVEqualsAllZeros(operand), BIT_TRUE, BIT_FALSE);
 
         return new Function(BIT_BOOL, body, operand);
     }
 
+    /*
+    // TODO: NOT IMPLEMENTED
     public static Function makeBVXORR(Variable operand)
     {
         checkNotNull(operand);
         checkBitVector(operand);
-       
-        // TODO: NOT SUPPORTED.
-        throw new UnsupportedOperationException();
 
-        // final NodeExpr body = null;
-        // return new Function(BIT_BOOL, body, operand);
+        final Node body = null;
+        return new Function(BIT_BOOL, body, operand);
     }
 
+    // TODO: NOT IMPLEMENTED
     public static Function makeBVXNORR(Variable operand)
     {
         checkNotNull(operand);
         checkBitVector(operand);
 
-        // TODO: NOT SUPPORTED.
-        throw new UnsupportedOperationException();
-
-        // final NodeExpr body = null;
-        // return new Function(BIT_BOOL, body, operand);
+        final Node body = null;
+        return new Function(BIT_BOOL, body, operand);
     }
-    
+    */
+
     private static void checkNotNull(Object o)
     {
         if (null == o)
@@ -217,18 +207,22 @@ public final class FunctionFactory
             String.format(ERR_UNSUPPORTED_ARG_TYPE, operand.getName(), type, DataTypeId.BIT_VECTOR));
     }
 
-    private static final Node makeBVEqualsAllZeros(NodeVariable operandNode)
+    private static final Node makeBVEqualsAllZeros(Variable operand)
     {
-        final Node zeroNode = 
-            new NodeValue(Data.newBitVector(0, operandNode.getData().getType().getSize()));
+        final DataType operandType = operand.getData().getType();
+
+        final NodeVariable operandNode = new NodeVariable(operand);
+        final NodeValue zeroNode = new NodeValue(Data.newBitVector(0, operandType.getSize()));
 
         return new NodeExpr(StandardOperation.EQ, operandNode, zeroNode);
     }
 
-    private static final Node makeBVEqualsAllOnes(NodeVariable operandNode)
+    private static final Node makeBVEqualsAllOnes(Variable operand)
     {
-        final Node zeroNode = 
-            new NodeValue(Data.newBitVector(0, operandNode.getData().getType().getSize()));
+        final DataType operandType = operand.getData().getType();
+
+        final NodeVariable operandNode = new NodeVariable(operand);
+        final NodeValue zeroNode = new NodeValue(Data.newBitVector(0, operandType.getSize()));
 
         return new NodeExpr(StandardOperation.EQ, operandNode, new NodeExpr(StandardOperation.BVNOT, zeroNode));
     }
