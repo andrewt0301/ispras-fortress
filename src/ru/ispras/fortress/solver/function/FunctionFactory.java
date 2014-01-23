@@ -28,107 +28,218 @@ import ru.ispras.fortress.expression.*;
 
 public final class FunctionFactory
 {
-    public static Function makeAbs(NodeVariable operand)
+    public static Function makeAbs(Variable operand)
     {
-        if (null == operand)
-            throw new NullPointerException();
+        checkNotNull(operand);
+        checkLogicNumeric(operand);
 
-        Data data = null;
-        switch (operand.getData().getType().getTypeId())
+        final DataType returnType = operand.getData().getType();
+        final Node operandNode = new NodeVariable(operand);
+
+        final Data zeroData;
+        switch (returnType.getTypeId())
         {
-            case LOGIC_INTEGER:
-                data = Data.newInteger(0);
-                break;
-            case LOGIC_REAL:
-                data = Data.newReal(0);
-                break;
-            default:
-                throw new IllegalArgumentException(
-                    String.format(ERR_UNSUPPORTED_TYPE, operand.getData().getType()));
+            case LOGIC_INTEGER: zeroData = Data.newInteger(0); break;
+            case LOGIC_REAL:    zeroData = Data.newReal(0);    break;
+            default:            zeroData = null;               assert false;
         }
 
-        final Variable parameter = new Variable("x", data);
+        final NodeExpr body = new NodeExpr(
+            StandardOperation.ITE,
+            new NodeExpr(StandardOperation.GREATEREQ, operandNode, new NodeValue(zeroData)),
+            operandNode,
+            new NodeExpr(StandardOperation.MINUS, operandNode)
+        );
+
+        return new Function(returnType, body, operand);
+    }
+
+    public static Function makeMin(Variable left, Variable right)
+    {
+        checkNotNull(left);
+        checkNotNull(right);
+
+        checkEqualTypes(left, right);
+        checkLogicNumeric(left);
+        checkLogicNumeric(right);
+
+        final DataType returnType = left.getData().getType();
+        final Node leftNode = new NodeVariable(left);
+        final Node rightNode = new NodeVariable(right);
 
         final NodeExpr body = new NodeExpr(
             StandardOperation.ITE,
-            new NodeExpr(StandardOperation.GREATEREQ, operand, new NodeValue(data)),
-            operand,
-            new NodeExpr(StandardOperation.MINUS, operand)
+            new NodeExpr(StandardOperation.GREATEREQ, leftNode, rightNode),
+            rightNode,
+            leftNode
         );
 
-        return new Function(operand.getData().getType(), body, parameter);
+        return new Function(returnType, body, left, right);
     }
 
-    public static Function makeMin(NodeVariable left, NodeVariable right)
+    public static Function makeMax(Variable left, Variable right)
     {
-        if (null == left)
-            throw new NullPointerException();
+        checkNotNull(left);
+        checkNotNull(right);
 
-        if (null == right)
-            throw new NullPointerException();
+        checkEqualTypes(left, right);
+        checkLogicNumeric(left);
+        checkLogicNumeric(right);
 
-        checkBothLogicNumeric(left, right);
-
-        final Data data = Data.newReal(0);
-
-        final Variable  leftParameter = new Variable("x", data);
-        final Variable rightParameter = new Variable("y", data);
+        final DataType returnType = left.getData().getType();
+        final Node leftNode = new NodeVariable(left);
+        final Node rightNode = new NodeVariable(right);
 
         final NodeExpr body = new NodeExpr(
             StandardOperation.ITE,
-            new NodeExpr(StandardOperation.GREATEREQ, left, right),
-            right,
-            left
+            new NodeExpr(StandardOperation.GREATEREQ, leftNode, rightNode),
+            leftNode,
+            rightNode
         );
 
-        return new Function(data.getType(), body, leftParameter, rightParameter);
+        return new Function(returnType, body, left, right);
     }
-
-    public static Function makeMax(NodeVariable left, NodeVariable right)
+    
+    public static Function makeBVANDR(Variable operand)
     {
-        if (null == left)
-            throw new NullPointerException();
-        
-        if (null == right)
-            throw new NullPointerException();
+        checkNotNull(operand);
+        checkBitVector(operand);
 
-        checkBothLogicNumeric(left, right);
-
-        final Data data = Data.newReal(0);
-
-        final Variable leftParameter  = new Variable("x", data);
-        final Variable rightParameter = new Variable("y", data);
+        final NodeVariable operandNode = new NodeVariable(operand);
 
         final NodeExpr body = new NodeExpr(
-            StandardOperation.ITE,
-            new NodeExpr(StandardOperation.GREATEREQ, left, right),
-            left,
-            right
-        );
+            StandardOperation.ITE, makeBVEqualsAllOnes(operandNode), BIT_TRUE, BIT_FALSE);
 
-        return new Function(data.getType(), body, leftParameter, rightParameter);
+        return new Function(BIT_BOOL, body, operand);
     }
 
-    private static void checkBothLogicNumeric(NodeVariable left, NodeVariable right)
+    public static Function makeBVNANDR(Variable operand)
     {
-        final DataType  leftType = left.getData().getType();
-        final DataType rightType = right.getData().getType();
+        checkNotNull(operand);
+        checkBitVector(operand);
 
-        if (isLogicNumeric(leftType) && isLogicNumeric(rightType))
+        final NodeVariable operandNode = new NodeVariable(operand);
+
+        final NodeExpr body = new NodeExpr(
+            StandardOperation.ITE, makeBVEqualsAllOnes(operandNode), BIT_FALSE, BIT_TRUE);
+
+        return new Function(BIT_BOOL, body, operand);
+    }
+
+    public static Function makeBVORR(Variable operand)
+    {
+        checkNotNull(operand);
+        checkBitVector(operand);
+
+        final NodeVariable operandNode = new NodeVariable(operand);
+
+        final NodeExpr body = new NodeExpr(
+            StandardOperation.ITE, makeBVEqualsAllZeros(operandNode), BIT_FALSE, BIT_TRUE);
+
+        return new Function(BIT_BOOL, body, operand);
+    }
+
+    public static Function makeBVNORR(Variable operand)
+    {
+        checkNotNull(operand);
+        checkBitVector(operand);
+
+        final NodeVariable operandNode = new NodeVariable(operand);
+
+        final NodeExpr body = new NodeExpr(
+            StandardOperation.ITE, makeBVEqualsAllZeros(operandNode), BIT_TRUE, BIT_FALSE);
+
+        return new Function(BIT_BOOL, body, operand);
+    }
+
+    public static Function makeBVXORR(Variable operand)
+    {
+        checkNotNull(operand);
+        checkBitVector(operand);
+       
+        // TODO: NOT SUPPORTED.
+        throw new UnsupportedOperationException();
+
+        // final NodeExpr body = null;
+        // return new Function(BIT_BOOL, body, operand);
+    }
+
+    public static Function makeBVXNORR(Variable operand)
+    {
+        checkNotNull(operand);
+        checkBitVector(operand);
+
+        // TODO: NOT SUPPORTED.
+        throw new UnsupportedOperationException();
+
+        // final NodeExpr body = null;
+        // return new Function(BIT_BOOL, body, operand);
+    }
+    
+    private static void checkNotNull(Object o)
+    {
+        if (null == o)
+            throw new NullPointerException();
+    }
+
+    private static void checkEqualTypes(Variable left, Variable right)
+    {
+        if (left.getData().getType().equals(right.getData().getType()))
             return;
 
         throw new IllegalArgumentException(
-            String.format(ERR_UNSUPPORTED_ARG_TYPES, leftType, rightType));
+            String.format(ERR_UNEQUAL_ARG_TYPES,
+                left.getName(), left.getData().getType(), right.getName(), right.getData().getType()));
     }
 
-    private static boolean isLogicNumeric(DataType type)
+    private static void checkLogicNumeric(Variable operand)
     {
+        final DataType type = operand.getData().getType();
         final DataTypeId typeId = type.getTypeId();
 
-        return (DataTypeId.LOGIC_INTEGER == typeId) ||
-               (DataTypeId.LOGIC_REAL == typeId);
+        if ((DataTypeId.LOGIC_INTEGER == typeId) || (DataTypeId.LOGIC_REAL == typeId))
+            return;
+
+        throw new IllegalArgumentException(
+            String.format(ERR_UNSUPPORTED_ARG_TYPE,
+                operand.getName(), type, DataTypeId.LOGIC_INTEGER + " and " + DataTypeId.LOGIC_REAL));
     }
 
-    private static final String      ERR_UNSUPPORTED_TYPE = "Type %s is not supported here.";
-    private static final String ERR_UNSUPPORTED_ARG_TYPES = "Unsupported argument types: %s and %s.";
+    private static void checkBitVector(Variable operand)
+    {
+        final DataType type = operand.getData().getType();
+        final DataTypeId typeId = type.getTypeId();
+
+        if (DataTypeId.BIT_VECTOR == typeId)
+            return;
+
+        throw new IllegalArgumentException(
+            String.format(ERR_UNSUPPORTED_ARG_TYPE, operand.getName(), type, DataTypeId.BIT_VECTOR));
+    }
+
+    private static final Node makeBVEqualsAllZeros(NodeVariable operandNode)
+    {
+        final Node zeroNode = 
+            new NodeValue(Data.newBitVector(0, operandNode.getData().getType().getSize()));
+
+        return new NodeExpr(StandardOperation.EQ, operandNode, zeroNode);
+    }
+
+    private static final Node makeBVEqualsAllOnes(NodeVariable operandNode)
+    {
+        final Node zeroNode = 
+            new NodeValue(Data.newBitVector(0, operandNode.getData().getType().getSize()));
+
+        return new NodeExpr(StandardOperation.EQ, operandNode, new NodeExpr(StandardOperation.BVNOT, zeroNode));
+    }
+
+    private static final DataType  BIT_BOOL  = DataType.BIT_VECTOR(1);
+    private static final NodeValue BIT_TRUE  = new NodeValue(Data.newBitVector(1, 1));
+    private static final NodeValue BIT_FALSE = new NodeValue(Data.newBitVector(1, 1));
+
+    private static final String ERR_UNEQUAL_ARG_TYPES =
+        "Arguments %s (%s) and %s (%s) have unequal types.";
+
+    private static final String ERR_UNSUPPORTED_ARG_TYPE =
+        "Argument %s (%s) has an unsupported type. Expected types: %s.";
 }

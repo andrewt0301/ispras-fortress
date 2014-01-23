@@ -197,6 +197,10 @@ public final class DataType
     {
         return new Data(this, null);
     }
+  
+    /**
+     * {@inheritDoc}
+     */
 
     @Override
     public String toString()

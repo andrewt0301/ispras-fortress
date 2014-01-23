@@ -48,7 +48,7 @@ public class AbsCustomOperation implements ISampleConstraint
 
         solver.addCustomOperation(
             FunctionOperation.ABS,
-            FunctionFactory.makeAbs(new NodeVariable(new Variable("x", realType))));
+            FunctionFactory.makeAbs(new Variable("x", realType)));
 
         final ConstraintBuilder builder = new ConstraintBuilder();
 

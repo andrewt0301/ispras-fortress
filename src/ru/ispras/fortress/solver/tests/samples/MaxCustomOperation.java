@@ -44,8 +44,8 @@ public class MaxCustomOperation implements ISampleConstraint
         solver.addCustomOperation(
             FunctionOperation.MAX,
             FunctionFactory.makeMax(
-                new NodeVariable(new Variable("x", realType)),
-                new NodeVariable(new Variable("y", realType))
+                new Variable("x", realType),
+                new Variable("y", realType)
             )
         );
 

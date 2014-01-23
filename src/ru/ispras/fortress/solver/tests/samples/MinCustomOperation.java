@@ -47,8 +47,8 @@ public class MinCustomOperation implements ISampleConstraint
         solver.addCustomOperation(
             FunctionOperation.MIN,
             FunctionFactory.makeMin(
-                new NodeVariable(new Variable("x", realType)),
-                new NodeVariable(new Variable("y", realType))
+                new Variable("x", realType),
+                new Variable("y", realType)
             )
         );
 

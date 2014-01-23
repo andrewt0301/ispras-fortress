@@ -147,7 +147,7 @@ public enum DataTypeId
      */
 
     abstract Object valueOf(String s, int radix, int size);
-
+    
     /**
      * Returns radix to be used to convert data of this type to a string or vice versa.
      * 
