@@ -18,9 +18,7 @@ package ru.ispras.fortress.logic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Set;
 
 /**
@@ -121,74 +119,6 @@ public final class DNF
     /**
      * Replaces the i-th clause of the list with the specified set of clauses.
      *
-     * @param clauses the list of clauses.
-     * @param i the index of the clause to be replaced.
-     * @param form the set of clauses to be substituted.
-     */
-    private static void replace(List<Clause> clauses, int i, final NormalForm split)
-    {
-        if(split.isEmpty())
-        {
-            clauses.remove(i);
-            return;
-        }
-
-        final List<Clause> list = split.getClauses();
-        final int max = list.size() - 1;
-        
-        if(max == 0)
-        {
-            clauses.set(i, list.get(0));
-            return;
-        }
-        
-        clauses.set(i, list.get(max));
-        clauses.addAll(i, list.subList(0, max));
-    }
-    
-    /**
-     * Orthogonolizes the specified DNF, i.e. constructs an equivalent DNF 
-     * consisting of disjoint conjuncts.
-     *
-     * @param form the DNF to be orthogonolized.
-     * @return the orthogonal DNF equivalent to the specified one.
-     */
-    public static NormalForm orthogonalize(final NormalForm form)
-    {
-        ArrayList<Clause> clauses = new ArrayList<Clause>(form.getClauses());
-
-        for(int i = 1; i < clauses.size(); i++)
-        for(int j = 0; j < i;              j++)
-        {
-            NormalForm split = new NormalForm(NormalForm.Type.DNF);
-
-            // Split one of the clauses to make them disjoint.
-            int index = orthogonalize(clauses.get(j), clauses.get(i), split);
-
-            // The left-hand-side clause is rewritten (#0).
-            if(index == 0)
-            {
-                replace(clauses, j, split);
-                
-                i += (split.size() - 1);
-                j += (split.size() - 1);
-            }
-            // The right-hand-side clause is rewritten (#1).
-            else if(index == 1)
-            {
-                replace(clauses, i, split);
-                
-                if(split.isEmpty())
-                    { j = (i >= clauses.size() ? i : -1); }
-            }
-        }
-
-        return new NormalForm(NormalForm.Type.DNF, clauses);
-    }
-
-    /**
-     * Replaces the i-th clause of the list with the specified set of clauses.
-     *
      * @param  clauses the list of clauses.
      * @param  branches the next-index map.
      * @param  pre_i the index of the preceding clause.
@@ -273,7 +203,7 @@ public final class DNF
      * @param form the DNF to be orthogonolized.
      * @return the orthogonal DNF equivalent to the specified one.
      */
-    public static NormalForm orthogonalize1(final NormalForm form)
+    public static NormalForm orthogonalize(final NormalForm form)
     {
         ArrayList<Clause> clauses = new ArrayList<Clause>(form.getClauses());
 

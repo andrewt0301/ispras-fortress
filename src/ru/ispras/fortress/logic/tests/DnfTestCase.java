@@ -28,9 +28,9 @@ public class DnfTestCase
 
         Clause x0 = new Clause();
 
-        for(int i = 0; i < 300; i++)
+        for(int i = 0; i < 100; i++)
         {
-            x0.add(i + 300, false);            
+            x0.add(i + 100, false);            
         }
 
         Clause x = new Clause();
@@ -62,18 +62,18 @@ public class DnfTestCase
         a.add(z);
         a.add(u);
 
-        for(int i = 0; i < 300; i++)
+        for(int i = 0; i < 100; i++)
         {
             a.add(y);
         }
 
-        for(int i = 0; i < 300; i += 4)
+        for(int i = 0; i < 100; i += 4)
         {
             u.add(i, (i & 1) == 0);
             a.add(u);
         }
 
-        for(int i = 0; i < 300; i++)
+        for(int i = 0; i < 100; i++)
         {
             z.add(i,        (i & 1) == 0);
             z.add(i + 1000, (i & 1) == 0);
@@ -84,24 +84,12 @@ public class DnfTestCase
     }
 
     @Test
-    public void run1()
+    public void run()
     {
         NormalForm x = createDnf();
         NormalForm y = DNF.orthogonalize(x);
 
-        System.out.println("TEST 1");
         System.out.println(x);
         System.out.println(y);
-    }
-
-    @Test
-    public void run2()
-    {
-        NormalForm a = createDnf();
-        NormalForm b = DNF.orthogonalize1(a);
-
-        System.out.println("TEST 2");
-        System.out.println(a);
-        System.out.println(b);
     }
 }
