@@ -13,6 +13,7 @@
 package ru.ispras.fortress.solver.function;
 
 import ru.ispras.fortress.data.Data;
+import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.DataTypeId;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.*;
@@ -62,18 +63,13 @@ public final class FunctionFactory
     {
         if (null == left)
             throw new NullPointerException();
-        
+
         if (null == right)
             throw new NullPointerException();
 
-        final Data data = Data.newReal(0);
+        checkBothLogicNumeric(left, right);
 
-        //check whether both operands are INT or REAL
-        if (!areLogic(left, right))
-        {
-            throw new IllegalArgumentException(String.format(
-                ERR_UNSUPPORTED_ARG_TYPES, left.getData().getType(), right.getData().getType()));
-        }
+        final Data data = Data.newReal(0);
 
         final Variable  leftParameter = new Variable("x", data);
         final Variable rightParameter = new Variable("y", data);
@@ -96,14 +92,9 @@ public final class FunctionFactory
         if (null == right)
             throw new NullPointerException();
 
-        final Data data = Data.newReal(0);
+        checkBothLogicNumeric(left, right);
 
-        //check whether both operands are INT or REAL
-        if (!areLogic(left, right))
-        {
-            throw new IllegalArgumentException(String.format(
-                ERR_UNSUPPORTED_ARG_TYPES, left.getData().getType(), right.getData().getType()));
-        }
+        final Data data = Data.newReal(0);
 
         final Variable leftParameter  = new Variable("x", data);
         final Variable rightParameter = new Variable("y", data);
@@ -118,17 +109,24 @@ public final class FunctionFactory
         return new Function(data.getType(), body, leftParameter, rightParameter);
     }
 
-    private static boolean areLogic(NodeVariable ... variables)
+    private static void checkBothLogicNumeric(NodeVariable left, NodeVariable right)
     {
-        for (NodeVariable v : variables)
-        {
-            final DataTypeId typeId = v.getData().getType().getTypeId();
+        final DataType  leftType = left.getData().getType();
+        final DataType rightType = right.getData().getType();
 
-            if ((typeId!= DataTypeId.LOGIC_INTEGER) && (typeId != DataTypeId.LOGIC_REAL))
-                return false;
-        }
+        if (isLogicNumeric(leftType) && isLogicNumeric(rightType))
+            return;
 
-        return true;
+        throw new IllegalArgumentException(
+            String.format(ERR_UNSUPPORTED_ARG_TYPES, leftType, rightType));
+    }
+
+    private static boolean isLogicNumeric(DataType type)
+    {
+        final DataTypeId typeId = type.getTypeId();
+
+        return (DataTypeId.LOGIC_INTEGER == typeId) ||
+               (DataTypeId.LOGIC_REAL == typeId);
     }
 
     private static final String      ERR_UNSUPPORTED_TYPE = "Type %s is not supported here.";
