@@ -57,50 +57,43 @@ public final class DNF
      * Splits one of the clauses, <code>lhs</code> or <code>rhs</code>, so as
      * to make them disjoint.
      *
-     * @return the index of the index clause or -1 if no one has been index.
+     * @param lhs the left-hand-side clause.
+     * @param rhs the right-hand-side clause.
+     * @param res the splitting result.
+     * @return the index of the split clause or -1 if no one has been split.
      */
-    private static int orthogonalize(final Clause lhs, final Clause rhs, NormalForm LHS, NormalForm RHS)
+    private static int orthogonalize(final Clause lhs, final Clause rhs, NormalForm res)
     {
         // The specified clauses are disjoint.
         if(areDisjoint(lhs, rhs))
-        {
-            // They are added to the corresponding normal forms without changes.
-            LHS.add(lhs);
-            RHS.add(rhs);
-            return -1;
-        }
+            { return -1; }
 
-        // Try to split the right-hand-side clause (#1).
-        int index = 1;
-        // To do it, the left-hand-side clause should have unique variables.
-        Set<Integer> unique = lhs.getUniqueVars(rhs);
+        // Try to split the left-hand-side clause (#0).
+        // Splitting the left-hand-side clause is preferable.
+        int index = 0;
+        // To do it, the right-hand-side clause should have unique variables.
+        Set<Integer> unique = rhs.getUniqueVars(lhs);
 
         // If it does not.
         if(unique.isEmpty())
         {
-            // Try to split the left-hand-side clause (#0).
-            index = 0;
-            // To do it, the right-hand-side clause should have unique variables.
-            unique = rhs.getUniqueVars(lhs);
+            // Try to split the right-hand-side clause (#1).
+            index = 1;
+            // To do it, the left-hand-side clause should have unique variables.
+            unique = lhs.getUniqueVars(rhs);
 
             // If it does not, the clauses are equal.
             if(unique.isEmpty())
             {
                 // The right-hand-side clause is removed (#1).
-                LHS.add(lhs);
                 return 1;
             }
         }
 
-        // The clauses are neither equal nor disjoint.
+        // One of the clauses is fixed (the other one is split).
         final Clause fixed = (index == 1 ? lhs : rhs);
         final Clause split = (index == 1 ? rhs : lhs);
-        NormalForm   FIXED = (index == 1 ? LHS : RHS);
-        NormalForm   SPLIT = (index == 1 ? RHS : LHS);
         
-        // One of the clauses is fixed (the other one is split).
-        FIXED.add(fixed);
-
         int     prev = -1;
         boolean sign = false;
 
@@ -117,7 +110,8 @@ public final class DNF
 
             factor.add((prev = var), !(sign = fixed.getSign(var)));
             clause.add(factor);
-            SPLIT.add(clause);
+
+            res.add(clause);
         }
 
         // Return the index of the split clause.
@@ -131,53 +125,60 @@ public final class DNF
      * @param i the index of the clause to be replaced.
      * @param form the set of clauses to be substituted.
      */
-    private static void replace(List<Clause> clauses, int i, final NormalForm form)
+    private static void replace(List<Clause> clauses, int i, final NormalForm split)
     {
-        if(form.isEmpty())
+        if(split.isEmpty())
         {
             clauses.remove(i);
             return;
         }
 
-        final List<Clause> list = form.getClauses();
+        final List<Clause> list = split.getClauses();
+        final int max = list.size() - 1;
         
-        if(form.size() == 1)
+        if(max == 0)
         {
             clauses.set(i, list.get(0));
             return;
         }
         
-        clauses.set(i, list.get(list.size() - 1));
-        clauses.addAll(i, list.subList(0, list.size() - 1));
+        clauses.set(i, list.get(max));
+        clauses.addAll(i, list.subList(0, max));
     }
     
+    /**
+     * Orthogonolizes the specified DNF, i.e. constructs an equivalent DNF 
+     * consisting of disjoint conjuncts.
+     *
+     * @param form the DNF to be orthogonolized.
+     * @return the orthogonal DNF equivalent to the specified one.
+     */
     public static NormalForm orthogonalize(final NormalForm form)
     {
         ArrayList<Clause> clauses = new ArrayList<Clause>(form.getClauses());
 
         for(int i = 1; i < clauses.size(); i++)
-        for(int j = 0; j < i; j++)
+        for(int j = 0; j < i;              j++)
         {
-            NormalForm LHS = new NormalForm(NormalForm.Type.DNF);
-            NormalForm RHS = new NormalForm(NormalForm.Type.DNF);
+            NormalForm split = new NormalForm(NormalForm.Type.DNF);
 
             // Split one of the clauses to make them disjoint.
-            int index = orthogonalize(clauses.get(j), clauses.get(i), LHS, RHS);
+            int index = orthogonalize(clauses.get(j), clauses.get(i), split);
 
             // The left-hand-side clause is rewritten (#0).
             if(index == 0)
             {
-                replace(clauses, j, LHS);
+                replace(clauses, j, split);
                 
-                i += (LHS.size() - 1);
-                j += (LHS.size() - 1);
+                i += (split.size() - 1);
+                j += (split.size() - 1);
             }
             // The right-hand-side clause is rewritten (#1).
             else if(index == 1)
             {
-                replace(clauses, i, RHS);
+                replace(clauses, i, split);
                 
-                if(RHS.isEmpty())
+                if(split.isEmpty())
                     { j = (i >= clauses.size() ? i : -1); }
             }
         }
@@ -185,32 +186,61 @@ public final class DNF
         return new NormalForm(NormalForm.Type.DNF, clauses);
     }
 
-    private static void replace(ArrayList<Clause> clauses, HashMap<Integer, Integer> branches, int pre_i, int i, final NormalForm form)
+    /**
+     * Replaces the i-th clause of the list with the specified set of clauses.
+     *
+     * @param  clauses the list of clauses.
+     * @param  branches the next-index map.
+     * @param  pre_i the index of the preceding clause.
+     * @param  i the index of the clause to be replaced.
+     * @param  split the set of clauses to be substituted.
+     * @return true iff the i-th clause is removed.
+     */
+    private static boolean replace(ArrayList<Clause> clauses,
+        HashMap<Integer, Integer> branches, int pre_i, int i, final NormalForm split)
     {
-        if(form.isEmpty())
+        // The clause should be removed (because it is equal with another one).
+        if(split.isEmpty())
         {
+            // The map is updated without removing the item from the list. 
             branches.put(pre_i, next(branches, i));
-            return;
+            return true;
         }
 
-        final List<Clause> list = form.getClauses();
+        final List<Clause> list = split.getClauses();
+        final int size = list.size();
 
-        if(form.size() == 1)
+        // The clause should be replaced with one clause.
+        if(size == 1)
         {
+            // The list item is simply updated.
             clauses.set(i, list.get(0));
-            return;
+            return false;
         }
 
-        int return_i = next(branches, i);
-        int branch_i = clauses.size();
+        // The clause should be replaced with two or more clauses.
+        final int return_i = next(branches, i);
+        final int branch_i = clauses.size();
 
+        // One of the clauses overrides the clause under processing.
         clauses.set(i, list.get(0));
-        clauses.addAll(list.subList(1, list.size()));
+        // The others are added to the end of the list.
+        clauses.addAll(list.subList(1, size));
 
+        // The map is correspondingly updated.
         branches.put(i, branch_i);
         branches.put(clauses.size() - 1, return_i);
+        
+        return false;
     }
     
+    /**
+     * Returns the index of the successive clause.
+     *
+     * @param branches the next-index map.
+     * @param i the index of the clause.
+     * @return the successive clause index.
+     */
     private static int next(final HashMap<Integer, Integer> branches, int i)
     {
         if(i == -1) { return 0; }
@@ -219,6 +249,13 @@ public final class DNF
         return (j == null ? i + 1 : j);
     }
 
+    /**
+     * Traverses the list of clauses and constructs the DNF.
+     *
+     * @param branches the next-index map.
+     * @param clauses the list of clauses.
+     * @return the DNF.
+     */
     private static NormalForm construct(final HashMap<Integer, Integer> branches, final ArrayList<Clause> clauses)
     {
         NormalForm form = new NormalForm(NormalForm.Type.DNF);
@@ -229,10 +266,16 @@ public final class DNF
         return form;
     }
 
+    /**
+     * Orthogonolizes the specified DNF, i.e. constructs an equivalent DNF 
+     * consisting of disjoint clauses.
+     *
+     * @param form the DNF to be orthogonolized.
+     * @return the orthogonal DNF equivalent to the specified one.
+     */
     public static NormalForm orthogonalize1(final NormalForm form)
     {
         ArrayList<Clause> clauses = new ArrayList<Clause>(form.getClauses());
-        clauses.ensureCapacity(2 * clauses.size());
 
         if(clauses.isEmpty())
             { return new NormalForm(NormalForm.Type.DNF); }
@@ -243,24 +286,22 @@ public final class DNF
         for(int pre_i, i = next(branches, pre_i =  0); i != -1; i = next(branches, pre_i = i))
         for(int pre_j, j = next(branches, pre_j = -1); j !=  i; j = next(branches, pre_j = j))
         {
-            //System.out.println(pre_i + " " + i + " " + pre_j + " " + j);
-            NormalForm LHS = new NormalForm(NormalForm.Type.DNF);
-            NormalForm RHS = new NormalForm(NormalForm.Type.DNF);
+            NormalForm split = new NormalForm(NormalForm.Type.DNF);
 
             // Split one of the clauses to make them disjoint.
-            int index = orthogonalize(clauses.get(j), clauses.get(i), LHS, RHS);
+            int index = orthogonalize(clauses.get(j), clauses.get(i), split);
 
             // The left-hand-side clause is rewritten (#0).
             if(index == 0)
             {
-                replace(clauses, branches, pre_j, j, LHS);
-                if(LHS.isEmpty()) { j = pre_j; }
+                if(replace(clauses, branches, pre_j, j, split))
+                    { j = pre_j; }
             }
             // The right-hand-side clause is rewritten (#1).
             else if(index == 1)
             {
-                replace(clauses, branches, pre_i, i, RHS);
-                if(RHS.isEmpty()) { i = pre_i; break; }
+                if(replace(clauses, branches, pre_i, i, split))
+                    { i = pre_i; break; }
             }
         }
         
