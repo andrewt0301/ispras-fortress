@@ -21,7 +21,6 @@
 
   <!-- Paths -->
   <property name="junit" location="${jars}/junit-4.10.jar"/>
-  <property name="colt"  location="${jars}/colt.jar"/>
   <property name="jdist" location="${dist}/${fullname}.jar"/>
 
   <!-- Default target (compile and pack into JAR) -->
@@ -30,7 +29,7 @@
     <delete dir="${dist}"/>
 
     <mkdir dir="${build}"/>
-    <javac srcdir="${src}" destdir="${build}" excludes="**/tests/**,**/Main.java" includeantruntime="false" classpath="${colt}"/>
+    <javac srcdir="${src}" destdir="${build}" excludes="**/tests/**,**/Main.java" includeantruntime="false"/>
 
     <mkdir dir="${dist}"/>
     <jar jarfile="${jdist}" basedir="${build}"/>
@@ -43,11 +42,10 @@
     <delete dir="${build}"/>
 
     <mkdir dir="${build}"/>
-    <javac srcdir="${src}" destdir="${build}" includeantruntime="false" classpath="${junit}:${colt}"/>
+    <javac srcdir="${src}" destdir="${build}" includeantruntime="false" classpath="${junit}"/>
 
     <path id="classpath.test">
       <pathelement location="${junit}"/>
-      <pathelement location="${colt}"/>
       <pathelement location="${build}"/>
     </path>
 
