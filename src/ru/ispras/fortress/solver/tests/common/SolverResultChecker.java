@@ -68,9 +68,12 @@ public class SolverResultChecker
 
         StringBuilder errorStringBuilder = new StringBuilder();
         errorStringBuilder.append("Errors occured:");
-        
+
         while (errorIterator.hasNext())
+        {
+            errorStringBuilder.append("\r\n");
             errorStringBuilder.append(errorIterator.next());
+        }
 
         Assert.fail(errorStringBuilder.toString());
     }
