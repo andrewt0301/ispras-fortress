@@ -226,4 +226,11 @@ public final class Data
 
         return value.equals(other.value);
     }
+
+    @Override
+    public String toString()
+    {
+        return String.format("Data[type=%s, value=%s]",
+            type.toString(), null == value ? "uninitialized" : value.toString());
+    }
 }

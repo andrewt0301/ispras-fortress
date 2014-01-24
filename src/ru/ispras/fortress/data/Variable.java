@@ -128,4 +128,10 @@ public final class Variable
 
         return data.equals(other.data);
     }
+
+    @Override
+    public String toString()
+    {
+        return String.format("Variable[name=%s, data=%s]", name, data); 
+    }
 }
