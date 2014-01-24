@@ -12,8 +12,8 @@
 
 package ru.ispras.fortress.solver.constraint;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.UUID;
 
 import ru.ispras.fortress.data.Data;
@@ -61,7 +61,7 @@ public final class ConstraintBuilder
         this.name           = UUID.randomUUID().toString();
         this.description    = "";
         this.kind           = kind;
-        this.variables      = new TreeMap<String, Variable>();
+        this.variables      = new LinkedHashMap<String, Variable>();
         this.representation = null;
     }
 
@@ -88,7 +88,7 @@ public final class ConstraintBuilder
 
     private static Map<String, Variable> createVariableMap(Iterable<Variable> variables)
     {
-        final Map<String, Variable> result = new TreeMap<String, Variable>();
+        final Map<String, Variable> result = new LinkedHashMap<String, Variable>();
 
         for (Variable v : variables)
             result.put(v.getName(), v);
