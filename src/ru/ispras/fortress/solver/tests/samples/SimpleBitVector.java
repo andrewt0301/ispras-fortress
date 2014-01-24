@@ -56,17 +56,17 @@ public class SimpleBitVector implements ISampleConstraint
         final NodeVariable a = new NodeVariable(builder.addVariable("a", BIT_VECTOR_TYPE));
         final NodeVariable b = new NodeVariable(builder.addVariable("b", BIT_VECTOR_TYPE));
 
-        final Formulas syntax = new Formulas();
-        builder.setInnerRep(syntax);
+        final Formulas formulas = new Formulas();
+        builder.setInnerRep(formulas);
 
-        syntax.add(
+        formulas.add(
             new NodeExpr(
                 StandardOperation.NOT,
                 new NodeExpr(StandardOperation.EQ, a, b)
             )
         );
 
-        syntax.add(
+        formulas.add(
             new NodeExpr(
                 StandardOperation.EQ,
                 new NodeExpr(StandardOperation.BVOR, a, b),
@@ -74,7 +74,7 @@ public class SimpleBitVector implements ISampleConstraint
             )
         );
 
-        syntax.add(
+        formulas.add(
             new NodeExpr(
                 StandardOperation.EQ,
                 new NodeExpr(StandardOperation.BVLSHL, a, new NodeValue(BIT_VECTOR_TYPE.valueOf("3", 10))),
@@ -82,7 +82,7 @@ public class SimpleBitVector implements ISampleConstraint
             )
         );
 
-        syntax.add(
+        formulas.add(
             new NodeExpr(
                 StandardOperation.EQ,
                 new NodeExpr(StandardOperation.BVAND, a, b),

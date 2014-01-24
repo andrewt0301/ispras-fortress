@@ -227,9 +227,10 @@ public final class FunctionFactory
         return new NodeExpr(StandardOperation.EQ, operandNode, new NodeExpr(StandardOperation.BVNOT, zeroNode));
     }
 
-    private static final DataType  BIT_BOOL  = DataType.BIT_VECTOR(1);
-    private static final NodeValue BIT_TRUE  = new NodeValue(Data.newBitVector(1, 1));
-    private static final NodeValue BIT_FALSE = new NodeValue(Data.newBitVector(1, 1));
+    private static final int BIT_BOOL_SIZE   = 1;
+    private static final DataType  BIT_BOOL  = DataType.BIT_VECTOR(BIT_BOOL_SIZE);
+    private static final NodeValue BIT_TRUE  = new NodeValue(Data.newBitVector(1, BIT_BOOL_SIZE));
+    private static final NodeValue BIT_FALSE = new NodeValue(Data.newBitVector(0, BIT_BOOL_SIZE));
 
     private static final String ERR_UNEQUAL_ARG_TYPES =
         "Arguments %s (%s) and %s (%s) have unequal types.";
