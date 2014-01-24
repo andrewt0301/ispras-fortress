@@ -33,9 +33,9 @@ import static ru.ispras.fortress.solver.engine.z3.SMTStrings.*;
 
 final class SMTTextBuilder implements Visitor
 {
-	private final Map<Enum<?>, SolverOperation> operations;
+    private final Map<Enum<?>, SolverOperation> operations;
+    private final Iterable<Variable>             variables;
 
-    private Map<String, Variable>      variables = new LinkedHashMap<String, Variable>();
     private List<StringBuilder>         formulas = new LinkedList<StringBuilder>();
     private FunctionDefinitionBuilders functions = new FunctionDefinitionBuilders();
 
@@ -47,9 +47,10 @@ final class SMTTextBuilder implements Visitor
      * @param operations Operation dictionary.
      */
 
-    SMTTextBuilder(Map<Enum<?>, SolverOperation> operations)
+    SMTTextBuilder(Iterable<Variable> variables, Map<Enum<?>, SolverOperation> operations)
     {
         this.operations = operations;
+        this.variables = variables;
     }
 
     private StringBuilder getCurrentBuilder()
@@ -85,7 +86,7 @@ final class SMTTextBuilder implements Visitor
             out = new PrintWriter(outFile);
 
             final StringBuilder variablesListBuilder = new StringBuilder();
-            for (Variable variable : variables.values())
+            for (Variable variable : variables)
             {
                 // Variables that have values don't need declarations 
                 // because their values are used in expression as constants.
@@ -113,18 +114,6 @@ final class SMTTextBuilder implements Visitor
         {
             if (null != out)
                 out.close();
-        }
-    }
-
-    private void addVariableDeclaration(String name, Data data)
-    {
-        if (functionCallDepth != 0)
-            return;
-
-        if (!variables.containsKey(name))
-        {
-            final Variable variable = new Variable(name, data); 
-            variables.put(name, variable);
         }
     }
 
@@ -250,8 +239,6 @@ final class SMTTextBuilder implements Visitor
     @Override
     public void onVariable(NodeVariable variable)
     {
-        addVariableDeclaration(variable.getName(), variable.getData());
-
         if (variable.getData().hasValue())
         {
             onValue(variable.getData());

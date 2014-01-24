@@ -89,7 +89,8 @@ public final class Z3TextSolver extends SolverBase
 
         try
         {
-            final SMTTextBuilder smtTextBuilder = new SMTTextBuilder(getOperations());
+            final SMTTextBuilder smtTextBuilder =
+                new SMTTextBuilder(constraint.getVariables(), getOperations());
 
             final Walker walker = new Walker(smtTextBuilder);
             walker.visit(((Formulas) constraint.getInnerRep()).exprs());
