@@ -56,7 +56,7 @@ public class SolverResultChecker
             );
         }
 
-        Assert.assertTrue("Wrong variables number", !expectedVariableIterator.hasNext() && !variableIterator.hasNext());
+        Assert.assertTrue("Wrong variable number", !expectedVariableIterator.hasNext() && !variableIterator.hasNext());
     }
 
     private static void checkErrors(Iterable<String> errors)
