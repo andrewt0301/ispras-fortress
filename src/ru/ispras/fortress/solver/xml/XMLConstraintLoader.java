@@ -522,7 +522,7 @@ final class XMLConstraintBuilder
 
     public Variable addGlobalVariable(Variable variable)
     {
-        return constraint.addVariable(variable.getName(), variable.getData().getType());
+        return constraint.addVariable(variable.getName(), variable.getData());
     }
 
     public Constraint getConstraint()
