@@ -179,12 +179,11 @@ class XMLConstraintHandler extends DefaultHandler
 
             case VARIABLE:
             {
-                final Variable variable = getVariable(qName, attributes);
+                final Variable variable = builder.addGlobalVariable(getVariable(qName, attributes));
                 variables.put(variable.getName(), variable);
-                builder.addGlobalVariable(variable);
                 break;
             }
-            
+
             case NAME:
             case KIND:
             case DESCRIPTION:
