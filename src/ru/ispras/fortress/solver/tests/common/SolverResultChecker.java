@@ -48,7 +48,7 @@ public class SolverResultChecker
             );
 
             Assert.assertTrue(
-                String.format("Unexpected variable value. %s: '%s' vs '%s'",
+                String.format("Unexpected value of the %s variable: '%s', expected: '%s'",
                     variable.getName(),
                     variable.getData().getValue(),
                     expectedVariable.getData().getValue()),
