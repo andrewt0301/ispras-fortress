@@ -144,7 +144,7 @@ public final class NormalForm
      */
     public String toString()
     {
-        final String neg_op = "~";
+        // final String neg_op = "~"; // andrewt >> unused local constraint 
         final String ext_op = type == Type.DNF ? " | " : " & ";
         final String int_op = type == Type.DNF ? " & " : " | ";
 
