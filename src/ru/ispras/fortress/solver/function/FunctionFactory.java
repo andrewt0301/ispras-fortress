@@ -28,6 +28,8 @@ import ru.ispras.fortress.expression.*;
 
 public final class FunctionFactory
 {
+    private FunctionFactory() {}
+    
     public static Function makeAbs(Variable operand)
     {
         checkNotNull(operand);
@@ -144,27 +146,29 @@ public final class FunctionFactory
         return new Function(BIT_BOOL, body, operand);
     }
 
-    /*
-    // TODO: NOT IMPLEMENTED
     public static Function makeBVXORR(Variable operand)
     {
         checkNotNull(operand);
         checkBitVector(operand);
 
-        final Node body = null;
+        final int  size = operand.getData().getType().getSize();
+        final Node body = makeBVRecursizeXOR(new NodeVariable(operand), size, size);
+
         return new Function(BIT_BOOL, body, operand);
     }
 
-    // TODO: NOT IMPLEMENTED
     public static Function makeBVXNORR(Variable operand)
     {
         checkNotNull(operand);
         checkBitVector(operand);
 
-        final Node body = null;
+        final int size = operand.getData().getType().getSize();
+
+        final Node body = new NodeExpr(
+            StandardOperation.BVNOT, makeBVRecursizeXOR(new NodeVariable(operand), size, size));
+
         return new Function(BIT_BOOL, body, operand);
     }
-    */
 
     private static void checkNotNull(Object o)
     {
@@ -207,6 +211,52 @@ public final class FunctionFactory
             String.format(ERR_UNSUPPORTED_ARG_TYPE, operand.getName(), type, DataTypeId.BIT_VECTOR));
     }
 
+    private static final Node makeBVRecursizeXOR(Node source, int size, int partSize)
+    {
+        if (1 == size)
+            return source;
+
+        assert 2 <= partSize:
+            String.format("Invalid part size: %s. Minimal part size is 2 bits.", partSize);
+
+        if (2 == partSize)
+            return makeBVTwoBitPartXOR(source, size);
+
+        final int newPartSize = partSize / 2 + partSize % 2;
+        final Node shiftLeftPart = new NodeValue(Data.newBitVector(newPartSize, size));
+
+        final Node maskForRightPart = new NodeExpr(
+            StandardOperation.BVLSHR,
+            new NodeExpr(StandardOperation.BVNOT, new NodeValue(Data.newBitVector(0, size))),
+            new NodeValue(Data.newBitVector(size - newPartSize, size))
+        );
+
+        final Node newSource = new NodeExpr(
+            StandardOperation.BVXOR,
+            new NodeExpr(StandardOperation.BVLSHR, source, shiftLeftPart),
+            new NodeExpr(StandardOperation.BVAND,  source, maskForRightPart)
+        );
+
+        return makeBVRecursizeXOR(newSource, size, newPartSize);
+    }
+
+    private static final Node makeBVTwoBitPartXOR(Node source, int size)
+    {
+        final NodeValue TWO_ZEROS = new NodeValue(DataType.BIT_VECTOR(size).valueOf("00", 2));
+        final NodeValue TWO_ONES  = new NodeValue(DataType.BIT_VECTOR(size).valueOf("11", 2));
+
+        return new NodeExpr(
+            StandardOperation.ITE,
+            new NodeExpr(
+                StandardOperation.OR,
+                new NodeExpr(StandardOperation.EQ, source, TWO_ZEROS),
+                new NodeExpr(StandardOperation.EQ, source, TWO_ONES)
+            ),
+            BIT_FALSE,
+            BIT_TRUE
+        );
+    }
+
     private static final Node makeBVEqualsAllZeros(Variable operand)
     {
         final DataType operandType = operand.getData().getType();
@@ -228,7 +278,7 @@ public final class FunctionFactory
     }
 
     private static final int BIT_BOOL_SIZE   = 1;
-    private static final DataType  BIT_BOOL  = DataType.BIT_VECTOR(BIT_BOOL_SIZE);
+    private static final DataType BIT_BOOL   = DataType.BIT_VECTOR(BIT_BOOL_SIZE);
     private static final NodeValue BIT_TRUE  = new NodeValue(Data.newBitVector(1, BIT_BOOL_SIZE));
     private static final NodeValue BIT_FALSE = new NodeValue(Data.newBitVector(0, BIT_BOOL_SIZE));
 

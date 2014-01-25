@@ -68,19 +68,15 @@ public class ReductionCustomOperations implements ISampleConstraint
         final NodeVariable varBVNORR_EVEN_BITS = new NodeVariable(builder.addVariable("varBVNORR_EVEN_BITS", BIT_BOOL_TYPE));
         final NodeVariable varBVNORR_ODD_BITS  = new NodeVariable(builder.addVariable("varBVNORR_ODD_BITS",  BIT_BOOL_TYPE));
 
-        /*
-        // TODO: BVXORR IS NOT IMPLEMENTED
         final NodeVariable varBVXORR_NO_BITS   = new NodeVariable(builder.addVariable("varBVXORR_NO_BITS",   BIT_BOOL_TYPE));
         final NodeVariable varBVXORR_ALL_BITS  = new NodeVariable(builder.addVariable("varBVXORR_ALL_BITS",  BIT_BOOL_TYPE));
         final NodeVariable varBVXORR_EVEN_BITS = new NodeVariable(builder.addVariable("varBVXORR_EVEN_BITS", BIT_BOOL_TYPE));
         final NodeVariable varBVXORR_ODD_BITS  = new NodeVariable(builder.addVariable("varBVXORR_ODD_BITS",  BIT_BOOL_TYPE));
         
-        // TODO: BVXNORR IS NOT IMPLEMENTED
         final NodeVariable varBVXNORR_NO_BITS   = new NodeVariable(builder.addVariable("varBVXNORR_NO_BITS",   BIT_BOOL_TYPE));
         final NodeVariable varBVXNORR_ALL_BITS  = new NodeVariable(builder.addVariable("varBVXNORR_ALL_BITS",  BIT_BOOL_TYPE));
         final NodeVariable varBVXNORR_EVEN_BITS = new NodeVariable(builder.addVariable("varBVXNORR_EVEN_BITS", BIT_BOOL_TYPE));
         final NodeVariable varBVXNORR_ODD_BITS  = new NodeVariable(builder.addVariable("varBVXNORR_ODD_BITS",  BIT_BOOL_TYPE));
-        */
 
         final Formulas formulas = new Formulas();
         builder.setInnerRep(formulas);
@@ -141,7 +137,6 @@ public class ReductionCustomOperations implements ISampleConstraint
         formulas.add(new NodeExpr(
             StandardOperation.EQ, varBVNORR_ODD_BITS, new NodeExpr(FunctionOperation.BVNORR, ODD_BITS)));
         
-        /*
         // BVXORR Asserts
 
         formulas.add(new NodeExpr(
@@ -169,7 +164,6 @@ public class ReductionCustomOperations implements ISampleConstraint
 
         formulas.add(new NodeExpr(
             StandardOperation.EQ, varBVXNORR_ODD_BITS, new NodeExpr(FunctionOperation.BVXNORR, ODD_BITS)));
-        */
 
         return builder.build();
     }
@@ -199,8 +193,6 @@ public class ReductionCustomOperations implements ISampleConstraint
             FunctionFactory.makeBVNORR(new Variable("x", BIT_VECTOR_TYPE))
         );
 
-        /*
-        // TODO: BVXORR IS NOT IMPLEMENTED
         solver.addCustomOperation(
             FunctionOperation.BVXORR,
             FunctionFactory.makeBVXORR(new Variable("x", BIT_VECTOR_TYPE))
@@ -211,7 +203,6 @@ public class ReductionCustomOperations implements ISampleConstraint
             FunctionOperation.BVXNORR,
             FunctionFactory.makeBVXNORR(new Variable("x", BIT_VECTOR_TYPE))
         );
-        */
     }
 
     @Override
@@ -236,21 +227,17 @@ public class ReductionCustomOperations implements ISampleConstraint
             new Variable("varBVNORR_NO_BITS",   BIT_TRUE),
             new Variable("varBVNORR_ALL_BITS",  BIT_FALSE),
             new Variable("varBVNORR_EVEN_BITS", BIT_FALSE),
-            new Variable("varBVNORR_ODD_BITS",  BIT_FALSE)
+            new Variable("varBVNORR_ODD_BITS",  BIT_FALSE),
 
-            /*
-            // TODO: BVXORR IS NOT IMPLEMENTED
             new Variable("varBVXORR_NO_BITS",    BIT_FALSE),
             new Variable("varBVXORR_ALL_BITS",   BIT_FALSE),
             new Variable("varBVXORR_EVEN_BITS",  BIT_FALSE),
             new Variable("varBVXORR_ODD_BITS",   BIT_TRUE),
             
-            // TODO: BVXNORR IS NOT IMPLEMENTED
             new Variable("varBVXNORR_NO_BITS",   BIT_TRUE),
             new Variable("varBVXNORR_ALL_BITS",  BIT_TRUE),
             new Variable("varBVXNORR_EVEN_BITS", BIT_TRUE),
             new Variable("varBVXNORR_ODD_BITS",  BIT_FALSE)
-            */
             );
     }
 }
