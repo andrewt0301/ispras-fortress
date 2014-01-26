@@ -93,13 +93,10 @@ public class LocalTransformer implements Visitor
 
         // TODO consequtive rule application
         TransformRule rule = ruleset.get(opId);
-        if (rule != null && rule.isApplicable(expr))
-            exprStack.add(rule.apply(new NodeExpr(opId, operandStack.remove(pos))));
-        else
-        {
-            exprStack.add(expr);
-            operandStack.remove(pos);
-        }
+        Node node = new NodeExpr(opId, operandStack.remove(pos));
+        if (rule != null && rule.isApplicable(node))
+            node = rule.apply(node);
+        exprStack.add(node);
     }
 
     @Override
