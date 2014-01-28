@@ -28,7 +28,7 @@ public class DnfTestCase
 
         Clause x0 = new Clause();
 
-        for(int i = 0; i < 100; i++)
+        for(int i = 0; i < 10; i++)
         {
             x0.add(i + 100, false);            
         }
@@ -62,18 +62,18 @@ public class DnfTestCase
         a.add(z);
         a.add(u);
 
-        for(int i = 0; i < 100; i++)
+        for(int i = 0; i < 10; i++)
         {
             a.add(y);
         }
 
-        for(int i = 0; i < 100; i += 4)
+        for(int i = 0; i < 10; i += 4)
         {
             u.add(i, (i & 1) == 0);
             a.add(u);
         }
 
-        for(int i = 0; i < 100; i++)
+        for(int i = 0; i < 10; i++)
         {
             z.add(i,        (i & 1) == 0);
             z.add(i + 1000, (i & 1) == 0);
