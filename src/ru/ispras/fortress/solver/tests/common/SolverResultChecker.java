@@ -22,7 +22,9 @@ public class SolverResultChecker
 {    
     public static void check(SolverResult solverResult, Iterable<Variable> expectedVariables)
     {
-        Assert.assertTrue("Failed to solve the constraint.", solverResult.getStatus() == SolverResult.Status.SAT);
+        Assert.assertTrue("Failed to solve the constraint. Status: " +
+            solverResult.getStatus(), solverResult.getStatus() == SolverResult.Status.SAT);
+
         checkErrors(solverResult.getErrors());
 
         final Iterator<Variable> expectedVariableIterator = expectedVariables.iterator();
