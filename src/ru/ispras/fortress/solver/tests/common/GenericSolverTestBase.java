@@ -42,15 +42,15 @@ public abstract class GenericSolverTestBase
     {
         if (Environment.isUnix())
         {
-            Environment.setSolverPath("../tools/z3/unix/z3/bin/z3");
+            Environment.setSolverPath("tools/z3/bin/z3");
         }
         else if(Environment.isWindows())
         {
-            Environment.setSolverPath("../tools/z3/windows/z3.exe");
+            Environment.setSolverPath("tools/z3/bin/z3.exe");
         }
         else if (Environment.isOSX())
         {
-        	Environment.setSolverPath("../tools/z3/osx/z3/bin/z3");
+        	Environment.setSolverPath("tools/z3/bin/z3");
         }
         else
         {
