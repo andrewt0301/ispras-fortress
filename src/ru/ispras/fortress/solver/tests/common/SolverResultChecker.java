@@ -22,10 +22,10 @@ public class SolverResultChecker
 {    
     public static void check(SolverResult solverResult, Iterable<Variable> expectedVariables)
     {
-        Assert.assertTrue("Failed to solve the constraint. Status: " +
-            solverResult.getStatus(), solverResult.getStatus() == SolverResult.Status.SAT);
-
         checkErrors(solverResult.getErrors());
+
+        Assert.assertTrue("Failed to solve the constraint. Status: " +
+           solverResult.getStatus(), solverResult.getStatus() == SolverResult.Status.SAT);
 
         final Iterator<Variable> expectedVariableIterator = expectedVariables.iterator();
         final Iterator<Variable> variableIterator = solverResult.getVariables().iterator();
