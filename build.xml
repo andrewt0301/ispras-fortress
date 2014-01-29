@@ -53,6 +53,7 @@ Please, prepare build environment:
 
   <target name="unpack.z3.unix" depends="init" if="platform.unix">
     <untar src="${tools.dir}/z3-unix.tar.gz" dest="${tools.dir}" compression="gzip"/>
+    <chmod file="${tools.dir}/z3/bin/z3" perm="+x"/>
   </target>
 
   <target name="unpack.z3.mac" depends="init" if="platform.mac">
