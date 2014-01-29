@@ -1,70 +1,105 @@
-<project name="fortress" default="build" basedir=".">
+<!--
+ * Copyright 2008-2009 ISP RAS (http://www.ispras.ru), UniTESK Lab (http://www.unitesk.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+  -->
+<project name="project" default="distr" basedir=".">
 
-  <description>
-  Builds the Fortress project package.
-  </description>
+<!-- 
+  BuildBase - ant+ivy based build system
+  $Id: build.xml 93 2009-12-14 09:33:48Z demakov $
+  -->
 
-  <!-- Product Information -->
-  <property name="name"      value="fortress"/>
-  <property name="ver_major" value="0"/>
-  <property name="ver_minor" value="3"/>
-  <property name="ver_build" value="0"/>
-  <property name="ver_tag"   value="-beta"/>
-  <property name="fullname"  value="${name}-${ver_major}.${ver_minor}.${ver_build}${ver_tag}"/>
+<property name="buildbase.dir" value="tools/buildbase"/>
 
-  <!-- Root Directories -->
-  <property name="src"   location="src"/>
-  <property name="build" location="bin"/>
-  <property name="dist"  location="dist"/>
-  <property name="jars"  location="../jars"/>
-  <property name="doc"   location="doc"/>
+<fail>>
 
-  <!-- Paths -->
-  <property name="junit" location="${jars}/junit-4.10.jar"/>
-  <property name="jdist" location="${dist}/${fullname}.jar"/>
+Please, prepare build environment:
+1. run 'ant -f setup.xml' to get latest BuildBase build script.
+2. run Ant again
+    <condition>
+        <not>
+            <available file="${buildbase.dir}/buildbase.xml"/>
+        </not>
+    </condition>
+</fail>
 
-  <!-- Default target (compile and pack into JAR) -->
-  <target name="build">
-    <delete dir="${build}"/>
-    <delete dir="${dist}"/>
+<import file="${buildbase.dir}/buildbase.xml"/>
 
-    <mkdir dir="${build}"/>
-    <javac srcdir="${src}" destdir="${build}" excludes="**/tests/**,**/Main.java" includeantruntime="false"/>
-
-    <mkdir dir="${dist}"/>
-    <jar jarfile="${jdist}" basedir="${build}"/>
-
-    <delete dir="${build}"/>
+  <target name="distr" depends="distr.src">
+    <move file="${dir.module.distr.src.zip}" tofile="${dir.module.distr.zip}"/>
+    <copy file="${dir.module.distr.zip}" tofile="${distr.root.dir}/${module.name}.zip"/>
+  </target>
+  
+  <target name="unpack.z3.windows" depends="init" if="platform.windows">
+    <mkdir dir="${tools.dir}/z3"/>
+    <unzip src="${tools.dir}/z3-windows.zip" dest="${tools.dir}/z3-tmp"/>
+    <move todir="${tools.dir}/z3">
+      <fileset dir="${tools.dir}/z3-tmp"/>
+      <cutdirsmapper dirs="1"/> 
+    </move>
+    <delete dir="${tools.dir}/z3-tmp"/>
   </target>
 
-  <!-- JUnit target (compile and run unit tests) -->
-  <target name="test">
-    <delete dir="${build}"/>
+  <target name="unpack.z3.unix" depends="init" if="platform.unix">
+    <untar src="${tools.dir}/z3-unix.tar.gz" dest="${tools.dir}" compression="gzip"/>
+  </target>
 
-    <mkdir dir="${build}"/>
-    <javac srcdir="${src}" destdir="${build}" includeantruntime="false" classpath="${junit}"/>
+  <target name="unpack.z3.mac" depends="init" if="platform.mac">
+    <echo>unpack.z3.mac</echo>
+    <mkdir dir="${tools.dir}/z3"/>
+    <unzip src="${tools.dir}/z3-mac.zip" dest="${tools.dir}/z3-tmp"/>
+    <move todir="${tools.dir}/z3">
+      <fileset dir="${tools.dir}/z3-tmp"/>
+      <cutdirsmapper dirs="1"/> 
+    </move>
+    <delete dir="${tools.dir}/z3-tmp"/>
+  </target>
+
+  <target name="unpack.z3" depends="init.properties,unpack.z3.windows,unpack.z3.unix,unpack.z3.mac"/>
+
+  <target name="test" depends="unpack.z3">
+    <delete dir="${output.dir}/tests"/>
+
+    <mkdir dir="${output.dir}/tests/classes"/>
+    <javac srcdir="${src.java.dir}"
+           destdir="${output.dir}/tests/classes"
+           classpath="${tools.dir}/junit.jar:${tools.dir}/hamcrest-core.jar"
+           deprecation="on"
+           encoding="${compile.java.encoding}"
+           debug="${compile.java.debug}"
+           debuglevel="${compile.java.debug.level}"
+           verbose="${compile.java.verbose}"
+           includeantruntime="false">
+    </javac>
 
     <path id="classpath.test">
-      <pathelement location="${junit}"/>
-      <pathelement location="${build}"/>
+      <pathelement location="${output.dir}/tests/classes"/>
+      <pathelement location="${tools.dir}/junit.jar"/>
+      <pathelement location="${tools.dir}/hamcrest-core.jar"/>
     </path>
+
+    <mkdir dir="${output.dir}/tests/reports"/>
 
     <junit fork="no" printsummary="yes" showoutput="yes">
       <classpath refid="classpath.test"/>
       <formatter type="plain" usefile="false"/>
+      <formatter type="xml" usefile="true"/>
 
-      <batchtest haltonfailure="no">
-        <fileset dir="${src}" includes="**/tests/*TestCase*.java"/>
+      <batchtest haltonfailure="no" todir="${output.dir}/tests/reports">
+        <fileset dir="${src.java.dir}" includes="**/tests/*TestCase*.java"/>
       </batchtest>
     </junit>
-
-    <delete dir="${build}"/>
-  </target>
-
-  <!-- JavaDoc target, generates documentation for source code in ${src} and places it into ${doc} -->
-  <target name="doc">
-    <mkdir dir="${doc}"/> 
-    <javadoc sourcepath="${src}" destdir="${doc}" classpath="${junit}" author="true"/>
   </target>
 
 </project>

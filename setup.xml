@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
   -->
-
 <project default="get.buildbase">
-
 <!-- 
   BuildBase - ant+ivy based build system
-  $Id: setup.xml,v 1.1 2007-10-11 09:34:00 demakov Exp $
+  $Id: setup.xml 81 2009-12-10 13:18:35Z demakov $
   -->
 
   <target name="get.buildbase">
@@ -42,3 +40,4 @@
     </unzip>
   </target>
 </project>
+
