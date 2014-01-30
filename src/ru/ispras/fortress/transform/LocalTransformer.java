@@ -53,6 +53,14 @@ public class LocalTransformer implements Visitor
         return result;
     }
 
+    private final Node applyRule(Enum<?> id, Node node)
+    {
+        TransformRule rule = ruleset.get(id);
+        if (rule != null && rule.isApplicable(node))
+            return rule.apply(node);
+        return node;
+    }
+
     @Override
     public void onRootBegin() {}
 
@@ -60,7 +68,11 @@ public class LocalTransformer implements Visitor
     public void onRootEnd()
     {
         if (exprStack.isEmpty())
+        {
+            if (rootNode.getKind() != Node.Kind.EXPR)
+                rootNode = applyRule(rootNode.getKind(), rootNode);
             result.add(rootNode);
+        }
         else
         {
             assert exprStack.size() == 1;
@@ -92,10 +104,7 @@ public class LocalTransformer implements Visitor
         final Enum<?> opId = expr.getOperationId();
 
         // TODO consequtive rule application
-        TransformRule rule = ruleset.get(opId);
-        Node node = new NodeExpr(opId, operandStack.remove(pos));
-        if (rule != null && rule.isApplicable(node))
-            node = rule.apply(node);
+        Node node = applyRule(opId, new NodeExpr(opId, operandStack.remove(pos)));
         exprStack.add(node);
     }
 
@@ -109,13 +118,12 @@ public class LocalTransformer implements Visitor
         if (operand.getKind() == Node.Kind.EXPR)
             operands[index] = exprStack.remove(exprStack.size() - 1);
         else
-            operands[index] = operand;
+            operands[index] = applyRule(operand.getKind(), operand);
     }
 
     @Override
     public void onValue(NodeValue value)
     {
-        // TODO apply rules to values
         if (rootNode == null)
             rootNode = value;
     }
@@ -123,7 +131,6 @@ public class LocalTransformer implements Visitor
     @Override
     public void onVariable(NodeVariable variable)
     {
-        // TODO apply rules to variables
         if (rootNode == null)
             rootNode = variable;
     }

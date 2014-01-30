@@ -14,6 +14,8 @@ package ru.ispras.fortress.transform;
 
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeExpr;
+import ru.ispras.fortress.expression.NodeVariable;
+import ru.ispras.fortress.expression.Walker;
 
 public final class Transform
 {
@@ -43,5 +45,31 @@ public final class Transform
             return expression;
 
         return result;
+    }
+
+    public static Node substitute(Node expr, final String name, final Node term)
+    {
+        if (expr == null || name == null || term == null)
+            throw new NullPointerException();
+
+        final TransformRule rule = new TransformRule() {
+            @Override
+            public boolean isApplicable(Node node) {
+                return node.getKind() == Node.Kind.VARIABLE
+                    && ((NodeVariable) node).getName().equals(name);
+            }
+
+            @Override
+            public Node apply(Node node) {
+                return term;
+            }
+        };
+
+        final LocalTransformer transformer = new LocalTransformer();
+        transformer.addRule(Node.Kind.VARIABLE, rule);
+
+        final Walker walker = new Walker(transformer);
+        walker.visit(expr);
+        return transformer.getResult().iterator().next();
     }
 }
