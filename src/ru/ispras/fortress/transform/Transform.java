@@ -17,6 +17,8 @@ import ru.ispras.fortress.expression.NodeExpr;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.Walker;
 
+import ru.ispras.fortress.transform.ruleset.Predicate;
+
 public final class Transform
 {
     /**
@@ -67,9 +69,17 @@ public final class Transform
 
         final LocalTransformer transformer = new LocalTransformer();
         transformer.addRule(Node.Kind.VARIABLE, rule);
-
-        final Walker walker = new Walker(transformer);
-        walker.visit(expr);
+        transformer.walk(expr);
         return transformer.getResult().iterator().next();
+    }
+
+    public static Node transformStandardPredicate(Node expr)
+    {
+        if (expr == null)
+            throw new NullPointerException();
+        
+        final LocalTransformer tl = new LocalTransformer(Predicate.getRuleset());
+        tl.walk(expr);
+        return tl.getResult().iterator().next();
     }
 }

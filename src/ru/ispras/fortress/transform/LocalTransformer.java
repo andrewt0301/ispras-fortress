@@ -16,7 +16,15 @@ public class LocalTransformer implements Visitor
     private final List<Node>    exprStack;
     private final List<Node>    result;
 
-    private Node rootNode;
+    private Node    rootNode;
+    private Walker  walker;
+
+    public void walk(Node root)
+    {
+        walker = new Walker(this);
+        walker.visit(root);
+        walker = null;
+    }
 
     public LocalTransformer()
     {
@@ -25,6 +33,7 @@ public class LocalTransformer implements Visitor
         exprStack       = new ArrayList<Node>();
         result          = new ArrayList<Node>();
         rootNode        = null;
+        walker          = null;
     }
 
     public LocalTransformer(Map<Enum<?>, TransformRule> rules)
@@ -37,6 +46,7 @@ public class LocalTransformer implements Visitor
         exprStack       = new ArrayList<Node>();
         result          = new ArrayList<Node>();
         rootNode        = null;
+        walker          = null;
     }
 
     public void addRule(Enum<?> opId, TransformRule rule)
