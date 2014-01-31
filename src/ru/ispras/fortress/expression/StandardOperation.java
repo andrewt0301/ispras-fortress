@@ -62,7 +62,7 @@ public enum StandardOperation
     /** Group: Logic, Operation: Unary minus */
     MINUS,
 
-    /** Group: Logic, Operation: Unary minus */
+    /** Group: Logic, Operation: Unary plus */
     PLUS,
 
     /** Group: Logic, Operation: Addition */
