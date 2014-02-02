@@ -15,7 +15,6 @@ package ru.ispras.fortress.transform;
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeExpr;
 import ru.ispras.fortress.expression.NodeVariable;
-import ru.ispras.fortress.expression.Walker;
 
 import ru.ispras.fortress.transform.ruleset.Predicate;
 
