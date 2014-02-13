@@ -41,36 +41,24 @@ public final class BitVectorMath
         }
     }
 
-    private static enum UnOps implements BitVectorAlgorithm.IUnaryOperation
-    {
-        NOT { @Override public byte run(byte v) { return (byte) ~v; } };
-    }
-
-    private static enum BinOps implements BitVectorAlgorithm.IBinaryOperation
-    {
-        AND { @Override public byte run(byte lhs, byte rhs) { return (byte) (lhs & rhs); } },
-        OR  { @Override public byte run(byte lhs, byte rhs) { return (byte) (lhs | rhs); } },
-        XOR { @Override public byte run(byte lhs, byte rhs) { return (byte) (lhs ^ rhs); } };
-    }
-
     public static BitVector and(BitVector lhs, BitVector rhs)
     {
-        return transform(lhs, rhs, BinOps.AND);
+        return transform(lhs, rhs, BitVectorAlgorithm.BinaryOperation.AND);
     }
 
     public static BitVector or(BitVector lhs, BitVector rhs)
     {
-        return transform(lhs, rhs, BinOps.OR);
+        return transform(lhs, rhs, BitVectorAlgorithm.BinaryOperation.OR);
     }
 
     public static BitVector xor(BitVector lhs, BitVector rhs)
     {
-        return transform(lhs, rhs, BinOps.XOR);
+        return transform(lhs, rhs, BitVectorAlgorithm.BinaryOperation.XOR);
     }
 
     public static BitVector not(BitVector v)
     {
-        return transform(v, UnOps.NOT);
+        return transform(v, BitVectorAlgorithm.UnaryOperation.NOT);
     }
 
     public static BitVector nand(BitVector lhs, BitVector rhs)

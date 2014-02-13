@@ -36,6 +36,18 @@ public final class BitVectorAlgorithm
         public void run(byte v);
     }
 
+    public static enum UnaryOperation implements IUnaryOperation
+    {
+        NOT { @Override public byte run(byte v) { return (byte) ~v; } };
+    }
+
+    public static enum BinaryOperation implements IBinaryOperation
+    {
+        AND { @Override public byte run(byte lhs, byte rhs) { return (byte) (lhs & rhs); } },
+        OR  { @Override public byte run(byte lhs, byte rhs) { return (byte) (lhs | rhs); } },
+        XOR { @Override public byte run(byte lhs, byte rhs) { return (byte) (lhs ^ rhs); } };
+    }
+
     public static void fill(BitVector dest, byte value)
     {
         notNullCheck(dest, "dest");
