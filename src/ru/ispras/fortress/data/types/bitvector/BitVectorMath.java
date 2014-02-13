@@ -16,6 +16,28 @@ public final class BitVectorMath
 {
     private BitVectorMath() {}
 
+    public static enum Operations
+    {
+        AND { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return and(lhs, rhs); } },
+        OR  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  or(lhs, rhs); } },
+        XOR { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return xor(lhs, rhs); } },
+        NOT { @Override public BitVector execute(BitVector v)                  { return        not(v); } };
+
+        // IMPORTANT: must be overridden if supported by a specific operation.
+        public BitVector execute(BitVector v)
+        {
+            throw new UnsupportedOperationException(
+               String.format("Unary %s operation is not supported", name()));
+        }
+
+        // IMPORTANT: must be overridden if supported by a specific operation.
+        public BitVector execute(BitVector lhs, BitVector rhs)
+        {
+            throw new UnsupportedOperationException(
+               String.format("Binary %s operation is not supported", name()));
+        }
+    }
+
     private enum UnOps implements BitVectorAlgorithm.IUnaryOperation
     {
         NOT { @Override public byte run(byte v) { return (byte) ~v; } };
