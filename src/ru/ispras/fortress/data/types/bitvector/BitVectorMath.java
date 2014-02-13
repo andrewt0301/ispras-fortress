@@ -18,10 +18,13 @@ public final class BitVectorMath
 
     public static enum Operations
     {
-        AND { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return and(lhs, rhs); } },
-        OR  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  or(lhs, rhs); } },
-        XOR { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return xor(lhs, rhs); } },
-        NOT { @Override public BitVector execute(BitVector v)                  { return        not(v); } };
+        AND  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  and(lhs, rhs); } },
+        OR   { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return   or(lhs, rhs); } },
+        XOR  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  xor(lhs, rhs); } },
+        NOT  { @Override public BitVector execute(BitVector v)                  { return         not(v); } },
+        NAND { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return nand(lhs, rhs); } },
+        NOR  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  nor(lhs, rhs); } },
+        XNOR { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return xnor(lhs, rhs); } };
 
         // IMPORTANT: must be overridden if supported by a specific operation.
         public BitVector execute(BitVector v)
@@ -68,6 +71,21 @@ public final class BitVectorMath
     public static BitVector not(BitVector v)
     {
         return transform(v, UnOps.NOT);
+    }
+
+    public static BitVector nand(BitVector lhs, BitVector rhs)
+    {
+        return not(and(lhs, rhs));
+    }
+
+    public static BitVector nor(BitVector lhs, BitVector rhs)
+    {
+        return not(or(lhs, rhs));
+    }
+
+    public static BitVector xnor(BitVector lhs, BitVector rhs)
+    {
+        return not(xor(lhs, rhs));
     }
 
     private static BitVector transform(BitVector lhs, BitVector rhs, BitVectorAlgorithm.IBinaryOperation op)
