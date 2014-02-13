@@ -38,12 +38,12 @@ public final class BitVectorMath
         }
     }
 
-    private enum UnOps implements BitVectorAlgorithm.IUnaryOperation
+    private static enum UnOps implements BitVectorAlgorithm.IUnaryOperation
     {
         NOT { @Override public byte run(byte v) { return (byte) ~v; } };
     }
 
-    private enum BinOps implements BitVectorAlgorithm.IBinaryOperation
+    private static enum BinOps implements BitVectorAlgorithm.IBinaryOperation
     {
         AND { @Override public byte run(byte lhs, byte rhs) { return (byte) (lhs & rhs); } },
         OR  { @Override public byte run(byte lhs, byte rhs) { return (byte) (lhs | rhs); } },
