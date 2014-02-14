@@ -44,6 +44,30 @@ public class BitVectorMathTestCase
             "11000100001"
         );
     }
+    
+    @Test
+    public void orTests()
+    {
+        checkBitVector(
+            BitVectorMath.or(BitVector.valueOf(0, 32), BitVector.valueOf(0xFFFFFFFF, 32)),
+            0xFFFFFFFF
+        );
+
+        checkBitVector(
+            BitVectorMath.or(BitVector.valueOf(0xF0F0F0F0, 32), BitVector.valueOf(0x0F0F0F0F, 32)),
+            0xFFFFFFFF
+        );
+
+        checkBitVector(
+            BitVectorMath.or(BitVector.valueOf("00010001000"), BitVector.valueOf("10000000001")),
+            "10010001001"
+        );
+
+        checkBitVector(
+            BitVectorMath.or(BitVector.valueOf(0xFF0FFFFFFFFFFFFFl, 64), BitVector.valueOf(0xF00F0FF0FFFF0FF0l, 64)),
+            0xFF0FFFFFFFFFFFFFl
+         );
+    }
 
     @Test
     public void notTests()
