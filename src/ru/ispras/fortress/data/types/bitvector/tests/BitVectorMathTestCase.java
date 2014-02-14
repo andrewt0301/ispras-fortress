@@ -70,6 +70,30 @@ public class BitVectorMathTestCase
     }
 
     @Test
+    public void xorTests()
+    {
+        checkBitVector(
+            BitVectorMath.xor(BitVector.newEmpty(32), BitVector.newEmpty(32)),
+            0
+        );
+
+        checkBitVector(
+            BitVectorMath.xor(BitVector.valueOf(0xFFFFFFFF, 32), BitVector.valueOf(0xFFFFFFFF, 32)),
+            0
+        );
+
+        checkBitVector(
+            BitVectorMath.xor(BitVector.valueOf(0xFFFFA000, 32), BitVector.valueOf(0x000AFFFF, 32)),
+            0xFFF55FFF
+        );
+
+        checkBitVector(
+            BitVectorMath.xor(BitVector.valueOf("11101010101"), BitVector.valueOf("01010101011")),
+            "10111111110"
+        );
+    }
+
+    @Test
     public void notTests()
     {
         checkBitVector(BitVector.newEmpty(11), "00000000000");
