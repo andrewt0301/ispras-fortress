@@ -480,7 +480,8 @@ public abstract class BitVector implements Comparable<BitVector>
 
     public final int intValue()
     {
-        assert getBitSize() <= Integer.SIZE;
+        assert getBitSize() <= Integer.SIZE :
+            String.format("Data will be truncated to %d bits.", Integer.SIZE);
 
         class Result { public int value = 0; }
         final Result result = new Result();
@@ -493,10 +494,7 @@ public abstract class BitVector implements Comparable<BitVector>
             public void run(byte v)
             {
                 if (bitCount >= Integer.SIZE)
-                {
-                    assert false : "Data will be truncated";
                     return; 
-                }
 
                 result.value |= (v & 0xFF) << bitCount;
                 bitCount     += BITS_IN_BYTE;
@@ -518,7 +516,8 @@ public abstract class BitVector implements Comparable<BitVector>
 
     public final long longValue()
     {
-        assert getBitSize() <= Long.SIZE;
+        assert getBitSize() <= Long.SIZE :
+            String.format("Data will be truncated to %d bits.", Long.SIZE);
 
         class Result { public long value = 0; }
         final Result result = new Result();
@@ -531,10 +530,7 @@ public abstract class BitVector implements Comparable<BitVector>
             public void run(byte v)
             {
                 if (bitCount >= Long.SIZE)
-                {                    
-                    assert false : "Data will be truncated";
                     return;
-                }
 
                 result.value |= (v & 0xFF) << bitCount;
                 bitCount     += BITS_IN_BYTE;
