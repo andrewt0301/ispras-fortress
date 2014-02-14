@@ -22,6 +22,30 @@ import static ru.ispras.fortress.data.types.bitvector.tests.TestUtils.*;
 public class BitVectorMathTestCase
 {
     @Test
+    public void andTests()
+    {
+        checkBitVector(
+            BitVectorMath.and(BitVector.valueOf(0, 32), BitVector.valueOf(0xFFFFFFFF, 32)),
+            0
+        );
+
+        checkBitVector(
+            BitVectorMath.and(BitVector.valueOf(0xFFFFFFFF, 32), BitVector.valueOf(0xFFFFFFFF, 32)),
+            0xFFFFFFFF
+        );
+
+        checkBitVector(
+            BitVectorMath.and(BitVector.valueOf(0xF0F0F0F0, 32), BitVector.valueOf(0x00FFFF00, 32)),
+            0x00F0F000
+        );
+
+        checkBitVector(
+            BitVectorMath.and(BitVector.valueOf("11010101001"), BitVector.valueOf("11000110011")),
+            "11000100001"
+        );
+    }
+
+    @Test
     public void notTests()
     {
         checkBitVector(BitVector.newEmpty(11), "00000000000");
