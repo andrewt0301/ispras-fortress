@@ -127,13 +127,33 @@ public class BitVectorMathTestCase
             BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFF, 32), 2),
             0xFFFFFFFC
         );
+        
+        checkBitVector(
+            BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFF, 32), 16),
+            0xFFFF0000
+        );
+        
+        checkBitVector(
+            BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFF, 32), 19),
+            0xFFF80000
+        );
 
         checkBitVector(
             BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64), 2),
             0xFFFFFFFFFFFFFFFCL
         );
+
+        checkBitVector(
+            BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64), 32),
+            0xFFFFFFFF00000000L
+        );
+
+        checkBitVector(
+            BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64), 35),
+            0xFFFFFFF800000000L
+        );
     }
-    
+
     @Test
     public void lshrTests()
     {
@@ -151,16 +171,54 @@ public class BitVectorMathTestCase
             BitVectorMath.lshr(BitVector.valueOf("10111111111111"), 2),
             "00101111111111"
         );
-        
+
         checkBitVector(
             BitVectorMath.lshr(BitVector.valueOf(0xFFFFFFFF, 32), 2),
             0x3FFFFFFF
         );
 
         checkBitVector(
+            BitVectorMath.lshr(BitVector.valueOf(0xFFFFFFFF, 32), 16),
+            0x0000FFFF
+        );
+
+        checkBitVector(
+            BitVectorMath.lshr(BitVector.valueOf(0xFFFFFFFF, 32), 19),
+            0x00001FFF
+        );
+
+        checkBitVector(
             BitVectorMath.lshr(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64), 2),
             0x3FFFFFFFFFFFFFFFL
         );
+
+        checkBitVector(
+            BitVectorMath.lshr(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64), 32),
+            0x00000000FFFFFFFFL
+        );
+
+        checkBitVector(
+            BitVectorMath.lshr(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64), 35),
+            0x000000001FFFFFFFL
+        );
     }
     
+    @Test
+    public void ashrTests()
+    {
+        checkBitVector(
+            BitVectorMath.ashr(BitVector.valueOf("1111"), 2),
+            "1111"
+        );
+
+        checkBitVector(
+            BitVectorMath.ashr(BitVector.valueOf("01111"), 2),
+            "00011"
+        );
+
+        checkBitVector(
+            BitVectorMath.ashr(BitVector.valueOf("10111111111111"), 2),
+            "11101111111111"
+        );
+    }
 }
