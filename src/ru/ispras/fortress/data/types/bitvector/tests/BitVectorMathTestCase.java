@@ -133,4 +133,34 @@ public class BitVectorMathTestCase
             0xFFFFFFFFFFFFFFFCL
         );
     }
+    
+    @Test
+    public void lshrTests()
+    {
+        checkBitVector(
+            BitVectorMath.lshr(BitVector.valueOf("1111"), 2),
+            "0011"
+        );
+
+        checkBitVector(
+            BitVectorMath.lshr(BitVector.valueOf("1101111111"), 2),
+            "0011011111"
+        );
+
+        checkBitVector(
+            BitVectorMath.lshr(BitVector.valueOf("10111111111111"), 2),
+            "00101111111111"
+        );
+        
+        checkBitVector(
+            BitVectorMath.lshr(BitVector.valueOf(0xFFFFFFFF, 32), 2),
+            0x3FFFFFFF
+        );
+
+        checkBitVector(
+            BitVectorMath.lshr(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64), 2),
+            0x3FFFFFFFFFFFFFFFL
+        );
+    }
+    
 }
