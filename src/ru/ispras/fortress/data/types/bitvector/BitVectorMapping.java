@@ -114,9 +114,9 @@ final class BitVectorMapping extends BitVector
         final int byteIndex = getByteIndex(index);
         rangeCheck(byteIndex, source.getByteSize());
 
-        final int excludedLowBits = beginBitPos % BITS_IN_BYTE;
-
-        // If there is no lower bits are excluded from a byte this means that data
+        final int excludedLowBits = getExcludedLowBitCount();
+        
+        // If there are no lower bits excluded from a byte this means that data
         // is aligned by bytes and no data transformation is needed. If there is an incomplete
         // high byte, we just apply a bit mask for the specified byte.
 
@@ -157,14 +157,14 @@ final class BitVectorMapping extends BitVector
         final int byteIndex = getByteIndex(index);
         rangeCheck(byteIndex, source.getByteSize());
 
-        final int excludedLowBits  = beginBitPos % BITS_IN_BYTE;
-        final int excludedHighBits = (BITS_IN_BYTE - (beginBitPos + bitSize) % BITS_IN_BYTE) % BITS_IN_BYTE;
+        final int excludedLowBits  = getExcludedLowBitCount();
+        final int excludedHighBits = getExcludedHighBitCount();
 
         final int endByteIndex = getEndByteIndex();
 
         final byte  lowByteMask = (0 == excludedLowBits)  ? 0 : (byte)(0xFF << excludedLowBits);
         final byte highByteMask = (0 == excludedHighBits) ? 0 : (byte)(0xFF >>> excludedHighBits);
-
+        
         final boolean isHighByteMaskApplied = (byteIndex == endByteIndex) && (0 != excludedHighBits);
 
         // If no lower bites are excluded this means that data is aligned by bytes
@@ -189,7 +189,7 @@ final class BitVectorMapping extends BitVector
 
         final byte prevValueMask =
             (byte)(isHighByteMaskApplied ? (~lowByteMask | ~highByteMask) & 0xFF : ~lowByteMask & 0xFF);
-
+        
         // Moves the low part of the specified byte to the high border of the byte
         // and unites the result with the old part of the target byte that should be preserved.
         // Also, we reset all redundant bits that go beyond the border of the high incomplete byte. 
@@ -211,15 +211,18 @@ final class BitVectorMapping extends BitVector
         // Moves the high part of the parameter byte to the low border (beginning) of the byte and unites
         // it with the high part of the target byte that we want to preserve. Also, in case when the high
         // part of the target byte is limited with the high border of the mask, we reset all excluded bits
-        // with a high byte mask. 
+        // with a high byte mask.
+
+        final byte     prevHighValue = (byte) (source.getByte(byteIndex+1) & lowByteMask);
+        final byte allignedHighValue = (byte)((value & 0xFF) >>> (BITS_IN_BYTE - excludedLowBits));
 
         final byte highByte = (byte)
         (
-            ((value >>> (BITS_IN_BYTE-excludedLowBits)) & ((byteIndex+1 == endByteIndex) ? highByteMask : 0xFF))
+            (allignedHighValue & ((byteIndex+1 == endByteIndex) & (0 != excludedHighBits) ? highByteMask : 0xFF))
             |
-            source.getByte(byteIndex+1) & lowByteMask
+            prevHighValue
         );
-
+        
         source.setByte(byteIndex + 1, highByte);
     }
 
@@ -231,5 +234,15 @@ final class BitVectorMapping extends BitVector
     private int getEndByteIndex()
     {
         return (beginBitPos + bitSize - 1) / BITS_IN_BYTE; // Highest bit position / bits in byte
+    }
+    
+    private int getExcludedLowBitCount()
+    {
+        return beginBitPos % BITS_IN_BYTE;
+    }
+    
+    private int getExcludedHighBitCount()
+    {
+        return (BITS_IN_BYTE - (beginBitPos + bitSize) % BITS_IN_BYTE) % BITS_IN_BYTE;    
     }
 }

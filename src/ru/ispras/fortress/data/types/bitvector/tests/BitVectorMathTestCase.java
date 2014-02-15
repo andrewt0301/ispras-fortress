@@ -122,15 +122,15 @@ public class BitVectorMathTestCase
             BitVectorMath.shl(BitVector.valueOf("11111111111101"), 2),
             "11111111110100"
         );
-
+        
         checkBitVector(
             BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFF, 32), 2),
-            0xFFFFFFFF
+            0xFFFFFFFC
         );
 
         checkBitVector(
             BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64), 2),
-            0xFFFFFFFFFFFFFFFFL
+            0xFFFFFFFFFFFFFFFCL
         );
     }
 }
