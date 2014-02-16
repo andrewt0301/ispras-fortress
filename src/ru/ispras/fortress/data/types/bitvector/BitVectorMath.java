@@ -28,7 +28,10 @@ public final class BitVectorMath
 
         SHL  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  shl(lhs, rhs); } },
         LSHR { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return lshr(lhs, rhs); } },
-        ASHR { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return ashr(lhs, rhs); } };
+        ASHR { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return ashr(lhs, rhs); } },
+
+        ROTL { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return rotl(lhs, rhs); } },
+        ROTR { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return rotr(lhs, rhs); } };
 
         // IMPORTANT: must be overridden if supported by a specific operation.
         public BitVector execute(BitVector v)
@@ -163,6 +166,72 @@ public final class BitVectorMath
         checkNotNull(to);
 
         return ashr(v, to.intValue());
+    }
+
+    public static BitVector rotl(BitVector v, int to)
+    {
+        checkNotNull(v);
+
+        final int distance = Math.abs(to % v.getBitSize());
+
+        if (0 == distance) 
+            return v;
+
+        final BitVector result = BitVector.newEmpty(v.getBitSize());
+
+        if (to > 0)
+        {
+            BitVectorAlgorithm.copy(v, 0, result, distance, result.getBitSize() - distance);
+            BitVectorAlgorithm.copy(v, v.getBitSize() - distance, result, 0, distance);
+        }
+        else
+        {
+            BitVectorAlgorithm.copy(v, 0, result, result.getBitSize() - distance, distance);
+            BitVectorAlgorithm.copy(v, distance, result, 0, result.getBitSize() - distance);
+        }
+
+        return result;
+    }
+
+    public static BitVector rotl(BitVector v, BitVector to)
+    {
+        checkNotNull(v);
+        checkNotNull(to);
+
+        return rotl(v, to.intValue());
+    }
+
+    public static BitVector rotr(BitVector v, int to)
+    {
+        checkNotNull(v);
+
+        final int distance = Math.abs(to % v.getBitSize());
+
+        if (0 == distance)
+            return v;
+
+        final BitVector result = BitVector.newEmpty(v.getBitSize());
+
+        if (to > 0)
+        {
+            BitVectorAlgorithm.copy(v, distance, result, 0, result.getBitSize() - distance);
+            BitVectorAlgorithm.copy(v, 0, result, result.getBitSize() - distance, distance);
+        }
+        else
+        {
+            BitVectorAlgorithm.copy(v, result.getBitSize() - distance, result, 0, distance);
+            BitVectorAlgorithm.copy(v, 0, result, distance, result.getBitSize() - distance);
+        }
+
+        return result;
+    }
+
+    public static BitVector rotr(BitVector v, BitVector to)
+    {
+        checkNotNull(v);
+        checkNotNull(to);
+
+        return rotr(v, to.intValue());
     }
 
     private static BitVector transform(BitVector lhs, BitVector rhs, BitVectorAlgorithm.IBinaryOperation op)
