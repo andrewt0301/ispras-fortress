@@ -109,6 +109,9 @@ final class BitVectorMapping extends BitVector
     @Override
     public byte getByte(int index)
     {
+        // TODO: Refactoring is needed. The implementation is not perfectly clear
+        // and may contain subtle bugs.
+
         rangeCheck(index, getByteSize());
 
         final int byteIndex = getByteIndex(index);
@@ -152,6 +155,9 @@ final class BitVectorMapping extends BitVector
     @Override
     public void setByte(int index, byte value)
     {
+        // TODO: Refactoring is needed. The implementation is not perfectly clear
+        // and may contain subtle bugs.
+
         rangeCheck(index, getByteSize());
 
         final int byteIndex = getByteIndex(index);
