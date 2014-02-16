@@ -66,7 +66,7 @@ public class BitVectorMathTestCase
         checkBitVector(
             BitVectorMath.or(BitVector.valueOf(0xFF0FFFFFFFFFFFFFl, 64), BitVector.valueOf(0xF00F0FF0FFFF0FF0l, 64)),
             0xFF0FFFFFFFFFFFFFl
-         );
+        );
     }
 
     @Test
@@ -104,10 +104,48 @@ public class BitVectorMathTestCase
         checkBitVector(BitVectorMath.not(BitVector.valueOf(0xFFFFFFFF, 32)), 0);
         checkBitVector(BitVectorMath.not(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64)), 0);
     }
+    
+    @Test
+    public void nandTests()
+    {
+        checkBitVector(
+            BitVectorMath.nand(BitVector.valueOf(0, 32), BitVector.valueOf(0xFFFFFFFF, 32)),
+            0xFFFFFFFF
+        );
+
+        checkBitVector(
+            BitVectorMath.nand(BitVector.valueOf(0xFFFFFFFF, 32), BitVector.valueOf(0xFFFFFFFF, 32)),
+            0
+        );
+
+        checkBitVector(
+            BitVectorMath.nand(BitVector.valueOf(0xF0F0F0F0, 32), BitVector.valueOf(0x00FFFF00, 32)),
+            0xFF0F0FFF
+        );
+
+        checkBitVector(
+            BitVectorMath.nand(BitVector.valueOf("11010101001"), BitVector.valueOf("11000110011")),
+            "00111011110"
+        );
+    }
+
+    @Test
+    public void norTests()
+    {
+    }
+    
+    @Test
+    public void xnorTests()
+    {
+    }
 
     @Test
     public void shlTests()
     {
+        // TODO: NEED:
+        // 1. TEST FOR NEGATIVE SHIFT
+        // 2. TEST FOR THE SITUATION WHEN THE SECOND ARGUMENT IS a BIT VECTOR (NOT INT)
+        
         checkBitVector(
             BitVectorMath.shl(BitVector.valueOf("1111"), 2),
             "1100"
@@ -157,6 +195,10 @@ public class BitVectorMathTestCase
     @Test
     public void lshrTests()
     {
+        // TODO: NEED:
+        // 1. TEST FOR NEGATIVE SHIFT
+        // 2. TEST FOR THE SITUATION WHEN THE SECOND ARGUMENT IS a BIT VECTOR (NOT INT)
+        
         checkBitVector(
             BitVectorMath.lshr(BitVector.valueOf("1111"), 2),
             "0011"
@@ -206,6 +248,10 @@ public class BitVectorMathTestCase
     @Test
     public void ashrTests()
     {
+        // TODO: NEED:
+        // 1. TEST FOR NEGATIVE SHIFT
+        // 2. TEST FOR THE SITUATION WHEN THE SECOND ARGUMENT IS a BIT VECTOR (NOT INT)
+        
         checkBitVector(
             BitVectorMath.ashr(BitVector.valueOf("1111"), 2),
             "1111"
@@ -219,6 +265,71 @@ public class BitVectorMathTestCase
         checkBitVector(
             BitVectorMath.ashr(BitVector.valueOf("10111111111111"), 2),
             "11101111111111"
+        );
+        
+        checkBitVector(
+            BitVectorMath.ashr(BitVector.valueOf("00101111111111"), 2),
+            "00001011111111"
+        );
+        
+        checkBitVector(
+            BitVectorMath.ashr(BitVector.valueOf(0xFFFFF0FF, 32), 2),
+            0xFFFFFC3F
+        );
+
+        checkBitVector(
+            BitVectorMath.ashr(BitVector.valueOf(0xF0FFFFFF, 32), 16),
+            0xFFFFF0FF
+        );
+
+        checkBitVector(
+            BitVectorMath.ashr(BitVector.valueOf(0xF0FFFFFF, 32), 19),
+            0xFFFFFE1F
+        );
+        
+        checkBitVector(
+            BitVectorMath.ashr(BitVector.valueOf(0x7FFFF0FF, 32), 2),
+            0x1FFFFC3F
+        );
+
+        checkBitVector(
+            BitVectorMath.ashr(BitVector.valueOf(0x70FFFFFF, 32), 16),
+            0x000070FF
+        );
+
+        checkBitVector(
+            BitVectorMath.ashr(BitVector.valueOf(0x70FFFFFF, 32), 19),
+            0x00000E1F
+        );
+        
+        checkBitVector(
+            BitVectorMath.ashr(BitVector.valueOf(0xFFFFFFFFFFFFF0FFL, 64), 2),
+            0xFFFFFFFFFFFFFC3FL
+        );
+
+        checkBitVector(
+            BitVectorMath.ashr(BitVector.valueOf(0x7FFFFFFFFFFFF0FFL, 64), 2),
+            0x1FFFFFFFFFFFFC3FL
+        );
+
+        checkBitVector(
+            BitVectorMath.ashr(BitVector.valueOf(0xFFF0FFFFFFFFFFFFL, 64), 32),
+            0xFFFFFFFFFFF0FFFFL
+        );
+
+        checkBitVector(
+            BitVectorMath.ashr(BitVector.valueOf(0x7FF0FFFFFFFFFFFFL, 64), 32),
+            0x000000007FF0FFFFL
+        );
+
+        checkBitVector(
+            BitVectorMath.ashr(BitVector.valueOf(0xFFF0FFFFFFFFFFFFL, 64), 35),
+            0xFFFFFFFFFFFE1FFFL
+        );
+        
+        checkBitVector(
+            BitVectorMath.ashr(BitVector.valueOf(0x7FF0FFFFFFFFFFFFL, 64), 35),
+            0x000000000FFE1FFFL
         );
     }
 }
