@@ -241,16 +241,23 @@ public final class BitVectorMath
 
     public static BitVector add(BitVector lhs, BitVector rhs)
     {
-        // TODO
-        assert false : "NOT IMPLEMENTED";
-        return null;
+        return transform(lhs, rhs, new BitVectorAlgorithm.IBinaryOperation()
+        {
+            private byte carry = 0;
+
+            @Override
+            public byte run(byte lhs, byte rhs)
+            { 
+                final int sum = (lhs & 0xFF) + (rhs & 0xFF) + (carry & 0xFF);
+                carry = (byte)(sum >>> BitVector.BITS_IN_BYTE);
+                return (byte)sum ;
+            }
+        });
     }
 
     public static BitVector sub(BitVector lhs, BitVector rhs)
     {
-        // TODO
-        assert false : "NOT IMPLEMENTED";
-        return null;
+        return add(lhs, neg(rhs));
     }
 
     public static BitVector plus(BitVector v)
@@ -261,9 +268,9 @@ public final class BitVectorMath
 
     public static BitVector neg(BitVector v)
     {   
-        // TODO
-        assert false : "NOT IMPLEMENTED";
-        return null;
+        checkNotNull(v);
+        // Negation algorithm: "-arg = ~arg + 1".
+        return add(not(v), BitVector.valueOf(1, v.getBitSize()));
     }
 
     private static BitVector transform(BitVector lhs, BitVector rhs, BitVectorAlgorithm.IBinaryOperation op)

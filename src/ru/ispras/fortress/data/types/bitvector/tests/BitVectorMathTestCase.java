@@ -360,4 +360,63 @@ public class BitVectorMathTestCase
             "001101"
         );
     }
+
+    @Test
+    public void addTests()
+    {
+        checkBitVector(
+            BitVectorMath.add(BitVector.valueOf(1, 32), BitVector.valueOf(256, 32)),
+            257
+        );
+
+        checkBitVector(
+            BitVectorMath.add(BitVector.valueOf(0, 32), BitVector.valueOf(0xFFFFFFFF, 32)),
+            0xFFFFFFFF
+        );
+
+        checkBitVector(
+            BitVectorMath.add(BitVector.valueOf(-1, 32), BitVector.valueOf(5, 32)),
+            4
+        );
+    }
+    
+    @Test
+    public void subTests()
+    {
+        checkBitVector(
+            BitVectorMath.sub(BitVector.valueOf(0, 32), BitVector.valueOf(1, 32)),
+            -1
+        );
+
+        checkBitVector(
+            BitVectorMath.sub(BitVector.valueOf(-1, 32), BitVector.valueOf(-1, 32)),
+            0
+        );
+
+        checkBitVector(
+            BitVectorMath.sub(BitVector.valueOf(1024, 32), BitVector.valueOf(21, 32)),
+            1003
+        );
+
+        checkBitVector(
+            BitVectorMath.sub(BitVector.valueOf(-1, 32), BitVector.valueOf(0, 32)),
+            -1
+        );
+    }
+    
+    @Test
+    public void negTests()
+    {
+        checkBitVector(BitVectorMath.neg(BitVector.newEmpty(11)),   "00000000000");
+        checkBitVector(BitVectorMath.neg(BitVector.valueOf(1, 11)), "11111111111");
+        checkBitVector(BitVectorMath.neg(BitVector.valueOf(-2, 11)), 2);
+        checkBitVector(BitVectorMath.neg(BitVector.valueOf("1")), "1");
+        checkBitVector(BitVectorMath.neg(BitVector.valueOf(256, 32)), -256);
+
+        checkBitVector(BitVectorMath.neg(BitVector.valueOf(0xFFFFFFFF, 32)), 1);
+        checkBitVector(BitVectorMath.neg(BitVector.valueOf(1, 32)), 0xFFFFFFFF);
+
+        checkBitVector(BitVectorMath.neg(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64)), 1);
+        checkBitVector(BitVectorMath.neg(BitVector.valueOf(1, 64)), 0xFFFFFFFFFFFFFFFFL);
+    }
 }
