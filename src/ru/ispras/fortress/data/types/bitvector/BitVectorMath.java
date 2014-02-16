@@ -31,7 +31,12 @@ public final class BitVectorMath
         ASHR { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return ashr(lhs, rhs); } },
 
         ROTL { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return rotl(lhs, rhs); } },
-        ROTR { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return rotr(lhs, rhs); } };
+        ROTR { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return rotr(lhs, rhs); } },
+
+        ADD  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  add(lhs, rhs); } },
+        SUB  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  sub(lhs, rhs); } },
+        PLUS { @Override public BitVector execute(BitVector v)                  { return        plus(v); } },
+        NEG  { @Override public BitVector execute(BitVector v)                  { return         neg(v); } };
 
         // IMPORTANT: must be overridden if supported by a specific operation.
         public BitVector execute(BitVector v)
@@ -232,6 +237,33 @@ public final class BitVectorMath
         checkNotNull(to);
 
         return rotr(v, to.intValue());
+    }
+
+    public static BitVector add(BitVector lhs, BitVector rhs)
+    {
+        // TODO
+        assert false : "NOT IMPLEMENTED";
+        return null;
+    }
+
+    public static BitVector sub(BitVector lhs, BitVector rhs)
+    {
+        // TODO
+        assert false : "NOT IMPLEMENTED";
+        return null;
+    }
+
+    public static BitVector plus(BitVector v)
+    {
+        checkNotNull(v);
+        return v;
+    }
+
+    public static BitVector neg(BitVector v)
+    {   
+        // TODO
+        assert false : "NOT IMPLEMENTED";
+        return null;
     }
 
     private static BitVector transform(BitVector lhs, BitVector rhs, BitVectorAlgorithm.IBinaryOperation op)
