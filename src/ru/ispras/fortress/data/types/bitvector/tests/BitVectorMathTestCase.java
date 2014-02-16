@@ -132,11 +132,49 @@ public class BitVectorMathTestCase
     @Test
     public void norTests()
     {
+        checkBitVector(
+            BitVectorMath.nor(BitVector.valueOf(0, 32), BitVector.valueOf(0xFFFFFFFF, 32)),
+            0
+        );
+
+        checkBitVector(
+            BitVectorMath.nor(BitVector.valueOf(0xF0F0F0F0, 32), BitVector.valueOf(0x0F0F0F0F, 32)),
+            0
+        );
+
+        checkBitVector(
+            BitVectorMath.nor(BitVector.valueOf("00010001000"), BitVector.valueOf("10000000001")),
+            "01101110110"
+        );
+
+        checkBitVector(
+            BitVectorMath.nor(BitVector.valueOf(0xFF0FFFFFFFFFFFFFl, 64), BitVector.valueOf(0xF00F0FF0FFFF0FF0l, 64)),
+            0x00F0000000000000L
+        );
     }
-    
+
     @Test
     public void xnorTests()
     {
+        checkBitVector(
+            BitVectorMath.xnor(BitVector.newEmpty(32), BitVector.newEmpty(32)),
+            -1
+        );
+
+        checkBitVector(
+            BitVectorMath.xnor(BitVector.valueOf(0xFFFFFFFF, 32), BitVector.valueOf(0xFFFFFFFF, 32)),
+            -1
+        );
+
+        checkBitVector(
+            BitVectorMath.xnor(BitVector.valueOf(0xFFFFA000, 32), BitVector.valueOf(0x000AFFFF, 32)),
+            0x000AA000
+        );
+
+        checkBitVector(
+            BitVectorMath.xnor(BitVector.valueOf("11101010101"), BitVector.valueOf("01010101011")),
+            "01000000001"
+        );
     }
 
     @Test
