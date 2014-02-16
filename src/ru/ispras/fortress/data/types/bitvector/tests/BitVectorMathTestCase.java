@@ -332,4 +332,32 @@ public class BitVectorMathTestCase
             0x000000000FFE1FFFL
         );
     }
+
+    @Test
+    public void rotlTests()
+    {
+        checkBitVector(
+            BitVectorMath.rotl(BitVector.valueOf("010011"), 2),
+            "001101"
+        );
+        
+        checkBitVector(
+            BitVectorMath.rotl(BitVector.valueOf("010011"), -2),
+            "110100"
+        );
+    }
+    
+    @Test
+    public void rotrTests()
+    {
+        checkBitVector(
+            BitVectorMath.rotr(BitVector.valueOf("010011"), 2),
+            "110100"
+        );
+
+        checkBitVector(
+            BitVectorMath.rotr(BitVector.valueOf("010011"), -2),
+            "001101"
+        );
+    }
 }
