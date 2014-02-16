@@ -109,7 +109,7 @@ final class BitVectorMapping extends BitVector
     @Override
     public byte getByte(int index)
     {
-        rangeCheck(index, getBitSize());
+        rangeCheck(index, getByteSize());
 
         final int byteIndex = getByteIndex(index);
         rangeCheck(byteIndex, source.getByteSize());
@@ -152,7 +152,7 @@ final class BitVectorMapping extends BitVector
     @Override
     public void setByte(int index, byte value)
     {
-        rangeCheck(index, getBitSize());
+        rangeCheck(index, getByteSize());
 
         final int byteIndex = getByteIndex(index);
         rangeCheck(byteIndex, source.getByteSize());
