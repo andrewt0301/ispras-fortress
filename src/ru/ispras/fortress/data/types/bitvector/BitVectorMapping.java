@@ -15,7 +15,7 @@ package ru.ispras.fortress.data.types.bitvector;
 /**
  * The BitVectorMapping class provides the possibility to map a bit vector to
  * another bit vector. Mapping can start at an arbitrary position and can have
- * an arbitrary length (bonded by the size of the source bit vector).
+ * an arbitrary length (bounded by the size of the source bit vector).
  *
  * <pre>
  * The scheme below demonstrates how the class works:
@@ -241,12 +241,12 @@ final class BitVectorMapping extends BitVector
     {
         return (beginBitPos + bitSize - 1) / BITS_IN_BYTE; // Highest bit position / bits in byte
     }
-    
+
     private int getExcludedLowBitCount()
     {
         return beginBitPos % BITS_IN_BYTE;
     }
-    
+
     private int getExcludedHighBitCount()
     {
         return (BITS_IN_BYTE - (beginBitPos + bitSize) % BITS_IN_BYTE) % BITS_IN_BYTE;    
