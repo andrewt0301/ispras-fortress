@@ -1,17 +1,51 @@
 ----------------------------------------------------------------
- Fortress Project (UNDER DEVELOPMENT, COPIED FROR MicroTESK)
+ Fortress Project
 ----------------------------------------------------------------
 
- Building Fortress from command line:
+ Preparing the project:
 
- 1. To build the project, run the build.sh script:
+ 1. Check out the project from the Subversion repository:
 
-    sh build.sh
+    svn checkout http://forge.ispras.ru/svn/solver-api
 
- 2. To clean the project folder, run the script with the "clean" key:
+ 2. Download common files required to build the project:
 
-    sh build.sh clean 
+    cd solver-api/trunk/fortress/
+    ant -f setup.xml
 
+    All required files will be downloaded to the "tools" folder. Including:
+      - Main build file: 'tools/buildbase/buildbase.xml'.
+      - Build property file: 'tools/buildbase/buildbase.properties'.
+      - Archived build files: buildbase.zip (including the buildbase.txt file containing brief information on BuildBase).
+      - Runtime dependencies: the 'libs' folder (at the moment Fortress does not have runtime dependencies).
+
+----------------------------------------------------------------
+ Building the project:
+
+ 1. To build the JAR file, execute the following command:
+
+    ant distr.jar 
+
+ 2. To run unit tests, execute the following command:
+
+    ant test 
+
+ 3. To generate JavaDoc documentation, execute the following command:
+
+    ant javadoc 
+
+ Junit and Z3 are automatically downloaded to the 'tools' folder. Their version numbers are specified in the ivy.xml file.
+ Z3 is automatically unpacked from the archive.
+
+----------------------------------------------------------------
+ Building the project on the server side:
+
+ The the project can be built on the build server using the Hudson continuous integration tool.
+ To do this, visit the following link:
+
+ http://forge.ispras.ru:8080/job/Fortress/
+
+----------------------------------------------------------------
  Working with the project in the Eclipse IDE:
 
  1. Create a workspace located in the "<solver-api>/trunk" directory.
@@ -21,27 +55,10 @@
 
  2. Import an existing project called "fortess" into the workspace.
 
-    Use the menu item "File/Import...".
-    Choose "General/Existing Project into Workspace".
-    Select the "<microtesk>/trunk/microtesk" folder as the root directory.
-    Select the "microtesk" project located in this directory.
-    The project will be opened in the Eclipse IDE.
-
- 3. Set up the Ant building tool integrated into Eclipse to enable it 
-    to run ANTLR tasks.
-
-    Use the menu item "Window/Preferences...".
-    Choose "Ant/Runtime".
-    Select the "Classpath" page.
-    Select the "Ant Home Entries (Default)" row.
-    Click the "Add JARs..." button.
-    Select the "microtesk/jars/ant-antlr3.jar" JAR file.
-
- 4. Run the "build.xml" building script.
-
-    Right-click the "build.xml" file in Project Exlorer.
-    Select "Run As/Ant Build" from the context menu.
-    Ant will run ANRLR to generate the needed code translation classes and
-    build the project.
+    - Use the menu item "File/Import...".
+    - Choose "General/Existing Project into Workspace".
+    - Select the "<solver-api>/trunk/fortress" folder as the root directory.
+    - Select the "fortress" project located in this directory.
+    - The project will be opened in the Eclipse IDE.
 
 ----------------------------------------------------------------
