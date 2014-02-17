@@ -10,13 +10,13 @@
  * BitVectorMultiMappingTestCase.java, Nov 13, 2012 4:35:54 PM Andrei Tatarnikov
  */
 
-package ru.ispras.fortress.data.types.bitvector.tests;
+package ru.ispras.fortress.data.types.bitvector;
 
 import org.junit.Test;
 
 import ru.ispras.fortress.data.types.bitvector.BitVector;
 
-import static ru.ispras.fortress.data.types.bitvector.tests.TestUtils.*;
+import static ru.ispras.fortress.data.types.bitvector.TestUtils.*;
 
 public class BitVectorMultiMappingTestCase
 {

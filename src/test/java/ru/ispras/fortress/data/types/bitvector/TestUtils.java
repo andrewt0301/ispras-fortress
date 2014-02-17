@@ -10,7 +10,7 @@
  * TestUtils.java, Oct 19, 2012 11:42:28 AM Andrei Tatarnikov
  */
 
-package ru.ispras.fortress.data.types.bitvector.tests;
+package ru.ispras.fortress.data.types.bitvector;
 
 import ru.ispras.fortress.data.types.bitvector.BitVector;
 

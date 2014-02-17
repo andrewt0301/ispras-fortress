@@ -10,14 +10,14 @@
  * BitVectorMathTestCase.java, Feb 14, 2014 5:23:00 PM Andrei Tatarnikov
  */
 
-package ru.ispras.fortress.data.types.bitvector.tests;
+package ru.ispras.fortress.data.types.bitvector;
 
 import org.junit.Test;
 
 import ru.ispras.fortress.data.types.bitvector.BitVector;
 import ru.ispras.fortress.data.types.bitvector.BitVectorMath;
 
-import static ru.ispras.fortress.data.types.bitvector.tests.TestUtils.*;
+import static ru.ispras.fortress.data.types.bitvector.TestUtils.*;
 
 public class BitVectorMathTestCase
 {

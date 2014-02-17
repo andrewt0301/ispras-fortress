@@ -10,7 +10,7 @@
  * BitVectorTestCase.java, Oct 17, 2012 2:36:56 PM Andrei Tatarnikov
  */
 
-package ru.ispras.fortress.data.types.bitvector.tests;
+package ru.ispras.fortress.data.types.bitvector;
 
 import java.math.BigInteger;
 
@@ -19,7 +19,7 @@ import ru.ispras.fortress.data.types.bitvector.BitVector;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static ru.ispras.fortress.data.types.bitvector.tests.TestUtils.*;
+import static ru.ispras.fortress.data.types.bitvector.TestUtils.*;
 
 public class BitVectorTestCase
 {
