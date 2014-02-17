@@ -16,23 +16,23 @@
     All required files will be downloaded to the "tools" folder. Including:
       - Main build file: 'tools/buildbase/buildbase.xml'.
       - Build property file: 'tools/buildbase/buildbase.properties'.
-      - Archived build files: buildbase.zip (including the buildbase.txt file containing brief information on BuildBase).
-      - Runtime dependencies: the 'libs' folder (at the moment Fortress does not have runtime dependencies).
+      - Archived build files: tools/buildbase.zip (including the buildbase.txt file containing brief information on BuildBase).
+      - Runtime dependencies: the 'libs' folder (at the moment, Fortress does not have runtime dependencies).
 
 ----------------------------------------------------------------
  Building the project:
 
  1. To build the JAR file, execute the following command:
 
-    ant distr.jar 
+    ant distr.jar
 
  2. To run unit tests, execute the following command:
 
-    ant test 
+    ant test
 
  3. To generate JavaDoc documentation, execute the following command:
 
-    ant javadoc 
+    ant javadoc
 
  Junit and Z3 are automatically downloaded to the 'tools' folder. Their version numbers are specified in the ivy.xml file.
  Z3 is automatically unpacked from the archive.
