@@ -20,6 +20,7 @@
       - Runtime dependencies: the 'libs' folder (at the moment, Fortress does not have runtime dependencies).
 
 ----------------------------------------------------------------
+ 
  Building the project:
 
  1. To build the JAR file, execute the following command:
@@ -38,6 +39,7 @@
  Z3 is automatically unpacked from the archive.
 
 ----------------------------------------------------------------
+ 
  Building the project on the server side:
 
  The the project can be built on the build server using the Hudson continuous integration tool.
@@ -46,6 +48,7 @@
  http://forge.ispras.ru:8080/job/Fortress/
 
 ----------------------------------------------------------------
+ 
  Working with the project in the Eclipse IDE:
 
  1. Create a workspace located in the "<solver-api>/trunk" directory.
