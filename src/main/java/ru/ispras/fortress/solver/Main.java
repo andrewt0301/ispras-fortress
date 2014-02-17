@@ -6,7 +6,7 @@ import java.io.IOException;
 import org.junit.Assert;
 
 import ru.ispras.fortress.solver.constraint.Constraint;
-import ru.ispras.fortress.solver.tests.samples.SimpleBitVector;
+import ru.ispras.fortress.solver.samples.SimpleBitVector;
 import ru.ispras.fortress.solver.xml.XMLConstraintSaver;
 import ru.ispras.fortress.solver.xml.XMLNotSavedException;
 
