@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-package ru.ispras.fortress.logic.tests;
+package ru.ispras.fortress.logic;
 
 import org.junit.*;
-
-import ru.ispras.fortress.logic.*;
 
 public class DnfTestCase
 {

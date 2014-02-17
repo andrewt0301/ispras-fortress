@@ -13,9 +13,6 @@
 package ru.ispras.fortress.data.types.bitvector;
 
 import org.junit.Test;
-
-import ru.ispras.fortress.data.types.bitvector.BitVector;
-
 import static ru.ispras.fortress.data.types.bitvector.TestUtils.*;
 
 public class BitVectorMultiMappingTestCase

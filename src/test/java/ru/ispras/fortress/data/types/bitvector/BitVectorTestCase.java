@@ -13,9 +13,6 @@
 package ru.ispras.fortress.data.types.bitvector;
 
 import java.math.BigInteger;
-
-import ru.ispras.fortress.data.types.bitvector.BitVector;
-
 import org.junit.Assert;
 import org.junit.Test;
 

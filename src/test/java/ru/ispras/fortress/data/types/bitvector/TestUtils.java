@@ -12,8 +12,6 @@
 
 package ru.ispras.fortress.data.types.bitvector;
 
-import ru.ispras.fortress.data.types.bitvector.BitVector;
-
 import org.junit.Assert;
 
 public final class TestUtils
