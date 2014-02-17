@@ -1,4 +1,4 @@
-package ru.ispras.fortress.solver.samples;
+package ru.ispras.fortress.solver.common;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,17 +9,21 @@ import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.*;
 import ru.ispras.fortress.solver.constraint.*;
 
-/* The constraint as described in the SMT-LIB language:
+/** The constraint as described in the SMT-LIB language:
 
+<pre>
 (declare-const x (_ BitVec 32))
 (assert (bvugt x (_ bv100 32)))
 (check-sat)
 (get-value (x))
-(exit)
+(exit)</pre>
 
-Expected output: sat ((x #x00000070))
+Expected output:
 
+<pre>
+sat ((x #x00000070))</pre>
 */
+
 public class BVUGTOperation implements ISampleConstraint
 {
     protected static final int      BIT_VECTOR_SIZE = 32;
@@ -57,5 +61,4 @@ public class BVUGTOperation implements ISampleConstraint
 
         return result;
     }
-
 }

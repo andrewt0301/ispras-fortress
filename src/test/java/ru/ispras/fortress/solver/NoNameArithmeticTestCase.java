@@ -26,10 +26,10 @@ import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.solver.common.GenericSolverSampleTestBase;
+import ru.ispras.fortress.solver.common.ISampleConstraint;
 import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintBuilder;
 import ru.ispras.fortress.solver.constraint.Formulas;
-import ru.ispras.fortress.solver.samples.ISampleConstraint;
 
 /**
  * @author <a href="mailto:ssedai@ispras.ru">Sergey Smolov</a>

@@ -5,10 +5,10 @@ import java.util.List;
 
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.solver.common.GenericSolverSampleTestBase;
+import ru.ispras.fortress.solver.common.ISampleConstraint;
+import ru.ispras.fortress.solver.common.BVUGTOperation;
 import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintCombiner;
-import ru.ispras.fortress.solver.samples.BVUGTOperation;
-import ru.ispras.fortress.solver.samples.ISampleConstraint;
 
 public class ConstraintDisjunctionTestCase extends GenericSolverSampleTestBase
 {

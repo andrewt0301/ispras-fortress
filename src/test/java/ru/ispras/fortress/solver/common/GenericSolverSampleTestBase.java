@@ -17,7 +17,6 @@ import org.junit.Before;
 
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.solver.constraint.Constraint;
-import ru.ispras.fortress.solver.samples.ISampleConstraint;
 
 public abstract class GenericSolverSampleTestBase extends GenericSolverTestBase
 {

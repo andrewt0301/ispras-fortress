@@ -23,12 +23,12 @@ import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.solver.common.GenericSolverSampleTestBase;
+import ru.ispras.fortress.solver.common.ISampleConstraint;
 import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintBuilder;
 import ru.ispras.fortress.solver.constraint.ConstraintKind;
 import ru.ispras.fortress.solver.constraint.Formulas;
 import ru.ispras.fortress.solver.function.Function;
-import ru.ispras.fortress.solver.samples.ISampleConstraint;
 
 public class CustomOperationsTestCase extends GenericSolverSampleTestBase
 {
