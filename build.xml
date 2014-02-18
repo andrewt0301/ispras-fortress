@@ -69,13 +69,13 @@ Please, prepare build environment:
 
   <target name="unpack.z3" depends="init.properties,unpack.z3.windows,unpack.z3.unix,unpack.z3.mac"/>
 
-  <target name="test" depends="unpack.z3">
+  <target name="test" depends="compile.java,unpack.z3">
     <delete dir="${output.dir}/tests"/>
 
     <mkdir dir="${output.dir}/tests/classes"/>
-    <javac srcdir="${src.java.dir}"
+    <javac srcdir="${src.test.java.dir}"
            destdir="${output.dir}/tests/classes"
-           classpath="${tools.dir}/junit.jar:${tools.dir}/hamcrest-core.jar"
+           classpath="${output.class.dir}:${tools.dir}/junit.jar:${tools.dir}/hamcrest-core.jar"
            deprecation="on"
            encoding="${compile.java.encoding}"
            debug="${compile.java.debug}"
@@ -85,6 +85,7 @@ Please, prepare build environment:
     </javac>
 
     <path id="classpath.test">
+      <pathelement location="${output.class.dir}"/>
       <pathelement location="${output.dir}/tests/classes"/>
       <pathelement location="${tools.dir}/junit.jar"/>
       <pathelement location="${tools.dir}/hamcrest-core.jar"/>
@@ -98,7 +99,7 @@ Please, prepare build environment:
       <formatter type="xml" usefile="true"/>
 
       <batchtest haltonfailure="no" todir="${output.dir}/tests/reports">
-        <fileset dir="${src.java.dir}" includes="**/tests/*TestCase*.java"/>
+        <fileset dir="${src.test.java.dir}" includes="**/*TestCase.java"/>
       </batchtest>
     </junit>
   </target>
