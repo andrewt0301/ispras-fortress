@@ -2,7 +2,7 @@
  Fortress Project
 ----------------------------------------------------------------
 
- NOTES:
+ Project structure:
 
  In the Fortress project, production code and unit tests are separated and
  located in the following folders respectively:
