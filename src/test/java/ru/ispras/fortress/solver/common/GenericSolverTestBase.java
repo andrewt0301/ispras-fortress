@@ -18,17 +18,24 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
+import ru.ispras.fortress.expression.Node;
+import ru.ispras.fortress.expression.NodeExpr;
+import ru.ispras.fortress.expression.NodeValue;
+import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.solver.Environment;
 import ru.ispras.fortress.solver.Solver;
 import ru.ispras.fortress.solver.SolverId;
 import ru.ispras.fortress.solver.SolverResult;
 import ru.ispras.fortress.solver.constraint.Constraint;
+import ru.ispras.fortress.solver.constraint.Formulas;
 import ru.ispras.fortress.solver.xml.XMLConstraintLoader;
 import ru.ispras.fortress.solver.xml.XMLConstraintSaver;
 import ru.ispras.fortress.solver.xml.XMLNotLoadedException;
@@ -130,3 +137,203 @@ public abstract class GenericSolverTestBase
     public abstract Constraint getConstraint();
     public abstract Iterable<Variable> getExpectedVariables();
 }
+
+final class ConstraintEqualityChecker
+{
+	private ConstraintEqualityChecker() {}
+
+    public static void check(Constraint expected, Constraint actual)
+    {
+        Assert.assertNotNull(expected);
+        Assert.assertNotNull(actual);
+        Assert.assertFalse("The same object", expected == actual);
+        
+        Assert.assertTrue("Constraint names do not match.", expected.getName().equals(actual.getName()));
+        Assert.assertTrue("Constraint kinds.", expected.getKind() == actual.getKind());
+        Assert.assertTrue("Constraint descriptions do not match.", expected.getDescription().equals(actual.getDescription()));
+        
+        check((Formulas)expected.getInnerRep(), (Formulas)actual.getInnerRep());
+    }
+
+    public static void check(Formulas expected, Formulas actual)
+    {
+        Assert.assertNotNull(expected);
+        Assert.assertNotNull(actual);
+        Assert.assertFalse("The same object", expected == actual);
+
+        Assert.assertNotNull(expected.exprs());
+        Assert.assertNotNull(actual.exprs());
+        Assert.assertFalse("The same object", expected.exprs() == actual.exprs());
+
+        final Iterator<Node> expectedIterator = expected.exprs().iterator();
+        final Iterator<Node> actualIterator = actual.exprs().iterator();
+
+        while (expectedIterator.hasNext() && actualIterator.hasNext())
+            check(expectedIterator.next(), actualIterator.next());
+
+        Assert.assertTrue("The numbers of formulas are different.", expectedIterator.hasNext() == actualIterator.hasNext());
+    }
+
+    public static void check(NodeExpr expected, NodeExpr actual)
+    {
+        Assert.assertNotNull(expected);
+        Assert.assertNotNull(actual);
+        Assert.assertFalse("The same object", expected == actual);
+
+        Assert.assertTrue("Invalid element ID.", expected.getKind() == Node.Kind.EXPR);
+        Assert.assertTrue("Invalid element ID.", actual.getKind() == Node.Kind.EXPR);
+        Assert.assertTrue("Different operation IDs.", expected.getOperationId().equals(actual.getOperationId()));
+
+        // TODO: Temporary requirement. Once the getDataType method is implemented to return a proper value
+        // this code must be replaced with a proper check.
+        // Assert.assertNull(expected.getDataType());
+        // Assert.assertNull(actual.getDataType());
+
+        int operandIndex = 0;
+        while (operandIndex < expected.getOperandCount())
+        {
+            if ((null != expected.getOperand(operandIndex)) && 
+                (null != actual.getOperand(operandIndex)))
+            {
+                check(expected.getOperand(operandIndex), actual.getOperand(operandIndex));
+            }
+
+            ++operandIndex;
+        }
+    }
+
+    public static void check(NodeVariable expected, NodeVariable actual)
+    {
+        Assert.assertNotNull(expected);
+        Assert.assertNotNull(actual);
+        Assert.assertFalse("The same object", expected == actual);
+
+        Assert.assertTrue("Invalid node kind.", expected.getKind() == Node.Kind.VARIABLE);
+        Assert.assertTrue("Invalid node kind.", actual.getKind() == Node.Kind.VARIABLE);
+
+        Assert.assertTrue("Variable names do not match.", expected.getName().equals(actual.getName()));
+
+        check(expected.getData().getType(), actual.getData().getType());
+        if (!
+             ((null == expected.getValue()) && (null == actual.getValue()))
+           )
+        {
+            Assert.assertTrue("Variable values do not match.", expected.getValue().equals(actual.getValue()));
+        }
+    }
+
+    public static void check(NodeValue expected, NodeValue actual)
+    {
+        Assert.assertNotNull(expected);
+        Assert.assertNotNull(actual);
+        Assert.assertFalse("The same object", expected == actual);
+
+        Assert.assertTrue("Invalid element ID.", expected.getKind() == Node.Kind.VALUE);
+        Assert.assertTrue("Invalid element ID.", actual.getKind() == Node.Kind.VALUE);
+        check(expected.getData().getType(), actual.getData().getType());
+        Assert.assertTrue("Values do not match.", expected.getValue().equals(actual.getValue()));
+    }
+
+    public static void check(Node expected, Node actual)
+    {
+        Assert.assertNotNull(expected);
+        Assert.assertNotNull(actual);
+
+        Assert.assertFalse("The same object", expected == actual);
+        Assert.assertTrue("Different element IDs.", expected.getKind() == actual.getKind());
+
+        switch(expected.getKind())
+        {
+        case VALUE:
+            check((NodeValue) expected, (NodeValue) actual);
+            break;
+
+        case VARIABLE:
+            check((NodeVariable) expected, (NodeVariable) actual);
+            break;
+
+        case EXPR:
+            check((NodeExpr) expected, (NodeExpr) actual);
+            break;
+
+        default:
+            Assert.fail("Unknown element type.");
+            break;
+        }
+    }
+
+    public static void check(DataType expected, DataType actual)
+    {
+        Assert.assertNotNull(expected);
+        Assert.assertNotNull(actual);
+
+        Assert.assertTrue("Data type IDs do not match.", expected.getTypeId() == actual.getTypeId());
+        Assert.assertTrue("Data type sizes do not match.", expected.getSize() == actual.getSize());
+    }
+}
+
+final class SolverResultChecker
+{   
+	private SolverResultChecker() {}
+	
+    public static void check(SolverResult solverResult, Iterable<Variable> expectedVariables)
+    {
+        checkErrors(solverResult.getErrors());
+
+        Assert.assertTrue("Failed to solve the constraint. Status: " +
+           solverResult.getStatus(), solverResult.getStatus() == SolverResult.Status.SAT);
+
+        final Iterator<Variable> expectedVariableIterator = expectedVariables.iterator();
+        final Iterator<Variable> variableIterator = solverResult.getVariables().iterator();
+
+        while(expectedVariableIterator.hasNext() && variableIterator.hasNext())
+        {
+            final Variable expectedVariable = expectedVariableIterator.next();
+            final Variable variable = variableIterator.next();
+
+            Assert.assertTrue(
+                String.format("Unexpected variable name. '%s' vs '%s'",
+                    variable.getName(),
+                    expectedVariable.getName()),
+                    variable.getName().equals(expectedVariable.getName())
+            );
+
+            Assert.assertTrue(
+                String.format("Unexpected variable type. '%s' vs '%s'",
+                    variable.getData().getType().toString(),
+                    expectedVariable.getData().getType().toString()),
+                    variable.getData().getType().equals(expectedVariable.getData().getType())
+            );
+
+            Assert.assertTrue(
+                String.format("Unexpected value of the %s variable: '%s', expected: '%s'",
+                    variable.getName(),
+                    variable.getData().getValue(),
+                    expectedVariable.getData().getValue()),
+                    variable.getData().getValue().equals(expectedVariable.getData().getValue())
+            );
+        }
+
+        Assert.assertTrue("Wrong variable number", !expectedVariableIterator.hasNext() && !variableIterator.hasNext());
+    }
+
+    private static void checkErrors(Iterable<String> errors)
+    {
+        Iterator<String> errorIterator = errors.iterator();
+
+        if (!errorIterator.hasNext())
+            return;
+
+        StringBuilder errorStringBuilder = new StringBuilder();
+        errorStringBuilder.append("Errors occured:");
+
+        while (errorIterator.hasNext())
+        {
+            errorStringBuilder.append("\r\n");
+            errorStringBuilder.append(errorIterator.next());
+        }
+
+        Assert.fail(errorStringBuilder.toString());
+    }
+}
+
