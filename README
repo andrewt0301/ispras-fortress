@@ -2,6 +2,16 @@
  Fortress Project
 ----------------------------------------------------------------
 
+ NOTES:
+
+ In the Fortress project production code and unit tests are
+ separated and located in the following folders respectively: 
+ 
+  'src/main/java'
+  'src/test/java'
+
+----------------------------------------------------------------
+
  Preparing the project:
 
  1. Check out the project from the Subversion repository:
