@@ -10,7 +10,7 @@
  * GenericSolverSampleTestBase.java, Oct 4, 2012 4:20:59 PM Andrei Tatarnikov
  */
 
-package ru.ispras.fortress.solver.common;
+package ru.ispras.fortress.solver;
 
 import org.junit.After;
 import org.junit.Before;

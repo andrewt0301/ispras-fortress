@@ -7,10 +7,10 @@
  * 
  * All rights reserved.
  * 
- * $Id: SolverTestCases.java, Dec 20, 2011 12:19:23 PM Andrei Tatarnikov Exp $
+ * SolverTestCases.java, Dec 20, 2011 12:19:23 PM Andrei Tatarnikov
  */
 
-package ru.ispras.fortress.solver.common;
+package ru.ispras.fortress.solver;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;

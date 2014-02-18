@@ -22,8 +22,6 @@ import ru.ispras.fortress.expression.NodeExpr;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
-import ru.ispras.fortress.solver.common.GenericSolverSampleTestBase;
-import ru.ispras.fortress.solver.common.ISampleConstraint;
 import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintBuilder;
 import ru.ispras.fortress.solver.constraint.ConstraintKind;
@@ -37,7 +35,7 @@ public class PowerOfTwoCustomTestCase extends GenericSolverSampleTestBase
     {
         return new PowerOfTwoCustom();
     }
-    
+
     /**
     The sample is similar to the PowerOfTwo sample, but the is_pow_of_two function 
     is provided as a custom text-based operation that extends the solver.

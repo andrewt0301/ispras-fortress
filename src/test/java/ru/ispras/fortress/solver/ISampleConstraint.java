@@ -10,7 +10,7 @@
  * ISampleConstraint.java, Oct 4, 2012 12:40:18 PM Andrei Tatarnikov
  */
 
-package ru.ispras.fortress.solver.common;
+package ru.ispras.fortress.solver;
 
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.solver.constraint.Constraint;
