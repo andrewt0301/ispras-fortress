@@ -29,14 +29,26 @@ public final class BitVectorMath
         SHL  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  shl(lhs, rhs); } },
         LSHR { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return lshr(lhs, rhs); } },
         ASHR { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return ashr(lhs, rhs); } },
-
         ROTL { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return rotl(lhs, rhs); } },
         ROTR { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return rotr(lhs, rhs); } },
 
         ADD  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  add(lhs, rhs); } },
         SUB  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  sub(lhs, rhs); } },
         PLUS { @Override public BitVector execute(BitVector v)                  { return        plus(v); } },
-        NEG  { @Override public BitVector execute(BitVector v)                  { return         neg(v); } };
+        NEG  { @Override public BitVector execute(BitVector v)                  { return         neg(v); } },
+        MUL  { /* TODO */ },
+        UREM { /* TODO */ },
+        SREM { /* TODO */ },
+        SMOD { /* TODO */ },
+
+        ULE  { /* TODO */ },
+        ULT  { /* TODO */ },
+        UGE  { /* TODO */ },
+        UGT  { /* TODO */ },
+        SLE  { /* TODO */ },
+        SLT  { /* TODO */ },
+        SGE  { /* TODO */ },
+        SGT  { /* TODO */ };
 
         // IMPORTANT: must be overridden if supported by a specific operation.
         public BitVector execute(BitVector v)
