@@ -36,19 +36,20 @@ public final class BitVectorMath
         SUB  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  sub(lhs, rhs); } },
         PLUS { @Override public BitVector execute(BitVector v)                  { return        plus(v); } },
         NEG  { @Override public BitVector execute(BitVector v)                  { return         neg(v); } },
-        MUL  { /* TODO */ },
-        UREM { /* TODO */ },
-        SREM { /* TODO */ },
-        SMOD { /* TODO */ },
 
-        ULE  { /* TODO */ },
-        ULT  { /* TODO */ },
-        UGE  { /* TODO */ },
-        UGT  { /* TODO */ },
-        SLE  { /* TODO */ },
-        SLT  { /* TODO */ },
-        SGE  { /* TODO */ },
-        SGT  { /* TODO */ };
+        // MUL  { /* TODO */ },
+        // UREM { /* TODO */ },
+        // SREM { /* TODO */ },
+        // SMOD { /* TODO */ },
+
+        ULE  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  ule(lhs, rhs); } },
+        ULT  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  ult(lhs, rhs); } },
+        UGE  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  uge(lhs, rhs); } },
+        UGT  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  ugt(lhs, rhs); } },
+        SLE  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  sle(lhs, rhs); } },
+        SLT  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  slt(lhs, rhs); } },
+        SGE  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  sge(lhs, rhs); } },
+        SGT  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  sgt(lhs, rhs); } };
 
         // IMPORTANT: must be overridden if supported by a specific operation.
         public BitVector execute(BitVector v)
@@ -283,6 +284,54 @@ public final class BitVectorMath
         checkNotNull(v);
         // Negation algorithm: "-arg = ~arg + 1".
         return add(not(v), BitVector.valueOf(1, v.getBitSize()));
+    }
+
+    public static BitVector ule(BitVector v, BitVector to)
+    {
+    	// TODO
+    	return null;
+    }
+
+    public static BitVector ult(BitVector v, BitVector to)
+    {
+    	// TODO
+    	return null;
+    }
+
+    public static BitVector uge(BitVector v, BitVector to)
+    {
+    	// TODO
+    	return null;
+    }
+
+    public static BitVector ugt(BitVector v, BitVector to)
+    {
+    	// TODO
+    	return null;
+    }
+
+    public static BitVector sle(BitVector v, BitVector to)
+    {
+    	// TODO
+    	return null;
+    }
+
+    public static BitVector slt(BitVector v, BitVector to)
+    {
+    	// TODO
+    	return null;
+    }
+
+    public static BitVector sge(BitVector v, BitVector to)
+    {
+    	// TODO
+    	return null;
+    }
+
+    public static BitVector sgt(BitVector v, BitVector to)
+    {
+    	// TODO
+    	return null;
     }
 
     private static BitVector transform(BitVector lhs, BitVector rhs, BitVectorAlgorithm.IBinaryOperation op)

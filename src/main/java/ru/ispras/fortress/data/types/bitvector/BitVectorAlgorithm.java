@@ -36,6 +36,11 @@ public final class BitVectorAlgorithm
         public void run(byte v);
     }
 
+    public static interface IBinaryPredicate
+    {
+        public boolean test(byte lhs, byte rhs);
+    }
+
     public static enum UnaryOperation implements IUnaryOperation
     {
         NOT { @Override public byte run(byte v) { return (byte) ~v; } };
@@ -118,12 +123,51 @@ public final class BitVectorAlgorithm
         }
     }
 
+    public static int mismatch(BitVector src1, BitVector src2)
+    {
+        notNullCheck(src1, "src1");
+        notNullCheck(src2, "src2");
+
+        equalSizeCheck(src1.getBitSize(), src2.getBitSize());
+
+        if (src1 == src2)
+            return -1;
+
+        for (int index = 0; index < src1.getByteSize(); ++index)
+        {
+            if (src1.getByte(index) != src2.getByte(index))
+                return index;
+        }
+
+        return -1;
+    }
+
+    public static int mismatch(BitVector src1, BitVector src2, IBinaryPredicate op)
+    {
+        notNullCheck(src1, "src1");
+        notNullCheck(src2, "src2");
+        notNullCheck(op,     "op");
+
+        equalSizeCheck(src1.getBitSize(), src2.getBitSize());
+
+        if (src1 == src2)
+            return -1;
+
+        for (int index = 0; index < src1.getByteSize(); ++index)
+        {
+            if (!op.test(src1.getByte(index), src2.getByte(index)))
+                return index;
+        }
+
+        return -1;
+    }
+
     public static int mismatch_reverse(BitVector src1, BitVector src2)
     {
         notNullCheck(src1, "src1");
         notNullCheck(src2, "src2");
 
-        equalSizeCheck(src1.getBitSize(), src1.getBitSize());
+        equalSizeCheck(src1.getBitSize(), src2.getBitSize());
 
         if (src1 == src2)
             return -1;
@@ -131,6 +175,26 @@ public final class BitVectorAlgorithm
         for (int index = src1.getByteSize() - 1; index >= 0; --index)
         {
             if (src1.getByte(index) != src2.getByte(index))
+                return index;
+        }
+
+        return -1;
+    }
+
+    public static int mismatch_reverse(BitVector src1, BitVector src2, IBinaryPredicate op)
+    {
+        notNullCheck(src1, "src1");
+        notNullCheck(src2, "src2");
+        notNullCheck(op,     "op");
+
+        equalSizeCheck(src1.getBitSize(), src2.getBitSize());
+
+        if (src1 == src2)
+            return -1;
+
+        for (int index = src1.getByteSize() - 1; index >= 0; --index)
+        {
+            if (!op.test(src1.getByte(index), src2.getByte(index)))
                 return index;
         }
 
