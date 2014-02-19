@@ -286,49 +286,49 @@ public final class BitVectorMath
         return add(not(v), BitVector.valueOf(1, v.getBitSize()));
     }
 
-    public static BitVector ule(BitVector v, BitVector to)
+    public static BitVector ule(BitVector lhs, BitVector rhs)
     {
     	// TODO
     	return null;
     }
 
-    public static BitVector ult(BitVector v, BitVector to)
+    public static BitVector ult(BitVector lhs, BitVector rhs)
     {
     	// TODO
     	return null;
     }
 
-    public static BitVector uge(BitVector v, BitVector to)
+    public static BitVector uge(BitVector lhs, BitVector rhs)
     {
     	// TODO
     	return null;
     }
 
-    public static BitVector ugt(BitVector v, BitVector to)
+    public static BitVector ugt(BitVector lhs, BitVector rhs)
     {
     	// TODO
     	return null;
     }
 
-    public static BitVector sle(BitVector v, BitVector to)
+    public static BitVector sle(BitVector lhs, BitVector rhs)
     {
     	// TODO
     	return null;
     }
 
-    public static BitVector slt(BitVector v, BitVector to)
+    public static BitVector slt(BitVector lhs, BitVector rhs)
     {
     	// TODO
     	return null;
     }
 
-    public static BitVector sge(BitVector v, BitVector to)
+    public static BitVector sge(BitVector lhs, BitVector rhs)
     {
     	// TODO
     	return null;
     }
 
-    public static BitVector sgt(BitVector v, BitVector to)
+    public static BitVector sgt(BitVector lhs, BitVector rhs)
     {
     	// TODO
     	return null;
