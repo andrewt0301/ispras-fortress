@@ -681,5 +681,35 @@ public class BitVectorMathTestCase
     @Test
     public void sgtTests()
     {
+        checkBitVector(BitVectorMath.sgt(BitVector.newEmpty(16),        BitVector.newEmpty(16)),        BitVector.FALSE);
+        checkBitVector(BitVectorMath.sgt(BitVector.valueOf(0xFFFF, 16), BitVector.valueOf(0, 16)),      BitVector.FALSE);
+
+        checkBitVector(BitVectorMath.sgt(BitVector.valueOf(0xF000, 16), BitVector.valueOf(0xFFFF, 16)), BitVector.FALSE);
+        checkBitVector(BitVectorMath.sgt(BitVector.valueOf(0xFFFE, 16), BitVector.valueOf(0xFFFF, 16)), BitVector.FALSE);
+        checkBitVector(BitVectorMath.sgt(BitVector.valueOf(0x7FFF, 16), BitVector.valueOf(0x7FFF, 16)), BitVector.FALSE);
+        checkBitVector(BitVectorMath.sgt(BitVector.valueOf(0x7000, 16), BitVector.valueOf(0x7FFF, 16)), BitVector.FALSE);
+
+        checkBitVector(BitVectorMath.sgt(BitVector.valueOf(0xF98A, 16), BitVector.valueOf(0xF98A, 16)), BitVector.FALSE);
+        checkBitVector(BitVectorMath.sgt(BitVector.valueOf(0xFFFF, 16), BitVector.valueOf(0xFF0F, 16)), BitVector.TRUE);
+
+        checkBitVector(BitVectorMath.sgt(BitVector.valueOf(0x7FFF, 16), BitVector.valueOf(0x7FFF, 16)), BitVector.FALSE);
+        checkBitVector(BitVectorMath.sgt(BitVector.valueOf(0x7FFE, 16), BitVector.valueOf(0x7FFF, 16)), BitVector.FALSE);
+        checkBitVector(BitVectorMath.sgt(BitVector.valueOf(0x7FFF, 16), BitVector.valueOf(0x7FFE, 16)), BitVector.TRUE);
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        checkBitVector(BitVectorMath.sgt(BitVector.valueOf(0xFFFFFFFF, 32), BitVector.valueOf(0xFFFFFFFF, 32)), BitVector.FALSE);
+
+        checkBitVector(BitVectorMath.sgt(BitVector.valueOf(0xFFFFFFFF, 32), BitVector.valueOf(0x7FFFFFFF, 32)), BitVector.FALSE);
+        checkBitVector(BitVectorMath.sgt(BitVector.valueOf(0x7FFFFFFF, 32), BitVector.valueOf(0xFFFFFFFF, 32)), BitVector.TRUE);
+
+        checkBitVector(BitVectorMath.sgt(BitVector.valueOf(0xFFFFFFFE, 32), BitVector.valueOf(0xFFFFFFFF, 32)), BitVector.FALSE);
+        checkBitVector(BitVectorMath.sgt(BitVector.valueOf(0xFFFFFFFF, 32), BitVector.valueOf(0xFFFFFFFE, 32)), BitVector.TRUE);
+
+        checkBitVector(BitVectorMath.sgt(BitVector.valueOf(0xFFFFFFFFFFFFFFFEL, 64), BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64)), BitVector.FALSE);
+        checkBitVector(BitVectorMath.sgt(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64), BitVector.valueOf(0xFFFFFFFFFFFFFFFEL, 64)), BitVector.TRUE);
+
+        checkBitVector(BitVectorMath.sgt(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64), BitVector.valueOf(0x7FFFFFFFFFFFFFFFL, 64)), BitVector.FALSE);
+        checkBitVector(BitVectorMath.sgt(BitVector.valueOf(0x7FFFFFFFFFFFFFFFL, 64), BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64)), BitVector.TRUE);
     }
 }

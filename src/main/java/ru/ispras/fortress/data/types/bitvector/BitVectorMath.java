@@ -387,8 +387,7 @@ public final class BitVectorMath
         if (isLeftNeg != isRightNeg)
             return BitVector.valueOf(!isLeftNeg); // If lhs is positive, it is greater. Otherwise, it is less.
 
-        final int status = lhs.compareTo(rhs);
-        return BitVector.valueOf(isLeftNeg ? status < 0 : status > 0);
+        return BitVector.valueOf(lhs.compareTo(rhs) > 0);
     }
 
     private static BitVector transform(BitVector lhs, BitVector rhs, BitVectorAlgorithm.IBinaryOperation op)
