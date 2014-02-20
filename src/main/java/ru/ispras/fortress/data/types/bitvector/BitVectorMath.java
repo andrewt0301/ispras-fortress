@@ -336,8 +336,7 @@ public final class BitVectorMath
         if (isLeftNeg != isRightNeg)
             return BitVector.valueOf(isLeftNeg); // If lhs is negative, it is less. Otherwise, it is greater.
 
-        final int status = lhs.compareTo(rhs);
-        return BitVector.valueOf(isLeftNeg ? status >= 0 : status <= 0);
+        return BitVector.valueOf(lhs.compareTo(rhs) <= 0);
     }
 
     public static BitVector slt(BitVector lhs, BitVector rhs)
