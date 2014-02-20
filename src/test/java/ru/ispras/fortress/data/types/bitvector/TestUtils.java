@@ -36,6 +36,11 @@ public final class TestUtils
         Trace(String.format(SEPARATOR, title));
     }
 
+    public static void checkBitVector(BitVector current, BitVector expected)
+    {
+        checkBitVector(current, expected.toBinString());
+    }
+
     public static void checkBitVector(BitVector current, String expected)
     {
         final String dataString = current.toBinString();
