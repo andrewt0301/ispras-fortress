@@ -24,6 +24,18 @@ import static ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.*;
 public abstract class BitVector implements Comparable<BitVector>
 {
     /**
+     * A constant bit vector that represents the 'false' boolean value (bit size is 1).
+     */
+
+    public static final BitVector FALSE = BitVector.unmodifiable(BitVector.valueOf(0, 1));
+
+    /**
+     * A constant bit vector that represents the 'true' boolean value (bit size is 1).
+     */
+
+    public static final BitVector  TRUE = BitVector.unmodifiable(BitVector.valueOf(1, 1));
+
+    /**
      * Number of bits an a byte.
      */
 
@@ -266,6 +278,21 @@ public abstract class BitVector implements Comparable<BitVector>
     public static BitVector valueOf(final String bs)
     {
         return valueOf(bs, 2, bs.length());
+    }
+
+    /**
+     * Returns a bit vector that corresponds to the specified boolean value.
+     * IMPORTANT: The returned bit vector is an unmodifiable singleton object.
+     * The method is implemented this way to avoid unnecessary memory allocations
+     * because bit vectors representing boolean values are not normally modified.
+     * 
+     * @param b Boolean value.
+     * @return A constant (!) bit vector for the specified boolean value.
+     */
+
+    public static BitVector valueOf(boolean b)
+    {
+    	return b ? TRUE : FALSE;
     }
 
     /**

@@ -53,6 +53,15 @@ public final class BitVectorAlgorithm
         XOR { @Override public byte run(byte lhs, byte rhs) { return (byte) (lhs ^ rhs); } };
     }
 
+    // All byte comparisons are unsigned.    
+    public static enum BinaryPredicate implements IBinaryPredicate
+    {
+    	LE { @Override public boolean test(byte lhs, byte rhs) { return (lhs & 0xFF) <= (rhs & 0xFF); } },
+    	LT { @Override public boolean test(byte lhs, byte rhs) { return (lhs & 0xFF) <  (rhs & 0xFF); } },
+    	GE { @Override public boolean test(byte lhs, byte rhs) { return (lhs & 0xFF) >= (rhs & 0xFF); } },
+    	GT { @Override public boolean test(byte lhs, byte rhs) { return (lhs & 0xFF) >  (rhs & 0xFF); } };
+    }
+
     public static void fill(BitVector dest, byte value)
     {
         notNullCheck(dest, "dest");

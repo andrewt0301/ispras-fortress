@@ -288,50 +288,110 @@ public final class BitVectorMath
 
     public static BitVector ule(BitVector lhs, BitVector rhs)
     {
-    	// TODO
-    	return null;
+        checkNotNull(lhs);
+        checkNotNull(rhs);
+        checkEqualSize(lhs, rhs);
+
+        return BitVector.valueOf(lhs.compareTo(rhs) <= 0);
     }
 
     public static BitVector ult(BitVector lhs, BitVector rhs)
     {
-    	// TODO
-    	return null;
+        checkNotNull(lhs);
+        checkNotNull(rhs);
+        checkEqualSize(lhs, rhs);
+
+        return BitVector.valueOf(lhs.compareTo(rhs) < 0); 
     }
 
     public static BitVector uge(BitVector lhs, BitVector rhs)
     {
-    	// TODO
-    	return null;
+        checkNotNull(lhs);
+        checkNotNull(rhs);
+        checkEqualSize(lhs, rhs);
+
+        return BitVector.valueOf(lhs.compareTo(rhs) >= 0);
     }
 
     public static BitVector ugt(BitVector lhs, BitVector rhs)
     {
-    	// TODO
-    	return null;
+        checkNotNull(lhs);
+        checkNotNull(rhs);
+        checkEqualSize(lhs, rhs);
+
+        return BitVector.valueOf(lhs.compareTo(rhs) > 0);
     }
 
     public static BitVector sle(BitVector lhs, BitVector rhs)
     {
-    	// TODO
-    	return null;
+        checkNotNull(lhs);
+        checkNotNull(rhs);
+        checkEqualSize(lhs, rhs);
+
+        final int signBitIndex = lhs.getBitSize() - 1;
+
+        final boolean  isLeftNeg = lhs.getBit(signBitIndex);
+        final boolean isRightNeg = rhs.getBit(signBitIndex);
+
+        if (isLeftNeg != isRightNeg)
+            return BitVector.valueOf(isLeftNeg); // If lhs is negative, it is less. Otherwise, it is greater.
+
+        final int status = lhs.compareTo(rhs);
+        return BitVector.valueOf(isLeftNeg ? status >= 0 : status <= 0);
     }
 
     public static BitVector slt(BitVector lhs, BitVector rhs)
     {
-    	// TODO
-    	return null;
+        checkNotNull(lhs);
+        checkNotNull(rhs);
+        checkEqualSize(lhs, rhs);
+
+        final int signBitIndex = lhs.getBitSize() - 1;
+
+        final boolean  isLeftNeg = lhs.getBit(signBitIndex);
+        final boolean isRightNeg = rhs.getBit(signBitIndex);
+
+        if (isLeftNeg != isRightNeg)
+            return BitVector.valueOf(isLeftNeg); // If lhs is negative, it is less. Otherwise, it is greater.
+
+        final int status = lhs.compareTo(rhs);
+        return BitVector.valueOf(isLeftNeg ? status > 0 : status < 0);
     }
 
     public static BitVector sge(BitVector lhs, BitVector rhs)
     {
-    	// TODO
-    	return null;
+        checkNotNull(lhs);
+        checkNotNull(rhs);
+        checkEqualSize(lhs, rhs);
+
+        final int signBitIndex = lhs.getBitSize() - 1;
+
+        final boolean  isLeftNeg = lhs.getBit(signBitIndex);
+        final boolean isRightNeg = rhs.getBit(signBitIndex);
+
+        if (isLeftNeg != isRightNeg)
+            return BitVector.valueOf(!isLeftNeg); // If lhs is positive, it is greater. Otherwise, it is less.
+
+        final int status = lhs.compareTo(rhs);
+        return BitVector.valueOf(isLeftNeg ? status <= 0 : status >= 0);
     }
 
     public static BitVector sgt(BitVector lhs, BitVector rhs)
     {
-    	// TODO
-    	return null;
+        checkNotNull(lhs);
+        checkNotNull(rhs);
+        checkEqualSize(lhs, rhs);
+
+        final int signBitIndex = lhs.getBitSize() - 1;
+
+        final boolean  isLeftNeg = lhs.getBit(signBitIndex);
+        final boolean isRightNeg = rhs.getBit(signBitIndex);
+
+        if (isLeftNeg != isRightNeg)
+            return BitVector.valueOf(!isLeftNeg); // If lhs is positive, it is greater. Otherwise, it is less.
+
+        final int status = lhs.compareTo(rhs);
+        return BitVector.valueOf(isLeftNeg ? status < 0 : status > 0);
     }
 
     private static BitVector transform(BitVector lhs, BitVector rhs, BitVectorAlgorithm.IBinaryOperation op)
