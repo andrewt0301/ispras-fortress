@@ -481,12 +481,21 @@ public class BitVectorMathTestCase
         checkBitVector(BitVectorMath.ult(BitVector.valueOf(0x7FFF, 16), BitVector.valueOf(0x7FFF, 16)), BitVector.FALSE);
         checkBitVector(BitVectorMath.ult(BitVector.valueOf(0x7FFE, 16), BitVector.valueOf(0x7FFF, 16)), BitVector.TRUE);
         checkBitVector(BitVectorMath.ult(BitVector.valueOf(0x7FFF, 16), BitVector.valueOf(0x7FFE, 16)), BitVector.FALSE);
-
     }
 
     @Test
     public void ugeTests()
     {
+        checkBitVector(BitVectorMath.uge(BitVector.newEmpty(16),    BitVector.newEmpty(16)),    BitVector.TRUE);
+        checkBitVector(BitVectorMath.uge(BitVector.valueOf(-1, 16), BitVector.valueOf(0, 16)),  BitVector.TRUE);
+        checkBitVector(BitVectorMath.uge(BitVector.valueOf(-1, 16), BitVector.valueOf(-1, 16)), BitVector.TRUE);
+
+        checkBitVector(BitVectorMath.uge(BitVector.valueOf(0xF98A, 16), BitVector.valueOf(0xF98A, 16)), BitVector.TRUE);
+        checkBitVector(BitVectorMath.uge(BitVector.valueOf(0xFFFF, 16), BitVector.valueOf(0xFF0F, 16)), BitVector.TRUE);
+
+        checkBitVector(BitVectorMath.uge(BitVector.valueOf(0x7FFF, 16), BitVector.valueOf(0x7FFF, 16)), BitVector.TRUE);
+        checkBitVector(BitVectorMath.uge(BitVector.valueOf(0x7FFE, 16), BitVector.valueOf(0x7FFF, 16)), BitVector.FALSE);
+        checkBitVector(BitVectorMath.uge(BitVector.valueOf(0x7FFF, 16), BitVector.valueOf(0x7FFE, 16)), BitVector.TRUE);
     }
 
     @Test
