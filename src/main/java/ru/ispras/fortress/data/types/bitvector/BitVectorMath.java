@@ -65,7 +65,9 @@ public final class BitVectorMath
         SLE  (BINARY) { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  sle(lhs, rhs); } },
         SLT  (BINARY) { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  slt(lhs, rhs); } },
         SGE  (BINARY) { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  sge(lhs, rhs); } },
-        SGT  (BINARY) { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  sgt(lhs, rhs); } };
+        SGT  (BINARY) { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  sgt(lhs, rhs); } },
+        EQ   (BINARY) { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return   eq(lhs, rhs); } },
+        NEQ  (BINARY) { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  neq(lhs, rhs); } };
 
         private final Operands operands;
 
@@ -416,6 +418,24 @@ public final class BitVectorMath
             return BitVector.valueOf(!isLeftNeg); // If lhs is positive, it is greater. Otherwise, it is less.
 
         return BitVector.valueOf(lhs.compareTo(rhs) > 0);
+    }
+
+    public static BitVector eq(BitVector lhs, BitVector rhs)
+    {
+        checkNotNull(lhs);
+        checkNotNull(rhs);
+        checkEqualSize(lhs, rhs);
+
+        return BitVector.valueOf(lhs.equals(rhs));
+    }
+
+    public static BitVector neq(BitVector lhs, BitVector rhs)
+    {
+        checkNotNull(lhs);
+        checkNotNull(rhs);
+        checkEqualSize(lhs, rhs);
+
+        return BitVector.valueOf(!lhs.equals(rhs));
     }
 
     private static BitVector transform(BitVector lhs, BitVector rhs, BitVectorAlgorithm.IBinaryOperation op)
