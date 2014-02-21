@@ -12,44 +12,72 @@
 
 package ru.ispras.fortress.data.types.bitvector;
 
+import static ru.ispras.fortress.data.types.bitvector.BitVectorMath.Operands.*;
+
 public final class BitVectorMath
 {
     private BitVectorMath() {}
 
+    public static enum Operands
+    {
+        UNARY(1),
+        BINARY(2),
+        TERNARY(3);
+
+        private final int count;
+
+        private Operands(int count)
+        {
+            this.count = count;
+        }
+
+        public int count()
+        { 
+            return count;
+        }
+    }
+
     public static enum Operations
     {
-        AND  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  and(lhs, rhs); } },
-        OR   { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return   or(lhs, rhs); } },
-        XOR  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  xor(lhs, rhs); } },
-        NOT  { @Override public BitVector execute(BitVector v)                  { return         not(v); } },
-        NAND { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return nand(lhs, rhs); } },
-        NOR  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  nor(lhs, rhs); } },
-        XNOR { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return xnor(lhs, rhs); } },
+        AND  (BINARY) { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  and(lhs, rhs); } },
+        OR   (BINARY) { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return   or(lhs, rhs); } },
+        XOR  (BINARY) { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  xor(lhs, rhs); } },
+        NOT  (UNARY)  { @Override public BitVector execute(BitVector v)                  { return         not(v); } },
+        NAND (BINARY) { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return nand(lhs, rhs); } },
+        NOR  (BINARY) { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  nor(lhs, rhs); } },
+        XNOR (BINARY) { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return xnor(lhs, rhs); } },
 
-        SHL  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  shl(lhs, rhs); } },
-        LSHR { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return lshr(lhs, rhs); } },
-        ASHR { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return ashr(lhs, rhs); } },
-        ROTL { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return rotl(lhs, rhs); } },
-        ROTR { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return rotr(lhs, rhs); } },
+        SHL  (BINARY) { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  shl(lhs, rhs); } },
+        LSHR (BINARY) { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return lshr(lhs, rhs); } },
+        ASHR (BINARY) { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return ashr(lhs, rhs); } },
+        ROTL (BINARY) { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return rotl(lhs, rhs); } },
+        ROTR (BINARY) { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return rotr(lhs, rhs); } },
 
-        ADD  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  add(lhs, rhs); } },
-        SUB  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  sub(lhs, rhs); } },
-        PLUS { @Override public BitVector execute(BitVector v)                  { return        plus(v); } },
-        NEG  { @Override public BitVector execute(BitVector v)                  { return         neg(v); } },
+        ADD  (BINARY) { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  add(lhs, rhs); } },
+        SUB  (BINARY) { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  sub(lhs, rhs); } },
+        PLUS (UNARY)  { @Override public BitVector execute(BitVector v)                  { return        plus(v); } },
+        NEG  (UNARY)  { @Override public BitVector execute(BitVector v)                  { return         neg(v); } },
 
-        // MUL  { /* TODO */ },
-        // UREM { /* TODO */ },
-        // SREM { /* TODO */ },
-        // SMOD { /* TODO */ },
+        ULE  (BINARY) { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  ule(lhs, rhs); } },
+        ULT  (BINARY) { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  ult(lhs, rhs); } },
+        UGE  (BINARY) { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  uge(lhs, rhs); } },
+        UGT  (BINARY) { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  ugt(lhs, rhs); } },
+        SLE  (BINARY) { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  sle(lhs, rhs); } },
+        SLT  (BINARY) { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  slt(lhs, rhs); } },
+        SGE  (BINARY) { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  sge(lhs, rhs); } },
+        SGT  (BINARY) { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  sgt(lhs, rhs); } };
 
-        ULE  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  ule(lhs, rhs); } },
-        ULT  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  ult(lhs, rhs); } },
-        UGE  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  uge(lhs, rhs); } },
-        UGT  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  ugt(lhs, rhs); } },
-        SLE  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  sle(lhs, rhs); } },
-        SLT  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  slt(lhs, rhs); } },
-        SGE  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  sge(lhs, rhs); } },
-        SGT  { @Override public BitVector execute(BitVector lhs, BitVector rhs) { return  sgt(lhs, rhs); } };
+        private final Operands operands;
+
+        private Operations(Operands operands)
+        {
+            this.operands = operands;
+        }
+
+        public Operands getOperands()
+        {
+            return operands;
+        }
 
         // IMPORTANT: must be overridden if supported by a specific operation.
         public BitVector execute(BitVector v)
