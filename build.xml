@@ -22,7 +22,7 @@
 
 <property name="buildbase.dir" value="tools/buildbase"/>
 
-<fail>>
+<fail>
 
 Please, prepare build environment:
 1. run 'ant -f setup.xml' to get latest BuildBase build script.
