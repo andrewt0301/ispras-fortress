@@ -150,7 +150,7 @@ public final class Data
      * initializes its value with the specified value object.
      *
      * @param type  The type of the data.
-     * @param value An object that stores the data.
+     * @param value An object of related type that stores the data.
      */
 
     public Data(DataType type, Object value)
