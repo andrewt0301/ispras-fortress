@@ -100,9 +100,9 @@ public abstract class GenericSolverTestBase
             final XMLConstraintSaver saver = new XMLConstraintSaver(tempFile, constraint);
             saver.save();
 
-            final Constraint loadedConstraint = new XMLConstraintLoader(tempFile).load();
+            final Constraint loadedConstraint = XMLConstraintLoader.load(tempFile);
             ConstraintEqualityChecker.check(constraint, loadedConstraint);
-            
+
             final Solver solver = constraint.getKind().getDefaultSolverId().getSolver();
             final SolverResult solverResult = solver.solve(loadedConstraint);
 

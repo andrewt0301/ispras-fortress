@@ -12,9 +12,13 @@
 
 package ru.ispras.fortress.solver.xml;
 
+import java.net.URL;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import ru.ispras.fortress.solver.constraint.Constraint;
 
@@ -27,34 +31,23 @@ import ru.ispras.fortress.solver.constraint.Constraint;
 
 public final class XMLConstraintLoader
 {
-    private final String fileName;
-
-    /**
-     * Constructs an XMLConstraintLoader object that will load 
-     * a constraint from the specified XML document.
-     * 
-     * @param fileName XML document file name.
-     * 
-     * @throws NullPointerException if the parameter equals null.
-     */
-
-    public XMLConstraintLoader(String fileName)
-    {
-        if (null == fileName)
-            throw new NullPointerException();
-
-        this.fileName = fileName;
-    }
+    private XMLConstraintLoader() {}
    
     /**
      * Loads a constraint from the specified XML file.
      *
-     * @param fileName The full name of the target path.
+     * @param fileName The full name of an XML file storing the constraint.
      * @return A constraint object loaded from the file.
+     * 
+     * @throws NullPointerException if the parameter equals null.
+     * @throws XMLNotLoadedException if an issue occurred during parsing the XML document.
      */
 
-    public Constraint load() throws XMLNotLoadedException
+    public static Constraint load(String fileName) throws XMLNotLoadedException
     {
+        if (null == fileName)
+            throw new NullPointerException();
+
         try
         {
             final XMLConstraintHandler handler = new XMLConstraintHandler();
@@ -65,6 +58,34 @@ public final class XMLConstraintLoader
         catch (Exception e)
         {
             throw new XMLNotLoadedException(fileName, e);
+        }
+    }
+
+    /**
+     * Loads a constraint from an XML file pointed by the specified URL.
+     *
+     * @param url URL that points to an XML file storing the constraint.
+     * @return A constraint object loaded from the file.
+     * 
+     * @throws NullPointerException if the parameter equals null.
+     * @throws XMLNotLoadedException if an issue occurred during parsing the XML document.
+     */
+
+    public static Constraint load(URL url) throws XMLNotLoadedException
+    {
+        if (null == url)
+            throw new NullPointerException();
+
+        try
+        {
+            final XMLConstraintHandler handler = new XMLConstraintHandler();
+            newSAXParser().parse(new InputSource(url.openStream()), handler);
+
+            return handler.getConstraint();
+        }
+        catch (Exception e)
+        {
+            throw new XMLNotLoadedException(url.toString(), e);
         }
     }
 
