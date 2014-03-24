@@ -219,9 +219,9 @@ public enum StandardOperation
         this(Attribute.DEFAULT);
     }
 
-    private StandardOperation(Attribute attribyte)
+    private StandardOperation(Attribute attribute)
     {
-        this.attribute = attribyte;
+        this.attribute = attribute;
     }
 
     public static boolean isParametric(Enum<?> id)
