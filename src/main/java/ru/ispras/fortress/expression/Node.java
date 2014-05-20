@@ -12,6 +12,12 @@
 
 package ru.ispras.fortress.expression;
 
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import ru.ispras.fortress.jaxb.JaxbNodeAdapter;
+import ru.ispras.fortress.jaxb.JaxbNodeValue;
+
 /**
  * The Node class is a base class for all kinds of classes describing nodes
  * in an expression tree. It includes declarations and implementations of 
@@ -20,6 +26,8 @@ package ru.ispras.fortress.expression;
  * @author Andrei Tatarnikov
  */
 
+@XmlJavaTypeAdapter(JaxbNodeAdapter.class)
+@XmlSeeAlso({JaxbNodeValue.class})
 public abstract class Node
 {
     /**
