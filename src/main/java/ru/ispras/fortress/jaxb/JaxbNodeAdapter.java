@@ -36,10 +36,11 @@ public class JaxbNodeAdapter extends XmlAdapter<JaxbNode, Node>
     	if (node instanceof NodeValue)
     	{
     	    JaxbNodeValue jaxbNodeValue = new JaxbNodeValue();
-            jaxbNodeValue.type =
-                    JaxbDataType.valueOf(((NodeValue) node).getData().getType().getTypeId().name());
-            jaxbNodeValue.size = ((NodeValue) node).getData().getType().getSize();
-            jaxbNodeValue.value = ((NodeValue) node).getData().getValue().toString();
+    	    Data data = ((NodeValue) node).getData();
+    	    DataType dataType = data.getType();
+            jaxbNodeValue.type = JaxbDataType.valueOf(dataType.getTypeId().name());
+            jaxbNodeValue.size = dataType.getSize();
+            jaxbNodeValue.value = data.getValue().toString();
             return jaxbNodeValue;
     	}
     	else
@@ -54,11 +55,10 @@ public class JaxbNodeAdapter extends XmlAdapter<JaxbNode, Node>
     {
     	if (node instanceof JaxbNodeValue)
     	{
-    	    DataTypeId typeId = DataTypeId.valueOf(((JaxbNodeValue) node).type.name());
-            DataType type = DataType.newDataType(typeId, ((JaxbNodeValue) node).size);
-            return new NodeValue(new Data(DataType.newDataType(typeId,
-                    ((JaxbNodeValue) node).size),
-                    type.valueOf(((JaxbNodeValue) node).value, type.getTypeRadix())));
+    		JaxbNodeValue jaxbNodeValue = (JaxbNodeValue) node;
+    	    DataTypeId typeId = DataTypeId.valueOf(jaxbNodeValue.type.name());
+            DataType type = DataType.newDataType(typeId, jaxbNodeValue.size);
+            return new NodeValue(type.valueOf(jaxbNodeValue.value, type.getTypeRadix()));
     	}
     	else
     	{

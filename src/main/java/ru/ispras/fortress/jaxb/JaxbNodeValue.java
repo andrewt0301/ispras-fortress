@@ -35,8 +35,4 @@ public class JaxbNodeValue extends JaxbNode
 	public int size;
 	@XmlValue
     public String value;
-
-    public JaxbNodeValue()
-    {
-    }
 }

@@ -12,6 +12,10 @@
 
 package ru.ispras.fortress.data;
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import ru.ispras.fortress.jaxb.JaxbVariableAdapter;
+
 /**
  * The Variable class describes a variable that can be used as input
  * or output data in constraints. 
@@ -19,6 +23,7 @@ package ru.ispras.fortress.data;
  * @author Andrei Tatarnikov
  */
 
+@XmlJavaTypeAdapter(JaxbVariableAdapter.class)
 public final class Variable
 {
     private final String name;
