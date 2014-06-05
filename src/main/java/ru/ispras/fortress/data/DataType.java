@@ -85,6 +85,13 @@ public final class DataType
      * @return A data type object
      */
 
+    public static DataType newDataType(DataTypeId typeId, int size)
+    {
+        if (typeId == DataTypeId.BIT_VECTOR)
+            return newDataType(typeId, (Object) Integer.valueOf(size));
+        return newDataType(typeId);
+    }
+
     public static DataType newDataType(DataTypeId typeId, Object ... parameters)
     {
         if (typeId == null)
