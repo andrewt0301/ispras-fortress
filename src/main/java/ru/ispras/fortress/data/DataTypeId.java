@@ -138,7 +138,7 @@ public enum DataTypeId
 
             final char LPAREN = '(';
             final char RPAREN = ')';
-            final char DELIM = ' ';
+            final char DELIM = ':';
 
             final Map<Data, Data> map = new HashMap<Data, Data>() {
                 @Override
@@ -158,7 +158,7 @@ public enum DataTypeId
                 }
             };
 
-            int depth = 0;
+            int depth = -1;
             int start = -1, end = -1;
 
             for (int i = 0; i < s.length(); ++i)
@@ -166,13 +166,13 @@ public enum DataTypeId
                 final char c = s.charAt(i);
                 if (c == LPAREN && ++depth == 1)
                     start = i + 1;
-                else if (c == RPAREN && --depth == 1)
+                else if (c == RPAREN && --depth == 0)
                     map.put(keyType.valueOf(s.substring(start, end), radix),
                             valueType.valueOf(s.substring(end + 1, i), radix));
                 else if (c == DELIM && depth == 1)
                     end = i;
             }
-            if (depth != 0)
+            if (depth != -1)
                 throw new IllegalArgumentException("Broken string value");
 
             return map;
