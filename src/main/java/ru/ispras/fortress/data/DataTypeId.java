@@ -58,9 +58,9 @@ public enum DataTypeId
             return String.format("(%s %d)", name(), params.get(0));
         }
 
-        Object getAttribute(String name, List<Object> params)
+        Object getAttribute(Attribute a, List<Object> params)
         {
-            if (name.equals("size"))
+            if (a == Attribute.SIZE)
                 return params.get(0);
 
             return null;
@@ -129,7 +129,7 @@ public enum DataTypeId
         String format(List<Object> params) { return name(); }
     },
 
-    KV_STORE(Map.class)
+    MAP(Map.class)
     {
         Object valueOf(String s, int radix, List<Object> params)
         {
@@ -190,11 +190,11 @@ public enum DataTypeId
             return String.format("(%s %s %s)", name(), params.get(0), params.get(1));
         }
 
-        Object getAttribute(String name, List<Object> params)
+        Object getAttribute(Attribute a, List<Object> params)
         {
-            if (name.equals("key"))
+            if (a == Attribute.KEY)
                 return params.get(0);
-            else if (name.equals("value"))
+            else if (a == Attribute.VALUE)
                 return params.get(1);
 
             return null;
@@ -262,6 +262,13 @@ public enum DataTypeId
         return valueOf(s, radix, list);
     }
 
+    public static enum Attribute
+    {
+        SIZE,
+        KEY,
+        VALUE
+    }
+
     abstract Object valueOf(String s, int radix, List<Object> params);
     
     /**
@@ -286,5 +293,5 @@ public enum DataTypeId
                 throw new IllegalArgumentException("Invalid parameter type");
     }
 
-    Object getAttribute(String name, List<Object> params) { return null; }
+    Object getAttribute(Attribute a, List<Object> params) { return null; }
 }

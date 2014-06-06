@@ -68,12 +68,12 @@ public final class DataType
         return newDataType(DataTypeId.BIT_VECTOR, size);
     }
 
-    public static DataType KV_STORE(DataType keyType, DataType valueType)
+    public static DataType MAP(DataType keyType, DataType valueType)
     {
         if (keyType == null || valueType == null)
             throw new NullPointerException();
 
-        return newDataType(DataTypeId.KV_STORE, keyType, valueType);
+        return newDataType(DataTypeId.MAP, keyType, valueType);
     }
 
     /**
@@ -167,7 +167,7 @@ public final class DataType
     public int getSize()
     {
         if (typeId == DataTypeId.BIT_VECTOR)
-            return (Integer) DataTypeId.BIT_VECTOR.getAttribute("size", parameters);
+            return (Integer) DataTypeId.BIT_VECTOR.getAttribute(DataTypeId.Attribute.SIZE, parameters);
         return LOGIC_TYPE_SIZE;
     }
 
