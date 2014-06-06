@@ -10,7 +10,7 @@ public class DataTypeTestCase
     public void parseKeyValue()
     {
         final String strval = "((1:2)(2:3)(3:4))";
-        final DataType type = DataType.KV_STORE(DataType.INTEGER, DataType.INTEGER);
+        final DataType type = DataType.MAP(DataType.INTEGER, DataType.INTEGER);
         final Data data = type.valueOf(strval, 10);
 
         Assert.assertTrue(data.getValue() instanceof Map);
