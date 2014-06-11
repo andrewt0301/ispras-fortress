@@ -271,5 +271,9 @@ public final class Z3TextSolver extends SolverBase
         addStandardOperation(StandardOperation.BVSLT,  "bvslt");
         addStandardOperation(StandardOperation.BVSGE,  "bvsge");
         addStandardOperation(StandardOperation.BVSGT,  "bvsgt");
+
+        /* Array operations */
+        addStandardOperation(StandardOperation.SELECT, "select");
+        addStandardOperation(StandardOperation.STORE,  "store");
     }
 }

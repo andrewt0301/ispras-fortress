@@ -204,7 +204,17 @@ public enum StandardOperation
     BVSGE,
 
     /** Group: Bitvector, Operation: Signed greater than */
-    BVSGT;
+    BVSGT,
+
+    /**
+    The items below belong to the "Array Operations" group.
+    */
+
+    /** Group: Array, Operation: Get stored value */
+    SELECT,
+
+    /** Group: Array, Operation: Store value */
+    STORE;
 
     private static enum Attribute
     {

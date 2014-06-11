@@ -31,6 +31,7 @@ public final class DataType
      */
 
     private static HashMap<String, DataType> dataTypes = new HashMap<String, DataType>();
+    private static Object[] EMPTY_PARAMETERS_LIST = new Object[0];
 
     /**
      * The LOGIC_TYPE_SIZE constant specifies the size of logic data types.
@@ -169,6 +170,11 @@ public final class DataType
         if (typeId == DataTypeId.BIT_VECTOR)
             return (Integer) DataTypeId.BIT_VECTOR.getAttribute(DataTypeId.Attribute.SIZE, parameters);
         return LOGIC_TYPE_SIZE;
+    }
+
+    public Object[] getParameters()
+    {
+        return parameters.toArray(EMPTY_PARAMETERS_LIST);
     }
 
     /**

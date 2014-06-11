@@ -26,14 +26,16 @@ public class LocalTransformer implements Visitor
         walker = null;
     }
 
+    public void walk(Iterable<Node> trees)
+    {
+        walker = new Walker(this);
+        walker.visit(trees);
+        walker = null;
+    }
+
     public LocalTransformer()
     {
-        ruleset         = new IdentityHashMap<Enum<?>, TransformRule>();
-        operandStack    = new ArrayList<Node[]>();
-        exprStack       = new ArrayList<Node>();
-        result          = new ArrayList<Node>();
-        rootNode        = null;
-        walker          = null;
+        this(new IdentityHashMap<Enum<?>, TransformRule>());
     }
 
     public LocalTransformer(Map<Enum<?>, TransformRule> rules)

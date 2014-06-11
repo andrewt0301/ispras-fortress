@@ -44,6 +44,7 @@ public final class SMTStrings
     public static String sTYPE_INT       = "Int";
     public static String sTYPE_REAL      = "Real";
     public static String sTYPE_BITVECTOR = "(_ BitVec %d)";
+    public static String sTYPE_ARRAY     = "(Array %s %s)";
 
     public static String sASSERT         = "(assert %s)%n";
     public static String sDECLARE_CONST  = "(declare-const %s %s)%n";
@@ -65,6 +66,7 @@ public final class SMTStrings
         result.put(DataTypeId.LOGIC_BOOLEAN, sTYPE_BOOL);
         result.put(DataTypeId.LOGIC_INTEGER, sTYPE_INT);
         result.put(DataTypeId.LOGIC_REAL,    sTYPE_REAL);
+        result.put(DataTypeId.MAP,           sTYPE_ARRAY);
 
         return result;
     }
@@ -77,7 +79,12 @@ public final class SMTStrings
         if (!typeMap.containsKey(type.getTypeId()))
             throw new IllegalArgumentException("Unsupported type: " + type.getTypeId());
 
-        return String.format(typeMap.get(type.getTypeId()), type.getSize());
+        final Object[] parameters = type.getParameters();
+        for (int i = 0; i < parameters.length; ++i)
+            if (parameters[i] instanceof DataType)
+                parameters[i] = textForType((DataType) parameters[i]);
+
+        return String.format(typeMap.get(type.getTypeId()), parameters);
     }
     
     public static String textForData(Data data)
@@ -110,6 +117,27 @@ public final class SMTStrings
             {
                 final double value = (Double) data.getValue();
                 return (value >= 0) ? Double.toString(value) : String.format(sNEGATION, Math.abs(value));
+            }
+
+            case MAP:
+            {
+                final Map<Data, Data> map = (Map<Data, Data>) data.getValue();
+                final StringBuilder builder = new StringBuilder();
+
+                final String prefix = "(store ";
+                final String literal = "EmptyArrayLiteral ";
+
+                builder.ensureCapacity(prefix.length() * map.size() + literal.length());
+                for (int i = 0; i < map.size(); ++i)
+                    builder.append(prefix);
+                builder.append(literal);
+
+                for (Map.Entry<Data, Data> entry : map.entrySet())
+                    builder .append(textForData(entry.getKey()))
+                            .append(" ")
+                            .append(textForData(entry.getValue()))
+                            .append(") ");
+                return builder.toString();
             }
 
             default: // Unknown value type
