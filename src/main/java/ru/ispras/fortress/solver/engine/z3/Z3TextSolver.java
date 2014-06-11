@@ -20,6 +20,8 @@ import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Map;
+import java.util.TreeMap;
 
 
 import ru.ispras.fortress.data.Data;
@@ -105,6 +107,8 @@ public final class Z3TextSolver extends SolverBase
             boolean isStatusSet = false;  
 
             String line;
+            final Map<Variable, Variable> refs = new TreeMap<Variable, Variable>();
+
             while((line = reader.readLine()) != null)
             {
                 if (!isStatusSet && tryToParseStatus(line, resultBuilder))
@@ -115,10 +119,12 @@ public final class Z3TextSolver extends SolverBase
                 {
                     // Do nothing
                 }
-                else if (vi.hasNext() && tryToParseVariable(line, vi.next(), resultBuilder))
+                else if (vi.hasNext() && tryToParseVariable(line, vi.next(), resultBuilder, refs))
                 {
                     // Do nothing
                 }
+                else if (tryToParseModel(line, reader, refs, resultBuilder))
+                    ; // Do nothing
                 else
                 {
                     assert false : String.format(UNK_OUTPUT_ERR_FRMT, line);
@@ -186,7 +192,7 @@ public final class Z3TextSolver extends SolverBase
         return new Variable(name, data);
     }
 
-    private static boolean tryToParseVariable(String line, Variable variable, SolverResultBuilder resultBuilder)
+    private static boolean tryToParseVariable(String line, Variable variable, SolverResultBuilder resultBuilder, Map<Variable, Variable> refs)
     {
         final Matcher matcher = 
             Pattern.compile(String.format(SMTRegExp.EXPR_PTRN_FRMT, variable.getName())).matcher(line);
@@ -196,10 +202,23 @@ public final class Z3TextSolver extends SolverBase
 
         final String valueText = 
             matcher.group().replaceAll(String.format(SMTRegExp.EXPR_TRIM_PTRN_FRMT, variable.getName()), "");
+        final Matcher refMatcher =
+            Pattern.compile(SMTRegExp.ARRAY_REF).matcher(valueText);
+        if (refMatcher.matches())
+            refs.put(variable, new Variable(refMatcher.group(1), variable.getData()));
+        else
+            resultBuilder.addVariable(
+                parseVariable(variable.getName(), variable.getData().getType(), valueText));
 
-        resultBuilder.addVariable(
-            parseVariable(variable.getName(), variable.getData().getType(), valueText));
+        return true;
+    }
 
+    private static boolean tryToParseModel(String line, BufferedReader reader, Map<Variable, Variable> refs, SolverResultBuilder builder) throws IOException
+    {
+        if (!line.equals("(model "))
+            return false;
+        while (reader.readLine() != null)
+            ; // skip lines
         return true;
     }
 

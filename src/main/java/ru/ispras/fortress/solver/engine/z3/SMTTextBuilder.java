@@ -108,6 +108,7 @@ final class SMTTextBuilder implements Visitor
 
             out.println(sCHECK_SAT);
             out.printf(sGET_VALUE, variablesListBuilder.toString());
+            out.println(sGET_MODEL);
             out.println(sEXIT);
         }
         finally

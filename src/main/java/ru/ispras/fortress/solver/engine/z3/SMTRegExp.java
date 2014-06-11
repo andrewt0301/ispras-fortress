@@ -27,7 +27,8 @@ public final class SMTRegExp
     public static final String VALUE_BIN           = "[#][b][0|1]{1,}";
     public static final String VALUE_HEX           = "[#][x][\\d|a-f|A-F]{1,}";
     public static final String VALUE_DEC           = "\\(?(-\\s)?\\d+(\\.\\d+)?\\)?";
-    public static final String VALUE_PTRN          = String.format("((%s)|(%s)|(%s))", VALUE_BIN, VALUE_HEX, VALUE_DEC); // bin|hex|dec
+    public static final String ARRAY_REF           = "[ ]*_[ ]+as-array[ ]+(.+)[ ]*";
+    public static final String VALUE_PTRN          = String.format("((%s)|(%s)|(%s)|(\\(%s\\)))", VALUE_BIN, VALUE_HEX, VALUE_DEC, ARRAY_REF); // bin|hex|dec
     public static final String VALUE_TRIM_PTRN     = "^([#][b|x]){0,1}";
     public static final String EXPR_START          = "^[ ]{0,}[(]{1,2}";
     public static final String EXPR_END            = "[)]{1,3}$";

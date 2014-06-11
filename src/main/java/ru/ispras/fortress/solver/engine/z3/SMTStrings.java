@@ -51,6 +51,7 @@ public final class SMTStrings
     public static String sDEFINE_FUN     = "(define-fun %s)%n";
     public static String sCHECK_SAT      = "(check-sat)";
     public static String sGET_VALUE      = "(get-value (%s))%n";
+    public static String sGET_MODEL      = "(get-model)";
     public static String sEXIT           = "(exit)";
 
     public static String sNEGATION       = "(- %s)";
