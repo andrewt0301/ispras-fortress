@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.TreeMap;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -286,16 +287,23 @@ final class SolverResultChecker
         final Iterator<Variable> expectedVariableIterator = expectedVariables.iterator();
         final Iterator<Variable> variableIterator = solverResult.getVariables().iterator();
 
-        while(expectedVariableIterator.hasNext() && variableIterator.hasNext())
-        {
-            final Variable expectedVariable = expectedVariableIterator.next();
-            final Variable variable = variableIterator.next();
+        final TreeMap<String, Variable> results = new TreeMap<String, Variable>();
+        for (Variable v : solverResult.getVariables())
+            results.put(v.getName(), v);
 
+        final TreeMap<String, Variable> expected = new TreeMap<String, Variable>();
+        for (Variable v : expectedVariables)
+            expected.put(v.getName(), v);
+
+        Assert.assertTrue("Wrong variable number", results.size() == expected.size());
+
+        for (Variable variable : results.values())
+        {
+            final Variable expectedVariable = expected.get(variable.getName());
             Assert.assertTrue(
-                String.format("Unexpected variable name. '%s' vs '%s'",
-                    variable.getName(),
-                    expectedVariable.getName()),
-                    variable.getName().equals(expectedVariable.getName())
+                String.format("Unexpected variable name. '%s'",
+                    variable.getName()),
+                    expectedVariable != null
             );
 
             Assert.assertTrue(
@@ -314,7 +322,6 @@ final class SolverResultChecker
             );
         }
 
-        Assert.assertTrue("Wrong variable number", !expectedVariableIterator.hasNext() && !variableIterator.hasNext());
     }
 
     private static void checkErrors(Iterable<String> errors)
