@@ -284,9 +284,6 @@ final class SolverResultChecker
         Assert.assertTrue("Failed to solve the constraint. Status: " +
            solverResult.getStatus(), solverResult.getStatus() == SolverResult.Status.SAT);
 
-        final Iterator<Variable> expectedVariableIterator = expectedVariables.iterator();
-        final Iterator<Variable> variableIterator = solverResult.getVariables().iterator();
-
         final TreeMap<String, Variable> results = new TreeMap<String, Variable>();
         for (Variable v : solverResult.getVariables())
             results.put(v.getName(), v);
@@ -321,7 +318,6 @@ final class SolverResultChecker
                     variable.getData().getValue().equals(expectedVariable.getData().getValue())
             );
         }
-
     }
 
     private static void checkErrors(Iterable<String> errors)
