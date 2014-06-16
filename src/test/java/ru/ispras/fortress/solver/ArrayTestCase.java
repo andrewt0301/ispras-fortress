@@ -11,10 +11,14 @@ import ru.ispras.fortress.solver.constraint.*;
 /** The constraint as described in the SMT-LIB language:
 
 <pre>
-(declare-const x (_ BitVec 32))
-(assert (bvugt x (_ bv100 32)))
+(define-sort ARRAY_TYPE () (Array Int Int))
+(declare-fun a () ARRAY_TYPE)
+(declare-fun v () ARRAY_TYPE)
+(assert (= a (store v 37 37)))
 (check-sat)
-(get-value (x))
+(get-value (a))
+(get-value (v))
+(get-model)
 (exit)</pre>
 
 Expected output:
@@ -62,9 +66,8 @@ class ArrayInvariant implements ISampleConstraint
     {
         final List<Variable> result = new ArrayList<Variable>();
 
-        final String mapValue = "((37:37))";
-        result.add( new Variable("a", ARRAY_TYPE.valueOf(mapValue, 10)));
-        result.add( new Variable("v", ARRAY_TYPE.valueOf(mapValue, 10)));
+        result.add( new Variable("a", ARRAY_TYPE.valueOf("((37:37))", 10)));
+        result.add( new Variable("v", ARRAY_TYPE.valueOf("()", 10)));
 
         return result;
     }
