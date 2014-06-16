@@ -21,7 +21,9 @@ import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Map;
-import java.util.TreeMap;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 
 
 import ru.ispras.fortress.data.Data;
@@ -107,7 +109,7 @@ public final class Z3TextSolver extends SolverBase
             boolean isStatusSet = false;  
 
             String line;
-            final Map<Variable, Variable> refs = new TreeMap<Variable, Variable>();
+            final Map<String, Variable> refs = new HashMap<String, Variable>();
 
             while((line = reader.readLine()) != null)
             {
@@ -192,7 +194,7 @@ public final class Z3TextSolver extends SolverBase
         return new Variable(name, data);
     }
 
-    private static boolean tryToParseVariable(String line, Variable variable, SolverResultBuilder resultBuilder, Map<Variable, Variable> refs)
+    private static boolean tryToParseVariable(String line, Variable variable, SolverResultBuilder resultBuilder, Map<String, Variable> refs)
     {
         final Matcher matcher = 
             Pattern.compile(String.format(SMTRegExp.EXPR_PTRN_FRMT, variable.getName())).matcher(line);
@@ -205,7 +207,7 @@ public final class Z3TextSolver extends SolverBase
         final Matcher refMatcher =
             Pattern.compile(SMTRegExp.ARRAY_REF).matcher(valueText);
         if (refMatcher.matches())
-            refs.put(variable, new Variable(refMatcher.group(1), variable.getData()));
+            refs.put(refMatcher.group(1), variable);
         else
             resultBuilder.addVariable(
                 parseVariable(variable.getName(), variable.getData().getType(), valueText));
@@ -213,13 +215,95 @@ public final class Z3TextSolver extends SolverBase
         return true;
     }
 
-    private static boolean tryToParseModel(String line, BufferedReader reader, Map<Variable, Variable> refs, SolverResultBuilder builder) throws IOException
+    private static boolean tryToParseModel(
+        String line,
+        BufferedReader reader,
+        Map<String, Variable> refs,
+        SolverResultBuilder builder) throws IOException
     {
         if (!line.equals("(model "))
             return false;
-        while (reader.readLine() != null)
-            ; // skip lines
+        // skip model when there are no deferred variables
+        if (refs.isEmpty())
+        {
+            while (!reader.readLine().equals(")"))
+                ; // skip line
+            return true;
+        }
+
+        final Pattern defPattern =
+            Pattern.compile("[ ]*\\(define-fun[ ]([^ ]+)[ ].*");
+        final Map<String, List<String>> model =
+            new HashMap<String, List<String>>();
+
+        line = reader.readLine();
+        final Matcher matcher = defPattern.matcher(line);
+
+        List<String> lines = null;
+        for (; !line.equals(")"); line = reader.readLine())
+            if (matcher.reset(line).matches())
+            {
+                lines = new ArrayList<String>();
+                model.put(matcher.group(1), lines);
+            }
+            else
+                lines.add(line.trim());
+
+        final Map<String, String> valueTextCache =
+            new HashMap<String, String>();
+
+        for (Map.Entry<String, Variable> ref : refs.entrySet())
+        {
+            final String valueText = arrayModelToText(ref.getKey(), model, valueTextCache);
+            // FIXME radix?
+            builder.addVariable(new Variable(
+                ref.getValue().getName(),
+                ref.getValue().getData().getType().valueOf(valueText, 10)));
+        }
         return true;
+    }
+
+    private static String arrayModelToText(String name, Map<String, List<String>> model, Map<String, String> cache)
+    {
+        /*
+            Build text representation that valueOf() can deal with
+        */
+
+        if (cache.containsKey(name))
+            return cache.get(name);
+
+        final StringBuilder builder = new StringBuilder();
+        builder.append("(");
+
+        final Matcher entryMatcher =
+            Pattern.compile("\\(ite[ ]\\(=[ ][^ ]+[ ](.+)\\)+[ ](.+)").matcher("");
+
+        final Matcher arrayRefMatcher =
+            Pattern.compile(SMTRegExp.ARRAY_REF).matcher("");
+
+        final List<String> entries = model.get(name);
+        for (String entry : entries)
+            if (entryMatcher.reset(entry).matches())
+            {
+                String key = entryMatcher.group(1);
+                if (key.charAt(0) == '(')
+                    key = key.substring(1, key.length() - 1);
+                if (arrayRefMatcher.reset(key).matches())
+                    key = arrayModelToText(arrayRefMatcher.group(1), model, cache);
+
+                String value = entryMatcher.group(2);
+                if (value.charAt(0) == '(')
+                    value = value.substring(1, value.length() - 1);
+                if (arrayRefMatcher.reset(value).matches())
+                    value = arrayModelToText(arrayRefMatcher.group(1), model, cache);
+
+                builder.append("(").append(key).append(":").append(value).append(")");
+            }
+
+        builder.append(")");
+        final String s = builder.toString();
+        cache.put(name, s);
+        return s;
     }
 
     private void initStandardOperations()
