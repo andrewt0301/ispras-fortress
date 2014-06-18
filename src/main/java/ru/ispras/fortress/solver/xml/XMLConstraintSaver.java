@@ -184,8 +184,7 @@ public final class XMLConstraintSaver
         final Element result = document.createElement(XMLConst.NODE_VARIABLE);
 
         result.setAttribute(XMLConst.ATTR_VARIABLE_NAME, name);
-        result.setAttribute(XMLConst.ATTR_TYPE_ID, data.getType().getTypeId().toString());
-        result.setAttribute(XMLConst.ATTR_DATA_LENGTH, String.valueOf(data.getType().getSize()));
+        result.setAttribute(XMLConst.ATTR_TYPE_ID, data.getType().toString());
         result.setAttribute(XMLConst.ATTR_VALUE, data.hasValue() ? data.getValue().toString() : "");
 
         return result;
@@ -290,8 +289,7 @@ class XMLBuilderForExprs implements Visitor
         final Element valueElement = document.createElement(XMLConst.NODE_VALUE);
         elements.getLast().appendChild(valueElement);
 
-        valueElement.setAttribute(XMLConst.ATTR_TYPE_ID, data.getType().getTypeId().toString());
-        valueElement.setAttribute(XMLConst.ATTR_DATA_LENGTH, Integer.toString(data.getType().getSize()));
+        valueElement.setAttribute(XMLConst.ATTR_TYPE_ID, data.getType().toString());
         valueElement.setAttribute(XMLConst.ATTR_VALUE, data.getValue().toString());
     }
 

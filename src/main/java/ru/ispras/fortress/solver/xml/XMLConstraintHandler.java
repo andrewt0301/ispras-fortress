@@ -295,30 +295,24 @@ final class XMLConstraintHandler extends DefaultHandler
         }
     }
 
-    // XML representation: <Value length="3" type="BIT_VECTOR" value="11"/>
+    // XML representation: <Value type="(BIT_VECTOR 3)" value="11"/>
     private static Data getValue(String nodeName, Attributes attributes) throws SAXException
     {
-        final String lengthString = getAttribute(nodeName, attributes, XMLConst.ATTR_DATA_LENGTH);
         final String typeIdString = getAttribute(nodeName, attributes, XMLConst.ATTR_TYPE_ID);
         final String  valueString = getAttribute(nodeName, attributes, XMLConst.ATTR_VALUE);
-        final DataTypeId   typeId = DataTypeId.valueOf(typeIdString);
-        final int          length = Integer.valueOf(lengthString);
-        final DataType   typeInfo = DataType.newDataType(typeId, length);
+        final DataType   typeInfo = DataType.typeOf(typeIdString);
 
         return typeInfo.valueOf(valueString, typeInfo.getTypeRadix());
     }
 
-    // XML representation: <Variable length="3" name="aaa" type="BIT_VECTOR" value=""/>
+    // XML representation: <Variable name="aaa" type="(BIT_VECTOR 3)" value=""/>
     private static Variable getVariable(String nodeName, Attributes attributes) throws SAXException
     {
         final String variableName = getAttribute(nodeName, attributes, XMLConst.ATTR_VARIABLE_NAME);
-        final String lengthString = getAttribute(nodeName, attributes, XMLConst.ATTR_DATA_LENGTH);
         final String typeIdString = getAttribute(nodeName, attributes, XMLConst.ATTR_TYPE_ID);
         final String  valueString = getAttribute(nodeName, attributes, XMLConst.ATTR_VALUE);
 
-        final DataTypeId typeId = DataTypeId.valueOf(typeIdString);
-        final int        length = Integer.valueOf(lengthString);
-        final DataType typeInfo = DataType.newDataType(typeId, length);
+        final DataType typeInfo = DataType.typeOf(typeIdString);
 
         return valueString.isEmpty() ?
             new Variable(variableName, typeInfo) :
