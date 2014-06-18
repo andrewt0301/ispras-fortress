@@ -215,6 +215,22 @@ public final class DataType
     	value = value.replaceAll("\\s?", ""); // Removes extra spaces
         return new Data(this, typeId.valueOf(value, radix, parameters));
     }
+
+    public static DataType typeOf(String value)
+    {
+        if (value == null)
+            throw new NullPointerException();
+
+        if (dataTypes.containsKey(value))
+            return dataTypes.get(value);
+
+        DataType type;
+        for (DataTypeId tid : DataTypeId.values())
+            if ((type = tid.typeOf(value)) != null)
+                return type;
+
+        throw new IllegalArgumentException("Invalid DataType text representation");
+    }
     
     /**
      * Creates an uninitialized data object (the value is set to null).

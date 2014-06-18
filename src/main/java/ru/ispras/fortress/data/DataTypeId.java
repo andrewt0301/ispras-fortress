@@ -16,6 +16,10 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
+
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 import ru.ispras.fortress.data.types.Radix;
 import ru.ispras.fortress.data.types.bitvector.BitVector;
@@ -58,6 +62,19 @@ public enum DataTypeId
             return String.format("(%s %d)", name(), params.get(0));
         }
 
+        DataType typeOf(String text)
+        {
+            final Matcher matcher =
+                Pattern.compile(String.format("^\\(%s[ ](\\d+)\\)$", name())).matcher(text);
+
+            if (!matcher.matches())
+                return null;
+
+            return DataType.newDataType(
+                this,
+                Arrays.asList((Object) Integer.valueOf(matcher.group(1))));
+        }
+
         Object getAttribute(Attribute a, List<Object> params)
         {
             if (a == Attribute.SIZE)
@@ -86,6 +103,14 @@ public enum DataTypeId
 
         void validate(List<Object> params) { report(params); }
         String format(List<Object> params) { return name(); }
+
+        DataType typeOf(String text)
+        {
+            if (!text.equals(name()))
+                return null;
+
+            return DataType.BOOLEAN;
+        }
     },
 
     /**
@@ -107,6 +132,14 @@ public enum DataTypeId
 
         void validate(List<Object> params) { report(params); }
         String format(List<Object> params) { return name(); }
+
+        DataType typeOf(String text)
+        {
+            if (!text.equals(name()))
+                return null;
+
+            return DataType.INTEGER;
+        }
     },
 
     /**
@@ -127,6 +160,14 @@ public enum DataTypeId
 
         void validate(List<Object> params) { report(params); }
         String format(List<Object> params) { return name(); }
+
+        DataType typeOf(String text)
+        {
+            if (!text.equals(name()))
+                return null;
+
+            return DataType.REAL;
+        }
     },
 
     MAP(Map.class)
@@ -190,6 +231,42 @@ public enum DataTypeId
             return String.format("(%s %s %s)", name(), params.get(0), params.get(1));
         }
 
+        DataType typeOf(String text)
+        {
+            final Matcher matcher =
+                Pattern.compile(String.format("^\\(%s[ ](.+)[ ](.+)\\)$", name())).matcher(text);
+
+            if (!matcher.matches())
+                return null;
+
+            String keyTypeText = matcher.group(1);
+            String valueTypeText = matcher.group(2);
+
+            if (valueTypeText.charAt(valueTypeText.length() - 1) == ')')
+            {
+                int depth = 0;
+                for (int i = 0; i < keyTypeText.length(); ++i)
+                {
+                    final char c = keyTypeText.charAt(i);
+                    if (c == '(')
+                        ++depth;
+                    else if (c == ')')
+                        --depth;
+                    else if (c == ' ' && depth == 0)
+                    {
+                        valueTypeText = keyTypeText.substring(i + 1) + " " + valueTypeText;
+                        keyTypeText = keyTypeText.substring(0, i);
+                        break;
+                    }
+                }
+            }
+
+            final Object keyType = DataType.typeOf(keyTypeText);
+            final Object valueType = DataType.typeOf(valueTypeText);
+
+            return DataType.newDataType(this, Arrays.asList(keyType, valueType));
+        }
+
         Object getAttribute(Attribute a, List<Object> params)
         {
             if (a == Attribute.KEY)
@@ -219,6 +296,8 @@ public enum DataTypeId
         void validate(List<Object> params) {}
 
         String format(List<Object> params) { return name(); }
+
+        DataType typeOf(String text) { return null; }
     };
 
     private final Class<?> valueClass;
@@ -282,6 +361,7 @@ public enum DataTypeId
 
     abstract String format(List<Object> params);
     abstract void validate(List<Object> params);
+    abstract DataType typeOf(String text);
 
     private static void report(List<Object> passed, Class<?> ... required)
     {
