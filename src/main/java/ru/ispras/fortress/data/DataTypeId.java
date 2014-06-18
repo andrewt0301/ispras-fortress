@@ -221,7 +221,7 @@ public enum DataTypeId
 
         int radix(int size)
         {
-            return 0;
+            return 10;
         }
 
         void validate(List<Object> params) { report(params, DataType.class, DataType.class); }

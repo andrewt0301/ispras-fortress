@@ -36,6 +36,7 @@ public final class SMTStrings
     public static String sEMPTY          = ""; 
     public static String sTRUE           = "true";
     public static String sFALSE          = "false";
+    public static String sDEFAULT_ARRAY  = "DefaultArrayLiteral!%d";
 
     public static String sBV_BIN_PREFIX  = "#b";
     public static String sBV_HEX_PREFIX  = "#x";
@@ -126,12 +127,11 @@ public final class SMTStrings
                 final StringBuilder builder = new StringBuilder();
 
                 final String prefix = "(store ";
-                final String literal = "EmptyArrayLiteral ";
 
-                builder.ensureCapacity(prefix.length() * map.size() + literal.length());
+                builder.ensureCapacity(prefix.length() * map.size() + sDEFAULT_ARRAY.length());
                 for (int i = 0; i < map.size(); ++i)
                     builder.append(prefix);
-                builder.append(literal);
+                builder.append(sDEFAULT_ARRAY).append(sSPACE);
 
                 for (Map.Entry<Data, Data> entry : map.entrySet())
                     builder .append(textForData(entry.getKey()))

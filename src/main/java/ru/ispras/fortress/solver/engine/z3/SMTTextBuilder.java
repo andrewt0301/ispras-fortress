@@ -15,8 +15,9 @@ package ru.ispras.fortress.solver.engine.z3;
 import java.io.*;
 import java.util.*;
 
-
 import ru.ispras.fortress.data.Data;
+import ru.ispras.fortress.data.DataType;
+import ru.ispras.fortress.data.DataTypeId;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.*;
 import ru.ispras.fortress.solver.SolverOperation;
@@ -41,6 +42,8 @@ final class SMTTextBuilder implements Visitor
 
     private StringBuilder currentBuilder = null;
     private int        functionCallDepth = 0;
+
+    private final List<DataType> arraysInUse = new ArrayList<DataType>();
 
     /**
      * Creates an instance of a SMT text builder.
@@ -86,6 +89,13 @@ final class SMTTextBuilder implements Visitor
             out = new PrintWriter(outFile);
 
             final StringBuilder variablesListBuilder = new StringBuilder();
+
+            int i = 0;
+            for (DataType type : arraysInUse)
+                out.printf(sDECLARE_CONST,
+                    String.format(sDEFAULT_ARRAY, i++),
+                    textForType(type));
+
             for (Variable variable : variables)
             {
                 // Variables that have values don't need declarations 
@@ -234,7 +244,22 @@ final class SMTTextBuilder implements Visitor
     private void onValue(Data data)
     {
         appendToCurrent(sSPACE);
-        appendToCurrent(textForData(data));
+        if (data.getType().getTypeId() == DataTypeId.MAP)
+        {
+            int i = 0;
+            final String type = data.getType().toString();
+            for (DataType arrayType : arraysInUse)
+            {
+                if (arrayType.toString().equals(type))
+                    break;
+                ++i;
+            }
+            if (i >= arraysInUse.size())
+                arraysInUse.add(data.getType());
+            appendToCurrent(String.format(textForData(data), i));
+        }
+        else
+            appendToCurrent(textForData(data));
     }
 
     @Override
