@@ -15,6 +15,7 @@ import ru.ispras.fortress.solver.constraint.*;
 (declare-fun a () ARRAY_TYPE)
 (declare-fun v () ARRAY_TYPE)
 (assert (= a (store v 37 37)))
+(assert (= a '((37 37))))
 (check-sat)
 (get-value (a))
 (get-value (v))
@@ -39,6 +40,7 @@ public class ArrayTestCase extends GenericSolverSampleTestBase
 class ArrayInvariant implements ISampleConstraint
 {
     private static final DataType ARRAY_TYPE = DataType.MAP(DataType.INTEGER, DataType.INTEGER);
+    private static final String ARRAY_VALUE = "((37:37))";
 
     public Constraint getConstraint()
     {
@@ -52,12 +54,15 @@ class ArrayInvariant implements ISampleConstraint
         final NodeVariable v = new NodeVariable(builder.addVariable("v", ARRAY_TYPE));
 
         final NodeValue value = new NodeValue(DataType.INTEGER.valueOf("37", 10));
+        final NodeValue array = new NodeValue(ARRAY_TYPE.valueOf(ARRAY_VALUE, 10));
+
         final Node stored = new NodeExpr(StandardOperation.STORE, v, value, value);
 
         final Formulas formulas = new Formulas();
         builder.setInnerRep(formulas);
 
         formulas.add(new NodeExpr(StandardOperation.EQ, a, stored));
+        formulas.add(new NodeExpr(StandardOperation.EQ, a, array));
 
         return builder.build();
     }
@@ -66,7 +71,7 @@ class ArrayInvariant implements ISampleConstraint
     {
         final List<Variable> result = new ArrayList<Variable>();
 
-        result.add( new Variable("a", ARRAY_TYPE.valueOf("((37:37))", 10)));
+        result.add( new Variable("a", ARRAY_TYPE.valueOf(ARRAY_VALUE, 10)));
         result.add( new Variable("v", ARRAY_TYPE.valueOf("()", 10)));
 
         return result;
