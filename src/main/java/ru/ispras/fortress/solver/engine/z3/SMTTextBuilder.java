@@ -231,7 +231,8 @@ final class SMTTextBuilder implements Visitor
     @Override
     public void onOperandEnd(NodeExpr expr, Node node, int index)
     {
-        if ((0 == index) && StandardOperation.isParametric(expr.getOperationId()))
+        if (StandardOperation.isParametric(expr.getOperationId())
+        &&  index == StandardOperation.getParameterCount(expr.getOperationId()) - 1)
             appendToCurrent(sBRACKET_CLOSE);
     }
 

@@ -139,19 +139,19 @@ public enum StandardOperation
     BVCONCAT,
 
     /** Group: Bitvector, Operation: Replication (concatenation of several copies of bitvector) */
-    BVREPEAT  (Attribute.PARAMETRIC),
+    BVREPEAT  (1),
 
     /** Group: Bitvector, Operation: Rotate left */
-    BVROL     (Attribute.PARAMETRIC),
+    BVROL     (1),
 
     /** Group: Bitvector, Operation: Rotate right */
-    BVROR     (Attribute.PARAMETRIC),
+    BVROR     (1),
 
     /** Group: Bitvector, Operation: Extension by zeros */
-    BVZEROEXT (Attribute.PARAMETRIC),
+    BVZEROEXT (1),
 
     /** Group: Bitvector, Operation: Extension to the signed equivalent */
-    BVSIGNEXT (Attribute.PARAMETRIC),
+    BVSIGNEXT (1),
 
     /**
     The items below belong to the "Bitwise Operations" group.
@@ -216,29 +216,27 @@ public enum StandardOperation
     /** Group: Array, Operation: Store value */
     STORE;
 
-    private static enum Attribute
-    {
-        PARAMETRIC,
-        DEFAULT
-    }
-
-    private final Attribute attribute;
+    private final int numParams;
 
     private StandardOperation()
     {
-        this(Attribute.DEFAULT);
+        this(0);
     }
 
-    private StandardOperation(Attribute attribute)
+    private StandardOperation(int numParams)
     {
-        this.attribute = attribute;
+        this.numParams = numParams;
     }
 
     public static boolean isParametric(Enum<?> id)
     {
-        if (!id.getClass().equals((StandardOperation.class)))
-            return false;
+        return getParameterCount(id) != 0;
+    }
 
-        return Attribute.PARAMETRIC == ((StandardOperation) id).attribute; 
+    public static int getParameterCount(Enum<?> id)
+    {
+        if (!id.getClass().equals((StandardOperation.class)))
+            return 0;
+        return ((StandardOperation) id).numParams;
     }
 }
