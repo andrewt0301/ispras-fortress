@@ -153,6 +153,9 @@ public enum StandardOperation
     /** Group: Bitvector, Operation: Extension to the signed equivalent */
     BVSIGNEXT (1),
 
+    /** Group: Bitvector, Operation: Extraction of subvector */
+    BVEXTRACT (2),
+
     /**
     The items below belong to the "Bitwise Operations" group.
     */
