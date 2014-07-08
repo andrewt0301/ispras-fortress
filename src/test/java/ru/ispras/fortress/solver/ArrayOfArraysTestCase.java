@@ -91,9 +91,9 @@ class ArrayOfArraysConstraint implements ISampleConstraint
 
     public Iterable<Variable> getExpectedVariables()
     {
-        final String xValue = "((-1:-1))";
-        final String yValue = "((-1:-1)(0:0))";
-        final String zValue = "((-1:-1)(0:0)(1:2))";
+        final String xValue = "((-1:-1)(0:8)(1:7)(3:6))";
+        final String yValue = "((-1:-1)(0:0)(1:7)(3:6))";
+        final String zValue = "((-1:-1)(0:0)(1:2)(3:6))";
         final String wValue = "((-1:-1)(0:0)(1:2)(3:4))";
         final String uValue = String.format("((%s:%s))", xValue, yValue);
         final String vValue = String.format("((%s:%s)(%s:%s))", xValue, yValue, zValue, wValue);
