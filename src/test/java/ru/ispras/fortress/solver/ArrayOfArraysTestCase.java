@@ -1,8 +1,6 @@
 package ru.ispras.fortress.solver;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Collections;
 
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
