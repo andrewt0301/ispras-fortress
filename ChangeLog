@@ -1,0 +1,67 @@
+================================================================================
+ Fortress Builds
+================================================================================
+
+ Fortress (FORmula TRanslation, Evaluation and Symbolic Simplification), former
+ JCSA (Java Constraint Solver API), is an open-source and extendable Java
+ library providing facilities for manipulation with formulae (terms and
+ constraints). The library allows creating formulae (in the form of syntax
+ trees), translating them into external formats (programming languages, XML,
+ SMT-LIB, etc.), evaluating them and doing symbolic simplification. It also
+ supports constraint solving using built-in solvers as well as external ones
+ (like Yices, Z3, CVC4, etc.)
+
+--------------------------------------------------------------------------------
+ 2014/07/08 Fortress 0.3.1 beta
+ 
+ The following features have been implemented:
+ 
+ - Support for parametric operations with two or more parameters
+ - Support for array operations
+ - Support for the BVEXTRACT operation
+ 
+--------------------------------------------------------------------------------
+ 2014/01/13 Fortress 0.3.0 beta
+ 
+ The new release includes the following changes:
+
+ - The library was redesigned and renamed to Fortress
+ - The library was decomposed into a set of reusable packages
+   (including data, expression, calculator, transform, solver)
+ - New classes for describing data were implemented 
+   (including a new bit vector implementation)
+ - A lot of refactoring has been done
+ - A number of bugs was fixed
+ 
+--------------------------------------------------------------------------------
+ 2013/07/11 Java Constraint Solver API 0.2.2 beta
+ 
+ The following things have been done:
+
+ - Support for constant folding has been added
+ - Support for user-defined calculators has been added
+ - Several bugs have been fixed
+  
+--------------------------------------------------------------------------------
+ 2013/06/11 Java Constraint Solver API 0.2.1 beta
+ 
+ The new build contains the following changes:
+
+ - Support for parametric operations has been added
+ - Support for ternary operations has been added
+ - Support for user-defined objects and operations in constraint tree
+   has been added
+ - Several bugs have been fixed
+  
+--------------------------------------------------------------------------------
+ 2013/04/11 Java Constraint Solver API 0.1.1 beta
+  
+ Features offered by the build:
+
+ - Constraints creating (in the form of abstract syntax trees)
+ - Constraints mapping to the SMT-LIB description (in this version
+   only binary operations are supported)
+ - Constraints storing in external memory (as XML files)
+ - Z3 solver launching and transferring results back to Java
+ 
+--------------------------------------------------------------------------------
