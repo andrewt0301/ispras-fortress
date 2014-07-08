@@ -40,7 +40,11 @@ Please, prepare build environment:
     <move file="${dir.module.distr.src.zip}" tofile="${dir.module.distr.zip}"/>
     <copy file="${dir.module.distr.zip}" tofile="${distr.root.dir}/${module.name}.zip"/>
   </target>
-  
+
+  <target name="gather.changelog" depends="init">
+    <copy file="ChangeLog" todir="${distr.dir}"/>
+  </target>
+
   <target name="unpack.z3.windows" depends="init" if="platform.windows">
     <mkdir dir="${tools.dir}/z3"/>
     <unzip src="${tools.dir}/z3-windows.zip" dest="${tools.dir}/z3-tmp"/>
