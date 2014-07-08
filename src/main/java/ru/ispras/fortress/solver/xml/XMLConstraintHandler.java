@@ -24,7 +24,6 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
-import ru.ispras.fortress.data.DataTypeId;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeExpr;

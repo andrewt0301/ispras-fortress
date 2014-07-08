@@ -111,25 +111,6 @@ public final class DataType
         return dataType;
     }
 
-    /**
-     * Calculates a hash value that uniquely identifies a data type. 
-     * 
-     * @param typeId A type identifier.
-     * @param size The size of data in bits.
-     * @return A hash value.
-     */
-
-    private static int calculateHashCode(DataTypeId typeId, int size)
-    {
-        final int prime = 31;
-        int result = 1;
-
-        result = prime * result + size;
-        result = prime * result + typeId.ordinal();
-
-        return result;
-    }
-
     private final DataTypeId    typeId;
     private final String        name;
     private final List<Object>  parameters;

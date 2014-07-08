@@ -24,39 +24,39 @@ public final class SMTStrings
 {
     private SMTStrings() {}
     
-    public static String sSPACE          = " ";
-    public static String sBRACKET_OPEN   = "(";
-    public static String sBRACKET_CLOSE  = ")";
-    public static String sHYPHEN         = "-";
-    public static String sUNDERLINE      = "_";
+    public static final String sSPACE          = " ";
+    public static final String sBRACKET_OPEN   = "(";
+    public static final String sBRACKET_CLOSE  = ")";
+    public static final String sHYPHEN         = "-";
+    public static final String sUNDERLINE      = "_";
 
-    public static String sZERO           = "0";
-    public static String sONE            = "1";
+    public static final String sZERO           = "0";
+    public static final String sONE            = "1";
 
-    public static String sEMPTY          = ""; 
-    public static String sTRUE           = "true";
-    public static String sFALSE          = "false";
-    public static String sDEFAULT_ARRAY  = "DefaultArrayLiteral!%d";
+    public static final String sEMPTY          = ""; 
+    public static final String sTRUE           = "true";
+    public static final String sFALSE          = "false";
+    public static final String sDEFAULT_ARRAY  = "DefaultArrayLiteral!%d";
 
-    public static String sBV_BIN_PREFIX  = "#b";
-    public static String sBV_HEX_PREFIX  = "#x";
+    public static final String sBV_BIN_PREFIX  = "#b";
+    public static final String sBV_HEX_PREFIX  = "#x";
 
-    public static String sTYPE_BOOL      = "Bool";
-    public static String sTYPE_INT       = "Int";
-    public static String sTYPE_REAL      = "Real";
-    public static String sTYPE_BITVECTOR = "(_ BitVec %d)";
-    public static String sTYPE_ARRAY     = "(Array %s %s)";
+    public static final String sTYPE_BOOL      = "Bool";
+    public static final String sTYPE_INT       = "Int";
+    public static final String sTYPE_REAL      = "Real";
+    public static final String sTYPE_BITVECTOR = "(_ BitVec %d)";
+    public static final String sTYPE_ARRAY     = "(Array %s %s)";
 
-    public static String sASSERT         = "(assert %s)%n";
-    public static String sDECLARE_CONST  = "(declare-const %s %s)%n";
-    public static String sDEFINE_FUN     = "(define-fun %s)%n";
-    public static String sCHECK_SAT      = "(check-sat)";
-    public static String sGET_VALUE      = "(get-value (%s))%n";
-    public static String sGET_MODEL      = "(get-model)";
-    public static String sEXIT           = "(exit)";
+    public static final String sASSERT         = "(assert %s)%n";
+    public static final String sDECLARE_CONST  = "(declare-const %s %s)%n";
+    public static final String sDEFINE_FUN     = "(define-fun %s)%n";
+    public static final String sCHECK_SAT      = "(check-sat)";
+    public static final String sGET_VALUE      = "(get-value (%s))%n";
+    public static final String sGET_MODEL      = "(get-model)";
+    public static final String sEXIT           = "(exit)";
 
-    public static String sNEGATION       = "(- %s)";
-    public static String sPARAM_DEF      = "(%s %s)"; 
+    public static final String sNEGATION       = "(- %s)";
+    public static final String sPARAM_DEF      = "(%s %s)"; 
 
     private static final Map<DataTypeId, String> typeMap = createTypeMap();
     private static Map<DataTypeId, String> createTypeMap()
@@ -123,7 +123,8 @@ public final class SMTStrings
 
             case MAP:
             {
-                final Map<Data, Data> map = (Map<Data, Data>) data.getValue();
+                // Map<Data, Data> is assumed.
+                final Map<?, ?> map = (Map<?, ?>) data.getValue();
                 final StringBuilder builder = new StringBuilder();
 
                 final String prefix = "(store ";
@@ -133,10 +134,10 @@ public final class SMTStrings
                     builder.append(prefix);
                 builder.append(sDEFAULT_ARRAY).append(sSPACE);
 
-                for (Map.Entry<Data, Data> entry : map.entrySet())
-                    builder .append(textForData(entry.getKey()))
+                for (Map.Entry<?, ?> entry : map.entrySet())
+                    builder .append(textForData((Data) entry.getKey()))
                             .append(" ")
-                            .append(textForData(entry.getValue()))
+                            .append(textForData((Data) entry.getValue()))
                             .append(") ");
                 return builder.toString();
             }

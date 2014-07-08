@@ -182,6 +182,8 @@ public enum DataTypeId
             final char DELIM = ':';
 
             final Map<Data, Data> map = new HashMap<Data, Data>() {
+                private static final long serialVersionUID = -5044263572714846606L;
+
                 @Override
                 public String toString()
                 {
