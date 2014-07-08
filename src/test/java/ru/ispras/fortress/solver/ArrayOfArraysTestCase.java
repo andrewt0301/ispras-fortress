@@ -30,10 +30,6 @@ import ru.ispras.fortress.solver.constraint.*;
 (check-sat)
 (get-model)</pre>
 
-Expected output:
-
-<pre>
-sat ((x #x00000070))</pre>
 */
 
 public class ArrayOfArraysTestCase extends GenericSolverSampleTestBase

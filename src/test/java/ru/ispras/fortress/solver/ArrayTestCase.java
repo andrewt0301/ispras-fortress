@@ -22,10 +22,6 @@ import ru.ispras.fortress.solver.constraint.*;
 (get-model)
 (exit)</pre>
 
-Expected output:
-
-<pre>
-sat ((x #x00000070))</pre>
 */
 
 public class ArrayTestCase extends GenericSolverSampleTestBase
