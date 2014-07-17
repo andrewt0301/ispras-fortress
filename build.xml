@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
   -->
-<project name="project" default="distr" basedir=".">
+<project name="project" default="distr.all" basedir=".">
 
 <!-- 
   BuildBase - ant+ivy based build system
@@ -35,11 +35,6 @@ Please, prepare build environment:
 </fail>
 
 <import file="${buildbase.dir}/buildbase.xml"/>
-
-  <target name="distr" depends="distr.src">
-    <move file="${dir.module.distr.src.zip}" tofile="${dir.module.distr.zip}"/>
-    <copy file="${dir.module.distr.zip}" tofile="${distr.root.dir}/${module.name}.zip"/>
-  </target>
 
   <target name="gather.changelog" depends="init">
     <copy file="ChangeLog" todir="${distr.dir}"/>
