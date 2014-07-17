@@ -29,7 +29,7 @@ public final class Data
     private final Object  value;
 
     /**
-     * Creates a data object that has the INTEGER type from an integer value.
+     * Creates a data object of the INTEGER type from an integer value.
      *
      * @param value An integer value.
      * @return New data object.
@@ -41,7 +41,7 @@ public final class Data
     }
 
     /**
-     * Creates a data object that has the REAL type from an double value.
+     * Creates a data object of the REAL type from an double value.
      *
      * @param value A double value.
      * @return An new data object.
@@ -73,7 +73,7 @@ public final class Data
     private static final Data FALSE = new Data(DataType.BOOLEAN, false);
 
     /**
-     * Creates a data object that has the BOOLEAN type from a boolean value.
+     * Creates a data object of the BOOLEAN type from a boolean value.
      *
      * @param value A boolean value.
      * @return A new data object.
@@ -98,9 +98,9 @@ public final class Data
     }
 
     /**
-     * Creates a data object that has the BIT_VECTOR type from a BigInteger object.
+     * Creates a data object of the BIT_VECTOR type from a BigInteger object.
      *
-     * @param value A BitInteger object that stores binary data for a bit vector.
+     * @param value A BigInteger object that stores binary data for a bit vector.
      * @param size The bit vector size (in bits).
      * @return A new data object.
      */
@@ -117,7 +117,25 @@ public final class Data
     }
 
     /**
-     * Creates a data object that has the BIT_VECTOR type from a string.
+     * Creates a data object of the BIT_VECTOR type from a BitVector object.
+     *
+     * @param value A BitVector object.
+     * @return A new data object.
+     */
+
+    public static Data newBitVector(BitVector value)
+    {
+        if (null == value)
+            throw new NullPointerException();
+
+        final DataType dt = DataType.BIT_VECTOR(value.getBitSize());
+        final Object    v = BitVector.unmodifiable(value);
+
+        return new Data(dt, v);
+    }
+
+    /**
+     * Creates a data object of the BIT_VECTOR type from a string.
      * 
      * @param s Textual representation of the bit vector.
      * @param radix Radix to be used for parsing.
@@ -137,7 +155,7 @@ public final class Data
     }
 
     /**
-     * Creates a data object that has the BIT_VECTOR type from an integer value.
+     * Creates a data object of the BIT_VECTOR type from an integer value.
      * 
      * @param value Integer value to be converted.
      * @param size The bit vector size (in bits).
@@ -150,7 +168,7 @@ public final class Data
     }
 
     /**
-     * Creates a data object that has the BIT_VECTOR type from a long integer value.
+     * Creates a data object of the BIT_VECTOR type from a long integer value.
      * 
      * @param value Long integer value to be converted.
      * @param size The bit vector size (in bits).
