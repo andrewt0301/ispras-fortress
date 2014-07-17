@@ -53,6 +53,26 @@ public final class Data
     }
 
     /**
+     * A boolean constant for a <code>true</code> value. Defined as private
+     * to avoid incorrect results when objects are tested for equality because
+     * the implementation cannot guarantee it is a singleton (the Data
+     * constructor is public and the DataType.valueOf method uses it to create
+     * new instances).
+     */
+
+    private static final Data TRUE = new Data(DataType.BOOLEAN, true);
+
+    /**
+     * A boolean constant for a <code>false</code> value. Defined as private
+     * to avoid incorrect results when objects are tested for equality because
+     * the implementation cannot guarantee it is a singleton (the Data
+     * constructor is public and the DataType.valueOf method uses it to create
+     * new instances).
+     */
+
+    private static final Data FALSE = new Data(DataType.BOOLEAN, false);
+
+    /**
      * Creates a data object that has the BOOLEAN type from a boolean value.
      *
      * @param value A boolean value.
@@ -61,7 +81,7 @@ public final class Data
 
     public static Data newBoolean(boolean value)
     {
-        return new Data(DataType.BOOLEAN, value);
+        return value ? TRUE : FALSE;
     }
 
     /**
