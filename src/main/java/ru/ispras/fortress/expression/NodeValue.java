@@ -13,6 +13,7 @@
 package ru.ispras.fortress.expression;
 
 import ru.ispras.fortress.data.Data;
+import ru.ispras.fortress.data.types.bitvector.BitVector;
 
 /**
  * The NodeValue class represents a node that stores a constant value.
@@ -23,6 +24,26 @@ import ru.ispras.fortress.data.Data;
 
 public final class NodeValue extends Node
 {
+    /** Creates a new value node based on an integer value. */
+    public static NodeValue newInteger(int value)
+        { return new NodeValue(Data.newInteger(value)); }
+
+    /** Creates a new value node based on a double value. */
+    public static NodeValue newReal(double value)
+        { return new NodeValue(Data.newReal(value)); }
+
+    /** Creates a new value node based on a boolean value. */
+    public static NodeValue newBoolean(boolean value)
+        { return new NodeValue(Data.newBoolean(value)); }
+    
+    /** Creates a new value node based on a value of an unknown type. */
+    public static NodeValue newUnknown(Object value)
+        { return new NodeValue(Data.newUnknown(value)); }
+
+    /** Creates a new value node based on a bit vector. */
+    public static NodeValue newBitVector(BitVector value)
+        { return new NodeValue(Data.newBitVector(value)); }
+
     private final Data data;
 
     /**
