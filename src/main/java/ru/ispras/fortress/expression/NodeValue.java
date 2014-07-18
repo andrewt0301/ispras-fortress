@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 ISPRAS
+ * Copyright (c) 2011 ISPRAS (www.ispras.ru)
  *
  * Institute for System Programming of Russian Academy of Sciences
  *
@@ -8,6 +8,18 @@
  * All rights reserved.
  *
  * NodeValue.java, Dec 20, 2011 12:23:40 PM Andrei Tatarnikov
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package ru.ispras.fortress.expression;
@@ -60,6 +72,29 @@ public final class NodeValue extends Node
             throw new NullPointerException();
 
         this.data = data;
+    }
+
+    /**
+     * Constructor for making deep copies. The data field is copied by
+     * reference because the Data class guarantees immutablility.
+     * 
+     * @param nodeValue Node value object to be copied. 
+     */
+
+    private NodeValue(NodeValue nodeValue)
+    {
+        super(nodeValue);
+        this.data = nodeValue.data;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+
+    @Override
+    public Node deepCopy()
+    {
+        return new NodeValue(this);
     }
 
     /**

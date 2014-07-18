@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 ISPRAS
+ * Copyright (c) 2011 ISPRAS (www.ispras.ru)
  *
  * Institute for System Programming of Russian Academy of Sciences
  *
@@ -8,6 +8,18 @@
  * All rights reserved.
  *
  * NodeExpr.java, Dec 20, 2011 12:24:03 PM Andrei Tatarnikov
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package ru.ispras.fortress.expression;
@@ -44,6 +56,36 @@ public final class NodeExpr extends Node
 
         this.operation = operation;
         this.operands  = operands;
+    }
+
+    /**
+     * Constructor for making deep copies. The operation field is immutable
+     * and, therefore, it copied by reference. The operands array is cloned
+     * because it contains nodes that must be cloned to create a fully
+     * independent copy of an expression. 
+     * 
+     * @param nodeExpr Node expression object to be copied.
+     */
+
+    private NodeExpr(NodeExpr nodeExpr)
+    {
+        super(nodeExpr);
+
+        this.operation = nodeExpr.operation;
+        this.operands  = new Node[nodeExpr.operands.length];
+
+        for (int index = 0; index < nodeExpr.operands.length; index++)
+            this.operands[index] = nodeExpr.operands[index].deepCopy();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+
+    @Override
+    public Node deepCopy()
+    {
+        return new NodeExpr(this);
     }
 
     /**

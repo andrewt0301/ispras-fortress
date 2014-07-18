@@ -58,7 +58,22 @@ public final class Variable
 
     public Variable(String name, DataType type)
     {
-        this(name, type.valueUninitialized());
+        this(name, type != null ? type.valueUninitialized() : null);
+    }
+
+    /**
+     * Constructs a full copy of the given variable object. The fields are
+     * copied by reference because their types are immutable.
+     * 
+     * @param variable Variable object to be copied.
+     */
+
+    public Variable(Variable variable)
+    {
+        this(
+           variable != null ? variable.name : null,
+           variable != null ? variable.data : null
+        );
     }
 
     /**
