@@ -12,6 +12,15 @@
  (like Yices, Z3, CVC4, etc.)
 
 --------------------------------------------------------------------------------
+ XXXX/XX/XX Fortress 0.3.2 beta (to be released)
+
+ The following features have been implemented:
+
+ - Factory methods to simplify creating NodeValue objects
+ - Support for creating deep copies of expressions
+ - ...
+
+--------------------------------------------------------------------------------
  2014/07/08 Fortress 0.3.1 beta
  
  The following features have been implemented:
