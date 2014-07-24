@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 ISPRAS
+ * Copyright (c) 2012 ISPRAS (www.ispras.ru)
  * 
  * Institute for System Programming of Russian Academy of Sciences
  * 
@@ -8,6 +8,18 @@
  * All rights reserved.
  * 
  * BitVector.java, Oct 11, 2012 12:45:55 PM Andrei Tatarnikov
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package ru.ispras.fortress.data.types.bitvector;
@@ -140,6 +152,30 @@ public abstract class BitVector implements Comparable<BitVector>
         if (getBitSize() != other.getBitSize()) return false;
 
         return (-1 == mismatch_reverse(this, other));
+    }
+
+    /**
+    * Returns the hash code value for this bit vector. The hash code is
+    * calculated based on the stored data bytes.
+    *
+    * @return The hash code value for bit vector.
+    */
+
+    @Override
+    public final int hashCode()
+    {
+        class Result { public int value = 1; }
+
+        final Result result = new Result();
+        final IAction op = new IAction()
+        {
+            @Override
+            public void run(byte v)
+                { result.value = 31 * result.value + (v & 0xFF); }
+        };
+
+        for_each(this, op);
+        return result.value;
     }
 
     /**
