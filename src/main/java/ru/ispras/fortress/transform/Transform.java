@@ -29,9 +29,8 @@ public final class Transform
      * partially reduced or left unchanged. In the last case, the method returns
      * a reference to the current operation (this).
      * 
-     * @param calculator The calculator that performs specific operations to reduce
-     * the operation expression.
      * @param options Option flags to tune the reduction strategy.
+     * @param expression Expression to be reduced.
      * @return An element that describes the reduced operation expression
      * (a value or another operation expression with minimal subexpressions) or
      * this if it is impossible to reduce the operation expression.

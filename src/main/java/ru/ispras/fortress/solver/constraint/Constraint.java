@@ -26,7 +26,7 @@ import ru.ispras.fortress.data.Variable;
  * its internal representation (see the representation field) can use a different class
  * to store the information.
  *
- * @authors Andrei Tatarnikov, Sergey Smolov
+ * @author Andrei Tatarnikov, Sergey Smolov
  */
 
 public final class Constraint

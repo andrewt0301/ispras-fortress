@@ -44,7 +44,7 @@ public interface Visitor
     /**
      * Finishes visiting an expression node.
      * 
-     * @param op Expression node.
+     * @param expr Expression node.
      */
 
     void onExprEnd(NodeExpr expr);

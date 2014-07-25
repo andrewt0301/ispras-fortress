@@ -4,7 +4,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlValue;
 
 /**
- * The class for mediation during JAXB marshalling/unmarshalling of {@link Variable} objects.  
+ * The class for mediation during JAXB marshalling/unmarshalling of
+ * {@link ru.ispras.fortress.data.Variable} objects.  
  * 
  * @author <a href="mailto:i.melnichenko@deltasolutions.ru">Igor Melnichenko</a>
  */

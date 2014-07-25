@@ -63,7 +63,7 @@ public final class XMLConstraintSaver
      * @throws NullPointerException if any of the parameters equals null.
      * @throws IllegalArgumentException if the constraint is not formula-based
      * (its type is not FORMULA_BASED). Currently, the possibility of saving 
-     * other constraint types is not implementeed. 
+     * other constraint types is not implemented. 
      */
 
     public XMLConstraintSaver(String fileName, Constraint constraint)
@@ -83,13 +83,11 @@ public final class XMLConstraintSaver
     }
 
     /**
-     * Saves the specified constraint object to an XML file.
+     * Saves the constraint object to an XML file.
      * 
-     * @param fileName The name of the target file.
-     * @param constraint A constraint object to be saved.
      * @throws XMLNotSavedException 
      */
-    
+
     public void save() throws XMLNotSavedException  
     {
         try

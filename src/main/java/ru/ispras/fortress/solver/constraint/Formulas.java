@@ -79,7 +79,7 @@ public final class Formulas
     /**
      * Adds a new formula expression to the collection.
      * 
-     * @param expr A formula expression.
+     * @param formula A formula expression.
      */
     
     public void add(Node formula)

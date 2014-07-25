@@ -28,7 +28,7 @@ public interface CalculatorEngine
      * Checks whether the specified operation is supported for the provided operands.
      * Operation identifier and operand types are taken into consideration.
      * 
-     * @param operationId Operation identifier. Identifies an operation within a group.
+     * @param operatorId Operator identifier. Identifies an operation within a group.
      * @param operands Array of operands.
      * @return <code>true</code> if the operation is supported for the given operand
      * types or <code>false</code> if it is not supported or its invariants are violated
@@ -42,7 +42,7 @@ public interface CalculatorEngine
      * is not supported or its invariants are violated (e.g. operand types do not match) 
      * the UnsupportedOperationException runtime exception will be thrown.
      * 
-     * @param operationId Operation identifier. Identifies an operation within a group.
+     * @param operatorId Operator identifier. Identifies an operation within a group.
      * @param operands Array of operands.
      * @return Data object holding the calculated value.
      */

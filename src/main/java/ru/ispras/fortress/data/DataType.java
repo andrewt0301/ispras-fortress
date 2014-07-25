@@ -77,6 +77,13 @@ public final class DataType
         return newDataType(DataTypeId.MAP, keyType, valueType);
     }
 
+    public static DataType newDataType(DataTypeId typeId, int size)
+    {
+        if (typeId == DataTypeId.BIT_VECTOR)
+            return newDataType(typeId, (Object) Integer.valueOf(size));
+        return newDataType(typeId);
+    }
+    
     /**
      * Returns an instance of a data type object based on its attributes. For objects of the
      * same type (type identifier and sizes are equal), the same instance is returned.
@@ -85,13 +92,6 @@ public final class DataType
      * @param parameters The list of type parameters 
      * @return A data type object
      */
-
-    public static DataType newDataType(DataTypeId typeId, int size)
-    {
-        if (typeId == DataTypeId.BIT_VECTOR)
-            return newDataType(typeId, (Object) Integer.valueOf(size));
-        return newDataType(typeId);
-    }
 
     public static DataType newDataType(DataTypeId typeId, Object ... parameters)
     {

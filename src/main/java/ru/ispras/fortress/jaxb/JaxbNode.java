@@ -17,7 +17,8 @@ package ru.ispras.fortress.jaxb;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * The class for mediation during JAXB marshalling/unmarshalling of {@link Node} objects.  
+ * The class for mediation during JAXB marshalling/unmarshalling of
+ * {@link ru.ispras.fortress.expression.Node} objects.  
  * 
  * @author <a href="mailto:i.melnichenko@deltasolutions.ru">Igor Melnichenko</a>
  */

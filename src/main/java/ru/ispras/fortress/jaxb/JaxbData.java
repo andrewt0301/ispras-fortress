@@ -21,7 +21,8 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 
 /**
- * The class for mediation during JAXB marshalling/unmarshalling of {@link Data} objects.  
+ * The class for mediation during JAXB marshalling/unmarshalling of
+ * {@link ru.ispras.fortress.data.Data} objects.  
  * 
  * @author <a href="mailto:i.melnichenko@deltasolutions.ru">Igor Melnichenko</a>
  */
