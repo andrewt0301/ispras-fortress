@@ -105,7 +105,9 @@ public final class XMLConstraintSaver
             final Element innerRep = document.createElement(XMLConst.NODE_INNER_REP);
             root.appendChild(innerRep);
 
-            final Walker walker = new Walker(new XMLBuilderForExprs(document, innerRep));
+            final ExprTreeWalker walker = 
+                new ExprTreeWalker(new XMLBuilderForExprs(document, innerRep));
+
             walker.visit(((Formulas) constraint.getInnerRep()).exprs());
 
             saveDocument(document, fileName);
@@ -195,7 +197,7 @@ public final class XMLConstraintSaver
  * @author Andrei Tatarnikov
  */
 
-class XMLBuilderForExprs implements Visitor
+class XMLBuilderForExprs implements ExprTreeVisitor
 {
     private final Document       document;
     private final Deque<Element> elements;

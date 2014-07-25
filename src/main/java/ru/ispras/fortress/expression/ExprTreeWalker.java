@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 ISPRAS
+ * Copyright (c) 2013 ISPRAS (www.ispras.ru)
  * 
  * Institute for System Programming of Russian Academy of Sciences
  * 
@@ -7,31 +7,43 @@
  * 
  * All rights reserved.
  * 
- * Visitor.java, Dec 17, 2013 11:28:28 AM Andrei Tatarnikov
+ * ExprTreeWalker.java, Dec 17, 2013 11:28:28 AM Andrei Tatarnikov
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package ru.ispras.fortress.expression;
 
 /**
- * The Walker class provides methods that traverse an expression tree
+ * The ExprTreeWalker class provides methods that traverse an expression tree
  * and apply a visitor to its nodes.
  * 
  * @author Andrei Tatarnikov
  */
 
-public final class Walker
+public final class ExprTreeWalker
 {
-    private final Visitor visitor;
+    private final ExprTreeVisitor visitor;
 
     /**
-     * Constructs a Walker object.
+     * Constructs an ExprTreeWalker object.
      * 
      * @param visitor Visitor to be applied to tree nodes.
      * 
      * @throws NullPointerException if the visitor parameter is null.
      */
 
-    public Walker(Visitor visitor)
+    public ExprTreeWalker(ExprTreeVisitor visitor)
     {
         if (null == visitor)
             throw new NullPointerException();

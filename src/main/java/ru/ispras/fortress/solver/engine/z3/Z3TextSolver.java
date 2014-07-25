@@ -115,7 +115,7 @@ public final class Z3TextSolver extends SolverBase
             final SMTTextBuilder smtTextBuilder =
                 new SMTTextBuilder(constraint.getVariables(), getOperations());
 
-            final Walker walker = new Walker(smtTextBuilder);
+            final ExprTreeWalker walker = new ExprTreeWalker(smtTextBuilder);
             walker.visit(((Formulas) constraint.getInnerRep()).exprs());
 
             final String tempFile = File.createTempFile(TEMP_FILE, TEMP_FILE_SUFFIX).getPath();

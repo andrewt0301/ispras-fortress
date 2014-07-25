@@ -32,7 +32,7 @@ import static ru.ispras.fortress.solver.engine.z3.SMTStrings.*;
  * @author Andrei Tatarnikov
  */
 
-final class SMTTextBuilder implements Visitor
+final class SMTTextBuilder implements ExprTreeVisitor
 {
     private final Map<Enum<?>, SolverOperation> operations;
     private final Iterable<Variable>             variables;
@@ -162,7 +162,7 @@ final class SMTTextBuilder implements Visitor
 
         functionCallDepth++;
 
-        final Walker walker = new Walker(this);
+        final ExprTreeWalker walker = new ExprTreeWalker(this);
         walker.visitNode(function.getBody());
 
         functionCallDepth--;
