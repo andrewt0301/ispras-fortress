@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 ISPRAS
+ * Copyright (c) 2012 ISPRAS (www.ispras.ru)
  *
  * Institute for System Programming of Russian Academy of Sciences
  *
@@ -8,6 +8,18 @@
  * All rights reserved.
  *
  * Constraint.java, Jan 11, 2012 4:56:25 PM Andrei Tatarnikov
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package ru.ispras.fortress.solver.constraint;
@@ -48,8 +60,8 @@ public final class Constraint
      * in a format that depends on the type of the constraint.
      * 
      * @throws NullPointerException if any of the parameters equals null.
-     * @throws IllegalArgumentException (1) if the internal representation class does not match
-     * the class required by the constraint type; (2) if the table of variables is empty.  
+     * @throws IllegalArgumentException if the internal representation class does not match
+     * the class required by the constraint type.  
      */
 
     public Constraint(
@@ -71,11 +83,6 @@ public final class Constraint
             throw new IllegalArgumentException(
                 String.format(ILLEGAL_IR_CLASS,
                     representation.getClass().getName(), kind.getInnerRepClass().getName()));
-        }
-
-        if (variables.isEmpty())
-        {
-            throw new IllegalArgumentException(EMPTY_VARIABLES);
         }
 
         this.name           = name;
@@ -262,5 +269,4 @@ public final class Constraint
     private static final String UNDEFINED_VARIABLE = "%s is illegal variable name. No such varaible is defined.";
     private static final String       ILLEGAL_TYPE = "%s is illegal data type, %s is expected.";
     private static final String   ILLEGAL_IR_CLASS = "%s is illegal representation class, %s is expected.";
-    private static final String    EMPTY_VARIABLES = "The variable table is empty.";
 }
