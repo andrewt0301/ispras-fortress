@@ -63,7 +63,7 @@ public final class Z3TextSolver extends SolverBase
 
     private static final String NO_SOLVER_PATH_ERR_FRMT =
         "The path to the external constraint solver executable " +
-        " is not assigned (equals %s).";
+        "is not assigned (equals %s).";
 
     private static final String NO_SOLVER_FILE_ERR_FRMT =
         "The external constraint solver executable (%s) does not exist or " + 
