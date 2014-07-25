@@ -7,20 +7,20 @@
  * 
  * All rights reserved.
  * 
- * Range.java, Nov 6, 2013 4:16:46 PM Andrei Tatarnikov
+ * ArityRange.java, Nov 6, 2013 4:16:46 PM Andrei Tatarnikov
  */
 
 package ru.ispras.fortress.calculator;
 
 /**
- * The Range class is used to specify a possible arity of an operator (unary, binary, etc.).
+ * The ArityRange class is used to specify a possible arity of an operator (unary, binary, etc.).
  * It is possible for an operator to be unary and binary at the same time or to have an unlimited
  * number of operands. The Range class allows specifying a range for the allowed number of operands.
  * 
  * @author Andrei Tatarnikov
  */
 
-public final class Range
+public final class ArityRange
 {
     /**
      * The Bound enumeration contains constants for specifying most common bounds for
@@ -60,19 +60,19 @@ public final class Range
     }
 
     /** Unary operator range. */
-    public static final Range UNARY = new Range(Bound.UNARY, Bound.UNARY);
+    public static final ArityRange UNARY = new ArityRange(Bound.UNARY, Bound.UNARY);
 
     /** Binary operator range. */
-    public static final Range BINARY = new Range(Bound.BINARY, Bound.BINARY);
+    public static final ArityRange BINARY = new ArityRange(Bound.BINARY, Bound.BINARY);
 
     /** Range for operators that can be unary and binary at the same time. */
-    public static final Range UNARY_BINARY = new Range(Bound.UNARY, Bound.BINARY);
+    public static final ArityRange UNARY_BINARY = new ArityRange(Bound.UNARY, Bound.BINARY);
 
     /** Range for operators that can have one (unary) or an unbounded number of operands. */
-    public static final Range UNARY_UNBOUNDED = new Range(Bound.UNARY, Bound.UNBOUNDED);
+    public static final ArityRange UNARY_UNBOUNDED = new ArityRange(Bound.UNARY, Bound.UNBOUNDED);
 
     /** Range for operators that can have two (binary) or an unbounded number of operands. */
-    public static final Range BINARY_UNBOUNDED = new Range(Bound.BINARY, Bound.UNBOUNDED);
+    public static final ArityRange BINARY_UNBOUNDED = new ArityRange(Bound.BINARY, Bound.UNBOUNDED);
 
     private final int min;
     private final int max;
@@ -84,7 +84,7 @@ public final class Range
      * @param max Upper bound.
      */
 
-    public Range(Bound min, Bound max)
+    public ArityRange(Bound min, Bound max)
     {
         this(min.value(), max.value());
     }
@@ -96,7 +96,7 @@ public final class Range
      * @param max Upper boundary value.
      */
 
-    public Range(int min, int max)
+    public ArityRange(int min, int max)
     {
         assert min > 0;
         assert (min <= max) || (max == Bound.UNBOUNDED.value());

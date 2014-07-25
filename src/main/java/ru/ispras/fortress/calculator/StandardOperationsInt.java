@@ -46,7 +46,7 @@ import ru.ispras.fortress.expression.StandardOperation;
 
 enum StandardOperationsInt implements Operation<StandardOperation>
 {
-    PLUS (StandardOperation.PLUS, Range.UNARY)
+    PLUS (StandardOperation.PLUS, ArityRange.UNARY)
     {
         @Override
         public Data calculate(Data operand)
@@ -61,7 +61,7 @@ enum StandardOperationsInt implements Operation<StandardOperation>
         }
     },
 
-    MINUS (StandardOperation.MINUS, Range.UNARY)
+    MINUS (StandardOperation.MINUS, ArityRange.UNARY)
     {
         @Override
         public Data calculate(Data operand)
@@ -77,7 +77,7 @@ enum StandardOperationsInt implements Operation<StandardOperation>
         }
     },
 
-    ADD (StandardOperation.ADD, Range.BINARY_UNBOUNDED)
+    ADD (StandardOperation.ADD, ArityRange.BINARY_UNBOUNDED)
     {
         @Override
         public Data calculate(Data operand)
@@ -95,7 +95,7 @@ enum StandardOperationsInt implements Operation<StandardOperation>
         }
     },
 
-    SUB (StandardOperation.SUB, Range.BINARY_UNBOUNDED)
+    SUB (StandardOperation.SUB, ArityRange.BINARY_UNBOUNDED)
     {
         @Override
         public Data calculate(Data operand)
@@ -113,7 +113,7 @@ enum StandardOperationsInt implements Operation<StandardOperation>
         }
     },
 
-    MUL (StandardOperation.MUL, Range.BINARY_UNBOUNDED)
+    MUL (StandardOperation.MUL, ArityRange.BINARY_UNBOUNDED)
     {
         @Override
         public Data calculate(Data operand)
@@ -131,7 +131,7 @@ enum StandardOperationsInt implements Operation<StandardOperation>
         }
     },
 
-    DIV (StandardOperation.DIV, Range.BINARY)
+    DIV (StandardOperation.DIV, ArityRange.BINARY)
     {
         @Override
         public Data calculate(Data operand)
@@ -149,7 +149,7 @@ enum StandardOperationsInt implements Operation<StandardOperation>
         }
     },
 
-    REM(StandardOperation.REM, Range.BINARY)
+    REM(StandardOperation.REM, ArityRange.BINARY)
     {
         @Override
         public Data calculate(Data operand)
@@ -167,7 +167,7 @@ enum StandardOperationsInt implements Operation<StandardOperation>
         }
     },
 
-    MOD (StandardOperation.MOD, Range.BINARY)
+    MOD (StandardOperation.MOD, ArityRange.BINARY)
     {    
         @Override
         public Data calculate(Data operand)
@@ -202,12 +202,12 @@ enum StandardOperationsInt implements Operation<StandardOperation>
     }
 
     private final StandardOperation operationId;
-    private final Range             operandRange;
+    private final ArityRange        operationArity;
 
-    private StandardOperationsInt(StandardOperation operationId, Range operandRange)
+    private StandardOperationsInt(StandardOperation operationId, ArityRange operationArity)
     {
         this.operationId = operationId;
-        this.operandRange = operandRange;
+        this.operationArity = operationArity;
     }
 
     public static DataTypeId dataTypeId()
@@ -222,9 +222,9 @@ enum StandardOperationsInt implements Operation<StandardOperation>
     }
 
     @Override
-    public final Range getOperandRange()
+    public final ArityRange getOperationArity()
     {
-        return operandRange;
+        return operationArity;
     }
 
     private static int extractInteger(Data data)

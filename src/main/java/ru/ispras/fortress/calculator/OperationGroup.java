@@ -85,7 +85,7 @@ public final class OperationGroup<OperationId extends Enum<OperationId>> impleme
             return false;
 
         final Operation<OperationId> operation = operationsForType.get(operationId);
-        if (!operation.getOperandRange().isWithinRange(operands.length))
+        if (!operation.getOperationArity().isWithinRange(operands.length))
             return false;
 
         return true;
@@ -149,12 +149,12 @@ public final class OperationGroup<OperationId extends Enum<OperationId>> impleme
 
     private Data calculate(Operation<OperationId> operation, Data[] operands)
     {
-        assert operation.getOperandRange().isWithinRange(operands.length);
+        assert operation.getOperationArity().isWithinRange(operands.length);
 
-        if (Range.Bound.UNARY.value() == operands.length)
+        if (ArityRange.Bound.UNARY.value() == operands.length)
             return operation.calculate(operands[0]);
 
-        if (Range.Bound.BINARY.value() == operands.length)
+        if (ArityRange.Bound.BINARY.value() == operands.length)
             return operation.calculate(operands[0], operands[1]);
 
         Data result = operation.calculate(operands[0], operands[1]);

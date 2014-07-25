@@ -38,7 +38,7 @@ public interface Operation<OperationId extends Enum<OperationId>>
      * @return Range of operation arity.
      */
 
-    public Range getOperandRange();
+    public ArityRange getOperationArity();
 
     /**
      * Performs an unary operation on the specified operand. If the current operation
