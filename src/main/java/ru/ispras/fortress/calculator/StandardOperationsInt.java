@@ -136,10 +136,14 @@ enum StandardOperationsInt implements Operation<StandardOperation>
         @Override
         public Data calculate(Data ...operands)
         {
+            // Implemented like in Z3: the result is negative only
+            // if the second operand is negative.
+
             final int value1 = extractInteger(operands[0]);
             final int value2 = extractInteger(operands[1]);
 
-            return Data.newInteger(value1 % value2);
+            final int result = Math.abs(value1 % value2);
+            return Data.newInteger(value2 < 0 ? -result : result);
         }
     },
 
@@ -148,10 +152,13 @@ enum StandardOperationsInt implements Operation<StandardOperation>
         @Override
         public Data calculate(Data ... operands)
         {
+            // Implemented like in Z3: The result is always non-negative.
+
             final int value1 = extractInteger(operands[0]);
             final int value2 = extractInteger(operands[1]);
 
-            return Data.newInteger(value1 % value2);
+            final int result = Math.abs(value1 % value2);
+            return Data.newInteger(result);
         }
     }
     ;
