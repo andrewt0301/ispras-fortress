@@ -52,7 +52,8 @@ public final class Z3TextSolver extends SolverBase
         "Z3 (text-based interface)";
 
     private static final String DESCRIPTION =
-        "Solves constraints using the Z3 solver. Interacts with thesolver via text files and command line.";
+        "Solves constraints using the Z3 solver. " +
+        "Interacts with thesolver via text files and command line.";
 
     private static final String TEMP_FILE           = "ispras_z3_temp";
     private static final String TEMP_FILE_SUFFIX    = ".smt2";
@@ -60,11 +61,16 @@ public final class Z3TextSolver extends SolverBase
     private static final String UNK_OUTPUT_ERR_FRMT =
         "Unexpected solver output: \"%s\"";
 
+    private static final String NO_SOLVER_PATH_ERR_FRMT =
+        "The path to the external constraint solver executable " +
+        " is not assigned (equals %s).";
+
+    private static final String NO_SOLVER_FILE_ERR_FRMT =
+        "The external constraint solver executable (%s) does not exist or " + 
+        "the path is not a valid file path.";
+
     private static final String IO_EXCEPTION_ERR =
         "I/O exception in the process of a solving the constraint. Details: ";
-    
-    private static final String UNSUPPORTED_KIND_ERR =
-        "Unsupported constraint type: %s.%s.";
 
     public Z3TextSolver()
     {
@@ -78,15 +84,28 @@ public final class Z3TextSolver extends SolverBase
         initStandardOperations();
     }
 
+    private static void solverFileExistsCheck(String solverPath)
+    {
+        if (null == solverPath)
+            throw new NullPointerException(
+                String.format(NO_SOLVER_PATH_ERR_FRMT, "null"));
+
+        if (solverPath.isEmpty())
+            throw new NullPointerException(
+                String.format(NO_SOLVER_PATH_ERR_FRMT, "empty string"));
+
+        if (!new File(solverPath).isFile())
+            throw new IllegalStateException(
+                String.format(NO_SOLVER_FILE_ERR_FRMT, solverPath));
+    }
+
     @Override
     public SolverResult solve(Constraint constraint) 
     {
-        if (null == constraint)
-            throw new NullPointerException();
+        notNullCheck(constraint, "constraint");
 
-        if (!isSupported(constraint.getKind()))
-            throw new IllegalArgumentException(String.format(UNSUPPORTED_KIND_ERR,
-                constraint.getKind().getClass().getSimpleName(), constraint.getKind()));
+        supportedKindCheck(constraint.getKind());
+        solverFileExistsCheck(Environment.getSolverPath());
 
         final SolverResultBuilder resultBuilder = 
             new SolverResultBuilder(SolverResult.Status.ERROR);

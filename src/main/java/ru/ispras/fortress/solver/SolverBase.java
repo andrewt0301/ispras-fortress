@@ -25,6 +25,9 @@ public abstract class SolverBase implements Solver
 {
     private static final String ERR_ALREADY_REGISTERED =
         "The %s.%s operation is already registered.";
+    
+    private static final String ERR_UNSUPPORTED_KIND =
+        "Unsupported constraint type: %s.%s.";
 
     private final String                              name;
     private final String                       description;
@@ -49,11 +52,18 @@ public abstract class SolverBase implements Solver
         this.isGeneric      = isGeneric;
         this.operations     = new HashMap<Enum<?>, SolverOperation>();
     }
-    
-    private static void notNullCheck(Object o, String name)
+
+    protected static void notNullCheck(Object o, String name)
     {
         if (null == o)
             throw new NullPointerException(name + " is null");
+    }
+
+    protected final void supportedKindCheck(ConstraintKind kind)
+    {
+        if (!isSupported(kind))
+            throw new IllegalArgumentException(String.format(
+                ERR_UNSUPPORTED_KIND, kind.getClass().getSimpleName(), kind));
     }
 
     @Override
@@ -88,22 +98,16 @@ public abstract class SolverBase implements Solver
     @Override
     public final boolean addCustomOperation(Enum<?> id, Function function)
     {
-        if (null == id)
-            throw new NullPointerException();
-
-        if (null == function)
-            throw new NullPointerException();
+        notNullCheck(id, "id");
+        notNullCheck(function, "function");
 
         return null == operations.put(id, SolverOperation.newCustom(id, function));
     }
 
     protected final void addStandardOperation(StandardOperation id, String text)
     {
-        if (null == id)
-            throw new NullPointerException();
-
-        if (null == text)
-            throw new NullPointerException();
+        notNullCheck(id, "id");
+        notNullCheck(text, "text");
 
         if (operations.containsKey(id))
         {
