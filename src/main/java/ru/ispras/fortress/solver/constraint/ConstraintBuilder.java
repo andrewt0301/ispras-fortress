@@ -135,7 +135,7 @@ public final class ConstraintBuilder
      * @param value Internal representation of the constraint.
      */
 
-    public void setInnerRep(Formulas value)
+    public void setInnerRep(Object value)
     {
         this.representation = value;
     }
