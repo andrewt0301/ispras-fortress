@@ -54,10 +54,15 @@ public final class ConstraintBuilder
      * Default description is an empty string.
      * 
      * @param kind Constraint type.
+     * 
+     * @throws NullPointerException if the parameter equals null.
      */
 
     public ConstraintBuilder(ConstraintKind kind)
     {
+        if (null == kind)
+            throw new NullPointerException();
+
         this.name           = UUID.randomUUID().toString();
         this.description    = "";
         this.kind           = kind;
@@ -100,10 +105,15 @@ public final class ConstraintBuilder
      * Sets the name of the constraint to be created.
      * 
      * @param name Constraint name.
+     * 
+     * @throws NullPointerException if the parameter equals null.
      */
 
     public void setName(String name)
     {
+        if (null == name)
+            throw new NullPointerException();
+
         this.name = name;
     }
     
@@ -111,10 +121,15 @@ public final class ConstraintBuilder
      * Sets the description of the constraint to be created.
      * 
      * @param description Constraint description.
+     * 
+     * @throws NullPointerException if the parameter equals null.
      */
 
     public void setDescription(String description)
     {
+        if (null == description)
+            throw new NullPointerException();
+
         this.description = description;
     }
 
@@ -122,10 +137,15 @@ public final class ConstraintBuilder
      * Sets the type of the constraint to be created.
      * 
      * @param kind Constraint type.
+     * 
+     * @throws NullPointerException if the parameter equals null.
      */
 
     public void setKind(ConstraintKind kind)
     {
+        if (null == kind)
+            throw new NullPointerException();
+
         this.kind = kind;
     }
 
@@ -133,10 +153,15 @@ public final class ConstraintBuilder
      * Sets the internal representation of the constraint to be created.
      * 
      * @param value Internal representation of the constraint.
+     * 
+     * @throws NullPointerException if the parameter equals null.
      */
 
     public void setInnerRep(Object value)
     {
+        if (null == value)
+            throw new NullPointerException();
+
         this.representation = value;
     }
 
@@ -221,6 +246,7 @@ public final class ConstraintBuilder
      * @param variable Variable object.
      * @return A referent to the variable in the variable table.
      * 
+     * @throws NullPointerException if the parameter equals null.
      * @throws IllegalArgumentException if the specified variable name has already been
      * use to define a variable that has different type or value (an illegal attempt to
      * redefine the variable). 
@@ -228,7 +254,8 @@ public final class ConstraintBuilder
 
     private Variable addVariable(Variable variable)
     {
-        assert null != variable;
+        if (null == variable)
+            throw new NullPointerException();
 
         if (!variables.containsKey(variable.getName()))
         {
