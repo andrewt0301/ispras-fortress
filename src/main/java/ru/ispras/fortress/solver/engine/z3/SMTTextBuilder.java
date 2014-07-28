@@ -318,7 +318,7 @@ final class FunctionDefinitionBuilders
                 entries.add(entry);
 
         queue.clear();
-        callTreeStarted = true;
+        callTreeStarted = false;
     }
 
     public boolean isDefined(Enum<?> opId)
