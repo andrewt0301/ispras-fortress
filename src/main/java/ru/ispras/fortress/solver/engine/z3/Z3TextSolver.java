@@ -223,13 +223,19 @@ public final class Z3TextSolver extends SolverBase
 
         final String valueText = 
             matcher.group().replaceAll(String.format(SMTRegExp.EXPR_TRIM_PTRN_FRMT, variable.getName()), "");
+
         final Matcher refMatcher =
             Pattern.compile(SMTRegExp.ARRAY_REF).matcher(valueText);
+
         if (refMatcher.matches())
+        {
             refs.put(refMatcher.group(1), variable);
+        }
         else
+        {
             resultBuilder.addVariable(
                 parseVariable(variable.getName(), variable.getData().getType(), valueText));
+        }
 
         return true;
     }
