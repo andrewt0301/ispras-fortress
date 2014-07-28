@@ -106,12 +106,22 @@ public final class Variable
 
     /**
      * Returns a data object associated with the specified variable. 
-     * @return An IData object associated with the variable.
+     * @return An Data object associated with the variable.
      */
 
     public Data getData()
     {
         return data;
+    }
+
+    /**
+     * Returns the type of the variable. 
+     * @return Variable type.
+     */
+
+    public DataType getType()
+    {
+        return getData().getType();
     }
 
     /**
