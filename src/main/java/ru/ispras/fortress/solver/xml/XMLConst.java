@@ -80,8 +80,11 @@ class Messages
     static final String ERR_BAD_CONSTRAINT_KIND   = "Unsupported constraint kind: ";
     static final String ERR_NO_CONSTRAINT_NAME    = "The constraint name is not specified.";
     static final String ERR_NO_CONSTRAINT_KIND    = "The constraint kind is not specified.";
-    static final String ERR_SYNTAX_ALREADY_EXISTS = "Syntax already exists.";
-    
+    static final String ERR_ALREADY_STARTED       = "Building %s has already been started.";
+    static final String ERR_NO_EXPRESSION         = "No expression has been started.";
+    static final String ERR_NO_EXPRESSION_FOR_OP  = "No expression is created for the %s operation.";
+    static final String ERR_FORMULA_ALREADY_ASSIGNED = "The formula is already assigned.";
+
     static final String ERR_NO_OPERATION_ID       = "The operation type is not specified.";
     static final String ERR_EXTRA_OPERATION_ID    = "The operation type is already set.";
     

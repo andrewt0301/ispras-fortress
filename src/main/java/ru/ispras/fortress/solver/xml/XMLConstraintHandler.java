@@ -72,7 +72,7 @@ final class XMLConstraintHandler extends DefaultHandler
 
             case INNER_REP:
             {
-                builder.beginSyntax();
+                builder.beginInnerRep();
                 break;
             }
 
@@ -150,7 +150,7 @@ final class XMLConstraintHandler extends DefaultHandler
         }
         catch (Exception e)
         {
-            throw new SAXException(Messages.ERR_INVALID_CONSTRAINT + e.getMessage());
+            throw new SAXException(Messages.ERR_INVALID_CONSTRAINT, e);
         }
 
         /////////// DEBUG CODE ////////////////////////
@@ -178,7 +178,7 @@ final class XMLConstraintHandler extends DefaultHandler
                 break;
 
             case INNER_REP:
-                builder.endSyntax();
+                builder.endInnerRep();
                 break;
 
             case FORMULA:
@@ -347,20 +347,21 @@ final class XMLConstraintBuilder
     private ConstraintBuilder constraint = null;
     private String                  name = null;
     private ConstraintKind          kind = null;
-    private Formulas              syntax = null;
-    private NodeExpr             formula = null;
+    private Formulas            formulas = null;
+    private Node                 formula = null;
 
     private final Stack<ExprBuilder> expressions =
         new Stack<ExprBuilder>();
 
     private void cleanup()
     {
-        constraint  = null;
-        kind        = null;
-        name        = null;
+        constraint = null;
+        kind       = null;
+        name       = null;
 
-        syntax      = null; 
-        formula     = null;
+        formulas   = null; 
+        formula    = null;
+
         expressions.clear();
     }
 
@@ -389,27 +390,32 @@ final class XMLConstraintBuilder
         //
     }
 
-    public void beginSyntax() throws Exception
+    public void beginInnerRep() throws Exception
     {
-        if (null != syntax)
-            throw new Exception(Messages.ERR_SYNTAX_ALREADY_EXISTS);
-        syntax = new Formulas();
+        if (null != formulas)
+            throw new IllegalStateException(
+                String.format(Messages.ERR_ALREADY_STARTED, "InnerRep"));
+
+        formulas = new Formulas();
     }
 
-    public void endSyntax() throws Exception
+    public void endInnerRep() throws Exception
     {
         // Nothing
     }
 
     public void beginFormula() throws Exception
     {
-        assert null == formula;
+        if (null != formula)
+            throw new IllegalStateException(
+                 String.format(Messages.ERR_ALREADY_STARTED, "Formula"));
+
         formula = null;
     }
 
     public void endFormula() throws Exception
     {
-        syntax.add(formula);
+        formulas.add(formula);
         formula = null;
     }
 
@@ -420,24 +426,47 @@ final class XMLConstraintBuilder
 
     public void endExpression() throws Exception
     {
-        assert !expressions.empty();
-
-        NodeExpr operation = expressions.pop().create();
         if (expressions.empty())
-            formula = operation;
+            throw new IllegalStateException(Messages.ERR_NO_EXPRESSION);
+
+        final NodeExpr expr = expressions.pop().create();
+
+        if (expressions.empty())
+        {
+            if (null != formula)
+                throw new IllegalStateException(
+                    Messages.ERR_FORMULA_ALREADY_ASSIGNED);
+
+            formula = expr;
+        }
         else
-            pushElement(operation);
+        {
+            pushElement(expr);
+        }
     }
 
     public void pushElement(Node se) throws Exception
     {
-        assert !expressions.empty();
-        expressions.lastElement().addElement(se);
+        if (expressions.empty())
+        {
+            if (null != formula)
+                throw new IllegalStateException(
+                     Messages.ERR_FORMULA_ALREADY_ASSIGNED);
+
+            formula = se;
+        }
+        else
+        {
+            expressions.lastElement().addElement(se);
+        }
     }
 
     public void pushOperation(Enum<?> oid) throws Exception
     {
-        assert !expressions.empty();
+        if (expressions.empty())
+            throw new IllegalStateException(String.format(
+                Messages.ERR_NO_EXPRESSION_FOR_OP, oid.name()));
+
         expressions.lastElement().setOperationId(oid);
     }
 
@@ -465,7 +494,7 @@ final class XMLConstraintBuilder
     {
         constraint.setName(name);
         constraint.setKind(kind);
-        constraint.setInnerRep(syntax);
+        constraint.setInnerRep(formulas);
         return constraint.build();
     }
 }

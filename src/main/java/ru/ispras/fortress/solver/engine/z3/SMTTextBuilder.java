@@ -88,14 +88,13 @@ final class SMTTextBuilder implements ExprTreeVisitor
             final FileWriter outFile = new FileWriter(fileName);
             out = new PrintWriter(outFile);
 
-            final StringBuilder variablesListBuilder = new StringBuilder();
-
             int i = 0;
             for (DataType type : arraysInUse)
                 out.printf(sDECLARE_CONST,
                     String.format(sDEFAULT_ARRAY, i++),
                     textForType(type));
-
+            
+            final StringBuilder variablesListBuilder = new StringBuilder();
             for (Variable variable : variables)
             {
                 // Variables that have values don't need declarations 
@@ -117,7 +116,10 @@ final class SMTTextBuilder implements ExprTreeVisitor
                 out.printf(sASSERT, builder.toString());
 
             out.println(sCHECK_SAT);
-            out.printf(sGET_VALUE, variablesListBuilder.toString());
+
+            if (variablesListBuilder.length() > 0)
+                out.printf(sGET_VALUE, variablesListBuilder.toString());
+
             out.println(sGET_MODEL);
             out.println(sEXIT);
         }

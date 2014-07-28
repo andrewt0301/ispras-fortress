@@ -113,7 +113,7 @@ enum XMLNodeType
         EXPRESSION.parents   = EnumSet.of(FORMULA, EXPRESSION);
         OPERATION.parents    = expressionSet;
         VARIABLE_REF.parents = expressionSet;
-        VALUE.parents        = expressionSet;
+        VALUE.parents        = EnumSet.of(FORMULA, EXPRESSION);
         SIGNATURE.parents    = constraintSet;
         VARIABLE.parents     = EnumSet.of(SIGNATURE);
 
