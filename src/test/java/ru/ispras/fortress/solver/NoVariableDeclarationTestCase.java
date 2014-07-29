@@ -13,11 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package ru.ispras.fortress.solver;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
@@ -27,56 +23,65 @@ import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintBuilder;
+import ru.ispras.fortress.solver.constraint.ConstraintKind;
 import ru.ispras.fortress.solver.constraint.Formulas;
 
-public class NoNameArithmeticTestCase extends GenericSolverSampleTestBase
+import java.util.ArrayList;
+import java.util.List;
+
+public class NoVariableDeclarationTestCase extends GenericSolverSampleTestBase
 {
     @Override
     public ISampleConstraint createSample()
     {
-        return new NoNameArithmetic();
+        return new NoVariableDeclaration();
     }
-    
-    /** The constraint as described in the SMT language:
 
-    <pre>
-    (declare-const x Int)
-    (assert (= x (+ 2 2)))
-    (check-sat)
-    (get-value (x))
-    (exit)</pre>
+  /** The constraint as described in the SMT language:
 
-    Expected output: 
-    
-    <pre>
-    sat ((x 4))</pre>
-    */
+   <pre>
+   (declare-const a Int)
+   (declare-const b Int)
+   (assert (> a (+ b 2)))
+   (check-sat)
+   (get-value (a b))
+   (exit)</pre>
 
-    public static class NoNameArithmetic implements ISampleConstraint
+   Expected output:
+   sat
+   ((a 1)
+   (b (- 2)))
+   */
+    public static class NoVariableDeclaration implements ISampleConstraint
     {
-        private static final DataType intType = DataType.INTEGER;
+
+        private static final DataType intType  = DataType.INTEGER;
 
         @Override
         public Constraint getConstraint()
         {
             final ConstraintBuilder builder = new ConstraintBuilder();
 
-            final NodeVariable x = new NodeVariable(builder.addVariable("x", intType));
+            builder.setName("NoVariableDeclaration");
+            builder.setKind(ConstraintKind.FORMULA_BASED);
+            builder.setDescription("NoVariableDeclaration constraint");
+
+            final NodeVariable a = new NodeVariable(new Variable("a", intType));
+            final NodeVariable b = new NodeVariable(new Variable("b", intType));
 
             final Formulas formulas = new Formulas();
             builder.setInnerRep(formulas);
 
             formulas.add(
                 new NodeExpr(
-                    StandardOperation.EQ,
-                    x,
-                    new NodeExpr(
-                        StandardOperation.ADD,
-                        new NodeValue(intType.valueOf("2", 10)),
-                        new NodeValue(intType.valueOf("2", 10))
-                    )
+                    StandardOperation.GREATER,
+                    a,
+                    new NodeExpr(StandardOperation.ADD, b, new NodeValue(intType.valueOf("2", 10)))
                 )
             );
+
+            // main feature of the test - getting variables declaration from syntax tree
+            builder.addVariables(formulas.getVariables());
 
             return builder.build();
         }
@@ -86,7 +91,8 @@ public class NoNameArithmeticTestCase extends GenericSolverSampleTestBase
         {
             final List<Variable> result = new ArrayList<Variable>();
 
-            result.add(new Variable("x", intType.valueOf("4", 10)));
+            result.add(new Variable("a", intType.valueOf("1", 10)));
+            result.add(new Variable("b", intType.valueOf("-2", 10)));
 
             return result;
         }

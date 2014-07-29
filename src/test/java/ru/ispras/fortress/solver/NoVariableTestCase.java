@@ -35,6 +35,20 @@ import ru.ispras.fortress.solver.constraint.Formulas;
 
 public class NoVariableTestCase extends GenericSolverSampleTestBase
 {
+
+    /** The constraint as described in the SMT language:
+
+     <pre>
+     (assert true)
+     (check-sat)
+     (exit)</pre>
+
+     Expected output:
+
+     <pre>
+     sat</pre>
+     */
+
     @Override
     public ISampleConstraint createSample()
     { 
