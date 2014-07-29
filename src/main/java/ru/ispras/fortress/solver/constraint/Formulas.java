@@ -25,9 +25,17 @@
 package ru.ispras.fortress.solver.constraint;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import ru.ispras.fortress.data.Variable;
+import ru.ispras.fortress.expression.ExprTreeVisitor;
+import ru.ispras.fortress.expression.ExprTreeWalker;
 import ru.ispras.fortress.expression.Node;
+import ru.ispras.fortress.expression.NodeExpr;
+import ru.ispras.fortress.expression.NodeValue;
+import ru.ispras.fortress.expression.NodeVariable;
 
 /**
  * The Formulas class serves as a container for formula expressions
@@ -155,6 +163,65 @@ public final class Formulas
             root = (null == root) ? item : Node.AND(root, item); 
 
         return root;
+    }
+
+    /**
+     * Finds all variables used in the stored formula expressions
+     * and returns them to the client.
+     * 
+     * @return A collection of all variables used in the stored
+     * formula expressions.
+     * 
+     * @throws IllegalStateException if the method finds nodes
+     * that refer to different variable instances that have the
+     * same name. This is illegal because all variables used
+     * in formula expression of a constraint must be accessible
+     * via its variable table (the signature of the constraint). 
+     */
+
+    public Iterable<Variable> getVariables()
+    {
+        final Map<String, Variable> variables = 
+            new HashMap<String, Variable>();
+
+        final ExprTreeWalker walker = new ExprTreeWalker(new ExprTreeVisitor()
+        {
+            private static final String ERR_MULTIPLE_VARS = 
+               "References to different variables that have the same name %s.";
+
+            @Override
+            public void onVariable(NodeVariable variable)
+            {
+                if (null == variable)
+                    throw new NullPointerException();
+
+                if (variables.containsKey(variable.getName()))
+                {
+                    final Variable existingVariable =
+                        variables.get(variable.getName());
+
+                    if (variable.getVariable() != existingVariable)
+                        throw new IllegalStateException(String.format(
+                            ERR_MULTIPLE_VARS, variable.getName()));
+                }
+                else
+                {
+                    variables.put(
+                        variable.getName(), variable.getVariable());
+                }
+            }
+
+            @Override public void onValue(NodeValue value) {}
+            @Override public void onRootEnd() {}
+            @Override public void onRootBegin() {}
+            @Override public void onOperandEnd(NodeExpr expr, Node operand, int index) {}
+            @Override public void onOperandBegin(NodeExpr expr, Node operand, int index) {}
+            @Override public void onExprEnd(NodeExpr expr) {}
+            @Override public void onExprBegin(NodeExpr expr) {}
+        });
+
+        walker.visit(exprs());
+        return variables.values();
     }
 
     @Override

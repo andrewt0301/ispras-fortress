@@ -79,6 +79,17 @@ public final class NodeVariable extends Node
     }
 
     /**
+     * Returns the variable associated with the node.
+     * 
+     * @return Variable associated with the node.
+     */
+
+    public Variable getVariable()
+    {
+        return variable;
+    }
+
+    /**
      * Returns the name of the variable.
      * 
      * @return The variable name.

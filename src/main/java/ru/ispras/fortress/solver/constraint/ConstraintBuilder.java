@@ -166,6 +166,27 @@ public final class ConstraintBuilder
     }
 
     /**
+     * Adds variables in the specified collection to the constraint to be created.
+     * Variables are added directly (no copies are created).
+     * 
+     * @param variables A collection of variables.
+     * 
+     * @throws NullPointerException if the parameter equals null.
+     * @throws IllegalArgumentException if the specified variable name has already been
+     * use to define a variable that has different type or value (an illegal attempt to
+     * redefine the variable). See the internal addVariable method.
+     */
+
+    public void addVariables(Iterable<Variable> variables)
+    {
+        if (null == variables)
+            throw new NullPointerException();
+        
+        for (Variable variable : variables)
+            addVariable(variable);
+    }
+
+    /**
      * Adds copies of variables in the specified collection to the constraint to be created.
      * 
      * @param variables A collection of variables.
