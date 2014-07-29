@@ -16,11 +16,20 @@ public final class XMLNotSavedException extends Exception
 {   
     private static final long serialVersionUID = 9002901081366259102L;
 
-    private static final String MESSAGE = "Failed to save data to the '%s' document.";
+    private static final String MESSAGE_FILE =
+       "Failed to save data to the '%s' XML document.";
+
+    private static final String MESSAGE_TEXT =
+       "Failed to save data to XML text.";
 
     public XMLNotSavedException(String fileName, Throwable cause)
     {
-        super(String.format(MESSAGE, fileName), cause);
+        super(String.format(MESSAGE_FILE, fileName), cause);
+    }
+
+    public XMLNotSavedException(Throwable cause)
+    {
+        super(MESSAGE_TEXT, cause);
     }
 
     @Override

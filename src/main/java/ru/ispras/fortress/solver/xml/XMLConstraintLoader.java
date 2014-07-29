@@ -12,6 +12,8 @@
 
 package ru.ispras.fortress.solver.xml;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.net.URL;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -43,7 +45,7 @@ public final class XMLConstraintLoader
      * @throws XMLNotLoadedException if an issue occurred during parsing the XML document.
      */
 
-    public static Constraint load(String fileName) throws XMLNotLoadedException
+    public static Constraint loadFromFile(String fileName) throws XMLNotLoadedException
     {
         if (null == fileName)
             throw new NullPointerException();
@@ -62,6 +64,37 @@ public final class XMLConstraintLoader
     }
 
     /**
+     * Creates a constraint from the specified XML string.
+     *
+     * @param text XML text describing a constraint.
+     * @return A constraint object created from the XML text.
+     * 
+     * @throws NullPointerException if the parameter equals null.
+     * @throws XMLNotLoadedException if an issue occurred during parsing the XML text.
+     */
+
+    public static Constraint loadFromString(String text) throws XMLNotLoadedException
+    {
+        if (null == text)
+            throw new NullPointerException();
+
+        try
+        {
+            final InputStream stream = 
+                new ByteArrayInputStream(text.getBytes("UTF-8")); 
+
+            final XMLConstraintHandler handler = new XMLConstraintHandler();
+            newSAXParser().parse(stream, handler);
+
+            return handler.getConstraint();
+        }
+        catch (Exception e)
+        {
+            throw new XMLNotLoadedException(e);
+        }
+    }
+
+    /**
      * Loads a constraint from an XML file pointed by the specified URL.
      *
      * @param url URL that points to an XML file storing the constraint.
@@ -71,7 +104,7 @@ public final class XMLConstraintLoader
      * @throws XMLNotLoadedException if an issue occurred during parsing the XML document.
      */
 
-    public static Constraint load(URL url) throws XMLNotLoadedException
+    public static Constraint loadFromURL(URL url) throws XMLNotLoadedException
     {
         if (null == url)
             throw new NullPointerException();

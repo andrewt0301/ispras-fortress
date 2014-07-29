@@ -82,32 +82,33 @@ public abstract class GenericSolverTestBase
     public void runSolverTests()
     {
         final Constraint constraint = getConstraint();
-        
-        final Solver solver = constraint.getKind().getDefaultSolverId().getSolver();
-        final SolverResult solverResult = solver.solve(constraint);
-
-        SolverResultChecker.check(solverResult, getExpectedVariables());
+        solveAndCheckResult(constraint);
     }
 
     @Test
     public void runSerializerTests()
     {
         final Constraint constraint = getConstraint();
+        final XMLConstraintSaver saver = new XMLConstraintSaver(constraint);
 
         try
         {
+            // Saving to and loading from file. 
             final String tempFile = File.createTempFile(constraint.getName(), ".xml").getPath();
+            saver.saveToFile(tempFile);
 
-            final XMLConstraintSaver saver = new XMLConstraintSaver(tempFile, constraint);
-            saver.save();
+            final Constraint tempFileConstraint = XMLConstraintLoader.loadFromFile(tempFile);
+            ConstraintEqualityChecker.check(constraint, tempFileConstraint);
 
-            final Constraint loadedConstraint = XMLConstraintLoader.load(tempFile);
-            ConstraintEqualityChecker.check(constraint, loadedConstraint);
+            solveAndCheckResult(tempFileConstraint);
 
-            final Solver solver = constraint.getKind().getDefaultSolverId().getSolver();
-            final SolverResult solverResult = solver.solve(loadedConstraint);
+            // Saving to and loading from string.
+            final String xmlText = saver.saveToString();
 
-            SolverResultChecker.check(solverResult, getExpectedVariables());
+            final Constraint xmlTextConstraint = XMLConstraintLoader.loadFromString(xmlText);
+            ConstraintEqualityChecker.check(constraint, xmlTextConstraint);
+
+            solveAndCheckResult(xmlTextConstraint);
         }
         catch (IOException e)
         {
@@ -123,6 +124,14 @@ public abstract class GenericSolverTestBase
             e.printStackTrace();
             Assert.fail(e.getMessage());
         }
+    }
+
+    private void solveAndCheckResult(Constraint constraint)
+    {
+        final Solver solver = constraint.getKind().getDefaultSolverId().getSolver();
+        final SolverResult solverResult = solver.solve(constraint);
+
+        SolverResultChecker.check(solverResult, getExpectedVariables());
     }
 
     public Iterable<SolverId> getSolvers()

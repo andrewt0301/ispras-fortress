@@ -20,7 +20,8 @@
  - Support for creating deep copies of expressions
  - Utility classes for generating random values
  - Support for a variable number of operands in the expression calculator
- 
+ - Saving/loading constraints to/from an XML string 
+
 --------------------------------------------------------------------------------
  2014/07/08 Fortress 0.3.1 beta
  

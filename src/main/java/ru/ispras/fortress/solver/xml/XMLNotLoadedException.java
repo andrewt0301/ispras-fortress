@@ -16,13 +16,22 @@ public class XMLNotLoadedException extends Exception
 {
     private static final long serialVersionUID = 4850967822331699405L;
 
-    private static final String MESSAGE = "Failed to load data from '%s' document.";
+    private static final String MESSAGE_FILE =
+        "Failed to load data from the '%s' XML document.";
+
+    private static final String MESSAGE_TEXT = 
+        "Failed to load data from XML text.";
 
     public XMLNotLoadedException(String fileName, Throwable cause)
     {
-        super(String.format(MESSAGE, fileName), cause);
+        super(String.format(MESSAGE_FILE, fileName), cause);
     }
-    
+
+    public XMLNotLoadedException(Throwable cause)
+    {
+        super(MESSAGE_TEXT, cause);
+    }
+
     @Override
     public String getMessage()
     {

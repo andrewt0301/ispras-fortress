@@ -12,7 +12,9 @@
 
 package ru.ispras.fortress.solver.xml;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.OutputStream;
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -30,14 +32,12 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.*;
 import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintKind;
 import ru.ispras.fortress.solver.constraint.Formulas;
-
 
 /**
  * The XMLConstraintSaver class provides functionality to save a constraint
@@ -48,69 +48,82 @@ import ru.ispras.fortress.solver.constraint.Formulas;
 
 public final class XMLConstraintSaver
 {
-    private final String      fileName;
     private final Constraint constraint;
-
     private Document document;
 
     /**
      * Constructs an XMLConstraintSaver object that saves the specified
      * constraint to the specified XML document. 
      * 
-     * @param fileName Target XML document file name.
      * @param constraint Constraint to be save.
      * 
-     * @throws NullPointerException if any of the parameters equals null.
+     * @throws NullPointerException if the parameter equals null.
      * @throws IllegalArgumentException if the constraint is not formula-based
      * (its type is not FORMULA_BASED). Currently, the possibility of saving 
      * other constraint types is not implemented. 
      */
 
-    public XMLConstraintSaver(String fileName, Constraint constraint)
+    public XMLConstraintSaver(Constraint constraint)
     {
-        if (null == fileName)
-            throw new NullPointerException();
-
         if  (null == constraint)
             throw new NullPointerException();
 
         if (ConstraintKind.FORMULA_BASED != constraint.getKind())
-            throw new IllegalArgumentException(Messages.ERR_BAD_CONSTRAINT_KIND + constraint.getKind());
+            throw new IllegalArgumentException(
+                Messages.ERR_BAD_CONSTRAINT_KIND + constraint.getKind());
 
-        this.fileName   = fileName;
         this.constraint = constraint;
         this.document   = null;
     }
 
     /**
-     * Saves the constraint object to an XML file.
+     * Saves the constraint object to an XML string.
      * 
-     * @throws XMLNotSavedException 
+     * @return XML text for the constraint.
+     * @throws XMLNotSavedException if failed to save 
+     * the constraint to a string.
      */
 
-    public void save() throws XMLNotSavedException  
+    public String saveToString() throws XMLNotSavedException
     {
         try
         {
             document = newDocument();
+            buildDocument();
 
-            final Element root = newConstraintElement();
-            document.appendChild(root);
+            return saveDocumentToString(document);
+        }
+        catch (Exception e)
+        {
+            throw new XMLNotSavedException(e);
+        }
+        finally
+        {
+            document = null;
+        }
+    }
 
-            root.appendChild(newTextBasedElement(XMLConst.NODE_NAME, constraint.getName()));
-            root.appendChild(newTextBasedElement(XMLConst.NODE_KIND, constraint.getKind().name()));
-            root.appendChild(newTextBasedElement(XMLConst.NODE_DESCRIPTION, constraint.getDescription()));
-            root.appendChild(newSignatureElement());
+    /**
+     * Saves the constraint object to an XML file.
+     * 
+     * @param fileName Target XML document file name.
+     * 
+     * @throws NullPointerException if the parameter equals null.
+     * @throws XMLNotSavedException if failed to save the
+     * constraint to a file.
+     */
 
-            final Element innerRep = document.createElement(XMLConst.NODE_INNER_REP);
-            root.appendChild(innerRep);
+    public void saveToFile(String fileName) throws XMLNotSavedException  
+    {
+        if (null == fileName)
+            throw new NullPointerException();
 
-            final ExprTreeWalker walker = 
-                new ExprTreeWalker(new XMLBuilderForExprs(document, innerRep));
+        try
+        {
+            document = newDocument();
+            buildDocument();
 
-            walker.visit(((Formulas) constraint.getInnerRep()).exprs());
-
-            saveDocument(document, fileName);
+            saveDocumentToFile(document, fileName);
         }
         catch (Exception e)
         {
@@ -122,20 +135,51 @@ public final class XMLConstraintSaver
         }
     }
 
+    private void buildDocument()
+    {
+        final Element root = newConstraintElement();
+        document.appendChild(root);
+
+        root.appendChild(newTextBasedElement(XMLConst.NODE_NAME, constraint.getName()));
+        root.appendChild(newTextBasedElement(XMLConst.NODE_KIND, constraint.getKind().name()));
+        root.appendChild(newTextBasedElement(XMLConst.NODE_DESCRIPTION, constraint.getDescription()));
+        root.appendChild(newSignatureElement());
+
+        final Element innerRep = document.createElement(XMLConst.NODE_INNER_REP);
+        root.appendChild(innerRep);
+
+        final ExprTreeWalker walker = 
+            new ExprTreeWalker(new XMLBuilderForExprs(document, innerRep));
+
+        walker.visit(((Formulas) constraint.getInnerRep()).exprs());
+    }
+
     private static Document newDocument() throws ParserConfigurationException
     {
         final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-        final DocumentBuilder        docBuilder = docFactory.newDocumentBuilder();
+        final DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
         return docBuilder.newDocument();
     }
 
-    private static void saveDocument(Document document, String fileName) throws TransformerConfigurationException, TransformerException
+    private static void saveDocumentToFile(Document document, String fileName)
+        throws TransformerConfigurationException, TransformerException
     {
         final DOMSource source = new DOMSource(document);
         final StreamResult streamResult = new StreamResult(new File(fileName));
 
         newTransformer().transform(source, streamResult);
+    }
+    
+    private static String saveDocumentToString(Document document)
+       throws TransformerConfigurationException, TransformerException
+    {
+       final DOMSource source = new DOMSource(document);
+       final OutputStream os = new ByteArrayOutputStream();
+       final StreamResult streamResult = new StreamResult(os);
+
+       newTransformer().transform(source, streamResult);
+       return os.toString();
     }
 
     private static Transformer newTransformer() throws TransformerConfigurationException
