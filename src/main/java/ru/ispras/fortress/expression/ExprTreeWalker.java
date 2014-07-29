@@ -24,9 +24,21 @@
 
 package ru.ispras.fortress.expression;
 
+import ru.ispras.fortress.expression.ExprTreeVisitor.Status;
+
 /**
  * The ExprTreeWalker class provides methods that traverse an expression tree
- * and apply a visitor to its nodes.
+ * and apply a visitor to its nodes.<pre></pre>
+ * 
+ * NOTE: Actions taken in the traversal process  depend on the current status
+ * of the visitor (see {@link Status}). There are three possible statuses:
+ * (1) OK - continue traversal, (2) SKIP - skip child nodes and (3) ABORT -
+ * stop traversal. The status is checked after calling any visitor method.
+ * Once ABORT is set, all traversal methods return. If after a call to
+ * a method having the Begin suffix (e.g. onExprBegin), the SKIP status is set
+ * (not ABORT and not OR), nested elements of the visited node (child nodes or
+ * subtrees) are not traversed and a corresponding terminating method (that has
+ * the End suffix) is called.<pre></pre>
  * 
  * @author Andrei Tatarnikov
  */
@@ -52,6 +64,21 @@ public final class ExprTreeWalker
     }
 
     /**
+     * Checks whether the current status of the visitor equals
+     * the specified status.
+     * 
+     * @param status Status to be checked for equality with the current status
+     * of the visitor.   
+     * @return <code>true</code> if the visitor status equals
+     * the specified status, or <code>false</code> otherwise.
+     */
+
+    private boolean isStatus(Status status)
+    {
+        return visitor.getStatus() == status;
+    }
+
+    /**
      * Visits a sequence of expression trees. Each node in the sequence 
      * is considered a root of an expression tree and the visitor is
      * notified about it by calls to the onRootBegin and onRootEnd methods. 
@@ -69,7 +96,10 @@ public final class ExprTreeWalker
             throw new NullPointerException();
 
         for (Node tree : trees)
+        {
             visit(tree);
+            if (isStatus(Status.ABORT)) return; 
+        }
     }
 
     /**
@@ -90,17 +120,25 @@ public final class ExprTreeWalker
             throw new NullPointerException();
 
         visitor.onRootBegin();
-        visitNode(tree);
+        if (isStatus(Status.ABORT)) return;
+
+        if (isStatus(Status.OK))
+        {
+            visitNode(tree);
+            if (isStatus(Status.ABORT)) return;
+        }
+
         visitor.onRootEnd();
     }
-    
+
     /**
      * Visits the specified node.
      * 
      * @param node Node to be visited.
      * 
      * @throws NullPointerException if the parameter equals null.
-     * @throws IllegalArgumentException if the node or any of its child nodes has a unknown type. 
+     * @throws IllegalArgumentException if the node or any of its child
+     * nodes has a unknown type. 
      */
 
     public void visitNode(Node node)
@@ -134,13 +172,26 @@ public final class ExprTreeWalker
             throw new NullPointerException();
 
         visitor.onExprBegin(node);
+        if (isStatus(Status.ABORT)) return;
 
-        for (int index = 0; index < node.getOperandCount(); index++)
+        if (isStatus(Status.OK))
         {
-            final Node operand = node.getOperand(index);
-            visitor.onOperandBegin(node, operand, index);
-            visitNode(operand);
-            visitor.onOperandEnd(node, operand, index);
+            for (int index = 0; index < node.getOperandCount(); index++)
+            {
+                final Node operand = node.getOperand(index);
+
+                visitor.onOperandBegin(node, operand, index);
+                if (isStatus(Status.ABORT)) return;
+
+                if (isStatus(Status.OK))
+                {
+                    visitNode(operand);
+                    if (isStatus(Status.ABORT)) return;
+                }
+
+                visitor.onOperandEnd(node, operand, index);
+                if (isStatus(Status.ABORT)) return;
+            }
         }
 
         visitor.onExprEnd(node);

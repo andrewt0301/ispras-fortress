@@ -74,6 +74,16 @@ public class LocalTransformer implements ExprTreeVisitor
     }
 
     @Override
+    public Status getStatus()
+    {
+        // We are not going to stop the walker or to skip any subtrees.
+        // At least, I (Andrei Tatarnikov) think so.
+        // Therefore, it is always OK.
+
+        return Status.OK;
+    }
+
+    @Override
     public void onRootBegin() {}
 
     @Override

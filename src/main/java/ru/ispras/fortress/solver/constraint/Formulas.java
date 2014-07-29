@@ -218,6 +218,8 @@ public final class Formulas
             @Override public void onOperandBegin(NodeExpr expr, Node operand, int index) {}
             @Override public void onExprEnd(NodeExpr expr) {}
             @Override public void onExprBegin(NodeExpr expr) {}
+            @Override public Status getStatus() { return Status.OK; }
+           
         });
 
         walker.visit(exprs());

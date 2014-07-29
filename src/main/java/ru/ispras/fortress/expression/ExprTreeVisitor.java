@@ -34,6 +34,35 @@ package ru.ispras.fortress.expression;
 public interface ExprTreeVisitor
 {
     /**
+     * The Status enumeration described possible statuses of the visitor.
+     * Status serve as a directive for the walker to alter its behavior
+     * depending on events that may occur in the visitor.
+     *   
+     * @author Andrei Tatarnikov
+     */
+
+    static enum Status
+    {
+        /** Continue traversing */
+        OK,
+
+        /** Skip child nodes */
+        SKIP,
+
+        /** Stop traversing */
+        ABORT
+    }
+
+    /**
+     * Returns the current status of the visitor. The status guides 
+     * further actions of the walker. 
+     * 
+     * @return Current visitor status.
+     */
+
+    Status getStatus();
+
+    /**
      * Notifies that processing of an expression tree has been started.
      */
 
