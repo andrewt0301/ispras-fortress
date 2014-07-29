@@ -54,6 +54,8 @@ public final class Formulas
      * of an existing one.
      * 
      * @param formulas Existing formula container.
+     * 
+     * @throws NullPointerException if the parameter equals null.
      */
 
     public Formulas(Formulas formulas)
@@ -77,11 +79,13 @@ public final class Formulas
     }
 
     /**
-     * Adds a new formula expression to the collection.
+     * Adds a formula expression to the formula container.
      * 
      * @param formula A formula expression.
+     * 
+     * @throws NullPointerException if the parameter equals null.
      */
-    
+
     public void add(Node formula)
     {
         if (null == formula)
@@ -89,6 +93,15 @@ public final class Formulas
 
         exprs.add(formula);
     }
+
+    /**
+     * Adds all formula expression from the specified collection
+     * to the formula container.
+     * 
+     * @param formulas A collection of formula expressions.
+     * 
+     * @throws NullPointerException if the parameter equals null.
+     */
 
     public void addAll(Iterable<Node> formulas)
     {
@@ -98,6 +111,15 @@ public final class Formulas
         for (Node formula : formulas)
             add(formula);
     }
+
+    /**
+     * Adds all formula expressions from the specified formula
+     * container to the current formula container.
+     * 
+     * @param formulas Formula container to be copied.
+     * 
+     * @throws NullPointerException if the parameter equals null.
+     */
 
     public void addAll(Formulas formulas)
     {
@@ -117,7 +139,14 @@ public final class Formulas
     {
         return exprs;
     }
-    
+
+    /**
+     * Unites all stored formula expressions into a single expression
+     * using the AND operator and returns it to the client.
+     * 
+     * @return A single expression for all stored formula expressions.
+     */
+
     public Node asSingleExpr()
     {
         Node root = null;
