@@ -7,18 +7,18 @@
  * 
  * All rights reserved.
  * 
- * Transform.java, Nov 7, 2013 10:50:53 AM Andrei Tatarnikov
+ * Transformer.java, Nov 7, 2013 10:50:53 AM Andrei Tatarnikov
  */
 
-package ru.ispras.fortress.transform;
+package ru.ispras.fortress.transformer;
 
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeExpr;
 import ru.ispras.fortress.expression.NodeVariable;
 
-import ru.ispras.fortress.transform.ruleset.Predicate;
+import ru.ispras.fortress.transformer.ruleset.Predicate;
 
-public final class Transform
+public final class Transformer
 {
     /**
      * Attempts to reduce the operation expression including all of its child
@@ -52,7 +52,7 @@ public final class Transform
         if (expr == null || name == null || term == null)
             throw new NullPointerException();
 
-        final TransformRule rule = new TransformRule() {
+        final TransformerRule rule = new TransformerRule() {
             @Override
             public boolean isApplicable(Node node) {
                 return node.getKind() == Node.Kind.VARIABLE

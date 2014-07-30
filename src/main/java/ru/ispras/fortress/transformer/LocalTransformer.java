@@ -1,4 +1,4 @@
-package ru.ispras.fortress.transform;
+package ru.ispras.fortress.transformer;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -7,10 +7,10 @@ import java.util.IdentityHashMap;
 
 import ru.ispras.fortress.expression.*;
 
-public class LocalTransformer implements ExprTreeVisitor
+class LocalTransformer implements ExprTreeVisitor
 {
     // TODO use list of rules for enum as priority queue
-    private final Map<Enum<?>, TransformRule> ruleset;
+    private final Map<Enum<?>, TransformerRule> ruleset;
 
     private final List<Node[]>  operandStack;
     private final List<Node>    exprStack;
@@ -35,15 +35,15 @@ public class LocalTransformer implements ExprTreeVisitor
 
     public LocalTransformer()
     {
-        this(new IdentityHashMap<Enum<?>, TransformRule>());
+        this(new IdentityHashMap<Enum<?>, TransformerRule>());
     }
 
-    public LocalTransformer(Map<Enum<?>, TransformRule> rules)
+    public LocalTransformer(Map<Enum<?>, TransformerRule> rules)
     {
         if (rules == null)
             throw new NullPointerException();
 
-        ruleset         = new IdentityHashMap<Enum<?>, TransformRule>(rules);
+        ruleset         = new IdentityHashMap<Enum<?>, TransformerRule>(rules);
         operandStack    = new ArrayList<Node[]>();
         exprStack       = new ArrayList<Node>();
         result          = new ArrayList<Node>();
@@ -51,7 +51,7 @@ public class LocalTransformer implements ExprTreeVisitor
         walker          = null;
     }
 
-    public void addRule(Enum<?> opId, TransformRule rule)
+    public void addRule(Enum<?> opId, TransformerRule rule)
     {
         if (opId == null || rule == null)
             throw new NullPointerException();
@@ -67,7 +67,7 @@ public class LocalTransformer implements ExprTreeVisitor
 
     private final Node applyRule(Enum<?> id, Node node)
     {
-        TransformRule rule = ruleset.get(id);
+        final TransformerRule rule = ruleset.get(id);
         if (rule != null && rule.isApplicable(node))
             return rule.apply(node);
         return node;

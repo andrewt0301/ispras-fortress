@@ -10,7 +10,7 @@
  * ReduceOptions.java, Nov 7, 2013 11:00:08 AM Andrei Tatarnikov
  */
 
-package ru.ispras.fortress.transform;
+package ru.ispras.fortress.transformer;
 
 /**
  * Describes flags that affect the behavior of the expression reduction logic.  

@@ -1,4 +1,4 @@
-package ru.ispras.fortress.transform.ruleset;
+package ru.ispras.fortress.transformer.ruleset;
 
 import java.util.Map;
 import java.util.IdentityHashMap;
@@ -6,9 +6,9 @@ import java.util.IdentityHashMap;
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeExpr;
 import ru.ispras.fortress.expression.StandardOperation;
-import ru.ispras.fortress.transform.TransformRule;
+import ru.ispras.fortress.transformer.TransformerRule;
 
-abstract class ExpressionRule implements TransformRule
+abstract class ExpressionRule implements TransformerRule
 {
     private Enum<?> opId;
 
@@ -46,10 +46,10 @@ abstract class ExpressionRule implements TransformRule
 
 public final class Predicate
 {
-    public static Map<Enum<?>, TransformRule> getRuleset()
+    public static Map<Enum<?>, TransformerRule> getRuleset()
     {
-        Map<Enum<?>, TransformRule> ruleset =
-            new IdentityHashMap<Enum<?>, TransformRule>();
+        Map<Enum<?>, TransformerRule> ruleset =
+            new IdentityHashMap<Enum<?>, TransformerRule>();
 
         ExpressionRule rule;
 

@@ -10,8 +10,7 @@
  * OperationReducer.java, Nov 7, 2013 10:54:37 AM Andrei Tatarnikov
  */
 
-package ru.ispras.fortress.transform;
-
+package ru.ispras.fortress.transformer;
 
 import ru.ispras.fortress.calculator.Calculator;
 import ru.ispras.fortress.data.Data;
@@ -74,7 +73,7 @@ public class OperationReducer
 
                 case EXPR:
                     final Node reduced =
-                        Transform.reduce(options, (NodeExpr) o);
+                        Transformer.reduce(options, (NodeExpr) o);
 
                     if (reduced != o)
                     {
