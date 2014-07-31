@@ -55,7 +55,10 @@ public abstract class Node
         VARIABLE,
 
         /** An expression node. Describes an expression that includes an operation and one or two operands. */
-        EXPR
+        EXPR,
+
+        /** A binding node. Represents group of variable substitutions. */
+        BINDING
     }
 
     private final Kind kind;
