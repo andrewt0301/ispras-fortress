@@ -26,6 +26,10 @@ import ru.ispras.fortress.jaxb.JaxbVariableAdapter;
 @XmlJavaTypeAdapter(JaxbVariableAdapter.class)
 public final class Variable
 {
+    private static final String ERR_ILLEGAL_ASSIGNMENT = 
+        "It is illegal to assign a value of type %s " + 
+        "to the %s variable of type %s.";  
+
     private final String name;
     private       Data   data;
 
@@ -34,6 +38,8 @@ public final class Variable
      *
      * @param name Variable name.
      * @param data Data the variable refers to.
+     * 
+     * @throws NullPointerException if any of the parameters equals null.
      */
 
     public Variable(String name, Data data)
@@ -54,6 +60,8 @@ public final class Variable
      * 
      * @param name Variable name.
      * @param type Variable type.
+     * 
+     * @throws NullPointerException if any of the parameters equals null.
      */
 
     public Variable(String name, DataType type)
@@ -77,9 +85,16 @@ public final class Variable
     }
 
     /**
-     * Assigns a new data value to the variable. The data type must be the same.
+     * Assigns a new data value to the variable. The value type must match
+     * the variable type if the variable type is known. If it is unknown
+     * (specified as DataType.UNKNOWN), the variable type is changed
+     * to the type of the argument value. 
      *
      * @param data A data value to be assigned to the variable.
+     * 
+     * @throws NullPointerException if the parameter equals null.
+     * @throws IllegalArgumentException if the argument value type is
+     * different from the variable type and the variable type is known.
      */
 
     public void setData(Data data)
@@ -87,9 +102,12 @@ public final class Variable
         if (null == data)
             throw new NullPointerException();
 
-        if (!this.data.getType().equals(data.getType()))
-            throw new IllegalArgumentException(
-                String.format("%s is illegal data type, %s is expected.", this.data.getType(), data.getType())); 
+        if (!getType().equals(DataType.UNKNOWN) && 
+            !getType().equals(data.getType()))
+        {
+            throw new IllegalArgumentException(String.format(
+                ERR_ILLEGAL_ASSIGNMENT, data.getType(), getName(), getType()));
+        }
 
         this.data = data;
     }
