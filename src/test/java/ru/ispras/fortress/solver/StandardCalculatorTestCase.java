@@ -25,8 +25,8 @@ import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintBuilder;
 import ru.ispras.fortress.solver.constraint.ConstraintKind;
 import ru.ispras.fortress.solver.constraint.Formulas;
-import ru.ispras.fortress.transform.ReduceOptions;
-import ru.ispras.fortress.transform.Transform;
+import ru.ispras.fortress.transformer.ReduceOptions;
+import ru.ispras.fortress.transformer.Transformer;
 
 public class StandardCalculatorTestCase extends GenericSolverSampleTestBase
 {
@@ -88,7 +88,7 @@ public class StandardCalculatorTestCase extends GenericSolverSampleTestBase
                 new NodeExpr(
                     StandardOperation.EQ,
                     a,
-                    Transform.reduce(
+                    Transformer.reduce(
                         ReduceOptions.NEW_INSTANCE,
                         new NodeExpr(
                             StandardOperation.ADD,
@@ -103,7 +103,7 @@ public class StandardCalculatorTestCase extends GenericSolverSampleTestBase
                 new NodeExpr(
                     StandardOperation.EQ,
                     b, 
-                    Transform.reduce(
+                    Transformer.reduce(
                         ReduceOptions.NEW_INSTANCE,
                         new NodeExpr(
                             StandardOperation.SUB,
@@ -118,7 +118,7 @@ public class StandardCalculatorTestCase extends GenericSolverSampleTestBase
                 new NodeExpr(
                     StandardOperation.EQ,
                     c, 
-                    Transform.reduce(
+                    Transformer.reduce(
                         ReduceOptions.NEW_INSTANCE,
                         new NodeExpr(
                             StandardOperation.MUL,
@@ -133,7 +133,7 @@ public class StandardCalculatorTestCase extends GenericSolverSampleTestBase
                 new NodeExpr(
                     StandardOperation.EQ,
                     d,
-                    Transform.reduce(
+                    Transformer.reduce(
                         ReduceOptions.NEW_INSTANCE,
                         new NodeExpr(
                             StandardOperation.DIV,
@@ -148,7 +148,7 @@ public class StandardCalculatorTestCase extends GenericSolverSampleTestBase
                 new NodeExpr(
                     StandardOperation.EQ,
                     e,
-                    Transform.reduce(
+                    Transformer.reduce(
                         ReduceOptions.NEW_INSTANCE,
                         new NodeExpr(
                             StandardOperation.REM,
@@ -163,7 +163,7 @@ public class StandardCalculatorTestCase extends GenericSolverSampleTestBase
                 new NodeExpr(
                     StandardOperation.EQ,
                     f,
-                    Transform.reduce(
+                    Transformer.reduce(
                         ReduceOptions.NEW_INSTANCE,
                         new NodeExpr(
                             StandardOperation.MOD,
