@@ -13,8 +13,8 @@ import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintBuilder;
 import ru.ispras.fortress.solver.constraint.ConstraintKind;
 import ru.ispras.fortress.solver.constraint.Formulas;
-import ru.ispras.fortress.transform.ReduceOptions;
-import ru.ispras.fortress.transform.Transform;
+import ru.ispras.fortress.transformer.ReduceOptions;
+import ru.ispras.fortress.transformer.Transformer;
 
 public class RepeatOperationTestCase extends GenericSolverSampleTestBase
 {
@@ -78,7 +78,7 @@ public class RepeatOperationTestCase extends GenericSolverSampleTestBase
                     y,
                     new NodeExpr(
                         StandardOperation.BVREPEAT,
-                        Transform.reduce(
+                        Transformer.reduce(
                             ReduceOptions.NEW_INSTANCE,
                             new NodeExpr(
                                 StandardOperation.ADD,
