@@ -89,8 +89,7 @@ public class PowerOfTwoCustomTestCase extends GenericSolverSampleTestBase
             );
 
             solver.addCustomOperation(
-                EPowerOfTwoCustomOperation.ISPOWOFTWO,
-                new Function(DataType.BOOLEAN, body, param)
+                new Function(EPowerOfTwoCustomOperation.ISPOWOFTWO, DataType.BOOLEAN, body, param)
             );
         }
 

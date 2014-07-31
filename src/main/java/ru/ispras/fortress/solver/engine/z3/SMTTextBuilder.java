@@ -22,6 +22,7 @@ import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.*;
 import ru.ispras.fortress.solver.SolverOperation;
 import ru.ispras.fortress.solver.function.Function;
+import ru.ispras.fortress.solver.function.FunctionTemplate;
 
 import static ru.ispras.fortress.solver.engine.z3.SMTStrings.*;
 
@@ -130,14 +131,14 @@ final class SMTTextBuilder implements ExprTreeVisitor
         }
     }
 
-    private void addFunctionDefinition(Enum<?> id, Function function)
+    private void addFunctionDefinition(Function function)
     {
-        if (functions.isDefined(id))
+        if (functions.isDefined(function.getUniqueName()))
             return;
 
         final StringBuilder builder = new StringBuilder();
 
-        builder.append(id.name());
+        builder.append(function.getUniqueName());
         builder.append(sSPACE);
 
         // Forms the parameter list.
@@ -157,7 +158,7 @@ final class SMTTextBuilder implements ExprTreeVisitor
         final StringBuilder previousBuilder = getCurrentBuilder();
         setCurrentBuilder(builder);
 
-        functions.addEntry(id, functionCallDepth, builder);
+        functions.addEntry(function.getUniqueName(), functionCallDepth, builder);
 
         if (0 == functionCallDepth)
             functions.beginCallTree();
@@ -207,8 +208,37 @@ final class SMTTextBuilder implements ExprTreeVisitor
 
         final SolverOperation operation = operations.get(op);
 
-        if (operation.isCustom())
-            addFunctionDefinition(op, operation.getFunction());
+        final String operationText;
+        switch(operation.getKind())
+        {
+        case TEXT:
+            operationText = operation.getText();
+            break;
+
+        case FUNCTION:
+            operationText = operation.getFunction().getUniqueName();
+            addFunctionDefinition(operation.getFunction());
+            break;
+
+        case TEMPLATE:
+        {
+            final DataType[] argTypes = new DataType[expr.getOperandCount()];
+
+            for (int index = 0; index < expr.getOperandCount(); ++index)
+                argTypes[index] = expr.getOperand(index).getDataType(); 
+
+            final FunctionTemplate template = operation.getTemplate();
+            final Function function = template.instantiate(argTypes);
+
+            operationText = function.getUniqueName();
+            addFunctionDefinition(function);
+            break;
+        }
+
+        default:
+            throw new IllegalArgumentException(
+                "Unknown operation kind: " + operation.getKind());
+        }
 
         appendToCurrent(sSPACE);
 
@@ -222,7 +252,7 @@ final class SMTTextBuilder implements ExprTreeVisitor
             appendToCurrent(sSPACE);
         }
 
-        appendToCurrent(operation.getText());
+        appendToCurrent(operationText);
     }
 
     @Override
@@ -290,7 +320,7 @@ final class SMTTextBuilder implements ExprTreeVisitor
 
 final class FunctionDefinitionBuilders
 {
-    private final Set<Enum<?>>                      hashes;
+    private final Set<String>                        names;
     private final List<StringBuilder>              entries;
     private final Map<Integer, List<StringBuilder>>  queue;
 
@@ -306,14 +336,17 @@ final class FunctionDefinitionBuilders
 
     public FunctionDefinitionBuilders()
     {
-        this.hashes  = new HashSet<Enum<?>>();
+        this.names   = new HashSet<String>();
         this.entries = new ArrayList<StringBuilder>();
         this.queue   = new TreeMap<Integer, List<StringBuilder>>(new ReverseComparator());
     }
 
     public void beginCallTree()
     {
-        assert !callTreeStarted;
+        if (callTreeStarted)
+            throw new IllegalStateException(
+                "The call tree is already started.");
+
         callTreeStarted = true;
     }
 
@@ -329,16 +362,18 @@ final class FunctionDefinitionBuilders
         callTreeStarted = false;
     }
 
-    public boolean isDefined(Enum<?> opId)
+    public boolean isDefined(String name)
     {
-        return hashes.contains(opId);
+        return names.contains(name);
     }
 
-    public void addEntry(Enum<?> key, Integer depth, StringBuilder entry)
+    public void addEntry(String name, Integer depth, StringBuilder entry)
     {
-        assert !hashes.contains(key) : "The function is already defined."; 
+        if (names.contains(name))
+            throw new IllegalStateException(String.format(
+                "The function %s function is already defined.", name)); 
 
-        hashes.add(key);
+        names.add(name);
 
         final List<StringBuilder> level;
         if (queue.containsKey(depth))

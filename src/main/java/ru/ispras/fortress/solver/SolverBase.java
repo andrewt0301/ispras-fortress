@@ -20,6 +20,7 @@ import java.util.Set;
 import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.solver.constraint.ConstraintKind;
 import ru.ispras.fortress.solver.function.Function;
+import ru.ispras.fortress.solver.function.FunctionTemplate;
 
 public abstract class SolverBase implements Solver
 {
@@ -96,12 +97,21 @@ public abstract class SolverBase implements Solver
     }
 
     @Override
-    public final boolean addCustomOperation(Enum<?> id, Function function)
+    public final boolean addCustomOperation(Function function)
     {
-        notNullCheck(id, "id");
         notNullCheck(function, "function");
 
-        return null == operations.put(id, SolverOperation.newCustom(id, function));
+        return null == operations.put(
+            function.getId(), SolverOperation.newFunction(function));
+    }
+
+    @Override
+    public final boolean addCustomOperation(FunctionTemplate template)
+    {
+        notNullCheck(template, "template");
+
+        return null == operations.put(
+            template.getId(), SolverOperation.newTemplate(template));
     }
 
     protected final void addStandardOperation(StandardOperation id, String text)
@@ -115,6 +125,6 @@ public abstract class SolverBase implements Solver
                 String.format(ERR_ALREADY_REGISTERED, id.getClass().getSimpleName(), id.name()));
         }
 
-        operations.put(id, SolverOperation.newStandard(id, text));
+        operations.put(id, SolverOperation.newText(id, text));
     }
 }

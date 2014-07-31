@@ -3,6 +3,7 @@ package ru.ispras.fortress.solver;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.NodeExpr;
@@ -13,8 +14,6 @@ import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintBuilder;
 import ru.ispras.fortress.solver.constraint.ConstraintKind;
 import ru.ispras.fortress.solver.constraint.Formulas;
-import ru.ispras.fortress.solver.function.FunctionFactory;
-import ru.ispras.fortress.solver.function.FunctionOperation;
 
 public class MinCustomOperationTestCase extends GenericSolverSampleTestBase
 {
@@ -44,30 +43,19 @@ public class MinCustomOperationTestCase extends GenericSolverSampleTestBase
 
     public static class MinCustomOperation implements ISampleConstraint
     {
-        private static final DataType realType = DataType.REAL;
-
         @Override
         public Constraint getConstraint()
         {
-            final Solver solver = SolverId.Z3_TEXT.getSolver();
-            assert solver != null;
-
-            solver.addCustomOperation(
-                FunctionOperation.MIN,
-                FunctionFactory.makeMin(
-                    new Variable("x", realType),
-                    new Variable("y", realType)
-                )
-            );
-
             final ConstraintBuilder builder = new ConstraintBuilder();
 
             builder.setName("MinCustomOperation");
             builder.setKind(ConstraintKind.FORMULA_BASED);
             builder.setDescription("MinCustomOperation constraint");
 
-            final NodeVariable a = new NodeVariable(builder.addVariable("a", realType));
-            final NodeVariable b = new NodeVariable(builder.addVariable("b", realType));
+            final NodeVariable a = new NodeVariable(builder.addVariable("a", DataType.REAL));
+            final NodeVariable b = new NodeVariable(builder.addVariable("b", DataType.REAL));
+            final NodeVariable c = new NodeVariable(builder.addVariable("c", DataType.INTEGER));
+            final NodeVariable d = new NodeVariable(builder.addVariable("d", DataType.INTEGER));
 
             final Formulas formulas = new Formulas();
             builder.setInnerRep(formulas);
@@ -77,18 +65,36 @@ public class MinCustomOperationTestCase extends GenericSolverSampleTestBase
                     StandardOperation.EQ,
                     a,
                     new NodeExpr(
-                        FunctionOperation.MIN,
-                        new NodeValue(realType.valueOf("3.0", 10)),
-                        new NodeValue(realType.valueOf("4.0", 10)))));
+                        StandardOperation.MIN,
+                        NodeValue.newReal(3.0),
+                        NodeValue.newReal(4.0))));
 
             formulas.add(
                 new NodeExpr(
                     StandardOperation.EQ,
                     b,
                     new NodeExpr(
-                        FunctionOperation.MIN,
+                        StandardOperation.MIN,
                         a,
-                        new NodeValue(realType.valueOf("2.0", 10)))));
+                        NodeValue.newReal(2.0))));
+            
+            formulas.add(
+                new NodeExpr(
+                    StandardOperation.EQ,
+                    c,
+                    new NodeExpr(
+                        StandardOperation.MIN,
+                        NodeValue.newInteger(3),
+                        NodeValue.newInteger(4))));
+
+            formulas.add(
+                new NodeExpr(
+                    StandardOperation.EQ,
+                    d,
+                    new NodeExpr(
+                        StandardOperation.MIN,
+                        c,
+                        NodeValue.newInteger(2))));
 
             return builder.build();
         }
@@ -98,8 +104,10 @@ public class MinCustomOperationTestCase extends GenericSolverSampleTestBase
         {
             final List<Variable> result = new ArrayList<Variable>();
 
-            result.add(new Variable("a", realType.valueOf("3.0", 10)));
-            result.add(new Variable("b", realType.valueOf("2.0", 10)));
+            result.add(new Variable("a", Data.newReal(3.0)));
+            result.add(new Variable("b", Data.newReal(2.0)));
+            result.add(new Variable("c", Data.newInteger(3)));
+            result.add(new Variable("d", Data.newInteger(2)));
 
             return result;
         }

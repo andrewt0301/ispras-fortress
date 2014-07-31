@@ -15,6 +15,7 @@ package ru.ispras.fortress.solver;
 import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintKind;
 import ru.ispras.fortress.solver.function.Function;
+import ru.ispras.fortress.solver.function.FunctionTemplate;
 
 /**
  * The Solver interface provides a protocol for working with different kinds
@@ -69,11 +70,23 @@ public interface Solver
 
     /**
      * Register a custom operation that extends the functionality of the 
-     * solver. The operation is implemented in terms of existing operation
+     * solver. The operation is implemented in terms of existing operations
      * and represents a function.
      * 
-     * @param function Object describing the semantics and syntax of the operation.
+     * @param function Object describing the semantics and syntax of the function.
      */
 
-    public boolean addCustomOperation(Enum<?> id, Function function);
+    public boolean addCustomOperation(Function function);
+
+    /**
+     * Register a custom operation that extends the functionality of the 
+     * solver. The operation is implemented in terms of existing operation
+     * and represents a family of functions derived from the same template.
+     * Functions share the same logic, but may operate on different data types.
+     * 
+     * @param template Function template that describes the semantics and syntax
+     * of a family of similar functions.
+     */
+
+    public boolean addCustomOperation(FunctionTemplate template);
 }

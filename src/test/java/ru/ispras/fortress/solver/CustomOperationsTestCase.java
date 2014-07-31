@@ -106,14 +106,18 @@ public class CustomOperationsTestCase extends GenericSolverSampleTestBase
         private void registerINT_ZERO(Solver solver)
         {
             final Node body = new NodeValue(Int_t.valueOf("0", 10));
-            solver.addCustomOperation(ECustomOperation.INT_ZERO, new Function(Int_t, body));
+            solver.addCustomOperation(
+                new Function(ECustomOperation.INT_ZERO, Int_t, body)
+            );
         }
 
         // (define-fun INT_BASE_SIZE () Int_t (_ bv32 64))
         private void registerINT_BASE_SIZE(Solver solver)
         {
             final Node body = new NodeValue(Int_t.valueOf("32", 10));
-            solver.addCustomOperation(ECustomOperation.INT_BASE_SIZE, new Function(Int_t, body));
+            solver.addCustomOperation(
+                new Function(ECustomOperation.INT_BASE_SIZE, Int_t, body)
+            );
         }
 
         // (define-fun INT_SIGN_MASK () Int_t (bvshl (bvnot INT_ZERO) INT_BASE_SIZE))
@@ -126,7 +130,9 @@ public class CustomOperationsTestCase extends GenericSolverSampleTestBase
                     new NodeExpr(ECustomOperation.INT_BASE_SIZE)
                     );
 
-            solver.addCustomOperation(ECustomOperation.INT_SIGN_MASK, new Function(Int_t, body));
+            solver.addCustomOperation(
+                new Function(ECustomOperation.INT_SIGN_MASK, Int_t, body)
+            );
         }
 
         // (define-fun IS_VALID_POS ((x!1 Int_t)) Bool (ite (= (bvand x!1 INT_SIGN_MASK) INT_ZERO) true false))
@@ -145,8 +151,7 @@ public class CustomOperationsTestCase extends GenericSolverSampleTestBase
             );
 
             solver.addCustomOperation(
-                ECustomOperation.IS_VALID_POS,
-                new Function(DataType.BOOLEAN, body, param)
+                new Function(ECustomOperation.IS_VALID_POS, DataType.BOOLEAN, body, param)
             );
         }
 
@@ -166,8 +171,7 @@ public class CustomOperationsTestCase extends GenericSolverSampleTestBase
             );
 
             solver.addCustomOperation(
-                ECustomOperation.IS_VALID_NEG,
-                new Function(DataType.BOOLEAN, body, param)
+                new Function(ECustomOperation.IS_VALID_NEG, DataType.BOOLEAN, body, param)
             );
         }
 
@@ -183,8 +187,7 @@ public class CustomOperationsTestCase extends GenericSolverSampleTestBase
             );
 
             solver.addCustomOperation(
-                ECustomOperation.IS_VALID_SIGNED_INT,
-                new Function(DataType.BOOLEAN, body, param)
+                new Function(ECustomOperation.IS_VALID_SIGNED_INT, DataType.BOOLEAN, body, param)
             );
         }
 

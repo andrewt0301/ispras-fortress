@@ -13,6 +13,7 @@
 package ru.ispras.fortress.solver;
 
 import ru.ispras.fortress.solver.function.Function;
+import ru.ispras.fortress.solver.function.FunctionTemplate;
 
 /**
  * The SolverOperation class stores information about a solver operation.
@@ -23,32 +24,50 @@ import ru.ispras.fortress.solver.function.Function;
  * @author Andrei Tatarnikov
  */
 
-public final class SolverOperation
+public abstract class SolverOperation
 {
+    /**
+     * Describes the type of the solver operation.
+     * 
+     * @author Andrei Tatarnikov
+     */
+
+    public static enum Kind
+    {
+        TEXT,
+        FUNCTION,
+        TEMPLATE
+    }
+
+    private final Kind   kind;
     private final Enum<?>  id;
-    private final String   text;
-    private final Function function;
-    
-    public static final SolverOperation newStandard(Enum<?> id, String text)
+
+    public static final SolverOperation newText(Enum<?> id, String text)
     {
         if (null == id)
             throw new NullPointerException();
         
         if (text == null)
             throw new NullPointerException();
-
-        return new SolverOperation(id, text, null);
+        
+       return new TextOperation(id, text); 
+        
     }
-    
-    public static final SolverOperation newCustom(Enum<?> id, Function function)
-    {
-        if (null == id)
-            throw new NullPointerException();
 
+    public static final SolverOperation newFunction(Function function)
+    {
         if (null == function)
             throw new NullPointerException();
 
-        return new SolverOperation(id, id.name(), function);
+        return new FunctionOperation(function);
+    }
+    
+    public static final SolverOperation newTemplate(FunctionTemplate template)
+    {
+        if (null == template)
+            throw new NullPointerException();
+        
+        return new TemplateOperation(template); 
     }
 
     /**
@@ -57,45 +76,106 @@ public final class SolverOperation
      * @param function Definition of the operation (including its parameters and underlying expression).
      */
 
-    private SolverOperation(Enum<?> id, String text, Function function)
+    private SolverOperation(Kind kind, Enum<?> id)
     {
-        this.id       = id;
-        this.text     = text;
-        this.function = function;
+        this.kind = kind;
+        this.id   = id;
+    }
+
+    /**
+     * Returns information of the type of the operation.
+     * 
+     * @return Operation kind.
+     */
+
+    public final Kind getKind()
+    {
+        return kind;
     }
 
     /**
      * Returns the textual representation of the operation.
      * @return Textual representation of the operation.
      */
-    
-    public Enum<?> getOperationId()
+
+    public final Enum<?> getOperationId()
     {
         return id;
     }
 
-    public String getText()
-    {
-        return text;
-    }
+    public abstract String getText();
 
     /**
-     * Returns the underlying function of a custom operation.
-     * @return Underlying function of a custom operation.
+     * Returns the underlying function.
+     * @return Underlying function.
      */
 
-    public Function getFunction()
-    {
-        return function;
-    }
+    public abstract Function getFunction();
 
     /**
-     * Return a flag that indicates whether the operation is custom or not.
-     * @return true for custom operations and false for built-in operations.
+     * Returns the underlying function template.
+     * @return Underlying function template.
      */
 
-    public boolean isCustom()
+    public abstract FunctionTemplate getTemplate();
+    
+    private static class TextOperation extends SolverOperation
     {
-        return function != null;
+        private final String text;
+
+        private TextOperation(Enum<?> id, String text)
+        {
+            super(Kind.TEXT, id);
+            this.text = text;
+        }
+
+        @Override
+        public String getText() { return text; }
+
+        @Override
+        public Function getFunction() { return null; }
+
+        @Override
+        public FunctionTemplate getTemplate() { return null; }
+    }
+    
+    private static class FunctionOperation extends SolverOperation
+    {
+        private final Function function;
+
+        private FunctionOperation(Function function)
+        {
+            super(Kind.FUNCTION, function.getId());
+            this.function = function;
+        }
+
+        @Override
+        public String getText() { return function.getUniqueName(); }
+
+        @Override
+        public Function getFunction() { return function; }
+
+        @Override
+        public FunctionTemplate getTemplate() { return null; }
+    }
+
+    private static class TemplateOperation extends SolverOperation
+    {
+        private final FunctionTemplate template;
+
+        private TemplateOperation(FunctionTemplate template)
+        {
+            super(Kind.TEMPLATE, template.getId());
+            this.template = template;
+        }
+
+        @Override
+        public String getText() { return null; }
+
+        @Override
+        public Function getFunction() { return null; }
+
+        @Override
+        public FunctionTemplate getTemplate() { return template; }
     }
 }

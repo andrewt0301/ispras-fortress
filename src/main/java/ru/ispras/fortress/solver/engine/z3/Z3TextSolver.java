@@ -37,6 +37,7 @@ import ru.ispras.fortress.solver.SolverResultBuilder;
 import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintKind;
 import ru.ispras.fortress.solver.constraint.Formulas;
+import ru.ispras.fortress.solver.function.StandardFunction;
 
 /**
  * The Z3TextSolver class implements logic of a constraint solver that
@@ -405,5 +406,8 @@ public final class Z3TextSolver extends SolverBase
         /* Array operations */
         addStandardOperation(StandardOperation.SELECT, "select");
         addStandardOperation(StandardOperation.STORE,  "store");
+        
+        for (StandardFunction template : StandardFunction.values())
+            addCustomOperation(template);
     }
 }

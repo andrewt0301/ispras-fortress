@@ -3,6 +3,7 @@ package ru.ispras.fortress.solver;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.NodeExpr;
@@ -13,8 +14,6 @@ import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintBuilder;
 import ru.ispras.fortress.solver.constraint.ConstraintKind;
 import ru.ispras.fortress.solver.constraint.Formulas;
-import ru.ispras.fortress.solver.function.FunctionFactory;
-import ru.ispras.fortress.solver.function.FunctionOperation;
 
 public class AbsCustomOperationTestCase extends GenericSolverSampleTestBase
 {
@@ -28,52 +27,68 @@ public class AbsCustomOperationTestCase extends GenericSolverSampleTestBase
 	<pre>
     (declare-const a Real)
     (declare-const b Real)
-    (define-fun ABS ((x Real)) Real( ite( >= x  0.0) x( ~ x)))
-    (assert( =( ABS( ~  5.0))  5.0))
-    (assert( =( ABS  5.0)  5.0))
-    (assert( =( ABS( ~ a))  5.0))
-    (assert( =( ABS b)  5.0))
+    (declare-const c Int)
+    (declare-const d Int)
+    (define-fun StandardOperation_ABS_RET_LOGIC_REAL_PARAMS_LOGIC_REAL ((x Real)) Real (ite (>= x 0.0) x (- x)))
+    (define-fun StandardOperation_ABS_RET_LOGIC_INTEGER_PARAMS_LOGIC_INTEGER ((x Int)) Int (ite (>= x 0) x (- x)))
+    (assert  (< a 0.0))
+    (assert  (> b 0.0))
+    (assert  (< c 0))
+    (assert  (> d 0))
+    (assert  (= (StandardOperation_ABS_RET_LOGIC_REAL_PARAMS_LOGIC_REAL (- 5.0)) 5.0))
+    (assert  (= (StandardOperation_ABS_RET_LOGIC_REAL_PARAMS_LOGIC_REAL 5.0) 5.0))
+    (assert  (= (StandardOperation_ABS_RET_LOGIC_REAL_PARAMS_LOGIC_REAL (- a)) 5.0))
+    (assert  (= (StandardOperation_ABS_RET_LOGIC_REAL_PARAMS_LOGIC_REAL b) 5.0))
+    (assert  (= (StandardOperation_ABS_RET_LOGIC_INTEGER_PARAMS_LOGIC_INTEGER (- c)) 5))
+    (assert  (= (StandardOperation_ABS_RET_LOGIC_INTEGER_PARAMS_LOGIC_INTEGER d) 5))
     (check-sat)
-    (get-value ( a b))
-    (exit)</pre>
+    (get-value ( a b c d))
+    (get-model)
+    (exit)
+    </pre>
 
-    Expected output: sat ((a (- 5.0))(b (- 5.0)))
+    Expected output: sat ((a (- 5.0)) (b 5.0) (c (- 5)) (d 5))
     */
 
     public static class AbsCustomOperation implements ISampleConstraint
     {
-        private static final DataType realType = DataType.REAL;
-
         @Override
         public Constraint getConstraint()
         {
-            final Solver solver = SolverId.Z3_TEXT.getSolver();
-            assert solver != null;
-
-            solver.addCustomOperation(
-                FunctionOperation.ABS,
-                FunctionFactory.makeAbs(new Variable("x", realType)));
-
             final ConstraintBuilder builder = new ConstraintBuilder();
 
             builder.setName("AbsCustomOperation");
             builder.setKind(ConstraintKind.FORMULA_BASED);
             builder.setDescription("AbsCustomOperation constraint");
 
-            final NodeVariable a = new NodeVariable(builder.addVariable("a", realType));
-            final NodeVariable b = new NodeVariable(builder.addVariable("b", realType));
+            final NodeVariable a = new NodeVariable(builder.addVariable("a", DataType.REAL));
+            final NodeVariable b = new NodeVariable(builder.addVariable("b", DataType.REAL));
+            final NodeVariable c = new NodeVariable(builder.addVariable("c", DataType.INTEGER));
+            final NodeVariable d = new NodeVariable(builder.addVariable("d", DataType.INTEGER));
 
             final Formulas formulas = new Formulas();
             builder.setInnerRep(formulas);
+            
+            formulas.add(new NodeExpr(
+                StandardOperation.LESS, a, NodeValue.newReal(0)));
+            
+            formulas.add(new NodeExpr(
+                StandardOperation.GREATER, b, NodeValue.newReal(0)));
+
+            formulas.add(new NodeExpr(
+                StandardOperation.LESS, c, NodeValue.newInteger(0)));
+            
+            formulas.add(new NodeExpr(
+                StandardOperation.GREATER, d, NodeValue.newInteger(0)));
 
             formulas.add(
                 new NodeExpr(
                     StandardOperation.EQ,
                     new NodeExpr(
-                        FunctionOperation.ABS,
-                        new NodeExpr(StandardOperation.MINUS, new NodeValue(realType.valueOf("5.0",10)))
+                        StandardOperation.ABS,
+                        new NodeExpr(StandardOperation.MINUS, NodeValue.newReal(5.0))
                     ),
-                    new NodeValue(realType.valueOf("5.0", 10))
+                    NodeValue.newReal(5.0)
                 )
             );
 
@@ -81,10 +96,10 @@ public class AbsCustomOperationTestCase extends GenericSolverSampleTestBase
                 new NodeExpr(
                     StandardOperation.EQ,
                     new NodeExpr(
-                        FunctionOperation.ABS,
-                        new NodeValue(realType.valueOf("5.0",10))
+                        StandardOperation.ABS,
+                        NodeValue.newReal(5.0)
                     ),
-                    new NodeValue(realType.valueOf("5.0", 10))
+                    NodeValue.newReal(5.0)
                 )
             );
 
@@ -92,18 +107,37 @@ public class AbsCustomOperationTestCase extends GenericSolverSampleTestBase
                 new NodeExpr(
                     StandardOperation.EQ,
                     new NodeExpr(
-                        FunctionOperation.ABS,
+                        StandardOperation.ABS,
                         new NodeExpr(StandardOperation.MINUS, a)
                     ),
-                    new NodeValue(realType.valueOf("5.0",10))
+                    NodeValue.newReal(5.0)
                 )
             );
 
             formulas.add(
                 new NodeExpr(
                     StandardOperation.EQ,
-                    new NodeExpr(FunctionOperation.ABS, b),
-                    new NodeValue(realType.valueOf("5.0",10))
+                    new NodeExpr(StandardOperation.ABS, b),
+                    NodeValue.newReal(5.0)
+                )
+            );
+            
+            formulas.add(
+                new NodeExpr(
+                    StandardOperation.EQ,
+                    new NodeExpr(
+                        StandardOperation.ABS,
+                        new NodeExpr(StandardOperation.MINUS, c)
+                    ),
+                    NodeValue.newInteger(5)
+                )
+            );
+
+            formulas.add(
+                new NodeExpr(
+                    StandardOperation.EQ,
+                    new NodeExpr(StandardOperation.ABS, d),
+                    NodeValue.newInteger(5)
                 )
             );
 
@@ -115,8 +149,10 @@ public class AbsCustomOperationTestCase extends GenericSolverSampleTestBase
         {
             final List<Variable> result = new ArrayList<Variable>();
 
-            result.add(new Variable("a", realType.valueOf("-5.0", 10)));
-            result.add(new Variable("b", realType.valueOf("-5.0", 10)));
+            result.add(new Variable("a", Data.newReal(-5.0)));
+            result.add(new Variable("b", Data.newReal(5.0)));
+            result.add(new Variable("c", Data.newInteger(-5)));
+            result.add(new Variable("d", Data.newInteger(5)));
 
             return result;
         }
