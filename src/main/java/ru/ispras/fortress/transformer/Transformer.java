@@ -12,9 +12,13 @@
 
 package ru.ispras.fortress.transformer;
 
+import java.util.Map;
+import java.util.HashMap;
+
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeExpr;
 import ru.ispras.fortress.expression.NodeVariable;
+import ru.ispras.fortress.expression.NodeBinding;
 
 import ru.ispras.fortress.transformer.ruleset.Predicate;
 
@@ -69,6 +73,40 @@ public final class Transformer
         transformer.addRule(Node.Kind.VARIABLE, rule);
         transformer.walk(expr);
         return transformer.getResult().iterator().next();
+    }
+
+    public static Node substituteBinding(NodeBinding node)
+    {
+        if (node == null)
+            throw new NullPointerException();
+
+        final Map<String, Node> exprs = new HashMap<String, Node>();
+        for (NodeBinding.BoundVariable bound : node.getBindings())
+            exprs.put(bound.getVariable().getName(), bound.getValue());
+
+        final TransformerRule rule = new TransformerRule() {
+            @Override
+            public boolean isApplicable(Node node) {
+                if (node.getKind() != Node.Kind.VARIABLE)
+                    return false;
+
+                return exprs.containsKey(((NodeVariable) node).getName());
+            }
+
+            @Override
+            public Node apply(Node node) {
+                return exprs.get(((NodeVariable) node).getName());
+            }
+        };
+
+        final LocalTransformer transformer = new LocalTransformer();
+        transformer.addRule(Node.Kind.VARIABLE, rule);
+        transformer.walk(node);
+
+        final NodeBinding out =
+            (NodeBinding) transformer.getResult().iterator().next();
+
+        return out.getExpression();
     }
 
     public static Node transformStandardPredicate(Node expr)
