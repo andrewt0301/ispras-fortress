@@ -23,6 +23,9 @@
  - Saving/loading constraints to/from an XML string
  - Aborting visiting an expression tree and skipping subtrees 
  - Basic facilities to calculate the type of an expression
+ - Extending the functionality of a solver with function templates. 
+ - New standard operations: ABS, MIN, MAX, BVANDR, BVNANDR,
+   BVORR, BVNORR, BVXORR, BVXNORR
 
 --------------------------------------------------------------------------------
  2014/07/08 Fortress 0.3.1 beta
