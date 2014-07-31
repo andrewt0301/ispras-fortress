@@ -26,6 +26,8 @@ package ru.ispras.fortress.expression;
 
 import java.util.Arrays;
 
+import ru.ispras.fortress.data.DataType;
+
 /**
  * The NodeExpr class represents an expression node described by an operation and operands
  *
@@ -35,7 +37,8 @@ import java.util.Arrays;
 public final class NodeExpr extends Node
 {
     private final Enum<?> operation;
-    private final Node[]   operands;
+    private final Node[] operands;
+    private DataType dataType;
 
     /**
      * Creates an expression node that has a variable number of operands (from 0 to infinity).
@@ -44,7 +47,7 @@ public final class NodeExpr extends Node
      * @param operands Operands packed into an array of syntax elements.
      */
 
-    public <T extends Enum<?>> NodeExpr(T operation, Node ... operands)
+    public <T extends Enum<? extends T>> NodeExpr(T operation, Node ... operands)
     {
         super(Kind.EXPR);
 
@@ -56,6 +59,7 @@ public final class NodeExpr extends Node
 
         this.operation = operation;
         this.operands  = operands;
+        this.dataType  = DataType.UNKNOWN;
     }
 
     /**
@@ -125,16 +129,25 @@ public final class NodeExpr extends Node
         return operation;
     }
 
-    /* TODO: Not supported in the current version. No implementation for expressions.
+    /**
+     * {@inheritDoc}
+     */
+
     @Override
     public DataType getDataType()
     {
-        // TODO: we need to resolve here the type of the expression based
-        // on its parameters and some rules.
-        assert false : "Not implemented.";
-        return null;
+        if (dataType.equals(DataType.UNKNOWN) && operation instanceof TypeRule)
+        {
+            final DataType[] types = new DataType[getOperandCount()];
+
+            for (int index = 0; index < getOperandCount(); ++index)
+                types[index] = getOperand(index).getDataType();
+
+            dataType = ((TypeRule) operation).getResultType(types);
+        }
+
+        return dataType;
     }
-    */
 
     @Override
     public int hashCode()

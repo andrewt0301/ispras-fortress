@@ -12,6 +12,8 @@
 
 package ru.ispras.fortress.expression;
 
+import ru.ispras.fortress.data.DataType;
+
 /**
  * The StandardOperation.java enumeration contains identifiers that
  * specify particular operations used in expressions.
@@ -19,208 +21,208 @@ package ru.ispras.fortress.expression;
  * @author Andrei Tatarnikov
  */
 
-public enum StandardOperation
+public enum StandardOperation implements TypeRule
 {
     /**
     The items below belong to the "Logic Operations" group.
     */
 
     /** Group: Logic, Operation: Equality */
-    EQ,
+    EQ        (TypeRules.BOOLEAN),
 
     /** Group: Logic, Operation: Not Equal */
-    NOTEQ,
+    NOTEQ     (TypeRules.BOOLEAN),
 
     /** Group: Logic, Operation: Case equality */
-    EQCASE,
+    EQCASE    (TypeRules.BOOLEAN),
 
     /** Group: Logic, Operation: Case not equality */
-    NOTEQCASE,
+    NOTEQCASE (TypeRules.BOOLEAN),
 
     /** Group: Logic, Operation: AND */
-    AND,
+    AND       (TypeRules.BOOLEAN),
 
     /** Group: Logic, Operation: OR */
-    OR,
+    OR        (TypeRules.BOOLEAN),
 
     /** Group: Logic, Operation: NOT */
-    NOT,
+    NOT       (TypeRules.BOOLEAN),
 
     /** Group: Logic, Operation: XOR */
-    XOR,
+    XOR       (TypeRules.BOOLEAN),
 
     /** Group: Logic, Operation: Implication */
-    IMPL,
+    IMPL      (TypeRules.BOOLEAN),
 
     /** Group: Logic, Operation: Conditional expression aka if-then-else */
-    ITE,
+    ITE       (TypeRules.ITE),
 
     /**
     The items below belong to the "Logic Arithmetic" group.
     */
 
     /** Group: Logic, Operation: Unary minus */
-    MINUS,
+    MINUS     (TypeRules.FIRST_KNOWN_NUM_ARG),
 
     /** Group: Logic, Operation: Unary plus */
-    PLUS,
+    PLUS      (TypeRules.FIRST_KNOWN_NUM_ARG),
 
     /** Group: Logic, Operation: Addition */
-    ADD,
+    ADD       (TypeRules.FIRST_KNOWN_NUM_ARG),
 
     /** Group: Logic, Operation: Subtraction */
-    SUB,
+    SUB       (TypeRules.FIRST_KNOWN_NUM_ARG),
 
     /** Group: Logic, Operation: Division */
-    DIV,
+    DIV       (TypeRules.FIRST_KNOWN_NUM_ARG),
 
     /** Group: Logic, Operation: Multiplication */
-    MUL,
+    MUL       (TypeRules.FIRST_KNOWN_NUM_ARG),
 
     /** Group: Logic, Operation: Remainder */
-    REM,
+    REM       (TypeRules.FIRST_KNOWN_NUM_ARG),
 
     /** Group: Logic, Operation: Modulo */
-    MOD,
+    MOD       (TypeRules.FIRST_KNOWN_NUM_ARG),
 
     /** Group: Logic, Operation: Less */
-    LESS,
+    LESS      (TypeRules.BOOLEAN),
 
     /** Group: Logic, Operation: Less or equal */
-    LESSEQ,
+    LESSEQ    (TypeRules.BOOLEAN),
 
     /** Group: Logic, Operation: Greater */
-    GREATER,
+    GREATER   (TypeRules.BOOLEAN),
 
     /** Group: Logic, Operation: Greater or equal */
-    GREATEREQ,
+    GREATEREQ (TypeRules.BOOLEAN),
 
     /** Group: Logic, Operation: Power */
-    POWER,
-    
+    POWER     (TypeRules.FIRST_NUM_ARG),
+
     /**
     The items below belong to the "Logic Arithmetic (Additional)" group.
     */
 
     /** Group: Logic, Operation: Absolute value */
-    ABS,
+    ABS       (TypeRules.FIRST_KNOWN_NUM_ARG),
 
     /** Group: Logic, Operation: Minimum */
-    MIN,
+    MIN       (TypeRules.FIRST_KNOWN_NUM_ARG),
 
     /** Group: Logic, Operation: Maximum */
-    MAX,
+    MAX       (TypeRules.FIRST_KNOWN_NUM_ARG),
 
     /**
     The items below belong to the "Basic Bitvector Arithmetic" group.
     */
 
     /** Group: Bitvector, Operation: Addition */
-    BVADD,
+    BVADD     (TypeRules.FIRST_KNOWN_BV_ARG),
 
     /** Group: Bitvector, Operation: Subtraction */
-    BVSUB,
+    BVSUB     (TypeRules.FIRST_KNOWN_BV_ARG),
 
     /** Group: Bitvector, Operation: Unary minus */
-    BVNEG,
+    BVNEG     (TypeRules.FIRST_KNOWN_BV_ARG),
 
     /** Group: Bitvector, Operation: Multiplication */
-    BVMUL,
+    BVMUL     (TypeRules.FIRST_KNOWN_BV_ARG),
 
     /** Group: Bitvector, Operation: Unsigned remainder */
-    BVUREM,
+    BVUREM    (TypeRules.FIRST_KNOWN_BV_ARG),
 
     /** Group: Bitvector, Operation: Signed remainder */
-    BVSREM,
+    BVSREM    (TypeRules.FIRST_KNOWN_BV_ARG),
 
     /** Group: Bitvector, Operation: Signed modulo */
-    BVSMOD,
+    BVSMOD    (TypeRules.FIRST_KNOWN_BV_ARG),
 
     /** Group: Bitvector, Operation: Logical shift left */
-    BVLSHL,
+    BVLSHL    (TypeRules.FIRST_KNOWN_BV_ARG),
 
     /** Group: Bitvector, Operation: Arithmetical shift left */
-    BVASHL,
+    BVASHL    (TypeRules.FIRST_KNOWN_BV_ARG),
 
     /** Group: Bitvector, Operation: Unsigned (BitVectorOperational) shift right */
-    BVLSHR,
+    BVLSHR    (TypeRules.FIRST_KNOWN_BV_ARG),
 
     /** Group: Bitvector, Operation: Signed (arithmetical) shift right */
-    BVASHR,
+    BVASHR    (TypeRules.FIRST_KNOWN_BV_ARG),
 
     /** Group: Bitvector, Operation: Concatenation */
-    BVCONCAT,
+    BVCONCAT  (TypeRules.UNKNOWN),
 
     /** Group: Bitvector, Operation: Replication (concatenation of several copies of bitvector) */
-    BVREPEAT  (1),
+    BVREPEAT  (TypeRules.UNKNOWN, 1),
 
     /** Group: Bitvector, Operation: Rotate left */
-    BVROL     (1),
+    BVROL     (TypeRules.SECOND_VB_ARG, 1),
 
     /** Group: Bitvector, Operation: Rotate right */
-    BVROR     (1),
+    BVROR     (TypeRules.SECOND_VB_ARG, 1),
 
     /** Group: Bitvector, Operation: Extension by zeros */
-    BVZEROEXT (1),
+    BVZEROEXT (TypeRules.UNKNOWN, 1),
 
     /** Group: Bitvector, Operation: Extension to the signed equivalent */
-    BVSIGNEXT (1),
+    BVSIGNEXT (TypeRules.UNKNOWN, 1),
 
     /** Group: Bitvector, Operation: Extraction of subvector */
-    BVEXTRACT (2),
+    BVEXTRACT (TypeRules.UNKNOWN, 2),
 
     /**
     The items below belong to the "Bitwise Operations" group.
     */
 
     /** Group: Bitvector, Operation: Bitwise OR */
-    BVOR,
+    BVOR      (TypeRules.FIRST_KNOWN_BV_ARG),
 
     /** Group: Bitvector, Operation: Bitwise XOR */
-    BVXOR,
+    BVXOR     (TypeRules.FIRST_KNOWN_BV_ARG),
 
     /** Group: Bitvector, Operation: Bitwise AND */
-    BVAND,
+    BVAND     (TypeRules.FIRST_KNOWN_BV_ARG),
 
     /** Group: Bitvector, Operation: Bitwise NOT */
-    BVNOT,
+    BVNOT     (TypeRules.FIRST_KNOWN_BV_ARG),
 
     /** Group: Bitvector, Operation: Bitwise NAND */
-    BVNAND,
+    BVNAND    (TypeRules.FIRST_KNOWN_BV_ARG),
 
     /** Group: Bitvector, Operation: Bitwise NOR */
-    BVNOR,
+    BVNOR     (TypeRules.FIRST_KNOWN_BV_ARG),
 
     /** Group: Bitvector, Operation: Bitwise XNOR */
-    BVXNOR,
+    BVXNOR    (TypeRules.FIRST_KNOWN_BV_ARG),
 
     /**
     The items below belong to the "Predicates over Bitvectors" group.
     */
 
     /** Group: Bitvector, Operation: Unsigned less or equal */
-    BVULE,
+    BVULE     (TypeRules.BOOLEAN),
 
     /** Group: Bitvector, Operation: Unsigned less than */
-    BVULT,
+    BVULT     (TypeRules.BOOLEAN),
 
     /** Group: Bitvector, Operation: Unsigned greater or equal */
-    BVUGE,
+    BVUGE     (TypeRules.BOOLEAN),
 
     /** Group: Bitvector, Operation: Unsigned greater than */
-    BVUGT,
+    BVUGT     (TypeRules.BOOLEAN),
 
     /** Group: Bitvector, Operation: Signed less or equal */
-    BVSLE,
+    BVSLE     (TypeRules.BOOLEAN),
 
     /** Group: Bitvector, Operation: Signed less than */
-    BVSLT,
+    BVSLT     (TypeRules.BOOLEAN),
 
     /** Group: Bitvector, Operation: Signed greater or equal */
-    BVSGE,
+    BVSGE     (TypeRules.BOOLEAN),
 
     /** Group: Bitvector, Operation: Signed greater than */
-    BVSGT,
+    BVSGT     (TypeRules.BOOLEAN),
 
     /**
      * The items below belong to the "Bit Vector Reduction Operations" group.
@@ -242,42 +244,44 @@ public enum StandardOperation
      */
 
     /** Group: Bit Vector Reduction, Operation: Reduction AND (&) */
-    BVANDR,
+    BVANDR    (TypeRules.BIT_BOOLEAN),
 
     /** Group: Bit Vector Reduction, Operation: Reduction NAND (~&) */
-    BVNANDR,
+    BVNANDR   (TypeRules.BIT_BOOLEAN),
 
     /** Group: Bit Vector Reduction, Operation: Reduction OR (|) */
-    BVORR,
+    BVORR     (TypeRules.BIT_BOOLEAN),
 
     /** Group: Bit Vector Reduction, Operation: Reduction NOR (~|) */
-    BVNORR,
+    BVNORR    (TypeRules.BIT_BOOLEAN),
     
     /** Group: Bit Vector Reduction, Operation: Reduction XOR (^) */
-    BVXORR,
+    BVXORR    (TypeRules.BIT_BOOLEAN),
     
     /** Group: Bit Vector Reduction, Operation: Reduction XNOR (~^) */
-    BVXNORR,
+    BVXNORR   (TypeRules.BIT_BOOLEAN),
 
     /**
     The items below belong to the "Array Operations" group.
     */
 
     /** Group: Array, Operation: Get stored value */
-    SELECT,
+    SELECT    (TypeRules.UNKNOWN),
 
     /** Group: Array, Operation: Store value */
-    STORE;
+    STORE     (TypeRules.UNKNOWN);
 
+    private final TypeRule typeRule;
     private final int numParams;
 
-    private StandardOperation()
+    private StandardOperation(TypeRule typeRule)
     {
-        this(0);
+        this(typeRule, 0);
     }
 
-    private StandardOperation(int numParams)
+    private StandardOperation(TypeRule typeRule, int numParams)
     {
+        this.typeRule = typeRule;
         this.numParams = numParams;
     }
 
@@ -290,6 +294,16 @@ public enum StandardOperation
     {
         if (!id.getClass().equals((StandardOperation.class)))
             return 0;
+
         return ((StandardOperation) id).numParams;
+    }
+
+    @Override
+    public final DataType getResultType(DataType[] operandTypes)
+    {
+        if (null == operandTypes)
+            throw new NullPointerException();
+
+        return typeRule.getResultType(operandTypes);
     }
 }

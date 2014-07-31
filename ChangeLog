@@ -22,6 +22,7 @@
  - Support for a variable number of operands in the expression calculator
  - Saving/loading constraints to/from an XML string
  - Aborting visiting an expression tree and skipping subtrees 
+ - Basic facilities to calculate the type of an expression
 
 --------------------------------------------------------------------------------
  2014/07/08 Fortress 0.3.1 beta

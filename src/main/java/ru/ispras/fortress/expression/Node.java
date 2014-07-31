@@ -26,6 +26,7 @@ package ru.ispras.fortress.expression;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.jaxb.JaxbNodeAdapter;
 
 /**
@@ -113,13 +114,11 @@ public abstract class Node
 
     /**
      * Returns an object that describes the type of the value referred by the node.
-     * TODO: Not implemented in the current version. Probably, will be implemented and
-     * used in the future.  
      * 
      * @return A data type object.
-     *
-     * public abstract DataType getDataType();
      */
+
+    public abstract DataType getDataType();
 
     /**
      * Associates a user data object with the current node

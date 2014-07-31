@@ -25,6 +25,7 @@
 package ru.ispras.fortress.expression;
 
 import ru.ispras.fortress.data.Data;
+import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 
 /**
@@ -125,14 +126,16 @@ public final class NodeVariable extends Node
     {
         return variable.getData().getValue();
     }
+    
+    /**
+     * {@inheritDoc}
+     */
 
-    /* TODO: Not supported in the current version. No implementation for expressions.
     @Override
     public DataType getDataType()
     {
-        return variable.getData().getType();
+        return variable.getType();
     }
-    */
 
     @Override
     public int hashCode()

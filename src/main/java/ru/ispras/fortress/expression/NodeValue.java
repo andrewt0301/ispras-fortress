@@ -25,6 +25,7 @@
 package ru.ispras.fortress.expression;
 
 import ru.ispras.fortress.data.Data;
+import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.types.bitvector.BitVector;
 
 /**
@@ -120,13 +121,15 @@ public final class NodeValue extends Node
         return data.getValue();
     }
 
-    /* TODO: Not supported in the current version. No implementation for expressions.
+    /**
+     * {@inheritDoc}
+     */
+
     @Override
     public DataType getDataType()
     {
         return data.getType();
     }
-    */
 
     @Override
     public int hashCode()
