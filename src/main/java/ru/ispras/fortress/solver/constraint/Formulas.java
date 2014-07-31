@@ -36,6 +36,7 @@ import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeExpr;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
+import ru.ispras.fortress.expression.NodeBinding;
 
 /**
  * The Formulas class serves as a container for formula expressions
@@ -210,7 +211,11 @@ public final class Formulas
                         variable.getName(), variable.getVariable());
                 }
             }
-
+            @Override public void onBindingBegin(NodeBinding node) {}
+            @Override public void onBindingListEnd(NodeBinding node) {}
+            @Override public void onBindingEnd(NodeBinding node) {}
+            @Override public void onBoundVariableBegin(NodeBinding node, NodeVariable variable, Node value) {}
+            @Override public void onBoundVariableEnd(NodeBinding node, NodeVariable variable, Node value) {}
             @Override public void onValue(NodeValue value) {}
             @Override public void onRootEnd() {}
             @Override public void onRootBegin() {}

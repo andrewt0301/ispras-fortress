@@ -125,4 +125,11 @@ public interface ExprTreeVisitor
      */
 
     void onVariable(NodeVariable variable);
+
+    void onBindingBegin(NodeBinding node);
+    void onBindingListEnd(NodeBinding node);
+    void onBindingEnd(NodeBinding node);
+
+    void onBoundVariableBegin(NodeBinding node, NodeVariable variable, Node value);
+    void onBoundVariableEnd(NodeBinding node, NodeVariable variable, Node value);
 }

@@ -160,6 +160,10 @@ public final class ExprTreeWalker
             visitExpr((NodeExpr) node);
             break;
 
+        case BINDING:
+            visitBinding((NodeBinding) node);
+            break;
+
         default:
             throw new IllegalArgumentException(
                 String.format("Unknown node kind: %s.", node.getKind()));
@@ -211,5 +215,25 @@ public final class ExprTreeWalker
             throw new NullPointerException();
 
         visitor.onVariable(node);
+    }
+
+    private void visitBinding(NodeBinding node)
+    {
+        if (null == node)
+            throw new NullPointerException();
+
+        visitor.onBindingBegin(node);
+
+        for (NodeBinding.BoundVariable bound : node.getBindings())
+        {
+            visitor.onBoundVariableBegin(node, bound.getVariable(), bound.getValue());
+            visitNode(bound.getValue());
+            visitor.onBoundVariableEnd(node, bound.getVariable(), bound.getValue());
+        }
+        visitor.onBindingListEnd(node);
+
+        visitNode(node.getExpression());
+
+        visitor.onBindingEnd(node);
     }
 }

@@ -316,6 +316,21 @@ final class SMTTextBuilder implements ExprTreeVisitor
             appendToCurrent(variable.getName());
         }
     }
+
+    @Override
+    public void onBindingBegin(NodeBinding node) {}
+
+    @Override
+    public void onBindingListEnd(NodeBinding node) {}
+
+    @Override
+    public void onBindingEnd(NodeBinding node) {}
+
+    @Override
+    public void onBoundVariableBegin(NodeBinding node, NodeVariable variable, Node value) {}
+
+    @Override
+    public void onBoundVariableEnd(NodeBinding node, NodeVariable variable, Node value) {}
 }
 
 final class FunctionDefinitionBuilders

@@ -3,6 +3,7 @@ package ru.ispras.fortress.transformer;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.IdentityHashMap;
 
 import ru.ispras.fortress.expression.*;
@@ -15,22 +16,18 @@ class LocalTransformer implements ExprTreeVisitor
     private final List<Node[]>  operandStack;
     private final List<Node>    exprStack;
     private final List<Node>    result;
-
-    private Node           rootNode;
-    private ExprTreeWalker walker;
+    private final List<NodeBinding.BoundVariable> boundStack;
 
     public void walk(Node root)
     {
-        walker = new ExprTreeWalker(this);
+        final ExprTreeWalker walker = new ExprTreeWalker(this);
         walker.visit(root);
-        walker = null;
     }
 
     public void walk(Iterable<Node> trees)
     {
-        walker = new ExprTreeWalker(this);
+        final ExprTreeWalker walker = new ExprTreeWalker(this);
         walker.visit(trees);
-        walker = null;
     }
 
     public LocalTransformer()
@@ -47,8 +44,7 @@ class LocalTransformer implements ExprTreeVisitor
         operandStack    = new ArrayList<Node[]>();
         exprStack       = new ArrayList<Node>();
         result          = new ArrayList<Node>();
-        rootNode        = null;
-        walker          = null;
+        boundStack      = new ArrayList<NodeBinding.BoundVariable>();
     }
 
     public void addRule(Enum<?> opId, TransformerRule rule)
@@ -73,6 +69,11 @@ class LocalTransformer implements ExprTreeVisitor
         return node;
     }
 
+    private final Node updateNode(Node node)
+    {
+        return applyRule(node.getKind(), node);
+    }
+
     @Override
     public Status getStatus()
     {
@@ -89,26 +90,13 @@ class LocalTransformer implements ExprTreeVisitor
     @Override
     public void onRootEnd()
     {
-        if (exprStack.isEmpty())
-        {
-            if (rootNode.getKind() != Node.Kind.EXPR)
-                rootNode = applyRule(rootNode.getKind(), rootNode);
-            result.add(rootNode);
-        }
-        else
-        {
-            assert exprStack.size() == 1;
-            result.add(exprStack.remove(0));
-        }
-        rootNode = null;
+        assert exprStack.size() == 1;
+        result.add(exprStack.remove(0));
     }
 
     @Override
     public void onExprBegin(NodeExpr expr)
     {
-        if (rootNode == null)
-            rootNode = expr;
-
         if (expr.getOperandCount() > 0)
             operandStack.add(new Node[expr.getOperandCount()]);
     }
@@ -137,23 +125,125 @@ class LocalTransformer implements ExprTreeVisitor
     public void onOperandEnd(NodeExpr expr, Node operand, int index)
     {
         Node[] operands = operandStack.get(operandStack.size() - 1);
-        if (operand.getKind() == Node.Kind.EXPR)
-            operands[index] = exprStack.remove(exprStack.size() - 1);
-        else
-            operands[index] = applyRule(operand.getKind(), operand);
+        operands[index] = exprStack.remove(exprStack.size() - 1);
     }
 
     @Override
     public void onValue(NodeValue value)
     {
-        if (rootNode == null)
-            rootNode = value;
+        exprStack.add(value);
     }
 
     @Override
     public void onVariable(NodeVariable variable)
     {
-        if (rootNode == null)
-            rootNode = variable;
+        exprStack.add(updateNode(variable));
+    }
+
+    @Override
+    public void onBindingBegin(NodeBinding node)
+    {
+    }
+
+    @Override
+    public void onBindingListEnd(NodeBinding node)
+    {
+        final int fromIndex = boundStack.size() - node.getBindings().size();
+        final List<NodeBinding.BoundVariable> bindings =
+            boundStack.subList(fromIndex, boundStack.size());
+
+        final TransformerRule scopedRule =
+            new RejectBoundVariablesRule(
+                ruleset.get(Node.Kind.VARIABLE),
+                new NodeBinding(node.getExpression(), bindings));
+
+        ruleset.put(Node.Kind.VARIABLE, scopedRule);
+        bindings.clear();
+    }
+
+    @Override
+    public void onBindingEnd(NodeBinding node)
+    {
+        final RejectBoundVariablesRule rule =
+            (RejectBoundVariablesRule) ruleset.get(Node.Kind.VARIABLE);
+        ruleset.put(Node.Kind.VARIABLE, rule.getShadowedRule());
+
+        final Node expr = exprStack.remove(exprStack.size() - 1);
+        final NodeBinding bindingNode = rule.getBinding().bindTo(expr);
+        exprStack.add(updateNode(bindingNode));
+    }
+
+    @Override
+    public void onBoundVariableBegin(NodeBinding node, NodeVariable variable, Node value) {}
+
+    @Override
+    public void onBoundVariableEnd(NodeBinding node, NodeVariable variable, Node value)
+    {
+        final Node updatedValue = exprStack.remove(exprStack.size() - 1);
+        boundStack.add(NodeBinding.bindVariable(variable, updatedValue));
+    }
+}
+
+abstract class ScopedBindingRule implements TransformerRule
+{
+    protected final TransformerRule   shadowed;
+    protected final Map<String, Node> bindings;
+    protected Node applicableCache;
+
+    public ScopedBindingRule(TransformerRule previous, List<NodeBinding.BoundVariable> bindingList)
+    {
+        this.shadowed = previous;
+        this.bindings = new HashMap<String, Node>();
+        for (NodeBinding.BoundVariable bound : bindingList)
+            bindings.put(bound.getVariable().getName(), bound.getValue());
+        this.applicableCache = null;
+    }
+
+    @Override
+    public Node apply(Node node)
+    {
+        return applicableCache;
+    }
+
+    public TransformerRule getShadowedRule()
+    {
+        return shadowed;
+    }
+}
+
+final class RejectBoundVariablesRule extends ScopedBindingRule
+{
+    private final NodeBinding node;
+
+    public RejectBoundVariablesRule(TransformerRule previous, NodeBinding node)
+    {
+        super(previous, node.getBindings());
+        this.node = node;
+    }
+
+    public NodeBinding getBinding()
+    {
+        return node;
+    }
+
+    @Override
+    public boolean isApplicable(Node node)
+    {
+        if (node.getKind() != Node.Kind.VARIABLE)
+            return false;
+
+        final NodeVariable variable = (NodeVariable) node;
+
+        // variable is bound
+        if (bindings.containsKey(variable.getName()))
+            return false;
+
+        if (shadowed == null)
+            return false;
+
+        boolean applicable = shadowed.isApplicable(node);
+        if (applicable)
+            applicableCache = shadowed.apply(node);
+        return applicable;
     }
 }
