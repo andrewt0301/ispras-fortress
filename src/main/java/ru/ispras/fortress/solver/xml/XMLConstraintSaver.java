@@ -357,17 +357,50 @@ class XMLBuilderForExprs implements ExprTreeVisitor
     }
 
     @Override
-    public void onBindingBegin(NodeBinding node) {}
+    public void onBindingBegin(NodeBinding node)
+    {
+        assert !elements.isEmpty();
+
+        final Element binding = document.createElement(XMLConst.NODE_BINDING);
+        final Element bindingList = document.createElement(XMLConst.NODE_BINDING_LIST);
+
+        binding.appendChild(bindingList);
+        elements.getLast().appendChild(binding);
+
+        elements.addLast(binding);
+        elements.addLast(bindingList);
+    }
 
     @Override
-    public void onBindingListEnd(NodeBinding node) {}
+    public void onBindingListEnd(NodeBinding node)
+    {
+        assert !elements.isEmpty();
+        elements.removeLast();
+    }
 
     @Override
-    public void onBindingEnd(NodeBinding node) {}
+    public void onBindingEnd(NodeBinding node)
+    {
+        assert !elements.isEmpty();
+        elements.removeLast();
+    }
 
     @Override
-    public void onBoundVariableBegin(NodeBinding node, NodeVariable variable, Node value) {}
+    public void onBoundVariableBegin(NodeBinding node, NodeVariable variable, Node value)
+    {
+        assert !elements.isEmpty();
+
+        final Element binding = document.createElement(XMLConst.NODE_BOUND_VARIABLE);
+        elements.getLast().appendChild(binding);
+        elements.addLast(binding);
+
+        binding.setAttribute(XMLConst.ATTR_VARIABLE_NAME, variable.getName());
+    }
 
     @Override
-    public void onBoundVariableEnd(NodeBinding node, NodeVariable variable, Node value) {}
+    public void onBoundVariableEnd(NodeBinding node, NodeVariable variable, Node value)
+    {
+        assert !elements.isEmpty();
+        elements.removeLast();
+    }
 }
