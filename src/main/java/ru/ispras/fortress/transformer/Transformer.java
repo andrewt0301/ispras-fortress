@@ -101,12 +101,9 @@ public final class Transformer
 
         final NodeTransformer transformer = new NodeTransformer();
         transformer.addRule(Node.Kind.VARIABLE, rule);
-        transformer.walk(node);
+        transformer.walk(node.getExpression());
 
-        final NodeBinding out =
-            (NodeBinding) transformer.getResult().iterator().next();
-
-        return out.getExpression();
+        return transformer.getResult().iterator().next();
     }
 
     public static Node transformStandardPredicate(Node expr)
