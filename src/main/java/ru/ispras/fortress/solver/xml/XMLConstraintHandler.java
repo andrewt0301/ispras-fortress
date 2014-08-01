@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.Collections;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -29,6 +30,7 @@ import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeExpr;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
+import ru.ispras.fortress.expression.NodeBinding;
 import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintBuilder;
 import ru.ispras.fortress.solver.constraint.ConstraintKind;
@@ -46,6 +48,60 @@ final class XMLConstraintHandler extends DefaultHandler
     private final XMLConstraintBuilder    builder = new XMLConstraintBuilder();
     private final Stack<XMLNodeType>        nodes = new Stack<XMLNodeType>();
     private final Map<String, Variable> variables = new HashMap<String, Variable>();
+
+    private final Map<String, Variable> incompleteScope = new HashMap<String, Variable>();
+    private VariableScope nestedScope = VariableScope.EMPTY_SCOPE;
+
+    private static class VariableScope
+    {
+        public final static VariableScope EMPTY_SCOPE = new VariableScope() {
+            @Override
+            public boolean contains(String name) {
+                return false;
+            }
+
+            @Override
+            public Variable get(String name) {
+                return null;
+            }
+        };
+
+        private final Map<String, Variable> variables;
+        private final VariableScope hidden;
+
+        private VariableScope()
+        {
+            this.variables = Collections.emptyMap();
+            this.hidden = null;
+        }
+
+        public VariableScope(VariableScope previous, Map<String, Variable> variables)
+        {
+            this.variables = variables;
+            this.hidden = previous;
+        }
+
+        public VariableScope getHiddenScope()
+        {
+            return hidden;
+        }
+
+        public boolean contains(String name)
+        {
+            if (variables.containsKey(name))
+                return true;
+
+            return hidden.contains(name);
+        }
+
+        public Variable get(String name)
+        {
+            if (variables.containsKey(name))
+                return variables.get(name);
+
+            return hidden.get(name);
+        }
+    }
 
     public Constraint getConstraint()
     {
@@ -98,11 +154,12 @@ final class XMLConstraintHandler extends DefaultHandler
             {
                 final String variableName = getVariableRef(qName, attributes);
 
-                if (!variables.containsKey(variableName))
+                if (nestedScope.contains(variableName))
+                    builder.pushElement(new NodeVariable(nestedScope.get(variableName)));
+                else if (variables.containsKey(variableName))
+                    builder.pushElement(new NodeVariable(variables.get(variableName)));
+                else
                     throw new SAXException(String.format(Messages.ERR_UNDEFINED_VARIABLE, variableName));
-
-                final Variable variable = variables.get(variableName);
-                builder.pushElement(new NodeVariable(variable));
 
                 break;
             }
@@ -127,6 +184,24 @@ final class XMLConstraintHandler extends DefaultHandler
                 break;
             }
 
+            case BINDING:
+            {
+                builder.beginBinding();
+                break;
+            }
+
+            case BOUND_VARIABLE:
+            {
+                final String variableName = getVariableRef(qName, attributes);
+                final Variable variable = createLocalVariable(variableName);
+
+                incompleteScope.put(variableName, variable);
+                builder.pushElement(new NodeVariable(variable));
+
+                break;
+            }
+
+            case BINDING_LIST:
             case NAME:
             case KIND:
             case DESCRIPTION:
@@ -162,6 +237,11 @@ final class XMLConstraintHandler extends DefaultHandler
         //}
     }
 
+    private Variable createLocalVariable(String name)
+    {
+        return new Variable(name, DataType.UNKNOWN);
+    }
+
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException
     {
@@ -193,6 +273,15 @@ final class XMLConstraintHandler extends DefaultHandler
                 builder.endSignature();
                 break;
 
+            case BINDING:
+                builder.endBinding();
+                popVariableScope();
+                break;
+
+            case BINDING_LIST:
+                pushVariableScope();
+                break;
+
             case NAME:
             case KIND:
             case DESCRIPTION:
@@ -200,6 +289,7 @@ final class XMLConstraintHandler extends DefaultHandler
             case VARIABLE_REF:
             case VALUE:
             case VARIABLE:
+            case BOUND_VARIABLE:
                 // Nothing
                 break;
 
@@ -221,6 +311,20 @@ final class XMLConstraintHandler extends DefaultHandler
 
         /////////// DEBUG CODE ////////////////////////
         //System.out.print("</" + qName + ">");
+    }
+
+    private void pushVariableScope()
+    {
+        nestedScope = new VariableScope(
+            nestedScope,
+            new HashMap<String, Variable>(incompleteScope));
+
+        incompleteScope.clear();
+    }
+
+    private void popVariableScope()
+    {
+        nestedScope = nestedScope.getHiddenScope();
     }
 
     @Override
@@ -445,6 +549,30 @@ final class XMLConstraintBuilder
         }
     }
 
+    public void beginBinding() throws Exception
+    {
+        expressions.push(new ExprBuilder());
+    }
+
+    public void endBinding() throws Exception
+    {
+        if (expressions.empty())
+            throw new IllegalStateException(Messages.ERR_NO_EXPRESSION);
+
+        final NodeBinding node = expressions.pop().createBinding();
+
+        if (expressions.empty())
+        {
+            if (null != formula)
+                throw new IllegalStateException(
+                    Messages.ERR_FORMULA_ALREADY_ASSIGNED);
+
+            formula = node;
+        }
+        else
+            pushElement(node);
+    }
+
     public void pushElement(Node se) throws Exception
     {
         if (expressions.empty())
@@ -536,5 +664,22 @@ final class ExprBuilder
             throw new Exception(Messages.ERR_NO_OPERATION_ID);
 
         return new NodeExpr(operationId, elements.toArray(new Node[] {}));
+    }
+
+    public NodeBinding createBinding() throws Exception
+    {
+        final Node expr = elements.remove(elements.size() - 1);
+        final List<NodeBinding.BoundVariable> bindings =
+            new ArrayList<NodeBinding.BoundVariable>();
+
+        for (int i = 0; i < elements.size(); i += 2)
+        {
+            if (!(elements.get(i) instanceof NodeVariable))
+                throw new Exception("NodeVariable expected");
+
+            final NodeVariable var = (NodeVariable) elements.get(i);
+            bindings.add(NodeBinding.bindVariable(var, elements.get(i + 1)));
+        }
+        return new NodeBinding(expr, bindings);
     }
 }
