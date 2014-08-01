@@ -96,13 +96,29 @@ enum XMLNodeType
     /**
      * Specifies a global variable.
      */
-    VARIABLE (XMLConst.NODE_VARIABLE);
+    VARIABLE (XMLConst.NODE_VARIABLE),
+
+    /**
+     * Specifies an expression with bound variables.
+     */
+    BINDING(XMLConst.NODE_BINDING),
+
+    /**
+     * Specifies a list of bound variables.
+     */
+    BINDING_LIST(XMLConst.NODE_BINDING_LIST),
+
+    /**
+     * Specifies a local variable is to be replaced in expression.
+     */
+    BOUND_VARIABLE(XMLConst.NODE_BOUND_VARIABLE);
 
     private static final Map<String, XMLNodeType> nameToTypeMap;
     static 
     {
         final Set<XMLNodeType> constraintSet = EnumSet.of(CONSTRAINT); 
         final Set<XMLNodeType> expressionSet = EnumSet.of(EXPRESSION);
+        final Set<XMLNodeType> nestingSet = EnumSet.of(FORMULA, EXPRESSION, BINDING, BOUND_VARIABLE);
 
         CONSTRAINT.parents   = EnumSet.noneOf(XMLNodeType.class);
         NAME.parents         = constraintSet;
@@ -110,12 +126,15 @@ enum XMLNodeType
         DESCRIPTION.parents  = constraintSet;
         INNER_REP.parents    = constraintSet;
         FORMULA.parents      = EnumSet.of(INNER_REP);
-        EXPRESSION.parents   = EnumSet.of(FORMULA, EXPRESSION);
+        EXPRESSION.parents   = nestingSet;
         OPERATION.parents    = expressionSet;
         VARIABLE_REF.parents = expressionSet;
-        VALUE.parents        = EnumSet.of(FORMULA, EXPRESSION);
+        VALUE.parents        = nestingSet;
         SIGNATURE.parents    = constraintSet;
         VARIABLE.parents     = EnumSet.of(SIGNATURE);
+        BINDING.parents      = nestingSet;
+        BINDING_LIST.parents = EnumSet.of(BINDING);
+        BOUND_VARIABLE.parents = EnumSet.of(BINDING_LIST);
 
         nameToTypeMap = new HashMap<String, XMLNodeType>();
         for (XMLNodeType type : values())

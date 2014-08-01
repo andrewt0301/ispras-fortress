@@ -50,6 +50,9 @@ class XMLConst
     static final String NODE_VARIABLE_REF     = "VariableRef";
     static final String NODE_VALUE            = "Value";
     static final String NODE_SIGNATURE        = "Signature";
+    static final String NODE_BINDING          = "Binding";
+    static final String NODE_BINDING_LIST     = "BindingList";
+    static final String NODE_BOUND_VARIABLE   = "BoundVariable";
 
     static final String ATTR_FORMAT_VERSION   = "version";
     static final String ATTR_OPERATION_ID     = "id";
