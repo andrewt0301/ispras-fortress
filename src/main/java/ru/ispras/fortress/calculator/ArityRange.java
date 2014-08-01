@@ -37,6 +37,9 @@ public final class ArityRange
         /** Bound for binary operators. */
         BINARY(2),
 
+        /** Bound for ternary operators. */
+        TERNARY(3),
+
         /** Bound for unlimited number of operands. */
         UNBOUNDED(-1);
 
@@ -64,6 +67,9 @@ public final class ArityRange
 
     /** Binary operator range. */
     public static final ArityRange BINARY = new ArityRange(Bound.BINARY, Bound.BINARY);
+
+    /** Ternary operator range. */
+    public static final ArityRange TERNARY = new ArityRange(Bound.TERNARY, Bound.TERNARY);
 
     /** Range for operators that can be unary and binary at the same time. */
     public static final ArityRange UNARY_BINARY = new ArityRange(Bound.UNARY, Bound.BINARY);
