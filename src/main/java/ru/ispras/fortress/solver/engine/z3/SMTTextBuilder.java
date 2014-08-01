@@ -318,19 +318,36 @@ final class SMTTextBuilder implements ExprTreeVisitor
     }
 
     @Override
-    public void onBindingBegin(NodeBinding node) {}
+    public void onBindingBegin(NodeBinding node)
+    {
+        appendToCurrent("(let (");
+    }
 
     @Override
-    public void onBindingListEnd(NodeBinding node) {}
+    public void onBindingListEnd(NodeBinding node)
+    {
+        appendToCurrent(sBRACKET_CLOSE);
+    }
 
     @Override
-    public void onBindingEnd(NodeBinding node) {}
+    public void onBindingEnd(NodeBinding node)
+    {
+        appendToCurrent(sBRACKET_CLOSE);
+    }
 
     @Override
-    public void onBoundVariableBegin(NodeBinding node, NodeVariable variable, Node value) {}
+    public void onBoundVariableBegin(NodeBinding node, NodeVariable variable, Node value)
+    {
+        appendToCurrent(sBRACKET_OPEN);
+        appendToCurrent(variable.getName());
+        appendToCurrent(sSPACE);
+    }
 
     @Override
-    public void onBoundVariableEnd(NodeBinding node, NodeVariable variable, Node value) {}
+    public void onBoundVariableEnd(NodeBinding node, NodeVariable variable, Node value)
+    {
+        appendToCurrent(sBRACKET_CLOSE);
+    }
 }
 
 final class FunctionDefinitionBuilders
