@@ -97,7 +97,6 @@ public abstract class GenericSolverTestBase
             // Saving to and loading from file. 
             final String tempFile = File.createTempFile(constraint.getName(), ".xml").getPath();
             saver.saveToFile(tempFile);
-            saver.saveToFile(constraint.getName() + ".xml");
 
             final Constraint tempFileConstraint = XMLConstraintLoader.loadFromFile(tempFile);
             ConstraintEqualityChecker.check(constraint, tempFileConstraint);
