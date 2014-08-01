@@ -94,4 +94,24 @@ public final class NodeBinding extends Node
     {
         return expr.getDataType();
     }
+
+    @Override
+    public String toString()
+    {
+        final StringBuilder builder = new StringBuilder();
+
+        builder.append("(LET (");
+        for (BoundVariable bound : getBindings())
+        {
+            builder.append("(");
+            builder.append(bound.getVariable().toString());
+            builder.append(" ");
+            builder.append(bound.getValue().toString());
+            builder.append(")");
+        }
+        builder.append(") ");
+        builder.append(getExpression().toString());
+
+        return builder.toString();
+    }
 }
