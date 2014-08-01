@@ -69,7 +69,7 @@ public final class Transformer
             }
         };
 
-        final LocalTransformer transformer = new LocalTransformer();
+        final NodeTransformer transformer = new NodeTransformer();
         transformer.addRule(Node.Kind.VARIABLE, rule);
         transformer.walk(expr);
         return transformer.getResult().iterator().next();
@@ -99,7 +99,7 @@ public final class Transformer
             }
         };
 
-        final LocalTransformer transformer = new LocalTransformer();
+        final NodeTransformer transformer = new NodeTransformer();
         transformer.addRule(Node.Kind.VARIABLE, rule);
         transformer.walk(node);
 
@@ -114,7 +114,7 @@ public final class Transformer
         if (expr == null)
             throw new NullPointerException();
         
-        final LocalTransformer tl = new LocalTransformer(Predicate.getRuleset());
+        final NodeTransformer tl = new NodeTransformer(Predicate.getRuleset());
         tl.walk(expr);
         return tl.getResult().iterator().next();
     }

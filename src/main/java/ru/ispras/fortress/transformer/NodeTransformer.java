@@ -8,7 +8,7 @@ import java.util.IdentityHashMap;
 
 import ru.ispras.fortress.expression.*;
 
-class LocalTransformer implements ExprTreeVisitor
+public class NodeTransformer implements ExprTreeVisitor
 {
     // TODO use list of rules for enum as priority queue
     private final Map<Enum<?>, TransformerRule> ruleset;
@@ -30,12 +30,12 @@ class LocalTransformer implements ExprTreeVisitor
         walker.visit(trees);
     }
 
-    public LocalTransformer()
+    public NodeTransformer()
     {
         this(new IdentityHashMap<Enum<?>, TransformerRule>());
     }
 
-    public LocalTransformer(Map<Enum<?>, TransformerRule> rules)
+    public NodeTransformer(Map<Enum<?>, TransformerRule> rules)
     {
         if (rules == null)
             throw new NullPointerException();
