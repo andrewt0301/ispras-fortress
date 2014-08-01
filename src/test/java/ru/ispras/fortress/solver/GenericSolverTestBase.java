@@ -31,6 +31,7 @@ import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeExpr;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
+import ru.ispras.fortress.expression.NodeBinding;
 import ru.ispras.fortress.solver.Environment;
 import ru.ispras.fortress.solver.Solver;
 import ru.ispras.fortress.solver.SolverId;
@@ -96,6 +97,7 @@ public abstract class GenericSolverTestBase
             // Saving to and loading from file. 
             final String tempFile = File.createTempFile(constraint.getName(), ".xml").getPath();
             saver.saveToFile(tempFile);
+            saver.saveToFile(constraint.getName() + ".xml");
 
             final Constraint tempFileConstraint = XMLConstraintLoader.loadFromFile(tempFile);
             ConstraintEqualityChecker.check(constraint, tempFileConstraint);
@@ -212,6 +214,33 @@ final class ConstraintEqualityChecker
         }
     }
 
+    public static void check(NodeBinding expected, NodeBinding actual)
+    {
+        Assert.assertNotNull(expected);
+        Assert.assertNotNull(actual);
+        Assert.assertFalse("The same object", expected == actual);
+
+        Assert.assertTrue("Invalid element ID.", expected.getKind() == Node.Kind.BINDING);
+        Assert.assertTrue("Invalid element ID.", actual.getKind() == Node.Kind.BINDING);
+        Assert.assertTrue("Different number of bound variables.", expected.getBindings().size() == actual.getBindings().size());
+
+        for (int i = 0; i < expected.getBindings().size(); ++i)
+        {
+            Assert.assertTrue("Different binding order.", getBoundName(expected, i).equals(getBoundName(actual, i)));
+            check(getBoundValue(expected, i), getBoundValue(actual, i));
+        }
+    }
+
+    private static String getBoundName(NodeBinding node, int index)
+    {
+        return node.getBindings().get(index).getVariable().getName();
+    }
+
+    private static Node getBoundValue(NodeBinding node, int index)
+    {
+        return node.getBindings().get(index).getValue();
+    }
+
     public static void check(NodeVariable expected, NodeVariable actual)
     {
         Assert.assertNotNull(expected);
@@ -264,6 +293,10 @@ final class ConstraintEqualityChecker
 
         case EXPR:
             check((NodeExpr) expected, (NodeExpr) actual);
+            break;
+
+        case BINDING:
+            check((NodeBinding) expected, (NodeBinding) actual);
             break;
 
         default:
