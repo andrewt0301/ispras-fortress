@@ -48,7 +48,7 @@ public final class NodeBinding extends Node
         if (bindings.isEmpty())
             this.bindings = Collections.emptyList();
         else
-            this.bindings = new ArrayList<BoundVariable>(bindings);
+            this.bindings = Collections.unmodifiableList(new ArrayList<BoundVariable>(bindings));
     }
 
     private NodeBinding(Node expr, List<BoundVariable> bindings, int unused)
@@ -61,7 +61,7 @@ public final class NodeBinding extends Node
 
     public List<BoundVariable> getBindings()
     {
-        return Collections.unmodifiableList(bindings);
+        return bindings;
     }
 
     public Node getExpression()
