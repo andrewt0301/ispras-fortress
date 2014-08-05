@@ -210,7 +210,8 @@ public final class DataType
             if ((type = tid.typeOf(value)) != null)
                 return type;
 
-        throw new IllegalArgumentException("Invalid DataType text representation");
+        throw new IllegalArgumentException(
+            "Invalid DataType text representation: " + value);
     }
     
     /**

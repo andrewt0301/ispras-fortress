@@ -57,7 +57,7 @@ public interface Operation<OperationId extends Enum<OperationId>>
     /**
      * Performs an operation on the specified operands.  
      * 
-     * @param operand A variable of operands. 
+     * @param operands A variable of operands. 
      * @return Data object containing the calculated value.
      * 
      * @throws NullPointerException if null is passed to the method.
