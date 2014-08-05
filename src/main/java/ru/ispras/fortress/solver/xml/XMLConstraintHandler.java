@@ -225,7 +225,7 @@ final class XMLConstraintHandler extends DefaultHandler
         }
         catch (Exception e)
         {
-            throw new SAXException(Messages.ERR_INVALID_CONSTRAINT, e);
+            throw new SAXException(Messages.ERR_INVALID_CONSTRAINT + e.getMessage(), e);
         }
 
         /////////// DEBUG CODE ////////////////////////
@@ -306,7 +306,7 @@ final class XMLConstraintHandler extends DefaultHandler
         }
         catch (Exception e)
         {
-            throw new SAXException(Messages.ERR_INVALID_CONSTRAINT + e.getMessage());
+            throw new SAXException(Messages.ERR_INVALID_CONSTRAINT + e.getMessage(), e);
         }
 
         /////////// DEBUG CODE ////////////////////////
