@@ -71,8 +71,7 @@ public enum DataTypeId
                 return null;
 
             return DataType.newDataType(
-                this,
-                Arrays.asList((Object) Integer.valueOf(matcher.group(1))));
+                this, (Object) Integer.valueOf(matcher.group(1)));
         }
 
         Object getAttribute(Attribute a, List<Object> params)
