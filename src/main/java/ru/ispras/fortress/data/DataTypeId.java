@@ -368,11 +368,15 @@ public enum DataTypeId
     private static void report(List<Object> passed, Class<?> ... required)
     {
         if (passed.size() != required.length)
-            throw new IllegalArgumentException("Invalid number of type parameters");
+            throw new IllegalArgumentException(String.format(
+                "Invalid number of type parameters: %d, expected: %d.",
+                passed.size(), required.length));
 
         for (int i = 0; i < passed.size(); ++i)
             if (passed.get(i).getClass() != required[i])
-                throw new IllegalArgumentException("Invalid parameter type");
+                throw new IllegalArgumentException(String.format(
+                    "Invalid parameter type: %s, expected: %s.",
+                    passed.get(i).getClass().getName(), required[i].getName()));
     }
 
     Object getAttribute(Attribute a, List<Object> params) { return null; }
