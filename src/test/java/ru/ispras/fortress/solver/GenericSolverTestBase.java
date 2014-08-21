@@ -28,7 +28,7 @@ import org.junit.Test;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.Node;
-import ru.ispras.fortress.expression.NodeExpr;
+import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.NodeBinding;
@@ -185,14 +185,14 @@ final class ConstraintEqualityChecker
         Assert.assertTrue("The numbers of formulas are different.", expectedIterator.hasNext() == actualIterator.hasNext());
     }
 
-    public static void check(NodeExpr expected, NodeExpr actual)
+    public static void check(NodeOperation expected, NodeOperation actual)
     {
         Assert.assertNotNull(expected);
         Assert.assertNotNull(actual);
         Assert.assertFalse("The same object", expected == actual);
 
-        Assert.assertTrue("Invalid element ID.", expected.getKind() == Node.Kind.EXPR);
-        Assert.assertTrue("Invalid element ID.", actual.getKind() == Node.Kind.EXPR);
+        Assert.assertTrue("Invalid element ID.", expected.getKind() == Node.Kind.OPERATION);
+        Assert.assertTrue("Invalid element ID.", actual.getKind() == Node.Kind.OPERATION);
         Assert.assertTrue("Different operation IDs.", expected.getOperationId().equals(actual.getOperationId()));
 
         // TODO: Temporary requirement. Once the getDataType method is implemented to return a proper value
@@ -290,8 +290,8 @@ final class ConstraintEqualityChecker
             check((NodeVariable) expected, (NodeVariable) actual);
             break;
 
-        case EXPR:
-            check((NodeExpr) expected, (NodeExpr) actual);
+        case OPERATION:
+            check((NodeOperation) expected, (NodeOperation) actual);
             break;
 
         case BINDING:

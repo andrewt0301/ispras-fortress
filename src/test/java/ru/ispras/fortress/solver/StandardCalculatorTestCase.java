@@ -17,7 +17,7 @@ import java.util.List;
 
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
-import ru.ispras.fortress.expression.NodeExpr;
+import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
@@ -85,12 +85,12 @@ public class StandardCalculatorTestCase extends GenericSolverSampleTestBase
             builder.setInnerRep(formulas);
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.EQ,
                     a,
                     Transformer.reduce(
                         ReduceOptions.NEW_INSTANCE,
-                        new NodeExpr(
+                        new NodeOperation(
                             StandardOperation.ADD,
                             new NodeValue(intType.valueOf("2", 10)),
                             new NodeValue(intType.valueOf("3", 10))
@@ -100,12 +100,12 @@ public class StandardCalculatorTestCase extends GenericSolverSampleTestBase
             );
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.EQ,
                     b, 
                     Transformer.reduce(
                         ReduceOptions.NEW_INSTANCE,
-                        new NodeExpr(
+                        new NodeOperation(
                             StandardOperation.SUB,
                             new NodeValue(intType.valueOf("10", 10)),
                             new NodeValue(intType.valueOf("6", 10))
@@ -115,12 +115,12 @@ public class StandardCalculatorTestCase extends GenericSolverSampleTestBase
             );
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.EQ,
                     c, 
                     Transformer.reduce(
                         ReduceOptions.NEW_INSTANCE,
-                        new NodeExpr(
+                        new NodeOperation(
                             StandardOperation.MUL,
                             new NodeValue(intType.valueOf("2", 10)),
                             new NodeValue(intType.valueOf("5", 10))
@@ -130,12 +130,12 @@ public class StandardCalculatorTestCase extends GenericSolverSampleTestBase
             );
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.EQ,
                     d,
                     Transformer.reduce(
                         ReduceOptions.NEW_INSTANCE,
-                        new NodeExpr(
+                        new NodeOperation(
                             StandardOperation.DIV,
                             new NodeValue(intType.valueOf("12", 10)),
                             new NodeValue(intType.valueOf("5", 10))
@@ -145,12 +145,12 @@ public class StandardCalculatorTestCase extends GenericSolverSampleTestBase
             );
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.EQ,
                     e,
                     Transformer.reduce(
                         ReduceOptions.NEW_INSTANCE,
-                        new NodeExpr(
+                        new NodeOperation(
                             StandardOperation.REM,
                             new NodeValue(intType.valueOf("10", 10)),
                             new NodeValue(intType.valueOf("3", 10))
@@ -160,12 +160,12 @@ public class StandardCalculatorTestCase extends GenericSolverSampleTestBase
             );
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.EQ,
                     f,
                     Transformer.reduce(
                         ReduceOptions.NEW_INSTANCE,
-                        new NodeExpr(
+                        new NodeOperation(
                             StandardOperation.MOD,
                             new NodeValue(intType.valueOf("10", 10)),
                             new NodeValue(intType.valueOf("3", 10))

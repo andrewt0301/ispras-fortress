@@ -52,13 +52,13 @@ class ArrayInvariant implements ISampleConstraint
         final NodeValue value = new NodeValue(DataType.INTEGER.valueOf("37", 10));
         final NodeValue array = new NodeValue(ARRAY_TYPE.valueOf(ARRAY_VALUE, 10));
 
-        final Node stored = new NodeExpr(StandardOperation.STORE, v, value, value);
+        final Node stored = new NodeOperation(StandardOperation.STORE, v, value, value);
 
         final Formulas formulas = new Formulas();
         builder.setInnerRep(formulas);
 
-        formulas.add(new NodeExpr(StandardOperation.EQ, a, stored));
-        formulas.add(new NodeExpr(StandardOperation.EQ, a, array));
+        formulas.add(new NodeOperation(StandardOperation.EQ, a, stored));
+        formulas.add(new NodeOperation(StandardOperation.EQ, a, array));
 
         return builder.build();
     }

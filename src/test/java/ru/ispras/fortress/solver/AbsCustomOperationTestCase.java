@@ -6,7 +6,7 @@ import java.util.List;
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
-import ru.ispras.fortress.expression.NodeExpr;
+import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
@@ -69,33 +69,33 @@ public class AbsCustomOperationTestCase extends GenericSolverSampleTestBase
             final Formulas formulas = new Formulas();
             builder.setInnerRep(formulas);
             
-            formulas.add(new NodeExpr(
+            formulas.add(new NodeOperation(
                 StandardOperation.LESS, a, NodeValue.newReal(0)));
             
-            formulas.add(new NodeExpr(
+            formulas.add(new NodeOperation(
                 StandardOperation.GREATER, b, NodeValue.newReal(0)));
 
-            formulas.add(new NodeExpr(
+            formulas.add(new NodeOperation(
                 StandardOperation.LESS, c, NodeValue.newInteger(0)));
             
-            formulas.add(new NodeExpr(
+            formulas.add(new NodeOperation(
                 StandardOperation.GREATER, d, NodeValue.newInteger(0)));
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.EQ,
-                    new NodeExpr(
+                    new NodeOperation(
                         StandardOperation.ABS,
-                        new NodeExpr(StandardOperation.MINUS, NodeValue.newReal(5.0))
+                        new NodeOperation(StandardOperation.MINUS, NodeValue.newReal(5.0))
                     ),
                     NodeValue.newReal(5.0)
                 )
             );
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.EQ,
-                    new NodeExpr(
+                    new NodeOperation(
                         StandardOperation.ABS,
                         NodeValue.newReal(5.0)
                     ),
@@ -104,39 +104,39 @@ public class AbsCustomOperationTestCase extends GenericSolverSampleTestBase
             );
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.EQ,
-                    new NodeExpr(
+                    new NodeOperation(
                         StandardOperation.ABS,
-                        new NodeExpr(StandardOperation.MINUS, a)
+                        new NodeOperation(StandardOperation.MINUS, a)
                     ),
                     NodeValue.newReal(5.0)
                 )
             );
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.EQ,
-                    new NodeExpr(StandardOperation.ABS, b),
+                    new NodeOperation(StandardOperation.ABS, b),
                     NodeValue.newReal(5.0)
                 )
             );
             
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.EQ,
-                    new NodeExpr(
+                    new NodeOperation(
                         StandardOperation.ABS,
-                        new NodeExpr(StandardOperation.MINUS, c)
+                        new NodeOperation(StandardOperation.MINUS, c)
                     ),
                     NodeValue.newInteger(5)
                 )
             );
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.EQ,
-                    new NodeExpr(StandardOperation.ABS, d),
+                    new NodeOperation(StandardOperation.ABS, d),
                     NodeValue.newInteger(5)
                 )
             );

@@ -18,7 +18,7 @@ import java.util.List;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.Node;
-import ru.ispras.fortress.expression.NodeExpr;
+import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
@@ -124,10 +124,10 @@ public class CustomOperationsTestCase extends GenericSolverSampleTestBase
         private void registerINT_SIGN_MASK(Solver solver)
         {
             final Node body =
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.BVLSHL,
-                    new NodeExpr(StandardOperation.BVNOT, new NodeExpr(ECustomOperation.INT_ZERO)),
-                    new NodeExpr(ECustomOperation.INT_BASE_SIZE)
+                    new NodeOperation(StandardOperation.BVNOT, new NodeOperation(ECustomOperation.INT_ZERO)),
+                    new NodeOperation(ECustomOperation.INT_BASE_SIZE)
                     );
 
             solver.addCustomOperation(
@@ -140,14 +140,14 @@ public class CustomOperationsTestCase extends GenericSolverSampleTestBase
         {
             final Variable param = new Variable("x", Int_t);
 
-            final Node body = new NodeExpr(
+            final Node body = new NodeOperation(
                 StandardOperation.EQ,
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.BVAND,
                     new NodeVariable(param),
-                    new NodeExpr(ECustomOperation.INT_SIGN_MASK)
+                    new NodeOperation(ECustomOperation.INT_SIGN_MASK)
                 ),
-                new NodeExpr(ECustomOperation.INT_ZERO)
+                new NodeOperation(ECustomOperation.INT_ZERO)
             );
 
             solver.addCustomOperation(
@@ -160,14 +160,14 @@ public class CustomOperationsTestCase extends GenericSolverSampleTestBase
         {
             final Variable param = new Variable("x", Int_t);
 
-            final Node body = new NodeExpr(
+            final Node body = new NodeOperation(
                 StandardOperation.EQ,
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.BVAND,
                     new NodeVariable(param),
-                    new NodeExpr(ECustomOperation.INT_SIGN_MASK)
+                    new NodeOperation(ECustomOperation.INT_SIGN_MASK)
                     ),
-                new NodeExpr(ECustomOperation.INT_SIGN_MASK)
+                new NodeOperation(ECustomOperation.INT_SIGN_MASK)
             );
 
             solver.addCustomOperation(
@@ -180,10 +180,10 @@ public class CustomOperationsTestCase extends GenericSolverSampleTestBase
         {
             final Variable param = new Variable("x", Int_t);
 
-            final Node body = new NodeExpr(
+            final Node body = new NodeOperation(
                 StandardOperation.OR,
-                new NodeExpr(ECustomOperation.IS_VALID_POS, new NodeVariable(param)),
-                new NodeExpr(ECustomOperation.IS_VALID_NEG, new NodeVariable(param))
+                new NodeOperation(ECustomOperation.IS_VALID_POS, new NodeVariable(param)),
+                new NodeOperation(ECustomOperation.IS_VALID_NEG, new NodeVariable(param))
             );
 
             solver.addCustomOperation(
@@ -219,23 +219,23 @@ public class CustomOperationsTestCase extends GenericSolverSampleTestBase
 
             // (assert (IsValidSignedInt rs))
             formulas.add(
-                new NodeExpr(ECustomOperation.IS_VALID_SIGNED_INT, rs)
+                new NodeOperation(ECustomOperation.IS_VALID_SIGNED_INT, rs)
             );
 
             // (assert (IsValidSignedInt rt))
             formulas.add(
-                new NodeExpr(ECustomOperation.IS_VALID_SIGNED_INT, rt)
+                new NodeOperation(ECustomOperation.IS_VALID_SIGNED_INT, rt)
             );
 
             // ; the condition for an overflow: the summation result is not a valid sign-extended 32-bit value
 
             // (assert (not (IsValidSignedInt (bvadd rs rt))))
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.NOT,
-                    new NodeExpr(
+                    new NodeOperation(
                         ECustomOperation.IS_VALID_SIGNED_INT,
-                        new NodeExpr(StandardOperation.BVADD, rs, rt)
+                        new NodeOperation(StandardOperation.BVADD, rs, rt)
                     )
                 )
             );
@@ -244,7 +244,7 @@ public class CustomOperationsTestCase extends GenericSolverSampleTestBase
             // (assert (not (= rs rt)))
 
             formulas.add(
-                new NodeExpr(StandardOperation.NOT, new NodeExpr(StandardOperation.EQ, rs, rt))
+                new NodeOperation(StandardOperation.NOT, new NodeOperation(StandardOperation.EQ, rs, rt))
             );
 
             return builder.build();

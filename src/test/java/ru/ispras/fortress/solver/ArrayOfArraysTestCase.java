@@ -48,12 +48,12 @@ class ArrayOfArraysConstraint implements ISampleConstraint
 
     private Node STORE(Node array, Node key, Node value)
     {
-        return new NodeExpr(StandardOperation.STORE, array, key, value);
+        return new NodeOperation(StandardOperation.STORE, array, key, value);
     }
 
     private Node EQ(Node lhs, Node rhs)
     {
-        return new NodeExpr(StandardOperation.EQ, lhs, rhs);
+        return new NodeOperation(StandardOperation.EQ, lhs, rhs);
     }
 
     public Constraint getConstraint()

@@ -18,7 +18,7 @@ import java.util.List;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.Node;
-import ru.ispras.fortress.expression.NodeExpr;
+import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
@@ -74,12 +74,12 @@ public class PowerOfTwoCustomTestCase extends GenericSolverSampleTestBase
         {
             final Variable param = new Variable("a", BIT_VECTOR_TYPE);
             
-            final Node body = new NodeExpr(
+            final Node body = new NodeOperation(
                 StandardOperation.EQ,
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.BVAND,
                     new NodeVariable(param), 
-                    new NodeExpr(
+                    new NodeOperation(
                         StandardOperation.BVSUB,
                         new NodeVariable(param),
                         new NodeValue(BIT_VECTOR_TYPE.valueOf("1", 10))
@@ -112,7 +112,7 @@ public class PowerOfTwoCustomTestCase extends GenericSolverSampleTestBase
             builder.setInnerRep(formulas);
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.BVUGT,
                     x,
                     new NodeValue(BIT_VECTOR_TYPE.valueOf("100", 10))
@@ -120,7 +120,7 @@ public class PowerOfTwoCustomTestCase extends GenericSolverSampleTestBase
             );
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.BVULT,
                     x,
                     new NodeValue(BIT_VECTOR_TYPE.valueOf("200", 10))
@@ -128,7 +128,7 @@ public class PowerOfTwoCustomTestCase extends GenericSolverSampleTestBase
             );
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     EPowerOfTwoCustomOperation.ISPOWOFTWO,
                     x
                 )

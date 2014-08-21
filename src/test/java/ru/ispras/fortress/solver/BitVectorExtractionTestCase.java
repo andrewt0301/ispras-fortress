@@ -59,17 +59,17 @@ final class BitVectorExtractionConstraint implements ISampleConstraint
         builder.setInnerRep(formulas);
 
         formulas.add(
-            new NodeExpr(
+            new NodeOperation(
                 StandardOperation.EQ,
                 x,
                 new NodeValue(BitVector32.valueOf("257", 10))
             )
         );
         formulas.add(
-            new NodeExpr(
+            new NodeOperation(
                 StandardOperation.EQ,
                 y,
-                new NodeExpr(StandardOperation.BVEXTRACT, INTEGER(7), INTEGER(0), x)));
+                new NodeOperation(StandardOperation.BVEXTRACT, INTEGER(7), INTEGER(0), x)));
 
         return builder.build();
     }

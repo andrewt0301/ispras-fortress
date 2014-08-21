@@ -7,7 +7,7 @@
  *
  * All rights reserved.
  *
- * NodeExpr.java, Dec 20, 2011 12:24:03 PM Andrei Tatarnikov
+ * NodeOperation.java, Dec 20, 2011 12:24:03 PM Andrei Tatarnikov
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -29,27 +29,30 @@ import java.util.Arrays;
 import ru.ispras.fortress.data.DataType;
 
 /**
- * The NodeExpr class represents an expression node described by an operation and operands
+ * The NodeOperation class represents an expression node described
+ * by an operation and operands.
  *
  * @author Andrei Tatarnikov
  */
 
-public final class NodeExpr extends Node
+public final class NodeOperation extends Node
 {
     private final Enum<?> operation;
     private final Node[] operands;
     private DataType dataType;
 
     /**
-     * Creates an expression node that has a variable number of operands (from 0 to infinity).
+     * Creates an operation node that has a variable number of operands
+     * (from 0 to infinity).
      * 
      * @param operation Operation identifier.
      * @param operands Operands packed into an array of syntax elements.
      */
 
-    public <T extends Enum<? extends T>> NodeExpr(T operation, Node ... operands)
+    public <T extends Enum<? extends T>> NodeOperation(
+        T operation, Node ... operands)
     {
-        super(Kind.EXPR);
+        super(Kind.OPERATION);
 
         if (null == operation)
             throw new NullPointerException();
@@ -68,18 +71,18 @@ public final class NodeExpr extends Node
      * because it contains nodes that must be cloned to create a fully
      * independent copy of an expression. 
      * 
-     * @param nodeExpr Node expression object to be copied.
+     * @param node Node operation object to be copied.
      */
 
-    private NodeExpr(NodeExpr nodeExpr)
+    private NodeOperation(NodeOperation node)
     {
-        super(nodeExpr);
+        super(node);
 
-        this.operation = nodeExpr.operation;
-        this.operands  = new Node[nodeExpr.operands.length];
+        this.operation = node.operation;
+        this.operands  = new Node[node.operands.length];
 
-        for (int index = 0; index < nodeExpr.operands.length; index++)
-            this.operands[index] = nodeExpr.operands[index].deepCopy();
+        for (int index = 0; index < node.operands.length; index++)
+            this.operands[index] = node.operands[index].deepCopy();
     }
 
     /**
@@ -89,7 +92,7 @@ public final class NodeExpr extends Node
     @Override
     public Node deepCopy()
     {
-        return new NodeExpr(this);
+        return new NodeOperation(this);
     }
 
     /**
@@ -165,8 +168,9 @@ public final class NodeExpr extends Node
         if (getClass() != obj.getClass())
             return false;
 
-        final NodeExpr other = (NodeExpr) obj;
-        return operation.equals(other.operation) && Arrays.equals(operands, other.operands);
+        final NodeOperation other = (NodeOperation) obj;
+        return operation.equals(other.operation) &&
+               Arrays.equals(operands, other.operands);
     }
 
     @Override

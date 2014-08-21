@@ -5,7 +5,7 @@ import java.util.List;
 
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
-import ru.ispras.fortress.expression.NodeExpr;
+import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
@@ -60,7 +60,7 @@ public class IfThenElseTestCase extends GenericSolverSampleTestBase
             builder.setInnerRep(formulas);
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.GREATER,
                     a,
                     new NodeValue(intType.valueOf("5", 10))
@@ -68,7 +68,7 @@ public class IfThenElseTestCase extends GenericSolverSampleTestBase
             );
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.LESS,
                     b,
                     new NodeValue(intType.valueOf("7", 10))
@@ -76,11 +76,11 @@ public class IfThenElseTestCase extends GenericSolverSampleTestBase
             );
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.EQ,
-                    new NodeExpr(
+                    new NodeOperation(
                         StandardOperation.ITE,
-                        new NodeExpr(StandardOperation.EQ, a, b),
+                        new NodeOperation(StandardOperation.EQ, a, b),
                         new NodeValue(intType.valueOf("1", 10)),
                         new NodeValue(intType.valueOf("0", 10))
                     ),

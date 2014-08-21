@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.IdentityHashMap;
 
 import ru.ispras.fortress.expression.Node;
-import ru.ispras.fortress.expression.NodeExpr;
+import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.transformer.TransformerRule;
 
@@ -27,15 +27,15 @@ abstract class ExpressionRule implements TransformerRule
 
     public boolean isApplicable(Node node)
     {
-        return node.getKind() == Node.Kind.EXPR
-            && ((NodeExpr) node).getOperationId() == opId;
+        return node.getKind() == Node.Kind.OPERATION
+            && ((NodeOperation) node).getOperationId() == opId;
     }
 
     public abstract Node apply(Node node);
 
     protected static Node[] extractOperands(Node node)
     {
-        NodeExpr in = (NodeExpr) node;
+        NodeOperation in = (NodeOperation) node;
         Node[] operands = new Node[in.getOperandCount()];
         for (int i = 0; i < operands.length; ++i)
             operands[i] = in.getOperand(i);
@@ -56,9 +56,9 @@ public final class Predicate
         rule = new ExpressionRule(StandardOperation.NOTEQ) {
             @Override
             public Node apply(Node in) {
-                return new NodeExpr(
+                return new NodeOperation(
                     StandardOperation.NOT,
-                    new NodeExpr(StandardOperation.EQ, extractOperands(in)));
+                    new NodeOperation(StandardOperation.EQ, extractOperands(in)));
             }
         };
         ruleset.put(rule.getOperationId(), rule);
@@ -67,10 +67,10 @@ public final class Predicate
             @Override
             public Node apply(Node in) {
                 Node[] operands = extractOperands(in);
-                return new NodeExpr(
+                return new NodeOperation(
                     StandardOperation.OR,
-                    new NodeExpr(StandardOperation.LESS, operands),
-                    new NodeExpr(StandardOperation.EQ, operands));
+                    new NodeOperation(StandardOperation.LESS, operands),
+                    new NodeOperation(StandardOperation.EQ, operands));
             }
         };
         ruleset.put(rule.getOperationId(), rule);
@@ -79,12 +79,12 @@ public final class Predicate
             @Override
             public Node apply(Node in) {
                 Node [] operands = extractOperands(in);
-                return new NodeExpr(
+                return new NodeOperation(
                     StandardOperation.AND,
-                    new NodeExpr(StandardOperation.NOT,
-                        new NodeExpr(StandardOperation.LESS, operands)),
-                    new NodeExpr(StandardOperation.NOT,
-                        new NodeExpr(StandardOperation.EQ, operands)));
+                    new NodeOperation(StandardOperation.NOT,
+                        new NodeOperation(StandardOperation.LESS, operands)),
+                    new NodeOperation(StandardOperation.NOT,
+                        new NodeOperation(StandardOperation.EQ, operands)));
             }
         };
         ruleset.put(rule.getOperationId(), rule);
@@ -92,9 +92,9 @@ public final class Predicate
         rule = new ExpressionRule(StandardOperation.GREATEREQ) {
             @Override
             public Node apply(Node in) {
-                return new NodeExpr(
+                return new NodeOperation(
                     StandardOperation.NOT,
-                    new NodeExpr(StandardOperation.LESS, extractOperands(in)));
+                    new NodeOperation(StandardOperation.LESS, extractOperands(in)));
             }
         };
         ruleset.put(rule.getOperationId(), rule);
@@ -103,10 +103,10 @@ public final class Predicate
             @Override
             public Node apply(Node in) {
                 Node[] operands = extractOperands(in);
-                return new NodeExpr(
+                return new NodeOperation(
                     StandardOperation.OR,
-                    new NodeExpr(StandardOperation.BVULT, operands),
-                    new NodeExpr(StandardOperation.EQ, operands));
+                    new NodeOperation(StandardOperation.BVULT, operands),
+                    new NodeOperation(StandardOperation.EQ, operands));
             }
         };
         ruleset.put(rule.getOperationId(), rule);
@@ -114,9 +114,9 @@ public final class Predicate
         rule = new ExpressionRule(StandardOperation.BVUGE) {
             @Override
             public Node apply(Node in) {
-                return new NodeExpr(
+                return new NodeOperation(
                     StandardOperation.NOT,
-                    new NodeExpr(StandardOperation.BVULT, extractOperands(in)));
+                    new NodeOperation(StandardOperation.BVULT, extractOperands(in)));
             }
         };
         ruleset.put(rule.getOperationId(), rule);
@@ -125,12 +125,12 @@ public final class Predicate
             @Override
             public Node apply(Node in) {
                 Node [] operands = extractOperands(in);
-                return new NodeExpr(
+                return new NodeOperation(
                     StandardOperation.AND,
-                    new NodeExpr(StandardOperation.NOT,
-                        new NodeExpr(StandardOperation.BVULT, operands)),
-                    new NodeExpr(StandardOperation.NOT,
-                        new NodeExpr(StandardOperation.EQ, operands)));
+                    new NodeOperation(StandardOperation.NOT,
+                        new NodeOperation(StandardOperation.BVULT, operands)),
+                    new NodeOperation(StandardOperation.NOT,
+                        new NodeOperation(StandardOperation.EQ, operands)));
             }
         };
         ruleset.put(rule.getOperationId(), rule);
@@ -139,10 +139,10 @@ public final class Predicate
             @Override
             public Node apply(Node in) {
                 Node[] operands = extractOperands(in);
-                return new NodeExpr(
+                return new NodeOperation(
                     StandardOperation.OR,
-                    new NodeExpr(StandardOperation.BVSLT, operands),
-                    new NodeExpr(StandardOperation.EQ, operands));
+                    new NodeOperation(StandardOperation.BVSLT, operands),
+                    new NodeOperation(StandardOperation.EQ, operands));
             }
         };
         ruleset.put(rule.getOperationId(), rule);
@@ -150,9 +150,9 @@ public final class Predicate
         rule = new ExpressionRule(StandardOperation.BVSGE) {
             @Override
             public Node apply(Node in) {
-                return new NodeExpr(
+                return new NodeOperation(
                     StandardOperation.NOT,
-                    new NodeExpr(StandardOperation.BVSLT, extractOperands(in)));
+                    new NodeOperation(StandardOperation.BVSLT, extractOperands(in)));
             }
         };
         ruleset.put(rule.getOperationId(), rule);
@@ -161,12 +161,12 @@ public final class Predicate
             @Override
             public Node apply(Node in) {
                 Node [] operands = extractOperands(in);
-                return new NodeExpr(
+                return new NodeOperation(
                     StandardOperation.AND,
-                    new NodeExpr(StandardOperation.NOT,
-                        new NodeExpr(StandardOperation.BVSLT, operands)),
-                    new NodeExpr(StandardOperation.NOT,
-                        new NodeExpr(StandardOperation.EQ, operands)));
+                    new NodeOperation(StandardOperation.NOT,
+                        new NodeOperation(StandardOperation.BVSLT, operands)),
+                    new NodeOperation(StandardOperation.NOT,
+                        new NodeOperation(StandardOperation.EQ, operands)));
             }
         };
         ruleset.put(rule.getOperationId(), rule);

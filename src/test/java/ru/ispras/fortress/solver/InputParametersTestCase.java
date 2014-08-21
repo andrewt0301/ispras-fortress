@@ -18,7 +18,7 @@ import java.util.List;
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
-import ru.ispras.fortress.expression.NodeExpr;
+import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.solver.constraint.Constraint;
@@ -88,9 +88,9 @@ public class InputParametersTestCase extends GenericSolverSampleTestBase
             builder.setInnerRep(formulas);
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.EQ,
-                    new NodeExpr(StandardOperation.BVADD, a, b),
+                    new NodeOperation(StandardOperation.BVADD, a, b),
                     c
                 )
             );

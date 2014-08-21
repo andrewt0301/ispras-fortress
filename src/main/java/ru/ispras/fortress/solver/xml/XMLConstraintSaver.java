@@ -294,7 +294,7 @@ class XMLBuilderForExprs implements ExprTreeVisitor
     }
 
     @Override
-    public void onExprBegin(NodeExpr expr)
+    public void onOperationBegin(NodeOperation expr)
     {
         final Enum<?> op = expr.getOperationId();
 
@@ -312,7 +312,7 @@ class XMLBuilderForExprs implements ExprTreeVisitor
     }
 
     @Override
-    public void onExprEnd(NodeExpr expr)
+    public void onOperationEnd(NodeOperation expr)
     {
         assert !elements.isEmpty();
 
@@ -320,13 +320,13 @@ class XMLBuilderForExprs implements ExprTreeVisitor
     }
 
     @Override
-    public void onOperandBegin(NodeExpr expr, Node node, int index)
+    public void onOperandBegin(NodeOperation expr, Node node, int index)
     {
         // Do nothing.
     }
 
     @Override
-    public void onOperandEnd(NodeExpr expr, Node node, int index)
+    public void onOperandEnd(NodeOperation expr, Node node, int index)
     {
         // Do nothing.
     }

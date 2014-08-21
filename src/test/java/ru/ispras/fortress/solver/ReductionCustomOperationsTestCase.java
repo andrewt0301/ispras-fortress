@@ -6,7 +6,7 @@ import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.Node;
-import ru.ispras.fortress.expression.NodeExpr;
+import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
@@ -85,87 +85,87 @@ public class ReductionCustomOperationsTestCase extends GenericSolverSampleTestBa
 
             // BVANDR Asserts
 
-            formulas.add(new NodeExpr(
-                StandardOperation.EQ, varBVANDR_NO_BITS, new NodeExpr(StandardOperation.BVANDR, NO_BITS)));
+            formulas.add(new NodeOperation(
+                StandardOperation.EQ, varBVANDR_NO_BITS, new NodeOperation(StandardOperation.BVANDR, NO_BITS)));
 
-            formulas.add(new NodeExpr(
-                StandardOperation.EQ, varBVANDR_ALL_BITS, new NodeExpr(StandardOperation.BVANDR, ALL_BITS)));
+            formulas.add(new NodeOperation(
+                StandardOperation.EQ, varBVANDR_ALL_BITS, new NodeOperation(StandardOperation.BVANDR, ALL_BITS)));
 
-            formulas.add(new NodeExpr(
-                StandardOperation.EQ, varBVANDR_EVEN_BITS, new NodeExpr(StandardOperation.BVANDR, EVEN_BITS)));
+            formulas.add(new NodeOperation(
+                StandardOperation.EQ, varBVANDR_EVEN_BITS, new NodeOperation(StandardOperation.BVANDR, EVEN_BITS)));
 
-            formulas.add(new NodeExpr(
-                StandardOperation.EQ, varBVANDR_ODD_BITS, new NodeExpr(StandardOperation.BVANDR, ODD_BITS)));
+            formulas.add(new NodeOperation(
+                StandardOperation.EQ, varBVANDR_ODD_BITS, new NodeOperation(StandardOperation.BVANDR, ODD_BITS)));
 
             // BVNANDR Asserts
 
-            formulas.add(new NodeExpr(
-                StandardOperation.EQ, varBVNANDR_NO_BITS, new NodeExpr(StandardOperation.BVNANDR, NO_BITS)));
+            formulas.add(new NodeOperation(
+                StandardOperation.EQ, varBVNANDR_NO_BITS, new NodeOperation(StandardOperation.BVNANDR, NO_BITS)));
 
-            formulas.add(new NodeExpr(
-                StandardOperation.EQ, varBVNANDR_ALL_BITS, new NodeExpr(StandardOperation.BVNANDR, ALL_BITS)));
+            formulas.add(new NodeOperation(
+                StandardOperation.EQ, varBVNANDR_ALL_BITS, new NodeOperation(StandardOperation.BVNANDR, ALL_BITS)));
 
-            formulas.add(new NodeExpr(
-                StandardOperation.EQ, varBVNANDR_EVEN_BITS, new NodeExpr(StandardOperation.BVNANDR, EVEN_BITS)));
+            formulas.add(new NodeOperation(
+                StandardOperation.EQ, varBVNANDR_EVEN_BITS, new NodeOperation(StandardOperation.BVNANDR, EVEN_BITS)));
 
-            formulas.add(new NodeExpr(
-                StandardOperation.EQ, varBVNANDR_ODD_BITS, new NodeExpr(StandardOperation.BVNANDR, ODD_BITS)));
+            formulas.add(new NodeOperation(
+                StandardOperation.EQ, varBVNANDR_ODD_BITS, new NodeOperation(StandardOperation.BVNANDR, ODD_BITS)));
 
             // BVORR Asserts
 
-            formulas.add(new NodeExpr(
-                StandardOperation.EQ, varBVORR_NO_BITS, new NodeExpr(StandardOperation.BVORR, NO_BITS)));
+            formulas.add(new NodeOperation(
+                StandardOperation.EQ, varBVORR_NO_BITS, new NodeOperation(StandardOperation.BVORR, NO_BITS)));
 
-            formulas.add(new NodeExpr(
-                StandardOperation.EQ, varBVORR_ALL_BITS, new NodeExpr(StandardOperation.BVORR, ALL_BITS)));
+            formulas.add(new NodeOperation(
+                StandardOperation.EQ, varBVORR_ALL_BITS, new NodeOperation(StandardOperation.BVORR, ALL_BITS)));
 
-            formulas.add(new NodeExpr(
-                StandardOperation.EQ, varBVORR_EVEN_BITS, new NodeExpr(StandardOperation.BVORR, EVEN_BITS)));
+            formulas.add(new NodeOperation(
+                StandardOperation.EQ, varBVORR_EVEN_BITS, new NodeOperation(StandardOperation.BVORR, EVEN_BITS)));
 
-            formulas.add(new NodeExpr(
-                StandardOperation.EQ, varBVORR_ODD_BITS, new NodeExpr(StandardOperation.BVORR, ODD_BITS)));
+            formulas.add(new NodeOperation(
+                StandardOperation.EQ, varBVORR_ODD_BITS, new NodeOperation(StandardOperation.BVORR, ODD_BITS)));
 
             // BVNORR Asserts
 
-            formulas.add(new NodeExpr(
-                StandardOperation.EQ, varBVNORR_NO_BITS, new NodeExpr(StandardOperation.BVNORR, NO_BITS)));
+            formulas.add(new NodeOperation(
+                StandardOperation.EQ, varBVNORR_NO_BITS, new NodeOperation(StandardOperation.BVNORR, NO_BITS)));
 
-            formulas.add(new NodeExpr(
-                StandardOperation.EQ, varBVNORR_ALL_BITS, new NodeExpr(StandardOperation.BVNORR, ALL_BITS)));
+            formulas.add(new NodeOperation(
+                StandardOperation.EQ, varBVNORR_ALL_BITS, new NodeOperation(StandardOperation.BVNORR, ALL_BITS)));
 
-            formulas.add(new NodeExpr(
-                StandardOperation.EQ, varBVNORR_EVEN_BITS, new NodeExpr(StandardOperation.BVNORR, EVEN_BITS)));
+            formulas.add(new NodeOperation(
+                StandardOperation.EQ, varBVNORR_EVEN_BITS, new NodeOperation(StandardOperation.BVNORR, EVEN_BITS)));
 
-            formulas.add(new NodeExpr(
-                StandardOperation.EQ, varBVNORR_ODD_BITS, new NodeExpr(StandardOperation.BVNORR, ODD_BITS)));
+            formulas.add(new NodeOperation(
+                StandardOperation.EQ, varBVNORR_ODD_BITS, new NodeOperation(StandardOperation.BVNORR, ODD_BITS)));
             
             // BVXORR Asserts
 
-            formulas.add(new NodeExpr(
-                StandardOperation.EQ, varBVXORR_NO_BITS, new NodeExpr(StandardOperation.BVXORR, NO_BITS)));
+            formulas.add(new NodeOperation(
+                StandardOperation.EQ, varBVXORR_NO_BITS, new NodeOperation(StandardOperation.BVXORR, NO_BITS)));
 
-            formulas.add(new NodeExpr(
-                StandardOperation.EQ, varBVXORR_ALL_BITS, new NodeExpr(StandardOperation.BVXORR, ALL_BITS)));
+            formulas.add(new NodeOperation(
+                StandardOperation.EQ, varBVXORR_ALL_BITS, new NodeOperation(StandardOperation.BVXORR, ALL_BITS)));
 
-            formulas.add(new NodeExpr(
-                StandardOperation.EQ, varBVXORR_EVEN_BITS, new NodeExpr(StandardOperation.BVXORR, EVEN_BITS)));
+            formulas.add(new NodeOperation(
+                StandardOperation.EQ, varBVXORR_EVEN_BITS, new NodeOperation(StandardOperation.BVXORR, EVEN_BITS)));
 
-            formulas.add(new NodeExpr(
-                StandardOperation.EQ, varBVXORR_ODD_BITS, new NodeExpr(StandardOperation.BVXORR, ODD_BITS)));
+            formulas.add(new NodeOperation(
+                StandardOperation.EQ, varBVXORR_ODD_BITS, new NodeOperation(StandardOperation.BVXORR, ODD_BITS)));
 
             // BVXNORR Asserts
 
-            formulas.add(new NodeExpr(
-                StandardOperation.EQ, varBVXNORR_NO_BITS, new NodeExpr(StandardOperation.BVXNORR, NO_BITS)));
+            formulas.add(new NodeOperation(
+                StandardOperation.EQ, varBVXNORR_NO_BITS, new NodeOperation(StandardOperation.BVXNORR, NO_BITS)));
 
-            formulas.add(new NodeExpr(
-                StandardOperation.EQ, varBVXNORR_ALL_BITS, new NodeExpr(StandardOperation.BVXNORR, ALL_BITS)));
+            formulas.add(new NodeOperation(
+                StandardOperation.EQ, varBVXNORR_ALL_BITS, new NodeOperation(StandardOperation.BVXNORR, ALL_BITS)));
 
-            formulas.add(new NodeExpr(
-                StandardOperation.EQ, varBVXNORR_EVEN_BITS, new NodeExpr(StandardOperation.BVXNORR, EVEN_BITS)));
+            formulas.add(new NodeOperation(
+                StandardOperation.EQ, varBVXNORR_EVEN_BITS, new NodeOperation(StandardOperation.BVXNORR, EVEN_BITS)));
 
-            formulas.add(new NodeExpr(
-                StandardOperation.EQ, varBVXNORR_ODD_BITS, new NodeExpr(StandardOperation.BVXNORR, ODD_BITS)));
+            formulas.add(new NodeOperation(
+                StandardOperation.EQ, varBVXNORR_ODD_BITS, new NodeOperation(StandardOperation.BVXNORR, ODD_BITS)));
 
             return builder.build();
         }

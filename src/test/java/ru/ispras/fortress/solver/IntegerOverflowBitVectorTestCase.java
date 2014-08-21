@@ -18,7 +18,7 @@ import java.util.List;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.Node;
-import ru.ispras.fortress.expression.NodeExpr;
+import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
@@ -88,8 +88,8 @@ public class IntegerOverflowBitVectorTestCase extends GenericSolverSampleTestBas
                 BIT_VECTOR_TYPE.valueOf("32", 10)
             );
 
-        private final NodeExpr INT_SIGN_MASK =
-            new NodeExpr(StandardOperation.BVLSHL, new NodeExpr(StandardOperation.BVNOT, INT_ZERO), INT_BASE_SIZE);
+        private final NodeOperation INT_SIGN_MASK =
+            new NodeOperation(StandardOperation.BVLSHL, new NodeOperation(StandardOperation.BVNOT, INT_ZERO), INT_BASE_SIZE);
 
         @Override
         public Constraint getConstraint()
@@ -111,32 +111,32 @@ public class IntegerOverflowBitVectorTestCase extends GenericSolverSampleTestBas
             formulas.add(IsValidSignedInt(rt));
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.NOT,
-                    IsValidSignedInt(new NodeExpr(StandardOperation.BVADD, rs, rt))
+                    IsValidSignedInt(new NodeOperation(StandardOperation.BVADD, rs, rt))
                 )
             );
 
             formulas.add(
-                new NodeExpr(StandardOperation.NOT, new NodeExpr(StandardOperation.EQ, rs, rt))
+                new NodeOperation(StandardOperation.NOT, new NodeOperation(StandardOperation.EQ, rs, rt))
             );
 
             return builder.build();
         }
 
-        private NodeExpr IsValidPos(Node arg)
+        private NodeOperation IsValidPos(Node arg)
         {
-            return new NodeExpr(StandardOperation.EQ, new NodeExpr(StandardOperation.BVAND, arg, INT_SIGN_MASK), INT_ZERO);
+            return new NodeOperation(StandardOperation.EQ, new NodeOperation(StandardOperation.BVAND, arg, INT_SIGN_MASK), INT_ZERO);
         }
 
-        private NodeExpr IsValidNeg(Node arg)
+        private NodeOperation IsValidNeg(Node arg)
         {
-            return new NodeExpr(StandardOperation.EQ, new NodeExpr(StandardOperation.BVAND, arg, INT_SIGN_MASK), INT_SIGN_MASK);
+            return new NodeOperation(StandardOperation.EQ, new NodeOperation(StandardOperation.BVAND, arg, INT_SIGN_MASK), INT_SIGN_MASK);
         }
 
-        private NodeExpr IsValidSignedInt(Node arg)
+        private NodeOperation IsValidSignedInt(Node arg)
         {
-            return new NodeExpr(StandardOperation.OR, IsValidPos(arg), IsValidNeg(arg));
+            return new NodeOperation(StandardOperation.OR, IsValidPos(arg), IsValidNeg(arg));
         }
 
         @Override

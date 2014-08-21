@@ -18,14 +18,14 @@ public class SimpleTransformTestCase
         return new NodeVariable(var);
     }
 
-    private static NodeExpr PLUS(Node ... args)
+    private static NodeOperation PLUS(Node ... args)
     {
-        return new NodeExpr(StandardOperation.PLUS, args);
+        return new NodeOperation(StandardOperation.PLUS, args);
     }
 
-    private static NodeExpr EQ(Node lhs, Node rhs)
+    private static NodeOperation EQ(Node lhs, Node rhs)
     {
-        return new NodeExpr(StandardOperation.EQ, lhs, rhs);
+        return new NodeOperation(StandardOperation.EQ, lhs, rhs);
     }
 
     private static NodeBinding singleBinding(NodeVariable variable, Node value, Node expr)

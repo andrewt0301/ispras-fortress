@@ -33,7 +33,7 @@ import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.ExprTreeVisitor;
 import ru.ispras.fortress.expression.ExprTreeWalker;
 import ru.ispras.fortress.expression.Node;
-import ru.ispras.fortress.expression.NodeExpr;
+import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.NodeBinding;
@@ -219,10 +219,10 @@ public final class Formulas
             @Override public void onValue(NodeValue value) {}
             @Override public void onRootEnd() {}
             @Override public void onRootBegin() {}
-            @Override public void onOperandEnd(NodeExpr expr, Node operand, int index) {}
-            @Override public void onOperandBegin(NodeExpr expr, Node operand, int index) {}
-            @Override public void onExprEnd(NodeExpr expr) {}
-            @Override public void onExprBegin(NodeExpr expr) {}
+            @Override public void onOperandEnd(NodeOperation expr, Node operand, int index) {}
+            @Override public void onOperandBegin(NodeOperation expr, Node operand, int index) {}
+            @Override public void onOperationEnd(NodeOperation expr) {}
+            @Override public void onOperationBegin(NodeOperation expr) {}
             @Override public Status getStatus() { return Status.OK; }
            
         });

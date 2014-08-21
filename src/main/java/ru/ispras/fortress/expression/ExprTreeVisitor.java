@@ -75,40 +75,40 @@ public interface ExprTreeVisitor
     void onRootEnd();
 
     /**
-     * Starts visiting an expression node.
+     * Starts visiting an operation node.
      * 
-     * @param expr Expression node.
+     * @param node Operation node.
      */
 
-    void onExprBegin(NodeExpr expr);
+    void onOperationBegin(NodeOperation node);
 
     /**
-     * Finishes visiting an expression node.
+     * Finishes visiting an operation node.
      * 
-     * @param expr Expression node.
+     * @param node Operation node.
      */
 
-    void onExprEnd(NodeExpr expr);
+    void onOperationEnd(NodeOperation node);
 
     /**
      * Notifies that visiting an expression operand has started. 
      * 
-     * @param expr Expression node.
+     * @param operation Operation node.
      * @param operand Operand node.
      * @param index Operand index.
      */
 
-    void onOperandBegin(NodeExpr expr, Node operand, int index);
+    void onOperandBegin(NodeOperation operation, Node operand, int index);
 
     /**
      * Notifies that visiting an expression operand has finished.
      * 
-     * @param expr Expression node.
+     * @param operation Operation node.
      * @param operand Operand node.
      * @param index Operand index.
      */
 
-    void onOperandEnd(NodeExpr expr, Node operand, int index);
+    void onOperandEnd(NodeOperation operation, Node operand, int index);
 
     /**
      * Notifies that a value node has been visited. 

@@ -48,16 +48,30 @@ public abstract class Node
 
     public static enum Kind
     {
-        /** A value node. Stores a constant value. */
+        /**
+         * A value node. Stores a constant value.
+         */
+
         VALUE,
 
-        /** A variable node. Can be either an unknown variable or a named constant. */
+        /** 
+         * A variable node. Can be either an unknown variable or
+         * a named constant.
+         */
+
         VARIABLE,
 
-        /** An expression node. Describes an expression that includes an operation and one or two operands. */
-        EXPR,
+        /** 
+         * An operation node. Describes an expression that includes an operation
+         * and one or two operands.
+         */
 
-        /** A binding node. Represents group of variable substitutions. */
+        OPERATION,
+
+        /**
+         * A binding node. Represents group of variable substitutions.
+         */
+
         BINDING
     }
 
@@ -66,6 +80,7 @@ public abstract class Node
 
     /**
      * Creates a node of the specified kind.
+     * 
      * @param kind Node kind identifier.
      * @throws NullPointerException if the parameter equals null.
      */
@@ -100,6 +115,7 @@ public abstract class Node
      * Creates a deep copy of the current objects. All aggregated objects 
      * that are not readonly must be cloned. This excludes user data as 
      * its type is unknown.
+     * 
      * @return Full copy of the current node object.
      */
 
@@ -107,6 +123,7 @@ public abstract class Node
 
     /**
      * Returns the identifier that specifies the kind of the node.
+     * 
      * @return A node kind identifier.
      */
 
@@ -116,7 +133,8 @@ public abstract class Node
     }
 
     /**
-     * Returns an object that describes the type of the value referred by the node.
+     * Returns an object that describes the type of the value referred
+     * by the node.
      * 
      * @return A data type object.
      */
@@ -135,6 +153,7 @@ public abstract class Node
 
     /**
      * Returns user data.
+     * 
      * @return User data object.
      */
 
@@ -144,7 +163,8 @@ public abstract class Node
     }
     
     /**
-     * Creates an expression by performing logic conjunction on two existing expressions.
+     * Creates an expression by performing logic conjunction on two
+     * existing expressions.
      * 
      * @param left An existing expression.
      * @param right An existing expression.
@@ -159,11 +179,12 @@ public abstract class Node
         if (null == right)
             throw new NullPointerException();
 
-        return new NodeExpr(StandardOperation.AND, left, right);
+        return new NodeOperation(StandardOperation.AND, left, right);
     }
 
     /**
-     * Creates a new expression by performing logic disjunction on two existing expressions.
+     * Creates a new expression by performing logic disjunction on two
+     * existing expressions.
      * 
      * @param left An existing expression.
      * @param right An existing expression.
@@ -178,11 +199,12 @@ public abstract class Node
         if (null == right)
             throw new NullPointerException();
 
-        return new NodeExpr(StandardOperation.OR, left, right);
+        return new NodeOperation(StandardOperation.OR, left, right);
     }
 
     /**
-     * Creates a new expression by performing logical negation on an existing expression.
+     * Creates a new expression by performing logical negation
+     * on an existing expression.
      * 
      * @param expr An existing expression.
      * @return A new expression.
@@ -193,6 +215,6 @@ public abstract class Node
         if (null == expr)
             throw new NullPointerException();
 
-        return new NodeExpr(StandardOperation.NOT, expr);
+        return new NodeOperation(StandardOperation.NOT, expr);
     }
 }

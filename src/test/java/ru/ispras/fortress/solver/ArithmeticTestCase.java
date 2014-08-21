@@ -5,7 +5,7 @@ import java.util.List;
 
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
-import ru.ispras.fortress.expression.NodeExpr;
+import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
@@ -71,35 +71,35 @@ public class ArithmeticTestCase extends GenericSolverSampleTestBase
             builder.setInnerRep(formulas);
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.GREATER,
                     a, 
-                    new NodeExpr(StandardOperation.ADD, b, new NodeValue(intType.valueOf("2", 10)))
+                    new NodeOperation(StandardOperation.ADD, b, new NodeValue(intType.valueOf("2", 10)))
                 )
             );
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.EQ, 
                     a, 
-                    new NodeExpr(
+                    new NodeOperation(
                         StandardOperation.ADD, 
-                        new NodeExpr(StandardOperation.MUL, new NodeValue(intType.valueOf("2", 10)), c),
+                        new NodeOperation(StandardOperation.MUL, new NodeValue(intType.valueOf("2", 10)), c),
                         new NodeValue(intType.valueOf("10", 10))
                     )
                 )
             );
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.LESSEQ,
-                    new NodeExpr(StandardOperation.ADD, c, b),
+                    new NodeOperation(StandardOperation.ADD, c, b),
                     new NodeValue(intType.valueOf("1000", 10))
                 )
             );
 
             formulas.add(
-                new NodeExpr(StandardOperation.GREATEREQ, d, e)
+                new NodeOperation(StandardOperation.GREATEREQ, d, e)
             );
 
             return builder.build();

@@ -20,14 +20,14 @@ public class OperationReducer
 {
     private final static String UNKNOWN_ELEMENT = "Unknown syntax element kind: %s";
 
-    private final NodeExpr    operation;
+    private final NodeOperation    operation;
     private final ReduceOptions  options;
     private final Node[]        operands;
 
     private boolean hasValueOperandsOnly;
     private boolean      updatedOperands;
 
-    public OperationReducer(NodeExpr operation, ReduceOptions options)
+    public OperationReducer(NodeOperation operation, ReduceOptions options)
     {
         this.operation  = operation;
         this.options    = options;
@@ -48,7 +48,7 @@ public class OperationReducer
         }
 
         if (updatedOperands)
-            return new NodeExpr(operation.getOperationId(), operands);
+            return new NodeOperation(operation.getOperationId(), operands);
 
         return operation;
     }
@@ -71,9 +71,9 @@ public class OperationReducer
                     hasValueOperandsOnly = false;
                     break;
 
-                case EXPR:
+                case OPERATION:
                     final Node reduced =
-                        Transformer.reduce(options, (NodeExpr) o);
+                        Transformer.reduce(options, (NodeOperation) o);
 
                     if (reduced != o)
                     {
@@ -111,7 +111,7 @@ public class OperationReducer
         return new NodeValue(result);
     }
 
-    private static Node[] copyOperands(NodeExpr operation)
+    private static Node[] copyOperands(NodeOperation operation)
     {
         final Node[] operands = 
             new Node[operation.getOperandCount()];

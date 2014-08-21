@@ -199,7 +199,7 @@ final class SMTTextBuilder implements ExprTreeVisitor
     }
 
     @Override
-    public void onExprBegin(NodeExpr expr)
+    public void onOperationBegin(NodeOperation expr)
     {
         final Enum<?> op = expr.getOperationId();
         
@@ -256,20 +256,20 @@ final class SMTTextBuilder implements ExprTreeVisitor
     }
 
     @Override
-    public void onExprEnd(NodeExpr expr)
+    public void onOperationEnd(NodeOperation expr)
     {
         if (expr.getOperandCount() > 0)
             appendToCurrent(sBRACKET_CLOSE);
     }
 
     @Override
-    public void onOperandBegin(NodeExpr expr, Node node, int index)
+    public void onOperandBegin(NodeOperation expr, Node node, int index)
     {
         // Do nothing.
     }
 
     @Override
-    public void onOperandEnd(NodeExpr expr, Node node, int index)
+    public void onOperandEnd(NodeOperation expr, Node node, int index)
     {
         if (StandardOperation.isParametric(expr.getOperationId())
         &&  index == StandardOperation.getParameterCount(expr.getOperationId()) - 1)

@@ -5,7 +5,7 @@ import java.util.List;
 
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
-import ru.ispras.fortress.expression.NodeExpr;
+import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
@@ -65,7 +65,7 @@ public class RepeatOperationTestCase extends GenericSolverSampleTestBase
             builder.setInnerRep(formulas);
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.EQ,
                     x,
                     new NodeValue(BIT_VECTOR_ARG_TYPE.valueOf("5", HEX_RADIX))
@@ -73,14 +73,14 @@ public class RepeatOperationTestCase extends GenericSolverSampleTestBase
             );
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.EQ,
                     y,
-                    new NodeExpr(
+                    new NodeOperation(
                         StandardOperation.BVREPEAT,
                         Transformer.reduce(
                             ReduceOptions.NEW_INSTANCE,
-                            new NodeExpr(
+                            new NodeOperation(
                                 StandardOperation.ADD,
                                 new NodeValue(INT_TYPE.valueOf("2", DEC_RADIX)),
                                 new NodeValue(INT_TYPE.valueOf("2", DEC_RADIX))

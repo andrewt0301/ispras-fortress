@@ -27,7 +27,7 @@ import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.Node;
-import ru.ispras.fortress.expression.NodeExpr;
+import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.NodeBinding;
@@ -533,7 +533,7 @@ final class XMLConstraintBuilder
         if (expressions.empty())
             throw new IllegalStateException(Messages.ERR_NO_EXPRESSION);
 
-        final NodeExpr expr = expressions.pop().create();
+        final NodeOperation expr = expressions.pop().create();
 
         if (expressions.empty())
         {
@@ -658,12 +658,12 @@ final class ExprBuilder
         elements.add(se);
     }
 
-    public NodeExpr create() throws Exception
+    public NodeOperation create() throws Exception
     {
         if (null == operationId)
             throw new Exception(Messages.ERR_NO_OPERATION_ID);
 
-        return new NodeExpr(operationId, elements.toArray(new Node[] {}));
+        return new NodeOperation(operationId, elements.toArray(new Node[] {}));
     }
 
     public NodeBinding createBinding() throws Exception

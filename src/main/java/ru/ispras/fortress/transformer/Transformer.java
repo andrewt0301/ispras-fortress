@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 import ru.ispras.fortress.expression.Node;
-import ru.ispras.fortress.expression.NodeExpr;
+import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.NodeBinding;
 
@@ -40,7 +40,7 @@ public final class Transformer
      * this if it is impossible to reduce the operation expression.
      */
 
-    public static Node reduce(ReduceOptions options, NodeExpr expression)
+    public static Node reduce(ReduceOptions options, NodeOperation expression)
     {
         final OperationReducer reducer = new OperationReducer(expression, options);
         final Node result = reducer.reduce();

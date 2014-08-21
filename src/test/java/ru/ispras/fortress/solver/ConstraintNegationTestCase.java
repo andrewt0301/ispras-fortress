@@ -5,7 +5,7 @@ import java.util.List;
 
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.Node;
-import ru.ispras.fortress.expression.NodeExpr;
+import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintBuilder;
@@ -43,12 +43,12 @@ public class ConstraintNegationTestCase extends GenericSolverSampleTestBase
 
             // not(= (a not(not(a))))
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.NOT,
-                    new NodeExpr(
+                    new NodeOperation(
                         StandardOperation.EQ,
                         formula,
-                        new NodeExpr(
+                        new NodeOperation(
                             StandardOperation.NOT,
                             negFormula
                         )
@@ -58,7 +58,7 @@ public class ConstraintNegationTestCase extends GenericSolverSampleTestBase
 
             // (not(a) and a)
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.AND,
                     negFormula,
                     formula
@@ -67,9 +67,9 @@ public class ConstraintNegationTestCase extends GenericSolverSampleTestBase
 
             // not((not(a)) or a)
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.NOT,
-                    new NodeExpr(
+                    new NodeOperation(
                         StandardOperation.OR,
                         negFormula,
                         formula

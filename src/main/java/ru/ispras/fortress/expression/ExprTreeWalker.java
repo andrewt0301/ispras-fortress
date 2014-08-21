@@ -156,8 +156,8 @@ public final class ExprTreeWalker
             visitVariable((NodeVariable) node);
             break;
 
-        case EXPR:
-            visitExpr((NodeExpr) node);
+        case OPERATION:
+            visitOperation((NodeOperation) node);
             break;
 
         case BINDING:
@@ -170,12 +170,12 @@ public final class ExprTreeWalker
         }
     }
 
-    private void visitExpr(NodeExpr node)
+    private void visitOperation(NodeOperation node)
     {
         if (null == node)
             throw new NullPointerException();
 
-        visitor.onExprBegin(node);
+        visitor.onOperationBegin(node);
         if (isStatus(Status.ABORT)) return;
 
         if (isStatus(Status.OK))
@@ -198,7 +198,7 @@ public final class ExprTreeWalker
             }
         }
 
-        visitor.onExprEnd(node);
+        visitor.onOperationEnd(node);
     }
 
     private void visitValue(NodeValue node)

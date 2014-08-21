@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.ispras.fortress.data.Variable;
-import ru.ispras.fortress.expression.NodeExpr;
+import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintBuilder;
@@ -40,9 +40,9 @@ public class ConstraintConjunctionTestCase extends GenericSolverSampleTestBase
             builder.setInnerRep(formulas);
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.NOT,
-                    new NodeExpr(
+                    new NodeOperation(
                         StandardOperation.AND, 
                         ((Formulas)conjunction.getInnerRep()).exprs().iterator().next(), 
                         ((Formulas)conjunction.getInnerRep()).exprs().iterator().next()

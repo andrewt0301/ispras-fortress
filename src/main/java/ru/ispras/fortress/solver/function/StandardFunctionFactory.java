@@ -29,7 +29,7 @@ import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.DataTypeId;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.Node;
-import ru.ispras.fortress.expression.NodeExpr;
+import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
@@ -68,11 +68,11 @@ public final class StandardFunctionFactory
             default:            zeroData = null;               assert false;
         }
 
-        final NodeExpr body = new NodeExpr(
+        final NodeOperation body = new NodeOperation(
             StandardOperation.ITE,
-            new NodeExpr(StandardOperation.GREATEREQ, operandNode, new NodeValue(zeroData)),
+            new NodeOperation(StandardOperation.GREATEREQ, operandNode, new NodeValue(zeroData)),
             operandNode,
-            new NodeExpr(StandardOperation.MINUS, operandNode)
+            new NodeOperation(StandardOperation.MINUS, operandNode)
         );
 
         return new Function(id, returnType, body, operand);
@@ -96,9 +96,9 @@ public final class StandardFunctionFactory
         final Node leftNode = new NodeVariable(left);
         final Node rightNode = new NodeVariable(right);
 
-        final NodeExpr body = new NodeExpr(
+        final NodeOperation body = new NodeOperation(
             StandardOperation.ITE,
-            new NodeExpr(StandardOperation.GREATEREQ, leftNode, rightNode),
+            new NodeOperation(StandardOperation.GREATEREQ, leftNode, rightNode),
             rightNode,
             leftNode
         );
@@ -124,9 +124,9 @@ public final class StandardFunctionFactory
         final Node  leftNode = new NodeVariable(left);
         final Node rightNode = new NodeVariable(right);
 
-        final NodeExpr body = new NodeExpr(
+        final NodeOperation body = new NodeOperation(
             StandardOperation.ITE,
-            new NodeExpr(StandardOperation.GREATEREQ, leftNode, rightNode),
+            new NodeOperation(StandardOperation.GREATEREQ, leftNode, rightNode),
             leftNode,
             rightNode
         );
@@ -142,7 +142,7 @@ public final class StandardFunctionFactory
 
         final Variable operand = new Variable(OPERAND_NAME, operandType);
 
-        final NodeExpr body = new NodeExpr(
+        final NodeOperation body = new NodeOperation(
             StandardOperation.ITE, makeBVEqualsAllOnes(operand), BIT_TRUE, BIT_FALSE);
 
         return new Function(id, BIT_BOOL, body, operand);
@@ -156,7 +156,7 @@ public final class StandardFunctionFactory
 
         final Variable operand = new Variable(OPERAND_NAME, operandType);
 
-        final NodeExpr body = new NodeExpr(
+        final NodeOperation body = new NodeOperation(
             StandardOperation.ITE, makeBVEqualsAllOnes(operand), BIT_FALSE, BIT_TRUE);
 
         return new Function(id, BIT_BOOL, body, operand);
@@ -170,7 +170,7 @@ public final class StandardFunctionFactory
 
         final Variable operand = new Variable(OPERAND_NAME, operandType);
 
-        final NodeExpr body = new NodeExpr(
+        final NodeOperation body = new NodeOperation(
             StandardOperation.ITE, makeBVEqualsAllZeros(operand), BIT_FALSE, BIT_TRUE);
 
         return new Function(id, BIT_BOOL, body, operand);
@@ -184,7 +184,7 @@ public final class StandardFunctionFactory
 
         final Variable operand = new Variable(OPERAND_NAME, operandType);
 
-        final NodeExpr body = new NodeExpr(
+        final NodeOperation body = new NodeOperation(
             StandardOperation.ITE, makeBVEqualsAllZeros(operand), BIT_TRUE, BIT_FALSE);
 
         return new Function(id, BIT_BOOL, body, operand);
@@ -214,7 +214,7 @@ public final class StandardFunctionFactory
 
         final int size = operand.getType().getSize();
 
-        final Node body = new NodeExpr(
+        final Node body = new NodeOperation(
             StandardOperation.BVNOT,
             makeBVRecursizeXOR(new NodeVariable(operand), size, size)
         );
@@ -274,16 +274,16 @@ public final class StandardFunctionFactory
         final int newPartSize = partSize / 2 + partSize % 2;
         final Node shiftLeftPart = new NodeValue(Data.newBitVector(newPartSize, size));
 
-        final Node maskForRightPart = new NodeExpr(
+        final Node maskForRightPart = new NodeOperation(
             StandardOperation.BVLSHR,
-            new NodeExpr(StandardOperation.BVNOT, new NodeValue(Data.newBitVector(0, size))),
+            new NodeOperation(StandardOperation.BVNOT, new NodeValue(Data.newBitVector(0, size))),
             new NodeValue(Data.newBitVector(size - newPartSize, size))
         );
 
-        final Node newSource = new NodeExpr(
+        final Node newSource = new NodeOperation(
             StandardOperation.BVXOR,
-            new NodeExpr(StandardOperation.BVLSHR, source, shiftLeftPart),
-            new NodeExpr(StandardOperation.BVAND,  source, maskForRightPart)
+            new NodeOperation(StandardOperation.BVLSHR, source, shiftLeftPart),
+            new NodeOperation(StandardOperation.BVAND,  source, maskForRightPart)
         );
 
         return makeBVRecursizeXOR(newSource, size, newPartSize);
@@ -294,12 +294,12 @@ public final class StandardFunctionFactory
         final NodeValue TWO_ZEROS = new NodeValue(DataType.BIT_VECTOR(size).valueOf("00", 2));
         final NodeValue TWO_ONES  = new NodeValue(DataType.BIT_VECTOR(size).valueOf("11", 2));
 
-        return new NodeExpr(
+        return new NodeOperation(
             StandardOperation.ITE,
-            new NodeExpr(
+            new NodeOperation(
                 StandardOperation.OR,
-                new NodeExpr(StandardOperation.EQ, source, TWO_ZEROS),
-                new NodeExpr(StandardOperation.EQ, source, TWO_ONES)
+                new NodeOperation(StandardOperation.EQ, source, TWO_ZEROS),
+                new NodeOperation(StandardOperation.EQ, source, TWO_ONES)
             ),
             BIT_FALSE,
             BIT_TRUE
@@ -313,7 +313,7 @@ public final class StandardFunctionFactory
         final NodeVariable operandNode = new NodeVariable(operand);
         final NodeValue zeroNode = new NodeValue(Data.newBitVector(0, operandType.getSize()));
 
-        return new NodeExpr(StandardOperation.EQ, operandNode, zeroNode);
+        return new NodeOperation(StandardOperation.EQ, operandNode, zeroNode);
     }
 
     private static final Node makeBVEqualsAllOnes(Variable operand)
@@ -323,7 +323,7 @@ public final class StandardFunctionFactory
         final NodeVariable operandNode = new NodeVariable(operand);
         final NodeValue zeroNode = new NodeValue(Data.newBitVector(0, operandType.getSize()));
 
-        return new NodeExpr(StandardOperation.EQ, operandNode, new NodeExpr(StandardOperation.BVNOT, zeroNode));
+        return new NodeOperation(StandardOperation.EQ, operandNode, new NodeOperation(StandardOperation.BVNOT, zeroNode));
     }
 
     private static final int BIT_BOOL_SIZE   = 1;

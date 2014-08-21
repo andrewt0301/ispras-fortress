@@ -42,7 +42,7 @@ public class BVUGTOperation implements ISampleConstraint
         builder.setInnerRep(formulas);
 
         formulas.add(
-            new NodeExpr(
+            new NodeOperation(
                 StandardOperation.BVUGT,
                 x,
                 new NodeValue(BIT_VECTOR_TYPE.valueOf("100", 10))

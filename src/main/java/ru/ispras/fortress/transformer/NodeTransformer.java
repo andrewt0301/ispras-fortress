@@ -95,14 +95,14 @@ public class NodeTransformer implements ExprTreeVisitor
     }
 
     @Override
-    public void onExprBegin(NodeExpr expr)
+    public void onOperationBegin(NodeOperation expr)
     {
         if (expr.getOperandCount() > 0)
             operandStack.add(new Node[expr.getOperandCount()]);
     }
 
     @Override
-    public void onExprEnd(NodeExpr expr)
+    public void onOperationEnd(NodeOperation expr)
     {
         if (expr.getOperandCount() == 0)
         {
@@ -114,15 +114,15 @@ public class NodeTransformer implements ExprTreeVisitor
         final Enum<?> opId = expr.getOperationId();
 
         // TODO consequtive rule application
-        Node node = applyRule(opId, new NodeExpr(opId, operandStack.remove(pos)));
+        Node node = applyRule(opId, new NodeOperation(opId, operandStack.remove(pos)));
         exprStack.add(node);
     }
 
     @Override
-    public void onOperandBegin(NodeExpr expr, Node operand, int index) {}
+    public void onOperandBegin(NodeOperation expr, Node operand, int index) {}
 
     @Override
-    public void onOperandEnd(NodeExpr expr, Node operand, int index)
+    public void onOperandEnd(NodeOperation expr, Node operand, int index)
     {
         Node[] operands = operandStack.get(operandStack.size() - 1);
         operands[index] = exprStack.remove(exprStack.size() - 1);

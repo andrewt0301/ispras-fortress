@@ -17,7 +17,7 @@ import java.util.List;
 
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
-import ru.ispras.fortress.expression.NodeExpr;
+import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
@@ -71,32 +71,32 @@ public class SimpleBitVectorTestCase extends GenericSolverSampleTestBase
             builder.setInnerRep(formulas);
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.NOT,
-                    new NodeExpr(StandardOperation.EQ, a, b)
+                    new NodeOperation(StandardOperation.EQ, a, b)
                 )
             );
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.EQ,
-                    new NodeExpr(StandardOperation.BVOR, a, b),
+                    new NodeOperation(StandardOperation.BVOR, a, b),
                     new NodeValue(BIT_VECTOR_TYPE.valueOf("111", 2))
                 )
             );
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.EQ,
-                    new NodeExpr(StandardOperation.BVLSHL, a, new NodeValue(BIT_VECTOR_TYPE.valueOf("3", 10))),
-                    new NodeExpr(StandardOperation.BVSMOD, a, new NodeValue(BIT_VECTOR_TYPE.valueOf("2", 10)))
+                    new NodeOperation(StandardOperation.BVLSHL, a, new NodeValue(BIT_VECTOR_TYPE.valueOf("3", 10))),
+                    new NodeOperation(StandardOperation.BVSMOD, a, new NodeValue(BIT_VECTOR_TYPE.valueOf("2", 10)))
                 )
             );
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.EQ,
-                    new NodeExpr(StandardOperation.BVAND, a, b),
+                    new NodeOperation(StandardOperation.BVAND, a, b),
                     new NodeValue(BIT_VECTOR_TYPE.valueOf("0", 2))
                 )
             );

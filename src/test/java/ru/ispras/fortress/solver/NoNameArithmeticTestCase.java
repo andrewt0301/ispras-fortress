@@ -21,7 +21,7 @@ import java.util.List;
 
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
-import ru.ispras.fortress.expression.NodeExpr;
+import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
@@ -67,10 +67,10 @@ public class NoNameArithmeticTestCase extends GenericSolverSampleTestBase
             builder.setInnerRep(formulas);
 
             formulas.add(
-                new NodeExpr(
+                new NodeOperation(
                     StandardOperation.EQ,
                     x,
-                    new NodeExpr(
+                    new NodeOperation(
                         StandardOperation.ADD,
                         new NodeValue(intType.valueOf("2", 10)),
                         new NodeValue(intType.valueOf("2", 10))
