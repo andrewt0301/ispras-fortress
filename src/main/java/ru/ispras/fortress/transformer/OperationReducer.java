@@ -18,20 +18,21 @@ import ru.ispras.fortress.expression.*;
 
 public class OperationReducer
 {
-    private final static String UNKNOWN_ELEMENT = "Unknown syntax element kind: %s";
+    private final static String UNKNOWN_ELEMENT = 
+        "Unknown syntax element kind: %s";
 
-    private final NodeOperation    operation;
-    private final ReduceOptions  options;
-    private final Node[]        operands;
+    private final NodeOperation operation;
+    private final ReduceOptions options;
+    private final Node[] operands;
 
     private boolean hasValueOperandsOnly;
-    private boolean      updatedOperands;
+    private boolean updatedOperands;
 
     public OperationReducer(NodeOperation operation, ReduceOptions options)
     {
-        this.operation  = operation;
-        this.options    = options;
-        this.operands   = copyOperands(operation);
+        this.operation = operation;
+        this.options = options;
+        this.operands = copyOperands(operation);
 
         analyzeOperands();
     }
