@@ -25,7 +25,8 @@
 package ru.ispras.fortress.solver;
 
 /**
- * The Environment class provides methods to manage global the settings of the subsystem. 
+ * The Environment class provides methods to manage global the settings
+ * of the subsystem. 
  * 
  * @author Andrei Tatarnikov
  */
@@ -33,11 +34,11 @@ package ru.ispras.fortress.solver;
 public final class Environment
 {
     private Environment() {} 
-    
-    private static String solverPath;
 
-	private static final String PRP_OS_NAME        = "os.name";
-    private static final String PRP_CONSTRAINT_DIR = "ispras_solver_api: constraint-dir";
+    private static String solverPath;
+    private static String constraintDir;
+
+	private static final String PRP_OS_NAME = "os.name";
 
     static // Sets the default path to the external solver engine.
     {
@@ -87,7 +88,7 @@ public final class Environment
 
     public static String getConstraintDir()
     {
-        return System.getProperty(PRP_CONSTRAINT_DIR);
+        return constraintDir;
     }
 
     /**
@@ -97,7 +98,7 @@ public final class Environment
 
     public static void setConstraintDir(String value)
     {
-        System.setProperty(PRP_CONSTRAINT_DIR, value);        
+        constraintDir = value;        
     }
 
     /**
@@ -110,7 +111,7 @@ public final class Environment
 		final String os = System.getProperty(PRP_OS_NAME).toLowerCase();
 		return os.contains("win");
 	}
- 
+
     /**
      * Checks whether the tool is running in a Unix or Linux computer.
      * @return true if the tool is running in a Unix or Linux computer.
