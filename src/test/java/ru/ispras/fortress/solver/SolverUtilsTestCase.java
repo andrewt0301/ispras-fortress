@@ -32,6 +32,7 @@ import org.junit.Test;
 
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
+import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
@@ -75,6 +76,49 @@ public class SolverUtilsTestCase
                 StandardOperation.ADD,
                 NodeValue.newInteger(1),
                 NodeValue.newInteger(2))
+            )
+        );
+
+        final NodeVariable x = new NodeVariable(new Variable("x", DataType.INTEGER));
+        assertTrue(SolverUtils.isCondition(
+            new NodeOperation(
+                StandardOperation.OR,
+                new NodeOperation(StandardOperation.GREATEREQ, x, NodeValue.newInteger(0)),
+                new NodeOperation(StandardOperation.LESS, x, NodeValue.newInteger(10))
+                )
+            )
+        );
+    }
+
+    @Test
+    public void testIsAtomicCondition()
+    {
+        assertTrue(SolverUtils.isAtomicCondition(NodeValue.newBoolean(true)));
+        assertTrue(SolverUtils.isAtomicCondition(NodeValue.newBoolean(false)));
+        
+        assertTrue(SolverUtils.isAtomicCondition(
+            new NodeOperation(
+                StandardOperation.EQ,
+                NodeValue.newInteger(1),
+                NodeValue.newInteger(2))
+            )
+        );
+
+        assertFalse(SolverUtils.isAtomicCondition(
+            new NodeOperation(
+                StandardOperation.ADD,
+                NodeValue.newInteger(1),
+                NodeValue.newInteger(2))
+            )
+        );
+
+        final NodeVariable x = new NodeVariable(new Variable("x", DataType.INTEGER));
+        assertFalse(SolverUtils.isAtomicCondition(
+            new NodeOperation(
+                StandardOperation.OR,
+                new NodeOperation(StandardOperation.GREATEREQ, x, NodeValue.newInteger(0)),
+                new NodeOperation(StandardOperation.LESS, x, NodeValue.newInteger(10))
+                )
             )
         );
     }
