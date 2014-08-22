@@ -26,7 +26,9 @@
  - Extending the functionality of a solver with function templates
  - New standard operations: ABS, MIN, MAX, BVANDR, BVNANDR,
    BVORR, BVNORR, BVXORR, BVXNORR
- - Class NodeExpr was renamed to NodeOperation  
+ - Class NodeExpr was renamed to NodeOperation
+ - XML format was changed: nodes Expression and Operation were merged together
+   (the new node is called Operation)
 
 --------------------------------------------------------------------------------
  2014/07/08 Fortress 0.3.1 beta
