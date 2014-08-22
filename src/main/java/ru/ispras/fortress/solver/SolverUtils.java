@@ -146,7 +146,7 @@ public final class SolverUtils
     private static void checkAllConditions(Node ... exprs)
     {
         for (Node expr : exprs)
-            if (isCondition(expr))
+            if (!isCondition(expr))
                 throw new IllegalArgumentException(
                      "Expression is not a condition: " + expr.toString());
     }

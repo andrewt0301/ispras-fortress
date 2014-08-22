@@ -26,13 +26,13 @@ package ru.ispras.fortress.solver;
 
 import static org.junit.Assert.*;
 
-import org.junit.Before;
+import java.io.File;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
-import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
@@ -41,13 +41,30 @@ import ru.ispras.fortress.expression.StandardOperation;
 public class SolverUtilsTestCase
 {
     @BeforeClass
-    public static void setUpBeforeClass() throws Exception
+    public static void init()
     {
-    }
-    
-    @Before
-    public void setUp() throws Exception
-    {
+        if (Environment.isUnix())
+        {
+            Environment.setSolverPath("tools/z3/bin/z3");
+        }
+        else if(Environment.isWindows())
+        {
+            Environment.setSolverPath("tools/z3/bin/z3.exe");
+        }
+        else if (Environment.isOSX())
+        {
+            Environment.setSolverPath("tools/z3/bin/z3");
+        }
+        else
+        {
+            fail("Unsupported platform. Please set up paths to the external" +
+                 " engine. Platform name: " + System.getProperty("os.name"));
+        }
+
+        assertTrue("The solver engine executable is not found. Path: " +
+            Environment.getSolverPath(),
+            new File(Environment.getSolverPath()).isFile()
+        );
     }
 
     @Test
@@ -119,6 +136,23 @@ public class SolverUtilsTestCase
                 new NodeOperation(StandardOperation.GREATEREQ, x, NodeValue.newInteger(0)),
                 new NodeOperation(StandardOperation.LESS, x, NodeValue.newInteger(10))
                 )
+            )
+        );
+    }
+    
+    @Test
+    public void testAreCompatible()
+    {
+        final NodeVariable x = new NodeVariable(new Variable("x", DataType.INTEGER));
+        assertTrue(SolverUtils.areCompatible(
+            new NodeOperation(StandardOperation.GREATEREQ, x, NodeValue.newInteger(0)),
+            new NodeOperation(StandardOperation.LESS, x, NodeValue.newInteger(10))
+            )
+        );
+
+        assertFalse(SolverUtils.areCompatible(
+            new NodeOperation(StandardOperation.LESS, x, NodeValue.newInteger(0)),
+            new NodeOperation(StandardOperation.GREATEREQ, x, NodeValue.newInteger(10))
             )
         );
     }
