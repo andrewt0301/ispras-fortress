@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 ISPRAS
+ * Copyright (c) 2014 ISPRAS (www.ispras.ru)
  * 
  * Institute for System Programming of Russian Academy of Sciences
  * 
@@ -8,6 +8,18 @@
  * All rights reserved.
  * 
  * XMLConstraintHandler.java, Mar 21, 2014 5:21:03 PM Andrei Tatarnikov
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package ru.ispras.fortress.solver.xml;
@@ -138,14 +150,9 @@ final class XMLConstraintHandler extends DefaultHandler
                 break;
             }
 
-            case EXPRESSION:
-            {
-                builder.beginExpression();
-                break;
-            }
-
             case OPERATION:
             {
+                builder.beginOperation();
                 builder.pushOperation(getOperationId(qName, attributes));
                 break;
             }
@@ -265,8 +272,8 @@ final class XMLConstraintHandler extends DefaultHandler
                 builder.endFormula();
                 break;
 
-            case EXPRESSION:
-                builder.endExpression();
+            case OPERATION:
+                builder.endOperation();
                 break;
 
             case SIGNATURE:
@@ -285,7 +292,6 @@ final class XMLConstraintHandler extends DefaultHandler
             case NAME:
             case KIND:
             case DESCRIPTION:
-            case OPERATION:
             case VARIABLE_REF:
             case VALUE:
             case VARIABLE:
@@ -454,8 +460,8 @@ final class XMLConstraintBuilder
     private Formulas            formulas = null;
     private Node                 formula = null;
 
-    private final Stack<ExprBuilder> expressions =
-        new Stack<ExprBuilder>();
+    private final Stack<OperationBuilder> operations =
+        new Stack<OperationBuilder>();
 
     private void cleanup()
     {
@@ -466,7 +472,7 @@ final class XMLConstraintBuilder
         formulas   = null; 
         formula    = null;
 
-        expressions.clear();
+        operations.clear();
     }
 
     public void beginConstraint() throws Exception
@@ -523,19 +529,19 @@ final class XMLConstraintBuilder
         formula = null;
     }
 
-    public void beginExpression() throws Exception
+    public void beginOperation() throws Exception
     {
-        expressions.push(new ExprBuilder());
+        operations.push(new OperationBuilder());
     }
 
-    public void endExpression() throws Exception
+    public void endOperation() throws Exception
     {
-        if (expressions.empty())
-            throw new IllegalStateException(Messages.ERR_NO_EXPRESSION);
+        if (operations.empty())
+            throw new IllegalStateException(Messages.ERR_NO_OPERATION);
 
-        final NodeOperation expr = expressions.pop().create();
+        final NodeOperation expr = operations.pop().create();
 
-        if (expressions.empty())
+        if (operations.empty())
         {
             if (null != formula)
                 throw new IllegalStateException(
@@ -551,17 +557,17 @@ final class XMLConstraintBuilder
 
     public void beginBinding() throws Exception
     {
-        expressions.push(new ExprBuilder());
+        operations.push(new OperationBuilder());
     }
 
     public void endBinding() throws Exception
     {
-        if (expressions.empty())
-            throw new IllegalStateException(Messages.ERR_NO_EXPRESSION);
+        if (operations.empty())
+            throw new IllegalStateException(Messages.ERR_NO_OPERATION);
 
-        final NodeBinding node = expressions.pop().createBinding();
+        final NodeBinding node = operations.pop().createBinding();
 
-        if (expressions.empty())
+        if (operations.empty())
         {
             if (null != formula)
                 throw new IllegalStateException(
@@ -575,7 +581,7 @@ final class XMLConstraintBuilder
 
     public void pushElement(Node se) throws Exception
     {
-        if (expressions.empty())
+        if (operations.empty())
         {
             if (null != formula)
                 throw new IllegalStateException(
@@ -585,17 +591,17 @@ final class XMLConstraintBuilder
         }
         else
         {
-            expressions.lastElement().addElement(se);
+            operations.lastElement().addElement(se);
         }
     }
 
     public void pushOperation(Enum<?> oid) throws Exception
     {
-        if (expressions.empty())
+        if (operations.empty())
             throw new IllegalStateException(String.format(
                 Messages.ERR_NO_EXPRESSION_FOR_OP, oid.name()));
 
-        expressions.lastElement().setOperationId(oid);
+        operations.lastElement().setOperationId(oid);
     }
 
     public void setName(String name)
@@ -628,18 +634,18 @@ final class XMLConstraintBuilder
 }
 
 /**
- * The ExprBuilder class is aimed to build an expression from its attributes
- * (operation and two operands).
+ * The OperationBuilder class is aimed to build an operation expression
+ * from its attributes (operation and operands).
  *
  * @author Andrei Tatarnikov
  */
 
-final class ExprBuilder
+final class OperationBuilder
 {
     private Enum<?>       operationId;
     private final List<Node> elements;
 
-    public ExprBuilder()
+    public OperationBuilder()
     {
         this.operationId = null;
         this.elements    = new ArrayList<Node>();
