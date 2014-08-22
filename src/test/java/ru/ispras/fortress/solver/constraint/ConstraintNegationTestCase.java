@@ -51,7 +51,7 @@ public class ConstraintNegationTestCase extends GenericSolverTestBase
 
             final ConstraintBuilder builder = new ConstraintBuilder();
 
-            builder.setName("Negation constraint.");
+            builder.setName("ConstraintNegation");
             builder.setKind(constraint.getKind());
 
             for (Variable var : constraint.getVariables())

@@ -23,9 +23,9 @@ import ru.ispras.fortress.expression.Node;
 
 public final class ConstraintCombiner
 {
-    private static final String DISJUNCTION = "Disjunction of '%s' and '%s'";
-    private static final String CONJUNCTION = "Conjunction of '%s' and '%s'";
-    private static final String   NEGATION  = "Negation of '%s'";
+    private static final String DISJUNCTION = "Disjunction_of_%s_and_%s";
+    private static final String CONJUNCTION = "Conjunction_of_%s_and_%s";
+    private static final String   NEGATION  = "Negation_of_%s";
 
     private ConstraintCombiner() {}
 
