@@ -28,7 +28,7 @@ import ru.ispras.fortress.calculator.Calculator;
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.expression.*;
 
-public class OperationReducer
+final class OperationReducer
 {
     private final static String UNKNOWN_ELEMENT = 
         "Unknown syntax element kind: %s";

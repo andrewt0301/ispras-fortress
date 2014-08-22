@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 ISPRAS
+ * Copyright (c) 2013 ISPRAS (www.ispras.ru)
  * 
  * Institute for System Programming of Russian Academy of Sciences
  * 
@@ -8,6 +8,18 @@
  * All rights reserved.
  * 
  * Transformer.java, Nov 7, 2013 10:50:53 AM Andrei Tatarnikov
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package ru.ispras.fortress.transformer;
@@ -24,10 +36,12 @@ import ru.ispras.fortress.transformer.ruleset.Predicate;
 
 public final class Transformer
 {
+    private Transformer() {}
+
     /**
-     * Attempts to reduce the operation expression including all of its child
-     * operations to a value. Reduction is performed with the help of the calculator
-     * object that performs specific operations with specific data types.
+     * Attempts to reduce the specified expression including to a value.
+     * Reduction is performed with the help of the calculator object
+     * that performs specific operations with specific data types.
      * 
      * The operation may be totally reduced (or, so to speak, reduced to a value),
      * partially reduced or left unchanged. In the last case, the method returns
@@ -35,16 +49,30 @@ public final class Transformer
      * 
      * @param options Option flags to tune the reduction strategy.
      * @param expression Expression to be reduced.
-     * @return An element that describes the reduced operation expression
-     * (a value or another operation expression with minimal subexpressions) or
-     * this if it is impossible to reduce the operation expression.
+     * @return Reduced expression (value or another operation expression
+     * with minimal subexpressions) or the initial expression if it is
+     * impossible to reduce it.
+     * 
+     * @throws NullPointerException if any of the parameters is
+     * <code>null</code>.
      */
 
-    public static Node reduce(ReduceOptions options, NodeOperation expression)
+    public static Node reduce(ReduceOptions options, Node expression)
     {
-        final OperationReducer reducer = new OperationReducer(expression, options);
-        final Node result = reducer.reduce();
+        if (null == options)
+            throw new NullPointerException();
 
+        if (null == expression)
+            throw new NullPointerException();
+
+        // Only operation expressions can be reduced.
+        if (expression.getKind() != Node.Kind.OPERATION)
+            return expression;
+
+        final OperationReducer reducer = 
+            new OperationReducer((NodeOperation) expression, options);
+
+        final Node result = reducer.reduce();
         if (null == result)
             return expression;
 
