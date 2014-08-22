@@ -33,24 +33,25 @@ package ru.ispras.fortress.solver;
 public final class Environment
 {
     private Environment() {} 
+    
+    private static String solverPath;
 
 	private static final String PRP_OS_NAME        = "os.name";
-    private static final String PRP_SOLVER_PATH    = "ispras_solver_api: solver-path";
     private static final String PRP_CONSTRAINT_DIR = "ispras_solver_api: constraint-dir";
 
     static // Sets the default path to the external solver engine.
     {
         if (isUnix())
         {
-            setSolverPath("tools/z3/bin/z3");
+            solverPath = "tools/z3/bin/z3";
         }
         else if(isWindows())
         {
-            setSolverPath("tools/z3/bin/z3.exe");
+            solverPath = "tools/z3/bin/z3.exe";
         }
         else if (Environment.isOSX())
         {
-            setSolverPath("tools/z3/bin/z3");
+            solverPath = "tools/z3/bin/z3";
         }
         else
         {
@@ -66,7 +67,7 @@ public final class Environment
 
     public static String getSolverPath()
     {
-        return System.getProperty(PRP_SOLVER_PATH);
+        return solverPath;
     }
 
     /**
@@ -76,7 +77,7 @@ public final class Environment
 
     public static void setSolverPath(String value)
     {
-        System.setProperty(PRP_SOLVER_PATH, value);
+        solverPath = value;
     }
 
     /**
