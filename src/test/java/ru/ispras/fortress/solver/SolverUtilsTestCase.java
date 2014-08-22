@@ -141,6 +141,47 @@ public class SolverUtilsTestCase
     }
     
     @Test
+    public void testGetConjunction()
+    {
+        // TODO
+    }
+    
+    @Test
+    public void testGetDisjunction()
+    {
+        // TODO
+    }
+    
+    @Test
+    public void testGetNegation()
+    {
+        // TODO      
+    }
+    
+    @Test
+    public void testGetComplement()
+    {
+        // TODO
+    }
+
+    @Test
+    public void testAreComplete()
+    {
+        final NodeVariable x = new NodeVariable(new Variable("x", DataType.INTEGER));
+        assertTrue(SolverUtils.areComplete(
+            new NodeOperation(StandardOperation.GREATEREQ, x, NodeValue.newInteger(0)),
+            new NodeOperation(StandardOperation.LESS, x, NodeValue.newInteger(10))
+            )
+        );
+
+        assertTrue(SolverUtils.areComplete(
+            new NodeOperation(StandardOperation.LESS, x, NodeValue.newInteger(0)),
+            new NodeOperation(StandardOperation.GREATEREQ, x, NodeValue.newInteger(10))
+            )
+        );
+    }
+
+    @Test
     public void testAreCompatible()
     {
         final NodeVariable x = new NodeVariable(new Variable("x", DataType.INTEGER));

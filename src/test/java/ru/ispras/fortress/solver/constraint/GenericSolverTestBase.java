@@ -19,7 +19,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.TreeMap;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -36,6 +35,7 @@ import ru.ispras.fortress.solver.Environment;
 import ru.ispras.fortress.solver.Solver;
 import ru.ispras.fortress.solver.SolverId;
 import ru.ispras.fortress.solver.SolverResult;
+import ru.ispras.fortress.solver.SolverResultChecker;
 import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.Formulas;
 import ru.ispras.fortress.solver.xml.XMLConstraintLoader;
@@ -313,71 +313,3 @@ final class ConstraintEqualityChecker
         Assert.assertTrue("Data type sizes do not match.", expected.getSize() == actual.getSize());
     }
 }
-
-final class SolverResultChecker
-{   
-	private SolverResultChecker() {}
-	
-    public static void check(SolverResult solverResult, Iterable<Variable> expectedVariables)
-    {
-        checkErrors(solverResult.getErrors());
-
-        Assert.assertTrue("Failed to solve the constraint. Status: " +
-           solverResult.getStatus(), solverResult.getStatus() == SolverResult.Status.SAT);
-
-        final TreeMap<String, Variable> results = new TreeMap<String, Variable>();
-        for (Variable v : solverResult.getVariables())
-            results.put(v.getName(), v);
-
-        final TreeMap<String, Variable> expected = new TreeMap<String, Variable>();
-        for (Variable v : expectedVariables)
-            expected.put(v.getName(), v);
-
-        Assert.assertTrue("Wrong variable number", results.size() == expected.size());
-
-        for (Variable variable : results.values())
-        {
-            final Variable expectedVariable = expected.get(variable.getName());
-            Assert.assertTrue(
-                String.format("Unexpected variable name. '%s'",
-                    variable.getName()),
-                    expectedVariable != null
-            );
-
-            Assert.assertTrue(
-                String.format("Unexpected variable type. '%s' vs '%s'",
-                    variable.getData().getType().toString(),
-                    expectedVariable.getData().getType().toString()),
-                    variable.getData().getType().equals(expectedVariable.getData().getType())
-            );
-
-            Assert.assertTrue(
-                String.format("Unexpected value of the %s variable: '%s', expected: '%s'",
-                    variable.getName(),
-                    variable.getData().getValue(),
-                    expectedVariable.getData().getValue()),
-                    variable.getData().getValue().equals(expectedVariable.getData().getValue())
-            );
-        }
-    }
-
-    private static void checkErrors(Iterable<String> errors)
-    {
-        Iterator<String> errorIterator = errors.iterator();
-
-        if (!errorIterator.hasNext())
-            return;
-
-        StringBuilder errorStringBuilder = new StringBuilder();
-        errorStringBuilder.append("Errors occured:");
-
-        while (errorIterator.hasNext())
-        {
-            errorStringBuilder.append("\r\n");
-            errorStringBuilder.append(errorIterator.next());
-        }
-
-        Assert.fail(errorStringBuilder.toString());
-    }
-}
-
