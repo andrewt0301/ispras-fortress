@@ -25,10 +25,6 @@
 package ru.ispras.fortress.solver;
 
 import static org.junit.Assert.*;
-
-import java.io.File;
-
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ru.ispras.fortress.data.DataType;
@@ -40,33 +36,6 @@ import ru.ispras.fortress.expression.StandardOperation;
 
 public class SolverUtilsTestCase
 {
-    @BeforeClass
-    public static void init()
-    {
-        if (Environment.isUnix())
-        {
-            Environment.setSolverPath("tools/z3/bin/z3");
-        }
-        else if(Environment.isWindows())
-        {
-            Environment.setSolverPath("tools/z3/bin/z3.exe");
-        }
-        else if (Environment.isOSX())
-        {
-            Environment.setSolverPath("tools/z3/bin/z3");
-        }
-        else
-        {
-            fail("Unsupported platform. Please set up paths to the external" +
-                 " engine. Platform name: " + System.getProperty("os.name"));
-        }
-
-        assertTrue("The solver engine executable is not found. Path: " +
-            Environment.getSolverPath(),
-            new File(Environment.getSolverPath()).isFile()
-        );
-    }
-
     @Test
     public void testIsCondition()
     {
