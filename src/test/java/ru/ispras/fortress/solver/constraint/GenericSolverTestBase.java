@@ -26,14 +26,12 @@ package ru.ispras.fortress.solver.constraint;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.solver.Solver;
-import ru.ispras.fortress.solver.SolverId;
 import ru.ispras.fortress.solver.SolverResult;
 import ru.ispras.fortress.solver.SolverResultChecker;
 import ru.ispras.fortress.solver.constraint.Constraint;
@@ -44,17 +42,33 @@ import ru.ispras.fortress.solver.xml.XMLNotSavedException;
 
 public abstract class GenericSolverTestBase
 {
-    @Test
-    public void runSolverTests()
+    public static interface SampleConstraint
     {
-        final Constraint constraint = getConstraint();
+        public Constraint getConstraint();
+        public Iterable<Variable> getExpectedVariables();
+    }
+
+    private final SampleConstraint sample;
+
+    public GenericSolverTestBase(SampleConstraint sample)
+    {
+        if (null == sample)
+            throw new NullPointerException();
+
+        this.sample = sample;
+    }
+
+    @Test
+    public final void runSolverTests()
+    {
+        final Constraint constraint = sample.getConstraint();
         solveAndCheckResult(constraint);
     }
 
     @Test
-    public void runSerializerTests()
+    public final void runSerializerTests()
     {
-        final Constraint constraint = getConstraint();
+        final Constraint constraint = sample.getConstraint();
         final XMLConstraintSaver saver = new XMLConstraintSaver(constraint);
 
         try
@@ -97,19 +111,6 @@ public abstract class GenericSolverTestBase
         final Solver solver = constraint.getKind().getDefaultSolverId().getSolver();
         final SolverResult solverResult = solver.solve(constraint);
 
-        SolverResultChecker.check(solverResult, getExpectedVariables());
+        SolverResultChecker.check(solverResult, sample.getExpectedVariables());
     }
-
-    public Iterable<SolverId> getSolvers()
-    {
-        ArrayList<SolverId> result = new ArrayList<SolverId>();
-
-        result.add(SolverId.Z3_TEXT);
-        result.add(SolverId.DEFAULT);
-
-        return result;
-    }
-
-    public abstract Constraint getConstraint();
-    public abstract Iterable<Variable> getExpectedVariables();
 }

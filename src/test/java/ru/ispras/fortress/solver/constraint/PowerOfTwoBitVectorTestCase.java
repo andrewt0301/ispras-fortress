@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 ISPRAS
+ * Copyright (c) 2012 ISPRAS (www.ispras.ru)
  * 
  * Institute for System Programming of Russian Academy of Sciences
  * 
@@ -8,6 +8,18 @@
  * All rights reserved.
  * 
  * PowerOfTwoBitVectorTestCase.java, Jan 13, 2012 2:27:33 PM Andrei Tatarnikov
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package ru.ispras.fortress.solver.constraint;
@@ -22,12 +34,11 @@ import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
 
-public class PowerOfTwoBitVectorTestCase extends GenericSolverSampleTestBase
+public class PowerOfTwoBitVectorTestCase extends GenericSolverTestBase
 {
-    @Override
-    public PowerOfTwo createSample()
+    public PowerOfTwoBitVectorTestCase()
     {
-        return new PowerOfTwo();
+        super(new PowerOfTwo());
     }
 
     /** The constraint as described in the SMT-LIB language:
@@ -47,7 +58,7 @@ public class PowerOfTwoBitVectorTestCase extends GenericSolverSampleTestBase
     sat ((x #x00000080))</pre>
     */
 
-    public static class PowerOfTwo implements ISampleConstraint
+    public static class PowerOfTwo implements SampleConstraint
     {
         private static final int      BIT_VECTOR_SIZE = 32;
         private static final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_SIZE);

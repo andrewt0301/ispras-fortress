@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 ISPRAS
+ * Copyright (c) 2012 ISPRAS (www.ispras.ru)
  * 
  * Institute for System Programming of Russian Academy of Sciences
  * 
@@ -39,12 +39,11 @@ import ru.ispras.fortress.solver.constraint.ConstraintBuilder;
 import ru.ispras.fortress.solver.constraint.ConstraintKind;
 import ru.ispras.fortress.solver.constraint.Formulas;
 
-public class IntegerOverflowBitVectorTestCase extends GenericSolverSampleTestBase
+public class IntegerOverflowBitVectorTestCase extends GenericSolverTestBase
 {
-    @Override
-    public IntegerOverflow createSample()
+    public IntegerOverflowBitVectorTestCase()
     {
-        return new IntegerOverflow();
+        super(new IntegerOverflow());
     }
 
     /** The constraint as described in the SMT language:
@@ -85,7 +84,7 @@ public class IntegerOverflowBitVectorTestCase extends GenericSolverSampleTestBas
          (rt #x000000009b91b1b3))</pre>
     */
 
-    public static class IntegerOverflow implements ISampleConstraint
+    public static class IntegerOverflow implements SampleConstraint
     {
         private final int    BIT_VECTOR_LENGTH = 64;
         private final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_LENGTH);

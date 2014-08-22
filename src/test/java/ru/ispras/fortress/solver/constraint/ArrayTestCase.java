@@ -23,16 +23,15 @@ import ru.ispras.fortress.expression.*;
 
 */
 
-public class ArrayTestCase extends GenericSolverSampleTestBase
+public class ArrayTestCase extends GenericSolverTestBase
 {
-    @Override
-    public ISampleConstraint createSample()
+    public ArrayTestCase()
     {
-        return new ArrayInvariant();
+        super(new ArrayInvariant());
     }
 }
 
-class ArrayInvariant implements ISampleConstraint
+final class ArrayInvariant implements GenericSolverTestBase.SampleConstraint
 {
     private static final DataType ARRAY_TYPE = DataType.MAP(DataType.INTEGER, DataType.INTEGER);
     private static final String ARRAY_VALUE = "((37:37))";

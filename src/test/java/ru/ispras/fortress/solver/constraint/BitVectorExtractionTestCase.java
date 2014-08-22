@@ -24,16 +24,16 @@ Expected output:
 sat ((x #x00000070))</pre>
 */
 
-public class BitVectorExtractionTestCase extends GenericSolverSampleTestBase
+public class BitVectorExtractionTestCase extends GenericSolverTestBase
 {
-    @Override
-    public ISampleConstraint createSample()
+    public BitVectorExtractionTestCase()
     {
-        return new BitVectorExtractionConstraint();
+        super(new BitVectorExtractionConstraint());
     }
 }
 
-final class BitVectorExtractionConstraint implements ISampleConstraint
+final class BitVectorExtractionConstraint
+    implements GenericSolverTestBase.SampleConstraint
 {
     private static final DataType BitVector32 = DataType.BIT_VECTOR(32);
     private static final DataType BitVector8 = DataType.BIT_VECTOR(8);

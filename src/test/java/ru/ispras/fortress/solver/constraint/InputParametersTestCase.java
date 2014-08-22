@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 ISPRAS
+ * Copyright (c) 2012 ISPRAS (www.ispras.ru)
  * 
  * Institute for System Programming of Russian Academy of Sciences
  * 
@@ -38,23 +38,11 @@ import ru.ispras.fortress.solver.constraint.ConstraintBuilder;
 import ru.ispras.fortress.solver.constraint.ConstraintKind;
 import ru.ispras.fortress.solver.constraint.Formulas;
 
-public class InputParametersTestCase extends GenericSolverSampleTestBase
+public class InputParametersTestCase extends GenericSolverTestBase
 {
-    @Override
-    public Constraint getConstraint()
+    public InputParametersTestCase()
     {
-        final Constraint constraint = super.getConstraint();
-
-        constraint.setVariableValue("b", Data.newBitVector(2, 16));
-        constraint.setVariableValue("c", Data.newBitVector(5, 16));
-
-        return constraint;
-    }
-
-    @Override
-    public InputParameters createSample()
-    {
-        return new InputParameters();
+        super(new InputParameters());
     }
 
     /** The constraint as described in the SMT-LIB language:
@@ -79,7 +67,7 @@ public class InputParametersTestCase extends GenericSolverSampleTestBase
     sat ((a #x0003)(b #x0002)(c #x0005))</pre>
     */
 
-    public static class InputParameters implements ISampleConstraint
+    public static class InputParameters implements SampleConstraint
     {
         private static final int      BIT_VECTOR_SIZE = 16;
         private static final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_SIZE);
@@ -107,7 +95,12 @@ public class InputParametersTestCase extends GenericSolverSampleTestBase
                 )
             );
 
-            return builder.build();
+            final Constraint constraint = builder.build();
+            
+            constraint.setVariableValue("b", Data.newBitVector(2, 16));
+            constraint.setVariableValue("c", Data.newBitVector(5, 16));
+            
+            return constraint;
         }
 
         public Iterable<Variable> getExpectedVariables()

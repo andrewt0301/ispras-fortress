@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 ISPRAS
+ * Copyright (c) 2012 ISPRAS (www.ispras.ru)
  * 
  * Institute for System Programming of Russian Academy of Sciences
  * 
@@ -42,12 +42,11 @@ import ru.ispras.fortress.solver.constraint.ConstraintKind;
 import ru.ispras.fortress.solver.constraint.Formulas;
 import ru.ispras.fortress.solver.function.Function;
 
-public class PowerOfTwoCustomTestCase extends GenericSolverSampleTestBase
+public final class PowerOfTwoCustomTestCase extends GenericSolverTestBase
 {
-    @Override
-    public PowerOfTwoCustom createSample()
+    public PowerOfTwoCustomTestCase()
     {
-        return new PowerOfTwoCustom();
+        super(new PowerOfTwoCustom());
     }
 
     /**
@@ -74,7 +73,7 @@ public class PowerOfTwoCustomTestCase extends GenericSolverSampleTestBase
     sat ((x #x00000080))</pre>
     */
 
-    public static class PowerOfTwoCustom implements ISampleConstraint
+    public static class PowerOfTwoCustom implements SampleConstraint
     {
         private static final int      BIT_VECTOR_SIZE = 32;
         private static final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_SIZE);

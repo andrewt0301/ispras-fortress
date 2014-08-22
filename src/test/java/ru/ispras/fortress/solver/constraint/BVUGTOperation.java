@@ -6,6 +6,7 @@ import java.util.List;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.*;
+import ru.ispras.fortress.solver.constraint.GenericSolverTestBase.SampleConstraint;
 
 /** The constraint as described in the SMT-LIB language:
 
@@ -22,7 +23,7 @@ Expected output:
 sat ((x #x00000070))</pre>
 */
 
-public class BVUGTOperation implements ISampleConstraint
+public class BVUGTOperation implements SampleConstraint
 {
     protected static final int      BIT_VECTOR_SIZE = 32;
     protected static final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_SIZE);

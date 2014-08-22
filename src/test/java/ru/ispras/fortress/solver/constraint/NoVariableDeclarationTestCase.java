@@ -30,30 +30,28 @@ import ru.ispras.fortress.solver.constraint.Formulas;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NoVariableDeclarationTestCase extends GenericSolverSampleTestBase
+public class NoVariableDeclarationTestCase extends GenericSolverTestBase
 {
-    @Override
-    public ISampleConstraint createSample()
+    public NoVariableDeclarationTestCase()
     {
-        return new NoVariableDeclaration();
+        super(new NoVariableDeclaration());
     }
 
-  /** The constraint as described in the SMT language:
+    /** The constraint as described in the SMT language:
+    <pre>
+    (declare-const a Int)
+    (declare-const b Int)
+    (assert (> a (+ b 2)))
+    (check-sat)
+    (get-value (a b))
+    (exit)</pre>
 
-   <pre>
-   (declare-const a Int)
-   (declare-const b Int)
-   (assert (> a (+ b 2)))
-   (check-sat)
-   (get-value (a b))
-   (exit)</pre>
-
-   Expected output:
-   sat
-   ((a 1)
-   (b (- 2)))
-   */
-    public static class NoVariableDeclaration implements ISampleConstraint
+    Expected output:
+    sat
+    ((a 1)
+    (b (- 2)))
+    */
+    public static class NoVariableDeclaration implements SampleConstraint
     {
 
         private static final DataType intType  = DataType.INTEGER;

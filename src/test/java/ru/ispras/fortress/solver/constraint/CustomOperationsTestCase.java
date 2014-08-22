@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 ISPRAS
+ * Copyright (c) 2012 ISPRAS (www.ispras.ru)
  * 
  * Institute for System Programming of Russian Academy of Sciences
  * 
@@ -38,12 +38,11 @@ import ru.ispras.fortress.solver.Solver;
 import ru.ispras.fortress.solver.SolverId;
 import ru.ispras.fortress.solver.function.Function;
 
-public class CustomOperationsTestCase extends GenericSolverSampleTestBase
+public class CustomOperationsTestCase extends GenericSolverTestBase
 {
-    @Override
-    public CustomOperations createSample()
+    public CustomOperationsTestCase()
     {
-        return new CustomOperations();
+        super(new CustomOperations());
     }
     
     /**
@@ -87,7 +86,7 @@ public class CustomOperationsTestCase extends GenericSolverSampleTestBase
     sat ((rs #x000000009b91b193) (rt #x000000009b91b1b3))</pre>
     */
 
-    public static class CustomOperations implements ISampleConstraint
+    public static class CustomOperations implements SampleConstraint
     {
         private final int  BV_LENGTH = 64;
         private final DataType Int_t = DataType.BIT_VECTOR(BV_LENGTH);
@@ -271,5 +270,4 @@ public class CustomOperationsTestCase extends GenericSolverSampleTestBase
             return result;
         }
     }
-
 }

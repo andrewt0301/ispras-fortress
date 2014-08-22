@@ -26,14 +26,13 @@ import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
 
-public class NoNameArithmeticTestCase extends GenericSolverSampleTestBase
+public class NoNameArithmeticTestCase extends GenericSolverTestBase
 {
-    @Override
-    public ISampleConstraint createSample()
+    public NoNameArithmeticTestCase()
     {
-        return new NoNameArithmetic();
+        super(new NoNameArithmetic());
     }
-    
+   
     /** The constraint as described in the SMT language:
 
     <pre>
@@ -49,7 +48,7 @@ public class NoNameArithmeticTestCase extends GenericSolverSampleTestBase
     sat ((x 4))</pre>
     */
 
-    public static class NoNameArithmetic implements ISampleConstraint
+    public static class NoNameArithmetic implements SampleConstraint
     {
         private static final DataType intType = DataType.INTEGER;
 

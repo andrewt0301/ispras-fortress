@@ -29,8 +29,12 @@ import java.util.Collections;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.NodeValue;
 
-public class NoVariableTestCase extends GenericSolverSampleTestBase
+public class NoVariableTestCase extends GenericSolverTestBase
 {
+    public NoVariableTestCase()
+    {
+        super(new NoVariable());
+    }
 
     /** The constraint as described in the SMT language:
 
@@ -45,13 +49,7 @@ public class NoVariableTestCase extends GenericSolverSampleTestBase
      sat</pre>
      */
 
-    @Override
-    public ISampleConstraint createSample()
-    { 
-        return new NoVariable();
-    }
-
-    public static class NoVariable implements ISampleConstraint
+    public static class NoVariable implements SampleConstraint
     {
         @Override 
         public Constraint getConstraint()

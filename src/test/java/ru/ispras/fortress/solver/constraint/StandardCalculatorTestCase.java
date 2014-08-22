@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 ISPRAS
+ * Copyright (c) 2013 ISPRAS (www.ispras.ru)
  * 
  * Institute for System Programming of Russian Academy of Sciences
  * 
@@ -36,12 +36,11 @@ import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.transformer.ReduceOptions;
 import ru.ispras.fortress.transformer.Transformer;
 
-public class StandardCalculatorTestCase extends GenericSolverSampleTestBase
+public class StandardCalculatorTestCase extends GenericSolverTestBase
 {
-    @Override
-    public ISampleConstraint createSample()
+    public StandardCalculatorTestCase()
     {
-        return new StandardCalculator();
+        super(new StandardCalculator());
     }
 
     /** The constraint as described in the SMT language:
@@ -69,7 +68,7 @@ public class StandardCalculatorTestCase extends GenericSolverSampleTestBase
     sat ((a 5) (b 4) (c 10) (d 2) (e 1) (f 1))
     */
 
-    public static class StandardCalculator implements ISampleConstraint
+    public static class StandardCalculator implements SampleConstraint
     {
         private static final DataType intType = DataType.INTEGER;
 

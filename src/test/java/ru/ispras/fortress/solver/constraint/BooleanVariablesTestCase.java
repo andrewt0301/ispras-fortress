@@ -55,15 +55,14 @@ sat
 
 */
 
-public class BooleanVariablesTestCase extends GenericSolverSampleTestBase
+public class BooleanVariablesTestCase extends GenericSolverTestBase
 {
-    @Override
-    public ISampleConstraint createSample()
+    public BooleanVariablesTestCase()
     {
-        return new BooleanVariables();
+        super(new BooleanVariables());
     }
 
-    public static class BooleanVariables implements ISampleConstraint
+    public static class BooleanVariables implements SampleConstraint
     {
         @Override
         public Constraint getConstraint()

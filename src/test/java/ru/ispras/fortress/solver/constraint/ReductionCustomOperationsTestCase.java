@@ -1,3 +1,28 @@
+/*
+ * Copyright (c) 2014 ISPRAS (www.ispras.ru)
+ * 
+ * Institute for System Programming of Russian Academy of Sciences
+ * 
+ * 25 Alexander Solzhenitsyn st. Moscow 109004 Russia
+ * 
+ * All rights reserved.
+ * 
+ * ReductionCustomOperationsTestCase.java, Aug 22, 2014 7:22:38 PM Andrei
+ * Tatarnikov
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
 package ru.ispras.fortress.solver.constraint;
 
 import java.util.Arrays;
@@ -11,15 +36,14 @@ import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
 
-public class ReductionCustomOperationsTestCase extends GenericSolverSampleTestBase
+public class ReductionCustomOperationsTestCase extends GenericSolverTestBase
 {
-    @Override
-    public ISampleConstraint createSample()
+    public ReductionCustomOperationsTestCase()
     {
-        return new ReductionCustomOperations();
+        super(new ReductionCustomOperations());
     }
 
-    public static class ReductionCustomOperations implements ISampleConstraint
+    public static class ReductionCustomOperations implements SampleConstraint
     {
         // Data Types and Constants
         private static final int      BIT_VECTOR_SIZE = 8;

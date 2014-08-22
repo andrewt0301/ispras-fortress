@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 ISPRAS
+ * Copyright (c) 2012 ISPRAS (www.ispras.ru)
  * 
  * Institute for System Programming of Russian Academy of Sciences
  * 
@@ -34,12 +34,11 @@ import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
 
-public class SimpleBitVectorTestCase extends GenericSolverSampleTestBase
+public final class SimpleBitVectorTestCase extends GenericSolverTestBase
 {
-    @Override
-    public SimpleBitVector createSample()
+    public SimpleBitVectorTestCase()
     {
-        return new SimpleBitVector();
+        super(new SimpleBitVector());
     }
 
     /** The constraint as described in the SMT language:
@@ -58,7 +57,7 @@ public class SimpleBitVectorTestCase extends GenericSolverSampleTestBase
     Expected output: sat ((a #b010) (b #b101))
     */
 
-    public static class SimpleBitVector implements ISampleConstraint
+    public static class SimpleBitVector implements SampleConstraint
     {
         private static final int      BIT_VECTOR_SIZE = 3;
         private static final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_SIZE);
