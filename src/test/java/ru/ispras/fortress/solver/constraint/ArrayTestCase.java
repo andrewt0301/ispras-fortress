@@ -1,4 +1,4 @@
-package ru.ispras.fortress.solver;
+package ru.ispras.fortress.solver.constraint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,6 @@ import java.util.List;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.*;
-import ru.ispras.fortress.solver.constraint.*;
 
 /** The constraint as described in the SMT-LIB language:
 

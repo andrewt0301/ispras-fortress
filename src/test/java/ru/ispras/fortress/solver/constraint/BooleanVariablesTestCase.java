@@ -22,7 +22,7 @@
  * the License.
  */
 
-package ru.ispras.fortress.solver;
+package ru.ispras.fortress.solver.constraint;
 
 import java.util.ArrayList;
 import java.util.List;

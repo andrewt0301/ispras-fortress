@@ -1,11 +1,9 @@
-package ru.ispras.fortress.solver;
+package ru.ispras.fortress.solver.constraint;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ru.ispras.fortress.data.Variable;
-import ru.ispras.fortress.solver.constraint.Constraint;
-import ru.ispras.fortress.solver.constraint.ConstraintCombiner;
 
 public class ConstraintDisjunctionTestCase extends GenericSolverSampleTestBase
 {

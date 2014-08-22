@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ru.ispras.fortress.solver;
+
+package ru.ispras.fortress.solver.constraint;
 
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;

@@ -1,4 +1,4 @@
-package ru.ispras.fortress.solver;
+package ru.ispras.fortress.solver.constraint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,10 +6,6 @@ import java.util.List;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.StandardOperation;
-import ru.ispras.fortress.solver.constraint.Constraint;
-import ru.ispras.fortress.solver.constraint.ConstraintBuilder;
-import ru.ispras.fortress.solver.constraint.ConstraintCombiner;
-import ru.ispras.fortress.solver.constraint.Formulas;
 
 public class ConstraintConjunctionTestCase extends GenericSolverSampleTestBase
 {

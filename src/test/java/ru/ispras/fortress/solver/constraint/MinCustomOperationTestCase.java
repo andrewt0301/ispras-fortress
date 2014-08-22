@@ -1,4 +1,4 @@
-package ru.ispras.fortress.solver;
+package ru.ispras.fortress.solver.constraint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,10 +10,6 @@ import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
-import ru.ispras.fortress.solver.constraint.Constraint;
-import ru.ispras.fortress.solver.constraint.ConstraintBuilder;
-import ru.ispras.fortress.solver.constraint.ConstraintKind;
-import ru.ispras.fortress.solver.constraint.Formulas;
 
 public class MinCustomOperationTestCase extends GenericSolverSampleTestBase
 {
