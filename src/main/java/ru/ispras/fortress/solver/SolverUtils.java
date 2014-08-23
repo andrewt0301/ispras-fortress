@@ -39,9 +39,27 @@ import ru.ispras.fortress.solver.constraint.ConstraintBuilder;
 import ru.ispras.fortress.solver.constraint.ConstraintKind;
 import ru.ispras.fortress.solver.constraint.Formulas;
 
+/**
+ * The SolverUtils class provides utility methods to work with
+ * logical expressions.
+ * 
+ * @author Andrei Tatarnikov
+ */
+
 public final class SolverUtils
 {
     private SolverUtils() {}
+
+    /**
+     * Checks whether the specified expression is a logical expression
+     * (can be evaluated to boolean).
+     * 
+     * @param expr Expression to be checked.
+     * @return <code>true</code> if the expression is logical (can be evaluated
+     * to boolean) or <code>false</code> otherwise.
+     * 
+     * @throws NullPointerException if the parameter is <code>null</code>.
+     */
 
     public static boolean isCondition(Node expr)
     {
@@ -50,7 +68,20 @@ public final class SolverUtils
 
         return expr.getDataType().equals(DataType.BOOLEAN);
     }
-    
+
+    /**
+     * Checks whether the specified expression is an atomic logical
+     * expression (can be evaluated to boolean and does not include
+     * logical operations to combine expressions such as:
+     * AND, OR, NOT, XOR and IMPL).
+     * 
+     * @param expr Expression to be checked
+     * @return <code>true</code> if the expression is an atomic logical
+     * expression or <code>false</code> otherwise.
+     * 
+     * @throws NullPointerException if the parameter is <code>null</code>.
+     */
+
     public static boolean isAtomicCondition(Node expr)
     {
         if (!isCondition(expr))
@@ -79,6 +110,20 @@ public final class SolverUtils
         return visitor.getStatus() == Status.OK;
     }
 
+    /**
+     * Performs logical conjunction <code>(exprs[0] && ... && exprs[n-1])
+     * </code> of the specified expressions and returns the resulting
+     * expression.
+     * 
+     * @param exprs Expressions to be combined.
+     * @return A logical conjunction of the specified expressions.
+     * 
+     * @throws IllegalArgumentException if no arguments are provided;
+     * if an argument is not a logical expression.
+     * @throws NullPointerException if any argument in the array is
+     * <code>null</code>.
+     */
+
     public static Node getConjunction(Node ... exprs)
     {
         checkNotEmpty(exprs);
@@ -86,7 +131,21 @@ public final class SolverUtils
 
         return new NodeOperation(StandardOperation.AND, exprs);
     }
-    
+
+    /**
+     * Performs logical disjunction <code>(exprs[0] || ... || exprs[n-1])
+     * </code> of the specified expressions and returns the resulting
+     * expression.
+     * 
+     * @param exprs Expressions to be combined.
+     * @return A logical disjunction of the specified expressions.
+     * 
+     * @throws IllegalArgumentException if no arguments are provided;
+     * if an argument is not a logical expression.
+     * @throws NullPointerException if any argument in the array is
+     * <code>null</code>.
+     */
+
     public static Node getDisjunction(Node ... exprs)
     {
         checkNotEmpty(exprs);
@@ -95,15 +154,56 @@ public final class SolverUtils
         return new NodeOperation(StandardOperation.OR, exprs);
     }
 
+    /**
+     * Performs logical negation <code>(!getConjunction(exprs[0], ..., exprs[n-1]))
+     * </code> of the specified expressions combined with conjunction and returns
+     * the resulting expression. 
+     * 
+     * @param exprs Expressions to be combined. 
+     * @return A logical negation of the specified expressions.
+     * 
+     * @throws IllegalArgumentException if no arguments are provided;
+     * if an argument is not a logical expression.
+     * @throws NullPointerException if any argument in the array is
+     * <code>null</code>.
+     */
+
     public static Node getNegation(Node ... exprs)
     {
         return new NodeOperation(StandardOperation.NOT, getConjunction(exprs));
     }
 
+    /**
+     * Performs logical complement (negation) 
+     * <code>!(getDisjunction(exprs[0], ..., exprs[n-1])</code>
+     * of the specified expressions combined with disjunction and returns
+     * the resulting expression.
+     * 
+     * @param exprs Expressions to be combined. 
+     * @return A logical complement of the specified expressions.
+     * 
+     * @throws IllegalArgumentException if no arguments are provided;
+     * if an argument is not a logical expression.
+     * @throws NullPointerException if any argument in the array is
+     * <code>null</code>.
+     */
+
     public static Node getComplement(Node ... exprs)
     {
         return new NodeOperation(StandardOperation.NOT, getDisjunction(exprs));
     }
+
+    /**
+     * TODO: Description
+     * 
+     * @param exprs Expressions to be checked. 
+     * @return
+     * 
+     * @throws IllegalArgumentException if no arguments are provided;
+     * if an argument is not a logical expression.
+     * @throws NullPointerException if any argument in the array is
+     * <code>null</code>.
+     */
 
     public static boolean areComplete(Node ... exprs)
     {
@@ -112,6 +212,18 @@ public final class SolverUtils
         
         return isSAT(target);
     }
+    
+    /**
+     * TODO: Description
+     * 
+     * @param exprs Expressions to be checked. 
+     * @return
+     * 
+     * @throws IllegalArgumentException if no arguments are provided;
+     * if an argument is not a logical expression.
+     * @throws NullPointerException if any argument in the array is
+     * <code>null</code>.
+     */
 
     public static boolean areCompatible(Node ... exprs)
     {
