@@ -29,13 +29,44 @@ import org.junit.Test;
 
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
+import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
 
-public class SolverUtilsTestCase
+public final class SolverUtilsTestCase
 {
+    private static final Node x =
+        new NodeVariable(new Variable("x", DataType.INTEGER));
+
+    private static final Node y =
+        new NodeVariable(new Variable("y", DataType.INTEGER));
+
+    private static final Node z =
+        new NodeVariable(new Variable("z", DataType.INTEGER));
+
+    private static final Node i =
+        new NodeVariable(new Variable("i", DataType.INTEGER));
+
+    private static final Node j =
+        new NodeVariable(new Variable("j", DataType.INTEGER));
+    
+    private static final Node xEq0 =
+        new NodeOperation(StandardOperation.EQ, x, NodeValue.newInteger(0));
+
+    private static final Node yEq5 =
+        new NodeOperation(StandardOperation.EQ, y, NodeValue.newInteger(5));
+
+    private static final Node zEq10 =
+        new NodeOperation(StandardOperation.EQ, z, NodeValue.newInteger(10));
+    
+    private static final Node iEq15 =
+         new NodeOperation(StandardOperation.EQ, i, NodeValue.newInteger(15));
+
+    private static final Node jEq20 =
+         new NodeOperation(StandardOperation.EQ, j, NodeValue.newInteger(20));
+
     @Test
     public void testIsCondition()
     {
@@ -65,7 +96,6 @@ public class SolverUtilsTestCase
             )
         );
 
-        final NodeVariable x = new NodeVariable(new Variable("x", DataType.INTEGER));
         assertTrue(SolverUtils.isCondition(
             new NodeOperation(
                 StandardOperation.OR,
@@ -98,7 +128,6 @@ public class SolverUtilsTestCase
             )
         );
 
-        final NodeVariable x = new NodeVariable(new Variable("x", DataType.INTEGER));
         assertFalse(SolverUtils.isAtomicCondition(
             new NodeOperation(
                 StandardOperation.OR,
@@ -112,31 +141,66 @@ public class SolverUtilsTestCase
     @Test
     public void testGetConjunction()
     {
-        // TODO
+        final Node iEq15ORjEq20 =
+            new NodeOperation(StandardOperation.OR, iEq15, jEq20);
+
+        final Node expected = new NodeOperation(
+            StandardOperation.AND, xEq0, yEq5, zEq10, iEq15ORjEq20);
+
+        final Node actual = SolverUtils.getConjunction(
+            xEq0, yEq5, zEq10, iEq15ORjEq20);
+
+        assertEquals(expected, actual);
     }
     
     @Test
     public void testGetDisjunction()
     {
-        // TODO
+        final Node iEq15ANDjEq20 =
+            new NodeOperation(StandardOperation.AND, iEq15, jEq20);
+
+        final Node expected = new NodeOperation(
+            StandardOperation.OR, xEq0, yEq5, zEq10, iEq15ANDjEq20);
+
+        final Node actual = SolverUtils.getDisjunction(
+            xEq0, yEq5, zEq10, iEq15ANDjEq20);
+
+        assertEquals(expected, actual);
     }
-    
+
     @Test
     public void testGetNegation()
     {
-        // TODO      
+        final Node iEq15ORjEq20 =
+           new NodeOperation(StandardOperation.OR, iEq15, jEq20);
+
+        final Node expected = new NodeOperation(StandardOperation.NOT, 
+            new NodeOperation(StandardOperation.AND, xEq0, yEq5, zEq10, iEq15ORjEq20));
+
+        final Node actual = SolverUtils.getNegation(
+             xEq0, yEq5, zEq10, iEq15ORjEq20);
+
+        assertEquals(expected, actual);   
     }
-    
+
     @Test
     public void testGetComplement()
     {
-        // TODO
+        final Node iEq15ANDjEq20 =
+            new NodeOperation(StandardOperation.AND, iEq15, jEq20);
+
+        final Node expected = new NodeOperation(StandardOperation.NOT, 
+            new NodeOperation(StandardOperation.OR, xEq0, yEq5, zEq10, iEq15ANDjEq20));
+
+        final Node actual = SolverUtils.getComplement(
+            xEq0, yEq5, zEq10, iEq15ANDjEq20);
+
+        assertEquals(expected, actual);
     }
 
     @Test
     public void testAreComplete()
     {
-        final NodeVariable x = new NodeVariable(new Variable("x", DataType.INTEGER));
         assertTrue(SolverUtils.areComplete(
             new NodeOperation(StandardOperation.GREATEREQ, x, NodeValue.newInteger(0)),
             new NodeOperation(StandardOperation.LESS, x, NodeValue.newInteger(10))
@@ -153,7 +217,6 @@ public class SolverUtilsTestCase
     @Test
     public void testAreCompatible()
     {
-        final NodeVariable x = new NodeVariable(new Variable("x", DataType.INTEGER));
         assertTrue(SolverUtils.areCompatible(
             new NodeOperation(StandardOperation.GREATEREQ, x, NodeValue.newInteger(0)),
             new NodeOperation(StandardOperation.LESS, x, NodeValue.newInteger(10))
