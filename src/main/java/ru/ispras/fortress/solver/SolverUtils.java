@@ -194,10 +194,13 @@ public final class SolverUtils
     }
 
     /**
-     * TODO: Description
+     * Checks whether the specified logical conditions are complete
+     * <code>!(getComplement(exprs[0], ..., exprs[n-1]) is SAT)</code>.
+     * N.B. The method uses the default constraint solver to perform the check. 
      * 
-     * @param exprs Expressions to be checked. 
-     * @return
+     * @param exprs Conditions (logical expressions) to be checked.
+     * @return <code>true</code> if the conditions are complete or
+     * <code>false</code> otherwise.
      * 
      * @throws IllegalArgumentException if no arguments are provided;
      * if an argument is not a logical expression.
@@ -209,15 +212,18 @@ public final class SolverUtils
     {
         final Node target = 
             new NodeOperation(StandardOperation.NOT, getComplement(exprs));
-        
+
         return isSAT(target);
     }
-    
+
     /**
-     * TODO: Description
+     * Checks whether the specified logical conditions are compatible
+     * <code>(getConjunction(exprs[0], ..., exprs[n-1]) is SAT)</code>.
+     * N.B. The method uses the default constraint solver to perform the check. 
      * 
-     * @param exprs Expressions to be checked. 
-     * @return
+     * @param exprs Conditions (logical expressions) to be checked. 
+     * @return <code>true</code> if the conditions are compatible or
+     * <code>false</code> otherwise. 
      * 
      * @throws IllegalArgumentException if no arguments are provided;
      * if an argument is not a logical expression.
@@ -231,11 +237,11 @@ public final class SolverUtils
 
         return isSAT(target);
     }
-    
+
     private static boolean isSAT(Node assertion)
     {
         final ConstraintBuilder builder = 
-             new ConstraintBuilder(ConstraintKind.FORMULA_BASED);
+            new ConstraintBuilder(ConstraintKind.FORMULA_BASED);
 
         final Formulas formulas = new Formulas(assertion);
         builder.setInnerRep(formulas);
