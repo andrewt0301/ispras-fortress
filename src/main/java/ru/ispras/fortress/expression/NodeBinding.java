@@ -2,6 +2,7 @@ package ru.ispras.fortress.expression;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Collections;
 
 import ru.ispras.fortress.data.DataType;
@@ -28,6 +29,29 @@ public final class NodeBinding extends Node
         {
             return value;
         }
+
+        @Override
+        public int hashCode()
+        {
+            final int prime = 31;
+            return prime * variable.hashCode() + value.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object rhs)
+        {
+            if (rhs == null)
+                return false;
+
+            if (rhs == this)
+                return true;
+
+            if (this.getClass() != rhs.getClass())
+                return false;
+            
+            final BoundVariable binding = (BoundVariable) rhs;
+            return variable.equals(binding.variable) && value.equals(binding.value);
+        }
     }
 
     private Node expr;
@@ -48,7 +72,23 @@ public final class NodeBinding extends Node
         if (bindings.isEmpty())
             this.bindings = Collections.emptyList();
         else
-            this.bindings = Collections.unmodifiableList(new ArrayList<BoundVariable>(bindings));
+            this.bindings = new ArrayList<BoundVariable>(bindings);
+
+        final Comparator<BoundVariable> cmp = new Comparator<BoundVariable>()
+        {
+            public int compare(BoundVariable lhs, BoundVariable rhs)
+            {
+                if (lhs == null)
+                    throw new NullPointerException();
+
+                if (rhs == null)
+                    throw new NullPointerException();
+
+                return lhs.getVariable().getName().compareTo(rhs.getVariable().getName());
+            }
+        };
+
+        Collections.sort(this.bindings, cmp);
     }
 
     private NodeBinding(Node expr, List<BoundVariable> bindings, int unused)
@@ -61,7 +101,7 @@ public final class NodeBinding extends Node
 
     public List<BoundVariable> getBindings()
     {
-        return bindings;
+        return Collections.unmodifiableList(bindings);
     }
 
     public Node getExpression()
@@ -113,5 +153,28 @@ public final class NodeBinding extends Node
         builder.append(getExpression().toString());
 
         return builder.toString();
+    }
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        return expr.hashCode() * prime + bindings.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object rhs)
+    {
+        if (rhs == null)
+            return false;
+
+        if (rhs == this)
+            return true;
+
+        if (this.getClass() != rhs.getClass())
+            return false;
+
+        final NodeBinding node = (NodeBinding) rhs;
+        return this.bindings.equals(node.bindings);
     }
 }
