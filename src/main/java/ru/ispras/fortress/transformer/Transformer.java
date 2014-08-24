@@ -66,8 +66,12 @@ public final class Transformer
             throw new NullPointerException();
 
         // Only operation expressions can be reduced.
-        if (expression.getKind() != Node.Kind.OPERATION)
+        if (expression.getKind() == Node.Kind.VARIABLE ||
+            expression.getKind() == Node.Kind.VALUE)
             return expression;
+
+        if (expression.getKind() == Node.Kind.BINDING)
+            return reduceBinding(options, (NodeBinding) expression);
 
         final OperationReducer reducer = 
             new OperationReducer((NodeOperation) expression, options);
@@ -79,9 +83,27 @@ public final class Transformer
         return result;
     }
 
+    private static Node reduceBinding(ReduceOptions options, NodeBinding binding)
+    {
+        final Node reduced = reduce(options, binding.getExpression());
+        if (reduced == null || reduced == binding.getExpression())
+            return binding;
+
+        if (reduced.getKind() == Node.Kind.VALUE)
+            return reduced;
+
+        return binding.bindTo(reduced);
+    }
+
     public static Node substitute(Node expr, final String name, final Node term)
     {
-        if (expr == null || name == null || term == null)
+        if (expr == null)
+            throw new NullPointerException();
+
+        if (name == null)
+            throw new NullPointerException();
+
+        if (term == null)
             throw new NullPointerException();
 
         final TransformerRule rule = new TransformerRule() {

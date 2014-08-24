@@ -90,9 +90,10 @@ final class OperationReducer
                     hasValueOperandsOnly = false;
                     break;
 
+                case BINDING:
                 case OPERATION:
                     final Node reduced =
-                        Transformer.reduce(options, (NodeOperation) o);
+                        Transformer.reduce(options, o);
 
                     if (reduced != o)
                     {
