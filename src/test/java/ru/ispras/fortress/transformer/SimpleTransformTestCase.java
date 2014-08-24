@@ -85,4 +85,20 @@ public class SimpleTransformTestCase
 
         Assert.assertTrue(unrolled.toString().equals(expected.toString()));
     }
+
+    @Test
+    public void substituteAllBindings()
+    {
+        final NodeVariable a = createVariable("a");
+        final NodeVariable x = createVariable("x");
+        final NodeVariable y = createVariable("y");
+
+        final NodeBinding letA = singleBinding(a, PLUS(x, y), PLUS(x, a));
+        final NodeBinding letY = singleBinding(y, PLUS(x, x), letA);
+
+        final Node unrolled = Transformer.substituteAllBindings(PLUS(y, letY));
+        final Node expected = PLUS(y, PLUS(x, PLUS(x, PLUS(x, x))));
+
+        Assert.assertTrue(unrolled.toString().equals(expected.toString()));
+    }
 }

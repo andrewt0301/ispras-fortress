@@ -134,6 +134,30 @@ public final class Transformer
         return transformer.getResult().iterator().next();
     }
 
+    public static Node substituteAllBindings(Node node)
+    {
+        if (node == null)
+            throw new NullPointerException();
+
+        final TransformerRule rule = new TransformerRule() {
+            @Override
+            public boolean isApplicable(Node node) {
+                return node.getKind() == Node.Kind.BINDING;
+            }
+
+            @Override
+            public Node apply(Node node) {
+                return substituteBinding((NodeBinding) node);
+            }
+        };
+
+        final NodeTransformer transformer = new NodeTransformer();
+        transformer.addRule(Node.Kind.BINDING, rule);
+        transformer.walk(node);
+
+        return transformer.getResult().iterator().next();
+    }
+
     public static Node transformStandardPredicate(Node expr)
     {
         if (expr == null)
