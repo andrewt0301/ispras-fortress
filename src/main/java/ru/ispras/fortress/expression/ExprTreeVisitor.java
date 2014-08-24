@@ -126,10 +126,50 @@ public interface ExprTreeVisitor
 
     void onVariable(NodeVariable variable);
 
+    /**
+     * Starts visiting a binding node.
+     * 
+     * @param node Binding node.
+     */
+
     void onBindingBegin(NodeBinding node);
+
+    /**
+     * Notifies that visiting a bound variables list finished.
+     * 
+     * @param node Bounding node.
+     */
+
     void onBindingListEnd(NodeBinding node);
+
+    /**
+     * Finishes visiting a binding node.
+     * 
+     * @param node Binding node.
+     */
+
     void onBindingEnd(NodeBinding node);
 
+    /**
+     * Notifies that visiting a bound variable has started.
+     * Bound value expression will be visited next as general expression.
+     *
+     * Bound variables are not visited at all.
+     * 
+     * @param node Binding node.
+     * @param variable Bound variable reference.
+     * @param value Bound value expression.
+     */
+
     void onBoundVariableBegin(NodeBinding node, NodeVariable variable, Node value);
+
+    /**
+     * Notifies that visiting a bound variable has finished.
+     * 
+     * @param node Binding node.
+     * @param variable Bound variable reference.
+     * @param value Bound value expression.
+     */
+
     void onBoundVariableEnd(NodeBinding node, NodeVariable variable, Node value);
 }
