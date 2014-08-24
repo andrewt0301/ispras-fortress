@@ -95,9 +95,26 @@ public final class Transformer
         return binding.bindTo(reduced);
     }
 
-    public static Node substitute(Node expr, final String name, final Node term)
+    /**
+     * Substitute given term for variables with specified name in expression.
+     * Substitution considers variable names ignoring types.
+     *
+     * Provided term instance is referenced in resulting expression w/o
+     * copying.
+     *
+     * @param expression Expression in which substitution takes place.
+     * @param name Name of variables to be substituted.
+     * @param term Term to replace variables.
+     * @return An expression where all variables with given name are
+     * replaced with term specified.
+     *
+     * @throws NullPointerException if any of the parameters is
+     * <code>null</code>.
+     */
+
+    public static Node substitute(Node expression, final String name, final Node term)
     {
-        if (expr == null)
+        if (expression == null)
             throw new NullPointerException();
 
         if (name == null)
@@ -121,17 +138,32 @@ public final class Transformer
 
         final NodeTransformer transformer = new NodeTransformer();
         transformer.addRule(Node.Kind.VARIABLE, rule);
-        transformer.walk(expr);
+        transformer.walk(expression);
         return transformer.getResult().iterator().next();
     }
 
-    public static Node substituteBinding(NodeBinding node)
+    /**
+     * Apply given binding substitutions to underlying expression.
+     * Substitution applies to single binding provided, ignoring
+     * additional bindings in expression. However, nested binding scope is
+     * correctly resolved, i.e. substitution applies to free variables
+     * in underlying expression and in bound values of nested bindings.
+     *
+     * @param binding Binding node to be substituted.
+     * @return An underlying expression with all bindings specified
+     * being substituted.
+     *
+     * @throws NullPointerException if any of the parameters is
+     * <code>null</code>.
+     */
+
+    public static Node substituteBinding(NodeBinding binding)
     {
-        if (node == null)
+        if (binding == null)
             throw new NullPointerException();
 
         final Map<String, Node> exprs = new HashMap<String, Node>();
-        for (NodeBinding.BoundVariable bound : node.getBindings())
+        for (NodeBinding.BoundVariable bound : binding.getBindings())
             exprs.put(bound.getVariable().getName(), bound.getValue());
 
         final TransformerRule rule = new TransformerRule() {
@@ -151,14 +183,29 @@ public final class Transformer
 
         final NodeTransformer transformer = new NodeTransformer();
         transformer.addRule(Node.Kind.VARIABLE, rule);
-        transformer.walk(node.getExpression());
+        transformer.walk(binding.getExpression());
 
         return transformer.getResult().iterator().next();
     }
 
-    public static Node substituteAllBindings(Node node)
+    /**
+     * Substitute all bindings in given expression.
+     * Substitution applies with respect to nested binding scope.
+     *
+     * Substitution applies non-recursively, i.e. any bindings found
+     * in bound values are not substituted.
+     *
+     * @param expression Expression to be substituted.
+     * @return An expression resulting from substitution of all
+     * bindings found in initial expression.
+     *
+     * @throws NullPointerException if any of the parameters is
+     * <code>null</code>.
+     */
+
+    public static Node substituteAllBindings(Node expression)
     {
-        if (node == null)
+        if (expression == null)
             throw new NullPointerException();
 
         final TransformerRule rule = new TransformerRule() {
@@ -175,18 +222,33 @@ public final class Transformer
 
         final NodeTransformer transformer = new NodeTransformer();
         transformer.addRule(Node.Kind.BINDING, rule);
-        transformer.walk(node);
+        transformer.walk(expression);
 
         return transformer.getResult().iterator().next();
     }
 
-    public static Node transformStandardPredicate(Node expr)
+    /**
+     * Transforms given expression according to set of mathematical rules.
+     * Transforms composite math predicates such as NEQ, GEQ etc. into formula
+     * using NOT, EQ, LE, GE and boolean functions. Works for bitvectors.
+     *
+     * Transformation considers only standard predicates.
+     *
+     * @param expression Expression to be transformed.
+     * @return An expression resulting from substitution of all
+     * bindings found in initial expression.
+     *
+     * @throws NullPointerException if any of the parameters is
+     * <code>null</code>.
+     */
+
+    public static Node transformStandardPredicate(Node expression)
     {
-        if (expr == null)
+        if (expression == null)
             throw new NullPointerException();
         
         final NodeTransformer tl = new NodeTransformer(Predicate.getRuleset());
-        tl.walk(expr);
+        tl.walk(expression);
         return tl.getResult().iterator().next();
     }
 }
