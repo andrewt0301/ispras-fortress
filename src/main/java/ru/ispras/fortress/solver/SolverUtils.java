@@ -28,10 +28,12 @@ import java.util.EnumSet;
 import java.util.Set;
 
 import ru.ispras.fortress.data.DataType;
+import ru.ispras.fortress.expression.ExprTreeVisitor;
 import ru.ispras.fortress.expression.ExprTreeVisitor.Status;
 import ru.ispras.fortress.expression.ExprTreeVisitorDefault;
 import ru.ispras.fortress.expression.ExprTreeWalker;
 import ru.ispras.fortress.expression.Node;
+import ru.ispras.fortress.expression.NodeBinding;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.solver.constraint.Constraint;
@@ -75,7 +77,7 @@ public final class SolverUtils
      * logical operations to combine expressions such as:
      * AND, OR, NOT, XOR and IMPL).
      * 
-     * @param expr Expression to be checked
+     * @param expr Expression to be checked.
      * @return <code>true</code> if the expression is an atomic logical
      * expression or <code>false</code> otherwise.
      * 
@@ -95,12 +97,42 @@ public final class SolverUtils
             StandardOperation.IMPL
         );
 
-        final ExprTreeVisitorDefault visitor = new ExprTreeVisitorDefault()
+        final ExprTreeVisitor visitor = new ExprTreeVisitorDefault()
         {
             @Override public void onOperationBegin(NodeOperation node)
             {
                 if (logicOperations.contains(node.getOperationId()))
                     setStatus(Status.ABORT);
+            }
+        };
+
+        final ExprTreeWalker walker = new ExprTreeWalker(visitor);
+        walker.visit(expr);
+
+        return visitor.getStatus() == Status.OK;
+    }
+
+    /**
+     * Checks whether the specified expression tree contains bindings
+     * (nodes of type BINDING). 
+     * 
+     * @param expr Expression to be checked.
+     * @return <code>true</code> if the expression tree contains bindings
+     * (nodes of type BINDING) or <code>false</code> otherwise.
+     * 
+     * @throws NullPointerException if the parameter is <code>null</code>.
+     */
+
+    public static boolean hasBindings(Node expr)
+    {
+        if (null == expr)
+            throw new NullPointerException();
+
+        final ExprTreeVisitor visitor = new ExprTreeVisitorDefault()
+        {
+            @Override public void onBindingBegin(NodeBinding node)
+            {
+                setStatus(Status.ABORT);
             }
         };
 
