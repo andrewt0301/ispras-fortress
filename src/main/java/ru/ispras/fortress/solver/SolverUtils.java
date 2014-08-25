@@ -139,9 +139,9 @@ public final class SolverUtils
         final ExprTreeWalker walker = new ExprTreeWalker(visitor);
         walker.visit(expr);
 
-        return visitor.getStatus() == Status.OK;
+        return visitor.getStatus() == Status.ABORT;
     }
-
+   
     /**
      * Performs logical conjunction <code>(exprs[0] && ... && exprs[n-1])
      * </code> of the specified expressions and returns the resulting
