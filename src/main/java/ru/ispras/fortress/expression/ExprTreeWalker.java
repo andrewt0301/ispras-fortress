@@ -223,16 +223,31 @@ public final class ExprTreeWalker
             throw new NullPointerException();
 
         visitor.onBindingBegin(node);
+        if (isStatus(Status.ABORT)) return;
 
-        for (NodeBinding.BoundVariable bound : node.getBindings())
+        if (isStatus(Status.OK))
         {
-            visitor.onBoundVariableBegin(node, bound.getVariable(), bound.getValue());
-            visitNode(bound.getValue());
-            visitor.onBoundVariableEnd(node, bound.getVariable(), bound.getValue());
-        }
-        visitor.onBindingListEnd(node);
+            for (NodeBinding.BoundVariable bound : node.getBindings())
+            {
+                visitor.onBoundVariableBegin(node, bound.getVariable(), bound.getValue());
+                if (isStatus(Status.ABORT)) return;
 
-        visitNode(node.getExpression());
+                if (isStatus(Status.OK))
+                {
+                    visitNode(bound.getValue());
+                    if (isStatus(Status.ABORT)) return;
+                }
+
+                visitor.onBoundVariableEnd(node, bound.getVariable(), bound.getValue());
+                if (isStatus(Status.ABORT)) return;
+            }
+
+            visitor.onBindingListEnd(node);
+            if (isStatus(Status.ABORT)) return;
+
+            visitNode(node.getExpression());
+            if (isStatus(Status.ABORT)) return;
+        }
 
         visitor.onBindingEnd(node);
     }
