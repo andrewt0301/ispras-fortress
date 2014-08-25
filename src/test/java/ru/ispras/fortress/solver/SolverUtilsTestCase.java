@@ -30,6 +30,7 @@ import org.junit.Test;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.Node;
+import ru.ispras.fortress.expression.NodeBinding;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
@@ -37,19 +38,19 @@ import ru.ispras.fortress.expression.StandardOperation;
 
 public final class SolverUtilsTestCase
 {
-    private static final Node x =
+    private static final NodeVariable x =
         new NodeVariable(new Variable("x", DataType.INTEGER));
 
-    private static final Node y =
+    private static final NodeVariable y =
         new NodeVariable(new Variable("y", DataType.INTEGER));
 
-    private static final Node z =
+    private static final NodeVariable z =
         new NodeVariable(new Variable("z", DataType.INTEGER));
 
-    private static final Node i =
+    private static final NodeVariable i =
         new NodeVariable(new Variable("i", DataType.INTEGER));
 
-    private static final Node j =
+    private static final NodeVariable j =
         new NodeVariable(new Variable("j", DataType.INTEGER));
     
     private static final Node xEq0 =
@@ -228,5 +229,38 @@ public final class SolverUtilsTestCase
             new NodeOperation(StandardOperation.GREATEREQ, x, NodeValue.newInteger(10))
             )
         );
+    }
+    
+    @Test
+    public void testHasBindings()
+    {
+        final Node noBindings = new NodeOperation(
+            StandardOperation.AND,
+            xEq0,
+            yEq5,
+            zEq10,
+            new NodeOperation(StandardOperation.OR, iEq15, jEq20)
+        );
+
+        assertFalse(SolverUtils.hasBindings(noBindings));
+
+        final NodeVariable a = new NodeVariable(new Variable("a", DataType.INTEGER));
+        final NodeVariable b = new NodeVariable(new Variable("b", DataType.INTEGER));
+
+        final Node bindings = new NodeOperation(
+            StandardOperation.AND,
+            xEq0,
+            yEq5,
+            zEq10,
+            new NodeBinding(
+                new NodeOperation(StandardOperation.OR, iEq15, jEq20),
+                NodeBinding.bindVariable(a, NodeValue.newInteger(3)),
+                NodeBinding.bindVariable(b, NodeValue.newInteger(4)),
+                NodeBinding.bindVariable(i, new NodeOperation(StandardOperation.MUL, a, NodeValue.newInteger(5))),
+                NodeBinding.bindVariable(j, new NodeOperation(StandardOperation.MUL, b, NodeValue.newInteger(5)))
+            )
+        );
+
+        assertTrue(SolverUtils.hasBindings(bindings));
     }
 }
