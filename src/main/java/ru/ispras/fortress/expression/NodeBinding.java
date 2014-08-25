@@ -227,6 +227,7 @@ public final class NodeBinding extends Node
         }
         builder.append(") ");
         builder.append(getExpression().toString());
+        builder.append(")");
 
         return builder.toString();
     }
