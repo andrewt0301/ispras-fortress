@@ -207,7 +207,7 @@ public final class SolverUtilsTestCase
             )
         );
 
-        assertTrue(SolverUtils.areComplete(
+        assertFalse(SolverUtils.areComplete(
             new NodeOperation(StandardOperation.LESS, x, NodeValue.newInteger(0)),
             new NodeOperation(StandardOperation.GREATEREQ, x, NodeValue.newInteger(10))
             )
