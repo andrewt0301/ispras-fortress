@@ -24,7 +24,10 @@
 
 package ru.ispras.fortress.solver;
 
+import java.util.Deque;
 import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Set;
 
 import ru.ispras.fortress.data.DataType;
@@ -35,6 +38,7 @@ import ru.ispras.fortress.expression.ExprTreeWalker;
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeBinding;
 import ru.ispras.fortress.expression.NodeOperation;
+import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintBuilder;
@@ -141,7 +145,69 @@ public final class SolverUtils
 
         return visitor.getStatus() == Status.ABORT;
     }
+
+    /**
+     * Checks whether the given expression is a constant expression
+     * (can be evaluated to a constant value). An expression is considered
+     * constant as long as it does not contain unassigned variables
+     * (bindings are taken into consideration).
+     * 
+     * @param expr Expression to be checked.
+     * @return <code>true</code> if the expression is a constant expression
+     * or <code>false</code> otherwise.
+     * 
+     * @throws NullPointerException if the parameter is <code>null</code>.
+     */
+
+    public static boolean isConstant(Node expr)
+    {
+        if (null == expr)
+            throw new NullPointerException();
+
+        final ExprTreeVisitor visitor = new ExprTreeVisitorDefault()
+        {
+            // Variables bound to constant values (a stack of scopes).
+            private final Deque<Set<String>> knownVariables =
+                new LinkedList<Set<String>>();
+
+            @Override public void onVariable(NodeVariable variable)
+            {
+                if (variable.getVariable().hasValue())
+                    return;
+
+                for (Set<String> scope : knownVariables)
+                {
+                    if (scope.contains(variable.getName()))
+                        return;
+                }
+
+                setStatus(Status.ABORT);
+            }
+
+            @Override public void onBindingBegin(NodeBinding node)
+            {
+                knownVariables.push(new HashSet<String>());
+            }
+
+            @Override public void onBindingEnd(NodeBinding node)
+            {
+                knownVariables.pop();
+            }
    
+            @Override public void onBoundVariableEnd(
+                NodeBinding node, NodeVariable variable, Node value)
+            {
+                final Set<String> currentScope = knownVariables.peek();
+                currentScope.add(variable.getName());
+            }
+        };
+
+        final ExprTreeWalker walker = new ExprTreeWalker(visitor);
+        walker.visit(expr);
+
+        return visitor.getStatus() == Status.OK;
+    }
+
     /**
      * Performs logical conjunction <code>(exprs[0] && ... && exprs[n-1])
      * </code> of the specified expressions and returns the resulting
