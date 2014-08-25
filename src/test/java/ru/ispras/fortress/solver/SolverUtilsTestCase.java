@@ -27,6 +27,7 @@ package ru.ispras.fortress.solver;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
+import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.Node;
@@ -230,7 +231,7 @@ public final class SolverUtilsTestCase
             )
         );
     }
-    
+
     @Test
     public void testHasBindings()
     {
@@ -262,5 +263,105 @@ public final class SolverUtilsTestCase
         );
 
         assertTrue(SolverUtils.hasBindings(bindings));
+    }
+
+    @Test
+    public void testIsConstant()
+    {
+        final Node expr1 = new NodeOperation(
+            StandardOperation.PLUS,
+            NodeValue.newInteger(1),
+            new NodeOperation(
+                StandardOperation.MUL,
+                NodeValue.newInteger(2),
+                NodeValue.newInteger(3)
+            ),
+            new NodeOperation(
+                StandardOperation.SUB,
+                NodeValue.newInteger(20),
+                new NodeOperation(
+                    StandardOperation.MUL,
+                    NodeValue.newInteger(2),
+                    NodeValue.newInteger(5)
+                )
+            )
+        );
+
+        // Constant (no variables, no bindings). 
+        assertTrue(SolverUtils.isConstant(expr1));
+
+        final NodeVariable x = new NodeVariable(new Variable("x", DataType.INTEGER));
+        final Node expr2 = new NodeOperation(
+            StandardOperation.PLUS,
+            NodeValue.newInteger(1),
+            new NodeOperation(
+                StandardOperation.MUL,
+                NodeValue.newInteger(2),
+                NodeValue.newInteger(3)
+            ),
+            new NodeOperation(
+                StandardOperation.SUB,
+                NodeValue.newInteger(20),
+                new NodeOperation(
+                    StandardOperation.MUL,
+                    NodeValue.newInteger(2),
+                    x
+                )
+            )
+        );
+
+        // Non-constant: has a variable 
+        assertFalse(SolverUtils.isConstant(expr2));
+
+        x.getVariable().setData(Data.newInteger(5));
+
+        // Constant: has a variable, but it is assigned a value
+        assertTrue(SolverUtils.isConstant(expr2));
+
+        final NodeVariable y = new NodeVariable(new Variable("y", DataType.INTEGER));
+        final Node expr3 = new NodeOperation(
+            StandardOperation.PLUS,
+            NodeValue.newInteger(1),
+            new NodeOperation(
+                StandardOperation.MUL,
+                NodeValue.newInteger(2),
+                NodeValue.newInteger(3)
+            ),
+
+            new NodeBinding(
+                new NodeOperation(
+                    StandardOperation.SUB,
+                    NodeValue.newInteger(20),
+                    new NodeOperation(StandardOperation.MUL, NodeValue.newInteger(2), y)
+                ),
+                NodeBinding.bindVariable(y, NodeValue.newInteger(10))
+            )
+        );
+
+        // Constant: has a variable, but it is bound to a constant value
+        assertTrue(SolverUtils.isConstant(expr3));
+
+        final Node expr4 = new NodeOperation(
+            StandardOperation.PLUS,
+            NodeValue.newInteger(1),
+            new NodeOperation(
+                StandardOperation.MUL,
+                NodeValue.newInteger(2),
+                y
+            ),
+
+            new NodeBinding(
+                new NodeOperation(
+                    StandardOperation.SUB,
+                    NodeValue.newInteger(20),
+                    new NodeOperation(StandardOperation.MUL, NodeValue.newInteger(2), y)
+                ),
+                NodeBinding.bindVariable(y, NodeValue.newInteger(10))
+            )
+        );
+
+        // Non-constant: has a variable, but it is bound to a constant value 
+        //in all scopes it is used.
+        assertFalse(SolverUtils.isConstant(expr4));
     }
 }
