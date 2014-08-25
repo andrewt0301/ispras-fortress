@@ -210,10 +210,9 @@ public final class SolverUtils
 
     public static boolean areComplete(Node ... exprs)
     {
-        final Node target = 
-            new NodeOperation(StandardOperation.NOT, getComplement(exprs));
+        final Node target = getComplement(exprs);
 
-        return isSAT(target);
+        return !isSAT(target);
     }
 
     /**
