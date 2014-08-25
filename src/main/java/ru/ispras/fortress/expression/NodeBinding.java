@@ -1,5 +1,6 @@
 package ru.ispras.fortress.expression;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -120,6 +121,20 @@ public final class NodeBinding extends Node
         };
 
         Collections.sort(this.bindings, cmp);
+    }
+
+    /**
+     * Constructs a node based on an expression and a variable number
+     * of bindings. See constructor <code>
+     * NodeBinding(Node expression, List<BoundVariable> bindings)</code>.
+     * 
+     * @param expression Expression subtree.
+     * @param bindings Bound variables.
+     */
+
+    public NodeBinding(Node expression, BoundVariable ... bindings)
+    {
+        this(expression, Arrays.asList(bindings));
     }
 
     /**
