@@ -7,7 +7,7 @@
  * 
  * All rights reserved.
  * 
- * SolverUtils.java, Aug 22, 2014 2:36:30 PM Andrei Tatarnikov
+ * ExprUtils.java, Aug 22, 2014 2:36:30 PM Andrei Tatarnikov
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -22,7 +22,7 @@
  * the License.
  */
 
-package ru.ispras.fortress.solver;
+package ru.ispras.fortress.expression;
 
 import java.util.Deque;
 import java.util.EnumSet;
@@ -31,30 +31,24 @@ import java.util.LinkedList;
 import java.util.Set;
 
 import ru.ispras.fortress.data.DataType;
-import ru.ispras.fortress.expression.ExprTreeVisitor;
 import ru.ispras.fortress.expression.ExprTreeVisitor.Status;
-import ru.ispras.fortress.expression.ExprTreeVisitorDefault;
-import ru.ispras.fortress.expression.ExprTreeWalker;
-import ru.ispras.fortress.expression.Node;
-import ru.ispras.fortress.expression.NodeBinding;
-import ru.ispras.fortress.expression.NodeOperation;
-import ru.ispras.fortress.expression.NodeVariable;
-import ru.ispras.fortress.expression.StandardOperation;
+import ru.ispras.fortress.solver.Solver;
+import ru.ispras.fortress.solver.SolverResult;
 import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintBuilder;
 import ru.ispras.fortress.solver.constraint.ConstraintKind;
 import ru.ispras.fortress.solver.constraint.Formulas;
 
 /**
- * The SolverUtils class provides utility methods to work with
+ * The ExprUtils class provides utility methods to work with
  * logical expressions.
  * 
  * @author Andrei Tatarnikov
  */
 
-public final class SolverUtils
+public final class ExprUtils
 {
-    private SolverUtils() {}
+    private ExprUtils() {}
 
     /**
      * Checks whether the specified expression is a logical expression

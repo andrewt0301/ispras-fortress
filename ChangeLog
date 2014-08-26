@@ -29,7 +29,7 @@
  - Class NodeExpr was renamed to NodeOperation
  - XML format was simplified: nodes Expression and Operation were merged
    together (the new node is called Operation)
- - Class SolverUtils that provides a set of useful methods to work with
+ - Class ExprUtils that provides a set of useful methods to work with
    logical expressions  
 
 --------------------------------------------------------------------------------

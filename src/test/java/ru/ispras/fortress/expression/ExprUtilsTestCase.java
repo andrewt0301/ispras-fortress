@@ -7,7 +7,7 @@
  * 
  * All rights reserved.
  * 
- * SolverUtilsTestCase.java, Aug 22, 2014 5:15:41 PM Andrei Tatarnikov
+ * ExprUtilsTestCase.java, Aug 22, 2014 5:15:41 PM Andrei Tatarnikov
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -22,7 +22,7 @@
  * the License.
  */
 
-package ru.ispras.fortress.solver;
+package ru.ispras.fortress.expression;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -37,7 +37,7 @@ import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
 
-public final class SolverUtilsTestCase
+public final class ExprUtilsTestCase
 {
     private static final NodeVariable x =
         new NodeVariable(new Variable("x", DataType.INTEGER));
@@ -72,17 +72,17 @@ public final class SolverUtilsTestCase
     @Test
     public void testIsCondition()
     {
-        assertTrue(SolverUtils.isCondition(NodeValue.newBoolean(true)));
-        assertTrue(SolverUtils.isCondition(NodeValue.newBoolean(false)));
-        assertFalse(SolverUtils.isCondition(NodeValue.newInteger(0)));
-        assertFalse(SolverUtils.isCondition(NodeValue.newReal(0)));
+        assertTrue(ExprUtils.isCondition(NodeValue.newBoolean(true)));
+        assertTrue(ExprUtils.isCondition(NodeValue.newBoolean(false)));
+        assertFalse(ExprUtils.isCondition(NodeValue.newInteger(0)));
+        assertFalse(ExprUtils.isCondition(NodeValue.newReal(0)));
 
-        assertTrue(SolverUtils.isCondition(
+        assertTrue(ExprUtils.isCondition(
             new NodeVariable(new Variable("x", DataType.BOOLEAN))));
-        assertFalse(SolverUtils.isCondition(
+        assertFalse(ExprUtils.isCondition(
             new NodeVariable(new Variable("y", DataType.INTEGER))));
 
-        assertTrue(SolverUtils.isCondition(
+        assertTrue(ExprUtils.isCondition(
             new NodeOperation(
                 StandardOperation.EQ,
                 NodeValue.newInteger(1),
@@ -90,7 +90,7 @@ public final class SolverUtilsTestCase
             )
         );
 
-        assertFalse(SolverUtils.isCondition(
+        assertFalse(ExprUtils.isCondition(
             new NodeOperation(
                 StandardOperation.ADD,
                 NodeValue.newInteger(1),
@@ -98,7 +98,7 @@ public final class SolverUtilsTestCase
             )
         );
 
-        assertTrue(SolverUtils.isCondition(
+        assertTrue(ExprUtils.isCondition(
             new NodeOperation(
                 StandardOperation.OR,
                 new NodeOperation(StandardOperation.GREATEREQ, x, NodeValue.newInteger(0)),
@@ -111,10 +111,10 @@ public final class SolverUtilsTestCase
     @Test
     public void testIsAtomicCondition()
     {
-        assertTrue(SolverUtils.isAtomicCondition(NodeValue.newBoolean(true)));
-        assertTrue(SolverUtils.isAtomicCondition(NodeValue.newBoolean(false)));
+        assertTrue(ExprUtils.isAtomicCondition(NodeValue.newBoolean(true)));
+        assertTrue(ExprUtils.isAtomicCondition(NodeValue.newBoolean(false)));
         
-        assertTrue(SolverUtils.isAtomicCondition(
+        assertTrue(ExprUtils.isAtomicCondition(
             new NodeOperation(
                 StandardOperation.EQ,
                 NodeValue.newInteger(1),
@@ -122,7 +122,7 @@ public final class SolverUtilsTestCase
             )
         );
 
-        assertFalse(SolverUtils.isAtomicCondition(
+        assertFalse(ExprUtils.isAtomicCondition(
             new NodeOperation(
                 StandardOperation.ADD,
                 NodeValue.newInteger(1),
@@ -130,7 +130,7 @@ public final class SolverUtilsTestCase
             )
         );
 
-        assertFalse(SolverUtils.isAtomicCondition(
+        assertFalse(ExprUtils.isAtomicCondition(
             new NodeOperation(
                 StandardOperation.OR,
                 new NodeOperation(StandardOperation.GREATEREQ, x, NodeValue.newInteger(0)),
@@ -149,7 +149,7 @@ public final class SolverUtilsTestCase
         final Node expected = new NodeOperation(
             StandardOperation.AND, xEq0, yEq5, zEq10, iEq15ORjEq20);
 
-        final Node actual = SolverUtils.getConjunction(
+        final Node actual = ExprUtils.getConjunction(
             xEq0, yEq5, zEq10, iEq15ORjEq20);
 
         assertEquals(expected, actual);
@@ -164,7 +164,7 @@ public final class SolverUtilsTestCase
         final Node expected = new NodeOperation(
             StandardOperation.OR, xEq0, yEq5, zEq10, iEq15ANDjEq20);
 
-        final Node actual = SolverUtils.getDisjunction(
+        final Node actual = ExprUtils.getDisjunction(
             xEq0, yEq5, zEq10, iEq15ANDjEq20);
 
         assertEquals(expected, actual);
@@ -179,7 +179,7 @@ public final class SolverUtilsTestCase
         final Node expected = new NodeOperation(StandardOperation.NOT, 
             new NodeOperation(StandardOperation.AND, xEq0, yEq5, zEq10, iEq15ORjEq20));
 
-        final Node actual = SolverUtils.getNegation(
+        final Node actual = ExprUtils.getNegation(
              xEq0, yEq5, zEq10, iEq15ORjEq20);
 
         assertEquals(expected, actual);   
@@ -194,7 +194,7 @@ public final class SolverUtilsTestCase
         final Node expected = new NodeOperation(StandardOperation.NOT, 
             new NodeOperation(StandardOperation.OR, xEq0, yEq5, zEq10, iEq15ANDjEq20));
 
-        final Node actual = SolverUtils.getComplement(
+        final Node actual = ExprUtils.getComplement(
             xEq0, yEq5, zEq10, iEq15ANDjEq20);
 
         assertEquals(expected, actual);
@@ -203,13 +203,13 @@ public final class SolverUtilsTestCase
     @Test
     public void testAreComplete()
     {
-        assertTrue(SolverUtils.areComplete(
+        assertTrue(ExprUtils.areComplete(
             new NodeOperation(StandardOperation.GREATEREQ, x, NodeValue.newInteger(0)),
             new NodeOperation(StandardOperation.LESS, x, NodeValue.newInteger(10))
             )
         );
 
-        assertFalse(SolverUtils.areComplete(
+        assertFalse(ExprUtils.areComplete(
             new NodeOperation(StandardOperation.LESS, x, NodeValue.newInteger(0)),
             new NodeOperation(StandardOperation.GREATEREQ, x, NodeValue.newInteger(10))
             )
@@ -219,13 +219,13 @@ public final class SolverUtilsTestCase
     @Test
     public void testAreCompatible()
     {
-        assertTrue(SolverUtils.areCompatible(
+        assertTrue(ExprUtils.areCompatible(
             new NodeOperation(StandardOperation.GREATEREQ, x, NodeValue.newInteger(0)),
             new NodeOperation(StandardOperation.LESS, x, NodeValue.newInteger(10))
             )
         );
 
-        assertFalse(SolverUtils.areCompatible(
+        assertFalse(ExprUtils.areCompatible(
             new NodeOperation(StandardOperation.LESS, x, NodeValue.newInteger(0)),
             new NodeOperation(StandardOperation.GREATEREQ, x, NodeValue.newInteger(10))
             )
@@ -243,7 +243,7 @@ public final class SolverUtilsTestCase
             new NodeOperation(StandardOperation.OR, iEq15, jEq20)
         );
 
-        assertFalse(SolverUtils.hasBindings(noBindings));
+        assertFalse(ExprUtils.hasBindings(noBindings));
 
         final NodeVariable a = new NodeVariable(new Variable("a", DataType.INTEGER));
         final NodeVariable b = new NodeVariable(new Variable("b", DataType.INTEGER));
@@ -262,7 +262,7 @@ public final class SolverUtilsTestCase
             )
         );
 
-        assertTrue(SolverUtils.hasBindings(bindings));
+        assertTrue(ExprUtils.hasBindings(bindings));
     }
 
     @Test
@@ -288,7 +288,7 @@ public final class SolverUtilsTestCase
         );
 
         // Constant (no variables, no bindings). 
-        assertTrue(SolverUtils.isConstant(expr1));
+        assertTrue(ExprUtils.isConstant(expr1));
 
         final NodeVariable x = new NodeVariable(new Variable("x", DataType.INTEGER));
         final Node expr2 = new NodeOperation(
@@ -311,12 +311,12 @@ public final class SolverUtilsTestCase
         );
 
         // Non-constant: has a variable 
-        assertFalse(SolverUtils.isConstant(expr2));
+        assertFalse(ExprUtils.isConstant(expr2));
 
         x.getVariable().setData(Data.newInteger(5));
 
         // Constant: has a variable, but it is assigned a value
-        assertTrue(SolverUtils.isConstant(expr2));
+        assertTrue(ExprUtils.isConstant(expr2));
 
         final NodeVariable y = new NodeVariable(new Variable("y", DataType.INTEGER));
         final Node expr3 = new NodeOperation(
@@ -339,7 +339,7 @@ public final class SolverUtilsTestCase
         );
 
         // Constant: has a variable, but it is bound to a constant value
-        assertTrue(SolverUtils.isConstant(expr3));
+        assertTrue(ExprUtils.isConstant(expr3));
 
         final Node expr4 = new NodeOperation(
             StandardOperation.PLUS,
@@ -362,6 +362,6 @@ public final class SolverUtilsTestCase
 
         // Non-constant: has a variable, but it is bound to a constant value 
         //in all scopes it is used.
-        assertFalse(SolverUtils.isConstant(expr4));
+        assertFalse(ExprUtils.isConstant(expr4));
     }
 }
