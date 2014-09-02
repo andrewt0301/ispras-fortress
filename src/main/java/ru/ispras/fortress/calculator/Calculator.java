@@ -68,6 +68,13 @@ public final class Calculator
         final OperationGroup<StandardOperation> standardOperations =
             new OperationGroup<StandardOperation>();
 
+        // Register operation for Bool values. 
+        standardOperations.registerOperations
+        (
+            StandardOperationsBool.dataTypeId(),
+            StandardOperationsBool.operations()
+        );
+
         // Register operation for Int values. 
         standardOperations.registerOperations
         (
