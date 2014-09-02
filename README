@@ -10,8 +10,8 @@
   'src/main/java'
   'src/test/java'
 
- The package structure of unit tests replicated the package structure of
- production code. I.e. unit test are located in the same packages as the classes
+ The package structure of unit tests replicates the package structure of
+ production code. I.e. unit tests are located in the same packages as the classes
  they are intended to test.
 
 ----------------------------------------------------------------
