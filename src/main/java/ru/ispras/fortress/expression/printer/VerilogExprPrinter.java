@@ -38,7 +38,7 @@ import ru.ispras.fortress.expression.StandardOperation;
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
 
-final class VerilogStylePrinter implements ExprTreePrinter
+final class VerilogExprPrinter implements ExprTreePrinter
 {
     final class ExprTreeVisitor extends ExprTreeVisitorDefault
     {

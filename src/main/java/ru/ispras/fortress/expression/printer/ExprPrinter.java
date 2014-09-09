@@ -32,17 +32,17 @@ import ru.ispras.fortress.expression.Node;
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
 
-public enum ExprTreePrinterId implements ExprTreePrinter
+public enum ExprPrinter implements ExprTreePrinter
 {
     /** The Verilog-style expression tree printer. */
 
-    VERILOG(new VerilogStylePrinter());
+    VERILOG(new VerilogExprPrinter());
 
     /** The implementation of the expression tree printer. */
 
     private ExprTreePrinter printer;
 
-    private ExprTreePrinterId(final ExprTreePrinter printer)
+    private ExprPrinter(final ExprTreePrinter printer)
     {
         if (printer == null)
             throw new NullPointerException();
