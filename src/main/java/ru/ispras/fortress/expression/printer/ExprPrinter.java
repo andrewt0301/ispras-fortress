@@ -34,6 +34,10 @@ import ru.ispras.fortress.expression.Node;
 
 public enum ExprPrinter implements ExprTreePrinter
 {
+    /** The VHDL-style expression tree printer. */
+
+    VHDL(new VhdlExprPrinter()),
+
     /** The Verilog-style expression tree printer. */
 
     VERILOG(new VerilogExprPrinter());
@@ -48,6 +52,21 @@ public enum ExprPrinter implements ExprTreePrinter
             throw new NullPointerException();
 
         this.printer = printer;
+    }
+
+    /**
+     * Returns an array of expression tree printer names.
+     *
+     * @return printer names
+     */
+    public static String[] names() {
+        ExprPrinter[] printers = ExprPrinter.values();
+        String[] names = new String[printers.length];
+
+        for (int i = 0; i < printers.length; i++) {
+            names[i] = printers[i].name();
+        }
+        return names;
     }
 
     @Override
