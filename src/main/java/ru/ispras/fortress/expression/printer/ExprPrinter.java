@@ -69,6 +69,26 @@ public enum ExprPrinter implements ExprTreePrinter
         return names;
     }
 
+    /**
+    * Returns expression printer with the specified name.
+     *
+    * @param name printer name
+    * @return {@link ru.ispras.fortress.expression.printer.ExprTreePrinter}
+     * expression printer object or <code>null</code> if there is no printer
+     * with such name
+    */
+    public static ExprTreePrinter getExprPrinter(String name) {
+
+        ExprPrinter[] values = ExprPrinter.values();
+
+        for (ExprPrinter value : values) {
+            if (value.name().equalsIgnoreCase(name)) {
+                return value;
+            }
+        }
+        return null;
+    }
+
     @Override
     public String toString(final Node node)
     {
