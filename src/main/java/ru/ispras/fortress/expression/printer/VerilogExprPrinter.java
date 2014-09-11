@@ -41,44 +41,50 @@ final class VerilogExprPrinter extends MapBasedPrinter
 
     public VerilogExprPrinter()
     {
-        addMapping(StandardOperation.MINUS,     "-",   Type.PREFIX);
-        addMapping(StandardOperation.PLUS,      "+",   Type.PREFIX);
-        addMapping(StandardOperation.NOT,       "!",   Type.PREFIX);
-        addMapping(StandardOperation.BVNOT,     "~",   Type.PREFIX);
-        addMapping(StandardOperation.BVANDR,    "&",   Type.PREFIX);
-        addMapping(StandardOperation.BVNANDR,   "~&",  Type.PREFIX);
-        addMapping(StandardOperation.BVORR,     "|",   Type.PREFIX);
-        addMapping(StandardOperation.BVNORR,    "~|",  Type.PREFIX);
-        addMapping(StandardOperation.BVXORR,    "^",   Type.PREFIX);
-        addMapping(StandardOperation.BVXNORR,   "~^",  Type.PREFIX);
-        addMapping(StandardOperation.POWER,     "**",  Type.INFIX);
-        addMapping(StandardOperation.MUL,       "*",   Type.INFIX);
-        addMapping(StandardOperation.DIV,       "/",   Type.INFIX);
-        addMapping(StandardOperation.MOD,       "%",   Type.INFIX);
-        addMapping(StandardOperation.ADD,       "+",   Type.INFIX);
-        addMapping(StandardOperation.SUB,       "-",   Type.INFIX);
-        addMapping(StandardOperation.BVLSHR,    ">>",  Type.INFIX);
-        addMapping(StandardOperation.BVLSHL,    "<<",  Type.INFIX);
-        addMapping(StandardOperation.BVASHR,    ">>>", Type.INFIX);
-        addMapping(StandardOperation.BVASHL,    "<<<", Type.INFIX);
-        addMapping(StandardOperation.LESS,      "<",   Type.INFIX);
-        addMapping(StandardOperation.LESSEQ,    "<=",  Type.INFIX);
-        addMapping(StandardOperation.GREATER,   ">",   Type.INFIX);
-        addMapping(StandardOperation.GREATEREQ, ">=",  Type.INFIX);
-        addMapping(StandardOperation.EQ,        "==",  Type.INFIX);
-        addMapping(StandardOperation.NOTEQ,     "!=",  Type.INFIX);
-        addMapping(StandardOperation.EQCASE,    "===", Type.INFIX);
-        addMapping(StandardOperation.NOTEQCASE, "!==", Type.INFIX);
-        addMapping(StandardOperation.BVAND,     "&",   Type.INFIX);
-        addMapping(StandardOperation.BVNAND,    "~&",  Type.INFIX);
-        addMapping(StandardOperation.BVXOR,     "^",   Type.INFIX);
-        addMapping(StandardOperation.BVXNOR,    "~^",  Type.INFIX);
-        addMapping(StandardOperation.BVOR,      "|",   Type.INFIX);
-        addMapping(StandardOperation.BVNOR,     "~|",  Type.INFIX);
-        addMapping(StandardOperation.AND,       "&&",  Type.INFIX);
-        addMapping(StandardOperation.OR,        "||",  Type.INFIX);
+        addMapping(StandardOperation.MINUS,     "-",     Type.PREFIX);
+        addMapping(StandardOperation.PLUS,      "+",     Type.PREFIX);
+        addMapping(StandardOperation.NOT,       "!",     Type.PREFIX);
+        addMapping(StandardOperation.BVNOT,     "~",     Type.PREFIX);
+        addMapping(StandardOperation.BVANDR,    "&",     Type.PREFIX);
+        addMapping(StandardOperation.BVNANDR,   "~&",    Type.PREFIX);
+        addMapping(StandardOperation.BVORR,     "|",     Type.PREFIX);
+        addMapping(StandardOperation.BVNORR,    "~|",    Type.PREFIX);
+        addMapping(StandardOperation.BVXORR,    "^",     Type.PREFIX);
+        addMapping(StandardOperation.BVXNORR,   "~^",    Type.PREFIX);
+        addMapping(StandardOperation.POWER,     "**",    Type.INFIX);
+        addMapping(StandardOperation.MUL,       "*",     Type.INFIX);
+        addMapping(StandardOperation.DIV,       "/",     Type.INFIX);
+        addMapping(StandardOperation.MOD,       "%",     Type.INFIX);
+        addMapping(StandardOperation.ADD,       "+",     Type.INFIX);
+        addMapping(StandardOperation.SUB,       "-",     Type.INFIX);
+        addMapping(StandardOperation.BVLSHR,    ">>",    Type.INFIX);
+        addMapping(StandardOperation.BVLSHL,    "<<",    Type.INFIX);
+        addMapping(StandardOperation.BVASHR,    ">>>",   Type.INFIX);
+        addMapping(StandardOperation.BVASHL,    "<<<",   Type.INFIX);
+        addMapping(StandardOperation.LESS,      "<",     Type.INFIX);
+        addMapping(StandardOperation.LESSEQ,    "<=",    Type.INFIX);
+        addMapping(StandardOperation.GREATER,   ">",     Type.INFIX);
+        addMapping(StandardOperation.GREATEREQ, ">=",    Type.INFIX);
+        addMapping(StandardOperation.EQ,        "==",    Type.INFIX);
+        addMapping(StandardOperation.NOTEQ,     "!=",    Type.INFIX);
+        addMapping(StandardOperation.EQCASE,    "===",   Type.INFIX);
+        addMapping(StandardOperation.NOTEQCASE, "!==",   Type.INFIX);
+        addMapping(StandardOperation.BVAND,     "&",     Type.INFIX);
+        addMapping(StandardOperation.BVNAND,    "~&",    Type.INFIX);
+        addMapping(StandardOperation.BVXOR,     "^",     Type.INFIX);
+        addMapping(StandardOperation.BVXNOR,    "~^",    Type.INFIX);
+        addMapping(StandardOperation.BVOR,      "|",     Type.INFIX);
+        addMapping(StandardOperation.BVNOR,     "~|",    Type.INFIX);
+        addMapping(StandardOperation.AND,       "&&",    Type.INFIX);
+        addMapping(StandardOperation.OR,        "||",    Type.INFIX);
         addMapping(StandardOperation.BVCONCAT,  "{", ", ", "}");
         addMapping(StandardOperation.BVREPEAT,  "{", "{", "}}");
         addMapping(StandardOperation.ITE,       new String[] { "?", ":" });
+
+        // Unsupported in Verilog.
+        addMapping(StandardOperation.BVROL,     "BVROL", Type.INFIX);
+        addMapping(StandardOperation.BVROR,     "BVROR", Type.INFIX);
+        addMapping(StandardOperation.MIN,       "MIN(", ", ", ")");
+        addMapping(StandardOperation.MAX,       "MAX(", ", ", ")");
     }
 }
