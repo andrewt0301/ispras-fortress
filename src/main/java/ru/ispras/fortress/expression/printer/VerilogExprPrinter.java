@@ -41,6 +41,7 @@ final class VerilogExprPrinter extends MapBasedPrinter
 
     public VerilogExprPrinter()
     {
+        // Supported operations.
         addMapping(StandardOperation.MINUS,     "-",     Type.PREFIX);
         addMapping(StandardOperation.PLUS,      "+",     Type.PREFIX);
         addMapping(StandardOperation.NOT,       "!",     Type.PREFIX);
@@ -53,18 +54,30 @@ final class VerilogExprPrinter extends MapBasedPrinter
         addMapping(StandardOperation.BVXNORR,   "~^",    Type.PREFIX);
         addMapping(StandardOperation.POWER,     "**",    Type.INFIX);
         addMapping(StandardOperation.MUL,       "*",     Type.INFIX);
+        addMapping(StandardOperation.BVMUL,     "*",     Type.INFIX); // BVMUL = MUL
         addMapping(StandardOperation.DIV,       "/",     Type.INFIX);
         addMapping(StandardOperation.MOD,       "%",     Type.INFIX);
+        addMapping(StandardOperation.BVSMOD,    "%",     Type.INFIX); // BVSMOD = MOD
         addMapping(StandardOperation.ADD,       "+",     Type.INFIX);
+        addMapping(StandardOperation.BVADD,     "+",     Type.INFIX); // BVADD = ADD
         addMapping(StandardOperation.SUB,       "-",     Type.INFIX);
+        addMapping(StandardOperation.BVSUB,     "-",     Type.INFIX); // BVSUB = SUB
         addMapping(StandardOperation.BVLSHR,    ">>",    Type.INFIX);
         addMapping(StandardOperation.BVLSHL,    "<<",    Type.INFIX);
         addMapping(StandardOperation.BVASHR,    ">>>",   Type.INFIX);
         addMapping(StandardOperation.BVASHL,    "<<<",   Type.INFIX);
         addMapping(StandardOperation.LESS,      "<",     Type.INFIX);
+        addMapping(StandardOperation.BVULT,     "<",     Type.INFIX); // BVULT = LESS
+        addMapping(StandardOperation.BVSLT,     "<",     Type.INFIX); // BVSLT = LESS
         addMapping(StandardOperation.LESSEQ,    "<=",    Type.INFIX);
+        addMapping(StandardOperation.BVULE,     "<=",    Type.INFIX); // BVULE = LESSEQ
+        addMapping(StandardOperation.BVSLE,     "<=",    Type.INFIX); // BVSLE = LESSEQ
         addMapping(StandardOperation.GREATER,   ">",     Type.INFIX);
+        addMapping(StandardOperation.BVUGT,     ">",     Type.INFIX); // BVUGT = GREATER
+        addMapping(StandardOperation.BVSGT,     ">",     Type.INFIX); // BVSGT = GREATER
         addMapping(StandardOperation.GREATEREQ, ">=",    Type.INFIX);
+        addMapping(StandardOperation.BVUGE,     ">=",    Type.INFIX); // BVUGE = GREATEREQ
+        addMapping(StandardOperation.BVSGE,     ">=",    Type.INFIX); // BVSGE = GREATEREQ
         addMapping(StandardOperation.EQ,        "==",    Type.INFIX);
         addMapping(StandardOperation.NOTEQ,     "!=",    Type.INFIX);
         addMapping(StandardOperation.EQCASE,    "===",   Type.INFIX);
@@ -80,11 +93,21 @@ final class VerilogExprPrinter extends MapBasedPrinter
         addMapping(StandardOperation.BVCONCAT,  "{", ", ", "}");
         addMapping(StandardOperation.BVREPEAT,  "{", "{", "}}");
         addMapping(StandardOperation.ITE,       new String[] { "?", ":" });
+        addMapping(StandardOperation.BVEXTRACT, new String[] { "[", ":", "]" });
 
-        // Unsupported in Verilog.
-        addMapping(StandardOperation.BVROL,     "BVROL", Type.INFIX);
-        addMapping(StandardOperation.BVROR,     "BVROR", Type.INFIX);
+        // Unsupported operations.
+        addMapping(StandardOperation.BVROL,     "BVROL(", ", ", ")");
+        addMapping(StandardOperation.BVROR,     "BVROR(", ", ", ")");
+        addMapping(StandardOperation.BVUREM,    "BVUREM(", ", ", ")");
+        addMapping(StandardOperation.BVSREM,    "BVSREM(", ", ", ")");
+        addMapping(StandardOperation.BVZEROEXT, "BVZEROEXT(", ", ", ")");
+        addMapping(StandardOperation.BVSIGNEXT, "BVSIGNEXT(", ", ", ")");
+        addMapping(StandardOperation.REM,       "REM(", ", ", ")");
+        addMapping(StandardOperation.ABS,       "ABS(", ", ", ")");
         addMapping(StandardOperation.MIN,       "MIN(", ", ", ")");
         addMapping(StandardOperation.MAX,       "MAX(", ", ", ")");
+        addMapping(StandardOperation.IMPL,      "IMPL(", ", ", ")");
+        addMapping(StandardOperation.SELECT,    "SELECT(", ", ", ")");
+        addMapping(StandardOperation.STORE,     "STORE(", ", ", ")");
     }
 }
