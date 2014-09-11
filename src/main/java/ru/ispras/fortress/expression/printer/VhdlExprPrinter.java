@@ -1,240 +1,76 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru), UniTESK Lab (http://www.unitesk.com)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * Copyright (c) 2014 ISPRAS (www.ispras.ru)
+ * 
+ * Institute for System Programming of Russian Academy of Sciences
+ * 
+ * 25 Alexander Solzhenitsyn st. Moscow 109004 Russia
+ * 
+ * All rights reserved.
+ * 
+ * VhdlStylePrinter.java, Sep 9, 2014 13:47:21 PM Sergey Smolov
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */
+
 package ru.ispras.fortress.expression.printer;
 
-import ru.ispras.fortress.expression.ExprTreeVisitorDefault;
-import ru.ispras.fortress.expression.ExprTreeWalker;
-import ru.ispras.fortress.expression.Node;
-import ru.ispras.fortress.expression.NodeOperation;
-import ru.ispras.fortress.expression.NodeValue;
-import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
+import ru.ispras.fortress.expression.printer.OperationDescription.Type;
 
 /**
- * This class implements a VHDL-style expression tree printer.
+ * This class implements a VHDL-style expression printer.
  *
  * @author <a href="mailto:smolov@ispras.ru">Sergey Smolov</a>
  */
-final class VhdlExprPrinter implements ExprTreePrinter {
-  final class ExprTreeVisitor extends ExprTreeVisitorDefault
-  {
-    private StringBuffer buffer = new StringBuffer();
 
-    @Override
-    public void onOperationBegin(final NodeOperation expr) { buffer.append("("); }
-
-    @Override
-    public void onOperationEnd(final NodeOperation expr) { buffer.append(")"); }
-
-    @Override
-    public void onOperandBegin(final NodeOperation expr, final Node operand, int index)
-    {
-      final Enum<?> op = expr.getOperationId();
-
-      // Unary operations and concatenations.
-      if (index == 0)
-      {
-        if (op == StandardOperation.MINUS)
-        {
-          buffer.append("-");
-        }
-        else if (op == StandardOperation.PLUS)
-        {
-          buffer.append("+");
-        }
-        else if (op == StandardOperation.NOT)
-        {
-          buffer.append("NOT");
-        }
-        else if (op == StandardOperation.BVNOT)
-        {
-          buffer.append("not");
-        }
-        else if (op == StandardOperation.BVCONCAT)
-        {
-          buffer.append("&");
-        }
-      }
-      // Binary and ternary operations.
-      else if (index == 1)
-      {
-        buffer.append(" ");
-
-        if (op == StandardOperation.POWER)
-        {
-          buffer.append("**");
-        }
-        else if (op == StandardOperation.MUL)
-        {
-          buffer.append("*");
-        }
-        else if (op == StandardOperation.DIV)
-        {
-          buffer.append("/");
-        }
-        else if (op == StandardOperation.MOD)
-        {
-          buffer.append("mod");
-        }
-        else if (op == StandardOperation.ADD)
-        {
-          buffer.append("+");
-        }
-        else if (op == StandardOperation.SUB)
-        {
-          buffer.append("-");
-        }
-        else if (op == StandardOperation.BVLSHR)
-        {
-          buffer.append("SRL");
-        }
-        else if (op == StandardOperation.BVLSHL)
-        {
-          buffer.append("SLL");
-        }
-        else if (op == StandardOperation.BVASHR)
-        {
-          buffer.append("SRA");
-        }
-        else if (op == StandardOperation.BVASHL)
-        {
-          buffer.append("SLA");
-        }
-        else if (op == StandardOperation.LESS)
-        {
-          buffer.append("<");
-        }
-        else if (op == StandardOperation.LESSEQ)
-        {
-          buffer.append("<=");
-        }
-        else if (op == StandardOperation.GREATER)
-        {
-          buffer.append(">");
-        }
-        else if (op == StandardOperation.GREATEREQ)
-        {
-          buffer.append(">=");
-        }
-        else if (op == StandardOperation.EQ)
-        {
-          buffer.append("=");
-        }
-        else if (op == StandardOperation.NOTEQ)
-        {
-          buffer.append("/=");
-        }
-        else if (op == StandardOperation.BVAND)
-        {
-          buffer.append("AND");
-        }
-        else if (op == StandardOperation.BVXOR)
-        {
-          buffer.append("XOR");
-        }
-        else if (op == StandardOperation.BVOR)
-        {
-          buffer.append("OR");
-        }
-        else if (op == StandardOperation.AND)
-        {
-          buffer.append("AND");
-        }
-        else if (op == StandardOperation.OR)
-        {
-          buffer.append("OR");
-        }
-        else if (op == StandardOperation.ITE)
-        {
-          buffer.append("?");
-        }
-        else if (op == StandardOperation.BVROL) {
-          buffer.append("ROL");
-        }
-        else if (op == StandardOperation.BVROR) {
-          buffer.append("ROR");
-        }
-
-        buffer.append(" ");
-      }
-      // Ternary operations.
-      else if (index == 2)
-      {
-        buffer.append(" ");
-        {
-          if (op == StandardOperation.ITE)
-          {
-            buffer.append(":");
-          }
-        }
-        buffer.append(" ");
-      }
-    }
-
-    @Override
-    public void onOperandEnd(final NodeOperation expr, final Node operand, int index)
-    {
-      final Enum<?> op = expr.getOperationId();
-
-      // Repeat and concatenation.
-      if (index == 1)
-      {
-        if (op == StandardOperation.BVCONCAT)
-        {
-          buffer.append("}");
-        }
-        else if (op == StandardOperation.BVREPEAT)
-        {
-          buffer.append("}}");
-        }
-      }
-    }
-
-    @Override
-    public void onValue(final NodeValue value)
-    {
-      buffer.append(value.toString());
-    }
-
-    @Override
-    public void onVariable(final NodeVariable variable)
-    {
-      buffer.append(variable.getName());
-    }
-
+final class VhdlExprPrinter extends MapBasedPrinter
+{
     /**
-     * Returns the string representation of the expression tree.
-     *
-     * @return the string representation of the expression tree.
+     * Constructs a VHDL-style expression printer.
      */
 
-    public String toString()
+    public VhdlExprPrinter()
     {
-      return buffer.toString();
+        addMapping(StandardOperation.MINUS,     "-",   Type.PREFIX);
+        addMapping(StandardOperation.PLUS,      "+",   Type.PREFIX);
+        addMapping(StandardOperation.NOT,       "not", Type.PREFIX);
+        addMapping(StandardOperation.BVNOT,     "not", Type.PREFIX);
+        addMapping(StandardOperation.POWER,     "**",  Type.INFIX);
+        addMapping(StandardOperation.MUL,       "*",   Type.INFIX);
+        addMapping(StandardOperation.DIV,       "/",   Type.INFIX);
+        addMapping(StandardOperation.MOD,       "mod", Type.INFIX);
+        addMapping(StandardOperation.ADD,       "+",   Type.INFIX);
+        addMapping(StandardOperation.SUB,       "-",   Type.INFIX);
+        addMapping(StandardOperation.BVLSHR,    "srl", Type.INFIX);
+        addMapping(StandardOperation.BVLSHL,    "sll", Type.INFIX);
+        addMapping(StandardOperation.BVASHR,    "sra", Type.INFIX);
+        addMapping(StandardOperation.BVASHL,    "sla", Type.INFIX);
+        addMapping(StandardOperation.BVROL,     "rol", Type.INFIX);
+        addMapping(StandardOperation.BVROR,     "ror", Type.INFIX);
+        addMapping(StandardOperation.LESS,      "<",   Type.INFIX);
+        addMapping(StandardOperation.LESSEQ,    "<=",  Type.INFIX);
+        addMapping(StandardOperation.GREATER,   ">",   Type.INFIX);
+        addMapping(StandardOperation.GREATEREQ, ">=",  Type.INFIX);
+        addMapping(StandardOperation.EQ,        "=",   Type.INFIX);
+        addMapping(StandardOperation.NOTEQ,     "/=",  Type.INFIX);
+        addMapping(StandardOperation.EQCASE,    "=",   Type.INFIX);
+        addMapping(StandardOperation.NOTEQCASE, "/=",  Type.INFIX);
+        addMapping(StandardOperation.BVAND,     "and", Type.INFIX);
+        addMapping(StandardOperation.BVXOR,     "xor", Type.INFIX);
+        addMapping(StandardOperation.BVOR,      "or",  Type.INFIX);
+        addMapping(StandardOperation.AND,       "and", Type.INFIX);
+        addMapping(StandardOperation.OR,        "or",  Type.INFIX);
+        addMapping(StandardOperation.BVCONCAT,  "&",   Type.INFIX);
+        addMapping(StandardOperation.ITE,       new String[] { "?", ":" });
     }
-  }
-
-  @Override
-  public String toString(final Node node)
-  {
-    final ExprTreeVisitor visitor = new ExprTreeVisitor();
-    final ExprTreeWalker walker = new ExprTreeWalker(visitor);
-
-    walker.visit(node);
-
-    return visitor.toString();
-  }
 }

@@ -24,307 +24,61 @@
 
 package ru.ispras.fortress.expression.printer;
 
-import ru.ispras.fortress.expression.ExprTreeVisitorDefault;
-import ru.ispras.fortress.expression.ExprTreeWalker;
-import ru.ispras.fortress.expression.Node;
-import ru.ispras.fortress.expression.NodeOperation;
-import ru.ispras.fortress.expression.NodeValue;
-import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
+import ru.ispras.fortress.expression.printer.OperationDescription.Type;
 
 /**
- * This class implements a Verilog-style expression tree printer.
+ * This class implements a Verilog-style expression printer.
  * 
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
 
-final class VerilogExprPrinter implements ExprTreePrinter
+final class VerilogExprPrinter extends MapBasedPrinter
 {
-    final class ExprTreeVisitor extends ExprTreeVisitorDefault
+    /**
+     * Constructs a Verilog-style expression printer.
+     */
+
+    public VerilogExprPrinter()
     {
-        private StringBuffer buffer = new StringBuffer();
-
-        @Override
-        public void onOperationBegin(final NodeOperation expr)
-        {
-            final Enum<?> op = expr.getOperationId();
-            
-            // Brackets are not required for primary expressions.
-            if (op != StandardOperation.BVCONCAT
-             && op != StandardOperation.BVREPEAT)
-            {
-                buffer.append("(");
-            }
-        }
-
-        @Override
-        public void onOperationEnd(final NodeOperation expr)
-        {
-            final Enum<?> op = expr.getOperationId();
-
-            // Brackets are not required for primary expressions.
-            if (op != StandardOperation.BVCONCAT
-             && op != StandardOperation.BVREPEAT)
-            {
-                buffer.append(")");
-            }
-        }
-
-        @Override
-        public void onOperandBegin(final NodeOperation expr, final Node operand, int index)
-        {
-            final Enum<?> op = expr.getOperationId();
-
-            // Unary operations and concatenations.
-            if (index == 0)
-            {
-                if (op == StandardOperation.MINUS)
-                {
-                    buffer.append("-");
-                }
-                else if (op == StandardOperation.PLUS)
-                {
-                    buffer.append("+");
-                }
-                else if (op == StandardOperation.NOT)
-                {
-                    buffer.append("!");
-                }
-                else if (op == StandardOperation.BVNOT)
-                {
-                    buffer.append("~");
-                }
-                else if (op == StandardOperation.BVANDR)
-                {
-                    buffer.append("&");
-                }
-                else if (op == StandardOperation.BVNANDR)
-                {
-                    buffer.append("~&");
-                }
-                else if (op == StandardOperation.BVORR)
-                {
-                    buffer.append("|");
-                }
-                else if (op == StandardOperation.BVNORR)
-                {
-                    buffer.append("~|");
-                }
-                else if (op == StandardOperation.BVXORR)
-                {
-                    buffer.append("^");
-                }
-                else if (op == StandardOperation.BVXNORR)
-                {
-                    buffer.append("~^");
-                }
-                else if (op == StandardOperation.BVCONCAT)
-                {
-                    buffer.append("{");
-                }
-                else if (op == StandardOperation.BVREPEAT)
-                {
-                    buffer.append("{");
-                }
-            }
-            // Binary and ternary operations.
-            else if (index == 1)
-            {
-                final boolean space = (op != StandardOperation.BVCONCAT)
-                                   && (op != StandardOperation.BVREPEAT);
-
-                if (space)
-                {
-                    buffer.append(" ");
-                }
-
-                if (op == StandardOperation.POWER)
-                {
-                    buffer.append("**");
-                }
-                else if (op == StandardOperation.MUL)
-                {
-                    buffer.append("*");
-                }
-                else if (op == StandardOperation.DIV)
-                {
-                    buffer.append("/");
-                }
-                else if (op == StandardOperation.MOD)
-                {
-                    buffer.append("%");
-                }
-                else if (op == StandardOperation.ADD)
-                {
-                    buffer.append("+");
-                }
-                else if (op == StandardOperation.SUB)
-                {
-                    buffer.append("-");
-                }
-                else if (op == StandardOperation.BVLSHR)
-                {
-                    buffer.append(">>");
-                }
-                else if (op == StandardOperation.BVLSHL)
-                {
-                    buffer.append("<<");
-                }
-                else if (op == StandardOperation.BVASHR)
-                {
-                    buffer.append(">>>");
-                }
-                else if (op == StandardOperation.BVASHL)
-                {
-                    buffer.append("<<<");
-                }
-                else if (op == StandardOperation.LESS)
-                {
-                    buffer.append("<");
-                }
-                else if (op == StandardOperation.LESSEQ)
-                {
-                    buffer.append("<=");
-                }
-                else if (op == StandardOperation.GREATER)
-                {
-                    buffer.append(">");
-                }
-                else if (op == StandardOperation.GREATEREQ)
-                {
-                    buffer.append(">=");
-                }
-                else if (op == StandardOperation.EQ)
-                {
-                    buffer.append("==");
-                }
-                else if (op == StandardOperation.NOTEQ)
-                {
-                    buffer.append("!=");
-                }
-                else if (op == StandardOperation.EQCASE)
-                {
-                    buffer.append("===");
-                }
-                else if (op == StandardOperation.NOTEQCASE)
-                {
-                    buffer.append("!==");
-                }
-                else if (op == StandardOperation.BVAND)
-                {
-                    buffer.append("&");
-                }
-                else if (op == StandardOperation.BVNAND)
-                {
-                    buffer.append("~&");
-                }
-                else if (op == StandardOperation.BVXOR)
-                {
-                    buffer.append("^");
-                }
-                else if (op == StandardOperation.BVXNOR)
-                {
-                    buffer.append("~^");
-                }
-                else if (op == StandardOperation.BVOR)
-                {
-                    buffer.append("|");
-                }
-                else if (op == StandardOperation.BVNOR)
-                {
-                    buffer.append("~|");
-                }
-                else if (op == StandardOperation.AND)
-                {
-                    buffer.append("&&");
-                }
-                else if (op == StandardOperation.OR)
-                {
-                    buffer.append("||");
-                }
-                else if (op == StandardOperation.ITE)
-                {
-                    buffer.append("?");
-                }
-                else if (op == StandardOperation.BVCONCAT)
-                {
-                    buffer.append(", ");
-                }
-                else if (op == StandardOperation.BVREPEAT)
-                {
-                    buffer.append("{");
-                }
-
-                if (space)
-                {
-                    buffer.append(" ");
-                }
-            }
-            // Ternary operations.
-            else if (index == 2)
-            {
-                buffer.append(" ");
-                {
-                    if (op == StandardOperation.ITE)
-                    {
-                        buffer.append(":");
-                    }
-                }
-                buffer.append(" ");
-            }
-        }
-
-        @Override
-        public void onOperandEnd(final NodeOperation expr, final Node operand, int index)
-        {
-            final Enum<?> op = expr.getOperationId();
-
-            // Repeat and concatenation.
-            if (index == 1)
-            {
-                if (op == StandardOperation.BVCONCAT)
-                {
-                    buffer.append("}");
-                }
-                else if (op == StandardOperation.BVREPEAT)
-                {
-                    buffer.append("}}");
-                }
-            }
-        }
-
-        @Override
-        public void onValue(final NodeValue value)
-        {
-            buffer.append(value.toString());
-        }
-
-        @Override
-        public void onVariable(final NodeVariable variable)
-        {
-            buffer.append(variable.getName());
-        }
-
-        /**
-         * Returns the string representation of the expression tree.
-         * 
-         * @return the string representation of the expression tree.
-         */
-
-        public String toString()
-        {
-            return buffer.toString();
-        }
-    }
-
-    @Override
-    public String toString(final Node node)
-    {
-        final ExprTreeVisitor visitor = new ExprTreeVisitor();
-        final ExprTreeWalker walker = new ExprTreeWalker(visitor);
-
-        walker.visit(node);
-
-        return visitor.toString();
+        addMapping(StandardOperation.MINUS,     "-",   Type.PREFIX);
+        addMapping(StandardOperation.PLUS,      "+",   Type.PREFIX);
+        addMapping(StandardOperation.NOT,       "!",   Type.PREFIX);
+        addMapping(StandardOperation.BVNOT,     "~",   Type.PREFIX);
+        addMapping(StandardOperation.BVANDR,    "&",   Type.PREFIX);
+        addMapping(StandardOperation.BVNANDR,   "~&",  Type.PREFIX);
+        addMapping(StandardOperation.BVORR,     "|",   Type.PREFIX);
+        addMapping(StandardOperation.BVNORR,    "~|",  Type.PREFIX);
+        addMapping(StandardOperation.BVXORR,    "^",   Type.PREFIX);
+        addMapping(StandardOperation.BVXNORR,   "~^",  Type.PREFIX);
+        addMapping(StandardOperation.POWER,     "**",  Type.INFIX);
+        addMapping(StandardOperation.MUL,       "*",   Type.INFIX);
+        addMapping(StandardOperation.DIV,       "/",   Type.INFIX);
+        addMapping(StandardOperation.MOD,       "%",   Type.INFIX);
+        addMapping(StandardOperation.ADD,       "+",   Type.INFIX);
+        addMapping(StandardOperation.SUB,       "-",   Type.INFIX);
+        addMapping(StandardOperation.BVLSHR,    ">>",  Type.INFIX);
+        addMapping(StandardOperation.BVLSHL,    "<<",  Type.INFIX);
+        addMapping(StandardOperation.BVASHR,    ">>>", Type.INFIX);
+        addMapping(StandardOperation.BVASHL,    "<<<", Type.INFIX);
+        addMapping(StandardOperation.LESS,      "<",   Type.INFIX);
+        addMapping(StandardOperation.LESSEQ,    "<=",  Type.INFIX);
+        addMapping(StandardOperation.GREATER,   ">",   Type.INFIX);
+        addMapping(StandardOperation.GREATEREQ, ">=",  Type.INFIX);
+        addMapping(StandardOperation.EQ,        "==",  Type.INFIX);
+        addMapping(StandardOperation.NOTEQ,     "!=",  Type.INFIX);
+        addMapping(StandardOperation.EQCASE,    "===", Type.INFIX);
+        addMapping(StandardOperation.NOTEQCASE, "!==", Type.INFIX);
+        addMapping(StandardOperation.BVAND,     "&",   Type.INFIX);
+        addMapping(StandardOperation.BVNAND,    "~&",  Type.INFIX);
+        addMapping(StandardOperation.BVXOR,     "^",   Type.INFIX);
+        addMapping(StandardOperation.BVXNOR,    "~^",  Type.INFIX);
+        addMapping(StandardOperation.BVOR,      "|",   Type.INFIX);
+        addMapping(StandardOperation.BVNOR,     "~|",  Type.INFIX);
+        addMapping(StandardOperation.AND,       "&&",  Type.INFIX);
+        addMapping(StandardOperation.OR,        "||",  Type.INFIX);
+        addMapping(StandardOperation.BVCONCAT,  "{", ", ", "}");
+        addMapping(StandardOperation.BVREPEAT,  "{", "{", "}}");
+        addMapping(StandardOperation.ITE,       new String[] { "?", ":" });
     }
 }
