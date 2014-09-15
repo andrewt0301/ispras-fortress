@@ -35,10 +35,6 @@ import ru.ispras.fortress.expression.printer.OperationDescription.Type;
 
 final class VerilogExprPrinter extends MapBasedPrinter
 {
-    /**
-     * Constructs a Verilog-style expression printer.
-     */
-
     public VerilogExprPrinter()
     {
         // Supported operations.

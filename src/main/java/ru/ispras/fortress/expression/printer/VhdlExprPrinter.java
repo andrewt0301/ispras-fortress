@@ -35,10 +35,6 @@ import ru.ispras.fortress.expression.printer.OperationDescription.Type;
 
 final class VhdlExprPrinter extends MapBasedPrinter
 {
-    /**
-     * Constructs a VHDL-style expression printer.
-     */
-
     public VhdlExprPrinter()
     {
         // Supported operations.
@@ -91,7 +87,7 @@ final class VhdlExprPrinter extends MapBasedPrinter
 
         // Unsupported operations.
         addMapping(StandardOperation.BVNAND,    "BVNAND(", ", ", ")");
-        addMapping(StandardOperation.BVXNOR,    "BVZNOR(", ", ", ")");
+        addMapping(StandardOperation.BVXNOR,    "BVXNOR(", ", ", ")");
         addMapping(StandardOperation.BVANDR,    "BVANDR(", ", ", ")");
         addMapping(StandardOperation.BVNANDR,   "BVNANDR(", ", ", ")");
         addMapping(StandardOperation.BVORR,     "BVORR(", ", ", ")");
