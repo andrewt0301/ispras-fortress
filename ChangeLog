@@ -12,7 +12,7 @@
  (like Yices, Z3, CVC4, etc.)
 
 --------------------------------------------------------------------------------
- XXXX/XX/XX Fortress 0.3.2 beta (to be released)
+ 2014/09/15 Fortress 0.3.2 beta
 
  The following features have been implemented:
 
@@ -32,6 +32,7 @@
  - Class ExprUtils that provides a set of useful methods to work with
    logical expressions
  - Expression printers for Verilog and VHDL hardware description languages
+ - Support for the boolean type in the calculator
 
 --------------------------------------------------------------------------------
  2014/07/08 Fortress 0.3.1 beta
