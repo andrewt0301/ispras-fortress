@@ -30,7 +30,8 @@
  - XML format was simplified: nodes Expression and Operation were merged
    together (the new node is called Operation)
  - Class ExprUtils that provides a set of useful methods to work with
-   logical expressions  
+   logical expressions
+ - Expression printers for Verilog and VHDL hardware description languages
 
 --------------------------------------------------------------------------------
  2014/07/08 Fortress 0.3.1 beta
