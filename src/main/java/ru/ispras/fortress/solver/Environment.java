@@ -57,7 +57,7 @@ public final class Environment
         else
         {
             throw new IllegalStateException(String.format(
-               "Unsupported platform: %s.", System.getProperty("os.name")));
+               "Unsupported platform: %s.", getOSName()));
         }
     }
 
@@ -102,13 +102,23 @@ public final class Environment
     }
 
     /**
+     * Gets the name of the operating system the tool is running under.
+     * @return Operating system name.
+     */
+
+    public static String getOSName()
+    {
+        return System.getProperty(PRP_OS_NAME);
+    }
+
+    /**
      * Checks whether the tool is running in a Windows computer.
      * @return true if the tool is running in a Windows computer.
      */
 
     public static boolean isWindows()
     {
-		final String os = System.getProperty(PRP_OS_NAME).toLowerCase();
+		final String os = getOSName().toLowerCase();
 		return os.contains("win");
 	}
 
@@ -119,7 +129,7 @@ public final class Environment
 
     public static boolean isUnix()
     {
-        final String os = System.getProperty(PRP_OS_NAME).toLowerCase();
+        final String os = getOSName().toLowerCase();
         return os.contains("nix") || os.contains("nux");
     }
 
@@ -130,7 +140,7 @@ public final class Environment
 
     public static boolean isOSX()
     {
-        final String os = System.getProperty(PRP_OS_NAME).toLowerCase();
+        final String os = getOSName().toLowerCase();
         return os.contains("os x") || os.contains("mac");
     }
 }
