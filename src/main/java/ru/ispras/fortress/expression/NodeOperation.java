@@ -8,13 +8,13 @@
  * All rights reserved.
  *
  * NodeOperation.java, Dec 20, 2011 12:24:03 PM Andrei Tatarnikov
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -44,7 +44,7 @@ public final class NodeOperation extends Node
     /**
      * Creates an operation node that has a variable number of operands
      * (from 0 to infinity).
-     * 
+     *
      * @param operation Operation identifier.
      * @param operands Operands packed into an array of syntax elements.
      */
@@ -69,8 +69,8 @@ public final class NodeOperation extends Node
      * Constructor for making deep copies. The operation field is immutable
      * and, therefore, it copied by reference. The operands array is cloned
      * because it contains nodes that must be cloned to create a fully
-     * independent copy of an expression. 
-     * 
+     * independent copy of an expression.
+     *
      * @param node Node operation object to be copied.
      */
 
@@ -83,6 +83,7 @@ public final class NodeOperation extends Node
 
         for (int index = 0; index < node.operands.length; index++)
             this.operands[index] = node.operands[index].deepCopy();
+        this.dataType = node.dataType;
     }
 
     /**
@@ -97,7 +98,7 @@ public final class NodeOperation extends Node
 
     /**
      * Returns the number of operands.
-     * 
+     *
      * @return Number of operands.
      */
 
@@ -108,7 +109,7 @@ public final class NodeOperation extends Node
 
     /**
      * Returns an operand by its index.
-     * 
+     *
      * @param index Index of the operand.
      * @return An operand of the expression.
      */
@@ -123,7 +124,7 @@ public final class NodeOperation extends Node
 
     /**
      * Returns an operation identifier.
-     * 
+     *
      * @return An operation identifier.
      */
 
