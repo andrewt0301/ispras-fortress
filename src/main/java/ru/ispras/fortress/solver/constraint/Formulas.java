@@ -198,7 +198,7 @@ public final class Formulas
                     final Variable existingVariable =
                         variables.get(variable.getName());
 
-                    if (variable.getVariable() != existingVariable)
+                    if (!variable.getVariable().equals(existingVariable))
                         throw new IllegalStateException(String.format(
                             ERR_MULTIPLE_VARS, variable.getName()));
                 }
