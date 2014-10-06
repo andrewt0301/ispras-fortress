@@ -24,6 +24,7 @@
 
 package ru.ispras.fortress.calculator;
 
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -131,11 +132,14 @@ enum StandardOperationsBool implements Operation<StandardOperation>
 
     static
     {
-        operations = new EnumMap<
-            StandardOperation, Operation<StandardOperation>>(StandardOperation.class);
+        final Map<StandardOperation, Operation<StandardOperation>> map =
+            new EnumMap<StandardOperation, Operation<StandardOperation>>(
+                StandardOperation.class);
 
         for (Operation<StandardOperation> value : values())
-            operations.put(value.getOperationId(), value);
+            map.put(value.getOperationId(), value);
+
+        operations = Collections.unmodifiableMap(map);
     }
 
     public static Map<StandardOperation, Operation<StandardOperation>> operations()
