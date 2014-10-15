@@ -197,10 +197,10 @@ public final class DNF
     }
 
     /**
-     * Orthogonolizes the specified DNF, i.e. constructs an equivalent DNF 
+     * Orthogonalizes the specified DNF, i.e. constructs an equivalent DNF
      * consisting of disjoint clauses.
      *
-     * @param form the DNF to be orthogonolized.
+     * @param form the DNF to be orthogonalized.
      * @return the orthogonal DNF equivalent to the specified one.
      */
     public static NormalForm orthogonalize(final NormalForm form)
