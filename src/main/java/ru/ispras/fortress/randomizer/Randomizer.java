@@ -18,6 +18,7 @@ import java.util.List;
 
 import ru.ispras.fortress.data.types.bitvector.BitVector;
 import ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm;
+import ru.ispras.fortress.util.BitUtils;
 
 /**
  * This class is a wrapper around a random number generator. It is responsible for generating random
@@ -188,7 +189,7 @@ public final class Randomizer {
    * @param width the bit size.
    */
   public int nextIntField(int width) {
-    return next() & maskInt(width);
+    return next() & BitUtils.maskInt(width);
   }
 
   /**
@@ -199,7 +200,7 @@ public final class Randomizer {
    * @param hi the high bound of the field.
    */
   public int nextIntField(int lo, int hi) {
-    return next() & maskInt(lo, hi);
+    return next() & BitUtils.maskInt(lo, hi);
   }
 
   //------------------------------------------------------------------------------------------------
@@ -258,7 +259,7 @@ public final class Randomizer {
    * @param width the bit size.
    */
   public long nextLongField(int width) {
-    return nextLong() & maskLong(width);
+    return nextLong() & BitUtils.maskLong(width);
   }
 
   /**
@@ -269,7 +270,7 @@ public final class Randomizer {
    * @param hi the high bound of the field.
    */
   public long nextLongField(int lo, int hi) {
-    return nextLong() & maskLong(lo, hi);
+    return nextLong() & BitUtils.maskLong(lo, hi);
   }
 
   //------------------------------------------------------------------------------------------------
@@ -366,66 +367,5 @@ public final class Randomizer {
         return nextByte();
       }
     });
-  }
-  
-
-  //------------------------------------------------------------------------------------------------
-  // Mask Methods
-  //------------------------------------------------------------------------------------------------
-
-  /**
-   * Returns a bit mask of the given width.
-   * 
-   * @param width Mask width.
-   * @return Integer bit mask.
-   */
-  private int maskInt(int width) {
-    return width >= Integer.SIZE ? -1 : (1 << width) - 1;
-  }
-
-  /**
-   * Returns a bit mask for the given range.
-   * 
-   * @param lo Lower bound.
-   * @param hi Higher bound.
-   * @return Integer bit mask.
-   */
-  private int maskInt(int lo, int hi) {
-    int x = lo < hi ? lo : hi;
-    int y = lo < hi ? hi : lo;
-
-    if (y >= Integer.SIZE) {
-      y = Integer.SIZE - 1;
-    }
-
-    return maskInt((y - x) + 1) << x;
-  }
-
-  /**
-   * Returns a bit mask of the given width.
-   * 
-   * @param width Mask width.
-   * @return Long bit mask.
-   */
-  private long maskLong(int width) {
-    return width >= Long.SIZE ? -1 : (1 << width) - 1;
-  }
-
-  /**
-   * Returns a bit mask for the given range.
-   * 
-   * @param lo Lower bound.
-   * @param hi Higher bound.
-   * @return Long bit mask.
-   */
-  private long maskLong(int lo, int hi) {
-    int x = lo < hi ? lo : hi;
-    int y = lo < hi ? hi : lo;
-
-    if (y >= Long.SIZE) {
-      y = Long.SIZE - 1;
-    }
-
-    return maskLong((y - x) + 1) << x;
   }
 }
