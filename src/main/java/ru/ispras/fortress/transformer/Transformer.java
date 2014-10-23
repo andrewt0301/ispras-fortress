@@ -24,14 +24,14 @@
 
 package ru.ispras.fortress.transformer;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
+import ru.ispras.fortress.calculator.CalculatorEngine;
 import ru.ispras.fortress.expression.Node;
+import ru.ispras.fortress.expression.NodeBinding;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeVariable;
-import ru.ispras.fortress.expression.NodeBinding;
-
 import ru.ispras.fortress.transformer.ruleset.Predicate;
 
 public final class Transformer
@@ -47,6 +47,7 @@ public final class Transformer
      * partially reduced or left unchanged. In the last case, the method returns
      * a reference to the current operation (this).
      * 
+     * @param engine Calculator engine (if <code>null</code>, the default engine to be used).
      * @param options Option flags to tune the reduction strategy.
      * @param expression Expression to be reduced.
      * @return Reduced expression (value or another operation expression
@@ -57,7 +58,7 @@ public final class Transformer
      * <code>null</code>.
      */
 
-    public static Node reduce(ReduceOptions options, Node expression)
+    public static Node reduce(CalculatorEngine engine, ReduceOptions options, Node expression)
     {
         if (null == options)
             throw new NullPointerException();
@@ -71,10 +72,10 @@ public final class Transformer
             return expression;
 
         if (expression.getKind() == Node.Kind.BINDING)
-            return reduceBinding(options, (NodeBinding) expression);
+            return reduceBinding(engine, options, (NodeBinding) expression);
 
         final OperationReducer reducer = 
-            new OperationReducer((NodeOperation) expression, options);
+            new OperationReducer(engine, (NodeOperation) expression, options);
 
         final Node result = reducer.reduce();
         if (null == result)
@@ -83,9 +84,14 @@ public final class Transformer
         return result;
     }
 
-    private static Node reduceBinding(ReduceOptions options, NodeBinding binding)
+    public static Node reduce(ReduceOptions options, Node expression)
     {
-        final Node reduced = reduce(options, binding.getExpression());
+        return reduce(null, options, expression);
+    }
+
+    private static Node reduceBinding(CalculatorEngine engine, ReduceOptions options, NodeBinding binding)
+    {
+        final Node reduced = reduce(engine, options, binding.getExpression());
         if (reduced == null || reduced == binding.getExpression())
             return binding;
 

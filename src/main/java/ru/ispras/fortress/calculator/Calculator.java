@@ -160,6 +160,31 @@ public final class Calculator
     }
 
     /**
+     * Performs calculation by applying the specified engine and operation
+     * to the operands.
+     * 
+     * @param engine Calculator engine.
+     * @param operationId Operation identifier. Identifies an operation
+     * within a group.
+     * @param operands A variable number of operands.
+     * @return Data object holding the calculated value.
+     * 
+     * @throws NullPointerException if any of the parameters equals null.
+     * @throws UnsupportedOperationException if the operation is not
+     * supported or its invariants are violated (e.g. operand types do
+     * not match).
+     */
+
+    public static Data calculate(CalculatorEngine engine, Enum<?> operationId, Data ... operands)
+    {
+        notNullCheck(engine);
+        notNullCheck(operationId);
+        notNullCheck(operands);
+
+        return engine.calculate(operationId, operands);
+    }
+
+    /**
      * Performs calculation by applying the specified operation to the
      * operands.
      * 

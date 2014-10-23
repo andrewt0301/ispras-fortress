@@ -25,13 +25,18 @@
 package ru.ispras.fortress.transformer;
 
 import ru.ispras.fortress.calculator.Calculator;
+import ru.ispras.fortress.calculator.CalculatorEngine;
 import ru.ispras.fortress.data.Data;
-import ru.ispras.fortress.expression.*;
+import ru.ispras.fortress.expression.Node;
+import ru.ispras.fortress.expression.NodeOperation;
+import ru.ispras.fortress.expression.NodeValue;
 
 final class OperationReducer
 {
     private final static String UNKNOWN_ELEMENT = 
         "Unknown syntax element kind: %s";
+
+    private final CalculatorEngine engine;
 
     private final NodeOperation operation;
     private final Node[] operands;
@@ -40,7 +45,7 @@ final class OperationReducer
     private boolean hasValueOperandsOnly;
     private boolean updatedOperands;
 
-    public OperationReducer(NodeOperation operation, ReduceOptions options)
+    public OperationReducer(CalculatorEngine engine, NodeOperation operation, ReduceOptions options)
     {
         if (null == operation)
             throw new NullPointerException();
@@ -48,6 +53,7 @@ final class OperationReducer
         if (null == options)
             throw new NullPointerException();
 
+        this.engine = engine;
         this.operation = operation;
         this.operands = copyOperands(operation);
         this.options = options;
@@ -60,7 +66,7 @@ final class OperationReducer
         if (hasValueOperandsOnly)
         {
             final NodeValue result =
-                calculate(operation.getOperationId(), operands);
+                calculate(engine, operation.getOperationId(), operands);
 
             if (null != result)
                 return result;
@@ -93,7 +99,7 @@ final class OperationReducer
                 case BINDING:
                 case OPERATION:
                     final Node reduced =
-                        Transformer.reduce(options, o);
+                        Transformer.reduce(engine, options, o);
 
                     if (reduced != o)
                     {
@@ -114,7 +120,23 @@ final class OperationReducer
         }
     }
 
-    private NodeValue calculate(Enum<?> operation, Node[] operands)
+    private boolean isSupported(CalculatorEngine engine, Enum<?> operation, Data[] operands)
+    {
+        if (engine != null) 
+            return engine.isSupported(operation, operands);
+
+        return Calculator.isSupported(operation, operands);
+    }
+
+    private Data calculateData(CalculatorEngine engine, Enum<?> operation, Data[] operands)
+    {
+        if (engine != null)
+            return engine.calculate(operation, operands);
+
+        return Calculator.calculate(operation, operands);
+    }
+
+    private NodeValue calculate(CalculatorEngine engine, Enum<?> operation, Node[] operands)
     {
         final Data[] dataOperands = new Data[operands.length];
 
@@ -124,10 +146,10 @@ final class OperationReducer
             dataOperands[index] = value.getData();
         }
 
-        if (!Calculator.isSupported(operation, dataOperands))
+        if (!isSupported(engine, operation, dataOperands))
             return null;
 
-        final Data result = Calculator.calculate(operation, dataOperands);
+        final Data result = calculateData(engine, operation, dataOperands);
         return new NodeValue(result);
     }
 
