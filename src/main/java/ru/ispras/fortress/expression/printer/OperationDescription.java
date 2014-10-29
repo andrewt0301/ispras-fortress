@@ -184,7 +184,7 @@ final class OperationDescription
 
     public String getInfix(int i)
     {
-        return infix[i];
+        return infix.length == 1 ? infix[0] : infix[i];
     }
 
     /**
