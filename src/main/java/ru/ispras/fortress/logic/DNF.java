@@ -17,8 +17,9 @@
 package ru.ispras.fortress.logic;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -47,7 +48,7 @@ public final class DNF
             if(lhs.getSign(var) != rhs.getSign(var))
                 { return true; }
         }
-        
+
         return false;
     }
 
@@ -91,7 +92,7 @@ public final class DNF
         // One of the clauses is fixed (the other one is split).
         final Clause fixed = (index == 1 ? lhs : rhs);
         final Clause split = (index == 1 ? rhs : lhs);
-        
+
         int     prev = -1;
         boolean sign = false;
 
@@ -127,7 +128,7 @@ public final class DNF
      * @return true iff the i-th clause is removed.
      */
     private static boolean replace(ArrayList<Clause> clauses,
-        HashMap<Integer, Integer> branches, int pre_i, int i, final NormalForm split)
+        Map<Integer, Integer> branches, int pre_i, int i, final NormalForm split)
     {
         // The clause should be removed (because it is equal with another one).
         if(split.isEmpty())
@@ -160,7 +161,7 @@ public final class DNF
         // The map is correspondingly updated.
         branches.put(i, branch_i);
         branches.put(clauses.size() - 1, return_i);
-        
+
         return false;
     }
     
@@ -171,7 +172,7 @@ public final class DNF
      * @param i the index of the clause.
      * @return the successive clause index.
      */
-    private static int next(final HashMap<Integer, Integer> branches, int i)
+    private static int next(final Map<Integer, Integer> branches, int i)
     {
         if(i == -1) { return 0; }
 
@@ -186,13 +187,13 @@ public final class DNF
      * @param clauses the list of clauses.
      * @return the DNF.
      */
-    private static NormalForm construct(final HashMap<Integer, Integer> branches, final ArrayList<Clause> clauses)
+    private static NormalForm construct(final Map<Integer, Integer> branches, final ArrayList<Clause> clauses)
     {
         NormalForm form = new NormalForm(NormalForm.Type.DNF);
 
         for(int i = 0; i != -1; i = next(branches, i))
             { form.add(clauses.get(i)); }
-            
+
         return form;
     }
 
@@ -210,9 +211,9 @@ public final class DNF
         if(clauses.isEmpty())
             { return new NormalForm(NormalForm.Type.DNF); }
 
-        HashMap<Integer, Integer> branches = new HashMap<Integer, Integer>(2 * clauses.size());
+        Map<Integer, Integer> branches = new LinkedHashMap<Integer, Integer>(2 * clauses.size());
         branches.put(clauses.size() - 1, -1);
-        
+
         for(int pre_i, i = next(branches, pre_i =  0); i != -1; i = next(branches, pre_i = i))
         for(int pre_j, j = next(branches, pre_j = -1); j !=  i; j = next(branches, pre_j = j))
         {
@@ -234,7 +235,7 @@ public final class DNF
                     { i = pre_i; break; }
             }
         }
-        
+
         return construct(branches, clauses);
     }
 }

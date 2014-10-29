@@ -16,8 +16,8 @@
 
 package ru.ispras.fortress.logic;
  
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
  
@@ -29,7 +29,7 @@ import java.util.Set;
 public final class Clause
 {
     /// Contains the clause's literals (maps variables to negation flags).
-    private Map<Integer, Boolean> literals = new HashMap<Integer, Boolean>();
+    private Map<Integer, Boolean> literals = new LinkedHashMap<Integer, Boolean>();
 
     /**
      * Constructs the empty clause.
@@ -89,7 +89,7 @@ public final class Clause
         final Set<Integer> x = lhs.size() < rhs.size() ? lhs.getVars() : rhs.getVars();
         final Set<Integer> y = lhs.size() < rhs.size() ? rhs.getVars() : lhs.getVars();
 
-        Set<Integer> result = new HashSet<Integer>(x);
+        Set<Integer> result = new LinkedHashSet<Integer>(x);
         result.retainAll(y);
 
         return result;
@@ -104,7 +104,7 @@ public final class Clause
      */
     public Set<Integer> getUniqueVars(final Clause rhs)
     {
-        Set<Integer> result = new HashSet<Integer>(getVars());
+        Set<Integer> result = new LinkedHashSet<Integer>(getVars());
         result.removeAll(rhs.getVars());
 
         return result;
