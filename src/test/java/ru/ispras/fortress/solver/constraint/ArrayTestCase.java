@@ -7,7 +7,7 @@ import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.*;
 
-/** The constraint as described in the SMT-LIB language:
+/** The constraint as described in pseudo language similar to SMT-LIB:
 
 <pre>
 (define-sort ARRAY_TYPE () (Array Int Int))
