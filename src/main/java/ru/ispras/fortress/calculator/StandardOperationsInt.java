@@ -24,6 +24,7 @@
 
 package ru.ispras.fortress.calculator;
 
+import java.math.BigInteger;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
@@ -36,26 +37,28 @@ import ru.ispras.fortress.expression.StandardOperation;
  * The StandardOperationsInt enumeration holds a collection of operation
  * objects that are responsible for performing standard operations
  * (StandardOperation) on data objects that hold integers
- * (DataTypeId.LOGIC_INTEGER).<pre></pre>
+ * (DataTypeId.LOGIC_INTEGER).
  *  
- * Implementation details and conventions common for all operation groups
- * implemented as enumerations:<pre></pre>
- *   
- * 1. The enumeration implements the Operation interface parameterized with
- * the StandardOperation type.<pre></pre>
+ * <p>Implementation details and conventions common for all operation groups
+ * implemented as enumerations:
  * 
- * 2. Each operation is represented by an element of the enumeration that
+ * <ol>
+ * <li>The enumeration implements the Operation interface parameterized with
+ * the StandardOperation type.
+ * 
+ * <li>Each operation is represented by an element of the enumeration that
  * provides implementation for the "calculate" methods with one and two
  * parameters. If one of the overloaded "calculate" method is not applicable
  * for the operation the UnsupportedOperationException runtime exception
- * is thrown.<pre></pre>
+ * is thrown.
  * 
- * 3. Each enumeration elements holds operation identifier and the range
- * of the allowed operand number.<pre></pre>
+ * <li>Each enumeration elements holds operation identifier and the range
+ * of the allowed operand number.
  * 
- * 4. The enumeration provides the "dataTypeId" static method that returns
+ * <li>The enumeration provides the "dataTypeId" static method that returns
  * the identifier of the data type for which the enumeration provides
- * operations.<pre></pre>
+ * operations.
+ * </ol>
  *  
  * @author Andrei Tatarnikov
  */
@@ -76,8 +79,7 @@ enum StandardOperationsInt implements Operation<StandardOperation>
         @Override
         public Data calculate(Data ... operands)
         {
-            final int value = extractInteger(operands[0]);
-            return Data.newInteger(- value);
+            return Data.newInteger(toBigInteger(operands[0]).negate());
         }
     },
 
@@ -86,9 +88,9 @@ enum StandardOperationsInt implements Operation<StandardOperation>
         @Override
         public Data calculate(Data ... operands)
         {
-            int result = extractInteger(operands[0]);
+            BigInteger result = toBigInteger(operands[0]);
             for(int index = 1; index < operands.length; ++index)
-                result = result + extractInteger(operands[index]);
+                result = result.add(toBigInteger(operands[index]));
 
             return Data.newInteger(result);
         }
@@ -99,9 +101,9 @@ enum StandardOperationsInt implements Operation<StandardOperation>
         @Override
         public Data calculate(Data ... operands)
         {
-            int result = extractInteger(operands[0]);
+            BigInteger result = toBigInteger(operands[0]);
             for(int index = 1; index < operands.length; ++index)
-                result = result - extractInteger(operands[index]);
+                result = result.subtract(toBigInteger(operands[index]));
 
             return Data.newInteger(result);
         }
@@ -112,9 +114,9 @@ enum StandardOperationsInt implements Operation<StandardOperation>
         @Override
         public Data calculate(Data ... operands)
         {
-            int result = extractInteger(operands[0]);
+            BigInteger result = toBigInteger(operands[0]);
             for(int index = 1; index < operands.length; ++index)
-                result = result * extractInteger(operands[index]);
+                result = result.multiply(toBigInteger(operands[index]));
 
             return Data.newInteger(result);
         }
@@ -125,10 +127,10 @@ enum StandardOperationsInt implements Operation<StandardOperation>
         @Override
         public Data calculate(Data ...operands)
         {
-            final int value1 = extractInteger(operands[0]);
-            final int value2 = extractInteger(operands[1]);
+            final BigInteger value1 = toBigInteger(operands[0]);
+            final BigInteger value2 = toBigInteger(operands[1]);
 
-            return Data.newInteger(value1 / value2);
+            return Data.newInteger(value1.divide(value2));
         }
     },
 
@@ -140,11 +142,13 @@ enum StandardOperationsInt implements Operation<StandardOperation>
             // Implemented like in Z3: the result is negative only
             // if the second operand is negative.
 
-            final int value1 = extractInteger(operands[0]);
-            final int value2 = extractInteger(operands[1]);
+            final BigInteger value1 = toBigInteger(operands[0]);
+            final BigInteger value2 = toBigInteger(operands[1]);
 
-            final int result = Math.abs(value1 % value2);
-            return Data.newInteger(value2 < 0 ? -result : result);
+            final BigInteger result = value1.divideAndRemainder(value2)[1].abs();
+
+            return Data.newInteger(
+                value2.compareTo(BigInteger.ZERO) < 0 ? result.negate() : result);
         }
     },
 
@@ -155,11 +159,10 @@ enum StandardOperationsInt implements Operation<StandardOperation>
         {
             // Implemented like in Z3: The result is always non-negative.
 
-            final int value1 = extractInteger(operands[0]);
-            final int value2 = extractInteger(operands[1]);
+            final BigInteger value1 = toBigInteger(operands[0]);
+            final BigInteger value2 = toBigInteger(operands[1]);
 
-            final int result = Math.abs(value1 % value2);
-            return Data.newInteger(result);
+            return Data.newInteger(value1.mod(value2.abs()));
         }
     }
     ;
@@ -212,9 +215,9 @@ enum StandardOperationsInt implements Operation<StandardOperation>
         return operationArity;
     }
 
-    private static int extractInteger(Data data)
+    private static BigInteger toBigInteger(Data data)
     {
-        assert data.getType().getValueClass().equals(Integer.class);
-        return ((Number) data.getValue()).intValue();
+        assert data.getType().getValueClass().equals(BigInteger.class);
+        return (BigInteger) data.getValue();
     }
 }
