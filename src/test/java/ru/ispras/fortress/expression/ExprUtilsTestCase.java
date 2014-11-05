@@ -364,4 +364,35 @@ public final class ExprUtilsTestCase
         //in all scopes it is used.
         assertFalse(ExprUtils.isConstant(expr4));
     }
+    
+    @Test
+    public void testIsSat()
+    {
+        assertTrue(ExprUtils.isSAT(NodeValue.newBoolean(true)));
+        assertFalse(ExprUtils.isSAT(NodeValue.newBoolean(false)));
+
+        assertTrue(ExprUtils.isSAT(
+            new NodeOperation(
+                StandardOperation.EQ,
+                NodeValue.newInteger(5),
+                new NodeOperation(
+                    StandardOperation.ADD,
+                    NodeValue.newInteger(2),
+                    NodeValue.newInteger(3)
+                )
+            )
+        ));
+
+        assertFalse(ExprUtils.isSAT(
+            new NodeOperation(
+                StandardOperation.EQ,
+                NodeValue.newInteger(5),
+                new NodeOperation(
+                    StandardOperation.ADD,
+                    NodeValue.newInteger(2),
+                    NodeValue.newInteger(-3)
+                )
+            )
+        ));
+    }
 }
