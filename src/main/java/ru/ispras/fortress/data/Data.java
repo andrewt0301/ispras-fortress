@@ -29,6 +29,35 @@ public final class Data
     private final Object  value;
 
     /**
+     * Creates a data object of the INTEGER type from a BigInteger value.
+     *
+     * @param value A BitInteger value.
+     * @return New data object.
+     * 
+     * @throws NullPointerException if the parameter equals {@code null}.
+     */
+
+    public static Data newInteger(BigInteger value)
+    {
+        if (null == value)
+            throw new NullPointerException();
+
+        return new Data(DataType.INTEGER, value);
+    }
+
+    /**
+     * Creates a data object of the INTEGER type from a long value.
+     *
+     * @param value A long value.
+     * @return New data object.
+     */
+
+    public static Data newInteger(long value)
+    {
+        return newInteger(BigInteger.valueOf(value));
+    }
+
+    /**
      * Creates a data object of the INTEGER type from an integer value.
      *
      * @param value An integer value.
@@ -37,7 +66,7 @@ public final class Data
 
     public static Data newInteger(int value)
     {
-        return new Data(DataType.INTEGER, value);
+        return newInteger((long) value);
     }
 
     /**

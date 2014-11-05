@@ -12,6 +12,7 @@
 
 package ru.ispras.fortress.data;
 
+import java.math.BigInteger;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
@@ -117,11 +118,11 @@ public enum DataTypeId
      * with machine-dependent types used to store integer values (like 16-bit, 32-bit
      * or 64-bit integer representations). The size attribute is not applicable.
      */
-    LOGIC_INTEGER (Integer.class)
+    LOGIC_INTEGER (BigInteger.class)
     {
         Object valueOf(String s, int radix, List<Object> params)
         {
-            return Integer.valueOf(s, radix);
+            return new BigInteger(s, radix);
         }
 
         int radix(int size)

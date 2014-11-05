@@ -1,6 +1,8 @@
 package ru.ispras.fortress.data;
 
 import org.junit.*;
+
+import java.math.BigInteger;
 import java.util.Map;
 
 public class DataTypeTestCase
@@ -20,9 +22,9 @@ public class DataTypeTestCase
 
         for (Map.Entry<Data, Data> entry : map.entrySet())
         {
-            int key = (Integer) entry.getKey().getValue();
-            int value = (Integer) entry.getValue().getValue();
-            Assert.assertTrue(value == key + 1);
+            final BigInteger key = (BigInteger) entry.getKey().getValue();
+            final BigInteger value = (BigInteger) entry.getValue().getValue();
+            Assert.assertTrue(value.compareTo(key.add(BigInteger.ONE)) == 0);
         }
     }
 }

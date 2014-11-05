@@ -12,6 +12,7 @@
 
 package ru.ispras.fortress.solver.engine.z3;
 
+import java.math.BigInteger;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -111,8 +112,8 @@ public final class SMTStrings
 
             case LOGIC_INTEGER:
             {
-                final int value = (Integer) data.getValue();
-                return (value >= 0) ? Integer.toString(value) : String.format(sNEGATION, Math.abs(value));
+                final BigInteger value = (BigInteger) data.getValue();
+                return (value.compareTo(BigInteger.ZERO) >= 0) ? value.toString() : String.format(sNEGATION, value.abs());
             }
 
             case LOGIC_REAL:
@@ -135,10 +136,12 @@ public final class SMTStrings
                 builder.append(sDEFAULT_ARRAY).append(sSPACE);
 
                 for (Map.Entry<?, ?> entry : map.entrySet())
+                {
                     builder .append(textForData((Data) entry.getKey()))
                             .append(" ")
                             .append(textForData((Data) entry.getValue()))
                             .append(") ");
+                }
                 return builder.toString();
             }
 
