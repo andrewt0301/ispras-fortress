@@ -29,7 +29,7 @@ public final class ConstraintUtils {
    * Creates a constraint from the specified expression.
    * 
    * @param expr Expression to be used as a source for the constraint.
-   * @return Formula-based constraint. 
+   * @return New formula-based constraint. 
    * 
    * @throws NullPointerException if the parameter equals {@code null}.
    */
