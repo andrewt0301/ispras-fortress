@@ -31,6 +31,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import ru.ispras.fortress.data.Variable;
+import ru.ispras.fortress.solver.Environment;
 import ru.ispras.fortress.solver.Solver;
 import ru.ispras.fortress.solver.SolverResult;
 import ru.ispras.fortress.solver.SolverResultChecker;
@@ -71,13 +72,17 @@ public abstract class GenericSolverTestBase
         final Constraint constraint = sample.getConstraint();
         final XMLConstraintSaver saver = new XMLConstraintSaver(constraint);
 
+        File tempFile = null;
+
         try
         {
             // Saving to and loading from file. 
-            final String tempFile = File.createTempFile(constraint.getName(), ".xml").getPath();
-            saver.saveToFile(tempFile);
+            tempFile = File.createTempFile(constraint.getName(), ".xml");
 
-            final Constraint tempFileConstraint = XMLConstraintLoader.loadFromFile(tempFile);
+            final String tempFileName = tempFile.getPath();
+            saver.saveToFile(tempFileName);
+
+            final Constraint tempFileConstraint = XMLConstraintLoader.loadFromFile(tempFileName);
             ConstraintEqualityChecker.check(constraint, tempFileConstraint);
 
             solveAndCheckResult(tempFileConstraint);
@@ -103,6 +108,11 @@ public abstract class GenericSolverTestBase
         {
             e.printStackTrace();
             Assert.fail(e.getMessage());
+        }
+        finally 
+        {
+            if (null != tempFile && !Environment.isDebugMode())
+                tempFile.delete();
         }
     }
 
