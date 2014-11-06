@@ -188,8 +188,9 @@ public final class ExprUtils {
     checkNotEmpty(exprs);
     checkAllConditions(exprs);
 
-    if (exprs.length == 1)
+    if (exprs.length == 1) {
       return exprs[0];
+    }
 
     return new NodeOperation(StandardOperation.AND, exprs);
   }
@@ -210,8 +211,9 @@ public final class ExprUtils {
     checkNotEmpty(exprs);
     checkAllConditions(exprs);
 
-    if (exprs.length == 1)
+    if (exprs.length == 1) {
       return exprs[0];
+    }
 
     return new NodeOperation(StandardOperation.OR, exprs);
   }
