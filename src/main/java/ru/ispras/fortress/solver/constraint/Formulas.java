@@ -25,13 +25,12 @@
 package ru.ispras.fortress.solver.constraint;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import ru.ispras.fortress.data.Variable;
-import ru.ispras.fortress.expression.ExprTreeVisitorDefault;
-import ru.ispras.fortress.expression.ExprTreeWalker;
+import ru.ispras.fortress.expression.ExprUtils;
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeVariable;
 
@@ -179,39 +178,16 @@ public final class Formulas
 
     public Iterable<Variable> getVariables()
     {
-        final Map<String, Variable> variables = 
-            new HashMap<String, Variable>();
+        final Collection<NodeVariable> nodeVariables =
+            ExprUtils.getVariables(exprs());
 
-        final ExprTreeWalker walker = new ExprTreeWalker(new ExprTreeVisitorDefault()
-        {
-            private static final String ERR_MULTIPLE_VARS = 
-               "References to different variables that have the same name %s.";
+        final List<Variable> variables = 
+            new ArrayList<Variable>(nodeVariables.size());
 
-            @Override
-            public void onVariable(NodeVariable variable)
-            {
-                if (null == variable)
-                    throw new NullPointerException();
+        for (NodeVariable nodeVariable : nodeVariables)
+            variables.add(nodeVariable.getVariable());
 
-                if (variables.containsKey(variable.getName()))
-                {
-                    final Variable existingVariable =
-                        variables.get(variable.getName());
-
-                    if (!variable.getVariable().equals(existingVariable))
-                        throw new IllegalStateException(String.format(
-                            ERR_MULTIPLE_VARS, variable.getName()));
-                }
-                else
-                {
-                    variables.put(
-                        variable.getName(), variable.getVariable());
-                }
-            }
-        });
-
-        walker.visit(exprs());
-        return variables.values();
+        return Collections.unmodifiableList(variables);
     }
 
     @Override
