@@ -25,9 +25,7 @@ import ru.ispras.fortress.expression.ExprTreeVisitor.Status;
 import ru.ispras.fortress.solver.Solver;
 import ru.ispras.fortress.solver.SolverResult;
 import ru.ispras.fortress.solver.constraint.Constraint;
-import ru.ispras.fortress.solver.constraint.ConstraintBuilder;
-import ru.ispras.fortress.solver.constraint.ConstraintKind;
-import ru.ispras.fortress.solver.constraint.Formulas;
+import ru.ispras.fortress.solver.constraint.ConstraintUtils;
 
 /**
  * The ExprUtils class provides utility methods to work with logical expressions.
@@ -301,15 +299,7 @@ public final class ExprUtils {
    */
 
   public static boolean isSAT(Node expr) {
-    checkNotNull(expr);
-
-    final ConstraintBuilder builder = new ConstraintBuilder(ConstraintKind.FORMULA_BASED);
-
-    final Formulas formulas = new Formulas(expr);
-    builder.setInnerRep(formulas);
-
-    builder.addVariables(formulas.getVariables());
-    final Constraint constraint = builder.build();
+    final Constraint constraint = ConstraintUtils.newConstraint(expr);
 
     final Solver solver = constraint.getKind().getDefaultSolverId().getSolver();
     final SolverResult solverResult = solver.solve(constraint);
