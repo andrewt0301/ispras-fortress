@@ -14,10 +14,14 @@
 
 package ru.ispras.fortress.expression;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Set;
 
 import ru.ispras.fortress.data.DataType;
@@ -56,8 +60,8 @@ public final class ExprUtils {
    * XOR and IMPL).
    * 
    * @param expr Expression to be checked.
-   * @return {@code true} if the expression is an atomic logical expression or
-   *         {@code false} otherwise.
+   * @return {@code true} if the expression is an atomic logical expression or {@code false}
+   *         otherwise.
    * 
    * @throws NullPointerException if the parameter is {@code null}.
    */
@@ -173,8 +177,8 @@ public final class ExprUtils {
   }
 
   /**
-   * Performs logical conjunction {@code (exprs[0] && ... && exprs[n-1])}
-   * of the specified expressions and returns the resulting expression.
+   * Performs logical conjunction {@code (exprs[0] && ... && exprs[n-1])} of the specified
+   * expressions and returns the resulting expression.
    * 
    * @param exprs Expressions to be combined.
    * @return A logical conjunction of the specified expressions.
@@ -196,8 +200,8 @@ public final class ExprUtils {
   }
 
   /**
-   * Performs logical disjunction {@code (exprs[0] || ... || exprs[n-1])}
-   * of the specified expressions and returns the resulting expression.
+   * Performs logical disjunction {@code (exprs[0] || ... || exprs[n-1])} of the specified
+   * expressions and returns the resulting expression.
    * 
    * @param exprs Expressions to be combined.
    * @return A logical disjunction of the specified expressions.
@@ -219,9 +223,8 @@ public final class ExprUtils {
   }
 
   /**
-   * Performs logical negation {@code (!getConjunction(exprs[0], ..., exprs[n-1]))}
-   * of the specified expressions combined with conjunction and returns the resulting
-   * expression.
+   * Performs logical negation {@code (!getConjunction(exprs[0], ..., exprs[n-1]))} of the specified
+   * expressions combined with conjunction and returns the resulting expression.
    * 
    * @param exprs Expressions to be combined.
    * @return A logical negation of the specified expressions.
@@ -236,8 +239,8 @@ public final class ExprUtils {
   }
 
   /**
-   * Performs logical complement (negation) {@code !(getDisjunction(exprs[0], ..., exprs[n-1])}
-   * of the specified expressions combined with disjunction and returns the resulting expression.
+   * Performs logical complement (negation) {@code !(getDisjunction(exprs[0], ..., exprs[n-1])} of
+   * the specified expressions combined with disjunction and returns the resulting expression.
    * 
    * @param exprs Expressions to be combined.
    * @return A logical complement of the specified expressions.
@@ -253,8 +256,8 @@ public final class ExprUtils {
 
   /**
    * Checks whether the specified logical conditions are complete
-   * {@code !(getComplement(exprs[0], ..., exprs[n-1]) is SAT)}. N.B. The method uses the
-   * default constraint solver to perform the check.
+   * {@code !(getComplement(exprs[0], ..., exprs[n-1]) is SAT)}. N.B. The method uses the default
+   * constraint solver to perform the check.
    * 
    * @param exprs Conditions (logical expressions) to be checked.
    * @return {@code true} if the conditions are complete or {@code false} otherwise.
@@ -272,8 +275,8 @@ public final class ExprUtils {
 
   /**
    * Checks whether the specified logical conditions are compatible
-   * {@code (getConjunction(exprs[0], ..., exprs[n-1]) is SAT)}. N.B. The method uses the
-   * default constraint solver to perform the check.
+   * {@code (getConjunction(exprs[0], ..., exprs[n-1]) is SAT)}. N.B. The method uses the default
+   * constraint solver to perform the check.
    * 
    * @param exprs Conditions (logical expressions) to be checked.
    * @return {@code true} if the conditions are compatible or {@code false} otherwise.
@@ -290,8 +293,8 @@ public final class ExprUtils {
   }
 
   /**
-   * Checks whether the specified expression is satisfiable.
-   * N.B. The method uses the default constraint solver to perform the check.
+   * Checks whether the specified expression is satisfiable. N.B. The method uses the default
+   * constraint solver to perform the check.
    * 
    * @param expr Expression to be checked.
    * @return {@code true} if the expression is satisfiable or {@code false} otherwise.
@@ -304,6 +307,61 @@ public final class ExprUtils {
     final SolverResult result = ConstraintUtils.solve(constraint);
 
     return SolverResult.Status.SAT == result.getStatus();
+  }
+
+  /**
+   * Returns all variables used in the specified expression.
+   * 
+   * @param expr Expression to be processed.
+   * @return A collection of all variables used in the specified expression.
+   * 
+   * @throws NullPointerException if the parameter is {@code null}.
+   * @throws IllegalStateException if the method finds nodes that refer
+   *         to different variables that have the same name.
+   */
+
+  public static Collection<NodeVariable> getVariables(Node expr) {
+    checkNotNull(expr);
+    return getVariables(Collections.singletonList(expr));
+  }
+
+  /**
+   * Returns all variables used in the specified expressions.
+   * 
+   * @param expr Collection of expressions to be processed.
+   * @return A collection of all variables used in the specified expressions.
+   * 
+   * @throws NullPointerException if the parameter is {@code null}.
+   * @throws IllegalStateException if the method finds nodes that refer
+   *         to different variables that have the same name.
+   */
+
+  public static Collection<NodeVariable> getVariables(Iterable<Node> exprs) {
+    checkNotNull(exprs);
+
+    final String ERR_MULTIPLE_VARS =
+      "References to different variables that have the same name %s.";
+
+    final Map<String, NodeVariable> variables = new HashMap<String, NodeVariable>();
+    final ExprTreeWalker walker = new ExprTreeWalker(new ExprTreeVisitorDefault() {
+      @Override
+      public void onVariable(NodeVariable variable) {
+        checkNotNull(variable);
+        final String name = variable.getName();
+
+        if (variables.containsKey(name)) {
+          final NodeVariable existingVariable = variables.get(name);
+          if (!variable.equals(existingVariable)) {
+            throw new IllegalStateException(String.format(ERR_MULTIPLE_VARS, name));
+          }
+        } else {
+          variables.put(name, variable);
+        }
+      }
+    });
+
+    walker.visit(exprs);
+    return variables.values();
   }
 
   private static void checkNotNull(Object o) {
