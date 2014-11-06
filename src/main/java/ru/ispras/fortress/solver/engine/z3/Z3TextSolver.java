@@ -111,18 +111,22 @@ public final class Z3TextSolver extends SolverBase
         final SolverResultBuilder resultBuilder = 
             new SolverResultBuilder(SolverResult.Status.ERROR);
 
+        final SMTTextBuilder smtTextBuilder =
+            new SMTTextBuilder(constraint.getVariables(), getOperations());
+
+        final ExprTreeWalker walker = new ExprTreeWalker(smtTextBuilder);
+        
+        File tempFile = null;
         try
         {
-            final SMTTextBuilder smtTextBuilder =
-                new SMTTextBuilder(constraint.getVariables(), getOperations());
-
-            final ExprTreeWalker walker = new ExprTreeWalker(smtTextBuilder);
             walker.visit(((Formulas) constraint.getInnerRep()).exprs());
 
-            final String tempFile = File.createTempFile(TEMP_FILE, TEMP_FILE_SUFFIX).getPath();
-            smtTextBuilder.saveToFile(tempFile);
+            tempFile = File.createTempFile(TEMP_FILE, TEMP_FILE_SUFFIX);
 
-            final Process process = runSolver(Environment.getSolverPath(), tempFile, "");
+            final String tempFilePath = tempFile.getPath();
+            smtTextBuilder.saveToFile(tempFilePath);
+
+            final Process process = runSolver(Environment.getSolverPath(), tempFilePath, "");
             final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
             final Iterator<Variable> vi = constraint.getUnknownVariables().iterator();
@@ -158,6 +162,11 @@ public final class Z3TextSolver extends SolverBase
         {
             resultBuilder.setStatus(SolverResult.Status.ERROR);
             resultBuilder.addError(IO_EXCEPTION_ERR + e.getMessage());
+        }
+        finally 
+        {
+            if (null != tempFile && !Environment.isDebugMode())
+                tempFile.delete();
         }
 
         return resultBuilder.build();
