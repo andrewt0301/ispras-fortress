@@ -22,7 +22,6 @@ import java.util.Set;
 
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.expression.ExprTreeVisitor.Status;
-import ru.ispras.fortress.solver.Solver;
 import ru.ispras.fortress.solver.SolverResult;
 import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintUtils;
@@ -300,11 +299,9 @@ public final class ExprUtils {
 
   public static boolean isSAT(Node expr) {
     final Constraint constraint = ConstraintUtils.newConstraint(expr);
+    final SolverResult result = ConstraintUtils.solve(constraint);
 
-    final Solver solver = constraint.getKind().getDefaultSolverId().getSolver();
-    final SolverResult solverResult = solver.solve(constraint);
-
-    return SolverResult.Status.SAT == solverResult.getStatus();
+    return SolverResult.Status.SAT == result.getStatus();
   }
 
   private static void checkNotNull(Object o) {

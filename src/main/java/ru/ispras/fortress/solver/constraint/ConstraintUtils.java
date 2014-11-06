@@ -15,6 +15,9 @@
 package ru.ispras.fortress.solver.constraint;
 
 import ru.ispras.fortress.expression.Node;
+import ru.ispras.fortress.solver.Solver;
+import ru.ispras.fortress.solver.SolverId;
+import ru.ispras.fortress.solver.SolverResult;
 
 /**
  * The ConstraintUtils class provides utility methods to deal with constraints. 
@@ -45,6 +48,25 @@ public final class ConstraintUtils {
 
     builder.addVariables(formulas.getVariables());
     return builder.build();
+  }
+
+  /**
+   * Solves the specified constraint with the solver specified as default
+   * for the given constraint kind. 
+   * 
+   * @param constraint Constraint to be solved.
+   * @return Result of solving the constraint.
+   * 
+   * @throws NullPointerException if the parameter equals {@code null}.
+   */
+
+  public static SolverResult solve(Constraint constraint) {
+    checkNotNull(constraint);
+
+    final SolverId solverId = constraint.getKind().getDefaultSolverId();
+    final Solver solver = solverId.getSolver();
+
+    return solver.solve(constraint);
   }
 
   private static void checkNotNull(Object o) {
