@@ -85,7 +85,7 @@ public class DnfTestCase
     public void run()
     {
         NormalForm x = createDnf();
-        NormalForm y = DNF.orthogonalize(x);
+        NormalForm y = Orthogonalizer.orthogonalize(x);
 
         System.out.println(x);
         System.out.println(y);

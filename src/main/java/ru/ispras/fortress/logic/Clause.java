@@ -15,17 +15,17 @@
  */
 
 package ru.ispras.fortress.logic;
- 
+
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
- 
+
 /**
  * This class represents a clause, which is a set of literals.
  *
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
- */ 
+ */
 public final class Clause
 {
     /// Contains the clause's literals (maps variables to negation flags).
@@ -109,7 +109,7 @@ public final class Clause
 
         return result;
     }
-    
+
     /**
      * Returns the sign of the specified variable.
      *
@@ -120,7 +120,7 @@ public final class Clause
     {
         return literals.get(var);
     }
-    
+
     /**
      * Checks whether the clause contains the specified variable.
      *
@@ -142,7 +142,7 @@ public final class Clause
     {
         return literals.entrySet().containsAll(clause.literals.entrySet());
     }
-    
+
     /**
      * Appends the specified literal to the clause.
      *
@@ -179,7 +179,7 @@ public final class Clause
         for(int i = 0; i < vars.length; i++)
             { literals.put(vars[i], signs[i]); }
     }
-    
+
     /**
      * Appends the specified clause to the clause.
      *

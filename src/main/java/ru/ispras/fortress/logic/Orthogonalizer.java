@@ -26,8 +26,8 @@ import java.util.Set;
  * This class contains a set of utils dealing with disjunctive normal forms.
  *
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
- */ 
-public final class DNF
+ */
+public final class Orthogonalizer
 {
     /**
      * Checks whether two clauses (conjuncts), <code>lhs</code> and <code>rhs</code>,
@@ -35,7 +35,7 @@ public final class DNF
      *
      * @param lhs the left-hand-side clause.
      * @param rhs the right-hand-side clause.
-     * @return true iff the clauses are disjoint.
+     * @return <code>true</code> if the clauses are disjoint; <code>false</code> otherwise.
      */
     public static boolean areDisjoint(final Clause lhs, final Clause rhs)
     {
@@ -53,18 +53,115 @@ public final class DNF
     }
 
     /**
+     * Checks whether two clauses (conjuncts), <code>lhs</code> and <code>rhs</code>,
+     * are disjoint (mutually exclusive or orthogonal) w.r.t. the given set of conflicts.
+     *
+     * @param lhs the left-hand-side clause.
+     * @param rhs the right-hand-side clause.
+     * @param conflicts the set of conflicts.
+     * @return <code>true</code> if the clauses are disjoint; <code>false</code> otherwise.
+     */
+    public static boolean areDisjoint(final Clause lhs, final Clause rhs,
+        final Set<Conflict> conflicts)
+    {
+        if (areDisjoint(lhs, rhs))
+            { return true; }
+
+        if (conflicts == null)
+          { return false; }
+
+        for (final Conflict conflict : conflicts)
+        {
+            final int var1 = conflict.getLhsVar();
+            final int var2 = conflict.getRhsVar();
+
+            final boolean neg = conflict.areDifferentSigns();
+
+            if (lhs.contains(var1) && rhs.contains(var2))
+            {
+                if ((lhs.getSign(var1) != rhs.getSign(var2)) == neg)
+                    { return true; }
+            }
+            else if (lhs.contains(var2) && rhs.contains(var1))
+            {
+              if ((lhs.getSign(var2) != rhs.getSign(var1)) == neg)
+                  { return true; }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Orthogonalizes the specified DNF, i.e. constructs an equivalent DNF
+     * consisting of disjoint clauses.
+     *
+     * @param form the DNF to be orthogonalized.
+     * @param conflicts the set of conflicts.
+     * @return the orthogonal DNF equivalent to the specified one.
+     */
+    public static NormalForm orthogonalize(final NormalForm form, final Set<Conflict> conflicts)
+    {
+        final ArrayList<Clause> clauses = new ArrayList<Clause>(form.getClauses());
+
+        if(clauses.isEmpty())
+            { return new NormalForm(NormalForm.Type.DNF); }
+
+        Map<Integer, Integer> branches = new LinkedHashMap<Integer, Integer>(2 * clauses.size());
+        branches.put(clauses.size() - 1, -1);
+
+        for(int pre_i, i = next(branches, pre_i =  0); i != -1; i = next(branches, pre_i = i))
+        for(int pre_j, j = next(branches, pre_j = -1); j !=  i; j = next(branches, pre_j = j))
+        {
+            final NormalForm split = new NormalForm(NormalForm.Type.DNF);
+
+            // Split one of the clauses to make them disjoint.
+            int index = orthogonalize(clauses.get(j), clauses.get(i), split, conflicts);
+
+            // The left-hand-side clause is rewritten (#0).
+            if(index == 0)
+            {
+                if(replace(clauses, branches, pre_j, j, split))
+                    { j = pre_j; }
+            }
+            // The right-hand-side clause is rewritten (#1).
+            else if(index == 1)
+            {
+                if(replace(clauses, branches, pre_i, i, split))
+                    { i = pre_i; break; }
+            }
+        }
+
+        return construct(branches, clauses);
+    }
+
+    /**
+     * Orthogonalizes the specified DNF, i.e. constructs an equivalent DNF
+     * consisting of disjoint clauses.
+     *
+     * @param form the DNF to be orthogonalized.
+     * @return the orthogonal DNF equivalent to the specified one.
+     */
+    public static NormalForm orthogonalize(final NormalForm form)
+    {
+        return orthogonalize(form, /* No conflicts */ null);
+    }
+
+    /**
      * Splits one of the clauses, <code>lhs</code> or <code>rhs</code>, so as
      * to make them disjoint.
      *
      * @param lhs the left-hand-side clause.
      * @param rhs the right-hand-side clause.
      * @param res the splitting result.
+     * @param conflicts the set of conflicts.
      * @return the index of the split clause or -1 if no one has been split.
      */
-    private static int orthogonalize(final Clause lhs, final Clause rhs, NormalForm res)
+    private static int orthogonalize(final Clause lhs, final Clause rhs, final NormalForm res,
+        final Set<Conflict> conflicts)
     {
         // The specified clauses are disjoint.
-        if(areDisjoint(lhs, rhs))
+        if(areDisjoint(lhs, rhs, conflicts))
             { return -1; }
 
         // Try to split the left-hand-side clause (#0).
@@ -164,7 +261,7 @@ public final class DNF
 
         return false;
     }
-    
+
     /**
      * Returns the index of the successive clause.
      *
@@ -187,55 +284,14 @@ public final class DNF
      * @param clauses the list of clauses.
      * @return the DNF.
      */
-    private static NormalForm construct(final Map<Integer, Integer> branches, final ArrayList<Clause> clauses)
+    private static NormalForm construct(final Map<Integer, Integer> branches,
+        final ArrayList<Clause> clauses)
     {
-        NormalForm form = new NormalForm(NormalForm.Type.DNF);
+        final NormalForm form = new NormalForm(NormalForm.Type.DNF);
 
         for(int i = 0; i != -1; i = next(branches, i))
             { form.add(clauses.get(i)); }
 
         return form;
-    }
-
-    /**
-     * Orthogonalizes the specified DNF, i.e. constructs an equivalent DNF
-     * consisting of disjoint clauses.
-     *
-     * @param form the DNF to be orthogonalized.
-     * @return the orthogonal DNF equivalent to the specified one.
-     */
-    public static NormalForm orthogonalize(final NormalForm form)
-    {
-        ArrayList<Clause> clauses = new ArrayList<Clause>(form.getClauses());
-
-        if(clauses.isEmpty())
-            { return new NormalForm(NormalForm.Type.DNF); }
-
-        Map<Integer, Integer> branches = new LinkedHashMap<Integer, Integer>(2 * clauses.size());
-        branches.put(clauses.size() - 1, -1);
-
-        for(int pre_i, i = next(branches, pre_i =  0); i != -1; i = next(branches, pre_i = i))
-        for(int pre_j, j = next(branches, pre_j = -1); j !=  i; j = next(branches, pre_j = j))
-        {
-            NormalForm split = new NormalForm(NormalForm.Type.DNF);
-
-            // Split one of the clauses to make them disjoint.
-            int index = orthogonalize(clauses.get(j), clauses.get(i), split);
-
-            // The left-hand-side clause is rewritten (#0).
-            if(index == 0)
-            {
-                if(replace(clauses, branches, pre_j, j, split))
-                    { j = pre_j; }
-            }
-            // The right-hand-side clause is rewritten (#1).
-            else if(index == 1)
-            {
-                if(replace(clauses, branches, pre_i, i, split))
-                    { i = pre_i; break; }
-            }
-        }
-
-        return construct(branches, clauses);
     }
 }

@@ -25,7 +25,7 @@ import java.util.List;
  * The representation can be interpreted as either DNF or CNF.
  *
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
- */ 
+ */
 public final class NormalForm
 {
     /**
