@@ -1,3 +1,19 @@
+/*
+ * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may
+ * not use this file except in compliance with the License. You may obtain
+ * a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package ru.ispras.fortress.transformer;
 
 import java.util.List;
@@ -7,6 +23,12 @@ import java.util.HashMap;
 import java.util.IdentityHashMap;
 
 import ru.ispras.fortress.expression.*;
+
+/**
+ *  NodeTransformer is an experssion tree visitor with bottom-up substitution
+ *  policy. Substitutions take place accordingly to set of rules passed to
+ *  transformer before traversal.
+ */
 
 public class NodeTransformer implements ExprTreeVisitor
 {
@@ -18,11 +40,25 @@ public class NodeTransformer implements ExprTreeVisitor
     private final List<Node>    result;
     private final List<NodeBinding.BoundVariable> boundStack;
 
+    /**
+     *  Traverse and apply substitutions to single expression tree.
+     *  Resulting expression can be acquired via {@link #getResult()}.
+     *
+     *  @param root Root of a tree to be traversed.
+     */
+
     public void walk(Node root)
     {
         final ExprTreeWalker walker = new ExprTreeWalker(this);
         walker.visit(root);
     }
+
+    /**
+     *  Traverse and apply substitutions to expression forest.
+     *  Resulting expression can be acquired via {@link #getResult()}.
+     *
+     *  @param trees Collections of root nodes of trees to be traversed.
+     */
 
     public void walk(Iterable<Node> trees)
     {
@@ -30,10 +66,20 @@ public class NodeTransformer implements ExprTreeVisitor
         walker.visit(trees);
     }
 
+    /**
+     *  Create new transformer instance containing no substitution rules.
+     */
+
     public NodeTransformer()
     {
         this(new IdentityHashMap<Enum<?>, TransformerRule>());
     }
+
+    /**
+     *  Create new transformer instance with given substitutions rules.
+     *
+     *  @param rules Map of rules. See {@link #addRule addRule()} for details.
+     */
 
     public NodeTransformer(Map<Enum<?>, TransformerRule> rules)
     {
@@ -47,6 +93,19 @@ public class NodeTransformer implements ExprTreeVisitor
         boundStack      = new ArrayList<NodeBinding.BoundVariable>();
     }
 
+    /**
+     *  Add substitution rule.
+     *
+     *  For rule to be applied to node in expression tree several
+     *  conditions needs to be hold:
+     *  1) either node is NodeOperation with opId operation or
+     *  node is a Node subclass which kind is opId;
+     *  2) rule.isApplicable() should be true for node given.
+     *
+     *  @param opId Target node kind identifier.
+     *  @param rule Rule to be added.
+     */
+
     public void addRule(Enum<?> opId, TransformerRule rule)
     {
         if (opId == null || rule == null)
@@ -56,10 +115,25 @@ public class NodeTransformer implements ExprTreeVisitor
         ruleset.put(opId, rule);
     }
 
+    /**
+     *  Get collection of expression trees resulting from substitutions
+     *  done during traversals.
+     */
+
     public Iterable<Node> getResult()
     {
         return result;
     }
+
+    /**
+     *  Helper method to conditionally apply rule to node given.
+     *
+     *  @param id Rule search identifier
+     *  @param node Node to be substituted
+     *
+     *  @return Transformed expression or node itself if no applicable
+     *  rule can be found.
+     */
 
     private final Node applyRule(Enum<?> id, Node node)
     {
@@ -68,6 +142,10 @@ public class NodeTransformer implements ExprTreeVisitor
             return rule.apply(node);
         return node;
     }
+
+    /**
+     *  Helper methods to find and apply relevant rule to node given.
+     */
 
     private final Node updateNode(Node node)
     {
@@ -184,11 +262,31 @@ public class NodeTransformer implements ExprTreeVisitor
     }
 }
 
+/**
+ *  ScopedBindingRule is base class for rules respecting variable
+ *  binding visibility scope.
+ *
+ *  Implementors are organized in nesting scopes list with
+ *  inner scope being responsible for passing request to outer scope
+ *  if it cannot be satisfied by himself.
+ *
+ *  Subclasses are expected to implement TransformRule.isApplicable()
+ *  method that should set applicableCache member to correct substitution
+ *  result in case rule is applicable.
+ */
+
 abstract class ScopedBindingRule implements TransformerRule
 {
     protected final TransformerRule   shadowed;
     protected final Map<String, Node> bindings;
     protected Node applicableCache;
+
+    /**
+     *  Create rule for nested variable scope.
+     *
+     *  @param previous Rule representing outer scope.
+     *  @param bindingList List of bound variables in current scope.
+     */
 
     public ScopedBindingRule(TransformerRule previous, List<NodeBinding.BoundVariable> bindingList)
     {
@@ -205,21 +303,46 @@ abstract class ScopedBindingRule implements TransformerRule
         return applicableCache;
     }
 
+    /**
+     *  Get rule being shadowed by current scope.
+     */
+
     public TransformerRule getShadowedRule()
     {
         return shadowed;
     }
 }
 
+/**
+ *  RejectBoundVariablesRule works as a filter ignoring any variable
+ *  nodes considered bound in current nested variable scope.
+ *
+ *  As described in {@link ScopedBindingRule}, rules are organized in
+ *  nesting variable scopes list. Therefore first ignoring any variable
+ *  bound in current scope or delegating check to outer scope otherwise
+ *  brings requierd result.
+ */
+
 final class RejectBoundVariablesRule extends ScopedBindingRule
 {
     private final NodeBinding node;
+
+    /**
+     *  Create filter wrapper for existing rule.
+     *
+     *  @param previous Rule representing outer scope.
+     *  @param node NodeBinding instance is to check for.
+     */
 
     public RejectBoundVariablesRule(TransformerRule previous, NodeBinding node)
     {
         super(previous, node.getBindings());
         this.node = node;
     }
+
+    /**
+     *  Get binding being ignored by this rule.
+     */
 
     public NodeBinding getBinding()
     {

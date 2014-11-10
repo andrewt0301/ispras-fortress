@@ -31,6 +31,13 @@ import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 
+/**
+ *  The OperationReducer class implements constant expression evaluation.
+ *  OperationReducer relies on
+ *  {@link ru.ispras.fortress.calculator.CalculatorEngine CalculatorEngine}
+ *  to support different sets of operations.
+ */
+
 final class OperationReducer
 {
     private final static String UNKNOWN_ELEMENT = 
@@ -44,6 +51,14 @@ final class OperationReducer
 
     private boolean hasValueOperandsOnly;
     private boolean updatedOperands;
+
+    /**
+     *  Create reducer configuration.
+     *
+     *  @param engine Calculator engine supporting required set of operations.
+     *  @param operation Expression to be reduced.
+     *  @param options Reduction policy configuration.
+     */
 
     public OperationReducer(CalculatorEngine engine, NodeOperation operation, ReduceOptions options)
     {
@@ -61,6 +76,12 @@ final class OperationReducer
         analyzeOperands();
     }
 
+    /**
+     *  Run reduction on stored expression.
+     *
+     *  @return Reduced expression.
+     */
+
     public Node reduce()
     {
         if (hasValueOperandsOnly)
@@ -77,6 +98,12 @@ final class OperationReducer
 
         return operation;
     }
+
+    /**
+     *  Collect required information about operands in stored operation.
+     *  Checks if operation can be evaluated, should operands be updated
+     *  etc.
+     */
 
     private void analyzeOperands()
     {
@@ -120,6 +147,16 @@ final class OperationReducer
         }
     }
 
+    /**
+     *  Check if calculator engine supports given operation.
+     *
+     *  @param engine Engine is to be checked. If null, default engine is used.
+     *  @param operation Operation to check support for.
+     *  @param operands Operation operands.
+     *
+     *  @return true if operation is supported.
+     */
+
     private boolean isSupported(CalculatorEngine engine, Enum<?> operation, Data[] operands)
     {
         if (engine != null) 
@@ -128,6 +165,16 @@ final class OperationReducer
         return Calculator.isSupported(operation, operands);
     }
 
+    /**
+     *  Evaluate operation with given data operands.
+     *
+     *  @param engine Engine is to be used in evaluation. If null, default engine is used.
+     *  @param operation Operation to evaluate.
+     *  @param operands Operation operands.
+     *
+     *  @return Data instance for operation result.
+     */
+
     private Data calculateData(CalculatorEngine engine, Enum<?> operation, Data[] operands)
     {
         if (engine != null)
@@ -135,6 +182,16 @@ final class OperationReducer
 
         return Calculator.calculate(operation, operands);
     }
+
+    /**
+     *  Evaluate operation with given node operands.
+     *
+     *  @param engine Engine is to be used in evaluation. If null, default engine is used.
+     *  @param operation Operation to evaluate.
+     *  @param operands Operation operands.
+     *
+     *  @return NodeValue instance for operation result.
+     */
 
     private NodeValue calculate(CalculatorEngine engine, Enum<?> operation, Node[] operands)
     {
@@ -152,6 +209,13 @@ final class OperationReducer
         final Data result = calculateData(engine, operation, dataOperands);
         return new NodeValue(result);
     }
+
+    /**
+     *  Helper method to extract operands from operation node.
+     *
+     *  @param operation Operation node to extract operands from.
+     *  @return Array of operand nodes.
+     */
 
     private static Node[] copyOperands(NodeOperation operation)
     {
