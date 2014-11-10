@@ -328,7 +328,7 @@ public final class ExprUtils {
   /**
    * Returns all variables used in the specified expressions.
    * 
-   * @param expr Collection of expressions to be processed.
+   * @param exprs Collection of expressions to be processed.
    * @return A collection of all variables used in the specified expressions.
    * 
    * @throws NullPointerException if the parameter is {@code null}.
