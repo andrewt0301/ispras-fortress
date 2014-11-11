@@ -242,8 +242,7 @@ public final class Transformer
      * Transformation considers only standard predicates.
      *
      * @param expression Expression to be transformed.
-     * @return An expression resulting from substitution of all
-     * bindings found in initial expression.
+     * @return Expression with non-standard operations being replaced.
      *
      * @throws NullPointerException if any of the parameters is
      * <code>null</code>.
