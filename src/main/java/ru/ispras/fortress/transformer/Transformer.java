@@ -234,9 +234,10 @@ public final class Transformer
     }
 
     /**
-     * Transforms given expression according to set of mathematical rules.
+     * Replace operations in expression with standard counterparts.
      * Transforms composite math predicates such as NEQ, GEQ etc. into formula
-     * using NOT, EQ, LE, GE and boolean functions. Works for bitvectors.
+     * using NOT, EQ, LE, GE and boolean functions. Supports general and
+     * bitvector operations.
      *
      * Transformation considers only standard predicates.
      *
@@ -248,7 +249,7 @@ public final class Transformer
      * <code>null</code>.
      */
 
-    public static Node transformStandardPredicate(Node expression)
+    public static Node standardize(Node expression)
     {
         if (expression == null)
             throw new NullPointerException();
