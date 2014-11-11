@@ -71,13 +71,9 @@ public final class ExprUtils {
       return false;
     }
 
-    final Set<StandardOperation> logicOperations = EnumSet.of(
-      StandardOperation.AND,
-      StandardOperation.OR,
-      StandardOperation.NOT,
-      StandardOperation.XOR,
-      StandardOperation.IMPL
-      );
+    final Set<StandardOperation> logicOperations =
+        EnumSet.of(StandardOperation.AND, StandardOperation.OR, StandardOperation.NOT,
+            StandardOperation.XOR, StandardOperation.IMPL);
 
     final ExprTreeVisitor visitor = new ExprTreeVisitorDefault() {
       @Override
@@ -316,8 +312,8 @@ public final class ExprUtils {
    * @return A collection of all variables used in the specified expression.
    * 
    * @throws NullPointerException if the parameter is {@code null}.
-   * @throws IllegalStateException if the method finds nodes that refer
-   *         to different variables that have the same name.
+   * @throws IllegalStateException if the method finds nodes that refer to different variables that
+   *         have the same name.
    */
 
   public static Collection<NodeVariable> getVariables(Node expr) {
@@ -332,15 +328,15 @@ public final class ExprUtils {
    * @return A collection of all variables used in the specified expressions.
    * 
    * @throws NullPointerException if the parameter is {@code null}.
-   * @throws IllegalStateException if the method finds nodes that refer
-   *         to different variables that have the same name.
+   * @throws IllegalStateException if the method finds nodes that refer to different variables that
+   *         have the same name.
    */
 
   public static Collection<NodeVariable> getVariables(Iterable<Node> exprs) {
     checkNotNull(exprs);
 
     final String ERR_MULTIPLE_VARS =
-      "References to different variables that have the same name %s.";
+        "References to different variables that have the same name %s.";
 
     final Map<String, NodeVariable> variables = new HashMap<String, NodeVariable>();
     final ExprTreeWalker walker = new ExprTreeWalker(new ExprTreeVisitorDefault() {

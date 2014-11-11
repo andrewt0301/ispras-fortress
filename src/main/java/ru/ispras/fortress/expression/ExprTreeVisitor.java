@@ -1,175 +1,161 @@
 /*
- * Copyright (c) 2013 ISPRAS (www.ispras.ru)
+ * Copyright 2013-2014 ISP RAS (http://www.ispras.ru)
  * 
- * Institute for System Programming of Russian Academy of Sciences
- * 
- * 25 Alexander Solzhenitsyn st. Moscow 109004 Russia
- * 
- * All rights reserved.
- * 
- * ExprTreeVisitor.java, Dec 17, 2013 12:32:29 PM Andrei Tatarnikov
- * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  * 
  * http://www.apache.org/licenses/LICENSE-2.0
  * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
 
 package ru.ispras.fortress.expression;
 
 /**
- * Interface to be implemented by all visitor objects applied to an expression
- * tree to collect information or to build another representation of the expression.   
+ * Interface to be implemented by all visitor objects applied to an expression tree to collect
+ * information or to build another representation of the expression.
  * 
  * @author Andrei Tatarnikov
  */
 
-public interface ExprTreeVisitor
-{
-    /**
-     * The Status enumeration described possible statuses of the visitor.
-     * Status serve as a directive for the walker to alter its behavior
-     * depending on events that may occur in the visitor.
-     *   
-     * @author Andrei Tatarnikov
-     */
+public interface ExprTreeVisitor {
+  /**
+   * The Status enumeration described possible statuses of the visitor. Status serve as a directive
+   * for the walker to alter its behavior depending on events that may occur in the visitor.
+   * 
+   * @author Andrei Tatarnikov
+   */
 
-    static enum Status
-    {
-        /** Continue traversing */
-        OK,
+  static enum Status {
+    /** Continue traversing */
+    OK,
 
-        /** Skip child nodes */
-        SKIP,
+    /** Skip child nodes */
+    SKIP,
 
-        /** Stop traversing */
-        ABORT
-    }
+    /** Stop traversing */
+    ABORT
+  }
 
-    /**
-     * Returns the current status of the visitor. The status guides 
-     * further actions of the walker. 
-     * 
-     * @return Current visitor status.
-     */
+  /**
+   * Returns the current status of the visitor. The status guides further actions of the walker.
+   * 
+   * @return Current visitor status.
+   */
 
-    Status getStatus();
+  Status getStatus();
 
-    /**
-     * Notifies that processing of an expression tree has been started.
-     */
+  /**
+   * Notifies that processing of an expression tree has been started.
+   */
 
-    void onRootBegin();
+  void onRootBegin();
 
-    /**
-     * Notifies that processing of an expression tree has been finished. 
-     */
+  /**
+   * Notifies that processing of an expression tree has been finished.
+   */
 
-    void onRootEnd();
+  void onRootEnd();
 
-    /**
-     * Starts visiting an operation node.
-     * 
-     * @param node Operation node.
-     */
+  /**
+   * Starts visiting an operation node.
+   * 
+   * @param node Operation node.
+   */
 
-    void onOperationBegin(NodeOperation node);
+  void onOperationBegin(NodeOperation node);
 
-    /**
-     * Finishes visiting an operation node.
-     * 
-     * @param node Operation node.
-     */
+  /**
+   * Finishes visiting an operation node.
+   * 
+   * @param node Operation node.
+   */
 
-    void onOperationEnd(NodeOperation node);
+  void onOperationEnd(NodeOperation node);
 
-    /**
-     * Notifies that visiting an expression operand has started. 
-     * 
-     * @param operation Operation node.
-     * @param operand Operand node.
-     * @param index Operand index.
-     */
+  /**
+   * Notifies that visiting an expression operand has started.
+   * 
+   * @param operation Operation node.
+   * @param operand Operand node.
+   * @param index Operand index.
+   */
 
-    void onOperandBegin(NodeOperation operation, Node operand, int index);
+  void onOperandBegin(NodeOperation operation, Node operand, int index);
 
-    /**
-     * Notifies that visiting an expression operand has finished.
-     * 
-     * @param operation Operation node.
-     * @param operand Operand node.
-     * @param index Operand index.
-     */
+  /**
+   * Notifies that visiting an expression operand has finished.
+   * 
+   * @param operation Operation node.
+   * @param operand Operand node.
+   * @param index Operand index.
+   */
 
-    void onOperandEnd(NodeOperation operation, Node operand, int index);
+  void onOperandEnd(NodeOperation operation, Node operand, int index);
 
-    /**
-     * Notifies that a value node has been visited. 
-     * 
-     * @param value Value node.
-     */
+  /**
+   * Notifies that a value node has been visited.
+   * 
+   * @param value Value node.
+   */
 
-    void onValue(NodeValue value);
+  void onValue(NodeValue value);
 
-    /**
-     * Notifies that a variable node has been visited.
-     * 
-     * @param variable Variable node.
-     */
+  /**
+   * Notifies that a variable node has been visited.
+   * 
+   * @param variable Variable node.
+   */
 
-    void onVariable(NodeVariable variable);
+  void onVariable(NodeVariable variable);
 
-    /**
-     * Starts visiting a binding node.
-     * 
-     * @param node Binding node.
-     */
+  /**
+   * Starts visiting a binding node.
+   * 
+   * @param node Binding node.
+   */
 
-    void onBindingBegin(NodeBinding node);
+  void onBindingBegin(NodeBinding node);
 
-    /**
-     * Notifies that visiting a bound variables list finished.
-     * 
-     * @param node Bounding node.
-     */
+  /**
+   * Notifies that visiting a bound variables list finished.
+   * 
+   * @param node Bounding node.
+   */
 
-    void onBindingListEnd(NodeBinding node);
+  void onBindingListEnd(NodeBinding node);
 
-    /**
-     * Finishes visiting a binding node.
-     * 
-     * @param node Binding node.
-     */
+  /**
+   * Finishes visiting a binding node.
+   * 
+   * @param node Binding node.
+   */
 
-    void onBindingEnd(NodeBinding node);
+  void onBindingEnd(NodeBinding node);
 
-    /**
-     * Notifies that visiting a bound variable has started.
-     * Bound value expression will be visited next as general expression.
-     *
-     * Bound variables are not visited at all.
-     * 
-     * @param node Binding node.
-     * @param variable Bound variable reference.
-     * @param value Bound value expression.
-     */
+  /**
+   * Notifies that visiting a bound variable has started. Bound value expression will be visited
+   * next as general expression.
+   * 
+   * Bound variables are not visited at all.
+   * 
+   * @param node Binding node.
+   * @param variable Bound variable reference.
+   * @param value Bound value expression.
+   */
 
-    void onBoundVariableBegin(NodeBinding node, NodeVariable variable, Node value);
+  void onBoundVariableBegin(NodeBinding node, NodeVariable variable, Node value);
 
-    /**
-     * Notifies that visiting a bound variable has finished.
-     * 
-     * @param node Binding node.
-     * @param variable Bound variable reference.
-     * @param value Bound value expression.
-     */
+  /**
+   * Notifies that visiting a bound variable has finished.
+   * 
+   * @param node Binding node.
+   * @param variable Bound variable reference.
+   * @param value Bound value expression.
+   */
 
-    void onBoundVariableEnd(NodeBinding node, NodeVariable variable, Node value);
+  void onBoundVariableEnd(NodeBinding node, NodeVariable variable, Node value);
 }
