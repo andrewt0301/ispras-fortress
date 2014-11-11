@@ -1,57 +1,51 @@
 /*
- * Copyright (c) 2013 ISPRAS
+ * Copyright 2013-2014 ISP RAS (http://www.ispras.ru)
  * 
- * Institute for System Programming of Russian Academy of Sciences
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  * 
- * 25 Alexander Solzhenitsyn st. Moscow 109004 Russia
+ * http://www.apache.org/licenses/LICENSE-2.0
  * 
- * All rights reserved.
- * 
- * BitVectorUnmodifiable.java, Nov 6, 2013 10:28:57 AM Andrei Tatarnikov
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package ru.ispras.fortress.data.types.bitvector;
 
 /**
- * The BitVectorUnmodifiable class is a wrapper around a BitVector object
- * that forbids modification of data stored in the bit vector.
+ * The BitVectorUnmodifiable class is a wrapper around a BitVector object that forbids modification
+ * of data stored in the bit vector.
  * 
  * @author Andrei Tatarnikov
  */
 
-final class BitVectorUnmodifiable extends BitVector
-{
-    private final BitVector bitVector;
+final class BitVectorUnmodifiable extends BitVector {
+  private final BitVector bitVector;
 
-    public BitVectorUnmodifiable(BitVector bitVector)
-    {
-        if (null == bitVector)
-            throw new NullPointerException();
+  public BitVectorUnmodifiable(BitVector bitVector) {
+    notNullCheck(bitVector);
+    this.bitVector = bitVector;
+  }
 
-        this.bitVector = bitVector;
-    }
+  @Override
+  public int getBitSize() {
+    return bitVector.getBitSize();
+  }
 
-    @Override
-    public int getBitSize()
-    {
-        return bitVector.getBitSize();
-    }
+  @Override
+  public int getByteSize() {
+    return bitVector.getByteSize();
+  }
 
-    @Override
-    public int getByteSize()
-    {
-        return bitVector.getByteSize();
-    }
+  @Override
+  public byte getByte(int index) {
+    return bitVector.getByte(index);
+  }
 
-    @Override
-    public byte getByte(int index)
-    {
-        return bitVector.getByte(index);
-    }
-
-    @Override
-    public void setByte(int index, byte value)
-    {
-        throw new UnsupportedOperationException();
-    }
+  @Override
+  public void setByte(int index, byte value) {
+    throw new UnsupportedOperationException();
+  }
 }
