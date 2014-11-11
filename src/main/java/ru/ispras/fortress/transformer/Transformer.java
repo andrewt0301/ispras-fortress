@@ -34,6 +34,11 @@ import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.transformer.ruleset.Predicate;
 
+/**
+ *  The Transformer class contains static methods for common expression
+ *  transformations.
+ */
+
 public final class Transformer
 {
     private Transformer() {}
@@ -253,7 +258,8 @@ public final class Transformer
         if (expression == null)
             throw new NullPointerException();
         
-        final NodeTransformer tl = new NodeTransformer(Predicate.getRuleset());
+        final NodeTransformer tl =
+            new NodeTransformer(Predicate.getStandardRuleset());
         tl.walk(expression);
         return tl.getResult().iterator().next();
     }

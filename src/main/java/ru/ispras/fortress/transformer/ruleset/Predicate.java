@@ -82,13 +82,21 @@ abstract class ExpressionRule implements TransformerRule
     }
 }
 
+/**
+ *  The Predicate class provides static methods to create predefined
+ *  transformation rulesets to use with
+  * {@link ru.ispras.fortress.transformer.NodeTransformer NodeTransformer}.
+ */
+
 public final class Predicate
 {
+    private Predicate() {}
+
     /**
      *  Create ruleset for standard predicate transformations.
      */
 
-    public static Map<Enum<?>, TransformerRule> getRuleset()
+    public static Map<Enum<?>, TransformerRule> getStandardRuleset()
     {
         Map<Enum<?>, TransformerRule> ruleset =
             new IdentityHashMap<Enum<?>, TransformerRule>();
