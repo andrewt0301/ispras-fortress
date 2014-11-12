@@ -23,9 +23,19 @@ public class SimpleTransformTestCase
         return new NodeOperation(StandardOperation.PLUS, args);
     }
 
-    private static NodeOperation EQ(Node lhs, Node rhs)
+    private static NodeOperation AND(Node ... args)
     {
-        return new NodeOperation(StandardOperation.EQ, lhs, rhs);
+        return new NodeOperation(StandardOperation.AND, args);
+    }
+
+    private static NodeOperation EQ(Node ... args)
+    {
+        return new NodeOperation(StandardOperation.EQ, args);
+    }
+
+    private static NodeOperation NOT(Node node)
+    {
+        return new NodeOperation(StandardOperation.NOT, node);
     }
 
     private static NodeBinding singleBinding(NodeVariable variable, Node value, Node expr)
@@ -100,5 +110,54 @@ public class SimpleTransformTestCase
         final Node expected = PLUS(y, PLUS(x, PLUS(x, PLUS(x, x))));
 
         Assert.assertTrue(unrolled.toString().equals(expected.toString()));
+    }
+
+    @Test
+    public void standardizeBooleanEquality()
+    {
+        final NodeVariable x = createVariable("x");
+        final NodeVariable y = createVariable("y");
+
+        final Node equality = EQ(x, y);
+
+        final Node booleanEquality = EQ(equality, NodeValue.newBoolean(true));
+        final Node booleanInequality = EQ(NodeValue.newBoolean(false), EQ(x, y));
+
+        final Node standardEquality = Transformer.standardize(booleanEquality);
+        final Node standardInequality = Transformer.standardize(booleanInequality);
+
+        Assert.assertTrue(standardEquality.toString().equals(equality.toString()));
+        Assert.assertTrue(standardInequality.toString().equals(NOT(equality).toString()));
+    }
+
+    @Test
+    public void standardizeChainedBooleanEquality()
+    {
+        final NodeVariable x = createVariable("x");
+        final NodeVariable y = createVariable("y");
+        final NodeVariable z = createVariable("z");
+
+        final Node eqxy = EQ(x, y);
+        final Node eqxz = EQ(x, z);
+
+        final Node TRUE = NodeValue.newBoolean(true);
+        final Node FALSE = NodeValue.newBoolean(false);
+
+        final Node trueThenFalse = EQ(eqxy, TRUE, eqxz, FALSE);
+        final Node falseThenTrue = EQ(FALSE, eqxy, eqxz, TRUE);
+
+        final Node expectedEquality = AND(eqxy, eqxz, FALSE);
+        final Node standardEquality = Transformer.standardize(trueThenFalse);
+
+        final Node expectedInequality = AND(NOT(eqxy), NOT(eqxz), FALSE);
+        final Node standardInequality = Transformer.standardize(falseThenTrue);
+
+        Assert.assertTrue(
+            standardEquality.toString().equals(
+                expectedEquality.toString()));
+
+        Assert.assertTrue(
+            standardInequality.toString().equals(
+                expectedInequality.toString()));
     }
 }
