@@ -1,24 +1,14 @@
 /*
- * Copyright (c) 2012 ISPRAS (www.ispras.ru)
- *
- * Institute for System Programming of Russian Academy of Sciences
- *
- * 25 Alexander Solzhenitsyn st. Moscow 109004 Russia
- *
- * All rights reserved.
- *
- * XMLConstraintLoader.java, Feb 1, 2012 12:22:42 PM Andrei Tatarnikov
+ * Copyright 2012-2014 ISP RAS (http://www.ispras.ru)
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  * 
  * http://www.apache.org/licenses/LICENSE-2.0
  * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
 
@@ -37,106 +27,90 @@ import org.xml.sax.SAXException;
 import ru.ispras.fortress.solver.constraint.Constraint;
 
 /**
- * The XMLConstraintLoader class provides functionality that loads a constraint
- * from the specified XML file.
- *
+ * The XMLConstraintLoader class provides functionality that loads a constraint from the specified
+ * XML file.
+ * 
  * @author Andrei Tatarnikov
  */
 
-public final class XMLConstraintLoader
-{
-    private XMLConstraintLoader() {}
-   
-    /**
-     * Loads a constraint from the specified XML file.
-     *
-     * @param fileName The full name of an XML file storing the constraint.
-     * @return A constraint object loaded from the file.
-     * 
-     * @throws NullPointerException if the parameter equals null.
-     * @throws XMLNotLoadedException if an issue occurred during parsing the XML document.
-     */
+public final class XMLConstraintLoader {
+  private XMLConstraintLoader() {}
 
-    public static Constraint loadFromFile(String fileName) throws XMLNotLoadedException
-    {
-        if (null == fileName)
-            throw new NullPointerException();
+  /**
+   * Loads a constraint from the specified XML file.
+   * 
+   * @param fileName The full name of an XML file storing the constraint.
+   * @return A constraint object loaded from the file.
+   * 
+   * @throws NullPointerException if the parameter equals null.
+   * @throws XMLNotLoadedException if an issue occurred during parsing the XML document.
+   */
 
-        try
-        {
-            final XMLConstraintHandler handler = new XMLConstraintHandler();
-            newSAXParser().parse(fileName, handler);
-
-            return handler.getConstraint();
-        }
-        catch (Exception e)
-        {
-            throw new XMLNotLoadedException(fileName, e);
-        }
+  public static Constraint loadFromFile(String fileName) throws XMLNotLoadedException {
+    if (null == fileName) {
+      throw new NullPointerException();
     }
 
-    /**
-     * Creates a constraint from the specified XML string.
-     *
-     * @param text XML text describing a constraint.
-     * @return A constraint object created from the XML text.
-     * 
-     * @throws NullPointerException if the parameter equals null.
-     * @throws XMLNotLoadedException if an issue occurred during parsing the XML text.
-     */
+    try {
+      final XMLConstraintHandler handler = new XMLConstraintHandler();
+      newSAXParser().parse(fileName, handler);
+      return handler.getConstraint();
+    } catch (Exception e) {
+      throw new XMLNotLoadedException(fileName, e);
+    }
+  }
 
-    public static Constraint loadFromString(String text) throws XMLNotLoadedException
-    {
-        if (null == text)
-            throw new NullPointerException();
+  /**
+   * Creates a constraint from the specified XML string.
+   * 
+   * @param text XML text describing a constraint.
+   * @return A constraint object created from the XML text.
+   * 
+   * @throws NullPointerException if the parameter equals null.
+   * @throws XMLNotLoadedException if an issue occurred during parsing the XML text.
+   */
 
-        try
-        {
-            final InputStream stream = 
-                new ByteArrayInputStream(text.getBytes("UTF-8")); 
-
-            final XMLConstraintHandler handler = new XMLConstraintHandler();
-            newSAXParser().parse(stream, handler);
-
-            return handler.getConstraint();
-        }
-        catch (Exception e)
-        {
-            throw new XMLNotLoadedException(e);
-        }
+  public static Constraint loadFromString(String text) throws XMLNotLoadedException {
+    if (null == text) {
+      throw new NullPointerException();
     }
 
-    /**
-     * Loads a constraint from an XML file pointed by the specified URL.
-     *
-     * @param url URL that points to an XML file storing the constraint.
-     * @return A constraint object loaded from the file.
-     * 
-     * @throws NullPointerException if the parameter equals null.
-     * @throws XMLNotLoadedException if an issue occurred during parsing the XML document.
-     */
+    try {
+      final InputStream stream = new ByteArrayInputStream(text.getBytes("UTF-8"));
+      final XMLConstraintHandler handler = new XMLConstraintHandler();
+      newSAXParser().parse(stream, handler);
+      return handler.getConstraint();
+    } catch (Exception e) {
+      throw new XMLNotLoadedException(e);
+    }
+  }
 
-    public static Constraint loadFromURL(URL url) throws XMLNotLoadedException
-    {
-        if (null == url)
-            throw new NullPointerException();
+  /**
+   * Loads a constraint from an XML file pointed by the specified URL.
+   * 
+   * @param url URL that points to an XML file storing the constraint.
+   * @return A constraint object loaded from the file.
+   * 
+   * @throws NullPointerException if the parameter equals null.
+   * @throws XMLNotLoadedException if an issue occurred during parsing the XML document.
+   */
 
-        try
-        {
-            final XMLConstraintHandler handler = new XMLConstraintHandler();
-            newSAXParser().parse(new InputSource(url.openStream()), handler);
-
-            return handler.getConstraint();
-        }
-        catch (Exception e)
-        {
-            throw new XMLNotLoadedException(url.toString(), e);
-        }
+  public static Constraint loadFromURL(URL url) throws XMLNotLoadedException {
+    if (null == url) {
+      throw new NullPointerException();
     }
 
-    private static SAXParser newSAXParser() throws ParserConfigurationException, SAXException
-    {
-        final SAXParserFactory factory = SAXParserFactory.newInstance();
-        return factory.newSAXParser();
+    try {
+      final XMLConstraintHandler handler = new XMLConstraintHandler();
+      newSAXParser().parse(new InputSource(url.openStream()), handler);
+      return handler.getConstraint();
+    } catch (Exception e) {
+      throw new XMLNotLoadedException(url.toString(), e);
     }
+  }
+
+  private static SAXParser newSAXParser() throws ParserConfigurationException, SAXException {
+    final SAXParserFactory factory = SAXParserFactory.newInstance();
+    return factory.newSAXParser();
+  }
 }
