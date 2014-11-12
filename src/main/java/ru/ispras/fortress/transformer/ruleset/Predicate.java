@@ -370,6 +370,28 @@ public final class Predicate
         };
         ruleset.put(rule.getOperationId(), rule);
 
+        rule = new ExpressionRule(StandardOperation.IMPL) {
+            // Since NOT insertion can bring local inconsistencies in
+            // to expression tree we need to fix these.
+            public Node negate(Node node) {
+                final Node negated = new NodeOperation(StandardOperation.NOT, node);
+                if (unrollNotRule.isApplicable(negated)) {
+                    return unrollNotRule.apply(negated);
+                }
+                return negated;
+            }
+
+            @Override
+            public Node apply(Node in) {
+                final Node[] operands = extractOperands(in);
+                for (int i = 0; i < operands.length - 1; ++i) {
+                    operands[i] = negate(operands[i]);
+                }
+                return new NodeOperation(StandardOperation.OR, operands);
+            }
+        };
+        ruleset.put(rule.getOperationId(), rule);
+
         return ruleset;
     }
 }
