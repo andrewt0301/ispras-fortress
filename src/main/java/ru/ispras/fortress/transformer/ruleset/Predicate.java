@@ -1,17 +1,15 @@
 /*
  * Copyright 2014 ISP RAS (http://www.ispras.ru)
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may
- * not use this file except in compliance with the License. You may obtain
- * a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  * 
  * http://www.apache.org/licenses/LICENSE-2.0
  * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package ru.ispras.fortress.transformer.ruleset;
@@ -27,371 +25,339 @@ import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.transformer.TransformerRule;
 
 /**
- *  ExpressionRule is a base class for rules applicable to single
- *  operation type.
+ * ExpressionRule is a base class for rules applicable to single operation type.
  */
 
-abstract class ExpressionRule implements TransformerRule
-{
-    private Enum<?> opId;
+abstract class ExpressionRule implements TransformerRule {
+  private Enum<?> opId;
 
-    /**
-     *  Create new rule for given operation.
-     *
-     *  @param opId Operation identifier for this rule.
-     */
+  /**
+   * Create new rule for given operation.
+   * 
+   * @param opId Operation identifier for this rule.
+   */
 
-    public ExpressionRule(Enum<?> opId)
-    {
-        if (opId == null)
-            throw new NullPointerException();
-
-        this.opId = opId;
+  public ExpressionRule(Enum<?> opId) {
+    if (opId == null) {
+      throw new NullPointerException();
     }
 
-    /**
-     *  Get operation identifier for this rule.
-     */
+    this.opId = opId;
+  }
 
-    public Enum<?> getOperationId()
-    {
-        return opId;
+  /**
+   * Get operation identifier for this rule.
+   */
+
+  public Enum<?> getOperationId() {
+    return opId;
+  }
+
+  @Override
+  public boolean isApplicable(Node node) {
+    return isOperation(node, opId) && isApplicable((NodeOperation) node);
+  }
+
+  /**
+   * Helper method to allow additional constraints in derived classes.
+   * 
+   * @return true if derived class accepts given operation node.
+   */
+
+  public boolean isApplicable(NodeOperation op) {
+    return true;
+  }
+
+  public abstract Node apply(Node node);
+
+  /**
+   * Helper method to extract operands from node.
+   * 
+   * @param node Operation node to extract operands from.
+   */
+
+  public static Node[] extractOperands(Node node) {
+    final NodeOperation in = (NodeOperation) node;
+    final Node[] operands = new Node[in.getOperandCount()];
+    
+    for (int i = 0; i < operands.length; ++i) {
+      operands[i] = in.getOperand(i);
     }
 
-    @Override
-    public boolean isApplicable(Node node)
-    {
-        return isOperation(node, opId) && isApplicable((NodeOperation) node);
+    return operands;
+  }
+
+  /**
+   * Check if node represents boolean value.
+   * 
+   * @param node Node instance to be checked.
+   * 
+   * @return true if node is NodeValue instance with boolean type.
+   */
+
+  public static boolean isBoolean(Node node) {
+    return node.getKind() == Node.Kind.VALUE
+      && ((NodeValue) node).getDataType() == DataType.BOOLEAN;
+  }
+
+  /**
+   * Get boolean value of node in unsafe manner.
+   * 
+   * @param node NodeValue instance with boolean type.
+   * 
+   * @return boolean value of given node.
+   */
+
+  public static boolean getBoolean(Node node) {
+    return (Boolean) ((NodeValue) node).getValue();
+  }
+
+  /**
+   * Check if node represents specific operation.
+   * 
+   * @param node Node instance to be checked.
+   * @param opId Operation identifier.
+   * 
+   * @return true if node is NodeOperations instance with given operation id.
+   */
+
+  public static boolean isOperation(Node node, Enum<?> opId) {
+    return node.getKind() == Node.Kind.OPERATION && ((NodeOperation) node).getOperationId() == opId;
+  }
+
+  /**
+   * Find first boolean value among operands.
+   * 
+   * @param op Operation which operands are to be looked.
+   * @param start Start looking at operands starting with this index.
+   * 
+   * @return Operand index of boolean value, -1 if none found.
+   */
+
+  public static int booleanOperandIndex(NodeOperation op, int start) {
+    for (int i = start; i < op.getOperandCount(); ++i) {
+      if (isBoolean(op.getOperand(i))) {
+        return i;
+      }
     }
-
-    /**
-     *  Helper method to allow additional constraints in derived classes.
-     *
-     *  @return true if derived class accepts given operation node.
-     */
-
-    public boolean isApplicable(NodeOperation op)
-    {
-        return true;
-    }
-
-    public abstract Node apply(Node node);
-
-    /**
-     *  Helper method to extract operands from node.
-     *
-     *  @param node Operation node to extract operands from.
-     */
-
-    public static Node[] extractOperands(Node node)
-    {
-        NodeOperation in = (NodeOperation) node;
-        Node[] operands = new Node[in.getOperandCount()];
-        for (int i = 0; i < operands.length; ++i)
-            operands[i] = in.getOperand(i);
-
-        return operands;
-    }
-
-    /**
-     *  Check if node represents boolean value.
-     *
-     *  @param node Node instance to be checked.
-     *
-     *  @return true if node is NodeValue instance with boolean type.
-     */
-
-    public static boolean isBoolean(Node node)
-    {
-        return node.getKind() == Node.Kind.VALUE &&
-                ((NodeValue) node).getDataType() == DataType.BOOLEAN;
-    }
-
-    /**
-     *  Get boolean value of node in unsafe manner.
-     *
-     *  @param node NodeValue instance with boolean type.
-     *
-     *  @return boolean value of given node.
-     */
-
-    public static boolean getBoolean(Node node)
-    {
-        return (Boolean) ((NodeValue) node).getValue();
-    }
-
-    /**
-     *  Check if node represents specific operation.
-     *
-     *  @param node Node instance to be checked.
-     *  @param opId Operation identifier.
-     *
-     *  @return true if node is NodeOperations instance with given operation id.
-     */
-
-    public static boolean isOperation(Node node, Enum<?> opId)
-    {
-        return node.getKind() == Node.Kind.OPERATION &&
-               ((NodeOperation) node).getOperationId() == opId;
-    }
-
-    /**
-     *  Find first boolean value among operands.
-     *
-     *  @param op Operation which operands are to be looked.
-     *  @param start Start looking at operands starting with this index.
-     *
-     *  @return Operand index of boolean value, -1 if none found.
-     */
-
-    public static int booleanOperandIndex(NodeOperation op, int start)
-    {
-        for (int i = start; i < op.getOperandCount(); ++i) {
-            if (isBoolean(op.getOperand(i))) {
-                return i;
-            }
-        }
-        return -1;
-    }
+    return -1;
+  }
 }
 
+
 /**
- *  The Predicate class provides static methods to create predefined
- *  transformation rulesets to use with
-  * {@link ru.ispras.fortress.transformer.NodeTransformer NodeTransformer}.
+ * The Predicate class provides static methods to create predefined transformation rulesets to use
+ * with {@link ru.ispras.fortress.transformer.NodeTransformer NodeTransformer}.
  */
 
-public final class Predicate
-{
-    private Predicate() {}
+public final class Predicate {
+  private Predicate() {}
 
-    /**
-     *  Create ruleset for standard predicate transformations.
-     */
+  /**
+   * Create ruleset for standard predicate transformations.
+   */
 
-    public static Map<Enum<?>, TransformerRule> getStandardRuleset()
-    {
-        Map<Enum<?>, TransformerRule> ruleset =
-            new IdentityHashMap<Enum<?>, TransformerRule>();
+  public static Map<Enum<?>, TransformerRule> getStandardRuleset() {
+    final Map<Enum<?>, TransformerRule> ruleset = new IdentityHashMap<Enum<?>, TransformerRule>();
 
-        ExpressionRule rule;
+    ExpressionRule rule;
 
-        rule = new ExpressionRule(StandardOperation.NOTEQ) {
-            @Override
-            public Node apply(Node in) {
-                return new NodeOperation(
-                    StandardOperation.NOT,
-                    new NodeOperation(StandardOperation.EQ, extractOperands(in)));
-            }
-        };
-        ruleset.put(rule.getOperationId(), rule);
-   
-        rule = new ExpressionRule(StandardOperation.LESSEQ) {
-            @Override
-            public Node apply(Node in) {
-                Node[] operands = extractOperands(in);
-                return new NodeOperation(
-                    StandardOperation.OR,
-                    new NodeOperation(StandardOperation.LESS, operands),
-                    new NodeOperation(StandardOperation.EQ, operands));
-            }
-        };
-        ruleset.put(rule.getOperationId(), rule);
-   
-        rule = new ExpressionRule(StandardOperation.GREATER) {
-            @Override
-            public Node apply(Node in) {
-                Node [] operands = extractOperands(in);
-                return new NodeOperation(
-                    StandardOperation.AND,
-                    new NodeOperation(StandardOperation.NOT,
-                        new NodeOperation(StandardOperation.LESS, operands)),
-                    new NodeOperation(StandardOperation.NOT,
-                        new NodeOperation(StandardOperation.EQ, operands)));
-            }
-        };
-        ruleset.put(rule.getOperationId(), rule);
-   
-        rule = new ExpressionRule(StandardOperation.GREATEREQ) {
-            @Override
-            public Node apply(Node in) {
-                return new NodeOperation(
-                    StandardOperation.NOT,
-                    new NodeOperation(StandardOperation.LESS, extractOperands(in)));
-            }
-        };
-        ruleset.put(rule.getOperationId(), rule);
+    rule = new ExpressionRule(StandardOperation.NOTEQ) {
+      @Override
+      public Node apply(Node in) {
+        return new NodeOperation(StandardOperation.NOT, new NodeOperation(StandardOperation.EQ,
+            extractOperands(in)));
+      }
+    };
+    ruleset.put(rule.getOperationId(), rule);
 
-        rule = new ExpressionRule(StandardOperation.BVULE) {
-            @Override
-            public Node apply(Node in) {
-                Node[] operands = extractOperands(in);
-                return new NodeOperation(
-                    StandardOperation.OR,
-                    new NodeOperation(StandardOperation.BVULT, operands),
-                    new NodeOperation(StandardOperation.EQ, operands));
-            }
-        };
-        ruleset.put(rule.getOperationId(), rule);
+    rule = new ExpressionRule(StandardOperation.LESSEQ) {
+      @Override
+      public Node apply(Node in) {
+        Node[] operands = extractOperands(in);
+        return new NodeOperation(StandardOperation.OR, new NodeOperation(StandardOperation.LESS,
+            operands), new NodeOperation(StandardOperation.EQ, operands));
+      }
+    };
+    ruleset.put(rule.getOperationId(), rule);
 
-        rule = new ExpressionRule(StandardOperation.BVUGE) {
-            @Override
-            public Node apply(Node in) {
-                return new NodeOperation(
-                    StandardOperation.NOT,
-                    new NodeOperation(StandardOperation.BVULT, extractOperands(in)));
-            }
-        };
-        ruleset.put(rule.getOperationId(), rule);
+    rule = new ExpressionRule(StandardOperation.GREATER) {
+      @Override
+      public Node apply(Node in) {
+        Node[] operands = extractOperands(in);
+        return new NodeOperation(StandardOperation.AND, new NodeOperation(StandardOperation.NOT,
+            new NodeOperation(StandardOperation.LESS, operands)), new NodeOperation(
+            StandardOperation.NOT, new NodeOperation(StandardOperation.EQ, operands)));
+      }
+    };
+    ruleset.put(rule.getOperationId(), rule);
 
-        rule = new ExpressionRule(StandardOperation.BVUGT) {
-            @Override
-            public Node apply(Node in) {
-                Node [] operands = extractOperands(in);
-                return new NodeOperation(
-                    StandardOperation.AND,
-                    new NodeOperation(StandardOperation.NOT,
-                        new NodeOperation(StandardOperation.BVULT, operands)),
-                    new NodeOperation(StandardOperation.NOT,
-                        new NodeOperation(StandardOperation.EQ, operands)));
-            }
-        };
-        ruleset.put(rule.getOperationId(), rule);
+    rule = new ExpressionRule(StandardOperation.GREATEREQ) {
+      @Override
+      public Node apply(Node in) {
+        return new NodeOperation(StandardOperation.NOT, new NodeOperation(StandardOperation.LESS,
+            extractOperands(in)));
+      }
+    };
+    ruleset.put(rule.getOperationId(), rule);
 
-        rule = new ExpressionRule(StandardOperation.BVSLE) {
-            @Override
-            public Node apply(Node in) {
-                Node[] operands = extractOperands(in);
-                return new NodeOperation(
-                    StandardOperation.OR,
-                    new NodeOperation(StandardOperation.BVSLT, operands),
-                    new NodeOperation(StandardOperation.EQ, operands));
-            }
-        };
-        ruleset.put(rule.getOperationId(), rule);
+    rule = new ExpressionRule(StandardOperation.BVULE) {
+      @Override
+      public Node apply(Node in) {
+        Node[] operands = extractOperands(in);
+        return new NodeOperation(StandardOperation.OR, new NodeOperation(StandardOperation.BVULT,
+            operands), new NodeOperation(StandardOperation.EQ, operands));
+      }
+    };
+    ruleset.put(rule.getOperationId(), rule);
 
-        rule = new ExpressionRule(StandardOperation.BVSGE) {
-            @Override
-            public Node apply(Node in) {
-                return new NodeOperation(
-                    StandardOperation.NOT,
-                    new NodeOperation(StandardOperation.BVSLT, extractOperands(in)));
-            }
-        };
-        ruleset.put(rule.getOperationId(), rule);
+    rule = new ExpressionRule(StandardOperation.BVUGE) {
+      @Override
+      public Node apply(Node in) {
+        return new NodeOperation(StandardOperation.NOT, new NodeOperation(StandardOperation.BVULT,
+            extractOperands(in)));
+      }
+    };
+    ruleset.put(rule.getOperationId(), rule);
 
-        rule = new ExpressionRule(StandardOperation.BVSGT) {
-            @Override
-            public Node apply(Node in) {
-                Node [] operands = extractOperands(in);
-                return new NodeOperation(
-                    StandardOperation.AND,
-                    new NodeOperation(StandardOperation.NOT,
-                        new NodeOperation(StandardOperation.BVSLT, operands)),
-                    new NodeOperation(StandardOperation.NOT,
-                        new NodeOperation(StandardOperation.EQ, operands)));
-            }
-        };
-        ruleset.put(rule.getOperationId(), rule);
+    rule = new ExpressionRule(StandardOperation.BVUGT) {
+      @Override
+      public Node apply(Node in) {
+        Node[] operands = extractOperands(in);
+        return new NodeOperation(StandardOperation.AND, new NodeOperation(StandardOperation.NOT,
+            new NodeOperation(StandardOperation.BVULT, operands)), new NodeOperation(
+            StandardOperation.NOT, new NodeOperation(StandardOperation.EQ, operands)));
+      }
+    };
+    ruleset.put(rule.getOperationId(), rule);
+
+    rule = new ExpressionRule(StandardOperation.BVSLE) {
+      @Override
+      public Node apply(Node in) {
+        Node[] operands = extractOperands(in);
+        return new NodeOperation(StandardOperation.OR, new NodeOperation(StandardOperation.BVSLT,
+            operands), new NodeOperation(StandardOperation.EQ, operands));
+      }
+    };
+    ruleset.put(rule.getOperationId(), rule);
+
+    rule = new ExpressionRule(StandardOperation.BVSGE) {
+      @Override
+      public Node apply(Node in) {
+        return new NodeOperation(StandardOperation.NOT, new NodeOperation(StandardOperation.BVSLT,
+            extractOperands(in)));
+      }
+    };
+    ruleset.put(rule.getOperationId(), rule);
+
+    rule = new ExpressionRule(StandardOperation.BVSGT) {
+      @Override
+      public Node apply(Node in) {
+        Node[] operands = extractOperands(in);
+        return new NodeOperation(StandardOperation.AND, new NodeOperation(StandardOperation.NOT,
+            new NodeOperation(StandardOperation.BVSLT, operands)), new NodeOperation(
+            StandardOperation.NOT, new NodeOperation(StandardOperation.EQ, operands)));
+      }
+    };
+    ruleset.put(rule.getOperationId(), rule);
 
 
-        // (not true/false) -> false/true
-        // (not (not expr)) -> expr
-        final ExpressionRule unrollNotRule = new ExpressionRule(StandardOperation.NOT) {
-            @Override
-            public boolean isApplicable(NodeOperation op) {
-                final Node child = op.getOperand(0);
-                return isBoolean(child) || isOperation(child, StandardOperation.NOT);
-            }
+    // (not true/false) -> false/true
+    // (not (not expr)) -> expr
+    final ExpressionRule unrollNotRule = new ExpressionRule(StandardOperation.NOT) {
+      @Override
+      public boolean isApplicable(NodeOperation op) {
+        final Node child = op.getOperand(0);
+        return isBoolean(child) || isOperation(child, StandardOperation.NOT);
+      }
 
-            @Override
-            public Node apply(Node in) {
-                final Node child = ((NodeOperation) in).getOperand(0);
+      @Override
+      public Node apply(Node in) {
+        final Node child = ((NodeOperation) in).getOperand(0);
 
-                if (isBoolean(child)) {
-                    final Node neg = NodeValue.newBoolean(!getBoolean(child));
-                    neg.setUserData(child.getUserData());
-                    return neg;
-                }
-                return ((NodeOperation) child).getOperand(0);
-            }
-        };
-        ruleset.put(unrollNotRule.getOperationId(), unrollNotRule);
+        if (isBoolean(child)) {
+          final Node neg = NodeValue.newBoolean(!getBoolean(child));
+          neg.setUserData(child.getUserData());
+          return neg;
+        }
+        return ((NodeOperation) child).getOperand(0);
+      }
+    };
+    ruleset.put(unrollNotRule.getOperationId(), unrollNotRule);
 
-        // (eq expr true) -> expr
-        // (eq expr false) -> (not expr)
-        // (eq true expr0 ...) -> (and expr0 ...)
-        // (eq false expr0 ...) -> (and (not expr0) ...)
-        rule = new ExpressionRule(StandardOperation.EQ) {
-            @Override
-            public boolean isApplicable(NodeOperation in) {
-                return booleanOperandIndex(in, 0) >= 0;
-            }
+    // (eq expr true) -> expr
+    // (eq expr false) -> (not expr)
+    // (eq true expr0 ...) -> (and expr0 ...)
+    // (eq false expr0 ...) -> (and (not expr0) ...)
+    rule = new ExpressionRule(StandardOperation.EQ) {
+      @Override
+      public boolean isApplicable(NodeOperation in) {
+        return booleanOperandIndex(in, 0) >= 0;
+      }
 
-            // Since NOT insertion can bring local inconsistencies in
-            // to expression tree we need to fix these.
-            public Node negate(Node node) {
-                final Node negated = new NodeOperation(StandardOperation.NOT, node);
-                if (unrollNotRule.isApplicable(negated)) {
-                    return unrollNotRule.apply(negated);
-                }
-                return negated;
-            }
+      // Since NOT insertion can bring local inconsistencies in
+      // to expression tree we need to fix these.
+      public Node negate(Node node) {
+        final Node negated = new NodeOperation(StandardOperation.NOT, node);
+        if (unrollNotRule.isApplicable(negated)) {
+          return unrollNotRule.apply(negated);
+        }
+        return negated;
+      }
 
-            @Override
-            public Node apply(Node in) {
-                final NodeOperation op = (NodeOperation) in;
-                final int index = booleanOperandIndex(op, 0);
-                final boolean value =
-                    ((Boolean) ((NodeValue) op.getOperand(index)).getValue());
+      @Override
+      public Node apply(Node in) {
+        final NodeOperation op = (NodeOperation) in;
+        final int index = booleanOperandIndex(op, 0);
+        final boolean value = ((Boolean) ((NodeValue) op.getOperand(index)).getValue());
 
-                // For simple equalities just return plain or negated expression
-                if (op.getOperandCount() == 2) {
-                    final Node node = op.getOperand((index + 1) % 2);
-                    return (value) ? node : negate(node);
-                }
-           
-                // Chained equality with known boolean is conjunction of
-                // plain or negated expressions.
-                final Node[] operands = new Node[op.getOperandCount() - 1];
-                for (int i = 0; i < index; ++i) {
-                    operands[i] = op.getOperand(i);
-                }
-                for (int i = index + 1; i < op.getOperandCount(); ++i) {
-                    operands[i - 1] = op.getOperand(i);
-                }
-                if (!value) {
-                    for (int i = 0; i < operands.length; ++i) {
-                        operands[i] = negate(operands[i]);
-                    }
-                }
-                return new NodeOperation(StandardOperation.AND, operands);
-            }
-        };
-        ruleset.put(rule.getOperationId(), rule);
+        // For simple equalities just return plain or negated expression
+        if (op.getOperandCount() == 2) {
+          final Node node = op.getOperand((index + 1) % 2);
+          return (value) ? node : negate(node);
+        }
 
-        rule = new ExpressionRule(StandardOperation.IMPL) {
-            // Since NOT insertion can bring local inconsistencies in
-            // to expression tree we need to fix these.
-            public Node negate(Node node) {
-                final Node negated = new NodeOperation(StandardOperation.NOT, node);
-                if (unrollNotRule.isApplicable(negated)) {
-                    return unrollNotRule.apply(negated);
-                }
-                return negated;
-            }
+        // Chained equality with known boolean is conjunction of
+        // plain or negated expressions.
+        final Node[] operands = new Node[op.getOperandCount() - 1];
+        for (int i = 0; i < index; ++i) {
+          operands[i] = op.getOperand(i);
+        }
+        for (int i = index + 1; i < op.getOperandCount(); ++i) {
+          operands[i - 1] = op.getOperand(i);
+        }
+        if (!value) {
+          for (int i = 0; i < operands.length; ++i) {
+            operands[i] = negate(operands[i]);
+          }
+        }
+        return new NodeOperation(StandardOperation.AND, operands);
+      }
+    };
+    ruleset.put(rule.getOperationId(), rule);
 
-            @Override
-            public Node apply(Node in) {
-                final Node[] operands = extractOperands(in);
-                for (int i = 0; i < operands.length - 1; ++i) {
-                    operands[i] = negate(operands[i]);
-                }
-                return new NodeOperation(StandardOperation.OR, operands);
-            }
-        };
-        ruleset.put(rule.getOperationId(), rule);
+    rule = new ExpressionRule(StandardOperation.IMPL) {
+      // Since NOT insertion can bring local inconsistencies in
+      // to expression tree we need to fix these.
+      public Node negate(Node node) {
+        final Node negated = new NodeOperation(StandardOperation.NOT, node);
+        if (unrollNotRule.isApplicable(negated)) {
+          return unrollNotRule.apply(negated);
+        }
+        return negated;
+      }
 
-        return ruleset;
-    }
+      @Override
+      public Node apply(Node in) {
+        final Node[] operands = extractOperands(in);
+        for (int i = 0; i < operands.length - 1; ++i) {
+          operands[i] = negate(operands[i]);
+        }
+        return new NodeOperation(StandardOperation.OR, operands);
+      }
+    };
+    ruleset.put(rule.getOperationId(), rule);
+
+    return ruleset;
+  }
 }
