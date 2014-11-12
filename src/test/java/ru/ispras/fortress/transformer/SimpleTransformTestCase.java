@@ -152,14 +152,14 @@ public class SimpleTransformTestCase {
     final Node TRUE = NodeValue.newBoolean(true);
     final Node FALSE = NodeValue.newBoolean(false);
 
-    final Node trueThenFalse = EQ(eqxy, TRUE, eqxz, FALSE);
-    final Node falseThenTrue = EQ(FALSE, eqxy, eqxz, TRUE);
+    final Node equalsTrue = EQ(eqxy, TRUE, eqxz);
+    final Node equalsFalse = EQ(FALSE, eqxy, eqxz);
 
-    final Node expectedEquality = AND(eqxy, eqxz, FALSE);
-    final Node standardEquality = Transformer.standardize(trueThenFalse);
+    final Node expectedEquality = AND(eqxy, eqxz);
+    final Node standardEquality = Transformer.standardize(equalsTrue);
 
-    final Node expectedInequality = AND(NOT(eqxy), NOT(eqxz), FALSE);
-    final Node standardInequality = Transformer.standardize(falseThenTrue);
+    final Node expectedInequality = AND(NOT(eqxy), NOT(eqxz));
+    final Node standardInequality = Transformer.standardize(equalsFalse);
 
     Assert.assertTrue(standardEquality.toString().equals(expectedEquality.toString()));
     Assert.assertTrue(standardInequality.toString().equals(expectedInequality.toString()));
@@ -187,5 +187,49 @@ public class SimpleTransformTestCase {
     Assert.assertTrue(std2.toString().equals(OR(NOT(eqxy), eqxz).toString()));
     Assert.assertTrue(std3.toString().equals(
         OR(NOT(eqxy), NOT(eqxz), eqyz).toString()));
+  }
+
+  @Test
+  public void standardizeConjunction() {
+    final NodeVariable x = createVariable("x");
+    final NodeVariable y = createVariable("y");
+    final Node eqxy = EQ(x, y);
+
+    final Node TRUE = NodeValue.newBoolean(true);
+    final Node FALSE = NodeValue.newBoolean(false);
+
+    final Node allTrue = AND(TRUE, TRUE, TRUE);
+    final Node singleExpr = AND(TRUE, eqxy, TRUE);
+    final Node multiExpr = AND(eqxy, TRUE, TRUE, TRUE, eqxy, TRUE);
+    final Node singleFalse = AND(TRUE, TRUE, TRUE, eqxy, FALSE, eqxy);
+
+    Assert.assertTrue(Transformer.standardize(allTrue).toString().equals(TRUE.toString()));
+    Assert.assertTrue(Transformer.standardize(singleExpr).toString().equals(eqxy.toString()));
+    Assert.assertTrue(Transformer.standardize(singleFalse).toString().equals(FALSE.toString()));
+    Assert.assertTrue(
+      Transformer.standardize(multiExpr).toString().equals(
+        AND(eqxy, eqxy).toString()));
+  }
+
+  @Test
+  public void standardizeDisjunction() {
+    final NodeVariable x = createVariable("x");
+    final NodeVariable y = createVariable("y");
+    final Node eqxy = EQ(x, y);
+
+    final Node TRUE = NodeValue.newBoolean(true);
+    final Node FALSE = NodeValue.newBoolean(false);
+
+    final Node allFalse = OR(FALSE, FALSE, FALSE);
+    final Node singleExpr = OR(FALSE, eqxy, FALSE);
+    final Node multiExpr = OR(eqxy, FALSE, FALSE, FALSE, eqxy, FALSE);
+    final Node singleTrue = OR(FALSE, FALSE, FALSE, eqxy, TRUE, eqxy);
+
+    Assert.assertTrue(Transformer.standardize(allFalse).toString().equals(FALSE.toString()));
+    Assert.assertTrue(Transformer.standardize(singleExpr).toString().equals(eqxy.toString()));
+    Assert.assertTrue(Transformer.standardize(singleTrue).toString().equals(TRUE.toString()));
+    Assert.assertTrue(
+      Transformer.standardize(multiExpr).toString().equals(
+        OR(eqxy, eqxy).toString()));
   }
 }
