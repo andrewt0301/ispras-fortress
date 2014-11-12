@@ -155,6 +155,23 @@ public final class Predicate {
 
   /**
    * Create ruleset for standard predicate transformations.
+   * Complete list of transformations is as follows:
+   * <pre>
+   * {@code
+   * (neq ...) -> (not (= ...))
+   * (<= ...) -> (or (< ...) (= ...))
+   * (> ...) -> (and (not (< ...)) (not (= ...)))
+   * (>= ...) -> (not (< ...))
+   * (not true/false) -> false/true
+   * (not (not expr)) -> expr
+   * (= true e) -> e0
+   * (= false e) -> (not e0)
+   * (= true e0 ...) -> (and e0 ...)
+   * (= false e0 ...) -> (and (not e0) ...)
+   * (=> e0 ... en) -> (or (not e0) ... en)
+   * }
+   * </pre>
+   *
    */
 
   public static Map<Enum<?>, TransformerRule> getStandardRuleset() {
