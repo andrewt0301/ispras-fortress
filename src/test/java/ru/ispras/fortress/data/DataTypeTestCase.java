@@ -1,3 +1,17 @@
+/*
+ * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
 package ru.ispras.fortress.data;
 
 import org.junit.*;
@@ -5,26 +19,23 @@ import org.junit.*;
 import java.math.BigInteger;
 import java.util.Map;
 
-public class DataTypeTestCase
-{
-    @Test
-    @SuppressWarnings("unchecked")
-    public void parseKeyValue()
-    {
-        final String strval = "((1:2)(2:3)(3:4))";
-        final DataType type = DataType.MAP(DataType.INTEGER, DataType.INTEGER);
-        final Data data = type.valueOf(strval, 10);
+public class DataTypeTestCase {
+  @Test
+  @SuppressWarnings("unchecked")
+  public void parseKeyValue() {
+    final String strval = "((1:2)(2:3)(3:4))";
+    final DataType type = DataType.MAP(DataType.INTEGER, DataType.INTEGER);
+    final Data data = type.valueOf(strval, 10);
 
-        Assert.assertTrue(data.getValue() instanceof Map);
+    Assert.assertTrue(data.getValue() instanceof Map);
 
-        final Map<Data, Data> map = (Map<Data, Data>) data.getValue();
-        Assert.assertTrue(map.size() == 3);
+    final Map<Data, Data> map = (Map<Data, Data>) data.getValue();
+    Assert.assertTrue(map.size() == 3);
 
-        for (Map.Entry<Data, Data> entry : map.entrySet())
-        {
-            final BigInteger key = (BigInteger) entry.getKey().getValue();
-            final BigInteger value = (BigInteger) entry.getValue().getValue();
-            Assert.assertTrue(value.compareTo(key.add(BigInteger.ONE)) == 0);
-        }
+    for (Map.Entry<Data, Data> entry : map.entrySet()) {
+      final BigInteger key = (BigInteger) entry.getKey().getValue();
+      final BigInteger value = (BigInteger) entry.getValue().getValue();
+      Assert.assertTrue(value.compareTo(key.add(BigInteger.ONE)) == 0);
     }
+  }
 }
