@@ -42,6 +42,14 @@ public class SimpleTransformTestCase {
     return new NodeOperation(StandardOperation.EQ, args);
   }
 
+  private static NodeOperation OR(Node... args) {
+    return new NodeOperation(StandardOperation.OR, args);
+  }
+
+  private static NodeOperation IMPL(Node... args) {
+    return new NodeOperation(StandardOperation.IMPL, args);
+  }
+
   private static NodeOperation NOT(Node node) {
     return new NodeOperation(StandardOperation.NOT, node);
   }
@@ -155,5 +163,29 @@ public class SimpleTransformTestCase {
 
     Assert.assertTrue(standardEquality.toString().equals(expectedEquality.toString()));
     Assert.assertTrue(standardInequality.toString().equals(expectedInequality.toString()));
+  }
+
+  @Test
+  public void standardizeImplication() {
+    final NodeVariable x = createVariable("x");
+    final NodeVariable y = createVariable("y");
+    final NodeVariable z = createVariable("z");
+
+    final Node eqxy = EQ(x, y);
+    final Node eqxz = EQ(x, z);
+    final Node eqyz = EQ(y, z);
+
+    final Node TRUE = NodeValue.newBoolean(true);
+    final Node FALSE = NodeValue.newBoolean(false);
+
+    final Node impl2 = IMPL(eqxy, eqxz);
+    final Node impl3 = IMPL(eqxy, eqxz, eqyz);
+
+    final Node std2 = Transformer.standardize(impl2);
+    final Node std3 = Transformer.standardize(impl3);
+
+    Assert.assertTrue(std2.toString().equals(OR(NOT(eqxy), eqxz).toString()));
+    Assert.assertTrue(std3.toString().equals(
+        OR(NOT(eqxy), NOT(eqxz), eqyz).toString()));
   }
 }
