@@ -14,8 +14,8 @@
 
 package ru.ispras.fortress.transformer.ruleset;
 
-import java.util.Map;
 import java.util.IdentityHashMap;
+import java.util.Map;
 
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.expression.Node;
@@ -144,6 +144,59 @@ abstract class ExpressionRule implements TransformerRule {
   }
 }
 
+final class UnrollClause extends ExpressionRule {
+  private final boolean symbol;
+
+  UnrollClause(StandardOperation op) {
+    super(op);
+    if (op == StandardOperation.AND) {
+      this.symbol = false;
+    } else if (op == StandardOperation.OR) {
+      this.symbol = true;
+    } else {
+      throw new IllegalArgumentException();
+    }
+  }
+  
+  @Override
+  public boolean isApplicable(NodeOperation in) {
+    return booleanOperandIndex(in, 0) >= 0;
+  }
+
+  @Override
+  public Node apply(Node in) {
+    final NodeOperation op = (NodeOperation) in;
+
+    int cnt = 0;
+    int pos = booleanOperandIndex(op, 0);
+    while (pos >= 0) {
+      if (getBoolean(op.getOperand(pos)) == symbol) {
+        return op.getOperand(pos);
+      }
+      pos = booleanOperandIndex(op, pos + 1);
+      ++cnt;
+    }
+    final int effectiveNum = op.getOperandCount() - cnt;
+    if (effectiveNum == 0) {
+      return op.getOperand(0);
+    }
+    if (effectiveNum == 1) {
+      for (int i = 0; i < op.getOperandCount(); ++i) {
+        if (!isBoolean(op.getOperand(i))) {
+          return op.getOperand(i);
+        }
+      }
+    }
+    int index = 0;
+    final Node[] operands = new Node[effectiveNum];
+    for (int i = 0; i < op.getOperandCount(); ++i) {
+      if (!isBoolean(op.getOperand(i))) {
+        operands[index++] = op.getOperand(i);
+      }
+    }
+    return new NodeOperation(getOperationId(), operands);
+  }
+}
 
 /**
  * The Predicate class provides static methods to create predefined transformation rulesets to use
@@ -302,6 +355,12 @@ public final class Predicate {
     };
     ruleset.put(unrollNotRule.getOperationId(), unrollNotRule);
 
+    final ExpressionRule conjunctionRule = new UnrollClause(StandardOperation.AND);
+    ruleset.put(conjunctionRule.getOperationId(), conjunctionRule);
+
+    final ExpressionRule disjunctionRule = new UnrollClause(StandardOperation.OR);
+    ruleset.put(disjunctionRule.getOperationId(), disjunctionRule);
+
     // (eq expr true) -> expr
     // (eq expr false) -> (not expr)
     // (eq true expr0 ...) -> (and expr0 ...)
@@ -348,7 +407,11 @@ public final class Predicate {
             operands[i] = negate(operands[i]);
           }
         }
-        return new NodeOperation(StandardOperation.AND, operands);
+        final Node node = new NodeOperation(StandardOperation.AND, operands);
+        if (conjunctionRule.isApplicable(node)) {
+          return conjunctionRule.apply(node);
+        }
+        return node;
       }
     };
     ruleset.put(rule.getOperationId(), rule);
@@ -370,7 +433,11 @@ public final class Predicate {
         for (int i = 0; i < operands.length - 1; ++i) {
           operands[i] = negate(operands[i]);
         }
-        return new NodeOperation(StandardOperation.OR, operands);
+        final Node node = new NodeOperation(StandardOperation.OR, operands);
+        if (disjunctionRule.isApplicable(node)) {
+          return disjunctionRule.apply(node);
+        }
+        return node;
       }
     };
     ruleset.put(rule.getOperationId(), rule);
