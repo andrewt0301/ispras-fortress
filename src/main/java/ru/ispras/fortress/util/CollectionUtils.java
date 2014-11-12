@@ -82,6 +82,20 @@ public final class CollectionUtils {
   }
 
   /**
+   * Checks whether two sets are intersected (have as non-empty intersection).
+   * 
+   * @param lhs First set (left hand).
+   * @param rhs Second set (right hand).
+   * @return {@code true} if the sets are intersected if {@code false} otherwise. 
+   * 
+   * @throws NullPointerException if any of the parameters is {@code null}.
+   */
+
+  public static <E> boolean areIntersectedSets(Set<E> lhs, Set<E> rhs) {
+    return intersectSets(lhs, rhs).isEmpty();
+  }
+
+  /**
    * Returns a relative complement of two sets.
    * 
    * @param lhs First set (left hand).
