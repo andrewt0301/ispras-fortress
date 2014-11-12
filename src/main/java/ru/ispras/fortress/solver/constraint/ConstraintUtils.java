@@ -40,7 +40,7 @@ public final class ConstraintUtils {
   public static Constraint newConstraint(Node expr) {
     checkNotNull(expr);
 
-    final ConstraintBuilder builder = 
+    final ConstraintBuilder builder =
       new ConstraintBuilder(ConstraintKind.FORMULA_BASED);
 
     final Formulas formulas = new Formulas(expr);
