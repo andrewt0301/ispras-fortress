@@ -19,8 +19,10 @@ package ru.ispras.fortress.transformer.ruleset;
 import java.util.Map;
 import java.util.IdentityHashMap;
 
+import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeOperation;
+import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.transformer.TransformerRule;
 
@@ -59,8 +61,18 @@ abstract class ExpressionRule implements TransformerRule
     @Override
     public boolean isApplicable(Node node)
     {
-        return node.getKind() == Node.Kind.OPERATION
-            && ((NodeOperation) node).getOperationId() == opId;
+        return isOperation(node, opId) && isApplicable((NodeOperation) node);
+    }
+
+    /**
+     *  Helper method to allow additional constraints in derived classes.
+     *
+     *  @return true if derived class accepts given operation node.
+     */
+
+    public boolean isApplicable(NodeOperation op)
+    {
+        return true;
     }
 
     public abstract Node apply(Node node);
@@ -71,7 +83,7 @@ abstract class ExpressionRule implements TransformerRule
      *  @param node Operation node to extract operands from.
      */
 
-    protected static Node[] extractOperands(Node node)
+    public static Node[] extractOperands(Node node)
     {
         NodeOperation in = (NodeOperation) node;
         Node[] operands = new Node[in.getOperandCount()];
@@ -79,6 +91,67 @@ abstract class ExpressionRule implements TransformerRule
             operands[i] = in.getOperand(i);
 
         return operands;
+    }
+
+    /**
+     *  Check if node represents boolean value.
+     *
+     *  @param node Node instance to be checked.
+     *
+     *  @return true if node is NodeValue instance with boolean type.
+     */
+
+    public static boolean isBoolean(Node node)
+    {
+        return node.getKind() == Node.Kind.VALUE &&
+                ((NodeValue) node).getDataType() == DataType.BOOLEAN;
+    }
+
+    /**
+     *  Get boolean value of node in unsafe manner.
+     *
+     *  @param node NodeValue instance with boolean type.
+     *
+     *  @return boolean value of given node.
+     */
+
+    public static boolean getBoolean(Node node)
+    {
+        return (Boolean) ((NodeValue) node).getValue();
+    }
+
+    /**
+     *  Check if node represents specific operation.
+     *
+     *  @param node Node instance to be checked.
+     *  @param opId Operation identifier.
+     *
+     *  @return true if node is NodeOperations instance with given operation id.
+     */
+
+    public static boolean isOperation(Node node, Enum<?> opId)
+    {
+        return node.getKind() == Node.Kind.OPERATION &&
+               ((NodeOperation) node).getOperationId() == opId;
+    }
+
+    /**
+     *  Find first boolean value among operands.
+     *
+     *  @param op Operation which operands are to be looked.
+     *  @param start Start looking at operands starting with this index.
+     *
+     *  @return Operand index of boolean value, -1 if none found.
+     */
+
+    public static int booleanOperandIndex(NodeOperation op, int start)
+    {
+        for (int i = start; i < op.getOperandCount(); ++i) {
+            if (isBoolean(op.getOperand(i))) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
 
@@ -220,6 +293,83 @@ public final class Predicate
             }
         };
         ruleset.put(rule.getOperationId(), rule);
+
+
+        // (not true/false) -> false/true
+        // (not (not expr)) -> expr
+        final ExpressionRule unrollNotRule = new ExpressionRule(StandardOperation.NOT) {
+            @Override
+            public boolean isApplicable(NodeOperation op) {
+                final Node child = op.getOperand(0);
+                return isBoolean(child) || isOperation(child, StandardOperation.NOT);
+            }
+
+            @Override
+            public Node apply(Node in) {
+                final Node child = ((NodeOperation) in).getOperand(0);
+
+                if (isBoolean(child)) {
+                    final Node neg = NodeValue.newBoolean(!getBoolean(child));
+                    neg.setUserData(child.getUserData());
+                    return neg;
+                }
+                return ((NodeOperation) child).getOperand(0);
+            }
+        };
+        ruleset.put(unrollNotRule.getOperationId(), unrollNotRule);
+
+        // (eq expr true) -> expr
+        // (eq expr false) -> (not expr)
+        // (eq true expr0 ...) -> (and expr0 ...)
+        // (eq false expr0 ...) -> (and (not expr0) ...)
+        rule = new ExpressionRule(StandardOperation.EQ) {
+            @Override
+            public boolean isApplicable(NodeOperation in) {
+                return booleanOperandIndex(in, 0) >= 0;
+            }
+
+            // Since NOT insertion can bring local inconsistencies in
+            // to expression tree we need to fix these.
+            public Node negate(Node node) {
+                final Node negated = new NodeOperation(StandardOperation.NOT, node);
+                if (unrollNotRule.isApplicable(negated)) {
+                    return unrollNotRule.apply(negated);
+                }
+                return negated;
+            }
+
+            @Override
+            public Node apply(Node in) {
+                final NodeOperation op = (NodeOperation) in;
+                final int index = booleanOperandIndex(op, 0);
+                final boolean value =
+                    ((Boolean) ((NodeValue) op.getOperand(index)).getValue());
+
+                // For simple equalities just return plain or negated expression
+                if (op.getOperandCount() == 2) {
+                    final Node node = op.getOperand((index + 1) % 2);
+                    return (value) ? node : negate(node);
+                }
+           
+                // Chained equality with known boolean is conjunction of
+                // plain or negated expressions.
+                final Node[] operands = new Node[op.getOperandCount() - 1];
+                for (int i = 0; i < index; ++i) {
+                    operands[i] = op.getOperand(i);
+                }
+                for (int i = index + 1; i < op.getOperandCount(); ++i) {
+                    operands[i - 1] = op.getOperand(i);
+                }
+                if (!value) {
+                    for (int i = 0; i < operands.length; ++i) {
+                        operands[i] = negate(operands[i]);
+                    }
+                }
+                return new NodeOperation(StandardOperation.AND, operands);
+            }
+        };
+        ruleset.put(rule.getOperationId(), rule);
+
         return ruleset;
     }
 }
