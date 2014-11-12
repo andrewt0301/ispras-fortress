@@ -24,7 +24,7 @@ import ru.ispras.fortress.util.BitUtils;
  * This class is a wrapper around a random number generator. It is responsible for generating random
  * objects (numbers, strings, etc.) and filling storages (arrays, collections, etc.) with random
  * data.
- *
+ * 
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
 public final class Randomizer {
@@ -33,7 +33,7 @@ public final class Randomizer {
 
   /**
    * Returns the randomizer instance.
-   *
+   * 
    * @return the randomizer instance.
    */
   public static Randomizer get() {
@@ -50,7 +50,7 @@ public final class Randomizer {
 
   /**
    * Returns the current random number generator.
-   *
+   * 
    * @return the random number generator.
    */
   public RandomGenerator getGenerator() {
@@ -59,7 +59,7 @@ public final class Randomizer {
 
   /**
    * Sets the current random number generator.
-   *
+   * 
    * @param generator the random number generator to be set.
    */
   public void setGenerator(final RandomGenerator generator) {
@@ -68,16 +68,16 @@ public final class Randomizer {
 
   /**
    * Sets the new seed of the random number generator.
-   *
+   * 
    * @param seed the seed to be set.
    */
   public void setSeed(int seed) {
     generator.seed(seed);
   }
 
-  //------------------------------------------------------------------------------------------------
+  // ------------------------------------------------------------------------------------------------
   // Next Methods (Random Number Generators for Different Integer Types)
-  //------------------------------------------------------------------------------------------------
+  // ------------------------------------------------------------------------------------------------
 
   /**
    * Generates the next random integer value.
@@ -133,9 +133,9 @@ public final class Randomizer {
     return ((long) next() << Integer.SIZE) | next();
   }
 
-  //------------------------------------------------------------------------------------------------
+  // ------------------------------------------------------------------------------------------------
   // Next Integer Methods
-  //------------------------------------------------------------------------------------------------
+  // ------------------------------------------------------------------------------------------------
 
   private int nextNonNegativeInt() {
     return (nextInt() & (-1 >>> 1));
@@ -146,7 +146,7 @@ public final class Randomizer {
   }
 
   private int nextNonNegativeIntLessOrEqual(int max) {
-    if(max == Integer.MAX_VALUE) {
+    if (max == Integer.MAX_VALUE) {
       return nextNonNegativeInt();
     }
 
@@ -155,7 +155,7 @@ public final class Randomizer {
 
   /**
    * Returns a random number from the given range.
-   *
+   * 
    * @return a random number.
    * @param min the low bound of the range.
    * @param max the high bound of the range.
@@ -184,7 +184,7 @@ public final class Randomizer {
 
   /**
    * Returns a random number of the given bit size (width).
-   *
+   * 
    * @return a random number.
    * @param width the bit size.
    */
@@ -194,7 +194,7 @@ public final class Randomizer {
 
   /**
    * Returns a number with the randomized range of bits (field).
-   *
+   * 
    * @return a random number.
    * @param lo the low bound of the field.
    * @param hi the high bound of the field.
@@ -203,9 +203,9 @@ public final class Randomizer {
     return next() & BitUtils.maskInt(lo, hi);
   }
 
-  //------------------------------------------------------------------------------------------------
+  // ------------------------------------------------------------------------------------------------
   // Next Long Methods
-  //------------------------------------------------------------------------------------------------
+  // ------------------------------------------------------------------------------------------------
 
   private long nextNonNegativeLong() {
     return (nextLong() & (-1L >>> 1));
@@ -216,7 +216,7 @@ public final class Randomizer {
   }
 
   private long nextNonNegativeLongLessOrEqual(long max) {
-    if(max == Long.MAX_VALUE) {
+    if (max == Long.MAX_VALUE) {
       return nextNonNegativeLong();
     }
 
@@ -226,14 +226,15 @@ public final class Randomizer {
 
   /**
    * Returns a random number from the given range.
-   *
+   * 
    * @return a random number.
    * @param min the low bound of the range.
    * @param max the high bound of the range.
    */
   public long nextLongRange(long min, long max) {
-    if (min > max)
+    if (min > max) {
       throw new IllegalArgumentException("min is greater than max");
+    }
 
     if (max >= 0 && min >= max - Long.MAX_VALUE || max < 0 && max <= Long.MAX_VALUE + min) {
       return min + nextNonNegativeLongLessOrEqual(max - min);
@@ -254,7 +255,7 @@ public final class Randomizer {
 
   /**
    * Returns a random number of the given bit size (width).
-   *
+   * 
    * @return a random number.
    * @param width the bit size.
    */
@@ -264,7 +265,7 @@ public final class Randomizer {
 
   /**
    * Returns a number with the randomized range of bits (field).
-   *
+   * 
    * @return a random number.
    * @param lo the low bound of the field.
    * @param hi the high bound of the field.
@@ -273,13 +274,13 @@ public final class Randomizer {
     return nextLong() & BitUtils.maskLong(lo, hi);
   }
 
-  //------------------------------------------------------------------------------------------------
+  // ------------------------------------------------------------------------------------------------
   // Choose Methods
-  //------------------------------------------------------------------------------------------------
+  // ------------------------------------------------------------------------------------------------
 
   /**
    * Chooses a random item of the given array.
-   *
+   * 
    * @return a random item of the array.
    * @param array the array whoose items are chosen.
    */
@@ -289,7 +290,7 @@ public final class Randomizer {
 
   /**
    * Chooses a random item of the given list.
-   *
+   * 
    * @return a random item of the array.
    * @param list the list whose items are chosen.
    */
@@ -299,7 +300,7 @@ public final class Randomizer {
 
   /**
    * Chooses a variant ([0, N-1]) according to the probability distribution.
-   *
+   * 
    * @return a randomly chosen variant.
    * @param biases the probability distribution.
    */
@@ -307,13 +308,13 @@ public final class Randomizer {
     return biases.getVariant(nextIntRange(0, biases.getMaxWeight() - 1));
   }
 
-  //------------------------------------------------------------------------------------------------
+  // ------------------------------------------------------------------------------------------------
   // Fill Methods
-  //------------------------------------------------------------------------------------------------
+  // ------------------------------------------------------------------------------------------------
 
   /**
    * Fills the byte array with random data.
-   *
+   * 
    * @param data the array to be randomized.
    */
   public void fill(byte[] data) {
@@ -324,7 +325,7 @@ public final class Randomizer {
 
   /**
    * Fills the char array with random data.
-   *
+   * 
    * @param data the array to be randomized.
    */
   public void fill(char[] data) {
@@ -335,7 +336,7 @@ public final class Randomizer {
 
   /**
    * Fills the int array with random data.
-   *
+   * 
    * @param data the array to be randomized.
    */
   public void fill(int[] data) {
@@ -346,7 +347,7 @@ public final class Randomizer {
 
   /**
    * Fills the long array with random data.
-   *
+   * 
    * @param data the array to be randomized.
    */
   public void fill(long[] data) {
@@ -357,7 +358,7 @@ public final class Randomizer {
 
   /**
    * Fills the raw data storage with random data.
-   *
+   * 
    * @param data the raw data storage to be randomized.
    */
   public void fill(BitVector data) {
