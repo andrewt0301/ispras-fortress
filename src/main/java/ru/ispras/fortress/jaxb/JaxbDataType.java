@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru), UniTESK Lab (http://www.unitesk.com)
+ * Copyright 2014 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -15,15 +15,14 @@
 package ru.ispras.fortress.jaxb;
 
 /**
- * The class for mediation during JAXB marshalling/unmarshalling of Nodes.  
+ * The class for mediation during JAXB marshalling/unmarshalling of Nodes.
  * 
  * @author <a href="mailto:i.melnichenko@deltasolutions.ru">Igor Melnichenko</a>
  */
-public enum JaxbDataType
-{
-	BIT_VECTOR,
-    LOGIC_BOOLEAN,
-    LOGIC_INTEGER,
-    LOGIC_REAL,
-    UNKNOWN
+public enum JaxbDataType {
+  BIT_VECTOR,
+  LOGIC_BOOLEAN,
+  LOGIC_INTEGER,
+  LOGIC_REAL,
+  UNKNOWN
 }

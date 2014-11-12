@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru), UniTESK Lab (http://www.unitesk.com)
+ * Copyright 2014 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -23,48 +23,38 @@ import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeValue;
 
 /**
- * The adapter class for JAXB marshalling/unmarshalling of {@link Node} objects. Performs
- * conversion between {@link Node} and {@link JaxbNode} instances.
+ * The adapter class for JAXB marshalling/unmarshalling of {@link Node} objects. Performs conversion
+ * between {@link Node} and {@link JaxbNode} instances.
  * 
  * @author <a href="mailto:i.melnichenko@deltasolutions.ru">Igor Melnichenko</a>
  */
-public class JaxbNodeAdapter extends XmlAdapter<JaxbNode, Node>
-{
-    @Override
-    public JaxbNode marshal(Node node) throws Exception
-    {
-    	if (node instanceof NodeValue)
-    	{
-    	    JaxbNodeValue jaxbNodeValue = new JaxbNodeValue();
-    	    Data data = ((NodeValue) node).getData();
-    	    DataType dataType = data.getType();
-            jaxbNodeValue.type = JaxbDataType.valueOf(dataType.getTypeId().name());
-            jaxbNodeValue.size = dataType.getSize();
-            jaxbNodeValue.value = data.getValue().toString();
-            return jaxbNodeValue;
-    	}
-    	else
-    	{
-    		throw new IllegalArgumentException("Only NodeValue currently supported in JAXB among "
-    		        + "successors of the Node class");
-    	}
+public class JaxbNodeAdapter extends XmlAdapter<JaxbNode, Node> {
+  @Override
+  public JaxbNode marshal(Node node) throws Exception {
+    if (node instanceof NodeValue) {
+      final JaxbNodeValue jaxbNodeValue = new JaxbNodeValue();
+      final Data data = ((NodeValue) node).getData();
+      final DataType dataType = data.getType();
+      jaxbNodeValue.type = JaxbDataType.valueOf(dataType.getTypeId().name());
+      jaxbNodeValue.size = dataType.getSize();
+      jaxbNodeValue.value = data.getValue().toString();
+      return jaxbNodeValue;
+    } else {
+      throw new IllegalArgumentException(
+        "Only NodeValue currently supported in JAXB among successors of the Node class");
     }
+  }
 
-    @Override
-    public Node unmarshal(JaxbNode node) throws Exception
-    {
-    	if (node instanceof JaxbNodeValue)
-    	{
-    		JaxbNodeValue jaxbNodeValue = (JaxbNodeValue) node;
-    	    DataTypeId typeId = DataTypeId.valueOf(jaxbNodeValue.type.name());
-            DataType type = DataType.newDataType(typeId, jaxbNodeValue.size);
-            return new NodeValue(type.valueOf(jaxbNodeValue.value, type.getTypeRadix()));
-    	}
-    	else
-    	{
-    	    throw new IllegalArgumentException("Only NodeValue currently supported in JAXB among "
-    	        + "successors of the Node class");
-    	}
-    	
+  @Override
+  public Node unmarshal(JaxbNode node) throws Exception {
+    if (node instanceof JaxbNodeValue) {
+      final JaxbNodeValue jaxbNodeValue = (JaxbNodeValue) node;
+      final DataTypeId typeId = DataTypeId.valueOf(jaxbNodeValue.type.name());
+      final DataType type = DataType.newDataType(typeId, jaxbNodeValue.size);
+      return new NodeValue(type.valueOf(jaxbNodeValue.value, type.getTypeRadix()));
+    } else {
+      throw new IllegalArgumentException(
+        "Only NodeValue currently supported in JAXB among successors of the Node class");
     }
+  }
 }
