@@ -1,13 +1,15 @@
 /*
- * Copyright (c) 2011 ISPRAS
- *
- * Institute for System Programming of Russian Academy of Sciences
- *
- * 25 Alexander Solzhenitsyn st. Moscow 109004 Russia
- *
- * All rights reserved.
- *
- * Z3TextSolver.java, Dec 20, 2011 12:18:52 PM Andrei Tatarnikov
+ * Copyright 2011-2014 ISP RAS (http://www.ispras.ru)
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package ru.ispras.fortress.solver.engine.z3;
@@ -25,7 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 
-
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
@@ -40,383 +41,351 @@ import ru.ispras.fortress.solver.constraint.Formulas;
 import ru.ispras.fortress.solver.function.StandardFunction;
 
 /**
- * The Z3TextSolver class implements logic of a constraint solver that
- * uses the Z3 tool by Microsoft Research. The constraint is translated
- * to STM-LIB code that is then saved to a file and processed to the tool.
- *
+ * The Z3TextSolver class implements logic of a constraint solver that uses the Z3 tool by Microsoft
+ * Research. The constraint is translated to STM-LIB code that is then saved to a file and processed
+ * to the tool.
+ * 
  * @author Andrei Tatarnikov
  */
 
-public final class Z3TextSolver extends SolverBase
-{
-    private static final String NAME =
-        "Z3 (text-based interface)";
+public final class Z3TextSolver extends SolverBase {
+  private static final String NAME = "Z3 (text-based interface)";
 
-    private static final String DESCRIPTION =
-        "Solves constraints using the Z3 solver. " +
-        "Interacts with thesolver via text files and command line.";
+  private static final String DESCRIPTION =
+    "Solves constraints using the Z3 solver. " + 
+    "Interacts with the solver via text files and command line.";
 
-    private static final String TEMP_FILE           = "ispras_z3_temp";
-    private static final String TEMP_FILE_SUFFIX    = ".smt2";
+  private static final String TEMP_FILE = "ispras_z3_temp";
+  private static final String TEMP_FILE_SUFFIX = ".smt2";
 
-    private static final String UNK_OUTPUT_ERR_FRMT =
-        "Unexpected solver output: \"%s\"";
+  private static final String UNK_OUTPUT_ERR_FRMT =
+    "Unexpected solver output: \"%s\"";
 
-    private static final String NO_SOLVER_PATH_ERR_FRMT =
-        "The path to the external constraint solver executable " +
-        "is not assigned (equals %s).";
+  private static final String NO_SOLVER_PATH_ERR_FRMT =
+    "The path to the external constraint solver executable " + "is not assigned (equals %s).";
 
-    private static final String NO_SOLVER_FILE_ERR_FRMT =
-        "The external constraint solver executable (%s) does not exist or " + 
-        "the path is not a valid file path.";
+  private static final String NO_SOLVER_FILE_ERR_FRMT =
+    "The external constraint solver executable (%s) does not exist or " +
+    "the path is not a valid file path.";
 
-    private static final String IO_EXCEPTION_ERR =
-        "I/O exception in the process of a solving the constraint. Details: ";
+  private static final String IO_EXCEPTION_ERR =
+    "I/O exception in the process of a solving the constraint. Details: ";
 
-    public Z3TextSolver()
-    {
-        super(
-            NAME,
-            DESCRIPTION,
-            EnumSet.of(ConstraintKind.FORMULA_BASED),
-            true
-        );
+  public Z3TextSolver() {
+    super(NAME, DESCRIPTION, EnumSet.of(ConstraintKind.FORMULA_BASED), true);
+    initStandardOperations();
+  }
 
-        initStandardOperations();
+  private static void solverFileExistsCheck(String solverPath) {
+    if (null == solverPath) {
+      throw new NullPointerException(String.format(NO_SOLVER_PATH_ERR_FRMT, "null"));
     }
 
-    private static void solverFileExistsCheck(String solverPath)
-    {
-        if (null == solverPath)
-            throw new NullPointerException(
-                String.format(NO_SOLVER_PATH_ERR_FRMT, "null"));
-
-        if (solverPath.isEmpty())
-            throw new NullPointerException(
-                String.format(NO_SOLVER_PATH_ERR_FRMT, "empty string"));
-
-        if (!new File(solverPath).isFile())
-            throw new IllegalStateException(
-                String.format(NO_SOLVER_FILE_ERR_FRMT, solverPath));
+    if (solverPath.isEmpty()) {
+      throw new NullPointerException(String.format(NO_SOLVER_PATH_ERR_FRMT, "empty string"));
     }
 
-    @Override
-    public SolverResult solve(Constraint constraint) 
-    {
-        notNullCheck(constraint, "constraint");
+    if (!new File(solverPath).isFile()) {
+      throw new IllegalStateException(String.format(NO_SOLVER_FILE_ERR_FRMT, solverPath));
+    }
+  }
 
-        supportedKindCheck(constraint.getKind());
-        solverFileExistsCheck(Environment.getSolverPath());
+  @Override
+  public SolverResult solve(Constraint constraint) {
+    notNullCheck(constraint, "constraint");
 
-        final SolverResultBuilder resultBuilder = 
-            new SolverResultBuilder(SolverResult.Status.ERROR);
+    supportedKindCheck(constraint.getKind());
+    solverFileExistsCheck(Environment.getSolverPath());
 
-        final SMTTextBuilder smtTextBuilder =
-            new SMTTextBuilder(constraint.getVariables(), getOperations());
+    final SolverResultBuilder resultBuilder = new SolverResultBuilder(SolverResult.Status.ERROR);
 
-        final ExprTreeWalker walker = new ExprTreeWalker(smtTextBuilder);
-        
-        File tempFile = null;
-        try
-        {
-            walker.visit(((Formulas) constraint.getInnerRep()).exprs());
+    final SMTTextBuilder smtTextBuilder =
+      new SMTTextBuilder(constraint.getVariables(), getOperations());
 
-            tempFile = File.createTempFile(TEMP_FILE, TEMP_FILE_SUFFIX);
+    final ExprTreeWalker walker = new ExprTreeWalker(smtTextBuilder);
 
-            final String tempFilePath = tempFile.getPath();
-            smtTextBuilder.saveToFile(tempFilePath);
+    File tempFile = null;
+    try {
+      walker.visit(((Formulas) constraint.getInnerRep()).exprs());
+      tempFile = File.createTempFile(TEMP_FILE, TEMP_FILE_SUFFIX);
 
-            final Process process = runSolver(Environment.getSolverPath(), tempFilePath, "");
-            final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+      final String tempFilePath = tempFile.getPath();
+      smtTextBuilder.saveToFile(tempFilePath);
 
-            final Iterator<Variable> vi = constraint.getUnknownVariables().iterator();
-            boolean isStatusSet = false;  
+      final Process process = runSolver(Environment.getSolverPath(), tempFilePath, "");
 
-            String line;
-            final Map<String, Variable> refs = new HashMap<String, Variable>();
+      final BufferedReader reader = 
+        new BufferedReader(new InputStreamReader(process.getInputStream()));
 
-            while((line = reader.readLine()) != null)
-            {
-                if (!isStatusSet && tryToParseStatus(line, resultBuilder))
-                {
-                    isStatusSet = true;
-                }
-                else if (tryToParseError(line, resultBuilder))
-                {
-                    // Do nothing
-                }
-                else if (vi.hasNext() && tryToParseVariable(line, vi.next(), resultBuilder, refs))
-                {
-                    // Do nothing
-                }
-                else if (tryToParseModel(line, reader, refs, resultBuilder))
-                    ; // Do nothing
-                else
-                {
-                    assert false : String.format(UNK_OUTPUT_ERR_FRMT, line);
-                    resultBuilder.addError(String.format(UNK_OUTPUT_ERR_FRMT, line));
-                }
-            }
+      final Iterator<Variable> vi = constraint.getUnknownVariables().iterator();
+      boolean isStatusSet = false;
+
+      String line;
+      final Map<String, Variable> refs = new HashMap<String, Variable>();
+
+      while ((line = reader.readLine()) != null) {
+        if (!isStatusSet && tryToParseStatus(line, resultBuilder)) {
+          isStatusSet = true;
+        } else if (tryToParseError(line, resultBuilder)) {
+          // Do nothing
+        } else if (vi.hasNext() && tryToParseVariable(line, vi.next(), resultBuilder, refs)) {
+          // Do nothing
+        } else if (tryToParseModel(line, reader, refs, resultBuilder))
+          ; // Do nothing
+        else {
+          assert false : String.format(UNK_OUTPUT_ERR_FRMT, line);
+          resultBuilder.addError(String.format(UNK_OUTPUT_ERR_FRMT, line));
         }
-        catch (IOException e)
-        {
-            resultBuilder.setStatus(SolverResult.Status.ERROR);
-            resultBuilder.addError(IO_EXCEPTION_ERR + e.getMessage());
+      }
+    } catch (IOException e) {
+      resultBuilder.setStatus(SolverResult.Status.ERROR);
+      resultBuilder.addError(IO_EXCEPTION_ERR + e.getMessage());
+    } finally {
+      if (null != tempFile && !Environment.isDebugMode()) {
+        tempFile.delete();
+      }
+    }
+
+    return resultBuilder.build();
+  }
+
+  private Process runSolver(String solverPath, String constraintFileName, String solverArgs)
+      throws IOException {
+    final ProcessBuilder pb = new ProcessBuilder(solverPath, constraintFileName, solverArgs);
+    return pb.start();
+  }
+
+  private static boolean tryToParseStatus(String line, SolverResultBuilder resultBuilder) {
+    final Matcher matcher = Pattern.compile(SMTRegExp.STATUS_PTRN).matcher(line);
+
+    if (!matcher.matches()) {
+      return false;
+    }
+
+    if (line.equals(SMTRegExp.SAT)) {
+      resultBuilder.setStatus(SolverResult.Status.SAT);
+    } else if (line.equals(SMTRegExp.UNSAT)) {
+      resultBuilder.setStatus(SolverResult.Status.UNSAT);
+    } else {
+      resultBuilder.setStatus(SolverResult.Status.UNKNOWN);
+    }
+
+    return true;
+  }
+
+  private static boolean tryToParseError(String line, SolverResultBuilder resultBuilder) {
+    final Matcher matcher = Pattern.compile(SMTRegExp.ERR_PTRN).matcher(line);
+
+    if (!matcher.matches()) {
+      return false;
+    }
+
+    resultBuilder.addError(matcher.group().replaceAll(SMTRegExp.ERR_TRIM_PTRN, ""));
+    return true;
+  }
+
+  private static Variable parseVariable(String name, DataType typeInfo, String valueText) {
+    final int radix;
+
+    if (Pattern.compile(SMTRegExp.LINE_START + SMTRegExp.VALUE_BIN).matcher(valueText).matches()) {
+      radix = 2;
+    } else if (Pattern.compile(SMTRegExp.LINE_START + SMTRegExp.VALUE_HEX).matcher(valueText).matches()) {
+      radix = 16;
+    } else {
+      radix = 10; // decimal value by default
+    }
+
+    final Data data = typeInfo.valueOf(valueText.replaceAll(SMTRegExp.VALUE_TRIM_PTRN, ""), radix);
+    return new Variable(name, data);
+  }
+
+  private static boolean tryToParseVariable(String line, Variable variable,
+      SolverResultBuilder resultBuilder, Map<String, Variable> refs) {
+
+    final Matcher matcher = Pattern.compile(String.format(
+      SMTRegExp.EXPR_PTRN_FRMT, variable.getName())).matcher(line);
+
+    if (!matcher.matches()) {
+      return false;
+    }
+
+    final String valueText = matcher.group().replaceAll(
+      String.format(SMTRegExp.EXPR_TRIM_PTRN_FRMT, variable.getName()), "");
+
+    final Matcher refMatcher = Pattern.compile(SMTRegExp.ARRAY_REF).matcher(valueText);
+
+    if (refMatcher.matches()) {
+      refs.put(refMatcher.group(1), variable);
+    } else {
+      resultBuilder.addVariable(
+        parseVariable(variable.getName(), variable.getData().getType(), valueText));
+    }
+
+    return true;
+  }
+
+  private static boolean tryToParseModel(String line, BufferedReader reader,
+      Map<String, Variable> refs, SolverResultBuilder builder) throws IOException {
+    if (!line.equals("(model ")) {
+      return false;
+    }
+
+    // skip model when there are no deferred variables
+    if (refs.isEmpty()) {
+      while (!reader.readLine().equals(")")); // skip line
+      return true;
+    }
+
+    final Pattern defPattern = Pattern.compile("[ ]*\\(define-fun[ ]([^ ]+)[ ].*");
+    final Map<String, List<String>> model = new HashMap<String, List<String>>();
+
+    line = reader.readLine();
+    final Matcher matcher = defPattern.matcher(line);
+
+    List<String> lines = null;
+    for (; !line.equals(")"); line = reader.readLine())
+      if (matcher.reset(line).matches()) {
+        lines = new ArrayList<String>();
+        model.put(matcher.group(1), lines);
+      } else {
+        lines.add(line.trim());
+      }
+
+    final Map<String, String> valueTextCache = new HashMap<String, String>();
+
+    for (Map.Entry<String, Variable> ref : refs.entrySet()) {
+      final String valueText = arrayModelToText(ref.getKey(), model, valueTextCache);
+      // FIXME radix?
+      builder.addVariable(new Variable(
+        ref.getValue().getName(), ref.getValue().getData().getType().valueOf(valueText, 10)));
+    }
+
+    return true;
+  }
+
+  private static String arrayModelToText(String name, Map<String, List<String>> model,
+      Map<String, String> cache) {
+    /*
+     * Build text representation that valueOf() can deal with
+     */
+
+    if (cache.containsKey(name))
+      return cache.get(name);
+
+    final StringBuilder builder = new StringBuilder();
+    builder.append("(");
+
+    final Matcher entryMatcher =
+      Pattern.compile("\\(ite[ ]\\(=[ ][^ ]+[ ](.+)\\)+[ ](.+)").matcher("");
+
+    final Matcher arrayRefMatcher = Pattern.compile(SMTRegExp.ARRAY_REF).matcher("");
+
+    final List<String> entries = model.get(name);
+    for (String entry : entries)
+      if (entryMatcher.reset(entry).matches()) {
+        String key = entryMatcher.group(1);
+        if (key.charAt(0) == '(') {
+          key = key.substring(1, key.length() - 1);
         }
-        finally 
-        {
-            if (null != tempFile && !Environment.isDebugMode())
-                tempFile.delete();
+
+        if (arrayRefMatcher.reset(key).matches()) {
+          key = arrayModelToText(arrayRefMatcher.group(1), model, cache);
         }
 
-        return resultBuilder.build();
-    }
-
-    private Process runSolver(String solverPath, String constraintFileName, String solverArgs) throws IOException
-    {
-        final ProcessBuilder pb = new ProcessBuilder(solverPath, constraintFileName, solverArgs);
-        return pb.start();
-    }
-
-    private static boolean tryToParseStatus(String line, SolverResultBuilder resultBuilder)
-    {
-        final Matcher matcher = Pattern.compile(SMTRegExp.STATUS_PTRN).matcher(line);
-
-        if (!matcher.matches())
-            return false;
-
-        if (line.equals(SMTRegExp.SAT))
-            resultBuilder.setStatus(SolverResult.Status.SAT);
-        else if (line.equals(SMTRegExp.UNSAT))
-            resultBuilder.setStatus(SolverResult.Status.UNSAT);
-        else
-            resultBuilder.setStatus(SolverResult.Status.UNKNOWN);
-
-        return true;
-    }
-
-    private static boolean tryToParseError(String line, SolverResultBuilder resultBuilder)
-    {
-        final Matcher matcher = Pattern.compile(SMTRegExp.ERR_PTRN).matcher(line);
-
-        if (!matcher.matches())
-            return false;
-        
-        resultBuilder.addError(matcher.group().replaceAll(SMTRegExp.ERR_TRIM_PTRN, ""));
-        return true;
-    }
-
-    private static Variable parseVariable(String name, DataType typeInfo, String valueText)
-    {
-        final int radix;
-
-        if (Pattern.compile(SMTRegExp.LINE_START + SMTRegExp.VALUE_BIN).matcher(valueText).matches())
-            radix = 2;
-        else if (Pattern.compile(SMTRegExp.LINE_START + SMTRegExp.VALUE_HEX).matcher(valueText).matches())
-            radix = 16;
-        else
-            radix = 10; // decimal value by default
-
-        final Data data = 
-            typeInfo.valueOf(valueText.replaceAll(SMTRegExp.VALUE_TRIM_PTRN, ""), radix);
-
-        return new Variable(name, data);
-    }
-
-    private static boolean tryToParseVariable(String line, Variable variable, SolverResultBuilder resultBuilder, Map<String, Variable> refs)
-    {
-        final Matcher matcher = 
-            Pattern.compile(String.format(SMTRegExp.EXPR_PTRN_FRMT, variable.getName())).matcher(line);
-
-        if (!matcher.matches())
-            return false;
-
-        final String valueText = 
-            matcher.group().replaceAll(String.format(SMTRegExp.EXPR_TRIM_PTRN_FRMT, variable.getName()), "");
-
-        final Matcher refMatcher =
-            Pattern.compile(SMTRegExp.ARRAY_REF).matcher(valueText);
-
-        if (refMatcher.matches())
-        {
-            refs.put(refMatcher.group(1), variable);
-        }
-        else
-        {
-            resultBuilder.addVariable(
-                parseVariable(variable.getName(), variable.getData().getType(), valueText));
+        String value = entryMatcher.group(2);
+        if (value.charAt(0) == '(') {
+          value = value.substring(1, value.length() - 1);
         }
 
-        return true;
-    }
-
-    private static boolean tryToParseModel(
-        String line,
-        BufferedReader reader,
-        Map<String, Variable> refs,
-        SolverResultBuilder builder) throws IOException
-    {
-        if (!line.equals("(model "))
-            return false;
-        // skip model when there are no deferred variables
-        if (refs.isEmpty())
-        {
-            while (!reader.readLine().equals(")"))
-                ; // skip line
-            return true;
+        if (arrayRefMatcher.reset(value).matches()) {
+          value = arrayModelToText(arrayRefMatcher.group(1), model, cache);
         }
 
-        final Pattern defPattern =
-            Pattern.compile("[ ]*\\(define-fun[ ]([^ ]+)[ ].*");
-        final Map<String, List<String>> model =
-            new HashMap<String, List<String>>();
+        builder.append("(").append(key).append(":").append(value).append(")");
+      }
 
-        line = reader.readLine();
-        final Matcher matcher = defPattern.matcher(line);
+    builder.append(")");
+    final String s = builder.toString();
+    cache.put(name, s);
+    return s;
+  }
 
-        List<String> lines = null;
-        for (; !line.equals(")"); line = reader.readLine())
-            if (matcher.reset(line).matches())
-            {
-                lines = new ArrayList<String>();
-                model.put(matcher.group(1), lines);
-            }
-            else
-                lines.add(line.trim());
+  private void initStandardOperations() {
+    /* Logic Operations */
+    addStandardOperation(StandardOperation.EQ, "=");
+    addStandardOperation(StandardOperation.NOTEQ, "distinct");
+    addStandardOperation(StandardOperation.EQCASE, "=");
+    addStandardOperation(StandardOperation.NOTEQCASE, "distinct");
+    addStandardOperation(StandardOperation.AND, "and");
+    addStandardOperation(StandardOperation.OR, "or");
+    addStandardOperation(StandardOperation.NOT, "not");
+    addStandardOperation(StandardOperation.XOR, "xor");
+    addStandardOperation(StandardOperation.IMPL, "=>");
+    addStandardOperation(StandardOperation.ITE, "ite");
 
-        final Map<String, String> valueTextCache =
-            new HashMap<String, String>();
+    // Logic arithmetic
+    addStandardOperation(StandardOperation.MINUS, "-");
+    addStandardOperation(StandardOperation.PLUS, "+");
+    addStandardOperation(StandardOperation.ADD, "+");
+    addStandardOperation(StandardOperation.SUB, "-");
+    addStandardOperation(StandardOperation.MUL, "*");
+    addStandardOperation(StandardOperation.DIV, "div");
+    addStandardOperation(StandardOperation.REM, "rem");
+    addStandardOperation(StandardOperation.MOD, "mod");
+    addStandardOperation(StandardOperation.GREATER, ">");
+    addStandardOperation(StandardOperation.GREATEREQ, ">=");
+    addStandardOperation(StandardOperation.LESS, "<");
+    addStandardOperation(StandardOperation.LESSEQ, "<=");
+    addStandardOperation(StandardOperation.POWER, "^");
 
-        for (Map.Entry<String, Variable> ref : refs.entrySet())
-        {
-            final String valueText = arrayModelToText(ref.getKey(), model, valueTextCache);
-            // FIXME radix?
-            builder.addVariable(new Variable(
-                ref.getValue().getName(),
-                ref.getValue().getData().getType().valueOf(valueText, 10)));
-        }
-        return true;
+    /* Bitvector operations */
+
+    // Basic Bitvector Arithmetic
+    addStandardOperation(StandardOperation.BVADD, "bvadd");
+    addStandardOperation(StandardOperation.BVSUB, "bvsub");
+    addStandardOperation(StandardOperation.BVNEG, "bvneg");
+    addStandardOperation(StandardOperation.BVMUL, "bvmul");
+    addStandardOperation(StandardOperation.BVUREM, "bvurem");
+    addStandardOperation(StandardOperation.BVSREM, "bvsrem");
+    addStandardOperation(StandardOperation.BVSMOD, "bvsmod");
+    addStandardOperation(StandardOperation.BVLSHL, "bvshl");
+    addStandardOperation(StandardOperation.BVASHL, "bvshl");
+    addStandardOperation(StandardOperation.BVLSHR, "bvlshr");
+    addStandardOperation(StandardOperation.BVASHR, "bvashr");
+    addStandardOperation(StandardOperation.BVCONCAT, "concat");
+    addStandardOperation(StandardOperation.BVREPEAT, "repeat");
+    addStandardOperation(StandardOperation.BVROL, "rotate_left");
+    addStandardOperation(StandardOperation.BVROR, "rotate_right");
+    addStandardOperation(StandardOperation.BVZEROEXT, "extend_zero");
+    addStandardOperation(StandardOperation.BVSIGNEXT, "extend_sign");
+
+    // Bitwise Operations
+    addStandardOperation(StandardOperation.BVOR, "bvor");
+    addStandardOperation(StandardOperation.BVXOR, "bvxor");
+    addStandardOperation(StandardOperation.BVAND, "bvand");
+    addStandardOperation(StandardOperation.BVNOT, "bvnot");
+    addStandardOperation(StandardOperation.BVNAND, "bvnand");
+    addStandardOperation(StandardOperation.BVNOR, "bvnor");
+    addStandardOperation(StandardOperation.BVXNOR, "bvxnor");
+
+    // Predicates over Bitvectors
+    addStandardOperation(StandardOperation.BVULE, "bvule");
+    addStandardOperation(StandardOperation.BVULT, "bvult");
+    addStandardOperation(StandardOperation.BVUGE, "bvuge");
+    addStandardOperation(StandardOperation.BVUGT, "bvugt");
+    addStandardOperation(StandardOperation.BVSLE, "bvsle");
+    addStandardOperation(StandardOperation.BVSLT, "bvslt");
+    addStandardOperation(StandardOperation.BVSGE, "bvsge");
+    addStandardOperation(StandardOperation.BVSGT, "bvsgt");
+
+    addStandardOperation(StandardOperation.BVEXTRACT, "extract");
+
+    /* Array operations */
+    addStandardOperation(StandardOperation.SELECT, "select");
+    addStandardOperation(StandardOperation.STORE, "store");
+
+    for (StandardFunction template : StandardFunction.values()) {
+      addCustomOperation(template);
     }
-
-    private static String arrayModelToText(String name, Map<String, List<String>> model, Map<String, String> cache)
-    {
-        /*
-            Build text representation that valueOf() can deal with
-        */
-
-        if (cache.containsKey(name))
-            return cache.get(name);
-
-        final StringBuilder builder = new StringBuilder();
-        builder.append("(");
-
-        final Matcher entryMatcher =
-            Pattern.compile("\\(ite[ ]\\(=[ ][^ ]+[ ](.+)\\)+[ ](.+)").matcher("");
-
-        final Matcher arrayRefMatcher =
-            Pattern.compile(SMTRegExp.ARRAY_REF).matcher("");
-
-        final List<String> entries = model.get(name);
-        for (String entry : entries)
-            if (entryMatcher.reset(entry).matches())
-            {
-                String key = entryMatcher.group(1);
-                if (key.charAt(0) == '(')
-                    key = key.substring(1, key.length() - 1);
-                if (arrayRefMatcher.reset(key).matches())
-                    key = arrayModelToText(arrayRefMatcher.group(1), model, cache);
-
-                String value = entryMatcher.group(2);
-                if (value.charAt(0) == '(')
-                    value = value.substring(1, value.length() - 1);
-                if (arrayRefMatcher.reset(value).matches())
-                    value = arrayModelToText(arrayRefMatcher.group(1), model, cache);
-
-                builder.append("(").append(key).append(":").append(value).append(")");
-            }
-
-        builder.append(")");
-        final String s = builder.toString();
-        cache.put(name, s);
-        return s;
-    }
-
-    private void initStandardOperations()
-    {
-        /*  Logic Operations */
-        addStandardOperation(StandardOperation.EQ,        "=");
-        addStandardOperation(StandardOperation.NOTEQ,     "distinct");
-        addStandardOperation(StandardOperation.EQCASE,    "=");
-        addStandardOperation(StandardOperation.NOTEQCASE, "distinct");
-        addStandardOperation(StandardOperation.AND,       "and");
-        addStandardOperation(StandardOperation.OR,        "or");
-        addStandardOperation(StandardOperation.NOT,       "not");
-        addStandardOperation(StandardOperation.XOR,       "xor");
-        addStandardOperation(StandardOperation.IMPL,      "=>");
-        addStandardOperation(StandardOperation.ITE,       "ite");
-
-        //Logic arithmetic
-        addStandardOperation(StandardOperation.MINUS,     "-");
-        addStandardOperation(StandardOperation.PLUS,      "+");
-        addStandardOperation(StandardOperation.ADD,       "+");
-        addStandardOperation(StandardOperation.SUB,       "-");
-        addStandardOperation(StandardOperation.MUL,       "*");
-        addStandardOperation(StandardOperation.DIV,       "div");
-        addStandardOperation(StandardOperation.REM,       "rem");
-        addStandardOperation(StandardOperation.MOD,       "mod");
-        addStandardOperation(StandardOperation.GREATER,   ">");
-        addStandardOperation(StandardOperation.GREATEREQ, ">=");
-        addStandardOperation(StandardOperation.LESS,      "<");
-        addStandardOperation(StandardOperation.LESSEQ,    "<=");
-        addStandardOperation(StandardOperation.POWER,     "^");
-
-        /* Bitvector operations */
-
-        // Basic Bitvector Arithmetic
-        addStandardOperation(StandardOperation.BVADD,     "bvadd");
-        addStandardOperation(StandardOperation.BVSUB,     "bvsub");
-        addStandardOperation(StandardOperation.BVNEG,     "bvneg");
-        addStandardOperation(StandardOperation.BVMUL,     "bvmul");
-        addStandardOperation(StandardOperation.BVUREM,    "bvurem");
-        addStandardOperation(StandardOperation.BVSREM,    "bvsrem");
-        addStandardOperation(StandardOperation.BVSMOD,    "bvsmod");
-        addStandardOperation(StandardOperation.BVLSHL,    "bvshl");
-        addStandardOperation(StandardOperation.BVASHL,    "bvshl");
-        addStandardOperation(StandardOperation.BVLSHR,    "bvlshr");
-        addStandardOperation(StandardOperation.BVASHR,    "bvashr");
-        addStandardOperation(StandardOperation.BVCONCAT,  "concat");
-        addStandardOperation(StandardOperation.BVREPEAT,  "repeat");
-        addStandardOperation(StandardOperation.BVROL,     "rotate_left");
-        addStandardOperation(StandardOperation.BVROR,     "rotate_right");
-        addStandardOperation(StandardOperation.BVZEROEXT, "extend_zero");
-        addStandardOperation(StandardOperation.BVSIGNEXT, "extend_sign");
-
-        // Bitwise Operations
-        addStandardOperation(StandardOperation.BVOR,   "bvor");
-        addStandardOperation(StandardOperation.BVXOR,  "bvxor");
-        addStandardOperation(StandardOperation.BVAND,  "bvand");
-        addStandardOperation(StandardOperation.BVNOT,  "bvnot");
-        addStandardOperation(StandardOperation.BVNAND, "bvnand");
-        addStandardOperation(StandardOperation.BVNOR,  "bvnor");
-        addStandardOperation(StandardOperation.BVXNOR, "bvxnor");
-
-        // Predicates over Bitvectors
-        addStandardOperation(StandardOperation.BVULE,  "bvule");
-        addStandardOperation(StandardOperation.BVULT,  "bvult");
-        addStandardOperation(StandardOperation.BVUGE,  "bvuge");
-        addStandardOperation(StandardOperation.BVUGT,  "bvugt");
-        addStandardOperation(StandardOperation.BVSLE,  "bvsle");
-        addStandardOperation(StandardOperation.BVSLT,  "bvslt");
-        addStandardOperation(StandardOperation.BVSGE,  "bvsge");
-        addStandardOperation(StandardOperation.BVSGT,  "bvsgt");
-
-        addStandardOperation(StandardOperation.BVEXTRACT, "extract");
-
-        /* Array operations */
-        addStandardOperation(StandardOperation.SELECT, "select");
-        addStandardOperation(StandardOperation.STORE,  "store");
-        
-        for (StandardFunction template : StandardFunction.values())
-            addCustomOperation(template);
-    }
+  }
 }
