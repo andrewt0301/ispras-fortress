@@ -75,8 +75,9 @@ public class NodeTransformer implements ExprTreeVisitor {
    */
 
   public NodeTransformer(Map<Enum<?>, TransformerRule> rules) {
-    if (rules == null)
+    if (rules == null) {
       throw new NullPointerException();
+    }
 
     ruleset = new IdentityHashMap<Enum<?>, TransformerRule>(rules);
     operandStack = new ArrayList<Node[]>();
