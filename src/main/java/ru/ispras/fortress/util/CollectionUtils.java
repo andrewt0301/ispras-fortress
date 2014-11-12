@@ -86,13 +86,13 @@ public final class CollectionUtils {
    * 
    * @param lhs First set (left hand).
    * @param rhs Second set (right hand).
-   * @return {@code true} if the sets are intersected if {@code false} otherwise. 
+   * @return {@code true} if the sets are intersected, {@code false} otherwise.
    * 
    * @throws NullPointerException if any of the parameters is {@code null}.
    */
 
   public static <E> boolean areIntersectedSets(Set<E> lhs, Set<E> rhs) {
-    return intersectSets(lhs, rhs).isEmpty();
+    return !intersectSets(lhs, rhs).isEmpty();
   }
 
   /**
