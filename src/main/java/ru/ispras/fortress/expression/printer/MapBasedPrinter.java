@@ -76,14 +76,20 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
         throw new IllegalArgumentException(String.format("Unknown operation '%s'", op.name()));
       }
 
-      buffer.append(description.getPrefix());
+      String prefix = description.getPrefix();
+      if (prefix != null) {
+        buffer.append(prefix);
+      }
     }
 
     @Override
     public void onOperationEnd(final NodeOperation expr) {
       final OperationDescription description = map.get(expr.getOperationId());
 
-      buffer.append(description.getSuffix());
+      String suffix = description.getSuffix();
+      if (suffix != null) {
+        buffer.append(suffix);
+      }
     }
 
     @Override
@@ -91,7 +97,10 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
       final OperationDescription description = map.get(expr.getOperationId());
 
       if (index > 0) {
-        buffer.append(description.getInfix(index - 1));
+        String infix = description.getInfix(index - 1);
+        if (infix != null) {
+          buffer.append(infix);
+        }
       }
     }
 
