@@ -142,6 +142,14 @@ abstract class ExpressionRule implements TransformerRule {
     }
     return -1;
   }
+
+  public final Node applyOperation(Node ... operands) {
+    final Node node = new NodeOperation(this.getOperationId(), operands);
+    if (this.isApplicable(node)) {
+      return this.apply(node);
+    }
+    return node;
+  }
 }
 
 final class UnrollClause extends ExpressionRule {
@@ -222,6 +230,10 @@ public final class Predicate {
    * (= true e0 ...) -> (and e0 ...)
    * (= false e0 ...) -> (and (not e0) ...)
    * (=> e0 ... en) -> (or (not e0) ... en)
+   * (and false ...) -> false
+   * (and true ...) -> (and ...)
+   * (or true ...) -> true
+   * (or false ...) -> (or ...)
    * }
    * </pre>
    *
@@ -371,16 +383,6 @@ public final class Predicate {
         return booleanOperandIndex(in, 0) >= 0;
       }
 
-      // Since NOT insertion can bring local inconsistencies in
-      // to expression tree we need to fix these.
-      public Node negate(Node node) {
-        final Node negated = new NodeOperation(StandardOperation.NOT, node);
-        if (unrollNotRule.isApplicable(negated)) {
-          return unrollNotRule.apply(negated);
-        }
-        return negated;
-      }
-
       @Override
       public Node apply(Node in) {
         final NodeOperation op = (NodeOperation) in;
@@ -390,7 +392,7 @@ public final class Predicate {
         // For simple equalities just return plain or negated expression
         if (op.getOperandCount() == 2) {
           final Node node = op.getOperand((index + 1) % 2);
-          return (value) ? node : negate(node);
+          return (value) ? node : unrollNotRule.applyOperation(node);
         }
 
         // Chained equality with known boolean is conjunction of
@@ -404,40 +406,22 @@ public final class Predicate {
         }
         if (!value) {
           for (int i = 0; i < operands.length; ++i) {
-            operands[i] = negate(operands[i]);
+            operands[i] = unrollNotRule.applyOperation(operands[i]);
           }
         }
-        final Node node = new NodeOperation(StandardOperation.AND, operands);
-        if (conjunctionRule.isApplicable(node)) {
-          return conjunctionRule.apply(node);
-        }
-        return node;
+        return conjunctionRule.applyOperation(operands);
       }
     };
     ruleset.put(rule.getOperationId(), rule);
 
     rule = new ExpressionRule(StandardOperation.IMPL) {
-      // Since NOT insertion can bring local inconsistencies in
-      // to expression tree we need to fix these.
-      public Node negate(Node node) {
-        final Node negated = new NodeOperation(StandardOperation.NOT, node);
-        if (unrollNotRule.isApplicable(negated)) {
-          return unrollNotRule.apply(negated);
-        }
-        return negated;
-      }
-
       @Override
       public Node apply(Node in) {
         final Node[] operands = extractOperands(in);
         for (int i = 0; i < operands.length - 1; ++i) {
-          operands[i] = negate(operands[i]);
+          operands[i] = unrollNotRule.applyOperation(operands[i]);
         }
-        final Node node = new NodeOperation(StandardOperation.OR, operands);
-        if (disjunctionRule.isApplicable(node)) {
-          return disjunctionRule.apply(node);
-        }
-        return node;
+        return disjunctionRule.applyOperation(operands);
       }
     };
     ruleset.put(rule.getOperationId(), rule);
