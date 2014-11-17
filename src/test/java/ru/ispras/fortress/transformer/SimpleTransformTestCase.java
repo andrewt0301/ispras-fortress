@@ -175,9 +175,6 @@ public class SimpleTransformTestCase {
     final Node eqxz = EQ(x, z);
     final Node eqyz = EQ(y, z);
 
-    final Node TRUE = NodeValue.newBoolean(true);
-    final Node FALSE = NodeValue.newBoolean(false);
-
     final Node impl2 = IMPL(eqxy, eqxz);
     final Node impl3 = IMPL(eqxy, eqxz, eqyz);
 
