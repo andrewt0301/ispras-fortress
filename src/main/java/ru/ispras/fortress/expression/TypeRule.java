@@ -17,5 +17,5 @@ package ru.ispras.fortress.expression;
 import ru.ispras.fortress.data.DataType;
 
 interface TypeRule {
-  DataType getResultType(DataType[] operandTypes);
+  DataType getResultType(DataType[] operandTypes, int[] params);
 }

@@ -170,7 +170,7 @@ public enum StandardOperation implements TypeRule {
   BVSIGNEXT(TypeRules.UNKNOWN, 1),
 
   /** Group: Bitvector, Operation: Extraction of subvector */
-  BVEXTRACT(TypeRules.UNKNOWN, 2),
+  BVEXTRACT(TypeRules.BVEXTRACT, 2),
 
   /**
    * The items below belong to the "Bitwise Operations" group.
@@ -298,11 +298,11 @@ public enum StandardOperation implements TypeRule {
   }
 
   @Override
-  public final DataType getResultType(DataType[] operandTypes) {
+  public final DataType getResultType(DataType[] operandTypes, int[] params) {
     if (null == operandTypes) {
       throw new NullPointerException();
     }
 
-    return typeRule.getResultType(operandTypes);
+    return typeRule.getResultType(operandTypes, params);
   }
 }

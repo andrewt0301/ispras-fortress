@@ -16,6 +16,8 @@ package ru.ispras.fortress.solver.constraint;
 
 import java.util.Arrays;
 
+import junit.framework.Assert;
+
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
@@ -69,16 +71,23 @@ final class BitVectorExtractionConstraint implements GenericSolverTestBase.Sampl
     final Formulas formulas = new Formulas();
     builder.setInnerRep(formulas);
 
-    formulas.add(new NodeOperation(StandardOperation.EQ, x, new NodeValue(BitVector32.valueOf(
-        "257", 10))));
-    formulas.add(new NodeOperation(StandardOperation.EQ, y, new NodeOperation(
-        StandardOperation.BVEXTRACT, INTEGER(7), INTEGER(0), x)));
+    formulas.add(new NodeOperation(
+        StandardOperation.EQ, x, new NodeValue(BitVector32.valueOf("257", 10))));
+
+    final Node extraction =
+        new NodeOperation(StandardOperation.BVEXTRACT, INTEGER(7), INTEGER(0), x);
+
+    Assert.assertEquals(DataType.BIT_VECTOR(8), extraction.getDataType());
+
+    formulas.add(new NodeOperation(
+        StandardOperation.EQ, y, extraction));
 
     return builder.build();
   }
 
   public Iterable<Variable> getExpectedVariables() {
-    return Arrays.asList(new Variable("x", BitVector32.valueOf("257", 10)), new Variable("y",
-        BitVector8.valueOf("1", 10)));
+    return Arrays.asList(
+        new Variable("x", BitVector32.valueOf("257", 10)),
+        new Variable("y", BitVector8.valueOf("1", 10)));
   }
 }

@@ -20,28 +20,28 @@ import ru.ispras.fortress.data.DataTypeId;
 enum TypeRules implements TypeRule {
   UNKNOWN {
     @Override
-    public DataType getResultType(DataType[] operandTypes) {
+    public DataType getResultType(DataType[] operandTypes, int[] params) {
       return DataType.UNKNOWN;
     }
   },
 
   BOOLEAN {
     @Override
-    public DataType getResultType(DataType[] operandTypes) {
+    public DataType getResultType(DataType[] operandTypes, int[] params) {
       return DataType.BOOLEAN;
     }
   },
 
   BIT_BOOLEAN {
     @Override
-    public DataType getResultType(DataType[] operandTypes) {
+    public DataType getResultType(DataType[] operandTypes, int[] params) {
       return DataType.BIT_VECTOR(1);
     }
   },
 
   FIRST_KNOWN_BV_ARG {
     @Override
-    public DataType getResultType(DataType[] operandTypes) {
+    public DataType getResultType(DataType[] operandTypes, int[] params) {
       DataType result = DataType.UNKNOWN;
 
       for (DataType dataType : operandTypes) {
@@ -57,7 +57,7 @@ enum TypeRules implements TypeRule {
 
   SECOND_VB_ARG {
     @Override
-    public DataType getResultType(DataType[] operandTypes) {
+    public DataType getResultType(DataType[] operandTypes, int[] params) {
       if (operandTypes.length > 1 && operandTypes[1].getTypeId() == DataTypeId.BIT_VECTOR) {
         return operandTypes[1];
       }
@@ -68,7 +68,7 @@ enum TypeRules implements TypeRule {
 
   FIRST_NUM_ARG {
     @Override
-    public DataType getResultType(DataType[] operandTypes) {
+    public DataType getResultType(DataType[] operandTypes, int[] params) {
       if (operandTypes.length > 0) {
         if (operandTypes[0].getTypeId() == DataTypeId.LOGIC_INTEGER ||
             operandTypes[0].getTypeId() == DataTypeId.LOGIC_REAL) {
@@ -82,7 +82,7 @@ enum TypeRules implements TypeRule {
 
   FIRST_KNOWN_NUM_ARG {
     @Override
-    public DataType getResultType(DataType[] operandTypes) {
+    public DataType getResultType(DataType[] operandTypes, int[] params) {
       DataType result = DataType.UNKNOWN;
 
       for (DataType dataType : operandTypes) {
@@ -99,7 +99,7 @@ enum TypeRules implements TypeRule {
 
   ITE {
     @Override
-    public DataType getResultType(DataType[] operandTypes) {
+    public DataType getResultType(DataType[] operandTypes, int[] params) {
       if (operandTypes.length > 2) {
         if (operandTypes[1].getTypeId() != DataTypeId.UNKNOWN) {
           return operandTypes[1];
@@ -111,6 +111,44 @@ enum TypeRules implements TypeRule {
       }
 
       return DataType.UNKNOWN;
+    }
+  },
+  
+  /**
+   * Semantics of the BVEXTRACT operation as described in the SMT-LIB bit vector theory:
+   * <p>
+   * {@code ((_ extract i j) (_ BitVec m) (_ BitVec n))}
+   * <p>
+   * where
+   * <ul>
+   * <li>i,j,m,n are numerals
+   * <li>m > i >= j >= 0,
+   * <li>n = i-j+1
+   * </ul>
+   */
+
+  BVEXTRACT {
+    @Override
+    public DataType getResultType(DataType[] operandTypes, int[] params) {
+      if (operandTypes.length != 3 && params.length != 2) {
+        return DataType.UNKNOWN;
+      }
+
+      final DataType sourceType = operandTypes[2];
+      if (DataTypeId.BIT_VECTOR != sourceType.getTypeId()) {
+        return DataType.UNKNOWN;
+      }
+
+      final int m = sourceType.getSize();
+      final int i = params[0];      
+      final int j = params[1];
+
+      if (!((m > i) && (i >= j) && (j >= 0))) {
+        return DataType.UNKNOWN;
+      }
+
+      final int n = i - j + 1;
+      return DataType.BIT_VECTOR(n);
     }
   }
 }
