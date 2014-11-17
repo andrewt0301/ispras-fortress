@@ -37,13 +37,21 @@ public final class NodeOperation extends Node {
    * 
    * @param operation Operation identifier.
    * @param operands Operands packed into an array of syntax elements.
+   * 
+   * @throws NullPointerException if any parameter (including every operand) is {@code null}.
    */
 
-  public <T extends Enum<? extends T>> NodeOperation(T operation, Node... operands) {
+  public <T extends Enum<? extends T>> NodeOperation(T operation, Node ... operands) {
     super(Kind.OPERATION);
 
     if (null == operation) {
       throw new NullPointerException();
+    }
+
+    for (Node operand : operands) {
+      if (null == operand) {
+        throw new NullPointerException();
+      }
     }
 
     this.operation = operation;
