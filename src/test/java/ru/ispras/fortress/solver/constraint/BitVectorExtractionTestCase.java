@@ -29,17 +29,17 @@ import ru.ispras.fortress.expression.*;
  * <pre>
  * (declare-const x (_ BitVec 32))
  * (declare-const y (_ BitVec 8))
- * (assert (= x (_ bv100 257)))
- * (assert (= y ((_ extract 0 7) x))
+ * (assert (= x (_ bv257 32)))
+ * (assert (= y ((_ extract 7 0) x)))
  * (check-sat)
- * (get-value (x))
+ * (get-value (x y))
  * (exit)
  * </pre>
  * 
  * Expected output:
  * 
  * <pre>
- * sat ((x #x00000070))
+ * sat ((x #x00000101) (y #x01))
  * </pre>
  */
 

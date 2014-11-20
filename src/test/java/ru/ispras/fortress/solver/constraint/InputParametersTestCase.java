@@ -41,8 +41,8 @@ public class InputParametersTestCase extends GenericSolverTestBase {
    *     (declare-const b (_ BitVec 16))
    *     (declare-const c (_ BitVec 16))
    * 
-   *     ;(assert (= a #x0003)) ; assumed input value
-   *     ;(assert (= c #x0005)) ; assumed input value
+   *     (assert (= a #x0003)) ; assumed input value
+   *     (assert (= c #x0005)) ; assumed input value
    * 
    *     (assert (= (bvadd a b) c))
    * 

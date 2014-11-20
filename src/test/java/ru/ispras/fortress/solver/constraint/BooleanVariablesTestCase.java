@@ -29,10 +29,20 @@ import ru.ispras.fortress.solver.constraint.ConstraintBuilder;
 import ru.ispras.fortress.solver.constraint.ConstraintKind;
 import ru.ispras.fortress.solver.constraint.Formulas;
 
-/*
+/**
  * 
- * (declare-const x Bool) (declare-const y Bool) (assert (= x true)) (assert (= y false))
- * (check-sat) (get-value (x y)) (exit)
+ * The constraint as described in the SMT-LIB language:
+ * <pre>
+ * (declare-const x Bool)
+ * (declare-const y Bool)
+ * (assert (= x true))
+ * (assert (= y false))
+ * (check-sat)
+ * (get-value (x y))
+ * (exit)
+ * </pre>
+ * 
+ * Expected output:
  * 
  * sat ((x true) (y false))
  */

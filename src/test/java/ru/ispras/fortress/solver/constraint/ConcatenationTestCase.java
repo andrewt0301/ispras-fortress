@@ -47,7 +47,7 @@ public class ConcatenationTestCase extends GenericSolverTestBase {
    * Expected output:
    * 
    * <pre>
-   *     sat ((z #x0000ffff))
+   *     sat ((x #x0000) (y #xffff) (z #x0000ffff))
    * </pre>
    */
 
