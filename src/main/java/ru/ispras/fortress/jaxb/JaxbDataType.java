@@ -14,10 +14,15 @@
 
 package ru.ispras.fortress.jaxb;
 
+import ru.ispras.fortress.data.DataType;
+
 /**
- * The class for mediation during JAXB marshalling/unmarshalling of Nodes.
+ * The representation of {@link DataType} suitable for JAXB marshalling and unmarshalling. This
+ * class must be used only for JAXB operations.
  * 
  * @author <a href="mailto:i.melnichenko@deltasolutions.ru">Igor Melnichenko</a>
+ * 
+ * @see DataType
  */
 public enum JaxbDataType {
   BIT_VECTOR,

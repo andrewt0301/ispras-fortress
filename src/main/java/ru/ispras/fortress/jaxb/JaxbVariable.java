@@ -17,11 +17,15 @@ package ru.ispras.fortress.jaxb;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlValue;
 
+import ru.ispras.fortress.expression.NodeVariable;
+
 /**
- * The class for mediation during JAXB marshalling/unmarshalling of
- * {@link ru.ispras.fortress.data.Variable} objects.
- * 
+ * The representation of {@link NodeVariable} suitable for JAXB marshalling and unmarshalling. This
+ * class must be used only for JAXB operations.
+ *
  * @author <a href="mailto:i.melnichenko@deltasolutions.ru">Igor Melnichenko</a>
+ *
+ * @see NodeVariable
  */
 public class JaxbVariable {
   @XmlAttribute

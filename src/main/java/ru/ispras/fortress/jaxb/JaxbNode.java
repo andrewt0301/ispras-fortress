@@ -14,15 +14,21 @@
 
 package ru.ispras.fortress.jaxb;
 
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 
+import ru.ispras.fortress.expression.Node;
+
 /**
- * The class for mediation during JAXB marshalling/unmarshalling of
- * {@link ru.ispras.fortress.expression.Node} objects.
- * 
+ * The representation of {@link Node} suitable for JAXB marshalling and unmarshalling. This class
+ * must be used only for JAXB operations.
+ *
  * @author <a href="mailto:i.melnichenko@deltasolutions.ru">Igor Melnichenko</a>
+ *
+ * @see Node
  */
 @XmlTransient
+@XmlSeeAlso({JaxbNodeValue.class})
 public abstract class JaxbNode {
 
 }

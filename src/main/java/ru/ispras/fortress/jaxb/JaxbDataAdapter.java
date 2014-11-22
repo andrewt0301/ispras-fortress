@@ -23,22 +23,36 @@ import ru.ispras.fortress.data.DataTypeId;
 /**
  * The adapter class for JAXB marshalling/unmarshalling of {@link Data} objects. Performs conversion
  * between {@link Data} and {@link JaxbData} instances.
- * 
+ *
  * @author <a href="mailto:i.melnichenko@deltasolutions.ru">Igor Melnichenko</a>
+ *
+ * @see Data
+ * @see JaxbData
  */
 public class JaxbDataAdapter extends XmlAdapter<JaxbData, Data> {
   @Override
   public JaxbData marshal(Data data) throws Exception {
+    if (data == null) {
+      return null;
+    }
+
     final JaxbData jaxbData = new JaxbData();
     jaxbData.type = JaxbDataType.valueOf(data.getType().getTypeId().name());
     jaxbData.size = data.getType().getSize();
     jaxbData.value = data.getValue();
+
     return jaxbData;
   }
 
   @Override
   public Data unmarshal(JaxbData jaxbData) throws Exception {
-    return new Data(
-      DataType.newDataType(DataTypeId.valueOf(jaxbData.type.name()), jaxbData.size), jaxbData.value);
+    if (jaxbData == null) {
+      return null;
+    }
+
+    DataType dataType =
+        DataType.newDataType(DataTypeId.valueOf(jaxbData.type.name()), jaxbData.size);
+
+    return new Data(dataType, jaxbData.value);
   }
 }

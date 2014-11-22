@@ -25,12 +25,19 @@ import ru.ispras.fortress.expression.NodeValue;
 /**
  * The adapter class for JAXB marshalling/unmarshalling of {@link Node} objects. Performs conversion
  * between {@link Node} and {@link JaxbNode} instances.
- * 
+ *
  * @author <a href="mailto:i.melnichenko@deltasolutions.ru">Igor Melnichenko</a>
+ *
+ * @see Node
+ * @see JaxbNode
  */
 public class JaxbNodeAdapter extends XmlAdapter<JaxbNode, Node> {
   @Override
   public JaxbNode marshal(Node node) throws Exception {
+    if (node == null) {
+      return null;
+    }
+
     if (node instanceof NodeValue) {
       final JaxbNodeValue jaxbNodeValue = new JaxbNodeValue();
       final Data data = ((NodeValue) node).getData();
@@ -38,23 +45,27 @@ public class JaxbNodeAdapter extends XmlAdapter<JaxbNode, Node> {
       jaxbNodeValue.type = JaxbDataType.valueOf(dataType.getTypeId().name());
       jaxbNodeValue.size = dataType.getSize();
       jaxbNodeValue.value = data.getValue().toString();
+
       return jaxbNodeValue;
-    } else {
-      throw new IllegalArgumentException(
-        "Only NodeValue currently supported in JAXB among successors of the Node class");
     }
+
+    throw new IllegalArgumentException("Unsupported Node subclass: " + node.getClass().getName());
   }
 
   @Override
   public Node unmarshal(JaxbNode node) throws Exception {
+    if (node == null) {
+      return null;
+    }
+
     if (node instanceof JaxbNodeValue) {
       final JaxbNodeValue jaxbNodeValue = (JaxbNodeValue) node;
       final DataTypeId typeId = DataTypeId.valueOf(jaxbNodeValue.type.name());
       final DataType type = DataType.newDataType(typeId, jaxbNodeValue.size);
+
       return new NodeValue(type.valueOf(jaxbNodeValue.value, type.getTypeRadix()));
-    } else {
-      throw new IllegalArgumentException(
-        "Only NodeValue currently supported in JAXB among successors of the Node class");
     }
+
+    throw new IllegalArgumentException("Unsupported Node subclass: " + node.getClass().getName());
   }
 }

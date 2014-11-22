@@ -14,20 +14,21 @@
 
 package ru.ispras.fortress.jaxb;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 
+import ru.ispras.fortress.expression.NodeValue;
+
 /**
- * The class for mediation during JAXB marshalling/unmarshalling of
- * {@link ru.ispras.fortress.expression.NodeValue} objects.
- * 
+ * The representation of {@link NodeValue} suitable for JAXB marshalling and unmarshalling. This
+ * class must be used only for JAXB operations.
+ *
  * @author <a href="mailto:i.melnichenko@deltasolutions.ru">Igor Melnichenko</a>
+ *
+ * @see NodeValue
  */
 @XmlType(name = "value")
-@XmlAccessorType(value = XmlAccessType.FIELD)
 public class JaxbNodeValue extends JaxbNode {
   @XmlAttribute
   public JaxbDataType type;

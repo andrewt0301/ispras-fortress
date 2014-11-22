@@ -14,9 +14,11 @@
 
 package ru.ispras.fortress.expression;
 
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import ru.ispras.fortress.data.DataType;
+import ru.ispras.fortress.jaxb.JaxbNode;
 import ru.ispras.fortress.jaxb.JaxbNodeAdapter;
 
 /**
@@ -26,6 +28,7 @@ import ru.ispras.fortress.jaxb.JaxbNodeAdapter;
  * @author Andrei Tatarnikov
  */
 
+@XmlSeeAlso(JaxbNode.class)
 @XmlJavaTypeAdapter(JaxbNodeAdapter.class)
 public abstract class Node {
   /**

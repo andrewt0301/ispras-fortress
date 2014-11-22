@@ -24,13 +24,19 @@ import ru.ispras.fortress.data.Variable;
 /**
  * The adapter class for JAXB marshalling/unmarshalling of {@link Variable} objects. Performs
  * conversion between {@link Variable} and {@link JaxbVariable} instances.
- * 
+ *
  * @author <a href="mailto:i.melnichenko@deltasolutions.ru">Igor Melnichenko</a>
+ *
+ * @see Variable
+ * @see JaxbVariable
  */
 public class JaxbVariableAdapter extends XmlAdapter<JaxbVariable, Variable> {
-
   @Override
   public JaxbVariable marshal(Variable variable) throws Exception {
+    if (variable == null) {
+      return null;
+    }
+
     final JaxbVariable jaxbVariable = new JaxbVariable();
     jaxbVariable.name = variable.getName();
     final Data data = variable.getData();
@@ -38,11 +44,16 @@ public class JaxbVariableAdapter extends XmlAdapter<JaxbVariable, Variable> {
     jaxbVariable.type = JaxbDataType.valueOf(dataType.getTypeId().name());
     jaxbVariable.size = dataType.getSize();
     jaxbVariable.value = String.valueOf(data.getValue());
+
     return jaxbVariable;
   }
 
   @Override
   public Variable unmarshal(JaxbVariable jaxbVariable) throws Exception {
+    if (jaxbVariable == null) {
+      return null;
+    }
+
     final DataTypeId typeId = DataTypeId.valueOf(jaxbVariable.type.name());
     final DataType type = DataType.newDataType(typeId, jaxbVariable.size);
 

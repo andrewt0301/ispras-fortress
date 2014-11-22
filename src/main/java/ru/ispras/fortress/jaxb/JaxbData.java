@@ -14,20 +14,21 @@
 
 package ru.ispras.fortress.jaxb;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 
+import ru.ispras.fortress.data.Data;
+
 /**
- * The class for mediation during JAXB marshalling/unmarshalling of
- * {@link ru.ispras.fortress.data.Data} objects.
- * 
+ * The representation of {@link Data} suitable for JAXB marshalling and unmarshalling. This class
+ * must be used only for JAXB operations.
+ *
  * @author <a href="mailto:i.melnichenko@deltasolutions.ru">Igor Melnichenko</a>
+ *
+ * @see Data
  */
 @XmlType(name = "data")
-@XmlAccessorType(value = XmlAccessType.FIELD)
 public class JaxbData {
   @XmlAttribute
   public JaxbDataType type;
@@ -35,6 +36,4 @@ public class JaxbData {
   public int size;
   @XmlValue
   public Object value;
-
-  public JaxbData() {}
 }
