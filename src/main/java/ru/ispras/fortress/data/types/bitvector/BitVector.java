@@ -242,19 +242,24 @@ public abstract class BitVector implements Comparable<BitVector> {
    * Creates a bit vector mapping for the current bit vector. The mapping provides access to a part
    * of the bit vector as if it was a separate bit vector.
    * 
-   * @param src Source bit vector.
+   * @param source Source bit vector.
    * @param startBitPos The starting position of the mapping.
    * @param bitSize The size of the mapping in bytes.
    * @return A bit vector mapping.
    */
 
-  public static BitVector newMapping(BitVector src, int startBitPos, int bitSize) {
-    notNullCheck(src);
-    rangeCheck(startBitPos, src.getBitSize());
-    rangeCheckInclusive(startBitPos + bitSize, src.getBitSize());
+  public static BitVector newMapping(BitVector source, int startBitPos, int bitSize) {
+    notNullCheck(source);
 
+    if ((0 == startBitPos) && (source.getBitSize() == bitSize)) {
+      return source;
+    }
+
+    rangeCheck(startBitPos, source.getBitSize());
+    rangeCheckInclusive(startBitPos + bitSize, source.getBitSize());
     sizeCheck(bitSize);
-    return new BitVectorMapping(src, startBitPos, bitSize);
+
+    return new BitVectorMapping(source, startBitPos, bitSize);
   }
 
   /**
@@ -265,8 +270,13 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @return A bit vector mapping.
    */
 
-  public static BitVector newMapping(BitVector... sources) {
+  public static BitVector newMapping(BitVector ... sources) {
     sizeCheck(sources.length);
+
+    if (1 == sources.length) {
+      return sources[0];
+    }
+
     return new BitVectorMultiMapping(sources);
   }
 
@@ -279,6 +289,12 @@ public abstract class BitVector implements Comparable<BitVector> {
    */
 
   public static BitVector unmodifiable(BitVector source) {
+    notNullCheck(source);
+
+    if (source instanceof BitVectorUnmodifiable) {
+      return source;
+    }
+
     return new BitVectorUnmodifiable(source);
   }
 
