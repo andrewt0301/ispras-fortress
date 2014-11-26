@@ -229,4 +229,35 @@ public class SimpleTransformTestCase {
       Transformer.standardize(multiExpr).toString().equals(
         OR(eqxy, eqxy).toString()));
   }
+
+  private boolean equalNodes(Node lhs, Node rhs) {
+    return lhs.toString().equals(rhs.toString());
+  }
+
+  @Test
+  public void standardizeEqualityWithImmediates() {
+    final NodeValue ZERO = NodeValue.newInteger(0);
+    final NodeValue ONE = NodeValue.newInteger(1);
+
+    final NodeValue TRUE = NodeValue.newBoolean(true);
+    final NodeValue FALSE = NodeValue.newBoolean(false);
+
+    final NodeVariable x = createVariable("x");
+
+    Assert.assertTrue(equalNodes(
+        Transformer.standardize(EQ(ZERO, ZERO, ZERO)),
+        TRUE));
+
+    Assert.assertTrue(equalNodes(
+        Transformer.standardize(EQ(ZERO, ZERO, ONE, ZERO)),
+        FALSE));
+
+    Assert.assertTrue(equalNodes(
+        Transformer.standardize(EQ(x, ZERO, ZERO, ZERO)),
+        EQ(ZERO, x)));
+
+    Assert.assertTrue(equalNodes(
+        Transformer.standardize(EQ(x, ZERO, FALSE)),
+        FALSE));
+  }
 }
