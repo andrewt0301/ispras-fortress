@@ -264,16 +264,20 @@ public final class Predicate {
    * Complete list of transformations is as follows:
    * <pre>
    * {@code
+   * en - expression, cn - constant
    * (neq ...) -> (not (= ...))
    * (<= ...) -> (or (< ...) (= ...))
    * (> ...) -> (and (not (< ...)) (not (= ...)))
    * (>= ...) -> (not (< ...))
    * (not true/false) -> false/true
    * (not (not expr)) -> expr
-   * (= true e) -> e0
-   * (= false e) -> (not e0)
+   * (= true e) -> e
+   * (= false e) -> (not e)
    * (= true e0 ...) -> (and e0 ...)
    * (= false e0 ...) -> (and (not e0) ...)
+   * (= c0 c0 e0 ...) -> (= c0 ...)
+   * (= c0 c1 e1 ...) -> false
+   * (= c0 c0 ... c0) -> true
    * (=> e0 ... en) -> (or (not e0) ... en)
    * (and false ...) -> false
    * (and true ...) -> (and ...)
@@ -412,13 +416,84 @@ public final class Predicate {
     new OperationRule(StandardOperation.EQ, ruleset) {
       @Override
       public boolean isApplicable(NodeOperation in) {
-        return booleanOperandIndex(in, 0) >= 0;
+        return countImmediateOperands(in) > 1 ||
+               booleanOperandIndex(in, 0) >= 0;
       }
 
       @Override
       public Node apply(Node in) {
         final NodeOperation op = (NodeOperation) in;
-        final int index = booleanOperandIndex(op, 0);
+
+        final int count = countEqualImmediates(op);
+        if (count < 0) {
+          return NodeValue.newBoolean(false);
+        }
+        if (count == op.getOperandCount()) {
+          return NodeValue.newBoolean(true);
+        }
+        if (count > 1) {
+          return reduceEqualImmediates(op, count);
+        }
+        return reduceBoolean(op, booleanOperandIndex(op, 0));
+      }
+
+      private final int countImmediateOperands(NodeOperation node) {
+        int n = 0;
+        for (int i = 0; i < node.getOperandCount(); ++i) {
+          if (node.getOperand(i).getKind() == Node.Kind.VALUE) {
+            ++n;
+          }
+        }
+        return n;
+      }
+
+      private final Node reduceEqualImmediates(NodeOperation node, int count) {
+        final Node[] operands = new Node[node.getOperandCount() - count + 1];
+        final Node immediate = node.getOperand(immediateIndex(node, 0));
+        operands[0] = immediate;
+
+        int index = 1;
+        for (int i = 0; i < node.getOperandCount(); ++i) {
+          final Node operand = node.getOperand(i);
+          if (operand.getKind() == Node.Kind.VALUE) {
+            continue;
+          }
+          operands[index++] = operand;
+        }
+        final NodeOperation reduced =
+            new NodeOperation(StandardOperation.EQ, operands);
+
+        if (isBoolean(immediate)) {
+          return reduceBoolean(reduced, 0);
+        }
+        return reduced;
+      }
+
+      private final int countEqualImmediates(NodeOperation node) {
+        int index = immediateIndex(node, 0);
+        final Node immediate = node.getOperand(index);
+
+        int count = 0;
+        while (index >= 0) {
+          if (!node.getOperand(index).equals(immediate)) {
+            return -1;
+          }
+          index = immediateIndex(node, index + 1);
+          ++count;
+        }
+        return count;
+      }
+
+      private final int immediateIndex(NodeOperation node, int start) {
+        for (int i = start; i < node.getOperandCount(); ++i) {
+          if (node.getOperand(i).getKind() == Node.Kind.VALUE) {
+            return i;
+          }
+        }
+        return -1;
+      }
+
+      private final Node reduceBoolean(NodeOperation op, int index) {
         final boolean value = ((Boolean) ((NodeValue) op.getOperand(index)).getValue());
 
         // For simple equalities just return plain or negated expression
