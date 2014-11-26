@@ -20,7 +20,7 @@ package ru.ispras.fortress.expression.printer;
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
 
-final class OperationDescription {
+public final class OperationDescription {
   /**
    * This enumeration contains the operation types.
    */
