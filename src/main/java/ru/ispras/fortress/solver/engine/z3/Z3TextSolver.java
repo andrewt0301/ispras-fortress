@@ -30,6 +30,9 @@ import java.util.ArrayList;
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
+import ru.ispras.fortress.esexpr.ESExpr;
+import ru.ispras.fortress.esexpr.ESExprMatcher;
+import ru.ispras.fortress.esexpr.ESExprParser;
 import ru.ispras.fortress.expression.*;
 import ru.ispras.fortress.solver.Environment;
 import ru.ispras.fortress.solver.SolverBase;
@@ -120,9 +123,30 @@ public final class Z3TextSolver extends SolverBase {
       final Iterator<Variable> vi = constraint.getUnknownVariables().iterator();
       boolean isStatusSet = false;
 
-      String line;
-      final Map<String, Variable> refs = new HashMap<String, Variable>();
+      final Map<String, Variable> required =
+          variablesMap(constraint.getUnknownVariables());
 
+      final Map<String, Variable> deferred = new HashMap<>();
+
+      final ESExprParser parser = new ESExprParser(reader);
+      ESExpr e = parser.next();
+      while (e != null) {
+        if (!isStatusSet && isStatus(e)) {
+          setStatus(resultBuilder, e.getLiteral());
+          isStatusSet = true;
+        } else if (isError(e)) {
+          resultBuilder.addError(getLiteral(e, 1));
+        } else if (isModel(e)) {
+          parseModel(resultBuilder, e, required, deferred);
+        } else if (!e.isNil() && e.isList()) {
+          parseVariables(resultBuilder, e, required, deferred);
+        } else {
+          assert false : String.format(UNK_OUTPUT_ERR_FRMT, e.toString());
+          resultBuilder.addError(String.format(UNK_OUTPUT_ERR_FRMT, e.toString()));
+        }
+        e = parser.next();
+      }
+/*
       while ((line = reader.readLine()) != null) {
         if (!isStatusSet && tryToParseStatus(line, resultBuilder)) {
           isStatusSet = true;
@@ -137,6 +161,7 @@ public final class Z3TextSolver extends SolverBase {
           resultBuilder.addError(String.format(UNK_OUTPUT_ERR_FRMT, line));
         }
       }
+*/
     } catch (IOException e) {
       resultBuilder.setStatus(SolverResult.Status.ERROR);
       resultBuilder.addError(IO_EXCEPTION_ERR + e.getMessage());
@@ -147,6 +172,50 @@ public final class Z3TextSolver extends SolverBase {
     }
 
     return resultBuilder.build();
+  }
+
+  private static Map<String, Variable> variablesMap(Iterable<Variable> vars) {
+    final Map<String, Variable> map = new HashMap<>();
+    for (Variable var : vars) {
+      map.put(var.getName(), var);
+    }
+    return map;
+  }
+
+  private static boolean isStatus(ESExpr e) {
+    if (!e.isAtom()) {
+      return false;
+    }
+    final String literal = e.getLiteral();
+    return literal.equals(SMTRegExp.SAT) ||
+           literal.equals(SMTRegExp.UNSAT) ||
+           literal.equals(SMTRegExp.UNKNOWN);
+  }
+
+  private static void setStatus(SolverResultBuilder builder, String status) {
+    if (status.equals(SMTRegExp.SAT)) {
+      builder.setStatus(SolverResult.Status.SAT);
+    } else if (status.equals(SMTRegExp.UNSAT)) {
+      builder.setStatus(SolverResult.Status.UNSAT);
+    } else {
+      builder.setStatus(SolverResult.Status.UNKNOWN);
+    }
+  }
+
+  private static boolean isError(ESExpr e) {
+    final ESExprMatcher matcher = new ESExprMatcher("(error %a)");
+    return matcher.matches(e);
+  }
+
+  private static String getLiteral(ESExpr e, int n) {
+    return e.getItems().get(n).getLiteral();
+  }
+
+  private static boolean isModel(ESExpr e) {
+    if (!e.isList() || e.isNil()) {
+      return false;
+    }
+    return e.getItems().get(0).getLiteral().equals("model");
   }
 
   private Process runSolver(String solverPath, String constraintFileName, String solverArgs)
@@ -182,6 +251,37 @@ public final class Z3TextSolver extends SolverBase {
 
     resultBuilder.addError(matcher.group().replaceAll(SMTRegExp.ERR_TRIM_PTRN, ""));
     return true;
+  }
+
+  private static void parseVariables(SolverResultBuilder builder,
+                                     ESExpr results,
+                                     Map<String, Variable> required,
+                                     Map<String, Variable> deferred) {
+    final ESExprMatcher asArray =
+        new ESExprMatcher("(_ as-array %a)");
+    final ESExprMatcher constArray =
+        new ESExprMatcher("((as const (Array %s %s)) %s)");
+    final ESExprMatcher minus = new ESExprMatcher("(- %a)");
+
+    for (ESExpr e : results.getListItems()) {
+      final ESExpr value = e.getItems().get(1);
+      final String reqName = getLiteral(e, 0);
+
+      if (value.isAtom() || minus.matches(value)) {
+        final Variable var = required.remove(reqName);
+        String val = value.getLiteral();
+        if (!value.isAtom()) {
+          val = getLiteral(value, 0) + getLiteral(value, 1);
+        }
+        builder.addVariable(parseVariable(var.getName(), var.getType(), val));
+      } else if (asArray.matches(value)) {
+        deferred.put(getLiteral(value, 2), required.get(getLiteral(e, 0)));
+      } else if (constArray.matches(value)) {
+        // FIXME What are const arrays in Fortress?
+        final Variable var = required.remove(reqName);
+        builder.addVariable(new Variable(var.getName(), var.getType().valueOf("()", 10)));
+      }
+    }
   }
 
   private static Variable parseVariable(String name, DataType typeInfo, String valueText) {
@@ -224,6 +324,27 @@ public final class Z3TextSolver extends SolverBase {
     return true;
   }
 
+  private static void parseModel(SolverResultBuilder builder,
+                                 ESExpr model,
+                                 Map<String, Variable> required,
+                                 Map<String, Variable> deferred) {
+    final ESExprMatcher define = new ESExprMatcher("(define-fun %a %s %s %s)");
+
+    final Map<String, ESExpr> values = new HashMap<>(model.getItems().size());
+    for (ESExpr e : model.getListItems()) {
+      if (!define.matches(e)) {
+        continue;
+      }
+      values.put(getLiteral(e, 1), e.getItems().get(4));
+    }
+    final Map<String, String> cache = new HashMap<>();
+    for (Map.Entry<String, Variable> entry : deferred.entrySet()) {
+      final String array = arrayModelToText(entry.getKey(), values, cache);
+      final Variable origin = entry.getValue();
+      builder.addVariable(new Variable(origin.getName(), origin.getType().valueOf(array, 10)));
+    }
+  }
+/*
   private static boolean tryToParseModel(String line, BufferedReader reader,
       Map<String, Variable> refs, SolverResultBuilder builder) throws IOException {
     if (!line.equals("(model ")) {
@@ -262,13 +383,58 @@ public final class Z3TextSolver extends SolverBase {
 
     return true;
   }
+*/
+  private static String arrayModelToText(String name,
+                                         Map<String, ESExpr> model,
+                                         Map<String, String> cache) {
+    if (cache.containsKey(name)) {
+      return cache.get(name);
+    }
+    final ESExprMatcher ite = new ESExprMatcher("(ite (= %a %s) %s %s)");
+    final ESExprMatcher asArray = new ESExprMatcher("(_ as-array %a)");
+    final ESExprMatcher minus = new ESExprMatcher("(- %a)");
 
-  private static String arrayModelToText(String name, Map<String, List<String>> model,
-      Map<String, String> cache) {
-    /*
-     * Build text representation that valueOf() can deal with
-     */
+    ESExpr e = model.get(name);
+    if (asArray.matches(e)) {
+      final String value = arrayModelToText(getLiteral(e, 2), model, cache);
+      cache.put(name, value);
+      return value;
+    }
 
+    final StringBuilder builder = new StringBuilder();
+    builder.append('(');
+
+    while (ite.matches(e)) {
+      final ESExpr esKey = e.getItems().get(1).getItems().get(2);
+      final ESExpr esValue = e.getItems().get(2);
+
+      String key = esKey.getLiteral();
+      if (asArray.matches(esKey)) {
+        key = arrayModelToText(getLiteral(esKey, 2), model, cache);
+      } else if (minus.matches(esKey)) {
+        key = getLiteral(esKey, 0) + getLiteral(esKey, 1);
+      }
+      String value = esValue.getLiteral();
+      if (asArray.matches(esValue)) {
+        value = arrayModelToText(getLiteral(esValue, 2), model, cache);
+      } else if (minus.matches(esValue)) {
+        value = getLiteral(esValue, 0) + getLiteral(esValue, 1);
+      }
+      builder.append('(').append(key).append(':').append(value).append(')');
+
+      e = e.getItems().get(3);
+    }
+    builder.append(')');
+
+    final String array = builder.toString();
+    cache.put(name, array);
+    return array;
+  }
+/*
+  private static String arrayModelToText(String name,
+                                         Map<String, List<String>> model,
+                                         Map<String, String> cache,
+                                         int unused) {
     if (cache.containsKey(name))
       return cache.get(name);
 
@@ -309,7 +475,7 @@ public final class Z3TextSolver extends SolverBase {
     cache.put(name, s);
     return s;
   }
-
+*/
   private void initStandardOperations() {
     /* Logic Operations */
     addStandardOperation(StandardOperation.EQ, "=");
