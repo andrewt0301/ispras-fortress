@@ -137,6 +137,66 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
 
       return Data.newInteger(value1.mod(value2.abs()));
     }
+  },
+
+  EQ(StandardOperation.EQ, ArityRange.BINARY) {
+    @Override
+    public Data calculate(Data... operands) {
+      final BigInteger value1 = toBigInteger(operands[0]);
+      final BigInteger value2 = toBigInteger(operands[1]);
+
+      return Data.newBoolean(value1.compareTo(value2) == 0);
+    }
+  },
+
+  NOTEQ(StandardOperation.NOTEQ, ArityRange.BINARY) {
+    @Override
+    public Data calculate(Data... operands) {
+      final BigInteger value1 = toBigInteger(operands[0]);
+      final BigInteger value2 = toBigInteger(operands[1]);
+
+      return Data.newBoolean(value1.compareTo(value2) != 0);
+    }
+  },
+
+  GREATER(StandardOperation.GREATER, ArityRange.BINARY) {
+    @Override
+    public Data calculate(Data... operands) {
+      final BigInteger value1 = toBigInteger(operands[0]);
+      final BigInteger value2 = toBigInteger(operands[1]);
+
+      return Data.newBoolean(value1.compareTo(value2) > 0);
+    }
+  },
+
+  GREATEREQ(StandardOperation.GREATEREQ, ArityRange.BINARY) {
+    @Override
+    public Data calculate(Data... operands) {
+      final BigInteger value1 = toBigInteger(operands[0]);
+      final BigInteger value2 = toBigInteger(operands[1]);
+
+      return Data.newBoolean(value1.compareTo(value2) >= 0);
+    }
+  },
+
+  LESS(StandardOperation.LESS, ArityRange.BINARY) {
+    @Override
+    public Data calculate(Data... operands) {
+      final BigInteger value1 = toBigInteger(operands[0]);
+      final BigInteger value2 = toBigInteger(operands[1]);
+
+      return Data.newBoolean(value1.compareTo(value2) < 0);
+    }
+  },
+
+  LESSEQ(StandardOperation.LESSEQ, ArityRange.BINARY) {
+    @Override
+    public Data calculate(Data... operands) {
+      final BigInteger value1 = toBigInteger(operands[0]);
+      final BigInteger value2 = toBigInteger(operands[1]);
+
+      return Data.newBoolean(value1.compareTo(value2) <= 0);
+    }
   };
 
   private static final Map<StandardOperation, Operation<StandardOperation>> operations;
