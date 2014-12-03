@@ -302,6 +302,12 @@ public final class ExprUtils {
     final Constraint constraint = ConstraintUtils.newConstraint(expr);
     final SolverResult result = ConstraintUtils.solve(constraint);
 
+    /* Some solvers may return SAT status
+     * even when the constraint to be solved contains errors.
+     * In this case the error checking should be done first. */
+    if (result.hasErrors() && (SolverResult.Status.SAT == result.getStatus()))
+      throw new IllegalArgumentException(result.getErrors().toString());
+
     return SolverResult.Status.SAT == result.getStatus();
   }
 
