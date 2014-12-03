@@ -42,6 +42,26 @@ public class SimpleTransformTestCase {
     return new NodeOperation(StandardOperation.EQ, args);
   }
 
+  private static NodeOperation NOTEQ(Node... args) {
+    return new NodeOperation(StandardOperation.NOTEQ, args);
+  }
+
+  private static NodeOperation GREATER(Node... args) {
+    return new NodeOperation(StandardOperation.GREATER, args);
+  }
+
+  private static NodeOperation GREATEREQ(Node... args) {
+    return new NodeOperation(StandardOperation.GREATEREQ, args);
+  }
+
+  private static NodeOperation LESS(Node... args) {
+    return new NodeOperation(StandardOperation.LESS, args);
+  }
+
+  private static NodeOperation LESSEQ(Node... args) {
+    return new NodeOperation(StandardOperation.LESSEQ, args);
+  }
+
   private static NodeOperation OR(Node... args) {
     return new NodeOperation(StandardOperation.OR, args);
   }
@@ -259,5 +279,36 @@ public class SimpleTransformTestCase {
     Assert.assertTrue(equalNodes(
         Transformer.standardize(EQ(x, ZERO, FALSE)),
         FALSE));
+  }
+
+  @Test
+  public void standardizeValueComparisons() {
+
+    /* Integer values */
+    final NodeValue ZERO = NodeValue.newInteger(0);
+    final NodeValue ONE = NodeValue.newInteger(1);
+    final NodeValue TWO = NodeValue.newInteger(2);
+
+    /* Boolean values */
+    final NodeValue TRUE = NodeValue.newBoolean(true);
+    final NodeValue FALSE = NodeValue.newBoolean(false);
+
+    /* 0 != 1 */
+    Assert.assertTrue(equalNodes(Transformer.standardize(NOTEQ(ZERO, ONE)), TRUE));
+
+    /* 2 > 1 */
+    Assert.assertTrue(equalNodes(Transformer.standardize(GREATER(TWO, ONE)), TRUE));
+
+    /* 1 >= 0 */
+    Assert.assertTrue(equalNodes(Transformer.standardize(GREATEREQ(ONE, ZERO)), TRUE));
+
+    /* 0 < 2 */
+    Assert.assertTrue(equalNodes(Transformer.standardize(LESS(ZERO, TWO)), TRUE));
+
+    /* 0 <= 1 */
+    Assert.assertTrue(equalNodes(Transformer.standardize(LESSEQ(ZERO, ONE)), TRUE));
+
+    /* (1 >= 2) == false */
+    Assert.assertTrue(equalNodes(Transformer.standardize(GREATEREQ(ONE, TWO)), FALSE));
   }
 }

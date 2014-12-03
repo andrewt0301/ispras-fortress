@@ -240,6 +240,9 @@ public final class Transformer {
       throw new NullPointerException();
     }
 
+    /* Reduce expression before standardizing. */
+    expression = Transformer.reduce(ReduceOptions.NEW_INSTANCE, expression);
+
     final NodeTransformer tl = new NodeTransformer(Predicate.getStandardRuleset());
     tl.walk(expression);
     return tl.getResult().iterator().next();
