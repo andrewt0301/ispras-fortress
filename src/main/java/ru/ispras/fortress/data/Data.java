@@ -17,6 +17,7 @@ package ru.ispras.fortress.data;
 import java.math.BigInteger;
 
 import ru.ispras.fortress.data.types.bitvector.BitVector;
+import ru.ispras.fortress.data.types.datamap.DataMap;
 
 /**
  * The Data class is a storage of data being processed. This data will be used as an input or an
@@ -202,6 +203,11 @@ public final class Data {
     final Object v = BitVector.unmodifiable(BitVector.valueOf(value, size));
 
     return new Data(dt, v);
+  }
+
+  public static Data newArray(DataMap map) {
+    return new Data(DataType.MAP(map.getKeyType(), map.getValueType()),
+                    new DataMap(map));
   }
 
   /**

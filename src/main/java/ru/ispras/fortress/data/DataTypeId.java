@@ -15,8 +15,6 @@
 package ru.ispras.fortress.data;
 
 import java.math.BigInteger;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +24,7 @@ import java.util.regex.Matcher;
 
 import ru.ispras.fortress.data.types.Radix;
 import ru.ispras.fortress.data.types.bitvector.BitVector;
+import ru.ispras.fortress.data.types.datamap.DataMap;
 
 /**
  * The DataTypeId enumeration is used to specify type of data a solver operates with.
@@ -173,61 +172,15 @@ public enum DataTypeId {
     }
   },
 
-  MAP(Map.class) {
+  MAP(DataMap.class) {
     Object valueOf(String s, int radix, List<Object> params) {
       final DataType keyType = (DataType) params.get(0);
       final DataType valueType = (DataType) params.get(1);
-
-      final char LPAREN = '(';
-      final char RPAREN = ')';
-      final char DELIM = ':';
-
-      final Map<Data, Data> map = new HashMap<Data, Data>() {
-        private static final long serialVersionUID = -5044263572714846606L;
-
-        @Override
-        public String toString() {
-          final StringBuilder builder = new StringBuilder();
-          builder.append(LPAREN);
-
-          for (Map.Entry<Data, Data> entry : entrySet()) {
-            builder.append(LPAREN).append(entry.getKey().getValue().toString())
-                   .append(DELIM)
-                   .append(entry.getValue().getValue().toString())
-                   .append(RPAREN);
-          }
-
-          builder.append(RPAREN);
-          return builder.toString();
-        }
-      };
-
-      int depth = -1;
-      int start = -1, end = -1;
-
-      for (int i = 0; i < s.length(); ++i) {
-        final char c = s.charAt(i);
-        if (c == LPAREN && ++depth == 1) {
-          start = i + 1;
-        } else if (c == RPAREN && --depth == 0) {
-
-          //TODO: key radix generally is not equal to value radix, but DEC is widespread case
-          map.put(keyType.valueOf(s.substring(start, end), Radix.DEC.value()),
-                  valueType.valueOf(s.substring(end + 1, i), radix));
-        } else if (c == DELIM && depth == 1) {
-          end = i;
-        }
-      }
-
-      if (depth != -1) {
-        throw new IllegalArgumentException("Broken string value");
-      }
-
-      return map;
+      return DataMap.valueOf(s, keyType, valueType);
     }
 
     int radix(int size) {
-      return 10;
+      return 0;
     }
 
     void validate(List<Object> params) {
