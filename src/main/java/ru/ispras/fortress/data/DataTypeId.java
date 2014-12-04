@@ -210,7 +210,9 @@ public enum DataTypeId {
         if (c == LPAREN && ++depth == 1) {
           start = i + 1;
         } else if (c == RPAREN && --depth == 0) {
-          map.put(keyType.valueOf(s.substring(start, end), radix),
+
+          //TODO: key radix generally is not equal to value radix, but DEC is widespread case
+          map.put(keyType.valueOf(s.substring(start, end), Radix.DEC.value()),
                   valueType.valueOf(s.substring(end + 1, i), radix));
         } else if (c == DELIM && depth == 1) {
           end = i;
