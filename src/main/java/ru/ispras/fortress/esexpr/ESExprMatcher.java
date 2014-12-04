@@ -32,6 +32,9 @@ public final class ESExprMatcher {
     if (pattern.getLiteral().equals(ATOM)) {
       return e.isAtom();
     }
+    if (pattern.isAtom()) {
+      return e.isAtom() && e.getLiteral().equals(pattern.getLiteral());
+    }
     if (e.getItems().size() != pattern.getItems().size()) {
       return false;
     }
