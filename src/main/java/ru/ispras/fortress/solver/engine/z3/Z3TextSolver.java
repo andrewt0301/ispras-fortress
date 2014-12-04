@@ -19,13 +19,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
 
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
@@ -120,7 +116,6 @@ public final class Z3TextSolver extends SolverBase {
       final BufferedReader reader = 
         new BufferedReader(new InputStreamReader(process.getInputStream()));
 
-      final Iterator<Variable> vi = constraint.getUnknownVariables().iterator();
       boolean isStatusSet = false;
 
       final Map<String, Variable> required =
@@ -137,7 +132,7 @@ public final class Z3TextSolver extends SolverBase {
         } else if (isError(e)) {
           resultBuilder.addError(getLiteral(e, 1));
         } else if (isModel(e)) {
-          parseModel(resultBuilder, e, required, deferred);
+          parseModel(resultBuilder, e, deferred);
         } else if (!e.isNil() && e.isList()) {
           parseVariables(resultBuilder, e, required, deferred);
         } else {
@@ -146,22 +141,6 @@ public final class Z3TextSolver extends SolverBase {
         }
         e = parser.next();
       }
-/*
-      while ((line = reader.readLine()) != null) {
-        if (!isStatusSet && tryToParseStatus(line, resultBuilder)) {
-          isStatusSet = true;
-        } else if (tryToParseError(line, resultBuilder)) {
-          // Do nothing
-        } else if (vi.hasNext() && tryToParseVariable(line, vi.next(), resultBuilder, refs)) {
-          // Do nothing
-        } else if (tryToParseModel(line, reader, refs, resultBuilder))
-          ; // Do nothing
-        else {
-          assert false : String.format(UNK_OUTPUT_ERR_FRMT, line);
-          resultBuilder.addError(String.format(UNK_OUTPUT_ERR_FRMT, line));
-        }
-      }
-*/
     } catch (IOException e) {
       resultBuilder.setStatus(SolverResult.Status.ERROR);
       resultBuilder.addError(IO_EXCEPTION_ERR + e.getMessage());
@@ -192,14 +171,21 @@ public final class Z3TextSolver extends SolverBase {
            literal.equals(SMTRegExp.UNKNOWN);
   }
 
-  private static void setStatus(SolverResultBuilder builder, String status) {
-    if (status.equals(SMTRegExp.SAT)) {
-      builder.setStatus(SolverResult.Status.SAT);
-    } else if (status.equals(SMTRegExp.UNSAT)) {
-      builder.setStatus(SolverResult.Status.UNSAT);
-    } else {
-      builder.setStatus(SolverResult.Status.UNKNOWN);
+  private static void setStatus(SolverResultBuilder builder, String statusStr) {
+    SolverResult.Status status;
+    switch (statusStr) {
+      case SMTRegExp.SAT:
+        status = SolverResult.Status.SAT;
+        break;
+
+      case SMTRegExp.UNSAT:
+        status = SolverResult.Status.UNSAT;
+        break;
+
+      default:
+        status = SolverResult.Status.UNKNOWN;
     }
+    builder.setStatus(status);
   }
 
   private static boolean isError(ESExpr e) {
@@ -212,45 +198,15 @@ public final class Z3TextSolver extends SolverBase {
   }
 
   private static boolean isModel(ESExpr e) {
-    if (!e.isList() || e.isNil()) {
-      return false;
-    }
-    return e.getItems().get(0).getLiteral().equals("model");
+    return e.isList() &&
+           !e.isNil() &&
+           getLiteral(e, 0).equals("model");
   }
 
   private Process runSolver(String solverPath, String constraintFileName, String solverArgs)
       throws IOException {
     final ProcessBuilder pb = new ProcessBuilder(solverPath, constraintFileName, solverArgs);
     return pb.start();
-  }
-
-  private static boolean tryToParseStatus(String line, SolverResultBuilder resultBuilder) {
-    final Matcher matcher = Pattern.compile(SMTRegExp.STATUS_PTRN).matcher(line);
-
-    if (!matcher.matches()) {
-      return false;
-    }
-
-    if (line.equals(SMTRegExp.SAT)) {
-      resultBuilder.setStatus(SolverResult.Status.SAT);
-    } else if (line.equals(SMTRegExp.UNSAT)) {
-      resultBuilder.setStatus(SolverResult.Status.UNSAT);
-    } else {
-      resultBuilder.setStatus(SolverResult.Status.UNKNOWN);
-    }
-
-    return true;
-  }
-
-  private static boolean tryToParseError(String line, SolverResultBuilder resultBuilder) {
-    final Matcher matcher = Pattern.compile(SMTRegExp.ERR_PTRN).matcher(line);
-
-    if (!matcher.matches()) {
-      return false;
-    }
-
-    resultBuilder.addError(matcher.group().replaceAll(SMTRegExp.ERR_TRIM_PTRN, ""));
-    return true;
   }
 
   private static void parseVariables(SolverResultBuilder builder,
@@ -299,34 +255,8 @@ public final class Z3TextSolver extends SolverBase {
     return new Variable(name, data);
   }
 
-  private static boolean tryToParseVariable(String line, Variable variable,
-      SolverResultBuilder resultBuilder, Map<String, Variable> refs) {
-
-    final Matcher matcher = Pattern.compile(String.format(
-      SMTRegExp.EXPR_PTRN_FRMT, variable.getName())).matcher(line);
-
-    if (!matcher.matches()) {
-      return false;
-    }
-
-    final String valueText = matcher.group().replaceAll(
-      String.format(SMTRegExp.EXPR_TRIM_PTRN_FRMT, variable.getName()), "");
-
-    final Matcher refMatcher = Pattern.compile(SMTRegExp.ARRAY_REF).matcher(valueText);
-
-    if (refMatcher.matches()) {
-      refs.put(refMatcher.group(1), variable);
-    } else {
-      resultBuilder.addVariable(
-        parseVariable(variable.getName(), variable.getData().getType(), valueText));
-    }
-
-    return true;
-  }
-
   private static void parseModel(SolverResultBuilder builder,
                                  ESExpr model,
-                                 Map<String, Variable> required,
                                  Map<String, Variable> deferred) {
     final ESExprMatcher define = new ESExprMatcher("(define-fun %a %s %s %s)");
 
@@ -344,46 +274,7 @@ public final class Z3TextSolver extends SolverBase {
       builder.addVariable(new Variable(origin.getName(), origin.getType().valueOf(array, 10)));
     }
   }
-/*
-  private static boolean tryToParseModel(String line, BufferedReader reader,
-      Map<String, Variable> refs, SolverResultBuilder builder) throws IOException {
-    if (!line.equals("(model ")) {
-      return false;
-    }
 
-    // skip model when there are no deferred variables
-    if (refs.isEmpty()) {
-      while (!reader.readLine().equals(")")); // skip line
-      return true;
-    }
-
-    final Pattern defPattern = Pattern.compile("[ ]*\\(define-fun[ ]([^ ]+)[ ].*");
-    final Map<String, List<String>> model = new HashMap<String, List<String>>();
-
-    line = reader.readLine();
-    final Matcher matcher = defPattern.matcher(line);
-
-    List<String> lines = null;
-    for (; !line.equals(")"); line = reader.readLine())
-      if (matcher.reset(line).matches()) {
-        lines = new ArrayList<String>();
-        model.put(matcher.group(1), lines);
-      } else {
-        lines.add(line.trim());
-      }
-
-    final Map<String, String> valueTextCache = new HashMap<String, String>();
-
-    for (Map.Entry<String, Variable> ref : refs.entrySet()) {
-      final String valueText = arrayModelToText(ref.getKey(), model, valueTextCache);
-      // FIXME radix?
-      builder.addVariable(new Variable(
-        ref.getValue().getName(), ref.getValue().getData().getType().valueOf(valueText, 10)));
-    }
-
-    return true;
-  }
-*/
   private static String arrayModelToText(String name,
                                          Map<String, ESExpr> model,
                                          Map<String, String> cache) {
@@ -430,52 +321,7 @@ public final class Z3TextSolver extends SolverBase {
     cache.put(name, array);
     return array;
   }
-/*
-  private static String arrayModelToText(String name,
-                                         Map<String, List<String>> model,
-                                         Map<String, String> cache,
-                                         int unused) {
-    if (cache.containsKey(name))
-      return cache.get(name);
 
-    final StringBuilder builder = new StringBuilder();
-    builder.append("(");
-
-    final Matcher entryMatcher =
-      Pattern.compile("\\(ite[ ]\\(=[ ][^ ]+[ ](.+)\\)+[ ](.+)").matcher("");
-
-    final Matcher arrayRefMatcher = Pattern.compile(SMTRegExp.ARRAY_REF).matcher("");
-
-    final List<String> entries = model.get(name);
-    for (String entry : entries)
-      if (entryMatcher.reset(entry).matches()) {
-        String key = entryMatcher.group(1);
-        if (key.charAt(0) == '(') {
-          key = key.substring(1, key.length() - 1);
-        }
-
-        if (arrayRefMatcher.reset(key).matches()) {
-          key = arrayModelToText(arrayRefMatcher.group(1), model, cache);
-        }
-
-        String value = entryMatcher.group(2);
-        if (value.charAt(0) == '(') {
-          value = value.substring(1, value.length() - 1);
-        }
-
-        if (arrayRefMatcher.reset(value).matches()) {
-          value = arrayModelToText(arrayRefMatcher.group(1), model, cache);
-        }
-
-        builder.append("(").append(key).append(":").append(value).append(")");
-      }
-
-    builder.append(")");
-    final String s = builder.toString();
-    cache.put(name, s);
-    return s;
-  }
-*/
   private void initStandardOperations() {
     /* Logic Operations */
     addStandardOperation(StandardOperation.EQ, "=");
