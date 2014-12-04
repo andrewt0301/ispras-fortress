@@ -42,14 +42,4 @@ public final class ESExprMatcher {
     }
     return true;
   }
-
-  public static void main(String[] argv) throws java.io.IOException {
-    final ESExprMatcher matcher = new ESExprMatcher(argv[0]);
-    for (int i = 1; i < argv.length; ++i) {
-      final ESExpr e = ESExprParser.stringParser(argv[i]).next();
-      if (matcher.matches(e)) {
-        System.out.println(argv[i] + " matches");
-      }
-    }
-  }
 }

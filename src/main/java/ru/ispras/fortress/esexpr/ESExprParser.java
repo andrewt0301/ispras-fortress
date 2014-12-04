@@ -78,10 +78,7 @@ public final class ESExprParser {
   }
 
   private boolean delimiterFound() {
-    if (stack.isEmpty()) {
-      return false;
-    }
-    return stack.peek().size() > 1;
+    return !stack.isEmpty() && stack.peek().size() > 1;
   }
 
   public static ESExprParser stringParser(String s) {
