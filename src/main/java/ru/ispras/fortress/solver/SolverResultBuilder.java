@@ -79,4 +79,14 @@ public final class SolverResultBuilder {
   public void addVariable(Variable variable) {
     variables.add(variable);
   }
+
+  /**
+   * Checks whether any errors have been registered.
+   * 
+   * @return {@code true} if any errors have been reported or {@code false} otherwise.
+   */
+
+  public boolean hasErrors() {
+    return !errors.isEmpty();
+  }
 }

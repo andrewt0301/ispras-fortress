@@ -96,7 +96,8 @@ public final class Z3TextSolver extends SolverBase {
 
     supportedKindCheck(constraint.getKind());
     solverFileExistsCheck(Environment.getSolverPath());
-
+    
+    final StringBuilder textBuilder = new StringBuilder();
     final SolverResultBuilder resultBuilder = new SolverResultBuilder(SolverResult.Status.ERROR);
 
     final SMTTextBuilder smtTextBuilder =
@@ -108,9 +109,9 @@ public final class Z3TextSolver extends SolverBase {
     try {
       walker.visit(((Formulas) constraint.getInnerRep()).exprs());
       tempFile = File.createTempFile(TEMP_FILE, TEMP_FILE_SUFFIX);
-
+      
       final String tempFilePath = tempFile.getPath();
-      smtTextBuilder.saveToFile(tempFilePath);
+      smtTextBuilder.saveToFile(tempFilePath, textBuilder);
 
       final Process process = runSolver(Environment.getSolverPath(), tempFilePath, "");
 
@@ -153,6 +154,10 @@ public final class Z3TextSolver extends SolverBase {
       if (null != tempFile && !Environment.isDebugMode()) {
         tempFile.delete();
       }
+    }
+
+    if (resultBuilder.hasErrors()) {
+      resultBuilder.addError(textBuilder.toString());
     }
 
     return resultBuilder.build();

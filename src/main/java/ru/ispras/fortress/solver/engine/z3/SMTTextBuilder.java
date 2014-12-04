@@ -112,11 +112,40 @@ final class SMTTextBuilder implements ExprTreeVisitor {
    * @throws IOException if failed to create the output file.
    */
 
-  public void saveToFile(String fileName) throws IOException {
-    PrintWriter out = null;
+  public void saveToFile(String fileName, StringBuilder textBuilder) throws IOException {
+    class TextWriter {
+      private final PrintWriter fileOut;
+      private final StringBuilder textOut;
+
+      TextWriter(String fileName, StringBuilder textBuilder) throws IOException {
+        final FileWriter file = new FileWriter(fileName);
+        this.fileOut = new PrintWriter(file);
+        this.textOut = textBuilder;
+      }
+
+      public void printf(String format, Object ... args) {
+        fileOut.printf(format, args);
+        if (null != textOut) {
+          textOut.append(String.format(format, args));
+        }
+      }
+
+      public void println(String x) {
+        fileOut.println(x);
+        if (null != textOut) {
+          textOut.append(x);
+          textOut.append("\r\n");
+        }
+      }
+
+      public void close() {
+        fileOut.close();
+      }
+    }
+
+    TextWriter out = null;
     try {
-      final FileWriter outFile = new FileWriter(fileName);
-      out = new PrintWriter(outFile);
+      out = new TextWriter(fileName, textBuilder);
 
       int i = 0;
       for (DataType type : arraysInUse) {
