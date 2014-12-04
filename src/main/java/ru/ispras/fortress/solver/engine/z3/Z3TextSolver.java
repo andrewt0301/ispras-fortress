@@ -177,7 +177,7 @@ public final class Z3TextSolver extends SolverBase {
   }
 
   private static void setStatus(SolverResultBuilder builder, String statusStr) {
-    SolverResult.Status status;
+    final SolverResult.Status status;
     switch (statusStr) {
       case SMTRegExp.SAT:
         status = SolverResult.Status.SAT;
