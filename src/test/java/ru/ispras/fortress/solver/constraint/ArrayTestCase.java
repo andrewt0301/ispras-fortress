@@ -17,8 +17,10 @@ package ru.ispras.fortress.solver.constraint;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
+import ru.ispras.fortress.data.types.datamap.DataMap;
 import ru.ispras.fortress.expression.*;
 
 /**
@@ -59,8 +61,12 @@ final class ArrayInvariant implements GenericSolverTestBase.SampleConstraint {
     final NodeVariable a = new NodeVariable(builder.addVariable("a", ARRAY_TYPE));
     final NodeVariable v = new NodeVariable(builder.addVariable("v", ARRAY_TYPE));
 
-    final NodeValue value = new NodeValue(DataType.INTEGER.valueOf("37", 10));
-    final NodeValue array = new NodeValue(ARRAY_TYPE.valueOf(ARRAY_VALUE, 10));
+    final Data ival = Data.newInteger(37);
+    final DataMap map = new DataMap(DataType.INTEGER, DataType.INTEGER);
+    map.put(ival, ival);
+
+    final NodeValue value = new NodeValue(ival);
+    final NodeValue array = new NodeValue(Data.newArray(map));
 
     final Node stored = new NodeOperation(StandardOperation.STORE, v, value, value);
 
