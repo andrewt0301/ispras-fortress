@@ -14,19 +14,51 @@
 
 package ru.ispras.fortress.solver.engine.z3;
 
-import java.io.*;
-import java.util.*;
+import static ru.ispras.fortress.solver.engine.z3.SMTStrings.sASSERT;
+import static ru.ispras.fortress.solver.engine.z3.SMTStrings.sBRACKET_CLOSE;
+import static ru.ispras.fortress.solver.engine.z3.SMTStrings.sBRACKET_OPEN;
+import static ru.ispras.fortress.solver.engine.z3.SMTStrings.sCHECK_SAT;
+import static ru.ispras.fortress.solver.engine.z3.SMTStrings.sDECLARE_CONST;
+import static ru.ispras.fortress.solver.engine.z3.SMTStrings.sDEFAULT_ARRAY;
+import static ru.ispras.fortress.solver.engine.z3.SMTStrings.sDEFINE_FUN;
+import static ru.ispras.fortress.solver.engine.z3.SMTStrings.sEXIT;
+import static ru.ispras.fortress.solver.engine.z3.SMTStrings.sGET_MODEL;
+import static ru.ispras.fortress.solver.engine.z3.SMTStrings.sGET_VALUE;
+import static ru.ispras.fortress.solver.engine.z3.SMTStrings.sPARAM_DEF;
+import static ru.ispras.fortress.solver.engine.z3.SMTStrings.sSPACE;
+import static ru.ispras.fortress.solver.engine.z3.SMTStrings.sUNDERLINE;
+import static ru.ispras.fortress.solver.engine.z3.SMTStrings.textForData;
+import static ru.ispras.fortress.solver.engine.z3.SMTStrings.textForType;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Deque;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.DataTypeId;
 import ru.ispras.fortress.data.Variable;
-import ru.ispras.fortress.expression.*;
+import ru.ispras.fortress.data.types.bitvector.BitVector;
+import ru.ispras.fortress.expression.ExprTreeVisitor;
+import ru.ispras.fortress.expression.ExprTreeWalker;
+import ru.ispras.fortress.expression.Node;
+import ru.ispras.fortress.expression.NodeBinding;
+import ru.ispras.fortress.expression.NodeOperation;
+import ru.ispras.fortress.expression.NodeValue;
+import ru.ispras.fortress.expression.NodeVariable;
+import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.solver.SolverOperation;
 import ru.ispras.fortress.solver.function.Function;
 import ru.ispras.fortress.solver.function.FunctionTemplate;
-
-import static ru.ispras.fortress.solver.engine.z3.SMTStrings.*;
 
 /**
  * The SMTTextBuilder class implements logic that generates SMT-LIB code from a syntax structure.
@@ -46,6 +78,7 @@ final class SMTTextBuilder implements ExprTreeVisitor {
   private int functionCallDepth = 0;
 
   private final List<DataType> arraysInUse = new ArrayList<DataType>();
+  private final Deque<Boolean> castsToBV = new LinkedList<Boolean>();
 
   /**
    * Creates an instance of a SMT text builder.
@@ -257,13 +290,34 @@ final class SMTTextBuilder implements ExprTreeVisitor {
 
   @Override
   public void onOperandBegin(NodeOperation expr, Node node, int index) {
-    // Do nothing.
+    final Enum<?> operationId = expr.getOperationId();
+    if (StandardOperation.isFamily(operationId, StandardOperation.Family.BV) &&
+        (node.getDataType().getTypeId() == DataTypeId.LOGIC_BOOLEAN)) {
+
+      appendToCurrent(sSPACE);
+      appendToCurrent(sBRACKET_OPEN);
+
+      final SolverOperation ite = operations.get(StandardOperation.ITE);
+      appendToCurrent(ite.getText());
+
+      castsToBV.push(true);
+    }
+    else {
+      castsToBV.push(false);
+    }
   }
 
   @Override
   public void onOperandEnd(NodeOperation expr, Node node, int index) {
     if (StandardOperation.isParametric(expr.getOperationId())
         && index == StandardOperation.getParameterCount(expr.getOperationId()) - 1) {
+      appendToCurrent(sBRACKET_CLOSE);
+    }
+
+    final boolean isCastToBVNeeded = castsToBV.pop();
+    if (isCastToBVNeeded) {
+      onValue(Data.newBitVector(BitVector.TRUE));
+      onValue(Data.newBitVector(BitVector.FALSE));
       appendToCurrent(sBRACKET_CLOSE);
     }
   }

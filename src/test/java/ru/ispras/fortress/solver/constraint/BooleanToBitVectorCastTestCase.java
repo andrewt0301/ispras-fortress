@@ -18,6 +18,7 @@ package ru.ispras.fortress.solver.constraint;
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
+import ru.ispras.fortress.data.types.bitvector.BitVector;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
@@ -80,8 +81,12 @@ public class BooleanToBitVectorCastTestCase extends GenericSolverTestBase {
 
       formulas.add(
           new NodeOperation(
-              StandardOperation.BVOR,
-              new NodeOperation(StandardOperation.EQ, x, y), z));
+              StandardOperation.EQ,
+              new NodeOperation(
+                  StandardOperation.BVOR,
+                  new NodeOperation(StandardOperation.EQ, x, y), z),
+              NodeValue.newBitVector(BitVector.valueOf(true)))
+              );
 
       return builder.build();
     }
@@ -92,7 +97,6 @@ public class BooleanToBitVectorCastTestCase extends GenericSolverTestBase {
 
       result.add(new Variable("x", Data.newInteger(1)));
       result.add(new Variable("y", Data.newInteger(1)));
-      //TODO: write a correct value here
       result.add(new Variable("z", Data.newBitVector(0, 1)));
 
       return result;
