@@ -19,9 +19,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.EnumSet;
-import java.util.regex.Pattern;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
@@ -29,7 +29,8 @@ import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.esexpr.ESExpr;
 import ru.ispras.fortress.esexpr.ESExprMatcher;
 import ru.ispras.fortress.esexpr.ESExprParser;
-import ru.ispras.fortress.expression.*;
+import ru.ispras.fortress.expression.ExprTreeWalker;
+import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.solver.Environment;
 import ru.ispras.fortress.solver.SolverBase;
 import ru.ispras.fortress.solver.SolverResult;
@@ -131,6 +132,10 @@ public final class Z3TextSolver extends SolverBase {
           isStatusSet = true;
         } else if (isError(e)) {
           resultBuilder.addError(getLiteral(e, 1));
+          if (!isStatusSet) {
+            resultBuilder.setStatus(SolverResult.Status.ERROR);
+            isStatusSet = true;
+          }
         } else if (isModel(e)) {
           parseModel(resultBuilder, e, deferred);
         } else if (!e.isNil() && e.isList()) {

@@ -296,17 +296,26 @@ public final class ExprUtils {
    * @return {@code true} if the expression is satisfiable or {@code false} otherwise.
    * 
    * @throws NullPointerException if the parameter is {@code null}.
+   * @throws IllegalArgumentException (1) if the expression description contains errors that
+   * prevent the solver engine from solving it in a correct way or (2) if the solver is unable
+   * to solve a constraint based on the given expression due to limitations of its implementation.   
    */
 
   public static boolean isSAT(Node expr) {
     final Constraint constraint = ConstraintUtils.newConstraint(expr);
     final SolverResult result = ConstraintUtils.solve(constraint);
 
-    /* Some solvers may return SAT status
-     * even when the constraint to be solved contains errors.
-     * In this case the error checking should be done first. */
-    if (result.hasErrors() && (SolverResult.Status.SAT == result.getStatus()))
-      throw new IllegalArgumentException(result.getErrors().toString());
+    if (SolverResult.Status.ERROR == result.getStatus()) {
+      throw new IllegalArgumentException(
+          "Errors in the expression description: "
+          + result.getErrors().toString());
+    }
+
+    if (SolverResult.Status.UNKNOWN == result.getStatus()) {
+      throw new IllegalArgumentException(
+          "The solver is unable to solve the constraint based on the given expression. Errors: "
+          + result.getErrors().toString());
+    }
 
     return SolverResult.Status.SAT == result.getStatus();
   }
