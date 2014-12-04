@@ -298,26 +298,33 @@ public final class ExprUtils {
    * @throws NullPointerException if the parameter is {@code null}.
    * @throws IllegalArgumentException (1) if the expression description contains errors that
    * prevent the solver engine from solving it in a correct way or (2) if the solver is unable
-   * to solve a constraint based on the given expression due to limitations of its implementation.   
+   * to solve a constraint based on the given expression due to limitations of its implementation.
+   * @throws IllegalStateException if the solver engine returned results with an unknown status.    
    */
 
   public static boolean isSAT(Node expr) {
     final Constraint constraint = ConstraintUtils.newConstraint(expr);
     final SolverResult result = ConstraintUtils.solve(constraint);
 
-    if (SolverResult.Status.ERROR == result.getStatus()) {
-      throw new IllegalArgumentException(
-          "Errors in the expression description: "
-          + result.getErrors().toString());
-    }
+    switch (result.getStatus()) {
+      case SAT:
+        return true;
 
-    if (SolverResult.Status.UNKNOWN == result.getStatus()) {
-      throw new IllegalArgumentException(
-          "The solver is unable to solve the constraint based on the given expression. Errors: "
-          + result.getErrors().toString());
-    }
+      case UNSAT:
+        return false;
 
-    return SolverResult.Status.SAT == result.getStatus();
+      case ERROR:
+        throw new IllegalArgumentException(String.format(
+            "Errors in the expression description: %s", result.getErrors()));
+
+      case UNKNOWN:
+        throw new IllegalArgumentException(String.format(
+            "Unable to solve a constraint based on the given expression: %s", result.getErrors()));
+
+      default:
+        throw new IllegalStateException(String.format(
+            "The solver returned incorrect status %s: %s", result.getStatus(), result.getErrors()));
+    }
   }
 
   /**
