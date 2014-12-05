@@ -1,10 +1,26 @@
 package ru.ispras.fortress.esexpr;
 
+/**
+ * The ESExprMatcher is expression structure matcher for {@link ESExpr}.
+ * Matches expressions with patterns as-is, i.e. without normalization,
+ * respecting expression structure.
+ * Uses same Lisp-syntax notation for pattern specification, supports
+ * several wildcards: {@code %a} matches any atom including {@code NIL},
+ * {@code %s} matches any S-expression.
+ */
+
 public final class ESExprMatcher {
   private static final String ATOM = "%a";
   private static final String SEXPR = "%s";
 
   final ESExpr pattern;
+
+  /**
+   * Create new matcher for given pattern.
+   *
+   * @param pattern Lisp-syntax S-expression denoting pattern to match
+   * @throws NullPointerException if {@code pattern} is {@code null}
+   */
 
   public ESExprMatcher(String pattern) {
     if (pattern == null) {
@@ -21,9 +37,28 @@ public final class ESExprMatcher {
     this.pattern = sexpr;
   }
 
+  /**
+   * Returns {@code true} if given expression matches this matcher.
+   *
+   * @param e S-expression to be checked for match
+   * @return {@code true} if given expression matches
+   * @throws NullPointerException if {@code e} is {@code null}
+   */
+
   public boolean matches(ESExpr e) {
+    if (e == null) {
+      throw new NullPointerException();
+    }
     return matches(e, pattern);
   }
+
+  /**
+   * Returns {@code true} if given expression matches given pattern.
+   *
+   * @param e S-expression to be checked for match
+   * @param pattern S-expression denoting pattern
+   * @return {@code true} if given expression matches
+   */
 
   private static boolean matches(ESExpr e, ESExpr pattern) {
     if (pattern.getLiteral().equals(SEXPR)) {

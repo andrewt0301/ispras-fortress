@@ -5,6 +5,15 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * ESExpr class represents Lisp-like S-expressions using tuple notation.
+ * ESExpr can be atom, i.e. string literal, or expression of form (a . b . c ...)
+ * which is equivalent for traditional dotted-pair sequence (a . (b . (c . ...))).
+ * This kind of expressions is called tuples. Tuples with special atom NIL
+ * at the last position are called lists. NIL is a predefined atom which
+ * is considered as an empty tuple or list.
+ */
+
 public final class ESExpr {
   public static final ESExpr NIL =
       new ESExpr("NIL", Collections.<ESExpr>emptyList());
@@ -15,34 +24,83 @@ public final class ESExpr {
   final String literal;
   final List<ESExpr> items;
 
-  ESExpr(String literal, List<ESExpr> items) {
+  private ESExpr(String literal, List<ESExpr> items) {
     this.literal = literal;
     this.items = items;
   }
+
+  /**
+   * Returns {@code true} if this expression is atom.
+   *
+   * @return {@code true} if this expression is atom
+   */
 
   public boolean isAtom() {
     return items.isEmpty();
   }
 
+  /**
+   * Returns {@code true} if this expression is {@code NIL} atom.
+   *
+   * @return {@code true} if this expression is {@code NIL} atom
+   */
+
   public boolean isNil() {
     return this == NIL;
   }
+
+  /**
+   * Returns {@code true} if this expression is list.
+   * List expression is {@code NIL} atom or tuple containing {@code NIL}
+   * at last position.
+   *
+   * @return {@code true} if this expression is list
+   */
 
   public boolean isList() {
     return this.isNil() || !this.isAtom() && items.get(items.size() - 1).isNil();
   }
 
+  /**
+   * Returns {@code true} if this expression is tuple.
+   *
+   * @return {@code true} if this expression is tuple
+   */
+
   public boolean isTuple() {
-    return this.isNil() || !this.isAtom() && literal.equals(TUPLE_LITERAL);
+    return this.isNil() || !this.isAtom();
   }
+
+  /**
+   * Returns string literal for given expression.
+   * Atom string literal evaluates to itself, list and tuple literals are
+   * predefined strings denoting how expression has been created. If correct
+   * string representation required for S-expression, use {@link #toString() }
+   * instead.
+   *
+   * @return string literal for this expression
+   */
 
   public String getLiteral() {
     return literal;
   }
 
+  /**
+   * Returns list of S-expressions contained in this expression.
+   *
+   * @return list of contained expressions, empty list for atoms
+   */
+
   public List<ESExpr> getItems() {
     return Collections.unmodifiableList(items);
   }
+
+  /**
+   * Returns list of S-expressions contained in this list excluding last {@code NIL}.
+   *
+   * @return list of contained expressions excluding last {@code NIL}
+   * @throws UnsupportedOperationException if this expression is not list
+   */
 
   public List<ESExpr> getListItems() {
     if (!this.isList()) {
@@ -95,6 +153,13 @@ public final class ESExpr {
     return builder.toString();
   }
 
+  /**
+   * Helper method for writing string representation of this expression
+   * into StringBuilder.
+   *
+   * @param builder StringBuilder to write into.
+   */
+
   private void toString(StringBuilder builder) {
     if (this.isAtom()) {
       builder.append(this.getLiteral());
@@ -109,6 +174,14 @@ public final class ESExpr {
     builder.append(')');
   }
 
+  /**
+   * Helper method for writing string representation of this list
+   * into StringBuilder. List syntax-sugar is being used, i.e.
+   * (a . b . c . NIL) being written as (a b c).
+   *
+   * @param builder StringBuilder to write into.
+   */
+
   private void printList(StringBuilder builder) {
     final String delim = " ";
     for (int i = 0; i < items.size() - 1; ++i) {
@@ -117,6 +190,14 @@ public final class ESExpr {
     }
     builder.delete(builder.length() - delim.length(), builder.length());
   }
+
+  /**
+   * Helper method for writing string representation of this tuple
+   * into StringBuilder. Dotted-tuple notation is used, i.e. strings
+   * like (a . b . c).
+   *
+   * @param builder StringBuilder to write into.
+   */
 
   private void printTuple(StringBuilder builder) {
     final String delim = " . ";
@@ -127,19 +208,26 @@ public final class ESExpr {
     builder.delete(builder.length() - delim.length(), builder.length());
   }
 
-  public ESExpr normalizeLists() {
+  /**
+   * Returns shallowest equivalent of this expression. I.e. transforms
+   * recursively tuples like (a . b . (c . d)) into (a . b . c . d) form.
+   *
+   * @return shallowest equivalent of this expression.
+   */
+
+  public ESExpr normalizeTuples() {
     if (this.isAtom()) {
       return this;
     }
     final ArrayList<ESExpr> normItems = new ArrayList<>(items.size());
     boolean update = false;
     for (ESExpr e : items) {
-      final ESExpr norm = e.normalizeLists();
+      final ESExpr norm = e.normalizeTuples();
       normItems.add(norm);
       update = update || norm != e;
     }
     final ESExpr last = normItems.get(normItems.size() - 1);
-    if (this.isTuple() && last.isList() && !last.isNil()) {
+    if (this.isTuple() && last.isTuple() && !last.isNil()) {
       normItems.remove(normItems.size() - 1);
       normItems.addAll(last.getItems());
       update = true;
@@ -148,8 +236,15 @@ public final class ESExpr {
       return this;
     }
     normItems.trimToSize();
-    return new ESExpr(LIST_LITERAL, normItems);
+    return new ESExpr(TUPLE_LITERAL, normItems);
   }
+
+  /**
+   * Returns deepest equivalent of this expression. I.e. returns
+   * expression consisting only of dotted pairs and atoms.
+   *
+   * @return deepest equivalent of this expression.
+   */
 
   public ESExpr normalizePairs() {
     if (this.isAtom()) {
@@ -170,6 +265,14 @@ public final class ESExpr {
     return last;
   }
 
+  /**
+   * Create atom for given string literal.
+   *
+   * @param literal string literal for atom being created
+   * @return atom for given string literal
+   * @throws NullPointerException if {@code literal} is {@code null}
+   */
+
   public static ESExpr createAtom(String literal) {
     notnull(literal);
     if (literal.toUpperCase().equals(NIL.getLiteral())) {
@@ -177,6 +280,15 @@ public final class ESExpr {
     }
     return new ESExpr(literal, Collections.<ESExpr>emptyList());
   }
+
+  /**
+   * Create list of given S-expressions. Adds {@code NIL} atom at the end
+   * of list.
+   *
+   * @param items list of S-expressions
+   * @return list containing all expressions from {@code items} list
+   * @throws NullPointerException if {@code items} list is {@code null}
+   */
 
   public static ESExpr createList(List<ESExpr> items) {
     notnull(items);
@@ -189,6 +301,14 @@ public final class ESExpr {
     return new ESExpr(LIST_LITERAL, list);
   }
 
+  /**
+   * Create tuple of given S-expressions.
+   *
+   * @param items list of S-expressions
+   * @return tuple containing all expressions from {@code items} list
+   * @throws NullPointerException if {@code items} list is {@code null}
+   */
+
   public static ESExpr createTuple(List<ESExpr> items) {
     notnull(items);
     if (items.isEmpty()) {
@@ -200,6 +320,15 @@ public final class ESExpr {
     final ArrayList<ESExpr> tuple = new ArrayList<>(items);
     return new ESExpr(TUPLE_LITERAL, tuple);
   }
+
+  /**
+   * Create dotted pair for given S-expressions.
+   *
+   * @param lhs left expression in dotted pair
+   * @param rhs right expression in dotted pair
+   * @return tuple containing {@code lhs} and {@code rhs} expressions
+   * @throws NullPointerException if any of given expressions is {@code null}
+   */
 
   public static ESExpr cons(ESExpr lhs, ESExpr rhs) {
     notnull(lhs);
