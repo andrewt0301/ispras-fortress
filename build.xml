@@ -40,6 +40,15 @@ Please, prepare build environment:
     <copy file="ChangeLog" todir="${distr.dir}"/>
   </target>
 
+  <!-- Overridden to allow creating a ZIP file with sources on any OS -->
+  <target name="pack.src.zip" depends="pack.src.fileset">
+    <mkdir dir="${distr.root.dir}"/>
+    <zip destfile="${dir.module.distr.src.zip}" duplicate="fail">
+	  <fileset refid="src.src"/>
+	  <fileset refid="src.buildbase"/>
+    </zip>
+  </target>
+
   <target name="unpack.z3.windows" depends="init" if="platform.windows">
     <mkdir dir="${tools.dir}/z3"/>
     <unzip src="${tools.dir}/z3-windows.zip" dest="${tools.dir}/z3-tmp"/>
@@ -102,6 +111,6 @@ Please, prepare build environment:
       </batchtest>
     </junit>
   </target>
-
+	
 </project>
 
