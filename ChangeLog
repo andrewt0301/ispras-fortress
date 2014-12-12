@@ -12,6 +12,13 @@
  (like Yices, Z3, CVC4, etc.)
 
 --------------------------------------------------------------------------------
+ YYYY/MM/DD Fortress 0.3.3 beta
+
+ The following features have been implemented:
+
+ - Methods for converting BitVector from and to BigInteger
+
+--------------------------------------------------------------------------------
  2014/09/15 Fortress 0.3.2 beta
 
  The following features have been implemented:

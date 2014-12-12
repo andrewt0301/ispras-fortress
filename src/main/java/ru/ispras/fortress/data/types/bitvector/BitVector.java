@@ -20,6 +20,8 @@ import static ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.for_eac
 import static ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.generate;
 import static ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.mismatch_reverse;
 
+import java.math.BigInteger;
+
 import ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.IAction;
 import ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.IOperation;
 
@@ -351,6 +353,9 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @param radix Radix to be used during conversion.
    * @param bitSize Size of the resulting bit vector in bits.
    * @return New bit vector.
+   * 
+   * @throws NullPointerException if the {@code text} parameter is {@code null}.
+   * @throws IllegalArgumentException if the {@code bitSize} parameter is zero or negative.
    */
 
   public static BitVector valueOf(final String text, final int radix, final int bitSize) {
@@ -431,6 +436,8 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @param value Long value to be converted to a bit vector.
    * @param bitSize Size of the resulting data array (in bits).
    * @return New bit vector.
+   * 
+   * @throws IllegalArgumentException if the {@code bitSize} parameter is zero or negative.
    */
 
   public static BitVector valueOf(final long value, final int bitSize) {
@@ -470,6 +477,9 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @param data An array of bytes.
    * @param bitSize Size of the resulting bit vector in bits.
    * @return New bit vector.
+   * 
+   * @throws NullPointerException if the {@code data} parameter is {@code null}.
+   * @throws IllegalArgumentException if the {@code bitSize} parameter is zero or negative.
    */
 
   public static BitVector valueOf(final byte[] data, final int bitSize) {
@@ -506,10 +516,61 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @param value Integer value to be converted to a bit array.
    * @param bitSize Size of the resulting data array (in bits).
    * @return New bit vector.
+   * 
+   * @throws IllegalArgumentException if the {@code bitSize} parameter is zero or negative.
    */
 
   public static BitVector valueOf(final int value, final int bitSize) {
     return valueOf(((long) value) & 0xFFFFFFFFL, bitSize);
+  }
+
+  /**
+   * Creates a bit vector based on a BigInteger value. The data size is specified by a method
+   * parameter. If the bit vector is less than the size of the data stored in BigInteger (
+   * returned by the {@code toByteArray} method), the data is truncated (high bits are ignored).
+   * If the bit vector size exceeds the data size, the data is sign extended (high bits are
+   * filled with zeros for a non-negative value or with ones for a negative value).
+   * 
+   * @param value BigInteger value to be converted to a bit vector.
+   * @param bitSize Size of the resulting bit vector (in bits).
+   * @return New bit vector.
+   * 
+   * @throws NullPointerException if the {@code value} parameter is {@code null}.
+   * @throws IllegalArgumentException if the {@code bitSize} parameter is zero or negative.
+   */
+
+  public static BitVector valueOf(BigInteger value, int bitSize) {
+    notNullCheck(value);
+    sizeCheck(bitSize);
+
+    final byte[] data = value.toByteArray();
+    final byte prefix = (byte) (value.signum() < 0 ? 0xFF : 0x00);
+
+    final BitVector result = new BitVectorStore(bitSize);
+
+    /*
+     * NOTE: data is copied in reverse order starting from the highest byte (it goes to the
+     * lowest byte of the bit vector). It is implemented this way because the byte order of
+     * data received from BigInteger is different (opposite) from the byte order in bit vectors.
+     */
+
+    final int copyStartIndex =
+        result.getByteSize() >= data.length ? data.length - 1 : result.getByteSize() - 1;
+
+    final IOperation op = new IOperation() {
+      private int index = copyStartIndex;
+
+      @Override
+      public byte run() {
+        if (index < 0) {
+          return prefix;
+        }
+        return data[index--];
+      }
+    };
+
+    generate(result, op);
+    return result;
   }
 
   /**
@@ -578,6 +639,18 @@ public abstract class BitVector implements Comparable<BitVector> {
 
     for_each(this, op);
     return result.value;
+  }
+
+  /**
+   * Converts the stored data to a BigInteger value. 
+   * 
+   * @return BigInteger representation of the stored value.
+   * 
+   *         TODO: Unit tests for this method are needed.
+   */
+
+  public final BigInteger bigIntegerValue() {
+    return new BigInteger(toByteArray());
   }
 
   /**
