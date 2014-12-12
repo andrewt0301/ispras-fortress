@@ -29,6 +29,7 @@ import ru.ispras.fortress.data.types.datamap.DataMap;
 public final class Data {
   private final DataType type;
   private final Object value;
+  private Object userData;
 
   /**
    * Creates a data object of the INTEGER type from a BigInteger value.
@@ -231,6 +232,7 @@ public final class Data {
 
     this.type = type;
     this.value = value;
+    this.userData = null;
   }
 
   /**
@@ -261,6 +263,24 @@ public final class Data {
 
   public Object getValue() {
     return value;
+  }
+
+  /**
+   * Returns the value of the used-defined property. 
+   * @return User-defined object.
+   */
+
+  public Object getUserData() {
+    return userData;
+  }
+
+  /**
+   * Assigns value to the user-defined property.
+   * @param obj User-defined object.
+   */
+
+  public void setUserData(Object obj) {
+    this.userData = obj;
   }
 
   @Override
