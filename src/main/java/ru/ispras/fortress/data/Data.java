@@ -136,7 +136,7 @@ public final class Data {
     }
 
     final DataType dt = DataType.BIT_VECTOR(size);
-    final Object v = BitVector.unmodifiable(BitVector.valueOf(value.toByteArray(), size));
+    final Object v = BitVector.unmodifiable(BitVector.valueOf(value, size));
 
     return new Data(dt, v);
   }
