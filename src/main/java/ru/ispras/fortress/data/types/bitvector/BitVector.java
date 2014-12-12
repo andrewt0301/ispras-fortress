@@ -470,13 +470,9 @@ public abstract class BitVector implements Comparable<BitVector> {
   }
 
   /**
-   * Creates a bit vector from a byte array. This method is implemented to create bit vectors based
-   * on data stored in BigInteger. Data is copied starting from the highest byte (it goes to the
-   * lowest byte of the bit vector). It is implemented this way because the byte order of data
-   * stored in BigInteger is different (opposite) from the byte order in bit vectors. If the bit
-   * vector size is greater than the byte array size, the rest of the bit vector (high bytes) is
-   * filled with zeros. If the size of the byte array is greater, the highest bytes of the array are
-   * ignored.
+   * Creates a bit vector from a byte array. If the bit vector size is greater than the byte
+   * array size, the rest of the bit vector (high bytes) is filled with zeros. If the size
+   * of the byte array is greater, the highest bytes of the array are ignored.
    * 
    * @param data An array of bytes.
    * @param bitSize Size of the resulting bit vector in bits.
@@ -491,19 +487,11 @@ public abstract class BitVector implements Comparable<BitVector> {
     sizeCheck(bitSize);
 
     final BitVector result = new BitVectorStore(bitSize);
-
-    final int copyStartIndex =
-      result.getByteSize() >= data.length ? data.length - 1 : result.getByteSize() - 1;
-
     final IOperation op = new IOperation() {
-      private int index = copyStartIndex;
-
+      private int index = 0;
       @Override
       public byte run() {
-        if (index < 0) {
-          return 0;
-        }
-        return data[index--];
+        return index < data.length ? data[index++] : 0;
       }
     };
 
@@ -641,12 +629,26 @@ public abstract class BitVector implements Comparable<BitVector> {
    * Converts the stored data to a BigInteger value. 
    * 
    * @return BigInteger representation of the stored value.
-   * 
-   *         TODO: Unit tests for this method are needed.
    */
 
   public final BigInteger bigIntegerValue() {
-    return new BigInteger(toByteArray());
+    final byte[] byteArray = new byte[this.getByteSize()];
+
+    final IAction op = new IAction() {
+      private int index = 0;
+      @Override
+      public void run(byte v) {
+        byteArray[index++] = v;
+      }
+    };
+
+    /*
+     * NOTE: bytes are copies to the byte array in the reverse order because the
+     * order they are stored in BigInteger is opposite to the byte order in bit vectors.
+     */
+
+    for_each_reverse(this, op);
+    return new BigInteger(byteArray);
   }
 
   /**
@@ -710,14 +712,13 @@ public abstract class BitVector implements Comparable<BitVector> {
 
     final IAction op = new IAction() {
       private int index = 0;
-
       @Override
       public void run(byte v) {
         byteArray[index++] = v;
       }
     };
 
-    for_each_reverse(this, op);
+    for_each(this, op);
     return byteArray;
   }
 

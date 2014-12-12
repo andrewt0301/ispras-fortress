@@ -15,6 +15,7 @@
 package ru.ispras.fortress.data.types.bitvector;
 
 import java.math.BigInteger;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -538,14 +539,23 @@ public class BitVectorTestCase {
 
   @Test
   public void toByteArrayTests() {
+    final byte[] byte_array = new byte[] {1, 2, 3, 4};
+    
+    final BitVector bv = BitVector.valueOf(byte_array, 32);
+    System.out.println(bv.toHexString());
+
+    for (int i = 0; i < byte_array.length; i++) {
+      Assert.assertTrue(byte_array[i] == bv.getByte(i));
+    }
+
+    final byte[] bv_byte_array = bv.toByteArray();
+    System.out.println(BitVector.valueOf(bv_byte_array, 32).toHexString());
+
+    for (int i = 0; i < byte_array.length; i++) {
+      Assert.assertTrue(byte_array[i] == bv_byte_array[i]);
+    }
+
     // TODO: MORE COMPLEX TESTS!!!
-
-    final BitVector rd = BitVector.valueOf("01011100011010101");
-    BigInteger bi = new BigInteger(rd.toByteArray());
-
-    System.out.println(rd.toBinString());
-    System.out.println(String.format("%" + rd.getBitSize() + "s", bi.toString(2)));
-
   }
 
   @Test
