@@ -515,24 +515,25 @@ public class BitVectorTestCase {
   
   @Test
   public void toBigIntegerTests() {
-    // TODO IMPLEMENT
+    final BitVector bv0 = BitVector.valueOf(BigInteger.valueOf(0), 32);
+    Assert.assertEquals("00000000", bv0.toHexString());
+    Assert.assertEquals(BigInteger.valueOf(0), bv0.bigIntegerValue());
 
     final BitVector bv1 = BitVector.valueOf(BigInteger.valueOf(-1), 32);
-    System.out.println(bv1);
-    System.out.println(bv1.intValue());
-    System.out.println(bv1.bigIntegerValue());
+    Assert.assertEquals("FFFFFFFF", bv1.toHexString());
+    Assert.assertEquals(BigInteger.valueOf(-1), bv1.bigIntegerValue());
 
-    final BitVector bv2 = BitVector.valueOf(BigInteger.valueOf(-1).toByteArray(), 32);
-    System.out.println(bv2);
-    System.out.println(bv2.intValue());
-    System.out.println(bv2.bigIntegerValue());
+    final BitVector bv2 = BitVector.valueOf(BigInteger.valueOf(1), 32);
+    Assert.assertEquals("00000001", bv2.toHexString());
+    Assert.assertEquals(BigInteger.valueOf(1), bv2.bigIntegerValue());
     
-    final BitVector bv3 = BitVector.valueOf(BigInteger.valueOf(1), 32);
-    System.out.println(bv3);
-    System.out.println(bv3.intValue());
-    System.out.println(bv3.bigIntegerValue());
-
-    System.out.println();
+    final BitVector bv3 = BitVector.valueOf(BigInteger.valueOf(Integer.MAX_VALUE), 32);
+    Assert.assertEquals("7FFFFFFF", bv3.toHexString());
+    Assert.assertEquals(BigInteger.valueOf(Integer.MAX_VALUE), bv3.bigIntegerValue());
+    
+    final BitVector bv4 = BitVector.valueOf(BigInteger.valueOf(Integer.MIN_VALUE), 32);
+    Assert.assertEquals("80000000", bv4.toHexString());
+    Assert.assertEquals(BigInteger.valueOf(Integer.MIN_VALUE), bv4.bigIntegerValue());
   }
 
   @Test
