@@ -185,6 +185,10 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @param other A raw data object.
    * @return 0 if data in both object equals, -1 if the data in the current object is less and 1 of
    *         it is greater.
+   *         
+   * @throws NullPointerException if the parameter is {@code other}.
+   * @throws IllegalArgumentException if the size of the {@code other} bit vector is different from
+   * the size of the current bit vector.       
    */
 
   @Override
@@ -575,17 +579,12 @@ public abstract class BitVector implements Comparable<BitVector> {
 
   /**
    * Converts the stored data to an integer value. If the stored data size exceeds integer size (32
-   * bits), the data is truncated (high bits are cut off).
+   * bits), the data is truncated to 32 bits (high bits are cut off).
    * 
    * @return Integer representation of the stored value.
-   * 
-   *         TODO: Unit tests for this method are needed.
    */
 
   public final int intValue() {
-    assert getBitSize() <= Integer.SIZE :
-      String.format("Data will be truncated to %d bits.", Integer.SIZE);
-
     class Result {public int value = 0;}
     final Result result = new Result();
 
@@ -609,17 +608,12 @@ public abstract class BitVector implements Comparable<BitVector> {
 
   /**
    * Converts the stored data to an long value. If the stored data size exceeds long size (64 bits),
-   * the data is truncated (high bits are cut off).
+   * the data is truncated to 64 bits (high bits are cut off).
    * 
    * @return Long representation of the stored value.
-   * 
-   *         TODO: Unit tests for this method are needed.
    */
 
   public final long longValue() {
-    assert getBitSize() <= Long.SIZE :
-      String.format("Data will be truncated to %d bits.", Long.SIZE);
-
     class Result {public long value = 0;}
     final Result result = new Result();
 

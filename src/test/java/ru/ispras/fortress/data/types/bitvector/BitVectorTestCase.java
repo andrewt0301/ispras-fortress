@@ -476,6 +476,48 @@ public class BitVectorTestCase {
   }
 
   @Test
+  public void toIntTests() {
+    checkBitVector(BitVector.valueOf(0,  32), "00000000000000000000000000000000");
+    Assert.assertEquals(0, BitVector.valueOf(0,  32).intValue());
+
+    checkBitVector(BitVector.valueOf(-1, 32), "11111111111111111111111111111111");
+    Assert.assertEquals(-1, BitVector.valueOf(-1,  32).intValue());
+
+    checkBitVector(BitVector.valueOf(0,  36), "000000000000000000000000000000000000");
+    System.out.println(BitVector.valueOf(0,  36).intValue());
+    
+    checkBitVector(BitVector.valueOf(-1, 36), "000011111111111111111111111111111111");
+    System.out.println(BitVector.valueOf(-1,  36).intValue());
+  }
+  
+  @Test
+  public void toLongTests() {
+    // TODO IMPLEMENT
+  }
+  
+  @Test
+  public void toBigIntegerTests() {
+    // TODO IMPLEMENT
+
+    final BitVector bv1 = BitVector.valueOf(BigInteger.valueOf(-1), 32);
+    System.out.println(bv1);
+    System.out.println(bv1.intValue());
+    System.out.println(bv1.bigIntegerValue());
+
+    final BitVector bv2 = BitVector.valueOf(BigInteger.valueOf(-1).toByteArray(), 32);
+    System.out.println(bv2);
+    System.out.println(bv2.intValue());
+    System.out.println(bv2.bigIntegerValue());
+    
+    final BitVector bv3 = BitVector.valueOf(BigInteger.valueOf(1), 32);
+    System.out.println(bv3);
+    System.out.println(bv3.intValue());
+    System.out.println(bv3.bigIntegerValue());
+
+    System.out.println();
+  }
+
+  @Test
   public void toByteArrayTests() {
     // TODO: MORE COMPLEX TESTS!!!
 
@@ -488,16 +530,22 @@ public class BitVectorTestCase {
   }
 
   @Test
-  public void toHexStringTests() {
-    System.out.println(BitVector.valueOf("FFFF", 16, 16).toHexString());
-    System.out.println(BitVector.valueOf("FFFF", 16, 16).toBinString());
+  public void toStringTests() {
+    Assert.assertEquals("FFFF", BitVector.valueOf("FFFF", 16, 16).toHexString());
+    Assert.assertEquals("1111111111111111", BitVector.valueOf("FFFF", 16, 16).toBinString());
+    Assert.assertEquals("1111111111111111", BitVector.valueOf("FFFF", 16, 16).toString());
 
-    System.out.println(BitVector.valueOf(0xDEADBEEF, 32).toHexString());
+    Assert.assertEquals("0000FFFF", BitVector.valueOf("FFFF", 16, 32).toHexString());
+    Assert.assertEquals("00000000000000001111111111111111", BitVector.valueOf("FFFF", 16, 32).toBinString());
+
+    Assert.assertEquals("DEADBEEF", BitVector.valueOf(0xDEADBEEF, 32).toHexString());
   }
 
   @Test
   public void compareTo() {
     checkComparison(BitVector.valueOf("00000001"), BitVector.valueOf("10000000"), -1);
+    checkComparison(BitVector.valueOf("10000000"), BitVector.valueOf("00000001"), 1);
+    checkComparison(BitVector.valueOf("10000000"), BitVector.valueOf("10000000"), 0);
   }
 
   @Test
