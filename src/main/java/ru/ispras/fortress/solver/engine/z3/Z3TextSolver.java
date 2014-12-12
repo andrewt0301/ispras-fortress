@@ -128,9 +128,11 @@ public final class Z3TextSolver extends SolverBase {
       final ESExprParser parser = new ESExprParser(reader);
       ESExpr e = parser.next();
       while (e != null) {
-        if (!isStatusSet && isStatus(e)) {
-          setStatus(resultBuilder, e.getLiteral());
-          isStatusSet = true;
+        if (isStatus(e)) {
+          if (!isStatusSet) { 
+            setStatus(resultBuilder, e.getLiteral());
+            isStatusSet = true;
+          }
         } else if (isError(e)) {
           resultBuilder.addError(getLiteral(e, 1));
           if (!isStatusSet) {
