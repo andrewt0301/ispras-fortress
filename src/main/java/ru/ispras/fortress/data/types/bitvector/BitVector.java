@@ -578,8 +578,10 @@ public abstract class BitVector implements Comparable<BitVector> {
   }
 
   /**
-   * Converts the stored data to an integer value. If the stored data size exceeds integer size (32
-   * bits), the data is truncated to 32 bits (high bits are cut off).
+   * Converts the stored data to an integer value. If the bit vector size exceeds integer size (32
+   * bits), the data is truncated to 32 bits (high bits are cut off). If the bit vector size is
+   * smaller than integer size (32 bits), the high bits of the integer are set to 0 (no sign
+   * extension happens).  
    * 
    * @return Integer representation of the stored value.
    */

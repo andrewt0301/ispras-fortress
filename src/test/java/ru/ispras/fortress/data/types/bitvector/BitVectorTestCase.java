@@ -477,19 +477,37 @@ public class BitVectorTestCase {
 
   @Test
   public void toIntTests() {
-    checkBitVector(BitVector.valueOf(0,  32), "00000000000000000000000000000000");
-    Assert.assertEquals(0, BitVector.valueOf(0,  32).intValue());
+    // Size == 32
+ 
+    checkBitVector(BitVector.valueOf(0, 32), "00000000000000000000000000000000");
+    Assert.assertEquals(0, BitVector.valueOf(0, 32).intValue());
 
     checkBitVector(BitVector.valueOf(-1, 32), "11111111111111111111111111111111");
-    Assert.assertEquals(-1, BitVector.valueOf(-1,  32).intValue());
+    Assert.assertEquals(-1, BitVector.valueOf(-1, 32).intValue());
+
+    checkBitVector(BitVector.valueOf(Integer.MIN_VALUE, 32), "10000000000000000000000000000000");
+    Assert.assertEquals(Integer.MIN_VALUE, BitVector.valueOf(Integer.MIN_VALUE,  32).intValue());
+
+    checkBitVector(BitVector.valueOf(Integer.MAX_VALUE, 32), "01111111111111111111111111111111");
+    Assert.assertEquals(Integer.MAX_VALUE, BitVector.valueOf(Integer.MAX_VALUE,  32).intValue());
+
+    // Size < 32 (16)
+
+    checkBitVector(BitVector.valueOf(0, 16), "0000000000000000");
+    Assert.assertEquals(0, BitVector.valueOf(0, 16).intValue());
+
+    checkBitVector(BitVector.valueOf(-1, 16), "1111111111111111");
+    Assert.assertEquals(0xFFFF, BitVector.valueOf(-1, 16).intValue());
+    
+    // Size > 32 (36)
 
     checkBitVector(BitVector.valueOf(0,  36), "000000000000000000000000000000000000");
-    System.out.println(BitVector.valueOf(0,  36).intValue());
+    Assert.assertEquals(0, BitVector.valueOf(0, 36).intValue());
     
     checkBitVector(BitVector.valueOf(-1, 36), "000011111111111111111111111111111111");
-    System.out.println(BitVector.valueOf(-1,  36).intValue());
+    Assert.assertEquals(-1, BitVector.valueOf(-1, 36).intValue());
   }
-  
+
   @Test
   public void toLongTests() {
     // TODO IMPLEMENT
