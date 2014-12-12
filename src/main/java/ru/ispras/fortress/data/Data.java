@@ -266,7 +266,8 @@ public final class Data {
   }
 
   /**
-   * Returns the value of the used-defined property. 
+   * Returns the value of the used-defined property.
+   * 
    * @return User-defined object.
    */
 
@@ -276,6 +277,7 @@ public final class Data {
 
   /**
    * Assigns value to the user-defined property.
+   * 
    * @param obj User-defined object.
    */
 
