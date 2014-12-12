@@ -14,7 +14,14 @@
 
 package ru.ispras.fortress.data.types.bitvector;
 
-import static ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.*;
+import static ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.fill;
+import static ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.for_each;
+import static ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.for_each_reverse;
+import static ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.generate;
+import static ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.mismatch_reverse;
+
+import ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.IAction;
+import ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.IOperation;
 
 /**
  * The BitVector class provides an interface for working with bit vectors ("raw" binary data) of
