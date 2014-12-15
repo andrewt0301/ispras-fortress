@@ -51,7 +51,7 @@ public final class NodeValue extends Node {
     return new NodeValue(Data.newBitVector(value));
   }
 
-  private final Data data;
+  private Data data;
 
   /**
    * Creates a value syntax element based on a data object.
@@ -98,6 +98,22 @@ public final class NodeValue extends Node {
 
   public Data getData() {
     return data;
+  }
+
+  /**
+   * Changes the data value associated with the node. 
+   * 
+   * @param data New data value to be associated with the node.
+   * 
+   * @throws NullPointerException if the argument is {@code null}. 
+   */
+
+  public void setData(Data data) {
+    if (null == data) {
+      throw new NullPointerException();
+    }
+    
+    this.data = data;
   }
 
   /**

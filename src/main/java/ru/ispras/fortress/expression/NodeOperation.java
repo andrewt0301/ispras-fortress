@@ -130,7 +130,7 @@ public final class NodeOperation extends Node {
 
   @Override
   public DataType getDataType() {
-    if (dataType.equals(DataType.UNKNOWN) && operation instanceof TypeRule) {
+    if (operation instanceof TypeRule) {
       final DataType[] types = new DataType[getOperandCount()];
 
       final int paramCount = StandardOperation.getParameterCount(operation);

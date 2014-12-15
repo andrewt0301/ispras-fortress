@@ -97,6 +97,22 @@ public final class NodeVariable extends Node {
   }
 
   /**
+   * Assigns new data value to the variable.
+   * 
+   * @param data Data value to be assigned to the variable.
+   * 
+   * @throws NullPointerException if the argument is {@code null}.
+   */
+
+  public void setData(Data data) {
+    if (null == data) {
+      throw new NullPointerException();
+    }
+
+    variable.setData(data);
+  }
+
+  /**
    * Returns an object that stores a data value if any value was assigned to the variable (it is a
    * known variable) or null if it is an unknown variable. The exact type of the object returned by
    * the method depends on the implementation. Please see the
