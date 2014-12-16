@@ -71,7 +71,7 @@ public final class NodeValue extends Node {
 
   /**
    * Constructor for making deep copies. The data field is copied by reference because the Data
-   * class guarantees immutablility.
+   * class guarantees immutability.
    * 
    * @param nodeValue Node value object to be copied.
    */
