@@ -207,8 +207,11 @@ public final class Data {
   }
 
   public static Data newArray(DataMap map) {
+    if (map == null) {
+      throw new NullPointerException();
+    }
     return new Data(DataType.MAP(map.getKeyType(), map.getValueType()),
-                    new DataMap(map));
+                    map.copy());
   }
 
   /**

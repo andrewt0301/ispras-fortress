@@ -1,3 +1,17 @@
+/*
+ * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
 package ru.ispras.fortress.data.types.datamap;
 
 import ru.ispras.fortress.data.Data;
@@ -9,22 +23,28 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * The DataMap class represents mappings using Fortress data types with
+ * runtime type checking.
+ */
+
 public final class DataMap implements Map<Data, Data> {
   private final DataType keyType;
   private final DataType valueType;
   private final Map<Data, Data> map;
+
+  /**
+   * Create map for given key type and value type.
+   *
+   * @param keyType {@link ru.ispras.fortress.data.DataType DataType} instance for keys
+   * @param valueType {@link ru.ispras.fortress.data.DataType DataType} instance for values
+   */
 
   public DataMap(DataType keyType, DataType valueType) {
     this(keyType, valueType, new LinkedHashMap<Data, Data>());
 
     notnull(keyType);
     notnull(valueType);
-  }
-
-  public DataMap(DataMap source) {
-    this(source.keyType,
-         source.valueType,
-         new LinkedHashMap<>(source.map));
   }
 
   private DataMap(DataType keyType, DataType valueType, Map<Data, Data> map) {
@@ -127,9 +147,21 @@ public final class DataMap implements Map<Data, Data> {
     return map.hashCode();
   }
 
+  /**
+   * Return type of keys in this map.
+   *
+   * @return type of keys in this map
+   */
+
   public DataType getKeyType() {
     return keyType;
   }
+
+  /**
+   * Return type of values in this map.
+   *
+   * @return type of values in this map
+   */
 
   public DataType getValueType() {
     return valueType;
@@ -148,7 +180,22 @@ public final class DataMap implements Map<Data, Data> {
     return builder.toString();
   }
 
+  /**
+   * Read {@link DataMap} from string using type hints.
+   *
+   * @param s string representation of {@link DataMap} instance
+   * @param keyType expected data type for keys in map
+   * @param valueType expected data type for values in map
+   * @return {@link DataMap} instance for given string representation
+   *
+   * @throws IllegalArgumentException if {@code s} is not valid string representation
+   */
+
   public static DataMap valueOf(String s, DataType keyType, DataType valueType) {
+    notnull(s);
+    notnull(keyType);
+    notnull(valueType);
+
     final char LPAREN = '(';
     final char RPAREN = ')';
     final char DELIM = ':';
@@ -174,23 +221,62 @@ public final class DataMap implements Map<Data, Data> {
     return map;
   }
 
+  /**
+   * Read {@link ru.ispras.fortress.data.Data Data} instance from string
+   * using data type hint.
+   *
+   * @param s string representation of {@code Data} instance
+   * @param type expected data type of value being read
+   * @return {@link ru.ispras.fortress.data.Data Data} instance for given string representation
+   */
+
   private static Data readData(String s, DataType type) {
     return type.valueOf(s, type.getTypeRadix());
   }
 
-  public DataMap unmodifiable() {
+  /**
+   * Create copy of this map.
+   *
+   * @return copy of this map
+   */
+
+  public final DataMap copy() {
+    return new DataMap(keyType, valueType, new LinkedHashMap<>(map));
+  }
+
+  /**
+   * Create unmodifiable copy of this map.
+   *
+   * @return unmodifiable copy of this map
+   */
+
+  public final DataMap unmodifiableCopy() {
     return new DataMap(keyType,
                        valueType,
                        Collections.unmodifiableMap(new LinkedHashMap<>(map)));
   }
 
+  /**
+   * Check if object is {@link ru.ispras.fortress.data.Data Data} instance with
+   * type conforming to key type of this map.
+   */
+
   private boolean isKey(Object o) {
     return getData(o).getType().equals(keyType);
   }
 
+  /**
+   * Check if object is {@link ru.ispras.fortress.data.Data Data} instance with
+   * type conforming to value type of this map.
+   */
+
   private boolean isValue(Object o) {
     return getData(o).getType().equals(valueType);
   }
+
+  /**
+   * Cast from {@code Object} to {@code Data} instance.
+   */
 
   private static Data getData(Object o) {
     notnull(o);
