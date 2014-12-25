@@ -172,12 +172,20 @@ public enum DataTypeId {
     }
   },
 
+  /**
+   * A mapping type. Represents mappings from values of one type to another.
+   */
+
   MAP(DataMap.class) {
     Object valueOf(String s, int radix, List<Object> params) {
       final DataType keyType = (DataType) params.get(0);
       final DataType valueType = (DataType) params.get(1);
       return DataMap.valueOf(s, keyType, valueType);
     }
+
+    /** 
+     * {@inheritDoc} Radix for composite types like MAP is undefined.
+     */
 
     int radix(int size) {
       return 0;
