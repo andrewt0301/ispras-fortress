@@ -12,11 +12,31 @@
  (like Yices, Z3, CVC4, etc.)
 
 --------------------------------------------------------------------------------
- YYYY/MM/DD Fortress 0.3.3 beta
+ 2014/12/26 Fortress 0.3.3 beta
 
  The following features have been implemented:
 
  - Methods for converting BitVector from and to BigInteger
+ - Class NodeBinding that provides support SMT-LIB let-constructs
+ - Basic support for managing symbolic S-expressions
+ - Support for arbitrary size integers (LOGIC_INTEGER is based on BigInteger)
+ - Textual representation of a constraint is included in error log when
+   solver fails
+ - Utility method ExprUtils.isSAT for checking satisfiability of expressions
+ - Utility method ExprUtils.getVariables for getting the list of variables
+   contained in an expression
+ - Utility class CollectionUtils that facilitates manipulating collections
+ - Class ConstraintUtils that provides methods to simplify creating and 
+   solving constraints
+ - Improvement in solver implementation that allows interpreting boolean 
+   operands of bit vector operators as bit vectors of length 1 
+ - Debug and silent modes for SMT solvers (in the silent mode *.smt files
+   are not saved in file system after a constant has been solved)
+ - Support for the BVEXTRACT operator in expression type calculation logic
+ - Class DataMap for representing data of the MAP type
+ - New rules for expression transformation in the predefined rule set   
+
+ Basic facilities to calculate the type of an    
 
 --------------------------------------------------------------------------------
  2014/09/15 Fortress 0.3.2 beta
