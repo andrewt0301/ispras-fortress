@@ -264,7 +264,11 @@ public enum DataTypeId {
     }
 
     DataType typeOf(String text) {
-      return null;
+      if (!text.equals(name())) {
+        return null;
+      }
+
+      return DataType.UNKNOWN;
     }
   };
 
