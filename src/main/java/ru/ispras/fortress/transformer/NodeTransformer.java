@@ -190,7 +190,7 @@ public class NodeTransformer implements ExprTreeVisitor {
 
   @Override
   public void onValue(NodeValue value) {
-    exprStack.add(value);
+    exprStack.add(updateNode(value));
   }
 
   @Override
