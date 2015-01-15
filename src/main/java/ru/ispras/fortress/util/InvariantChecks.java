@@ -58,4 +58,11 @@ public final class InvariantChecks {
           "%d must be within range [0, %d)", index, length));
     }
   }
+
+  public static void checkBoundsInclusive(int index, int length) {
+    if (!(0 <= index && index <= length)) {
+      throw new IndexOutOfBoundsException(String.format(
+          "%d must be within range [0, %d]", index, length));
+    }
+  }
 }
