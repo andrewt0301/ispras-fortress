@@ -14,6 +14,8 @@
 
 package ru.ispras.fortress.calculator;
 
+import static ru.ispras.fortress.util.InvariantChecks.checkGreaterThanZero;
+
 /**
  * The ArityRange class is used to specify a possible arity of an operator (unary, binary, etc.). It
  * is possible for an operator to be unary and binary at the same time or to have an unlimited
@@ -97,11 +99,16 @@ public final class ArityRange {
    * 
    * @param min Lower boundary value.
    * @param max Upper boundary value.
+   * 
+   * @throws IllegalArgumentException if the range is specified incorrectly.
    */
 
   public ArityRange(int min, int max) {
-    assert min > 0;
-    assert (min <= max) || (max == Bound.UNBOUNDED.value());
+    checkGreaterThanZero(min);
+
+    if (!((min <= max) || (max == Bound.UNBOUNDED.value()))) {
+      throw new IllegalArgumentException();
+    }
 
     this.min = min;
     this.max = max;
@@ -111,7 +118,7 @@ public final class ArityRange {
    * Checks whether the specified value falls within the range of allowed values.
    * 
    * @param value Number of operands.
-   * @return <code>true</code> if value is in the range or <code>false</code> otherwise.
+   * @return {@code true} if value is in the range or {@code false} otherwise.
    */
 
   public boolean isWithinRange(int value) {
