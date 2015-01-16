@@ -40,6 +40,16 @@ public final class InvariantChecks {
     }
   }
 
+  /**
+   * Checks the invariant "Object reference is not null" and
+   * throws an exception if it is violated. 
+   * 
+   * @param o Object reference to be checked.
+   * @param name Name of the variable that stores the object reference. 
+   * 
+   * @throws NullPointerException if the invariant is violated ({@code o} is {@code null}).
+   */
+
   public static void checkNotNull(Object o, String name) {
     if (null == o) {
       throw new NullPointerException(
