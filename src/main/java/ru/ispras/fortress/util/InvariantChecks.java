@@ -24,7 +24,16 @@ package ru.ispras.fortress.util;
 
 public final class InvariantChecks {
   private InvariantChecks() {}
-  
+
+  /**
+   * Checks the invariant "Object reference is not null" and
+   * throws an exception if it is violated. 
+   * 
+   * @param o Object reference to be checked.
+   * 
+   * @throws NullPointerException if the invariant is violated ({@code o} is {@code null}).
+   */
+
   public static void checkNotNull(Object o) {
     if (null == o) {
       throw new NullPointerException();
