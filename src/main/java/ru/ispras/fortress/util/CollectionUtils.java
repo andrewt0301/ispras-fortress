@@ -14,8 +14,12 @@
 
 package ru.ispras.fortress.util;
 
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -119,9 +123,52 @@ public final class CollectionUtils {
     return result;
   }
 
-  private static void checkNotNull(Object o) {
-    if (null == o) {
-      throw new NullPointerException();
+  /**
+   * Appends all elements from the specified list to another list and
+   * returns the updated list with the appended elements.
+   * 
+   * @param lhs List to which the elements will be appended.
+   * @param rhs List which contains elements to be appended. 
+   * @return Updated list that contains the appended elements.
+   * 
+   * @throws NullPointerException if any of the parameters is {@code null}.
+   */
+
+  public static <T> List<T> appendToList(List<T> lhs, List<T> rhs) {
+    checkNotNull(lhs);
+    checkNotNull(rhs);
+
+    if (rhs.isEmpty()) {
+      return lhs;
     }
+
+    if (lhs.isEmpty()) {
+      return new ArrayList<T>(rhs);
+    }
+
+    lhs.addAll(rhs);
+    return lhs;
+  }
+
+  /**
+   * Appends the specified element to the specified list and returns
+   * the updated list with the appended element.
+   * 
+   * @param lhs List to which the element will be appended.
+   * @param elem Element to be added. 
+   * @return Updated list that contains the appended element.
+   * 
+   * @throws NullPointerException if the {@code lhs} parameter is {@code null}.
+   */
+
+  public  static <T> List<T> appendToList(List<T> lhs, T elem) {
+    checkNotNull(lhs);
+
+    if (lhs.isEmpty()) {
+      lhs = new ArrayList<T>();
+    }
+
+    lhs.add(elem);
+    return lhs;
   }
 }
