@@ -23,7 +23,7 @@ import ru.ispras.fortress.expression.printer.OperationDescription.Type;
  * @author <a href="mailto:smolov@ispras.ru">Sergey Smolov</a>
  */
 
-public final class VhdlExprPrinter extends MapBasedPrinter {
+final class VhdlExprPrinter extends MapBasedPrinter {
   public VhdlExprPrinter() {
     // Supported operations.
     addMapping(StandardOperation.MINUS, "-", Type.PREFIX);

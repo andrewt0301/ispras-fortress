@@ -23,7 +23,7 @@ import ru.ispras.fortress.expression.printer.OperationDescription.Type;
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
 
-public final class VerilogExprPrinter extends MapBasedPrinter {
+final class VerilogExprPrinter extends MapBasedPrinter {
   public VerilogExprPrinter() {
     // Supported operations.
     addMapping(StandardOperation.MINUS, "-", Type.PREFIX);
