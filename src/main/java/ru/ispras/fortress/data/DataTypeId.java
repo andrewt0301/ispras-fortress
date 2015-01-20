@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -36,7 +36,7 @@ public enum DataTypeId {
   /**
    * A bit vector type. Represents some data buffer of a specified size.
    */
-  BIT_VECTOR(BitVector.class) {
+  BIT_VECTOR(BitVector.class, false) {
     Object valueOf(String s, int radix, List<Object> params) {
       final int size = (Integer) params.get(0);
       return BitVector.unmodifiable(BitVector.valueOf(s, radix, size));
@@ -85,7 +85,7 @@ public enum DataTypeId {
    * types used to store boolean values (like BYTE, WORD, etc.). The size attribute is not
    * applicable.
    */
-  LOGIC_BOOLEAN(Boolean.class) {
+  LOGIC_BOOLEAN(Boolean.class, true) {
     Object valueOf(String s, int radix, List<Object> params) {
       return Boolean.valueOf(s);
     }
@@ -116,7 +116,7 @@ public enum DataTypeId {
    * machine-dependent types used to store integer values (like 16-bit, 32-bit or 64-bit integer
    * representations). The size attribute is not applicable.
    */
-  LOGIC_INTEGER(BigInteger.class) {
+  LOGIC_INTEGER(BigInteger.class, true) {
     Object valueOf(String s, int radix, List<Object> params) {
       return new BigInteger(s, radix);
     }
@@ -146,7 +146,7 @@ public enum DataTypeId {
    * A real type. It is a logic type. This means that it has no connection with machine-dependent
    * types used store to floating point numbers. The size attribute is not applicable.
    */
-  LOGIC_REAL(Double.class) {
+  LOGIC_REAL(Double.class, true) {
     Object valueOf(String s, int radix, List<Object> params) {
       return Double.valueOf(s);
     }
@@ -176,7 +176,7 @@ public enum DataTypeId {
    * A mapping type. Represents mappings from values of one type to another.
    */
 
-  MAP(DataMap.class) {
+  MAP(DataMap.class, true) {
     Object valueOf(String s, int radix, List<Object> params) {
       final DataType keyType = (DataType) params.get(0);
       final DataType valueType = (DataType) params.get(1);
@@ -248,7 +248,7 @@ public enum DataTypeId {
   /**
    * Uninterpreted data, that should not be passed to solver.
    */
-  UNKNOWN(Object.class) {
+  UNKNOWN(Object.class, true) {
     Object valueOf(String s, int radix, List<Object> params) {
       throw new RuntimeException("Unable to create a value of an unknown type.");
     }
@@ -273,15 +273,19 @@ public enum DataTypeId {
   };
 
   private final Class<?> valueClass;
+  private final boolean isLogic; 
 
   /**
    * Creates a description of a data type.
    * 
    * @param valueClass The type of the object used to store the data (internal representation).
+   * @param isLogic Specifies whether the type is logical which means that it is purely
+   * mathematical and is not associated with data types implemented in real hardware.
    */
 
-  private DataTypeId(Class<?> valueClass) {
+  private DataTypeId(Class<?> valueClass, boolean isLogic) {
     this.valueClass = valueClass;
+    this.isLogic = isLogic;
   }
 
   /**
@@ -292,6 +296,17 @@ public enum DataTypeId {
 
   Class<?> getValueClass() {
     return valueClass;
+  }
+
+  /**
+   * Checks whether the specified type is logical which means that it is purely
+   * mathematical and is not associated with data types implemented in real hardware.
+   * 
+   * @return {@code true} if the type is logic or {@code false} otherwise.
+   */
+
+  public boolean isLogic() {
+    return isLogic;
   }
 
   /**
