@@ -318,6 +318,11 @@ final class SMTTextBuilder implements ExprTreeVisitor {
   }
 
   @Override
+  public int[] getOperandOrder() {
+    return null;
+  }
+
+  @Override
   public void onOperandBegin(NodeOperation expr, Node node, int index) {
     final Enum<?> operationId = expr.getOperationId();
     if (StandardOperation.isFamily(operationId, StandardOperation.Family.BV) &&

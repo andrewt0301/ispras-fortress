@@ -180,6 +180,11 @@ public class NodeTransformer implements ExprTreeVisitor {
   }
 
   @Override
+  public int[] getOperandOrder() {
+    return null;
+  }
+
+  @Override
   public void onOperandBegin(NodeOperation expr, Node operand, int index) {}
 
   @Override

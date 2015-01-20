@@ -16,7 +16,7 @@ package ru.ispras.fortress.solver.constraint;
 
 import java.util.Arrays;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;

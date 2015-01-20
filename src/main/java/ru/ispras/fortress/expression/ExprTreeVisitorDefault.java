@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -17,22 +17,22 @@ package ru.ispras.fortress.expression;
 /**
  * The ExprTreeVisitorDefault abstract class provides a default implementation for the
  * ExprTreeVisitor interface. This implementation does not perform any actions and does not collect
- * any data. It stores the visitor status, which is by default set to <code>Status.OK</code> and is
- * accessible via the <code>getStatus</code> and <code>setStatus</code> methods. All other methods
- * defined by the <code>ExprTreeVisitor</code> interface and overridden by the class are empty. The
- * class helps keep the size of other implementations of the <code>ExprTreeVisitor</code> interface
- * to minimum when it is required to implement only a small number of <code>ExprTreeVisitor</code>
+ * any data. It stores the visitor status, which is by default set to {@code Status.OK} and is
+ * accessible via the {@code getStatus} and {@code setStatus} methods. All other methods
+ * defined by the {@code ExprTreeVisitor} interface and overridden by the class are empty. The
+ * class helps keep the size of other implementations of the {@code ExprTreeVisitor} interface
+ * to minimum when it is required to implement only a small number of {@code ExprTreeVisitor}
  * methods to perform some actions on the expression tree being visited.
  * 
  * @author Andrei Tatarnikov
  */
 
 public abstract class ExprTreeVisitorDefault implements ExprTreeVisitor {
+
   private Status status;
 
   /**
-   * Constructs a default expression tree visitor and sets the visitor status to
-   * <code>Status.OK</code>.
+   * Constructs a default expression tree visitor and sets the visitor status to {@code Status.OK}.
    */
 
   public ExprTreeVisitorDefault() {
@@ -52,7 +52,7 @@ public abstract class ExprTreeVisitorDefault implements ExprTreeVisitor {
    * Sets the current visitor status.
    * 
    * @param status New visitor status.
-   * @throws NullPointerException if the parameter is <code>null</code>.
+   * @throws NullPointerException if the parameter is {@code null}.
    */
 
   public final void setStatus(Status status) {
@@ -73,6 +73,9 @@ public abstract class ExprTreeVisitorDefault implements ExprTreeVisitor {
 
   @Override
   public void onOperationEnd(NodeOperation node) { /* Empty */}
+
+  @Override
+  public int[] getOperandOrder() { return null; }
 
   @Override
   public void onOperandBegin(NodeOperation operation, Node operand, int index) { /* Empty */}

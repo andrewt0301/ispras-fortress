@@ -293,6 +293,11 @@ class XMLBuilderForExprs implements ExprTreeVisitor {
   }
 
   @Override
+  public int[] getOperandOrder() {
+    return null;
+  }
+
+  @Override
   public void onOperandBegin(NodeOperation expr, Node node, int index) {
     // Do nothing.
   }

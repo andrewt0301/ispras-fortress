@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2013-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,6 +13,8 @@
  */
 
 package ru.ispras.fortress.expression;
+
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
 import ru.ispras.fortress.expression.ExprTreeVisitor.Status;
 
@@ -50,10 +52,7 @@ public final class ExprTreeWalker {
    */
 
   public ExprTreeWalker(ExprTreeVisitor visitor) {
-    if (null == visitor) {
-      throw new NullPointerException();
-    }
-
+    checkNotNull(visitor);
     this.visitor = visitor;
   }
 
@@ -81,10 +80,7 @@ public final class ExprTreeWalker {
    */
 
   public void visit(Iterable<Node> trees) {
-    if (null == trees) {
-      throw new NullPointerException();
-    }
-
+    checkNotNull(trees);
     for (Node tree : trees) {
       visit(tree);
       if (isStatus(Status.ABORT)) {
@@ -104,9 +100,7 @@ public final class ExprTreeWalker {
    */
 
   public void visit(Node tree) {
-    if (null == tree) {
-      throw new NullPointerException();
-    }
+    checkNotNull(tree);
 
     visitor.onRootBegin();
     if (isStatus(Status.ABORT)) {
@@ -133,9 +127,7 @@ public final class ExprTreeWalker {
    */
 
   public void visitNode(Node node) {
-    if (null == node) {
-      throw new NullPointerException();
-    }
+    checkNotNull(node);
 
     switch (node.getKind()) {
       case VALUE:
@@ -161,9 +153,7 @@ public final class ExprTreeWalker {
   }
 
   private void visitOperation(NodeOperation node) {
-    if (null == node) {
-      throw new NullPointerException();
-    }
+    checkNotNull(node);
 
     visitor.onOperationBegin(node);
     if (isStatus(Status.ABORT)) {
@@ -171,8 +161,14 @@ public final class ExprTreeWalker {
     }
 
     if (isStatus(Status.OK)) {
+      final int order[] = visitor.getOperandOrder();
+      if (order != null && order.length != node.getOperandCount()) {
+        throw new IllegalStateException(String.format(
+            "Illegal length: %d, expected: %d", order.length, node.getOperandCount()));
+      }
+
       for (int index = 0; index < node.getOperandCount(); index++) {
-        final Node operand = node.getOperand(index);
+        final Node operand = node.getOperand(order != null ? order[index] : index);
 
         visitor.onOperandBegin(node, operand, index);
         if (isStatus(Status.ABORT)) {
@@ -197,25 +193,17 @@ public final class ExprTreeWalker {
   }
 
   private void visitValue(NodeValue node) {
-    if (null == node) {
-      throw new NullPointerException();
-    }
-
+    checkNotNull(node);
     visitor.onValue(node);
   }
 
   private void visitVariable(NodeVariable node) {
-    if (null == node) {
-      throw new NullPointerException();
-    }
-
+    checkNotNull(node);
     visitor.onVariable(node);
   }
 
   private void visitBinding(NodeBinding node) {
-    if (null == node) {
-      throw new NullPointerException();
-    }
+    checkNotNull(node);
 
     visitor.onBindingBegin(node);
     if (isStatus(Status.ABORT)) {

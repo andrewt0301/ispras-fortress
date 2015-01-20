@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2013-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -75,6 +75,16 @@ public interface ExprTreeVisitor {
    */
 
   void onOperationEnd(NodeOperation node);
+
+  /**
+   * Returns an array of operand indexes that specify in which order the operands of
+   * the currently visited operator should be visited. If the order is standard
+   * (i.e. [0..N-1]), {@code null} is returned.
+   * 
+   * @return Array of operand indexes or {@code null} for the standard order.
+   */
+
+  int[] getOperandOrder();
 
   /**
    * Notifies that visiting an expression operand has started.
