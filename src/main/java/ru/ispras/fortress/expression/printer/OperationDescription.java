@@ -24,6 +24,7 @@ public final class OperationDescription {
   /**
    * This enumeration contains the operation types.
    */
+
   public enum Type {
     /** The prefix operation. */
     PREFIX,
@@ -42,6 +43,26 @@ public final class OperationDescription {
   /** The operation suffix (string written after the last operand). */
   private String suffix;
 
+  /** The order of operands. */
+  private int[] order;
+
+  /**
+   * Constructs an operation description.
+   * 
+   * @param prefix the operation prefix.
+   * @param infix the operation infixes.
+   * @param suffix the operation suffix.
+   * @param order the order of operands.
+   */
+
+  public OperationDescription(final String prefix, final String[] infix, final String suffix,
+      final int[] order) {
+    this.prefix = prefix;
+    this.infix = infix;
+    this.suffix = suffix;
+    this.order = order;
+  }
+
   /**
    * Constructs an operation description.
    * 
@@ -51,9 +72,7 @@ public final class OperationDescription {
    */
 
   public OperationDescription(final String prefix, final String[] infix, final String suffix) {
-    this.prefix = prefix;
-    this.infix = infix;
-    this.suffix = suffix;
+    this(prefix, infix, suffix, null);
   }
 
   /**
@@ -114,9 +133,10 @@ public final class OperationDescription {
    * @param sign the operation signs.
    * @param addSpaces the flag indicating whether spaces before and after the operation sign are
    *        required.
+   * @param order the order of operands.
    */
 
-  public OperationDescription(final String[] sign, boolean addSpaces) {
+  public OperationDescription(final String[] sign, boolean addSpaces, final int[] order) {
     final String[] modifiedSign = new String[sign.length];
 
     for (int i = 0; i < sign.length; i++) {
@@ -126,6 +146,31 @@ public final class OperationDescription {
     prefix = "(";
     infix = modifiedSign;
     suffix = ")";
+
+    this.order = order;
+  }
+  
+  /**
+   * Constructs an operation description.
+   * 
+   * @param sign the operation signs.
+   * @param addSpaces the flag indicating whether spaces before and after the operation sign are
+   *        required.
+   */
+
+  public OperationDescription(final String[] sign, boolean addSpaces) {
+    this(sign, addSpaces, null);
+  }
+
+  /**
+   * Constructs an operation description.
+   * 
+   * @param sign the operation signs.
+   * @param order the order of operands.
+   */
+
+  public OperationDescription(final String[] sign, final int[] order) {
+    this(sign, true, order);
   }
 
   /**
@@ -135,7 +180,7 @@ public final class OperationDescription {
    */
 
   public OperationDescription(final String[] sign) {
-    this(sign, true);
+    this(sign, null);
   }
 
   /**
@@ -177,5 +222,15 @@ public final class OperationDescription {
 
   public String getSuffix() {
     return suffix;
+  }
+
+  /**
+   * Returns the <code>i</code>-th operand position.
+   * 
+   * @return the <code>i</code>-th operation position.
+   */
+
+  public int getOrder(int i) {
+    return order == null ? i : order[i];
   }
 }

@@ -76,7 +76,8 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
         throw new IllegalArgumentException(String.format("Unknown operation '%s'", op.name()));
       }
 
-      String prefix = description.getPrefix();
+      final String prefix = description.getPrefix();
+
       if (prefix != null) {
         buffer.append(prefix);
       }
@@ -85,8 +86,8 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
     @Override
     public void onOperationEnd(final NodeOperation expr) {
       final OperationDescription description = map.get(expr.getOperationId());
+      final String suffix = description.getSuffix();
 
-      String suffix = description.getSuffix();
       if (suffix != null) {
         buffer.append(suffix);
       }
@@ -97,7 +98,8 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
       final OperationDescription description = map.get(expr.getOperationId());
 
       if (index > 0) {
-        String infix = description.getInfix(index - 1);
+        final String infix = description.getInfix(index - 1);
+
         if (infix != null) {
           buffer.append(infix);
         }
@@ -138,6 +140,21 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
   protected final void addMapping(final StandardOperation op, final String prefix,
       final String[] infix, final String suffix) {
     map.put(op, new OperationDescription(prefix, infix, suffix));
+  }
+
+  /**
+   * Adds a mapping between the operation identifier and the operation description.
+   * 
+   * @param op the operation identifier.
+   * @param prefix the operation prefix.
+   * @param infix the operation infixes.
+   * @param suffix the operation suffix.
+   * @param order the order of operands.
+   */
+
+  protected final void addMapping(final StandardOperation op, final String prefix,
+      final String[] infix, final String suffix, final int[] order) {
+    map.put(op, new OperationDescription(prefix, infix, suffix, order));
   }
 
   /**
@@ -189,10 +206,39 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
    * @param sign the operation signs.
    * @param addSpaces the flag indicating whether spaces before and after the operation sign are
    *        required.
+   * @param order the order of operands.
    */
 
-  protected final void addMapping(final StandardOperation op, final String[] sign, boolean addSpaces) {
+  protected final void addMapping(final StandardOperation op, final String[] sign,
+      boolean addSpaces, final int[] order) {
+    map.put(op, new OperationDescription(sign, addSpaces, order));
+  }
+
+  /**
+   * Adds a mapping between the operation identifier and the operation description.
+   * 
+   * @param op the operation identifier.
+   * @param sign the operation signs.
+   * @param addSpaces the flag indicating whether spaces before and after the operation sign are
+   *        required.
+   */
+
+  protected final void addMapping(final StandardOperation op, final String[] sign,
+      boolean addSpaces) {
     map.put(op, new OperationDescription(sign, addSpaces));
+  }
+
+  /**
+   * Adds a mapping between the operation identifier and the operation description.
+   * 
+   * @param op the operation identifier.
+   * @param sign the operation signs.
+   * @param order the order of operands.
+   */
+
+  protected final void addMapping(final StandardOperation op, final String[] sign,
+      final int[] order) {
+    map.put(op, new OperationDescription(sign, order));
   }
 
   /**
