@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -43,6 +43,9 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
     /** Keeps the intermediate expression text. */
     private StringBuffer buffer = new StringBuffer();
 
+    /** Specifies the order of operands traversal. */
+    private int[] operandOrder;
+
     /**
      * Constructs an expression tree visitor.
      * 
@@ -81,6 +84,13 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
       if (prefix != null) {
         buffer.append(prefix);
       }
+
+      operandOrder = description.getOrder();
+    }
+
+    @Override
+    public int[] getOperandOrder() {
+      return operandOrder;
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -225,12 +225,12 @@ public final class OperationDescription {
   }
 
   /**
-   * Returns the <code>i</code>-th operand position.
+   * Returns the order of operands.
    * 
-   * @return the <code>i</code>-th operation position.
+   * @return the array specifying the order of operands or <code>null</code> for the standard order.
    */
 
-  public int getOrder(int i) {
-    return order == null ? i : order[i];
+  public int[] getOrder() {
+    return order;
   }
 }

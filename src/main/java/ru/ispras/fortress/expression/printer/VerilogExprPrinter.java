@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -77,7 +77,7 @@ final class VerilogExprPrinter extends MapBasedPrinter {
     addMapping(StandardOperation.BVCONCAT, "{", ", ", "}");
     addMapping(StandardOperation.BVREPEAT, "{", "{", "}}");
     addMapping(StandardOperation.ITE, new String[] {"?", ":"});
-    addMapping(StandardOperation.BVEXTRACT, new String[] {"[", ":", "]"});
+    addMapping(StandardOperation.BVEXTRACT, new String[] {"[", ":", "]"}, new int[] {1, 2, 0});
 
     // Unsupported operations.
     addMapping(StandardOperation.BVROL, "BVROL(", ", ", ")");
