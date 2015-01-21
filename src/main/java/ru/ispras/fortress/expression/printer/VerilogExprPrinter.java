@@ -77,7 +77,7 @@ final class VerilogExprPrinter extends MapBasedPrinter {
     addMapping(StandardOperation.BVCONCAT, "{", ", ", "}");
     addMapping(StandardOperation.BVREPEAT, "{", "{", "}}");
     addMapping(StandardOperation.ITE, new String[] {"?", ":"});
-    addMapping(StandardOperation.BVEXTRACT, new String[] {"[", ":", "]"}, new int[] {1, 2, 0});
+    addMapping(StandardOperation.BVEXTRACT, "", new String[] {"[", ":"}, "]", new int[] {2, 0, 1});
 
     // Unsupported operations.
     addMapping(StandardOperation.BVROL, "BVROL(", ", ", ")");
