@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -19,7 +19,6 @@ package ru.ispras.fortress.util;
  * of invariants. If a check fails a corresponding exception is thrown.
  * 
  * @author Andrei Tatarnikov
- *
  */
 
 public final class InvariantChecks {
@@ -41,7 +40,7 @@ public final class InvariantChecks {
   }
 
   /**
-   * Checks the invariant "Object reference is not null" and
+   * Checks the invariant "Object reference is not {@code null}" and
    * throws an exception if it is violated. 
    * 
    * @param o Object reference to be checked.
@@ -57,12 +56,30 @@ public final class InvariantChecks {
     }
   }
 
+  /**
+   * Checks the invariant "Integer value is greater than {@code 0}" and
+   * throws an exception if it is violated. 
+   * 
+   * @param n Integer value to be checked.
+   * 
+   * @throws IllegalArgumentException if the invariant is violated ({@code n} <= {@code 0}).
+   */
+
   public static void checkGreaterThanZero(int n) {
     if (n <= 0) {
       throw new IllegalArgumentException(
           String.format("%d must be > 0", n));      
     }
   }
+
+  /**
+   * Checks the invariant "Integer value is greater or equal {@code 0}" and
+   * throws an exception if it is violated. 
+   * 
+   * @param n Integer value to be checked.
+   * 
+   * @throws IllegalArgumentException if the invariant is violated ({@code n} < {@code 0}).
+   */
 
   public static void checkGreaterOrEqZero(int n) {
     if (n < 0) {
@@ -71,12 +88,34 @@ public final class InvariantChecks {
     }
   }
 
+  /**
+   * Checks the invariant "{@code 0 <= index < length}" and
+   * throws an exception if it is violated. 
+   * 
+   * @param index Index to be checked.
+   * @param length Length of the allowed range.
+   * 
+   * @throws IllegalArgumentException if the invariant is violated
+   * ({@code index} is not within range {@code [0..length)}).
+   */
+
   public static void checkBounds(int index, int length) {
     if (!(0 <= index && index < length)) {
       throw new IndexOutOfBoundsException(String.format(
           "%d must be within range [0, %d)", index, length));
     }
   }
+
+  /**
+   * Checks the invariant "{@code 0 <= index <= length}" and
+   * throws an exception if it is violated. 
+   * 
+   * @param index Index to be checked.
+   * @param length Length of the allowed range.
+   * 
+   * @throws IllegalArgumentException if the invariant is violated
+   * ({@code index} is not within range {@code [0..length]}).
+   */
 
   public static void checkBoundsInclusive(int index, int length) {
     if (!(0 <= index && index <= length)) {
