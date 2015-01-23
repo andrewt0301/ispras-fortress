@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2011-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,6 +13,8 @@
  */
 
 package ru.ispras.fortress.expression;
+
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
@@ -29,6 +31,11 @@ public final class NodeValue extends Node {
   /** Creates a new value node based on an integer value. */
   public static NodeValue newInteger(int value) {
     return new NodeValue(Data.newInteger(value));
+  }
+
+  /** Creates a new value node based on a textual representation of an integer value. */
+  public static NodeValue newInteger(String text, int radix) {
+    return new NodeValue(Data.newInteger(text, radix));
   }
 
   /** Creates a new value node based on a double value. */
@@ -57,15 +64,14 @@ public final class NodeValue extends Node {
    * Creates a value syntax element based on a data object.
    * 
    * @param data A data object.
+   * 
+   * @throws NullPointerException if the argument is {@code null}.
    */
 
   public NodeValue(Data data) {
     super(Kind.VALUE);
 
-    if (null == data) {
-      throw new NullPointerException();
-    }
-
+    checkNotNull(data);
     this.data = data;
   }
 
@@ -109,10 +115,7 @@ public final class NodeValue extends Node {
    */
 
   public void setData(Data data) {
-    if (null == data) {
-      throw new NullPointerException();
-    }
-    
+    checkNotNull(data);
     this.data = data;
   }
 
