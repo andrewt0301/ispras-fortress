@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2013-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,6 +13,8 @@
  */
 
 package ru.ispras.fortress.expression;
+
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -75,10 +77,7 @@ public abstract class Node {
    */
 
   protected Node(Kind kind) {
-    if (null == kind) {
-      throw new NullPointerException();
-    }
-
+    checkNotNull(kind);
     this.kind = kind;
   }
 
@@ -92,10 +91,7 @@ public abstract class Node {
    */
 
   protected Node(Node node) {
-    if (null == node) {
-      throw new NullPointerException();
-    }
-
+    checkNotNull(node);
     this.kind = node.kind;
     this.userData = node.userData;
   }
@@ -156,14 +152,8 @@ public abstract class Node {
    */
 
   public static Node AND(Node left, Node right) {
-    if (null == left) {
-      throw new NullPointerException();
-    }
-
-    if (null == right) {
-      throw new NullPointerException();
-    }
-
+    checkNotNull(left);
+    checkNotNull(right);
     return new NodeOperation(StandardOperation.AND, left, right);
   }
 
@@ -176,14 +166,8 @@ public abstract class Node {
    */
 
   public static Node OR(Node left, Node right) {
-    if (null == left) {
-      throw new NullPointerException();
-    }
-
-    if (null == right) {
-      throw new NullPointerException();
-    }
-
+    checkNotNull(left);
+    checkNotNull(right);
     return new NodeOperation(StandardOperation.OR, left, right);
   }
 
@@ -195,10 +179,7 @@ public abstract class Node {
    */
 
   public static Node NOT(Node expr) {
-    if (null == expr) {
-      throw new NullPointerException();
-    }
-
+    checkNotNull(expr);
     return new NodeOperation(StandardOperation.NOT, expr);
   }
 }
