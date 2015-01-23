@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,8 +14,9 @@
 
 package ru.ispras.fortress.data;
 
-import java.math.BigInteger;
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
+import java.math.BigInteger;
 import ru.ispras.fortress.data.types.bitvector.BitVector;
 import ru.ispras.fortress.data.types.datamap.DataMap;
 
@@ -41,10 +42,7 @@ public final class Data {
    */
 
   public static Data newInteger(BigInteger value) {
-    if (null == value) {
-      throw new NullPointerException();
-    }
-
+    checkNotNull(value);
     return new Data(DataType.INTEGER, value);
   }
 
@@ -71,6 +69,22 @@ public final class Data {
   }
 
   /**
+   * Creates a data object of the INTEGER type from a string.
+   * 
+   * @param text String to be parsed.
+   * @param radix Radix to be used for parsing. 
+   * @return New data object.
+   * 
+   * @throws NullPointerException if the {@code text} parameter equals {@code null}.
+   * @throws NumberFormatException if failed to parse the string. 
+   */
+
+  public static Data newInteger(String text, int radix) {
+    checkNotNull(text);
+    return newInteger(new BigInteger(text, radix));
+  }
+
+  /**
    * Creates a data object of the REAL type from an double value.
    * 
    * @param value A double value.
@@ -82,7 +96,7 @@ public final class Data {
   }
 
   /**
-   * A boolean constant for a <code>true</code> value. Defined as private to avoid incorrect results
+   * A boolean constant for a {@code true} value. Defined as private to avoid incorrect results
    * when objects are tested for equality because the implementation cannot guarantee it is a
    * singleton (the Data constructor is public and the DataType.valueOf method uses it to create new
    * instances).
@@ -91,7 +105,7 @@ public final class Data {
   private static final Data TRUE = new Data(DataType.BOOLEAN, true);
 
   /**
-   * A boolean constant for a <code>false</code> value. Defined as private to avoid incorrect
+   * A boolean constant for a {@code false} value. Defined as private to avoid incorrect
    * results when objects are tested for equality because the implementation cannot guarantee it is
    * a singleton (the Data constructor is public and the DataType.valueOf method uses it to create
    * new instances).
@@ -128,12 +142,12 @@ public final class Data {
    * @param value A BigInteger object that stores binary data for a bit vector.
    * @param size The bit vector size (in bits).
    * @return A new data object.
+   * 
+   * @throws NullPointerException if the {@code value} parameter equals {@code null}.
    */
 
   public static Data newBitVector(BigInteger value, int size) {
-    if (null == value) {
-      throw new NullPointerException();
-    }
+    checkNotNull(value);
 
     final DataType dt = DataType.BIT_VECTOR(size);
     final Object v = BitVector.unmodifiable(BitVector.valueOf(value, size));
@@ -146,12 +160,12 @@ public final class Data {
    * 
    * @param value A BitVector object.
    * @return A new data object.
+   * 
+   * @throws NullPointerException if the {@code value} parameter equals {@code null}.
    */
 
   public static Data newBitVector(BitVector value) {
-    if (null == value) {
-      throw new NullPointerException();
-    }
+    checkNotNull(value);
 
     final DataType dt = DataType.BIT_VECTOR(value.getBitSize());
     final Object v = BitVector.unmodifiable(value);
@@ -166,12 +180,12 @@ public final class Data {
    * @param radix Radix to be used for parsing.
    * @param size Size of the resulting bit vector in bits.
    * @return A new data object.
+   * 
+   * @throws NullPointerException if the {@code s} parameter equals {@code null}.
    */
 
   public static Data newBitVector(String s, int radix, int size) {
-    if (null == s) {
-      throw new NullPointerException();
-    }
+    checkNotNull(s);
 
     final DataType dt = DataType.BIT_VECTOR(size);
     final Object v = BitVector.unmodifiable(BitVector.valueOf(s, radix, size));
@@ -206,12 +220,19 @@ public final class Data {
     return new Data(dt, v);
   }
 
+  /**
+   * Creates a data object of the MAP type from the specified {@link DataMap} object.
+   * 
+   * @param map A {@link DataMap} object.
+   * @return A new data object.
+   * 
+   * @throws NullPointerException if the {@code map} parameter equals {@code null}.
+   */
+
   public static Data newArray(DataMap map) {
-    if (map == null) {
-      throw new NullPointerException();
-    }
-    return new Data(DataType.MAP(map.getKeyType(), map.getValueType()),
-                    map.copy());
+    checkNotNull(map);
+    return new Data(DataType.MAP(
+        map.getKeyType(), map.getValueType()), map.copy());
   }
 
   /**
@@ -223,9 +244,7 @@ public final class Data {
    */
 
   public Data(DataType type, Object value) {
-    if (null == type) {
-      throw new NullPointerException();
-    }
+    checkNotNull(type);
 
     if (null != value && !type.getValueClass().isAssignableFrom(value.getClass())) {
       throw new IllegalArgumentException(String.format(
