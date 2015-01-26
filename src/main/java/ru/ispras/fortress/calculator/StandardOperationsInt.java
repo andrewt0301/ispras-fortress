@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2013-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -63,16 +63,16 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
   MINUS(StandardOperation.MINUS, ArityRange.UNARY) {
     @Override
     public Data calculate(Data... operands) {
-      return Data.newInteger(toBigInteger(operands[0]).negate());
+      return Data.newInteger(operands[0].getInteger().negate());
     }
   },
 
   ADD(StandardOperation.ADD, ArityRange.BINARY_UNBOUNDED) {
     @Override
     public Data calculate(Data... operands) {
-      BigInteger result = toBigInteger(operands[0]);
+      BigInteger result = operands[0].getInteger();
       for (int index = 1; index < operands.length; ++index) {
-        result = result.add(toBigInteger(operands[index]));
+        result = result.add(operands[index].getInteger());
       }
 
       return Data.newInteger(result);
@@ -82,9 +82,9 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
   SUB(StandardOperation.SUB, ArityRange.BINARY_UNBOUNDED) {
     @Override
     public Data calculate(Data... operands) {
-      BigInteger result = toBigInteger(operands[0]);
+      BigInteger result = operands[0].getInteger();
       for (int index = 1; index < operands.length; ++index) {
-        result = result.subtract(toBigInteger(operands[index]));
+        result = result.subtract(operands[index].getInteger());
       }
 
       return Data.newInteger(result);
@@ -94,9 +94,9 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
   MUL(StandardOperation.MUL, ArityRange.BINARY_UNBOUNDED) {
     @Override
     public Data calculate(Data... operands) {
-      BigInteger result = toBigInteger(operands[0]);
+      BigInteger result = operands[0].getInteger();
       for (int index = 1; index < operands.length; ++index) {
-        result = result.multiply(toBigInteger(operands[index]));
+        result = result.multiply(operands[index].getInteger());
       }
 
       return Data.newInteger(result);
@@ -106,8 +106,8 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
   DIV(StandardOperation.DIV, ArityRange.BINARY) {
     @Override
     public Data calculate(Data... operands) {
-      final BigInteger value1 = toBigInteger(operands[0]);
-      final BigInteger value2 = toBigInteger(operands[1]);
+      final BigInteger value1 = operands[0].getInteger();
+      final BigInteger value2 = operands[1].getInteger();
 
       return Data.newInteger(value1.divide(value2));
     }
@@ -119,8 +119,8 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
       // Implemented like in Z3: the result is negative only
       // if the second operand is negative.
 
-      final BigInteger value1 = toBigInteger(operands[0]);
-      final BigInteger value2 = toBigInteger(operands[1]);
+      final BigInteger value1 = operands[0].getInteger();
+      final BigInteger value2 = operands[1].getInteger();
 
       final BigInteger result = value1.divideAndRemainder(value2)[1].abs();
       return Data.newInteger(value2.compareTo(BigInteger.ZERO) < 0 ? result.negate() : result);
@@ -132,8 +132,8 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
     public Data calculate(Data... operands) {
       // Implemented like in Z3: The result is always non-negative.
 
-      final BigInteger value1 = toBigInteger(operands[0]);
-      final BigInteger value2 = toBigInteger(operands[1]);
+      final BigInteger value1 = operands[0].getInteger();
+      final BigInteger value2 = operands[1].getInteger();
 
       return Data.newInteger(value1.mod(value2.abs()));
     }
@@ -142,8 +142,8 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
   EQ(StandardOperation.EQ, ArityRange.BINARY) {
     @Override
     public Data calculate(Data... operands) {
-      final BigInteger value1 = toBigInteger(operands[0]);
-      final BigInteger value2 = toBigInteger(operands[1]);
+      final BigInteger value1 = operands[0].getInteger();
+      final BigInteger value2 = operands[1].getInteger();
 
       return Data.newBoolean(value1.compareTo(value2) == 0);
     }
@@ -152,8 +152,8 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
   NOTEQ(StandardOperation.NOTEQ, ArityRange.BINARY) {
     @Override
     public Data calculate(Data... operands) {
-      final BigInteger value1 = toBigInteger(operands[0]);
-      final BigInteger value2 = toBigInteger(operands[1]);
+      final BigInteger value1 = operands[0].getInteger();
+      final BigInteger value2 = operands[1].getInteger();
 
       return Data.newBoolean(value1.compareTo(value2) != 0);
     }
@@ -162,8 +162,8 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
   GREATER(StandardOperation.GREATER, ArityRange.BINARY) {
     @Override
     public Data calculate(Data... operands) {
-      final BigInteger value1 = toBigInteger(operands[0]);
-      final BigInteger value2 = toBigInteger(operands[1]);
+      final BigInteger value1 = operands[0].getInteger();
+      final BigInteger value2 = operands[1].getInteger();
 
       return Data.newBoolean(value1.compareTo(value2) > 0);
     }
@@ -172,8 +172,8 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
   GREATEREQ(StandardOperation.GREATEREQ, ArityRange.BINARY) {
     @Override
     public Data calculate(Data... operands) {
-      final BigInteger value1 = toBigInteger(operands[0]);
-      final BigInteger value2 = toBigInteger(operands[1]);
+      final BigInteger value1 = operands[0].getInteger();
+      final BigInteger value2 = operands[1].getInteger();
 
       return Data.newBoolean(value1.compareTo(value2) >= 0);
     }
@@ -182,8 +182,8 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
   LESS(StandardOperation.LESS, ArityRange.BINARY) {
     @Override
     public Data calculate(Data... operands) {
-      final BigInteger value1 = toBigInteger(operands[0]);
-      final BigInteger value2 = toBigInteger(operands[1]);
+      final BigInteger value1 = operands[0].getInteger();
+      final BigInteger value2 = operands[1].getInteger();
 
       return Data.newBoolean(value1.compareTo(value2) < 0);
     }
@@ -192,8 +192,8 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
   LESSEQ(StandardOperation.LESSEQ, ArityRange.BINARY) {
     @Override
     public Data calculate(Data... operands) {
-      final BigInteger value1 = toBigInteger(operands[0]);
-      final BigInteger value2 = toBigInteger(operands[1]);
+      final BigInteger value1 = operands[0].getInteger();
+      final BigInteger value2 = operands[1].getInteger();
 
       return Data.newBoolean(value1.compareTo(value2) <= 0);
     }
@@ -235,10 +235,5 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
   @Override
   public final ArityRange getOperationArity() {
     return operationArity;
-  }
-
-  private static BigInteger toBigInteger(Data data) {
-    assert data.getType().getValueClass().equals(BigInteger.class);
-    return (BigInteger) data.getValue();
   }
 }

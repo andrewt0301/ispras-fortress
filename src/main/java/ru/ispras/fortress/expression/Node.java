@@ -20,6 +20,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import ru.ispras.fortress.data.DataType;
+import ru.ispras.fortress.data.DataTypeId;
 import ru.ispras.fortress.jaxb.JaxbNode;
 import ru.ispras.fortress.jaxb.JaxbNodeAdapter;
 
@@ -122,6 +123,32 @@ public abstract class Node {
    */
 
   public abstract DataType getDataType();
+
+  /**
+   * Checks whether the expression has the specified type
+   * (types are compared on the {@link DataTypeId} level).
+   * 
+   * @param typeId {@link DataTypeId} object the data type is to be compared to.
+   * @return {@code true} if the expression type matches the type specified by
+   * the {@code typeId} argument or {@code false} otherwise.
+   */
+
+  public boolean isType(DataTypeId typeId) {
+    return getDataType().getTypeId() == typeId;
+  }
+
+  /**
+   * Checks whether the stored value has the specified type
+   * (types are compared on the {@link DataType} level).
+   * 
+   * @param type {@link DataType} object the data type is to be compared to.
+   * @return {@code true} if the expression type matches the type specified by
+   * the {@code type} argument or {@code false} otherwise.
+   */
+
+  public boolean isType(DataType type) {
+    return getDataType().equals(type);
+  }
 
   /**
    * Associates a user data object with the current node

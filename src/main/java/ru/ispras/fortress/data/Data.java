@@ -344,4 +344,103 @@ public final class Data {
     return String.format("Data[type=%s, value=%s]",
       type.toString(), null == value ? "uninitialized" : value.toString());
   }
+
+  /**
+   * Checks whether the stored value has the specified type
+   * (comparison is based on {@link DataTypeId}).
+   * 
+   * @param typeId {@link DataTypeId} object the data type is to be compared to.
+   * @return {@code true} if the type matches the type specified by the {@code typeId}
+   * argument or {@code false} otherwise.
+   */
+
+  public boolean isType(DataTypeId typeId) {
+    return this.type.getTypeId() == typeId;
+  }
+
+  /**
+   * Checks whether the stored value has the specified type
+   * (comparison is based on {@link DataType}).
+   * 
+   * @param type {@link DataType} object the data type is to be compared to.
+   * @return {@code true} if the type matches the type specified by the {@code type}
+   * argument or {@code false} otherwise.
+   */
+
+  public boolean isType(DataType type) {
+    return this.type.equals(type);
+  }
+
+  /**
+   * Returns a BigInteger value stored in the data object. Applicable to data objects
+   * of type {@link DataTypeId#LOGIC_INTEGER}.
+   * 
+   * @return Stored value represented by a BigInteger.
+   * @throws IllegalStateException if the stored data is not convertible to {@code BigInteger}.
+   */
+
+  public BigInteger getInteger() {
+    checkConvertibleTo(BigInteger.class);
+    return (BigInteger) value;
+  }
+
+  /**
+   * Returns a BitVector value stored in the data object. Applicable to data objects
+   * of type {@link DataTypeId#BIT_VECTOR}.
+   * 
+   * @return Stored value represented by a {@link BitVector}.
+   * @throws IllegalStateException if the stored data is not convertible to {@link BitVector}.
+   */
+
+  public BitVector getBitVector() {
+    checkConvertibleTo(BitVector.class);
+    return (BitVector) value;
+  }
+
+  /**
+   * Returns a boolean value stored in the data object. Applicable to data objects
+   * of type {@link DataTypeId#LOGIC_BOOLEAN}.
+   * 
+   * @return Stored value represented by a boolean.
+   * @throws IllegalStateException if the stored data is not convertible to {@code Boolean}.
+   */
+
+  public boolean getBoolean() {
+    checkConvertibleTo(Boolean.class);
+    return (Boolean) value;
+  }
+
+  /**
+   * Returns a Double value stored in the data object. Applicable to data objects
+   * of type {@link DataTypeId#LOGIC_REAL}.
+   * 
+   * @return Stored value represented by a Double.
+   * @throws IllegalStateException if the stored data is not convertible to {@code Double}.
+   */
+
+  public double getReal() {
+    checkConvertibleTo(Double.class);
+    return (Double) value;
+  }
+
+  /**
+   * Returns a DataMap value stored in the data object. Applicable to data objects
+   * of type {@link DataTypeId#MAP}.
+   * 
+   * @return Stored value represented by a {@code DataMap}.
+   * @throws IllegalStateException if the stored data is not convertible to {@link DataMap}.
+   */
+
+  public DataMap getArray() {
+    checkConvertibleTo(DataMap.class);
+    return (DataMap) value;
+  }
+
+  private void checkConvertibleTo(Class<?> c) {
+    if (!c.isAssignableFrom(value.getClass())) {
+      throw new IllegalStateException(String.format(
+          "%s data is not convertible to %s.",
+          value.getClass().getSimpleName(), c.getSimpleName()));
+    }
+  }
 }

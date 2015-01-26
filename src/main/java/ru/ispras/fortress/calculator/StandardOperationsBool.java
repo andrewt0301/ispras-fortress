@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -55,7 +55,7 @@ enum StandardOperationsBool implements Operation<StandardOperation> {
   NOT(StandardOperation.NOT, ArityRange.UNARY) {
     @Override
     public Data calculate(Data... operands) {
-      return Data.newBoolean(!extractBoolean(operands[0]));
+      return Data.newBoolean(!operands[0].getBoolean());
     }
   },
 
@@ -63,7 +63,7 @@ enum StandardOperationsBool implements Operation<StandardOperation> {
     @Override
     public Data calculate(Data... operands) {
       for (int index = 0; index < operands.length; ++index) {
-        if (!extractBoolean(operands[index])) {
+        if (!operands[index].getBoolean()) {
           return Data.newBoolean(false);
         }
       }
@@ -75,7 +75,7 @@ enum StandardOperationsBool implements Operation<StandardOperation> {
     @Override
     public Data calculate(Data... operands) {
       for (int index = 0; index < operands.length; ++index) {
-        if (extractBoolean(operands[index])) {
+        if (operands[index].getBoolean()) {
           return Data.newBoolean(true);
         }
       }
@@ -86,9 +86,9 @@ enum StandardOperationsBool implements Operation<StandardOperation> {
   XOR(StandardOperation.XOR, ArityRange.BINARY_UNBOUNDED) {
     @Override
     public Data calculate(Data... operands) {
-      boolean result = extractBoolean(operands[0]);
+      boolean result = operands[0].getBoolean();
       for (int index = 1; index < operands.length; ++index) {
-        result ^= extractBoolean(operands[index]);
+        result ^= operands[index].getBoolean();
       }
       return Data.newBoolean(result);
     }
@@ -97,8 +97,8 @@ enum StandardOperationsBool implements Operation<StandardOperation> {
   IMPL(StandardOperation.IMPL, ArityRange.BINARY) {
     @Override
     public Data calculate(Data... operands) {
-      final boolean value1 = extractBoolean(operands[0]);
-      final boolean value2 = extractBoolean(operands[1]);
+      final boolean value1 = operands[0].getBoolean();
+      final boolean value2 = operands[1].getBoolean();
 
       return Data.newBoolean(!value1 || value2);
     }
@@ -141,10 +141,5 @@ enum StandardOperationsBool implements Operation<StandardOperation> {
   @Override
   public final ArityRange getOperationArity() {
     return operationArity;
-  }
-
-  private static boolean extractBoolean(Data data) {
-    assert data.getType().getValueClass().equals(Boolean.class);
-    return ((Boolean) data.getValue()).booleanValue();
   }
 }

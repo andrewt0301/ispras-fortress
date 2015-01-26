@@ -16,9 +16,12 @@ package ru.ispras.fortress.expression;
 
 import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
+import java.math.BigInteger;
+
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.types.bitvector.BitVector;
+import ru.ispras.fortress.data.types.datamap.DataMap;
 
 /**
  * The NodeValue class represents a node that stores a constant value. The class serves as an
@@ -161,9 +164,49 @@ public final class NodeValue extends Node {
     final NodeValue other = (NodeValue) obj;
     return data.equals(other.data);
   }
-
+  
   @Override
   public String toString() {
     return data.getValue().toString();
+  }
+
+  /**
+   * Returns stored BigInteger value and throws an exception if the stored value has a different type.
+   */
+
+  public BigInteger getInteger() {
+    return getData().getInteger();
+  }
+
+  /**
+   * Returns stored BitVector value and throws an exception if the stored value has a different type.
+   */
+
+  public BitVector getBitVector() {
+    return getData().getBitVector();
+  }
+
+  /**
+   * Returns stored boolean value and throws an exception if the stored value has a different type.
+   */
+
+  public boolean getBoolean() {
+    return getData().getBoolean();
+  }
+
+  /**
+   * Returns stored Double value and throws an exception if the stored value has a different type.
+   */
+
+  public double getReal() {
+    return getData().getReal();
+  }
+
+  /**
+   * Returns stored DataMap value and throws an exception if the stored value has a different type.
+   */
+
+  public DataMap getArray() {
+    return getData().getArray();
   }
 }
