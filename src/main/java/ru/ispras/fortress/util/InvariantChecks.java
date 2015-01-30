@@ -95,7 +95,7 @@ public final class InvariantChecks {
    * @param index Index to be checked.
    * @param length Length of the allowed range.
    * 
-   * @throws IllegalArgumentException if the invariant is violated
+   * @throws IndexOutOfBoundsException if the invariant is violated
    * ({@code index} is not within range {@code [0..length)}).
    */
 
@@ -113,7 +113,7 @@ public final class InvariantChecks {
    * @param index Index to be checked.
    * @param length Length of the allowed range.
    * 
-   * @throws IllegalArgumentException if the invariant is violated
+   * @throws IndexOutOfBoundsException if the invariant is violated
    * ({@code index} is not within range {@code [0..length]}).
    */
 

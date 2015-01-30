@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2011-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,6 +13,9 @@
  */
 
 package ru.ispras.fortress.expression;
+
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
+import static ru.ispras.fortress.util.InvariantChecks.checkBounds;
 
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -44,14 +47,9 @@ public final class NodeOperation extends Node {
   public <T extends Enum<? extends T>> NodeOperation(T operation, Node ... operands) {
     super(Kind.OPERATION);
 
-    if (null == operation) {
-      throw new NullPointerException();
-    }
-
+    checkNotNull(operation);
     for (Node operand : operands) {
-      if (null == operand) {
-        throw new NullPointerException();
-      }
+      checkNotNull(operand);
     }
 
     this.operation = operation;
@@ -107,10 +105,7 @@ public final class NodeOperation extends Node {
    */
 
   public Node getOperand(int index) {
-    if (!((0 <= index) && (index < operands.length))) {
-      throw new IndexOutOfBoundsException();
-    }
-
+    checkBounds(index, operands.length);
     return operands[index];
   }
 
