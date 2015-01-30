@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,6 +13,9 @@
  */
 
 package ru.ispras.fortress.data;
+
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
+import static ru.ispras.fortress.util.InvariantChecks.checkGreaterThanZero;
 
 import java.util.List;
 import java.util.Arrays;
@@ -62,17 +65,13 @@ public final class DataType {
    */
 
   public static DataType BIT_VECTOR(int size) {
-    if (size <= 0) {
-      throw new IllegalArgumentException("Illegal bit vector size: " + size);
-    }
-
+    checkGreaterThanZero(size);
     return newDataType(DataTypeId.BIT_VECTOR, size);
   }
 
   public static DataType MAP(DataType keyType, DataType valueType) {
-    if (keyType == null || valueType == null) {
-      throw new NullPointerException();
-    }
+    checkNotNull(keyType);
+    checkNotNull(valueType);
 
     return newDataType(DataTypeId.MAP, keyType, valueType);
   }
@@ -95,9 +94,7 @@ public final class DataType {
    */
 
   public static DataType newDataType(DataTypeId typeId, Object... parameters) {
-    if (typeId == null) {
-      throw new NullPointerException();
-    }
+    checkNotNull(typeId);
 
     final List<Object> list = Arrays.asList(parameters);
     typeId.validate(list);
@@ -186,18 +183,14 @@ public final class DataType {
    */
 
   public Data valueOf(String value, int radix) {
-    if (null == value) {
-      throw new NullPointerException();
-    }
+    checkNotNull(value);
 
     value = value.replaceAll("\\s?", ""); // Removes extra spaces
     return new Data(this, typeId.valueOf(value, radix, parameters));
   }
 
   public static DataType typeOf(String value) {
-    if (value == null) {
-      throw new NullPointerException();
-    }
+    checkNotNull(value);
 
     if (dataTypes.containsKey(value)) {
       return dataTypes.get(value);
