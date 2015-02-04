@@ -524,6 +524,24 @@ public class BitVectorTestCase {
     Assert.assertEquals("FFFFFFFF", bv1.toHexString());
     Assert.assertEquals(BigInteger.valueOf(-1), bv1.bigIntegerValue());
 
+    final BitVector bv11 = BitVector.valueOf(BigInteger.valueOf(-1), 64);
+    Assert.assertEquals("FFFFFFFFFFFFFFFF", bv11.toHexString());
+    Assert.assertEquals(BigInteger.valueOf(-1), bv11.bigIntegerValue());
+
+    final BitVector bv12 = BitVector.valueOf(new BigInteger("FFFFFFFFFFFFFFFF", 16), 64);
+    Assert.assertEquals("FFFFFFFFFFFFFFFF", bv12.toHexString());
+    Assert.assertEquals(BigInteger.valueOf(-1), bv12.bigIntegerValue());
+
+    // Truncating BigInteger (1 becomes the highest bit - sign extension)
+    final BitVector bv110 = BitVector.valueOf(new BigInteger("DEADBEEF", 16), 16);
+    Assert.assertEquals("BEEF", bv110.toHexString());
+    Assert.assertEquals(BigInteger.valueOf(0xFFFFBEEF), bv110.bigIntegerValue());
+
+    // Truncating BigInteger (0 becomes the highest bit - no sign extension)
+    final BitVector bv111 = BitVector.valueOf(new BigInteger("DEAD7EEF", 16), 16);
+    Assert.assertEquals("7EEF", bv111.toHexString());
+    Assert.assertEquals(BigInteger.valueOf(0x7EEF), bv111.bigIntegerValue());
+
     final BitVector bv2 = BitVector.valueOf(BigInteger.valueOf(1), 32);
     Assert.assertEquals("00000001", bv2.toHexString());
     Assert.assertEquals(BigInteger.valueOf(1), bv2.bigIntegerValue());
@@ -531,10 +549,18 @@ public class BitVectorTestCase {
     final BitVector bv3 = BitVector.valueOf(BigInteger.valueOf(Integer.MAX_VALUE), 32);
     Assert.assertEquals("7FFFFFFF", bv3.toHexString());
     Assert.assertEquals(BigInteger.valueOf(Integer.MAX_VALUE), bv3.bigIntegerValue());
-    
+
     final BitVector bv4 = BitVector.valueOf(BigInteger.valueOf(Integer.MIN_VALUE), 32);
     Assert.assertEquals("80000000", bv4.toHexString());
     Assert.assertEquals(BigInteger.valueOf(Integer.MIN_VALUE), bv4.bigIntegerValue());
+    
+    final BitVector bv5 = BitVector.valueOf(BigInteger.valueOf(Long.MAX_VALUE), Long.SIZE);
+    Assert.assertEquals("7FFFFFFFFFFFFFFF", bv5.toHexString());
+    Assert.assertEquals(BigInteger.valueOf(Long.MAX_VALUE), bv5.bigIntegerValue());
+    
+    final BitVector bv6 = BitVector.valueOf(BigInteger.valueOf(Long.MIN_VALUE), Long.SIZE);
+    Assert.assertEquals("8000000000000000", bv6.toHexString());
+    Assert.assertEquals(BigInteger.valueOf(Long.MIN_VALUE), bv6.bigIntegerValue());
   }
 
   @Test

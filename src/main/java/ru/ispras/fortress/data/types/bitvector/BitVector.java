@@ -546,8 +546,7 @@ public abstract class BitVector implements Comparable<BitVector> {
      * data received from BigInteger is different (opposite) from the byte order in bit vectors.
      */
 
-    final int copyStartIndex =
-        result.getByteSize() >= data.length ? data.length - 1 : result.getByteSize() - 1;
+    final int copyStartIndex = data.length - 1;
 
     final IOperation op = new IOperation() {
       private int index = copyStartIndex;
