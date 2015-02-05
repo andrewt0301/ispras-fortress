@@ -125,6 +125,16 @@ public abstract class Node {
   public abstract DataType getDataType();
 
   /**
+   * Returns a data type identifier describing the type of the value referred by the node.
+   * 
+   * @return Data type identifier.
+   */
+
+  public final DataTypeId getDataTypeId() {
+	  return getDataType().getTypeId();
+  }
+
+  /**
    * Checks whether the expression has the specified type
    * (types are compared on the {@link DataTypeId} level).
    * 
@@ -133,8 +143,8 @@ public abstract class Node {
    * the {@code typeId} argument or {@code false} otherwise.
    */
 
-  public boolean isType(DataTypeId typeId) {
-    return getDataType().getTypeId() == typeId;
+  public final boolean isType(DataTypeId typeId) {
+    return getDataTypeId() == typeId;
   }
 
   /**
@@ -146,7 +156,7 @@ public abstract class Node {
    * the {@code type} argument or {@code false} otherwise.
    */
 
-  public boolean isType(DataType type) {
+  public final boolean isType(DataType type) {
     return getDataType().equals(type);
   }
 
