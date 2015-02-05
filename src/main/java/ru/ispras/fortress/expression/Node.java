@@ -131,7 +131,7 @@ public abstract class Node {
    */
 
   public final DataTypeId getDataTypeId() {
-	  return getDataType().getTypeId();
+    return getDataType().getTypeId();
   }
 
   /**
