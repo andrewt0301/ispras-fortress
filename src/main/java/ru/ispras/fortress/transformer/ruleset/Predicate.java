@@ -283,6 +283,8 @@ public final class Predicate {
    * (and true ...) -> (and ...)
    * (or true ...) -> true
    * (or false ...) -> (or ...)
+   * (ite true e0 e1) -> e0
+   * (ite false e0 e1) -> e1
    * }
    * </pre>
    *
@@ -528,6 +530,22 @@ public final class Predicate {
           operands[i] = reduce(StandardOperation.NOT, operands[i]);
         }
         return reduce(StandardOperation.OR, operands);
+      }
+    };
+
+    new OperationRule(StandardOperation.ITE, ruleset) {
+      @Override
+      public boolean isApplicable(NodeOperation ite) {
+        return isBoolean(ite.getOperand(0));
+      }
+
+      @Override
+      public Node apply(Node node) {
+        final NodeOperation ite = (NodeOperation) node;
+        if (getBoolean(ite.getOperand(0))) {
+          return ite.getOperand(1);
+        }
+        return ite.getOperand(2);
       }
     };
 
