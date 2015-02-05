@@ -74,6 +74,11 @@ public class SimpleTransformTestCase {
     return new NodeOperation(StandardOperation.NOT, node);
   }
 
+  private static NodeOperation ITE(Node cond, Node ifTrue, Node ifFalse) {
+    final Node[] operands = { cond, ifTrue, ifFalse };
+    return new NodeOperation(StandardOperation.ITE, operands);
+  }
+
   private static NodeBinding singleBinding(NodeVariable variable, Node value, Node expr) {
     final List<NodeBinding.BoundVariable> bindings =
       Collections.singletonList(NodeBinding.bindVariable(variable, value));
@@ -310,5 +315,20 @@ public class SimpleTransformTestCase {
 
     /* (1 >= 2) == false */
     Assert.assertTrue(equalNodes(Transformer.standardize(GREATEREQ(ONE, TWO)), FALSE));
+  }
+
+  @Test
+  public void standardazeIfThenElse() {
+    final NodeValue TRUE = NodeValue.newBoolean(true);
+    final NodeValue FALSE = NodeValue.newBoolean(false);
+
+    final NodeVariable x = createVariable("x");
+    final NodeVariable y = createVariable("y");
+
+    final NodeOperation ifLess = ITE(LESS(x, y), x, y);
+
+    Assert.assertTrue(equalNodes(Transformer.standardize(ITE(TRUE, x, y)), x));
+    Assert.assertTrue(equalNodes(Transformer.standardize(ITE(FALSE, x, y)), y));
+    Assert.assertTrue(equalNodes(Transformer.standardize(ifLess), ifLess));
   }
 }
