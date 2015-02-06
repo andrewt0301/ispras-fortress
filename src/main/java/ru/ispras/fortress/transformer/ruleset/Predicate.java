@@ -15,7 +15,9 @@
 package ru.ispras.fortress.transformer.ruleset;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.IdentityHashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -217,9 +219,23 @@ final class UnrollClause extends OperationRule {
   public boolean isApplicable(NodeOperation in) {
     for (int i = 0; i < in.getOperandCount(); ++i) {
       final Node operand = in.getOperand(i);
-      if (isBoolean(operand) || isOperation(operand, this.getOperationId())) {
+      if (isBoolean(operand) ||
+          isOperation(operand, this.getOperationId()) ||
+          this.getOperationId() == StandardOperation.AND && isEquality(operand)) {
         return true;
       }
+    }
+    return false;
+  }
+
+  private boolean isEquality(Node operand) {
+    if (isOperation(operand, StandardOperation.EQ) ||
+        isOperation(operand, StandardOperation.NOTEQ)) {
+      return true;
+    }
+    if (isOperation(operand, StandardOperation.NOT)) {
+      final Node candidate = ((NodeOperation) operand).getOperand(0);
+      return isOperation(candidate, StandardOperation.EQ);
     }
     return false;
   }
@@ -247,6 +263,9 @@ final class UnrollClause extends OperationRule {
       return op.getOperand(0);
     }
     final List<Node> operands = this.flattenFilter(op);
+    if (!this.postprocess(operands)) {
+      return NodeValue.newBoolean(false);
+    }
     if (operands.size() == 1) {
       return operands.get(0);
     }
@@ -271,6 +290,51 @@ final class UnrollClause extends OperationRule {
     }
   }
 
+  private boolean postprocess(List<Node> operands) {
+    if (this.getOperationId() != StandardOperation.AND) {
+      return true;
+    }
+
+    final EqualityConstraint constraint = filterEqualities(operands);
+    if (constraint.isEmpty()) {
+      return true;
+    }
+
+    final List<Node> reduced = constraint.reduce();
+    if (reduced.size() == 0) { // everything is (eq x x)
+      return true;
+    }
+    if (reduced.size() == 1 && isBoolean(reduced.get(0))) {
+      return getBoolean(reduced.get(0));
+    }
+
+    operands.addAll(reduced);
+
+    return true;
+  }
+
+  private static EqualityConstraint filterEqualities(Collection<? extends Node> operands) {
+    final EqualityConstraint constraint = new EqualityConstraint();
+
+    Iterator<? extends Node> it = operands.iterator();
+    while (it.hasNext()) {
+      final Node operand = it.next();
+      if (isOperation(operand, StandardOperation.EQ)) {
+        constraint.addEquality(operand);
+        it.remove();
+      } else if (isOperation(operand, StandardOperation.NOTEQ)) {
+        constraint.addInequality(operand);
+        it.remove();
+      } else if (isOperation(operand, StandardOperation.NOT)) {
+        final Node candidate = ((NodeOperation) operand).getOperand(0);
+        if (isOperation(candidate, StandardOperation.EQ)) {
+          constraint.addInequality(candidate);
+          it.remove();
+        }
+      }
+    }
+    return constraint;
+  }
 }
 
 /**
