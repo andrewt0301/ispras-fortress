@@ -23,6 +23,7 @@ import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.data.DataType;
 
 import ru.ispras.fortress.expression.*;
+import ru.ispras.fortress.transformer.ruleset.EqualityConstraint;
 
 public class SimpleTransformTestCase {
   private static NodeVariable createVariable(String name) {
@@ -180,7 +181,7 @@ public class SimpleTransformTestCase {
     final Node equalsTrue = EQ(eqxy, TRUE, eqxz);
     final Node equalsFalse = EQ(FALSE, eqxy, eqxz);
 
-    final Node expectedEquality = AND(eqxy, eqxz);
+    final Node expectedEquality = EQ(z, y, x);
     final Node standardEquality = Transformer.standardize(equalsTrue);
 
     final Node expectedInequality = AND(NOT(eqxy), NOT(eqxz));
@@ -216,21 +217,35 @@ public class SimpleTransformTestCase {
     final NodeVariable x = createVariable("x");
     final NodeVariable y = createVariable("y");
     final Node eqxy = EQ(x, y);
+    final Node eqyx = EQ(y, x);
 
     final Node TRUE = NodeValue.newBoolean(true);
     final Node FALSE = NodeValue.newBoolean(false);
 
     final Node allTrue = AND(TRUE, TRUE, TRUE);
     final Node singleExpr = AND(TRUE, eqxy, TRUE);
-    final Node multiExpr = AND(eqxy, TRUE, TRUE, TRUE, eqxy, TRUE);
     final Node singleFalse = AND(TRUE, TRUE, TRUE, eqxy, FALSE, eqxy);
 
-    Assert.assertTrue(Transformer.standardize(allTrue).toString().equals(TRUE.toString()));
-    Assert.assertTrue(Transformer.standardize(singleExpr).toString().equals(eqxy.toString()));
-    Assert.assertTrue(Transformer.standardize(singleFalse).toString().equals(FALSE.toString()));
-    Assert.assertTrue(
-      Transformer.standardize(multiExpr).toString().equals(
-        AND(eqxy, eqxy).toString()));
+    Assert.assertTrue(equalNodes(Transformer.standardize(allTrue), TRUE));
+    Assert.assertTrue(equalNodes(Transformer.standardize(singleFalse), FALSE));
+
+    final Node stdSingle = Transformer.standardize(singleExpr);
+    Assert.assertTrue(equalNodes(stdSingle, eqyx) || equalNodes(stdSingle, eqxy));
+  }
+
+  @Test
+  public void filterDuplicatedEqualities() {
+    final NodeVariable x = createVariable("x");
+    final NodeVariable y = createVariable("y");
+    final Node eqxy = EQ(x, y);
+    final Node eqyx = EQ(y, x);
+
+    final Node TRUE = NodeValue.newBoolean(true);
+
+    final Node multiExpr = AND(eqxy, TRUE, TRUE, TRUE, eqxy, TRUE, eqyx);
+
+    final Node std = Transformer.standardize(multiExpr);
+    Assert.assertTrue(equalNodes(std, eqxy) || equalNodes(std, eqyx));
   }
 
   @Test
@@ -259,13 +274,16 @@ public class SimpleTransformTestCase {
   public void standardizeConjunctionTree() {
     final NodeVariable x = createVariable("x");
     final NodeVariable y = createVariable("y");
+
     final Node eqxy = EQ(x, y);
+    final Node eqyx = EQ(y, x);
 
     final Node TRUE = NodeValue.newBoolean(true);
     final Node FALSE = NodeValue.newBoolean(false);
 
     final Node tree = AND(TRUE, AND(TRUE, AND(eqxy, TRUE), TRUE), TRUE);
-    Assert.assertTrue(equalNodes(Transformer.standardize(tree), eqxy));
+    final Node std = Transformer.standardize(tree);
+    Assert.assertTrue(equalNodes(std, eqxy) || equalNodes(std, eqyx));
   }
 
   @Test
@@ -356,5 +374,20 @@ public class SimpleTransformTestCase {
     Assert.assertTrue(equalNodes(Transformer.standardize(ITE(TRUE, x, y)), x));
     Assert.assertTrue(equalNodes(Transformer.standardize(ITE(FALSE, x, y)), y));
     Assert.assertTrue(equalNodes(Transformer.standardize(ifLess), ifLess));
+  }
+
+  @Test
+  public void equalityResolution() {
+    final NodeVariable x = createVariable("x");
+    final NodeValue eqValue = NodeValue.newInteger(0);
+    final NodeValue neqValue = NodeValue.newInteger(-1);
+
+    final Node TRUE = NodeValue.newBoolean(true);
+    final Node FALSE = NodeValue.newBoolean(false);
+
+    final Node expr = AND(EQ(x, eqValue), NOTEQ(x, neqValue));
+    final Node std = Transformer.standardize(expr);
+
+    Assert.assertTrue(equalNodes(std, EQ(x, eqValue)) || equalNodes(std, EQ(eqValue, x)));
   }
 }
