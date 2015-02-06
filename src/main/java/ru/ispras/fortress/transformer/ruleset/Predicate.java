@@ -14,7 +14,9 @@
 
 package ru.ispras.fortress.transformer.ruleset;
 
+import java.util.ArrayList;
 import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
 
 import ru.ispras.fortress.data.DataType;
@@ -213,42 +215,62 @@ final class UnrollClause extends OperationRule {
   
   @Override
   public boolean isApplicable(NodeOperation in) {
-    return booleanOperandIndex(in, 0) >= 0;
+    for (int i = 0; i < in.getOperandCount(); ++i) {
+      final Node operand = in.getOperand(i);
+      if (isBoolean(operand) || isOperation(operand, this.getOperationId())) {
+        return true;
+      }
+    }
+    return false;
   }
 
   @Override
   public Node apply(Node in) {
     final NodeOperation op = (NodeOperation) in;
 
-    int cnt = 0;
-    int pos = booleanOperandIndex(op, 0);
-    while (pos >= 0) {
-      if (getBoolean(op.getOperand(pos)) == symbol) {
-        return op.getOperand(pos);
+    int numBoolean = 0;
+    int numFlatten = 0;
+
+    for (int i = 0; i < op.getOperandCount(); ++i) {
+      final Node operand = op.getOperand(i);
+      if (isBoolean(operand) && getBoolean(operand) == symbol) {
+        return operand;
       }
-      pos = booleanOperandIndex(op, pos + 1);
-      ++cnt;
+
+      if (isOperation(operand, this.getOperationId())) {
+        numFlatten += ((NodeOperation) operand).getOperandCount();
+      } else if (isBoolean(operand)) {
+        ++numBoolean;
+      }
     }
-    final int effectiveNum = op.getOperandCount() - cnt;
-    if (effectiveNum == 0) {
+    if (numBoolean == op.getOperandCount()) {
       return op.getOperand(0);
     }
-    if (effectiveNum == 1) {
-      for (int i = 0; i < op.getOperandCount(); ++i) {
-        if (!isBoolean(op.getOperand(i))) {
-          return op.getOperand(i);
-        }
-      }
+    final List<Node> operands = this.flattenFilter(op);
+    if (operands.size() == 1) {
+      return operands.get(0);
     }
-    int index = 0;
-    final Node[] operands = new Node[effectiveNum];
-    for (int i = 0; i < op.getOperandCount(); ++i) {
-      if (!isBoolean(op.getOperand(i))) {
-        operands[index++] = op.getOperand(i);
-      }
-    }
-    return new NodeOperation(getOperationId(), operands);
+    return new NodeOperation(this.getOperationId(),
+                             operands.toArray(new Node[operands.size()]));
   }
+
+  private List<Node> flattenFilter(NodeOperation op) {
+    final List<Node> operands = new ArrayList<>(op.getOperandCount());
+    this.flattenFilter(op, operands);
+    return operands;
+  }
+
+  private void flattenFilter(NodeOperation op, List<Node> operands) {
+    for (int i = 0; i < op.getOperandCount(); ++i) {
+      final Node operand = op.getOperand(i);
+      if (isOperation(operand, this.getOperationId())) {
+        this.flattenFilter((NodeOperation) operand, operands);
+      } else if (!isBoolean(operand)) {
+        operands.add(operand);
+      }
+    }
+  }
+
 }
 
 /**
