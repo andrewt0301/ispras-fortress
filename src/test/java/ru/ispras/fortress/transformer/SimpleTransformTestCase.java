@@ -255,7 +255,33 @@ public class SimpleTransformTestCase {
         OR(eqxy, eqxy).toString()));
   }
 
-  private boolean equalNodes(Node lhs, Node rhs) {
+  @Test
+  public void standardizeConjunctionTree() {
+    final NodeVariable x = createVariable("x");
+    final NodeVariable y = createVariable("y");
+    final Node eqxy = EQ(x, y);
+
+    final Node TRUE = NodeValue.newBoolean(true);
+    final Node FALSE = NodeValue.newBoolean(false);
+
+    final Node tree = AND(TRUE, AND(TRUE, AND(eqxy, TRUE), TRUE), TRUE);
+    Assert.assertTrue(equalNodes(Transformer.standardize(tree), eqxy));
+  }
+
+  @Test
+  public void standardizeDisjunctionTree() {
+    final NodeVariable x = createVariable("x");
+    final NodeVariable y = createVariable("y");
+    final Node eqxy = EQ(x, y);
+
+    final Node TRUE = NodeValue.newBoolean(true);
+    final Node FALSE = NodeValue.newBoolean(false);
+
+    final Node tree = OR(FALSE, OR(FALSE, OR(eqxy, FALSE), FALSE), FALSE);
+    Assert.assertTrue(equalNodes(Transformer.standardize(tree), eqxy));
+  }
+
+  private static boolean equalNodes(Node lhs, Node rhs) {
     return lhs.toString().equals(rhs.toString());
   }
 
