@@ -14,11 +14,13 @@
 
 package ru.ispras.fortress.expression;
 
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 import static ru.ispras.fortress.util.InvariantChecks.checkBounds;
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
@@ -107,6 +109,16 @@ public final class NodeOperation extends Node {
   public Node getOperand(int index) {
     checkBounds(index, operands.length);
     return operands[index];
+  }
+
+  /**
+   * Returns an unmodifiable list of operands.
+   * 
+   * @return An unmodifiable list of operands.
+   */
+
+  public List<Node> getOperands() {
+    return Collections.unmodifiableList(Arrays.asList(operands));	  
   }
 
   /**
