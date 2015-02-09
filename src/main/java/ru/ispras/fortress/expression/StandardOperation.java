@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,6 +13,8 @@
  */
 
 package ru.ispras.fortress.expression;
+
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
 import java.util.EnumSet;
 import java.util.Set;
@@ -155,7 +157,7 @@ public enum StandardOperation implements TypeRule {
   BVASHR(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG),
 
   /** Group: Bitvector, Operation: Concatenation */
-  BVCONCAT(Family.BV, TypeRules.UNKNOWN),
+  BVCONCAT(Family.BV, TypeRules.BVCONCAT),
 
   /** Group: Bitvector, Operation: Replication (concatenation of several copies of bitvector) */
   BVREPEAT(Family.BV, TypeRules.UNKNOWN, 1),
@@ -328,10 +330,7 @@ public enum StandardOperation implements TypeRule {
 
   @Override
   public final DataType getResultType(DataType[] operandTypes, int[] params) {
-    if (null == operandTypes) {
-      throw new NullPointerException();
-    }
-
+    checkNotNull(operandTypes);
     return typeRule.getResultType(operandTypes, params);
   }
 }

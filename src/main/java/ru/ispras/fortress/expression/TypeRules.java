@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -149,6 +149,22 @@ enum TypeRules implements TypeRule {
 
       final int n = i - j + 1;
       return DataType.BIT_VECTOR(n);
+    }
+  },
+  
+  
+  BVCONCAT {
+    @Override
+    public DataType getResultType(DataType[] operandTypes, int[] params) {
+      int totalSize = 0;
+      for (DataType operandType : operandTypes) {
+        if (DataTypeId.BIT_VECTOR != operandType.getTypeId()) {
+          return DataType.UNKNOWN;
+        }
+        totalSize += operandType.getSize();
+      }
+
+      return DataType.BIT_VECTOR(totalSize);
     }
   }
 }
