@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,6 +13,8 @@
  */
 
 package ru.ispras.fortress.data;
+
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull; 
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -131,10 +133,7 @@ public final class Random {
      */
 
     public CompositeEngine(Initializer initializer) {
-      if (null == initializer) {
-        throw new NullPointerException();
-      }
-
+      checkNotNull(initializer);
       this.initializer = initializer;
       this.generators = new EnumMap<DataTypeId, TypedGenerator>(DataTypeId.class);
     }
@@ -149,14 +148,8 @@ public final class Random {
      */
 
     public void setGenerator(DataTypeId typeId, TypedGenerator generator) {
-      if (null == typeId) {
-        throw new NullPointerException();
-      }
-
-      if (null == generator) {
-        throw new NullPointerException();
-      }
-
+      checkNotNull(typeId);
+      checkNotNull(generator);
       generators.put(typeId, generator);
     }
 
@@ -184,9 +177,7 @@ public final class Random {
 
     @Override
     public Data random(DataTypeId typeId, int size) {
-      if (null == typeId) {
-        throw new NullPointerException();
-      }
+      checkNotNull(typeId);
 
       if (!generators.containsKey(typeId)) {
         throw new UnsupportedOperationException(String.format(ERR_UNSUPPORTED, typeId));
@@ -271,10 +262,7 @@ public final class Random {
    */
 
   public static void setEngine(Engine value) {
-    if (null == value) {
-      throw new NullPointerException();
-    }
-
+    checkNotNull(value);
     engine = value;
   }
 
@@ -300,10 +288,7 @@ public final class Random {
    */
 
   public static Data newValue(DataType type) {
-    if (null == type) {
-      throw new NullPointerException();
-    }
-
+    checkNotNull(type);
     return getEngine().random(type.getTypeId(), type.getSize());
   }
 
@@ -320,14 +305,8 @@ public final class Random {
    */
 
   public static Variable newVariable(String name, DataType type) {
-    if (null == name) {
-      throw new NullPointerException();
-    }
-
-    if (null == type) {
-      throw new NullPointerException();
-    }
-
+    checkNotNull(name);
+    checkNotNull(type);
     return new Variable(name, newValue(type));
   }
 
@@ -343,10 +322,7 @@ public final class Random {
    */
 
   public static Variable assignValue(Variable variable) {
-    if (null == variable) {
-      throw new NullPointerException();
-    }
-
+    checkNotNull(variable);
     variable.setData(newValue(variable.getType()));
     return variable;
   }
