@@ -17,13 +17,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class EqualityConstraint {
-  final Map<Node, EqualityGroup> equalLinks;
-  final List<EqualityGroup> equalityGroups;
-  final List<NodeOperation> inequalities;
+class EqualityConstraint {
+  private final Map<Node, EqualityGroup> equalLinks;
+  private final List<EqualityGroup> equalityGroups;
+  private final List<NodeOperation> inequalities;
 
-  boolean evaluated;
-  boolean consistent;
+  private boolean evaluated;
+  private boolean consistent;
 
   public EqualityConstraint() {
     this.equalLinks = new HashMap<>();

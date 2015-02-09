@@ -151,7 +151,7 @@ abstract class OperationRule extends DependentRule {
 
   public static boolean isBoolean(Node node) {
     return node.getKind() == Node.Kind.VALUE
-      && ((NodeValue) node).getDataType() == DataType.BOOLEAN;
+      && node.getDataType() == DataType.BOOLEAN;
   }
 
   /**
@@ -245,18 +245,14 @@ final class UnrollClause extends OperationRule {
     final NodeOperation op = (NodeOperation) in;
 
     int numBoolean = 0;
-    int numFlatten = 0;
-
     for (int i = 0; i < op.getOperandCount(); ++i) {
       final Node operand = op.getOperand(i);
-      if (isBoolean(operand) && getBoolean(operand) == symbol) {
-        return operand;
-      }
-
-      if (isOperation(operand, this.getOperationId())) {
-        numFlatten += ((NodeOperation) operand).getOperandCount();
-      } else if (isBoolean(operand)) {
-        ++numBoolean;
+      if (isBoolean(operand)) {
+        if (getBoolean(operand) == this.symbol) {
+          return operand;
+        } else {
+          ++numBoolean;
+        }
       }
     }
     if (numBoolean == op.getOperandCount()) {
@@ -377,8 +373,7 @@ public final class Predicate {
    */
 
   public static Map<Enum<?>, TransformerRule> getStandardRuleset() {
-    final Map<Enum<?>, TransformerRule> ruleset =
-        new IdentityHashMap<Enum<?>, TransformerRule>();
+    final Map<Enum<?>, TransformerRule> ruleset = new IdentityHashMap<>();
 
     new OperationRule(StandardOperation.NOTEQ, ruleset) {
       @Override
@@ -525,7 +520,7 @@ public final class Predicate {
         return reduceBoolean(op, booleanOperandIndex(op, 0));
       }
 
-      private final int countImmediateOperands(NodeOperation node) {
+      private int countImmediateOperands(NodeOperation node) {
         int n = 0;
         for (int i = 0; i < node.getOperandCount(); ++i) {
           if (node.getOperand(i).getKind() == Node.Kind.VALUE) {
@@ -535,7 +530,7 @@ public final class Predicate {
         return n;
       }
 
-      private final Node reduceEqualImmediates(NodeOperation node, int count) {
+      private Node reduceEqualImmediates(NodeOperation node, int count) {
         final Node[] operands = new Node[node.getOperandCount() - count + 1];
         final Node immediate = node.getOperand(immediateIndex(node, 0));
         operands[0] = immediate;
@@ -557,7 +552,7 @@ public final class Predicate {
         return reduced;
       }
 
-      private final int countEqualImmediates(NodeOperation node) {
+      private int countEqualImmediates(NodeOperation node) {
         int index = immediateIndex(node, 0);
         final Node immediate = node.getOperand(index);
 
@@ -572,7 +567,7 @@ public final class Predicate {
         return count;
       }
 
-      private final int immediateIndex(NodeOperation node, int start) {
+      private int immediateIndex(NodeOperation node, int start) {
         for (int i = start; i < node.getOperandCount(); ++i) {
           if (node.getOperand(i).getKind() == Node.Kind.VALUE) {
             return i;
@@ -581,7 +576,7 @@ public final class Predicate {
         return -1;
       }
 
-      private final Node reduceBoolean(NodeOperation op, int index) {
+      private Node reduceBoolean(NodeOperation op, int index) {
         final boolean value = ((Boolean) ((NodeValue) op.getOperand(index)).getValue());
 
         // For simple equalities just return plain or negated expression

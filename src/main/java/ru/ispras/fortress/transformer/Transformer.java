@@ -158,7 +158,7 @@ public final class Transformer {
       throw new NullPointerException();
     }
 
-    final Map<String, Node> exprs = new HashMap<String, Node>();
+    final Map<String, Node> exprs = new HashMap<>();
     for (NodeBinding.BoundVariable bound : binding.getBindings()) {
       exprs.put(bound.getVariable().getName(), bound.getValue());
     }

@@ -79,11 +79,11 @@ public class NodeTransformer implements ExprTreeVisitor {
       throw new NullPointerException();
     }
 
-    ruleset = new IdentityHashMap<Enum<?>, TransformerRule>(rules);
-    operandStack = new ArrayList<Node[]>();
-    exprStack = new ArrayList<Node>();
-    result = new ArrayList<Node>();
-    boundStack = new ArrayList<NodeBinding.BoundVariable>();
+    ruleset = new IdentityHashMap<>(rules);
+    operandStack = new ArrayList<>();
+    exprStack = new ArrayList<>();
+    result = new ArrayList<>();
+    boundStack = new ArrayList<>();
   }
 
   /**
@@ -123,7 +123,7 @@ public class NodeTransformer implements ExprTreeVisitor {
    * @return Transformed expression or node itself if no applicable rule can be found.
    */
 
-  private final Node applyRule(Enum<?> id, Node node) {
+  private Node applyRule(Enum<?> id, Node node) {
     final TransformerRule rule = ruleset.get(id);
     if (rule != null && rule.isApplicable(node)) {
       return rule.apply(node);
@@ -135,7 +135,7 @@ public class NodeTransformer implements ExprTreeVisitor {
    * Helper methods to find and apply relevant rule to node given.
    */
 
-  private final Node updateNode(Node node) {
+  private Node updateNode(Node node) {
     return applyRule(node.getKind(), node);
   }
 
@@ -267,7 +267,7 @@ abstract class ScopedBindingRule implements TransformerRule {
 
   public ScopedBindingRule(TransformerRule previous, List<NodeBinding.BoundVariable> bindingList) {
     this.shadowed = previous;
-    this.bindings = new HashMap<String, Node>();
+    this.bindings = new HashMap<>();
     for (NodeBinding.BoundVariable bound : bindingList) {
       bindings.put(bound.getVariable().getName(), bound.getValue());
     }
