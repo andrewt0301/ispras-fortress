@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,6 +13,8 @@
  */
 
 package ru.ispras.fortress.expression;
+
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull; 
 
 import java.util.Collection;
 import java.util.Collections;
@@ -380,12 +382,6 @@ public final class ExprUtils {
 
     walker.visit(exprs);
     return variables.values();
-  }
-
-  private static void checkNotNull(Object o) {
-    if (null == o) {
-      throw new NullPointerException();
-    }
   }
 
   private static void checkNotEmpty(Node... exprs) {
