@@ -79,7 +79,7 @@ public final class ExprTreeWalker {
    *         the child nodes of the expression nodes in the sequence has a unknown type.
    */
 
-  public void visit(Iterable<Node> trees) {
+  public void visit(Iterable<? extends Node> trees) {
     checkNotNull(trees);
     for (Node tree : trees) {
       visit(tree);

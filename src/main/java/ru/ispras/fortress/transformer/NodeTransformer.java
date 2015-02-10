@@ -55,7 +55,7 @@ public class NodeTransformer implements ExprTreeVisitor {
    * @param trees Collections of root nodes of trees to be traversed.
    */
 
-  public void walk(Iterable<Node> trees) {
+  public void walk(Iterable<? extends Node> trees) {
     final ExprTreeWalker walker = new ExprTreeWalker(this);
     walker.visit(trees);
   }
