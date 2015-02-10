@@ -61,6 +61,17 @@ public class NodeTransformer implements ExprTreeVisitor {
   }
 
   /**
+   * Reset transformer to initial state keeping all rules.
+   */
+
+  public void reset() {
+    this.operandStack.clear();
+    this.exprStack.clear();
+    this.result.clear();
+    this.boundStack.clear();
+  }
+
+  /**
    * Create new transformer instance containing no substitution rules.
    */
 
