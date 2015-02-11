@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2011-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,6 +13,8 @@
  */
 
 package ru.ispras.fortress.expression;
+
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
@@ -30,26 +32,38 @@ public final class NodeVariable extends Node {
   private final Variable variable;
 
   /**
+   * Constructs a node for an uninitialized variable of the specified type.
+   * The constructed variable does not hold any data and its value is set to {@code null}.
+   * 
+   * @param name Variable name.
+   * @param type Variable type.
+   * @throws NullPointerException if any of the arguments is {@code null}.
+   */
+
+  public NodeVariable(String name, DataType type) {
+    this(new Variable(name, type));
+  }
+
+  /**
    * Creates a node based on a Variable object.
    * 
    * @param variable A variable node object.
+   * @throws NullPointerException if the argument is {@code null}.
    */
 
   public NodeVariable(Variable variable) {
     super(Kind.VARIABLE);
 
-    if (null == variable) {
-      throw new NullPointerException();
-    }
-
+    checkNotNull(variable);
     this.variable = variable;
   }
 
   /**
-   * Constructor for making deep copies. The variable field is cloned because the Variable class is
-   * mutable.
+   * Constructor for making deep copies. The variable field is cloned because the Variable class
+   * is mutable.
    * 
    * @param nodeVariable Node variable object to be copied.
+   * @throws NullPointerException if the argument is {@code null}.
    */
 
   private NodeVariable(NodeVariable nodeVariable) {
@@ -105,10 +119,7 @@ public final class NodeVariable extends Node {
    */
 
   public void setData(Data data) {
-    if (null == data) {
-      throw new NullPointerException();
-    }
-
+    checkNotNull(data);
     variable.setData(data);
   }
 
