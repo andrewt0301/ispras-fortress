@@ -12,6 +12,17 @@
  (like Yices, Z3, CVC4, etc.)
 
 --------------------------------------------------------------------------------
+ 2015/02/14 Fortress 0.3.4 beta
+
+ The new build contains the following changes:
+
+ - Convenience methods simplifying access to expression value and type
+   information were implemented
+ - The expression transformer facility was enhanced
+ - The possibility to control the order of visiting operands of 
+   an expression was implemented   
+
+--------------------------------------------------------------------------------
  2014/12/26 Fortress 0.3.3 beta
 
  The following features have been implemented:
@@ -35,8 +46,6 @@
  - Support for the BVEXTRACT operator in expression type calculation logic
  - Class DataMap for representing data of the MAP type
  - New rules for expression transformation in the predefined rule set   
-
- Basic facilities to calculate the type of an    
 
 --------------------------------------------------------------------------------
  2014/09/15 Fortress 0.3.2 beta
