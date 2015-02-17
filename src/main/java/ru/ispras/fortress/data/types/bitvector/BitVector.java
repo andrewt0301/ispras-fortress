@@ -729,9 +729,7 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @return Bit mask for the current byte.
    */
 
-  private byte highByteMask = 0;
-
-  protected final byte getByteBitMask(int index) {
+  public final byte getByteBitMask(int index) {
     rangeCheck(index, getByteSize());
 
     final boolean isHighByte = index == getByteSize() - 1;
@@ -747,6 +745,8 @@ public abstract class BitVector implements Comparable<BitVector> {
 
     return highByteMask;
   }
+
+  private byte highByteMask = 0;
 
   protected static void rangeCheck(int index, int size) {
     if ((index < 0) || (index >= size)) {
