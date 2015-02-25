@@ -178,7 +178,7 @@ public class NodeTransformer implements ExprTreeVisitor {
   @Override
   public void onOperationEnd(NodeOperation expr) {
     if (expr.getOperandCount() == 0) {
-      exprStack.add(expr);
+      exprStack.add(applyRule(expr.getOperationId(), expr));
       return;
     }
 
