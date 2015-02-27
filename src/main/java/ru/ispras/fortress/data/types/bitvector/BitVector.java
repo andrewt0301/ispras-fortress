@@ -548,7 +548,8 @@ public abstract class BitVector implements Comparable<BitVector> {
     /*
      * NOTE: data is copied in reverse order starting from the highest byte (it goes to the
      * lowest byte of the bit vector). It is implemented this way because the byte order of
-     * data received from BigInteger is different (opposite) from the byte order in bit vectors.
+     * data received from BigInteger is big-endian, which is opposite from the byte order
+     * in bit vectors.
      */
 
     final int copyStartIndex = data.length - 1;
@@ -647,8 +648,8 @@ public abstract class BitVector implements Comparable<BitVector> {
     };
 
     /*
-     * NOTE: bytes are copies to the byte array in the reverse order because the
-     * order they are stored in BigInteger is opposite to the byte order in bit vectors.
+     * NOTE: bytes are copied to the byte array in the reverse order because the
+     * constructor of BigInteger requires big-endian byte order (high bytes come first).
      */
 
     for_each_reverse(this, op);
