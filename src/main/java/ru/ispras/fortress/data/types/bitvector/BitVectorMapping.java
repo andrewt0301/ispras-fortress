@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,6 +13,11 @@
  */
 
 package ru.ispras.fortress.data.types.bitvector;
+
+import static ru.ispras.fortress.util.InvariantChecks.checkBounds;
+import static ru.ispras.fortress.util.InvariantChecks.checkBoundsInclusive;
+import static ru.ispras.fortress.util.InvariantChecks.checkGreaterThanZero;
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
 /**
  * The BitVectorMapping class provides the possibility to map a bit vector to another bit vector.
@@ -70,11 +75,11 @@ final class BitVectorMapping extends BitVector {
    */
 
   public BitVectorMapping(BitVector src, int beginBitPos, int bitSize) {
-    notNullCheck(src);
-    sizeCheck(bitSize);
+    checkNotNull(src);
+    checkGreaterThanZero(bitSize);
 
-    rangeCheck(beginBitPos, src.getBitSize());
-    rangeCheckInclusive(beginBitPos + bitSize, src.getBitSize());
+    checkBounds(beginBitPos, src.getBitSize());
+    checkBoundsInclusive(beginBitPos + bitSize, src.getBitSize());
 
     this.source = src;
     this.beginBitPos = beginBitPos;
@@ -108,10 +113,10 @@ final class BitVectorMapping extends BitVector {
     // TODO: Refactoring is needed. The implementation is not perfectly clear
     // and may contain subtle bugs.
 
-    rangeCheck(index, getByteSize());
+    checkBounds(index, getByteSize());
 
     final int byteIndex = getByteIndex(index);
-    rangeCheck(byteIndex, source.getByteSize());
+    checkBounds(byteIndex, source.getByteSize());
 
     final int excludedLowBits = getExcludedLowBitCount();
 
@@ -154,10 +159,10 @@ final class BitVectorMapping extends BitVector {
     // TODO: Refactoring is needed. The implementation is not perfectly clear
     // and may contain subtle bugs.
 
-    rangeCheck(index, getByteSize());
+    checkBounds(index, getByteSize());
 
     final int byteIndex = getByteIndex(index);
-    rangeCheck(byteIndex, source.getByteSize());
+    checkBounds(byteIndex, source.getByteSize());
 
     final int excludedLowBits = getExcludedLowBitCount();
     final int excludedHighBits = getExcludedHighBitCount();

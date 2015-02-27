@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,6 +13,8 @@
  */
 
 package ru.ispras.fortress.data.types.bitvector;
+
+import static ru.ispras.fortress.util.InvariantChecks.checkBounds;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -303,7 +305,7 @@ final class BitVectorMultiMapping extends BitVector {
 
   @Override
   public byte getByte(int index) {
-    rangeCheck(index, getByteSize());
+    checkBounds(index, getByteSize());
 
     final ByteAccessor accessors = byteAccessors.get(index);
     return accessors.getByte();
@@ -315,7 +317,7 @@ final class BitVectorMultiMapping extends BitVector {
 
   @Override
   public void setByte(int index, byte value) {
-    rangeCheck(index, getByteSize());
+    checkBounds(index, getByteSize());
 
     final ByteAccessor accessors = byteAccessors.get(index);
     accessors.setByte(value);

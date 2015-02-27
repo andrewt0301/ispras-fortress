@@ -14,6 +14,8 @@
 
 package ru.ispras.fortress.data.types.bitvector;
 
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
+
 /**
  * The BitVectorUnmodifiable class is a wrapper around a BitVector object that forbids modification
  * of data stored in the bit vector.
@@ -25,7 +27,7 @@ final class BitVectorUnmodifiable extends BitVector {
   private final BitVector bitVector;
 
   public BitVectorUnmodifiable(BitVector bitVector) {
-    notNullCheck(bitVector);
+    checkNotNull(bitVector);
     this.bitVector = bitVector;
   }
 

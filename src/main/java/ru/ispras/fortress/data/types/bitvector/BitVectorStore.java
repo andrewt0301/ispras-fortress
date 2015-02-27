@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,6 +13,10 @@
  */
 
 package ru.ispras.fortress.data.types.bitvector;
+
+import static ru.ispras.fortress.util.InvariantChecks.checkBounds;
+import static ru.ispras.fortress.util.InvariantChecks.checkGreaterThanZero;
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
 /**
  * The BitVectorStore class represents a data array that stores binary data of a bit vector. Data
@@ -54,7 +58,7 @@ final class BitVectorStore extends BitVector {
    */
 
   public BitVectorStore(int bitSize) {
-    sizeCheck(bitSize);
+    checkGreaterThanZero(bitSize);
 
     final int byteSize = bitSize / BITS_IN_BYTE + (0 == (bitSize % BITS_IN_BYTE) ? 0 : 1);
 
@@ -71,7 +75,7 @@ final class BitVectorStore extends BitVector {
    */
 
   public BitVectorStore(BitVector src) {
-    notNullCheck(src);
+    checkNotNull(src);
 
     this.dataBytes = new byte[src.getByteSize()];
     this.bitSize = src.getBitSize();
@@ -103,7 +107,7 @@ final class BitVectorStore extends BitVector {
 
   @Override
   public byte getByte(int index) {
-    rangeCheck(index, getByteSize());
+    checkBounds(index, getByteSize());
     return (byte) (dataBytes[index] & getByteBitMask(index));
   }
 
@@ -113,7 +117,7 @@ final class BitVectorStore extends BitVector {
 
   @Override
   public void setByte(int index, byte value) {
-    rangeCheck(index, getByteSize());
+    checkBounds(index, getByteSize());
 
     final byte mask = getByteBitMask(index);
     final byte old = dataBytes[index];

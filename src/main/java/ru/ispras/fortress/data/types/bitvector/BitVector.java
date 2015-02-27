@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -19,6 +19,11 @@ import static ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.for_eac
 import static ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.for_each_reverse;
 import static ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.generate;
 import static ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.mismatch_reverse;
+
+import static ru.ispras.fortress.util.InvariantChecks.checkBounds;
+import static ru.ispras.fortress.util.InvariantChecks.checkBoundsInclusive;
+import static ru.ispras.fortress.util.InvariantChecks.checkGreaterThanZero;
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
 import java.math.BigInteger;
 
@@ -99,7 +104,7 @@ public abstract class BitVector implements Comparable<BitVector> {
    */
 
   public final boolean getBit(int index) {
-    rangeCheck(index, getBitSize());
+    checkBounds(index, getBitSize());
     return (getByte(index / BITS_IN_BYTE) & (1 << (index % BITS_IN_BYTE))) != 0;
   }
 
@@ -120,7 +125,7 @@ public abstract class BitVector implements Comparable<BitVector> {
    */
 
   public final void assign(BitVector src) {
-    notNullCheck(src);
+    checkNotNull(src);
     BitVectorAlgorithm.copy(src, this);
   }
 
@@ -193,7 +198,7 @@ public abstract class BitVector implements Comparable<BitVector> {
 
   @Override
   public final int compareTo(BitVector other) {
-    notNullCheck(other);
+    checkNotNull(other);
 
     if (this == other) {
       return 0;
@@ -235,7 +240,7 @@ public abstract class BitVector implements Comparable<BitVector> {
    */
 
   public static BitVector copyOf(BitVector src) {
-    notNullCheck(src);
+    checkNotNull(src);
     return src.copy();
   }
 
@@ -247,7 +252,7 @@ public abstract class BitVector implements Comparable<BitVector> {
    */
 
   public static BitVector newEmpty(int bitSize) {
-    sizeCheck(bitSize);
+    checkGreaterThanZero(bitSize);
     return new BitVectorStore(bitSize);
   }
 
@@ -262,15 +267,15 @@ public abstract class BitVector implements Comparable<BitVector> {
    */
 
   public static BitVector newMapping(BitVector source, int startBitPos, int bitSize) {
-    notNullCheck(source);
+    checkNotNull(source);
 
     if ((0 == startBitPos) && (source.getBitSize() == bitSize)) {
       return source;
     }
 
-    rangeCheck(startBitPos, source.getBitSize());
-    rangeCheckInclusive(startBitPos + bitSize, source.getBitSize());
-    sizeCheck(bitSize);
+    checkBounds(startBitPos, source.getBitSize());
+    checkBoundsInclusive(startBitPos + bitSize, source.getBitSize());
+    checkGreaterThanZero(bitSize);
 
     return new BitVectorMapping(source, startBitPos, bitSize);
   }
@@ -284,7 +289,7 @@ public abstract class BitVector implements Comparable<BitVector> {
    */
 
   public static BitVector newMapping(BitVector ... sources) {
-    sizeCheck(sources.length);
+    checkGreaterThanZero(sources.length);
 
     if (1 == sources.length) {
       return sources[0];
@@ -302,7 +307,7 @@ public abstract class BitVector implements Comparable<BitVector> {
    */
 
   public static BitVector unmodifiable(BitVector source) {
-    notNullCheck(source);
+    checkNotNull(source);
 
     if (source instanceof BitVectorUnmodifiable) {
       return source;
@@ -418,8 +423,8 @@ public abstract class BitVector implements Comparable<BitVector> {
       }
     }
 
-    notNullCheck(text);
-    sizeCheck(bitSize);
+    checkNotNull(text);
+    checkGreaterThanZero(bitSize);
 
     if ((2 == radix) || (16 == radix)) {
       final BitVector result = new BitVectorStore(bitSize);
@@ -445,7 +450,7 @@ public abstract class BitVector implements Comparable<BitVector> {
    */
 
   public static BitVector valueOf(final long value, final int bitSize) {
-    sizeCheck(bitSize);
+    checkGreaterThanZero(bitSize);
 
     final IOperation op = new IOperation() {
       private long v = value;
@@ -483,8 +488,8 @@ public abstract class BitVector implements Comparable<BitVector> {
    */
 
   public static BitVector valueOf(final byte[] data, final int bitSize) {
-    notNullCheck(data);
-    sizeCheck(bitSize);
+    checkNotNull(data);
+    checkGreaterThanZero(bitSize);
 
     final BitVector result = new BitVectorStore(bitSize);
     final IOperation op = new IOperation() {
@@ -532,8 +537,8 @@ public abstract class BitVector implements Comparable<BitVector> {
    */
 
   public static BitVector valueOf(BigInteger value, int bitSize) {
-    notNullCheck(value);
-    sizeCheck(bitSize);
+    checkNotNull(value);
+    checkGreaterThanZero(bitSize);
 
     final byte[] data = value.toByteArray();
     final byte prefix = (byte) (value.signum() < 0 ? 0xFF : 0x00);
@@ -730,7 +735,7 @@ public abstract class BitVector implements Comparable<BitVector> {
    */
 
   public final byte getByteBitMask(int index) {
-    rangeCheck(index, getByteSize());
+    checkBounds(index, getByteSize());
 
     final boolean isHighByte = index == getByteSize() - 1;
     if (!isHighByte) {
@@ -747,29 +752,4 @@ public abstract class BitVector implements Comparable<BitVector> {
   }
 
   private byte highByteMask = 0;
-
-  protected static void rangeCheck(int index, int size) {
-    if ((index < 0) || (index >= size)) {
-      throw new IndexOutOfBoundsException(String.format("Index: %d, Size: %d", index, size));
-    }
-  }
-
-  protected static void rangeCheckInclusive(int index, int size) {
-    if ((index < 0) || (index > size)) {
-      throw new IndexOutOfBoundsException(String.format(
-        "Index: %d, Size: %d (included)", index, size));
-    }
-  }
-
-  protected static void sizeCheck(int size) {
-    if (size <= 0) {
-      throw new IllegalArgumentException("Illegal size: " + size);
-    }
-  }
-
-  protected static void notNullCheck(Object o) {
-    if (null == o) {
-      throw new NullPointerException();
-    }
-  }
 }
