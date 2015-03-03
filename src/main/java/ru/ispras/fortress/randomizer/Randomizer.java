@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2007-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,11 +14,13 @@
 
 package ru.ispras.fortress.randomizer;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import ru.ispras.fortress.data.types.bitvector.BitVector;
 import ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm;
 import ru.ispras.fortress.util.BitUtils;
+import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * This class is a wrapper around a random number generator. It is responsible for generating random
@@ -46,7 +48,9 @@ public final class Randomizer {
   /**
    * The randomizer constructor is private.
    */
-  private Randomizer() {}
+  private Randomizer() {
+    // Do nothing.
+  }
 
   /**
    * Returns the current random number generator.
@@ -75,9 +79,9 @@ public final class Randomizer {
     generator.seed(seed);
   }
 
-  // ------------------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------------------
   // Next Methods (Random Number Generators for Different Integer Types)
-  // ------------------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------------------
 
   /**
    * Generates the next random integer value.
@@ -133,9 +137,9 @@ public final class Randomizer {
     return ((long) next() << Integer.SIZE) | next();
   }
 
-  // ------------------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------------------
   // Next Integer Methods
-  // ------------------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------------------
 
   private int nextNonNegativeInt() {
     return (nextInt() & (-1 >>> 1));
@@ -156,9 +160,9 @@ public final class Randomizer {
   /**
    * Returns a random number from the given range.
    * 
-   * @return a random number.
    * @param min the low bound of the range.
    * @param max the high bound of the range.
+   * @return a random number.
    */
   public int nextIntRange(int min, int max) {
     if (min > max) {
@@ -185,8 +189,8 @@ public final class Randomizer {
   /**
    * Returns a random number of the given bit size (width).
    * 
-   * @return a random number.
    * @param width the bit size.
+   * @return a random number.
    */
   public int nextIntField(int width) {
     return next() & BitUtils.maskInt(width);
@@ -195,17 +199,17 @@ public final class Randomizer {
   /**
    * Returns a number with the randomized range of bits (field).
    * 
-   * @return a random number.
    * @param lo the low bound of the field.
    * @param hi the high bound of the field.
+   * @return a random number.
    */
   public int nextIntField(int lo, int hi) {
     return next() & BitUtils.maskInt(lo, hi);
   }
 
-  // ------------------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------------------
   // Next Long Methods
-  // ------------------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------------------
 
   private long nextNonNegativeLong() {
     return (nextLong() & (-1L >>> 1));
@@ -227,9 +231,9 @@ public final class Randomizer {
   /**
    * Returns a random number from the given range.
    * 
-   * @return a random number.
    * @param min the low bound of the range.
    * @param max the high bound of the range.
+   * @return a random number.
    */
   public long nextLongRange(long min, long max) {
     if (min > max) {
@@ -256,8 +260,8 @@ public final class Randomizer {
   /**
    * Returns a random number of the given bit size (width).
    * 
-   * @return a random number.
    * @param width the bit size.
+   * @return a random number.
    */
   public long nextLongField(int width) {
     return nextLong() & BitUtils.maskLong(width);
@@ -266,58 +270,103 @@ public final class Randomizer {
   /**
    * Returns a number with the randomized range of bits (field).
    * 
-   * @return a random number.
    * @param lo the low bound of the field.
    * @param hi the high bound of the field.
+   * @return a random number.
    */
   public long nextLongField(int lo, int hi) {
     return nextLong() & BitUtils.maskLong(lo, hi);
   }
 
-  // ------------------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------------------
   // Choose Methods
-  // ------------------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------------------
 
   /**
    * Chooses a random item of the given array.
    * 
+   * @param array the array whose items are chosen.
    * @return a random item of the array.
-   * @param array the array whoose items are chosen.
+   * @throws NullPointerException if {@code array == null}.
+   * @throws IllegalArgumentException if {@code array} is empty.
    */
   public <T> T choose(final T[] array) {
+    InvariantChecks.checkNotEmpty(array);
+
     return array[nextIntRange(0, array.length - 1)];
   }
 
   /**
-   * Chooses a random item of the given list.
+   * Chooses a random item of the given collection.
    * 
-   * @return a random item of the array.
-   * @param list the list whose items are chosen.
+   * @param collection the collection whose items are chosen.
+   * @return a random item of the collection.
+   * @throws NullPointerException if {@code collection == null}.
+   * @throws IllegalArgumentException if {@code collection} is empty.
    */
-  public <T> T choose(final List<T> list) {
-    return list.get(nextIntRange(0, list.size() - 1));
+  public <T> T choose(final Collection<T> collection) {
+    InvariantChecks.checkNotEmpty(collection);
+
+    final ArrayList<T> arrayList = new ArrayList<>(collection);
+    return arrayList.get(nextIntRange(0, collection.size() - 1));
   }
 
   /**
-   * Chooses a variant ([0, N-1]) according to the probability distribution.
+   * Chooses a variant ({@code [0, N-1]}) according to the probability distribution.
    * 
-   * @return a randomly chosen variant.
    * @param biases the probability distribution.
+   * @return a randomly chosen variant.
+   * @throws NullPointerException if {@code biases == null}.
    */
   public int choose(final Distribution biases) {
+    InvariantChecks.checkNotNull(biases);
+
     return biases.getVariant(nextIntRange(0, biases.getMaxWeight() - 1));
   }
 
-  // ------------------------------------------------------------------------------------------------
+  /**
+   * Chooses a random item of the given array according to the given biases.
+   * 
+   * @param array the array whose items are chosen.
+   * @param biases the probability distribution.
+   * @return a random item of the array.
+   * @throws NullPointerException if {@code array == null} or {@code biases == null}.
+   * @throws IllegalArgumentException if {@code array} is empty.
+   */
+  public <T> T choose(final T[] array, final Distribution biases) {
+    InvariantChecks.checkNotEmpty(array);
+    InvariantChecks.checkNotNull(biases);
+
+    return array[choose(biases)];
+  }
+
+  /**
+   * Chooses a random item of the given collection according to the given biases.
+   * 
+   * @param collection the collection whose items are chosen.
+   * @param biases the probability distribution.
+   * @return a random item of the collection.
+   * @throws NullPointerException if {@code collection == null} or {@code biases == null}.
+   * @throws IllegalArgumentException if {@code collection} is empty.
+   */
+  public <T> T choose(final Collection<T> collection, final Distribution biases) {
+    InvariantChecks.checkNotEmpty(collection);
+    InvariantChecks.checkNotNull(biases);
+
+    final ArrayList<T> arrayList = new ArrayList<>(collection);
+    return arrayList.get(choose(biases));
+  }
+
+  //------------------------------------------------------------------------------------------------
   // Fill Methods
-  // ------------------------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------------------------
 
   /**
    * Fills the byte array with random data.
    * 
    * @param data the array to be randomized.
    */
-  public void fill(byte[] data) {
+  public void fill(final byte[] data) {
     for (int i = 0; i < data.length; i++) {
       data[i] = nextByte();
     }
@@ -328,7 +377,7 @@ public final class Randomizer {
    * 
    * @param data the array to be randomized.
    */
-  public void fill(char[] data) {
+  public void fill(final char[] data) {
     for (int i = 0; i < data.length; i++) {
       data[i] = nextChar();
     }
@@ -339,7 +388,7 @@ public final class Randomizer {
    * 
    * @param data the array to be randomized.
    */
-  public void fill(int[] data) {
+  public void fill(final int[] data) {
     for (int i = 0; i < data.length; i++) {
       data[i] = nextInt();
     }
@@ -350,7 +399,7 @@ public final class Randomizer {
    * 
    * @param data the array to be randomized.
    */
-  public void fill(long[] data) {
+  public void fill(final long[] data) {
     for (int i = 0; i < data.length; i++) {
       data[i] = nextLong();
     }
@@ -361,7 +410,7 @@ public final class Randomizer {
    * 
    * @param data the raw data storage to be randomized.
    */
-  public void fill(BitVector data) {
+  public void fill(final BitVector data) {
     BitVectorAlgorithm.generate(data, new BitVectorAlgorithm.IOperation() {
       @Override
       public byte run() {

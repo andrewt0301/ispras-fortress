@@ -14,6 +14,8 @@
 
 package ru.ispras.fortress.util;
 
+import java.util.Collection;
+
 /**
  * The InvariantChecks class provides static methods for checking different kinds
  * of invariants. If a check fails a corresponding exception is thrown.
@@ -36,6 +38,42 @@ public final class InvariantChecks {
   public static void checkNotNull(Object o) {
     if (null == o) {
       throw new NullPointerException();
+    }
+  }
+
+  /**
+   * Checks the invariants "Object reference is not null" and "Collection is not empty"
+   * throws an exception if they are violated. 
+   * 
+   * @param o Collection to be checked.
+   * 
+   * @throws NullPointerException if the invariant is violated ({@code o} is {@code null}).
+   * @throws IllegalArgumentException if the invariant is violated ({@code o.isEmpty}).
+   */
+
+  public static <T> void checkNotEmpty(final Collection<T> o) {
+    checkNotNull(o);
+
+    if (o.isEmpty()) {
+      throw new IllegalArgumentException(String.format("%s must not be empty", o));
+    }
+  }
+
+  /**
+   * Checks the invariants "Object reference is not null" and "Array is not empty"
+   * throws an exception if they are violated. 
+   * 
+   * @param o Array to be checked.
+   * 
+   * @throws NullPointerException if the invariant is violated ({@code o} is {@code null}).
+   * @throws IllegalArgumentException if the invariant is violated ({@code o.length} is 0).
+   */
+
+  public static <T> void checkNotEmpty(final T[] o) {
+    checkNotNull(o);
+
+    if (o.length == 0) {
+      throw new IllegalArgumentException(String.format("%s must not be empty", o));
     }
   }
 

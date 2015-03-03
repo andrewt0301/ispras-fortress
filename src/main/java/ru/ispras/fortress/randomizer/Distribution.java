@@ -14,6 +14,8 @@
 
 package ru.ispras.fortress.randomizer;
 
+import ru.ispras.fortress.util.InvariantChecks;
+
 /**
  * This class represents a discrete probability distribution.
  * 
@@ -26,16 +28,16 @@ public final class Distribution {
   /**
    * Constructs a probability distribution object.
    * 
-   * @param variants the values of the variate.
+   * @param variants the values of the variants.
    * @param weights the random biases of the values.
    * 
-   * @throws NullPointerException if any of the parameters equals null.
+   * @throws NullPointerException if any of the parameters equals {@code null}.
    * @throws IllegalArgumentException if the variants and weights arrays have different sizes or
    *         their size is 0; if the weights array contains negative numbers.
    */
   public Distribution(final int[] variants, final int[] weights) {
-    notNullCheck(variants);
-    notNullCheck(weights);
+    InvariantChecks.checkNotNull(variants);
+    InvariantChecks.checkNotNull(weights);
 
     if (0 == variants.length) {
       throw new IllegalArgumentException();
@@ -66,7 +68,7 @@ public final class Distribution {
    * 
    * @param weights the random biases of the values.
    * 
-   * @throws NullPointerException if the parameter equals null.
+   * @throws NullPointerException if the parameter equals {@code null}.
    * @throws IllegalArgumentException if weights array is empty (its size is 0; if the weights array
    *         contains negative numbers.
    */
@@ -78,11 +80,11 @@ public final class Distribution {
     return p[p.length - 1];
   }
 
-  public int getWeight(int variant) {
+  public int getWeight(final int variant) {
     return p[variant] - (variant != 0 ? p[variant - 1] : 0);
   }
 
-  public void setWeight(int variant, int weight) {
+  public void setWeight(final int variant, final int weight) {
     final int delta = weight - getWeight(variant);
 
     for (int i = variant; i < p.length; i++) {
@@ -90,26 +92,26 @@ public final class Distribution {
     }
   }
 
-  public int getLessOrEqualWeight(int variant) {
+  public int getLessOrEqualWeight(final int variant) {
     return p[variant];
   }
 
-  public int getVariant(int random_weight) {
-    final int i = binarySearch(p, 0, p.length - 1, random_weight);
+  public int getVariant(final int randomWeight) {
+    final int i = binarySearch(p, 0, p.length - 1, randomWeight);
     return v[i];
   }
 
   /**
-   * Finds the index <code>i</code> from <code>[a, b]</code> such that
-   * <code>x[i-1] <= v && v < x[i]</code>. Note that <code>x[-1]</code> is assumed to be zero.
+   * Finds the index {@code i} from {@code [a, b]} such that {@code x[i-1] <= v && v < x[i]}.
+   * Note that {@code x[-1]} is assumed to be zero.
    * 
-   * @return i such that <code>x[i-1] <= v && v < x[i]</code>.
    * @param x the ordered array of integer values.
    * @param a the low bound of the array indices.
    * @param b the high bound of the array indices.
    * @param v the value being searched.
+   * @return i such that {@code x[i-1] <= v && v < x[i]}.
    */
-  private int binarySearch(int[] x, int a, int b, int v) {
+  private int binarySearch(final int[] x, final int a, final int b, final int v) {
     if (a == b) {
       return a;
     }
@@ -131,12 +133,12 @@ public final class Distribution {
   }
 
   /**
-   * Returns the natural series of the size <code>n</code> (0, 1, ... n-1).
+   * Returns the natural series of the size {@code n} (0, 1, ... n-1).
    * 
    * @param n the size of the series.
    * @return the natural series.
    */
-  private static int[] getNaturalSeries(int n) {
+  private static int[] getNaturalSeries(final int n) {
     final int[] result = new int[n];
 
     for (int i = 0; i < n; i++) {
@@ -144,11 +146,5 @@ public final class Distribution {
     }
 
     return result;
-  }
-
-  private void notNullCheck(Object o) {
-    if (null == o) {
-      throw new NullPointerException();
-    }
   }
 }
