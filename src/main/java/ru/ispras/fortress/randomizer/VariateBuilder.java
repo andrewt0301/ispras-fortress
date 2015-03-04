@@ -25,13 +25,13 @@ import ru.ispras.fortress.util.InvariantChecks;
  * 
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
-public final class RandomVariateBuilder<T> {
+public final class VariateBuilder<T> {
 
   /** The special constant designating the default bias. */ 
   private static final int DEFAULT_BIAS = Integer.MAX_VALUE;
 
   /** The random variates. */
-  private List<RandomVariate<T>> values = new ArrayList<>();
+  private List<Variate<T>> values = new ArrayList<>();
   /** The random biases. */
   private List<Integer> biases = new ArrayList<>();
 
@@ -43,7 +43,7 @@ public final class RandomVariateBuilder<T> {
    * @throws NullPointerException if {@code variate == null}.
    * @throws IllegalArgumentException if {@code bias <= 0}.
    */
-  public void add(final RandomVariate<T> variate, final int bias) {
+  public void add(final Variate<T> variate, final int bias) {
     InvariantChecks.checkNotNull(variate);
     InvariantChecks.checkGreaterThanZero(bias);
 
@@ -56,7 +56,7 @@ public final class RandomVariateBuilder<T> {
    * @param variate the random variate to be added.
    * @throws NullPointerException if {@code variate == null}.
    */
-  public void add(final RandomVariate<T> variate) {
+  public void add(final Variate<T> variate) {
     add(variate, DEFAULT_BIAS);
   }
 
@@ -70,7 +70,7 @@ public final class RandomVariateBuilder<T> {
   public void add(final T value, final int bias) {
     InvariantChecks.checkGreaterThanZero(bias);
 
-    add(new RandomVariateSingleValue<T>(value), bias);
+    add(new VariateSingleValue<T>(value), bias);
   }
 
   /**
@@ -94,7 +94,7 @@ public final class RandomVariateBuilder<T> {
     InvariantChecks.checkNotNull(values);
     InvariantChecks.checkGreaterThanZero(bias);
 
-    add(new RandomVariateCollection<T>(values), bias);
+    add(new VariateCollection<T>(values), bias);
   }
 
   /**
@@ -119,7 +119,7 @@ public final class RandomVariateBuilder<T> {
     InvariantChecks.checkNotNull(values);
     InvariantChecks.checkGreaterThanZero(bias);
 
-    add(new RandomVariateCollection<T>(values), bias);
+    add(new VariateCollection<T>(values), bias);
   }
 
   /**
@@ -138,7 +138,7 @@ public final class RandomVariateBuilder<T> {
    * @return the constructed random variate.
    * @throws IllegalArgumentException if no values have been added.
    */
-  public RandomVariate<T> build() {
+  public Variate<T> build() {
     InvariantChecks.checkNotEmpty(values);
     InvariantChecks.checkNotEmpty(biases);
 
@@ -152,7 +152,7 @@ public final class RandomVariateBuilder<T> {
     }
 
     if (minBias == Integer.MAX_VALUE) {
-      return new RandomVariateComposite<T>(values);
+      return new VariateComposite<T>(values);
     }
 
     for (int i = 0; i < biases.size(); i++) {
@@ -161,6 +161,6 @@ public final class RandomVariateBuilder<T> {
       }
     }
 
-    return new RandomVariateComposite<T>(values, biases);
+    return new VariateComposite<T>(values, biases);
   }
 }

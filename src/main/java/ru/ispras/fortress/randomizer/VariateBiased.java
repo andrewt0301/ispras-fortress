@@ -26,7 +26,7 @@ import ru.ispras.fortress.util.InvariantChecks;
  * 
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
-public final class RandomVariateBiased<T> implements RandomVariate<T> {
+public final class VariateBiased<T> implements Variate<T> {
 
   /** The value area of the random variate. */
   private final List<T> values;
@@ -47,7 +47,7 @@ public final class RandomVariateBiased<T> implements RandomVariate<T> {
    * @throws IllegalArgumentException if the {@code values} and {@code biases} arrays have different
    *         sizes or they are empty or the {@code biases} array contains negative numbers.
    */
-  public RandomVariateBiased(final List<T> values, final List<Integer> biases) {
+  public VariateBiased(final List<T> values, final List<Integer> biases) {
     InvariantChecks.checkNotEmpty(values);
     InvariantChecks.checkNotNull(biases);
 
@@ -83,7 +83,7 @@ public final class RandomVariateBiased<T> implements RandomVariate<T> {
    * @throws IllegalArgumentException if the {@code values} and {@code biases} arrays have different
    *         sizes or they are empty or the {@code biases} array contains negative numbers.
    */
-  public RandomVariateBiased(final T[] values, final int[] biases) {
+  public VariateBiased(final T[] values, final int[] biases) {
     this(Arrays.asList(values), new AbstractList<Integer>() {
       public Integer get(int i) {
         return biases[i];

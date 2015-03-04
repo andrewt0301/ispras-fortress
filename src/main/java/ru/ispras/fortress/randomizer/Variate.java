@@ -15,26 +15,16 @@
 package ru.ispras.fortress.randomizer;
 
 /**
- * This class represents a single-value {@code T}-type random variate.
+ * This is an interface for a {@code T}-type random variate.
  * 
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
-public final class RandomVariateSingleValue<T> implements RandomVariate<T> {
-
-  /** The only value. */
-  private T value;
+public interface Variate<T> {
 
   /**
-   * Constructs a single-value random variate.
+   * Returns a value (instance) of the random variate.
    * 
-   * @param value the value of the random variate. 
+   * @return a random variate value.
    */
-  public RandomVariateSingleValue(final T value) {
-    this.value = value;
-  }
-
-  @Override
-  public T value() {
-    return value;
-  }
+  public T value();
 }

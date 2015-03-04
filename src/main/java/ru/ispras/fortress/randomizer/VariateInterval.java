@@ -24,8 +24,8 @@ import ru.ispras.fortress.util.InvariantChecks;
  * 
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
-public final class RandomVariateInterval<T extends Number & Comparable<T>>
-    implements RandomVariate<T> {
+public final class VariateInterval<T extends Number & Comparable<T>>
+    implements Variate<T> {
 
   /**
    * This enumeration contains supported types.
@@ -54,7 +54,7 @@ public final class RandomVariateInterval<T extends Number & Comparable<T>>
    *         {@code max == null}.
    * @throws IllegalArgumentException if {@code min > max} or type {@code T} is unsupported.
    */
-  public RandomVariateInterval(final Class<T> type, final T min, final T max) {
+  public VariateInterval(final Class<T> type, final T min, final T max) {
     InvariantChecks.checkNotNull(type);
     InvariantChecks.checkNotNull(min);
     InvariantChecks.checkNotNull(max);

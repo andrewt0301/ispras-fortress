@@ -26,7 +26,7 @@ import ru.ispras.fortress.util.InvariantChecks;
  * 
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
-public final class RandomVariateCollection<T> implements RandomVariate<T> {
+public final class VariateCollection<T> implements Variate<T> {
 
   /** The value area of the random variate. */
   private List<T> values;
@@ -38,7 +38,7 @@ public final class RandomVariateCollection<T> implements RandomVariate<T> {
    * @throws NullPointerException if {@code values == null}.
    * @throws IllegalArgumentException if {@code values} is empty.
    */
-  public RandomVariateCollection(final T[] values) {
+  public VariateCollection(final T[] values) {
     InvariantChecks.checkNotEmpty(values);
 
     this.values = Arrays.asList(values);
@@ -51,7 +51,7 @@ public final class RandomVariateCollection<T> implements RandomVariate<T> {
    * @throws NullPointerException if {@code values == null}.
    * @throws IllegalArgumentException if {@code values} is empty.
    */
-  public RandomVariateCollection(final Collection<T> values) {
+  public VariateCollection(final Collection<T> values) {
     InvariantChecks.checkNotEmpty(values);
 
     this.values = new ArrayList<>(values);
