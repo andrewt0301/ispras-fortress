@@ -14,6 +14,7 @@
 
 package ru.ispras.fortress.randomizer;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -279,6 +280,33 @@ public final class Randomizer {
   }
 
   //------------------------------------------------------------------------------------------------
+  // Next Big Integer Methods
+  //------------------------------------------------------------------------------------------------
+
+  /**
+   * Returns a random number from the given range.
+   * 
+   * @param min the low bound of the range.
+   * @param max the high bound of the range.
+   * @return a random number.
+   */
+  public BigInteger nextBigIntegerRange(final BigInteger min, final BigInteger max) {
+    InvariantChecks.checkNotNull(min);
+    InvariantChecks.checkNotNull(max);
+    InvariantChecks.checkGreaterOrEq(max, min);
+
+    final BigInteger diff = max.subtract(min);
+
+    if (diff.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) > 0) {
+      throw new IllegalArgumentException(String.format("(max-min)=%s is to too large", diff));
+    }
+
+    final long offset = nextLongRange(0, diff.longValue());
+
+    return min.add(BigInteger.valueOf(offset));
+  }
+
+  //------------------------------------------------------------------------------------------------
   // Choose Methods
   //------------------------------------------------------------------------------------------------
 
@@ -309,52 +337,6 @@ public final class Randomizer {
 
     final ArrayList<T> arrayList = new ArrayList<>(collection);
     return arrayList.get(nextIntRange(0, collection.size() - 1));
-  }
-
-  /**
-   * Chooses a variant ({@code [0, N-1]}) according to the probability distribution.
-   * 
-   * @param biases the probability distribution.
-   * @return a randomly chosen variant.
-   * @throws NullPointerException if {@code biases == null}.
-   */
-  public int choose(final Distribution biases) {
-    InvariantChecks.checkNotNull(biases);
-
-    return biases.getVariant(nextIntRange(0, biases.getMaxWeight() - 1));
-  }
-
-  /**
-   * Chooses a random item of the given array according to the given biases.
-   * 
-   * @param array the array whose items are chosen.
-   * @param biases the probability distribution.
-   * @return a random item of the array.
-   * @throws NullPointerException if {@code array == null} or {@code biases == null}.
-   * @throws IllegalArgumentException if {@code array} is empty.
-   */
-  public <T> T choose(final T[] array, final Distribution biases) {
-    InvariantChecks.checkNotEmpty(array);
-    InvariantChecks.checkNotNull(biases);
-
-    return array[choose(biases)];
-  }
-
-  /**
-   * Chooses a random item of the given collection according to the given biases.
-   * 
-   * @param collection the collection whose items are chosen.
-   * @param biases the probability distribution.
-   * @return a random item of the collection.
-   * @throws NullPointerException if {@code collection == null} or {@code biases == null}.
-   * @throws IllegalArgumentException if {@code collection} is empty.
-   */
-  public <T> T choose(final Collection<T> collection, final Distribution biases) {
-    InvariantChecks.checkNotEmpty(collection);
-    InvariantChecks.checkNotNull(biases);
-
-    final ArrayList<T> arrayList = new ArrayList<>(collection);
-    return arrayList.get(choose(biases));
   }
 
   //------------------------------------------------------------------------------------------------

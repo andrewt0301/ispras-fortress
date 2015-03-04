@@ -161,4 +161,38 @@ public final class InvariantChecks {
           "%d must be within range [0, %d]", index, length));
     }
   }
+
+  /**
+   * Checks the invariant "Numeric value {@code a} is greater than {@code b}" and
+   * throws an exception if it is violated. 
+   * 
+   * @param a Numeric value to be checked.
+   * @param b Numeric value to be checked.
+   * 
+   * @throws IllegalArgumentException if the invariant is violated ({@code a <= b}).
+   */
+
+  public static <T extends Number & Comparable<T>> void checkGreaterThan(final T a, final T b) {
+    if (a.compareTo(b) <= 0) {
+      throw new IllegalArgumentException(
+          String.format("%s must be > %s", a, b));
+    }
+  }
+
+  /**
+   * Checks the invariant "Numeric value {@code a} is greater than or equal to {@code b}" and
+   * throws an exception if it is violated. 
+   * 
+   * @param a Numeric value to be checked.
+   * @param b Numeric value to be checked.
+   * 
+   * @throws IllegalArgumentException if the invariant is violated ({@code a < b}).
+   */
+
+  public static <T extends Number & Comparable<T>> void checkGreaterOrEq(final T a, final T b) {
+    if (a.compareTo(b) < 0) {
+      throw new IllegalArgumentException(
+          String.format("%s must be >= %s", a, b));
+    }
+  }
 }
