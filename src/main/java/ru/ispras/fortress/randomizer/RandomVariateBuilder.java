@@ -138,7 +138,7 @@ public final class RandomVariateBuilder<T> {
    * @return the constructed random variate.
    * @throws IllegalArgumentException if no values have been added.
    */
-  public RandomVariate<T> create() {
+  public RandomVariate<T> build() {
     InvariantChecks.checkNotEmpty(values);
     InvariantChecks.checkNotEmpty(biases);
 
