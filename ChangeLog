@@ -12,6 +12,13 @@
  (like Yices, Z3, CVC4, etc.)
 
 --------------------------------------------------------------------------------
+ 2015/MM/DD Fortress 0.3.5 beta
+
+ The new build contains the following changes:
+
+ - Classes for representing and building random variates were implemented
+
+--------------------------------------------------------------------------------
  2015/02/14 Fortress 0.3.4 beta
 
  The new build contains the following changes:
@@ -19,8 +26,8 @@
  - Convenience methods simplifying access to expression value and type
    information were implemented
  - The expression transformer facility was enhanced
- - The possibility to control the order of visiting operands of 
-   an expression was implemented   
+ - The possibility to control the order of visiting operands of
+   an expression was implemented
 
 --------------------------------------------------------------------------------
  2014/12/26 Fortress 0.3.3 beta
@@ -45,7 +52,7 @@
    are not saved in file system after a constant has been solved)
  - Support for the BVEXTRACT operator in expression type calculation logic
  - Class DataMap for representing data of the MAP type
- - New rules for expression transformation in the predefined rule set   
+ - New rules for expression transformation in the predefined rule set
 
 --------------------------------------------------------------------------------
  2014/09/15 Fortress 0.3.2 beta
@@ -72,16 +79,16 @@
 
 --------------------------------------------------------------------------------
  2014/07/08 Fortress 0.3.1 beta
- 
+
  The following features have been implemented:
  
  - Support for parametric operations with two or more parameters
  - Support for array operations
  - Support for the BVEXTRACT operation
- 
+
 --------------------------------------------------------------------------------
  2014/01/13 Fortress 0.3.0 beta
- 
+
  The new release includes the following changes:
 
  - The library was redesigned and renamed to Fortress
@@ -91,19 +98,19 @@
    (including a new bit vector implementation)
  - A lot of refactoring has been done
  - A number of bugs was fixed
- 
+
 --------------------------------------------------------------------------------
  2013/07/11 Java Constraint Solver API 0.2.2 beta
- 
+
  The following things have been done:
 
  - Support for constant folding has been added
  - Support for user-defined calculators has been added
  - Several bugs have been fixed
-  
+
 --------------------------------------------------------------------------------
  2013/06/11 Java Constraint Solver API 0.2.1 beta
- 
+
  The new build contains the following changes:
 
  - Support for parametric operations has been added
@@ -111,10 +118,10 @@
  - Support for user-defined objects and operations in constraint tree
    has been added
  - Several bugs have been fixed
-  
+
 --------------------------------------------------------------------------------
  2013/04/11 Java Constraint Solver API 0.1.1 beta
-  
+
  Features offered by the build:
 
  - Constraints creating (in the form of abstract syntax trees)
@@ -122,5 +129,5 @@
    only binary operations are supported)
  - Constraints storing in external memory (as XML files)
  - Z3 solver launching and transferring results back to Java
- 
+
 --------------------------------------------------------------------------------
