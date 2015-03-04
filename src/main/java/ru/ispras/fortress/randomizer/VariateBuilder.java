@@ -91,7 +91,7 @@ public final class VariateBuilder<T> {
    * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
    * @throws IllegalArgumentException if {@code bias <= 0}.
    */
-  public void add(final T min, final T max, final int bias) {
+  public void addInterval(final T min, final T max, final int bias) {
     InvariantChecks.checkNotNull(min);
     InvariantChecks.checkNotNull(max);
     InvariantChecks.checkGreaterThanZero(bias);
@@ -105,8 +105,8 @@ public final class VariateBuilder<T> {
    * @param min the lower bound of the interval.
    * @param max the upper bound of the interval.
    */
-  public void add(final T min, final T max) {
-    add(min, max, DEFAULT_BIAS);
+  public void addInterval(final T min, final T max) {
+    addInterval(min, max, DEFAULT_BIAS);
   }
 
   /**
