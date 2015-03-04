@@ -22,7 +22,7 @@ import java.util.List;
  * 
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
-public final class CompositeRandomVariate<T> implements RandomVariate<T> {
+public final class RandomVariateComposite<T> implements RandomVariate<T> {
 
   /** The composition of random variates (a random variate whose values are random variates). */
   private RandomVariate<RandomVariate<T>> composite;
@@ -38,8 +38,8 @@ public final class CompositeRandomVariate<T> implements RandomVariate<T> {
    *         different sizes or they are empty or the {@code biases} array contains negative
    *         numbers.
    */
-  public CompositeRandomVariate(final RandomVariate<T>[] variates, final int[] biases) {
-    composite = new BiasedRandomVariate<RandomVariate<T>>(variates, biases);
+  public RandomVariateComposite(final RandomVariate<T>[] variates, final int[] biases) {
+    composite = new RandomVariateBiased<RandomVariate<T>>(variates, biases);
   }
 
   /**
@@ -53,8 +53,8 @@ public final class CompositeRandomVariate<T> implements RandomVariate<T> {
    *         different sizes or they are empty or the {@code biases} array contains negative
    *         numbers.
    */
-  public CompositeRandomVariate(final List<RandomVariate<T>> variates, final List<Integer> biases) {
-    composite = new BiasedRandomVariate<RandomVariate<T>>(variates, biases);
+  public RandomVariateComposite(final List<RandomVariate<T>> variates, final List<Integer> biases) {
+    composite = new RandomVariateBiased<RandomVariate<T>>(variates, biases);
   }
 
   /**
@@ -65,8 +65,8 @@ public final class CompositeRandomVariate<T> implements RandomVariate<T> {
    * @throws NullPointerException if {@code variates == null}.
    * @throws IllegalArgumentException if {@code variates} is empty.
    */
-  public CompositeRandomVariate(final RandomVariate<T>[] variates) {
-    composite = new FiniteSetRandomVariate<RandomVariate<T>>(variates);
+  public RandomVariateComposite(final RandomVariate<T>[] variates) {
+    composite = new RandomVariateCollection<RandomVariate<T>>(variates);
   }
 
   /**
@@ -77,8 +77,8 @@ public final class CompositeRandomVariate<T> implements RandomVariate<T> {
    * @throws NullPointerException if {@code variates == null}.
    * @throws IllegalArgumentException if {@code variates} is empty.
    */
-  public CompositeRandomVariate(final Collection<RandomVariate<T>> variates) {
-    composite = new FiniteSetRandomVariate<RandomVariate<T>>(variates);
+  public RandomVariateComposite(final Collection<RandomVariate<T>> variates) {
+    composite = new RandomVariateCollection<RandomVariate<T>>(variates);
   }
 
   @Override

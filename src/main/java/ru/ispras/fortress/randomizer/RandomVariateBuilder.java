@@ -70,7 +70,7 @@ public final class RandomVariateBuilder<T> {
   public void add(final T value, final int bias) {
     InvariantChecks.checkGreaterThanZero(bias);
 
-    add(new SingleValueRandomVariate<T>(value), bias);
+    add(new RandomVariateSingleValue<T>(value), bias);
   }
 
   /**
@@ -94,7 +94,7 @@ public final class RandomVariateBuilder<T> {
     InvariantChecks.checkNotNull(values);
     InvariantChecks.checkGreaterThanZero(bias);
 
-    add(new FiniteSetRandomVariate<T>(values), bias);
+    add(new RandomVariateCollection<T>(values), bias);
   }
 
   /**
@@ -119,7 +119,7 @@ public final class RandomVariateBuilder<T> {
     InvariantChecks.checkNotNull(values);
     InvariantChecks.checkGreaterThanZero(bias);
 
-    add(new FiniteSetRandomVariate<T>(values), bias);
+    add(new RandomVariateCollection<T>(values), bias);
   }
 
   /**
@@ -152,7 +152,7 @@ public final class RandomVariateBuilder<T> {
     }
 
     if (minBias == Integer.MAX_VALUE) {
-      return new CompositeRandomVariate<T>(values);
+      return new RandomVariateComposite<T>(values);
     }
 
     for (int i = 0; i < biases.size(); i++) {
@@ -161,6 +161,6 @@ public final class RandomVariateBuilder<T> {
       }
     }
 
-    return new CompositeRandomVariate<T>(values, biases);
+    return new RandomVariateComposite<T>(values, biases);
   }
 }

@@ -19,7 +19,7 @@ package ru.ispras.fortress.randomizer;
  * 
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
-public final class SingleValueRandomVariate<T> implements RandomVariate<T> {
+public final class RandomVariateSingleValue<T> implements RandomVariate<T> {
 
   /** The only value. */
   private T value;
@@ -29,7 +29,7 @@ public final class SingleValueRandomVariate<T> implements RandomVariate<T> {
    * 
    * @param value the value of the random variate. 
    */
-  public SingleValueRandomVariate(final T value) {
+  public RandomVariateSingleValue(final T value) {
     this.value = value;
   }
 

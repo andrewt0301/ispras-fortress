@@ -24,7 +24,7 @@ import ru.ispras.fortress.util.InvariantChecks;
  * 
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
-public final class IntervalRandomVariate<T extends Number & Comparable<T>>
+public final class RandomVariateInterval<T extends Number & Comparable<T>>
     implements RandomVariate<T> {
 
   /**
@@ -54,7 +54,7 @@ public final class IntervalRandomVariate<T extends Number & Comparable<T>>
    *         {@code max == null}.
    * @throws IllegalArgumentException if {@code min > max} or type {@code T} is unsupported.
    */
-  public IntervalRandomVariate(final Class<T> type, final T min, final T max) {
+  public RandomVariateInterval(final Class<T> type, final T min, final T max) {
     InvariantChecks.checkNotNull(type);
     InvariantChecks.checkNotNull(min);
     InvariantChecks.checkNotNull(max);
