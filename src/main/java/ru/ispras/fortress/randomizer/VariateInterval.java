@@ -89,7 +89,6 @@ public final class VariateInterval<T extends Number & Comparable<T>> implements 
    *         (2) if {@code min > max} or (3) if the value type is unsupported.
    */
   public VariateInterval(final T min, final T max) {
-    InvariantChecks.checkNotNull(type);
     InvariantChecks.checkNotNull(min);
     InvariantChecks.checkNotNull(max);
 
