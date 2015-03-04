@@ -53,7 +53,7 @@ public final class BiasedRandomVariate<T> implements RandomVariate<T> {
 
     if (values.size() != biases.size()) {
       throw new IllegalArgumentException(String.format(
-          "values.length=%d is not equal to biases.length=%d", values.size(), biases.size()));
+          "values.size()=%d is not equal to biases.size()=%d", values.size(), biases.size()));
     }
 
     this.values = values;
