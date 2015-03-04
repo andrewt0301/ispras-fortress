@@ -47,6 +47,7 @@ public final class VariateBuilder<T> {
     InvariantChecks.checkNotNull(variate);
     InvariantChecks.checkGreaterThanZero(bias);
 
+    values.add(variate);
     biases.add(bias);
   }
 
