@@ -84,6 +84,32 @@ public final class VariateBuilder<T> {
   }
 
   /**
+   * Adds an interval with the given bias.
+   * 
+   * @param min the lower bound of the interval.
+   * @param max the upper bound of the interval.
+   * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
+   * @throws IllegalArgumentException if {@code bias <= 0}.
+   */
+  public void add(final T min, final T max, final int bias) {
+    InvariantChecks.checkNotNull(min);
+    InvariantChecks.checkNotNull(max);
+    InvariantChecks.checkGreaterThanZero(bias);
+
+    add(new VariateInterval<T>(min, max), bias);
+  }
+
+  /**
+   * Adds an interval with the default bias.
+   * 
+   * @param min the lower bound of the interval.
+   * @param max the upper bound of the interval.
+   */
+  public void add(final T min, final T max) {
+    add(min, max, DEFAULT_BIAS);
+  }
+
+  /**
    * Adds the array of values with the given bias.
    * 
    * @param values the values to be added.

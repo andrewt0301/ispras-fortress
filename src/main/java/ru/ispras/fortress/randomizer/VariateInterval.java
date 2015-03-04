@@ -26,26 +26,38 @@ import ru.ispras.fortress.util.InvariantChecks;
  * 
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
-public final class VariateInterval<T extends Number & Comparable<T>> implements Variate<T> {
+public final class VariateInterval<T> implements Variate<T> {
 
   /**
    * This enumeration contains supported types.
    */
   private static enum Type {
     INTEGER(Integer.class) {
-      @Override <TT extends Number & Comparable<TT>> Object nextRange(TT min, TT max) {
-        return Randomizer.get().nextIntRange(min.intValue(), max.intValue());
+      @Override <TT> boolean isLessOrEq(TT min, TT max) {
+        return (Integer) min <= (Integer) max;
+      }
+
+      @Override <TT> Object nextRange(TT min, TT max) {
+        return Randomizer.get().nextIntRange((Integer) min, (Integer) max);
       }
     },
 
     LONG(Long.class) {
-      @Override <TT extends Number & Comparable<TT>> Object nextRange(TT min, TT max) {
-        return Randomizer.get().nextLongRange(min.longValue(), max.longValue());
+      @Override <TT> boolean isLessOrEq(TT min, TT max) {
+        return (Long) min <= (Long) max;
+      }
+
+      @Override <TT> Object nextRange(TT min, TT max) {
+        return Randomizer.get().nextLongRange((Long) min, (Long) max);
       }
     },
 
     BIG_INTEGER(BigInteger.class) {
-      @Override <TT extends Number & Comparable<TT>> Object nextRange(TT min, TT max) {
+      @Override <TT> boolean isLessOrEq(TT min, TT max) {
+        return ((BigInteger) min).compareTo((BigInteger) max) <= 0;
+      }
+     
+      @Override <TT> Object nextRange(TT min, TT max) {
         return Randomizer.get().nextBigIntegerRange((BigInteger) min, (BigInteger) max);
       }
     };
@@ -67,7 +79,8 @@ public final class VariateInterval<T extends Number & Comparable<T>> implements 
       return types.get(typeClass);
     }
 
-    abstract <TT extends Number & Comparable<TT>> Object nextRange(TT min, TT max);
+    abstract <TT> boolean isLessOrEq(TT min, TT max);
+    abstract <TT> Object nextRange(TT min, TT max);
   }
 
   /** The type information. */
@@ -98,14 +111,15 @@ public final class VariateInterval<T extends Number & Comparable<T>> implements 
           min.getClass().getName(), max.getClass().getName()));
     }
 
-    InvariantChecks.checkGreaterOrEq(max, min);
-
     final Class<?> typeClass = min.getClass();
-
     final Type type = Type.fromClass(typeClass);
     if (null == type) {
       throw new IllegalArgumentException(String.format(
           "Type %s is not supported.", typeClass.getName()));
+    }
+
+    if (!type.isLessOrEq(min, max)) {
+      throw new IllegalArgumentException(String.format("%s must be <= %s", min, max));
     }
 
     this.type = type;
