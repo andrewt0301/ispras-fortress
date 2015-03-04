@@ -15,6 +15,8 @@
 package ru.ispras.fortress.randomizer;
 
 import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.Map;
 
 import ru.ispras.fortress.util.InvariantChecks;
 
@@ -24,16 +26,48 @@ import ru.ispras.fortress.util.InvariantChecks;
  * 
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
-public final class VariateInterval<T extends Number & Comparable<T>>
-    implements Variate<T> {
+public final class VariateInterval<T extends Number & Comparable<T>> implements Variate<T> {
 
   /**
    * This enumeration contains supported types.
    */
   private static enum Type {
-    INTEGER,
-    LONG,
-    BIG_INTEGER
+    INTEGER(Integer.class) {
+      @Override <TT extends Number & Comparable<TT>> Object nextRange(TT min, TT max) {
+        return Randomizer.get().nextIntRange(min.intValue(), max.intValue());
+      }
+    },
+
+    LONG(Long.class) {
+      @Override <TT extends Number & Comparable<TT>> Object nextRange(TT min, TT max) {
+        return Randomizer.get().nextLongRange(min.longValue(), max.longValue());
+      }
+    },
+
+    BIG_INTEGER(BigInteger.class) {
+      @Override <TT extends Number & Comparable<TT>> Object nextRange(TT min, TT max) {
+        return Randomizer.get().nextBigIntegerRange((BigInteger) min, (BigInteger) max);
+      }
+    };
+
+    private static final Map<Class<?>, Type> types = new HashMap<>();
+    static {
+      for (Type type : values()) {
+        types.put(type.typeClass, type);
+      }
+    }
+
+    private final Class<?> typeClass;
+
+    private Type(Class<?> typeClass) {
+      this.typeClass = typeClass;
+    }
+
+    static Type fromClass(Class<?> typeClass) {
+      return types.get(typeClass);
+    }
+
+    abstract <TT extends Number & Comparable<TT>> Object nextRange(TT min, TT max);
   }
 
   /** The type information. */
@@ -49,27 +83,33 @@ public final class VariateInterval<T extends Number & Comparable<T>>
    * 
    * @param min the lower bound of the interval.
    * @param max the upper bound of the interval.
-   *
-   * @throws NullPointerException if {@code type == null}, {@code min == null} or
-   *         {@code max == null}.
-   * @throws IllegalArgumentException if {@code min > max} or type {@code T} is unsupported.
+   * 
+   * @throws NullPointerException if {@code min == null} or {@code max == null}.
+   * @throws IllegalArgumentException (1) if min and max have different types,
+   *         (2) if {@code min > max} or (3) if the value type is unsupported.
    */
-  public VariateInterval(final Class<T> type, final T min, final T max) {
+  public VariateInterval(final T min, final T max) {
     InvariantChecks.checkNotNull(type);
     InvariantChecks.checkNotNull(min);
     InvariantChecks.checkNotNull(max);
-    InvariantChecks.checkGreaterOrEq(max, min);
 
-    if (type.equals(Integer.class)) {
-      this.type = Type.INTEGER;
-    } else if (type.equals(Long.class)) {
-      this.type = Type.LONG;
-    } else if (type.equals(BigInteger.class)) {
-      this.type = Type.BIG_INTEGER;
-    } else {
-      throw new IllegalArgumentException(String.format("Type %s is unsupported", type));
+    if (!min.getClass().equals(max.getClass())) {
+      throw new IllegalArgumentException(String.format(
+          "Different types for min and max: %s and %s.", 
+          min.getClass().getName(), max.getClass().getName()));
     }
 
+    InvariantChecks.checkGreaterOrEq(max, min);
+
+    final Class<?> typeClass = min.getClass();
+
+    final Type type = Type.fromClass(typeClass);
+    if (null == type) {
+      throw new IllegalArgumentException(String.format(
+          "Type %s is not supported.", typeClass.getName()));
+    }
+
+    this.type = type;
     this.min = min;
     this.max = max;
   }
@@ -77,15 +117,6 @@ public final class VariateInterval<T extends Number & Comparable<T>>
   @SuppressWarnings("unchecked")
   @Override
   public T value() {
-    switch (type) {
-      case INTEGER:
-        return (T) ((Integer) Randomizer.get().nextIntRange((Integer) min, (Integer) max));
-      case LONG:
-        return (T) ((Long) Randomizer.get().nextLongRange((Long) min, (Long) max));
-      case BIG_INTEGER:
-        return (T) (Randomizer.get().nextBigIntegerRange((BigInteger) min, (BigInteger) max));
-      default:
-        return null;
-    }
+    return (T) type.nextRange(min, max);
   }
 }
