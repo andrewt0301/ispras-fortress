@@ -24,6 +24,8 @@ import ru.ispras.fortress.util.InvariantChecks;
  * This class represents a biased {@code T}-type random variate (a discrete probability
  * distribution).
  * 
+ * @param <T> the type of the random variate values. 
+ * 
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
 public final class VariateBiased<T> implements Variate<T> {
@@ -85,9 +87,11 @@ public final class VariateBiased<T> implements Variate<T> {
    */
   public VariateBiased(final T[] values, final int[] biases) {
     this(Arrays.asList(values), new AbstractList<Integer>() {
+      @Override
       public Integer get(int i) {
         return biases[i];
       }
+      @Override
       public int size() {
         return biases.length;
       }

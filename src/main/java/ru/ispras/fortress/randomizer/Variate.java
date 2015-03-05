@@ -16,6 +16,8 @@ package ru.ispras.fortress.randomizer;
 
 /**
  * This is an interface for a {@code T}-type random variate.
+
+ * @param <T> the type of the random variate values. 
  * 
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */

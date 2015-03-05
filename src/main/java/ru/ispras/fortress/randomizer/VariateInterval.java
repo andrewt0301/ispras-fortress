@@ -24,6 +24,8 @@ import ru.ispras.fortress.util.InvariantChecks;
  * This class represents an interval {@code T}-type random variate, where {@code T} is an integer
  * type ({@code Integer}, {@code Long} or {@code BigInteger}).
  * 
+ * @param <T> the type of the random variate values. 
+ * 
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
 public final class VariateInterval<T> implements Variate<T> {
@@ -33,31 +35,31 @@ public final class VariateInterval<T> implements Variate<T> {
    */
   private static enum Type {
     INTEGER(Integer.class) {
-      @Override <TT> boolean isLessOrEq(TT min, TT max) {
-        return (Integer) min <= (Integer) max;
+      @Override <TT> boolean isLessOrEq(final TT lhs, final TT rhs) {
+        return (Integer) lhs <= (Integer) rhs;
       }
 
-      @Override <TT> Object nextRange(TT min, TT max) {
+      @Override <TT> Object next(final TT min, final TT max) {
         return Randomizer.get().nextIntRange((Integer) min, (Integer) max);
       }
     },
 
     LONG(Long.class) {
-      @Override <TT> boolean isLessOrEq(TT min, TT max) {
-        return (Long) min <= (Long) max;
+      @Override <TT> boolean isLessOrEq(final TT lhs, final TT rhs) {
+        return (Long) lhs <= (Long) rhs;
       }
 
-      @Override <TT> Object nextRange(TT min, TT max) {
+      @Override <TT> Object next(final TT min, final TT max) {
         return Randomizer.get().nextLongRange((Long) min, (Long) max);
       }
     },
 
     BIG_INTEGER(BigInteger.class) {
-      @Override <TT> boolean isLessOrEq(TT min, TT max) {
-        return ((BigInteger) min).compareTo((BigInteger) max) <= 0;
+      @Override <TT> boolean isLessOrEq(final TT lhs, final TT rhs) {
+        return ((BigInteger) lhs).compareTo((BigInteger) rhs) <= 0;
       }
-     
-      @Override <TT> Object nextRange(TT min, TT max) {
+
+      @Override <TT> Object next(final TT min, final TT max) {
         return Randomizer.get().nextBigIntegerRange((BigInteger) min, (BigInteger) max);
       }
     };
@@ -79,8 +81,23 @@ public final class VariateInterval<T> implements Variate<T> {
       return types.get(typeClass);
     }
 
-    abstract <TT> boolean isLessOrEq(TT min, TT max);
-    abstract <TT> Object nextRange(TT min, TT max);
+    /**
+     * Checks whether {@code lhs} is less than or equal to {@code rhs}.
+     * 
+     * @param lhs the left-hand-side operand.
+     * @param rhs the right-hand-side operand.
+     * @return {@code true} if {@code lhs <= rhs}; {@code false} otherwise.
+     */
+    abstract <TT> boolean isLessOrEq(final TT lhs, final TT rhs);
+
+    /**
+     * Choose a random number from the specified range.
+     * 
+     * @param min the lower bound of the range.
+     * @param max the upper bound of the range.
+     * @return a random number from {@code [min, max]}.
+     */
+    abstract <TT> Object next(final TT min, final TT max);
   }
 
   /** The type information. */
@@ -130,6 +147,6 @@ public final class VariateInterval<T> implements Variate<T> {
   @SuppressWarnings("unchecked")
   @Override
   public T value() {
-    return (T) type.nextRange(min, max);
+    return (T) type.next(min, max);
   }
 }

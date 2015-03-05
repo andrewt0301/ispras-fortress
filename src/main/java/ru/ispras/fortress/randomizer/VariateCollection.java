@@ -24,6 +24,8 @@ import ru.ispras.fortress.util.InvariantChecks;
 /**
  * This class represents a finite-set {@code T}-type random variate.
  * 
+ * @param <T> the type of the random variate values. 
+ * 
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
 public final class VariateCollection<T> implements Variate<T> {

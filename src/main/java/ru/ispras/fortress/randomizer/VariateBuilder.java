@@ -23,6 +23,8 @@ import ru.ispras.fortress.util.InvariantChecks;
 /**
  * This class implements a probability distribution builder for a {@code T}-type random variate.
  * 
+ * @param <T> the type of the random variate values. 
+ * 
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
 public final class VariateBuilder<T> {

@@ -17,11 +17,13 @@ package ru.ispras.fortress.randomizer;
 /**
  * This class represents a single-value {@code T}-type random variate.
  * 
+ * @param <T> the type of the random variate values.
+ * 
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
 public final class VariateSingleValue<T> implements Variate<T> {
 
-  /** The only value. */
+  /** The single value. */
   private T value;
 
   /**

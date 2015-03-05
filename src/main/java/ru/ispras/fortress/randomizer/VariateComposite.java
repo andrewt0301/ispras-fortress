@@ -20,6 +20,8 @@ import java.util.List;
 /**
  * This class represents a composite {@code T}-type random variate.
  * 
+ * @param <T> the type of the random variate values. 
+ * 
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
 public final class VariateComposite<T> implements Variate<T> {
