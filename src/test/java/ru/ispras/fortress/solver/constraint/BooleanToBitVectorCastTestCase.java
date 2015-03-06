@@ -55,7 +55,16 @@ public class BooleanToBitVectorCastTestCase extends GenericSolverTestBase {
    * 
    * The library converts this into correct one:
    * 
-   * TODO: add generated code here 
+   * (declare-const x Int)
+   * (declare-const y Int)
+   * (declare-const z (_ BitVec 1))
+   * (assert  (< x 2))
+   * (assert  (> y 0))
+   * (assert  (= (bvor (ite (= x y) #b1 #b0) z) #b1))
+   * (check-sat)
+   * (get-value ( x y z))
+   * (get-model)
+   * (exit)
    * 
    */
   public static class BooleanToBitVectorCast implements SampleConstraint {
