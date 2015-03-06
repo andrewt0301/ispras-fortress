@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,6 +13,8 @@
  */
 
 package ru.ispras.fortress.solver;
+
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
 import java.util.List;
 import ru.ispras.fortress.data.Variable;
@@ -57,17 +59,9 @@ public final class SolverResult {
    */
 
   public SolverResult(Status status, List<String> errors, List<Variable> variables) {
-    if (null == status) {
-      throw new NullPointerException();
-    }
-
-    if (null == errors) {
-      throw new NullPointerException();
-    }
-
-    if (null == variables) {
-      throw new NullPointerException();
-    }
+    checkNotNull(status);
+    checkNotNull(errors);
+    checkNotNull(variables);
 
     this.status = status;
     this.errors = errors;
@@ -112,5 +106,11 @@ public final class SolverResult {
 
   public Iterable<Variable> getVariables() {
     return variables;
+  }
+
+  @Override
+  public String toString() {
+    return String.format("SolverResult [status=%s, errors=%s, variables=%s]",
+        status, errors, variables);
   }
 }
