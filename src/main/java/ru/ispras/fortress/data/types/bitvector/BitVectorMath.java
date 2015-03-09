@@ -17,6 +17,8 @@ package ru.ispras.fortress.data.types.bitvector;
 import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 import static ru.ispras.fortress.data.types.bitvector.BitVectorMath.Operands.*;
 
+import java.math.BigInteger;
+
 public final class BitVectorMath {
   private BitVectorMath() {}
 
@@ -269,30 +271,60 @@ public final class BitVectorMath {
     return not(xor(lhs, rhs));
   }
 
+  /**
+   * Performs logical left shift of the specified bit vector by the specified shift amount.
+   * The actual shift amount is calculated as {@code to} modulo {@code v.getBitSize()}. If the 
+   * actual shift amount equals {@code 0}, no shift is performed and the initial bit vector is
+   * returned. Otherwise, a new copy of data is created and returned. If the shift amount is
+   * negative, the actual shift amount is calculated as {@code v.getBitSize()} minus 
+   * ({@code to} modulo {@code v.getBitSize()}).
+   * 
+   * @param v Bit vector to be shifted.
+   * @param to Shift amount.
+   * @return Left shift result.
+   * 
+   * @throws NulBlPointerException if any of the parameters is {@code null}.
+   */
+
+  public static BitVector shl(BitVector v, BitVector to) {
+    checkNotNull(v);
+    checkNotNull(to);
+
+    return shl(v, to.bigIntegerValue());
+  }
+
+  public static BitVector shl(BitVector v, BigInteger to) {
+    checkNotNull(v);
+    checkNotNull(to);
+
+    final BigInteger size = BigInteger.valueOf(v.getBitSize());
+    final BigInteger offset = to.mod(size);
+
+    return shl_internal(v, offset.intValue());
+  }
+
   public static BitVector shl(BitVector v, int to) {
     checkNotNull(v);
 
-    final int distance = Math.abs(to % v.getBitSize());
-    if (0 == distance) {
+    final int offset = to % v.getBitSize();
+    return shl_internal(v, offset);
+  }
+
+  private static BitVector shl_internal(BitVector v, int offset) {
+    if (0 == offset) {
       return v;
     }
 
+    final int distance = Math.abs(offset);
     final BitVector result = BitVector.newEmpty(v.getBitSize());
 
-    if (to > 0) {
+    if (offset > 0) {
       BitVectorAlgorithm.copy(v, 0, result, distance, result.getBitSize() - distance);
     } else {
       BitVectorAlgorithm.copy(v, 0, result, result.getBitSize() - distance, distance);
     }
 
     return result;
-  }
-
-  public static BitVector shl(BitVector v, BitVector to) {
-    checkNotNull(v);
-    checkNotNull(to);
-
-    return shl(v, to.intValue());
   }
 
   public static BitVector lshr(BitVector v, int to) {
