@@ -149,6 +149,9 @@ public class BitVectorMathTestCase {
     // 2. TEST FOR THE SITUATION WHEN THE SECOND ARGUMENT IS a BIT VECTOR (NOT INT)
 
     checkBitVector(BitVectorMath.shl(BitVector.valueOf("1111"), 2), "1100");
+    checkBitVector(BitVectorMath.shl(BitVector.valueOf("1111"), -3), "1110");
+    checkBitVector(BitVectorMath.shl(BitVector.valueOf("1111"), -1), "1000");
+
     checkBitVector(BitVectorMath.shl(BitVector.valueOf("1111111101"), 2), "1111110100");
     checkBitVector(BitVectorMath.shl(BitVector.valueOf("11111111111101"), 2), "11111111110100");
     checkBitVector(BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFF, 32), 2), 0xFFFFFFFC);
