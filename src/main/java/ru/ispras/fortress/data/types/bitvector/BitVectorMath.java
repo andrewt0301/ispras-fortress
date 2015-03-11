@@ -283,7 +283,7 @@ public final class BitVectorMath {
    * @param to Shift amount.
    * @return Left shift result.
    * 
-   * @throws NulBlPointerException if any of the parameters is {@code null}.
+   * @throws NullPointerException if any of the parameters is {@code null}.
    */
 
   public static BitVector shl(BitVector v, BitVector to) {

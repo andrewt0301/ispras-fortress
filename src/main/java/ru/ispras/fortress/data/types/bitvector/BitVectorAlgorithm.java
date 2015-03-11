@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,6 +13,8 @@
  */
 
 package ru.ispras.fortress.data.types.bitvector;
+
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
 public final class BitVectorAlgorithm {
   private BitVectorAlgorithm() {}
@@ -96,7 +98,7 @@ public final class BitVectorAlgorithm {
   }
 
   public static void fill(BitVector dest, byte value) {
-    notNullCheck(dest, "dest");
+    checkNotNull(dest, "dest");
 
     for (int index = 0; index < dest.getByteSize(); ++index) {
       dest.setByte(index, value);
@@ -104,7 +106,7 @@ public final class BitVectorAlgorithm {
   }
 
   public static void generate(BitVector dest, IOperation op) {
-    notNullCheck(dest, "dest");
+    checkNotNull(dest, "dest");
 
     for (int index = 0; index < dest.getByteSize(); ++index) {
       dest.setByte(index, op.run());
@@ -112,8 +114,8 @@ public final class BitVectorAlgorithm {
   }
 
   public static void copy(BitVector src, BitVector dest) {
-    notNullCheck(src, "src");
-    notNullCheck(dest, "dest");
+    checkNotNull(src, "src");
+    checkNotNull(dest, "dest");
 
     if (src == dest) {
       return;
@@ -125,8 +127,8 @@ public final class BitVectorAlgorithm {
   }
 
   public static void copy(BitVector src, int srcPos, BitVector dest, int destPos, int bitSize) {
-    notNullCheck(src, "src");
-    notNullCheck(dest, "dest");
+    checkNotNull(src, "src");
+    checkNotNull(dest, "dest");
 
     if ((src == dest) && (srcPos == destPos)) {
       return;
@@ -139,8 +141,8 @@ public final class BitVectorAlgorithm {
   }
 
   public static void for_each(BitVector src, IAction op) {
-    notNullCheck(src, "src");
-    notNullCheck(op, "op");
+    checkNotNull(src, "src");
+    checkNotNull(op, "op");
 
     for (int index = 0; index < src.getByteSize(); ++index) {
       op.run(src.getByte(index));
@@ -148,8 +150,8 @@ public final class BitVectorAlgorithm {
   }
 
   public static void for_each_reverse(BitVector src, IAction op) {
-    notNullCheck(src, "src");
-    notNullCheck(op, "op");
+    checkNotNull(src, "src");
+    checkNotNull(op, "op");
 
     for (int index = src.getByteSize() - 1; index >= 0; --index) {
       op.run(src.getByte(index));
@@ -157,10 +159,10 @@ public final class BitVectorAlgorithm {
   }
 
   public static int mismatch(BitVector src1, BitVector src2) {
-    notNullCheck(src1, "src1");
-    notNullCheck(src2, "src2");
+    checkNotNull(src1, "src1");
+    checkNotNull(src2, "src2");
 
-    equalSizeCheck(src1.getBitSize(), src2.getBitSize());
+    checkEqualSize(src1.getBitSize(), src2.getBitSize());
 
     if (src1 == src2) {
       return -1;
@@ -176,11 +178,11 @@ public final class BitVectorAlgorithm {
   }
 
   public static int mismatch(BitVector src1, BitVector src2, IBinaryPredicate op) {
-    notNullCheck(src1, "src1");
-    notNullCheck(src2, "src2");
-    notNullCheck(op, "op");
+    checkNotNull(src1, "src1");
+    checkNotNull(src2, "src2");
+    checkNotNull(op, "op");
 
-    equalSizeCheck(src1.getBitSize(), src2.getBitSize());
+    checkEqualSize(src1.getBitSize(), src2.getBitSize());
 
     if (src1 == src2) {
       return -1;
@@ -196,10 +198,10 @@ public final class BitVectorAlgorithm {
   }
 
   public static int mismatch_reverse(BitVector src1, BitVector src2) {
-    notNullCheck(src1, "src1");
-    notNullCheck(src2, "src2");
+    checkNotNull(src1, "src1");
+    checkNotNull(src2, "src2");
 
-    equalSizeCheck(src1.getBitSize(), src2.getBitSize());
+    checkEqualSize(src1.getBitSize(), src2.getBitSize());
 
     if (src1 == src2) {
       return -1;
@@ -215,11 +217,11 @@ public final class BitVectorAlgorithm {
   }
 
   public static int mismatch_reverse(BitVector src1, BitVector src2, IBinaryPredicate op) {
-    notNullCheck(src1, "src1");
-    notNullCheck(src2, "src2");
-    notNullCheck(op, "op");
+    checkNotNull(src1, "src1");
+    checkNotNull(src2, "src2");
+    checkNotNull(op, "op");
 
-    equalSizeCheck(src1.getBitSize(), src2.getBitSize());
+    checkEqualSize(src1.getBitSize(), src2.getBitSize());
 
     if (src1 == src2) {
       return -1;
@@ -235,11 +237,11 @@ public final class BitVectorAlgorithm {
   }
 
   public static void transform(BitVector src, BitVector dest, IUnaryOperation op) {
-    notNullCheck(src, "src");
-    notNullCheck(dest, "dest");
-    notNullCheck(op, "op");
+    checkNotNull(src, "src");
+    checkNotNull(dest, "dest");
+    checkNotNull(op, "op");
 
-    equalSizeCheck(src.getBitSize(), dest.getBitSize());
+    checkEqualSize(src.getBitSize(), dest.getBitSize());
 
     for (int index = 0; index < dest.getByteSize(); ++index) {
       dest.setByte(index, op.run(src.getByte(index)));
@@ -247,26 +249,20 @@ public final class BitVectorAlgorithm {
   }
 
   public static void transform(BitVector src1, BitVector src2, BitVector dest, IBinaryOperation op) {
-    notNullCheck(src1, "src1");
-    notNullCheck(src2, "src2");
-    notNullCheck(dest, "dest");
-    notNullCheck(op, "op");
+    checkNotNull(src1, "src1");
+    checkNotNull(src2, "src2");
+    checkNotNull(dest, "dest");
+    checkNotNull(op, "op");
 
-    equalSizeCheck(src1.getBitSize(), dest.getBitSize());
-    equalSizeCheck(src2.getBitSize(), dest.getBitSize());
+    checkEqualSize(src1.getBitSize(), dest.getBitSize());
+    checkEqualSize(src2.getBitSize(), dest.getBitSize());
 
     for (int index = 0; index < dest.getByteSize(); ++index) {
       dest.setByte(index, op.run(src1.getByte(index), src2.getByte(index)));
     }
   }
 
-  private static void notNullCheck(Object o, String name) {
-    if (null == o) {
-      throw new NullPointerException("null == " + name);
-    }
-  }
-
-  private static void equalSizeCheck(int size1, int size2) {
+  private static void checkEqualSize(int size1, int size2) {
     if (size1 != size2) {
       throw new IllegalArgumentException("Invariant is violated: " + size1 + " != " + size2);
     }
