@@ -151,6 +151,10 @@ public class BitVectorMathTestCase {
     checkBitVector(BitVectorMath.shl(BitVector.valueOf("1111"), -2), "1100");
     checkBitVector(BitVectorMath.shl(BitVector.valueOf("1111"), -3), "1110");
     checkBitVector(BitVectorMath.shl(BitVector.valueOf("1111"), -1), "1000");
+    checkBitVector(BitVectorMath.shl(BitVector.valueOf("1111"), BitVector.valueOf(2, 4)), "1100");
+    checkBitVector(BitVectorMath.shl(BitVector.valueOf("1111"), BitVector.valueOf(2, 8)), "1100");
+    checkBitVector(BitVectorMath.shl(BitVector.valueOf("1111"), BitVector.valueOf(2, 32)), "1100");
+    checkBitVector(BitVectorMath.shl(BitVector.valueOf("1111"), BitVector.valueOf(2, 64)), "1100");
 
     checkBitVector(BitVectorMath.shl(BitVector.valueOf("1111111101"), 2), "1111110100");
     checkBitVector(BitVectorMath.shl(BitVector.valueOf("1111111101"), -8), "1111110100");
