@@ -19,8 +19,19 @@ import static ru.ispras.fortress.data.types.bitvector.BitVectorMath.Operands.*;
 
 import java.math.BigInteger;
 
+/**
+ * The {@code BitVectorMath} class contains utility methods and classes to perform operations
+ * with bit vectors. 
+ * 
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
+ */
+
 public final class BitVectorMath {
   private BitVectorMath() {}
+
+  /**
+   * Describes the number of arguments accepted by the bit vector operations. 
+   */
 
   public static enum Operands {
     UNARY(1), BINARY(2), TERNARY(3);
@@ -35,6 +46,11 @@ public final class BitVectorMath {
       return count;
     }
   }
+
+  /**
+   * Provides singleton objects that allow performing operations with bit vectors in
+   * a unified way (i.e. polymorphically).
+   */
 
   public static enum Operations {
 
@@ -511,8 +527,8 @@ public final class BitVectorMath {
     final boolean isRightNeg = rhs.getBit(signBitIndex);
 
     if (isLeftNeg != isRightNeg) {
-      return BitVector.valueOf(isLeftNeg); // If lhs is negative, it is less. Otherwise, it is
-                                           // greater.
+      // If lhs is negative, it is less. Otherwise, it is greater.
+      return BitVector.valueOf(isLeftNeg);
     }
 
     return BitVector.valueOf(lhs.compareTo(rhs) <= 0);
@@ -529,8 +545,8 @@ public final class BitVectorMath {
     final boolean isRightNeg = rhs.getBit(signBitIndex);
 
     if (isLeftNeg != isRightNeg) {
-      return BitVector.valueOf(isLeftNeg); // If lhs is negative, it is less. Otherwise, it is
-                                           // greater.
+      // If lhs is negative, it is less. Otherwise, it is greater.
+      return BitVector.valueOf(isLeftNeg); 
     }
 
     return BitVector.valueOf(lhs.compareTo(rhs) < 0);
@@ -547,8 +563,8 @@ public final class BitVectorMath {
     final boolean isRightNeg = rhs.getBit(signBitIndex);
 
     if (isLeftNeg != isRightNeg) {
-      return BitVector.valueOf(!isLeftNeg); // If lhs is positive, it is greater. Otherwise, it is
-                                            // less.
+      // If lhs is positive, it is greater. Otherwise, it is less.
+      return BitVector.valueOf(!isLeftNeg); 
     }
 
     return BitVector.valueOf(lhs.compareTo(rhs) >= 0);
@@ -565,8 +581,8 @@ public final class BitVectorMath {
     final boolean isRightNeg = rhs.getBit(signBitIndex);
 
     if (isLeftNeg != isRightNeg) {
-      return BitVector.valueOf(!isLeftNeg); // If lhs is positive, it is greater. Otherwise, it is
-                                            // less.
+      // If lhs is positive, it is greater. Otherwise, it is less.
+      return BitVector.valueOf(!isLeftNeg); 
     }
 
     return BitVector.valueOf(lhs.compareTo(rhs) > 0);
