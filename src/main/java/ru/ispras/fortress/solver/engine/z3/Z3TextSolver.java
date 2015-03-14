@@ -380,8 +380,8 @@ public final class Z3TextSolver extends SolverBase {
     addStandardOperation(StandardOperation.BVREPEAT, "repeat");
     addStandardOperation(StandardOperation.BVROL, "rotate_left");
     addStandardOperation(StandardOperation.BVROR, "rotate_right");
-    addStandardOperation(StandardOperation.BVZEROEXT, "extend_zero");
-    addStandardOperation(StandardOperation.BVSIGNEXT, "extend_sign");
+    addStandardOperation(StandardOperation.BVZEROEXT, "zero_extend");
+    addStandardOperation(StandardOperation.BVSIGNEXT, "sign_extend");
 
     // Bitwise Operations
     addStandardOperation(StandardOperation.BVOR, "bvor");
