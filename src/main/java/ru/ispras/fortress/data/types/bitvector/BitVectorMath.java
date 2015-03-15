@@ -460,6 +460,21 @@ public final class BitVectorMath {
     return result;
   }
 
+  /**
+   * Performs rotation to the left of the specified bit vector by the specified shift amount.
+   * The actual shift amount is calculated as {@code to} modulo {@code v.getBitSize()}. If the 
+   * actual shift amount equals {@code 0}, no shift is performed and the initial bit vector is
+   * returned. Otherwise, a new copy of data is created and returned. If the shift amount is
+   * negative, the actual shift amount is calculated as {@code v.getBitSize()} minus 
+   * ({@code to} modulo {@code v.getBitSize()}).
+   * 
+   * @param v Bit vector to be shifted.
+   * @param to Shift amount.
+   * @return Left rotation result.
+   * 
+   * @throws NullPointerException if any of the parameters is {@code null}.
+   */
+
   public static BitVector rotl(BitVector v, BitVector to) {
     checkNotNull(v);
     checkNotNull(to);
@@ -516,6 +531,21 @@ public final class BitVectorMath {
 
     return result;
   }
+
+  /**
+   * Performs rotation to the right of the specified bit vector by the specified shift amount.
+   * The actual shift amount is calculated as {@code to} modulo {@code v.getBitSize()}. If the 
+   * actual shift amount equals {@code 0}, no shift is performed and the initial bit vector is
+   * returned. Otherwise, a new copy of data is created and returned. If the shift amount is
+   * negative, the actual shift amount is calculated as {@code v.getBitSize()} minus 
+   * ({@code to} modulo {@code v.getBitSize()}).
+   * 
+   * @param v Bit vector to be shifted.
+   * @param to Shift amount.
+   * @return Right rotation result.
+   * 
+   * @throws NullPointerException if any of the parameters is {@code null}.
+   */
 
   public static BitVector rotr(BitVector v, BitVector to) {
     checkNotNull(v);
