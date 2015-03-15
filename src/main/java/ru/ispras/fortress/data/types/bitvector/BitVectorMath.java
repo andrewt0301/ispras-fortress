@@ -314,27 +314,27 @@ public final class BitVectorMath {
     checkNotNull(to);
 
     final BigInteger size = BigInteger.valueOf(v.getBitSize());
-    final BigInteger offset = to.mod(size);
+    final BigInteger amount = to.mod(size);
 
-    return shl_internal(v, offset.intValue());
+    return shl_internal(v, amount.intValue());
   }
 
   public static BitVector shl(BitVector v, int to) {
     checkNotNull(v);
 
-    final int offset = to % v.getBitSize();
-    return shl_internal(v, offset);
+    final int amount = to % v.getBitSize();
+    return shl_internal(v, amount);
   }
 
-  private static BitVector shl_internal(BitVector v, int offset) {
-    if (0 == offset) {
+  private static BitVector shl_internal(BitVector v, int amount) {
+    if (0 == amount) {
       return v;
     }
 
-    final int distance = Math.abs(offset);
+    final int distance = Math.abs(amount);
     final BitVector result = BitVector.newEmpty(v.getBitSize());
 
-    if (offset > 0) {
+    if (amount > 0) {
       BitVectorAlgorithm.copy(v, 0, result, distance, result.getBitSize() - distance);
     } else {
       BitVectorAlgorithm.copy(v, 0, result, result.getBitSize() - distance, distance);
@@ -370,28 +370,27 @@ public final class BitVectorMath {
     checkNotNull(to);
 
     final BigInteger size = BigInteger.valueOf(v.getBitSize());
-    final BigInteger offset = to.mod(size);
+    final BigInteger amount = to.mod(size);
 
-    return lshr_internal(v, offset.intValue());
+    return lshr_internal(v, amount.intValue());
   }
 
   public static BitVector lshr(BitVector v, int to) {
     checkNotNull(v);
 
-    final int offset = to % v.getBitSize();
-    return lshr_internal(v, offset);
+    final int amount = to % v.getBitSize();
+    return lshr_internal(v, amount);
   }
 
-  private static BitVector lshr_internal(BitVector v, int offset) {
-    if (0 == offset) {
+  private static BitVector lshr_internal(BitVector v, int amount) {
+    if (0 == amount) {
       return v;
     }
-    
 
-    final int distance = Math.abs(offset);
+    final int distance = Math.abs(amount);
     final BitVector result = BitVector.newEmpty(v.getBitSize());
 
-    if (offset > 0) {
+    if (amount > 0) {
       BitVectorAlgorithm.copy(v, distance, result, 0, result.getBitSize() - distance);
     } else {
       BitVectorAlgorithm.copy(v, result.getBitSize() - distance, result, 0, distance);
@@ -400,14 +399,51 @@ public final class BitVectorMath {
     return result;
   }
 
+  /**
+   * Performs arithmetical right shift of the specified bit vector by the specified shift amount.
+   * The actual shift amount is calculated as {@code to} modulo {@code v.getBitSize()}. If the 
+   * actual shift amount equals {@code 0}, no shift is performed and the initial bit vector is
+   * returned. Otherwise, a new copy of data is created and returned. If the shift amount is
+   * negative, the actual shift amount is calculated as {@code v.getBitSize()} minus 
+   * ({@code to} modulo {@code v.getBitSize()}).
+   * 
+   * @param v Bit vector to be shifted.
+   * @param to Shift amount.
+   * @return Arithmetical right shift result.
+   * 
+   * @throws NullPointerException if any of the parameters is {@code null}.
+   */
+
+  public static BitVector ashr(BitVector v, BitVector to) {
+    checkNotNull(v);
+    checkNotNull(to);
+    
+    return ashr(v, to.bigIntegerValue());
+  }
+
+  public static BitVector ashr(BitVector v, BigInteger to) {
+    checkNotNull(v);
+    checkNotNull(to);
+
+    final BigInteger size = BigInteger.valueOf(v.getBitSize());
+    final BigInteger amount = to.mod(size);
+
+    return ashr_internal(v, amount.intValue());
+  }
+
   public static BitVector ashr(BitVector v, int to) {
     checkNotNull(v);
 
-    final int distance = Math.abs(to % v.getBitSize());
-    if (0 == distance) {
+    final int amount = to % v.getBitSize();
+    return ashr_internal(v, amount);
+  }
+
+  private static BitVector ashr_internal(BitVector v, int amount) {
+    if (0 == amount) {
       return v;
     }
 
+    final int distance = Math.abs(amount);
     final BitVector result = BitVector.newEmpty(v.getBitSize());
 
     // If the sign (most significant) bit is set, fill the result with 1s.
@@ -415,7 +451,7 @@ public final class BitVectorMath {
       BitVectorAlgorithm.fill(result, (byte) 0xFF);
     }
 
-    if (to > 0) {
+    if (amount > 0) {
       BitVectorAlgorithm.copy(v, distance, result, 0, result.getBitSize() - distance);
     } else {
       BitVectorAlgorithm.copy(v, result.getBitSize() - distance, result, 0, distance);
@@ -424,12 +460,6 @@ public final class BitVectorMath {
     return result;
   }
 
-  public static BitVector ashr(BitVector v, BitVector to) {
-    checkNotNull(v);
-    checkNotNull(to);
-
-    return ashr(v, to.intValue());
-  }
 
   public static BitVector rotl(BitVector v, int to) {
     checkNotNull(v);
