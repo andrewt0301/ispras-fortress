@@ -631,7 +631,7 @@ public abstract class BitVector implements Comparable<BitVector> {
   }
 
   /**
-   * Converts the stored data to a BigInteger value. 
+   * Converts the stored data to a BigInteger value.
    * 
    * @return BigInteger representation of the stored value.
    */
@@ -653,6 +653,21 @@ public abstract class BitVector implements Comparable<BitVector> {
      */
 
     for_each_reverse(this, op);
+
+    /*
+     * NOTE: If the highest byte is incomplete (only part of it stores a value from the bit vector),
+     * it is sign-extended. This is needed to convert bit vectors of all sizes in a uniform way.
+     * The BigInteger value is negative if the highest bit of the highest byte in the byte array
+     * is set to 1. Consequently, all bit vectors which size is multiple of 8 and the highest bit is
+     * set to 1 will be converted to a negative BigInteger. To make this rule work for bit vectors
+     * which size is not multiple of 8, this sign extension is implemented.
+     */
+
+    final int incompleteBits = getBitSize() % BITS_IN_BYTE;
+    if (0 != incompleteBits & 0 != (byteArray[0] & (1 << (incompleteBits - 1)))) {
+      byteArray[0] = (byte)(byteArray[0] | (0xFF << incompleteBits));
+    }
+
     return new BigInteger(byteArray);
   }
 

@@ -516,6 +516,18 @@ public class BitVectorTestCase {
   
   @Test
   public void toBigIntegerTests() {
+    for (int bitSize = 1; bitSize <= 32; ++bitSize) {
+      System.out.println(bitSize + ":");
+      checkBigIntegerConversion(-1, bitSize);
+      checkBigIntegerConversion(0,  bitSize);
+    }
+
+    for (int bitSize = 33; bitSize <= 64; ++bitSize) {
+      System.out.println(bitSize + ":");
+      checkBigIntegerConversion(-1L, bitSize);
+      checkBigIntegerConversion(0L,  bitSize);
+    }
+
     final BitVector bv0 = BitVector.valueOf(BigInteger.valueOf(0), 32);
     Assert.assertEquals("00000000", bv0.toHexString());
     Assert.assertEquals(BigInteger.valueOf(0), bv0.bigIntegerValue());
@@ -561,6 +573,26 @@ public class BitVectorTestCase {
     final BitVector bv6 = BitVector.valueOf(BigInteger.valueOf(Long.MIN_VALUE), Long.SIZE);
     Assert.assertEquals("8000000000000000", bv6.toHexString());
     Assert.assertEquals(BigInteger.valueOf(Long.MIN_VALUE), bv6.bigIntegerValue());
+  }
+  
+  private void checkBigIntegerConversion(int value, int bitSize) {
+    final BitVector bv = BitVector.valueOf(value, bitSize);
+    final BigInteger bi = BigInteger.valueOf(value);
+
+    System.out.println(bv.toBinString());
+    System.out.println(bi.toString(2));
+
+    Assert.assertEquals(bi, bv.bigIntegerValue());
+  }
+
+  private void checkBigIntegerConversion(long value, int bitSize) {
+    final BitVector bv = BitVector.valueOf(value, bitSize);
+    final BigInteger bi = BigInteger.valueOf(value);
+
+    System.out.println(bv.toBinString());
+    System.out.println(bi.toString(2));
+
+    Assert.assertEquals(bi, bv.bigIntegerValue());
   }
 
   @Test
