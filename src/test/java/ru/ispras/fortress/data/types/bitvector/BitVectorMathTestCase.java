@@ -147,7 +147,7 @@ public class BitVectorMathTestCase {
     // TODO: NEED:
     // TESTS FOR THE SITUATION WHEN THE SECOND ARGUMENT IS A BIT VECTOR (NOT INT) AND IT SPECIFIES A NEGATIVE VALUE
 
-    checkBitVector(BitVectorMath.shl(BitVector.valueOf("1111"), 2), "1100");
+    checkBitVector(BitVectorMath.shl(BitVector.valueOf("1111"),  2), "1100");
     checkBitVector(BitVectorMath.shl(BitVector.valueOf("1111"), -2), "1100");
     checkBitVector(BitVectorMath.shl(BitVector.valueOf("1111"), -3), "1110");
     checkBitVector(BitVectorMath.shl(BitVector.valueOf("1111"), -1), "1000");
@@ -155,33 +155,43 @@ public class BitVectorMathTestCase {
     checkBitVector(BitVectorMath.shl(BitVector.valueOf("1111"), BitVector.valueOf(2, 8)), "1100");
     checkBitVector(BitVectorMath.shl(BitVector.valueOf("1111"), BitVector.valueOf(2, 32)), "1100");
     checkBitVector(BitVectorMath.shl(BitVector.valueOf("1111"), BitVector.valueOf(2, 64)), "1100");
+    checkBitVector(BitVectorMath.shl(BitVector.valueOf("1111"), BitVector.valueOf(-2, 4)), "1100");
+    checkBitVector(BitVectorMath.shl(BitVector.valueOf("1111"), BitVector.valueOf(-3, 4)), "1110");
+    checkBitVector(BitVectorMath.shl(BitVector.valueOf("1111"), BitVector.valueOf(-1, 4)), "1000");
 
-    checkBitVector(BitVectorMath.shl(BitVector.valueOf("1111111101"), 2), "1111110100");
+    checkBitVector(BitVectorMath.shl(BitVector.valueOf("1111111101"),  2), "1111110100");
     checkBitVector(BitVectorMath.shl(BitVector.valueOf("1111111101"), -8), "1111110100");
     checkBitVector(BitVectorMath.shl(BitVector.valueOf("1111111101"), BitVector.valueOf(2, 10)), "1111110100");
+    //checkBitVector(BitVectorMath.shl(BitVector.valueOf("1111111101"), BitVector.valueOf(-8, 10)), "1111110100");
 
-    checkBitVector(BitVectorMath.shl(BitVector.valueOf("11111111111101"), 2), "11111111110100");
+    checkBitVector(BitVectorMath.shl(BitVector.valueOf("11111111111101"),   2), "11111111110100");
     checkBitVector(BitVectorMath.shl(BitVector.valueOf("11111111111101"), -12), "11111111110100");
     checkBitVector(BitVectorMath.shl(BitVector.valueOf("11111111111101"), BitVector.valueOf(2, 14)), "11111111110100");
+    //checkBitVector(BitVectorMath.shl(BitVector.valueOf("11111111111101"), BitVector.valueOf(-12, 14)), "11111111110100");
 
-    checkBitVector(BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFF, 32), 2), 0xFFFFFFFC);
+    checkBitVector(BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFF, 32),  2),  0xFFFFFFFC);
     checkBitVector(BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFF, 32), -30), 0xFFFFFFFC);
-    checkBitVector(BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFF, 32), BitVector.valueOf(2, 32)), 0xFFFFFFFC);
+    checkBitVector(BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFF, 32), BitVector.valueOf(  2, 32)), 0xFFFFFFFC);
+    checkBitVector(BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFF, 32), BitVector.valueOf(-30, 32)), 0xFFFFFFFC);
 
-    checkBitVector(BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFF, 32), 16), 0xFFFF0000);
+    checkBitVector(BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFF, 32),  16), 0xFFFF0000);
     checkBitVector(BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFF, 32), -16), 0xFFFF0000);
-    checkBitVector(BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFF, 32), BitVector.valueOf(16, 32)), 0xFFFF0000);
+    checkBitVector(BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFF, 32), BitVector.valueOf(16,  32)), 0xFFFF0000);
+    checkBitVector(BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFF, 32), BitVector.valueOf(-16, 32)), 0xFFFF0000);
 
-    checkBitVector(BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFF, 32), 19), 0xFFF80000);
+    checkBitVector(BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFF, 32),  19), 0xFFF80000);
     checkBitVector(BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFF, 32), -13), 0xFFF80000);
-    checkBitVector(BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFF, 32), BitVector.valueOf(19, 32)), 0xFFF80000);
+    checkBitVector(BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFF, 32), BitVector.valueOf(19,  32)), 0xFFF80000);
+    checkBitVector(BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFF, 32), BitVector.valueOf(-13, 32)), 0xFFF80000);
 
     checkBitVector(
-        BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64), 2), 0xFFFFFFFFFFFFFFFCL);
+        BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64),   2), 0xFFFFFFFFFFFFFFFCL);
     checkBitVector(
         BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64), -62), 0xFFFFFFFFFFFFFFFCL);
     checkBitVector(
         BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64), BitVector.valueOf(2, 64)), 0xFFFFFFFFFFFFFFFCL);
+    checkBitVector(
+        BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64), BitVector.valueOf(-62, 64)), 0xFFFFFFFFFFFFFFFCL);
 
     checkBitVector(
       BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64), 32), 0xFFFFFFFF00000000L);
@@ -189,6 +199,8 @@ public class BitVectorMathTestCase {
         BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64), -32), 0xFFFFFFFF00000000L);
     checkBitVector(
         BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64), BitVector.valueOf(32, 64)), 0xFFFFFFFF00000000L);
+    checkBitVector(
+        BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64), BitVector.valueOf(-32, 64)), 0xFFFFFFFF00000000L);
 
     checkBitVector(
         BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64), 35), 0xFFFFFFF800000000L);
@@ -196,6 +208,8 @@ public class BitVectorMathTestCase {
         BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64), -29), 0xFFFFFFF800000000L);
     checkBitVector(
         BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64), BitVector.valueOf(35, 64)), 0xFFFFFFF800000000L);
+    checkBitVector(
+        BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64), BitVector.valueOf(-29, 64)), 0xFFFFFFF800000000L);
   }
 
   @Test
