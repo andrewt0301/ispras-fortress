@@ -417,7 +417,7 @@ public final class BitVectorMath {
   public static BitVector ashr(BitVector v, BitVector to) {
     checkNotNull(v);
     checkNotNull(to);
-    
+
     return ashr(v, to.bigIntegerValue());
   }
 
@@ -460,6 +460,22 @@ public final class BitVectorMath {
     return result;
   }
 
+  public static BitVector rotl(BitVector v, BitVector to) {
+    checkNotNull(v);
+    checkNotNull(to);
+
+    return rotl(v, to.bigIntegerValue());
+  }
+
+  public static BitVector rotl(BitVector v, BigInteger to) {
+    checkNotNull(v);
+    checkNotNull(to);
+
+    final BigInteger size = BigInteger.valueOf(v.getBitSize());
+    final BigInteger amount = to.mod(size);
+
+    return rotl_internal(v, amount.intValue());
+  }
 
   public static BitVector rotl(BitVector v, int to) {
     checkNotNull(v);
@@ -481,30 +497,21 @@ public final class BitVectorMath {
 
     return result;
   }
-
-  public static BitVector rotl(BitVector v, BitVector to) {
-    checkNotNull(v);
-    checkNotNull(to);
-
-    return rotl(v, to.intValue());
-  }
-
-  public static BitVector rotr(BitVector v, int to) {
-    checkNotNull(v);
-
-    final int distance = Math.abs(to % v.getBitSize());
-    if (0 == distance) {
+  
+  private static BitVector rotl_internal(BitVector v, int amount) {
+    if (0 == amount) {
       return v;
     }
 
+    final int distance = Math.abs(amount);
     final BitVector result = BitVector.newEmpty(v.getBitSize());
 
-    if (to > 0) {
-      BitVectorAlgorithm.copy(v, distance, result, 0, result.getBitSize() - distance);
-      BitVectorAlgorithm.copy(v, 0, result, result.getBitSize() - distance, distance);
-    } else {
-      BitVectorAlgorithm.copy(v, result.getBitSize() - distance, result, 0, distance);
+    if (amount > 0) {
       BitVectorAlgorithm.copy(v, 0, result, distance, result.getBitSize() - distance);
+      BitVectorAlgorithm.copy(v, v.getBitSize() - distance, result, 0, distance);
+    } else {
+      BitVectorAlgorithm.copy(v, 0, result, result.getBitSize() - distance, distance);
+      BitVectorAlgorithm.copy(v, distance, result, 0, result.getBitSize() - distance);
     }
 
     return result;
@@ -514,7 +521,43 @@ public final class BitVectorMath {
     checkNotNull(v);
     checkNotNull(to);
 
-    return rotr(v, to.intValue());
+    return rotr(v, to.bigIntegerValue());
+  }
+
+  public static BitVector rotr(BitVector v, BigInteger to) {
+    checkNotNull(v);
+    checkNotNull(to);
+
+    final BigInteger size = BigInteger.valueOf(v.getBitSize());
+    final BigInteger amount = to.mod(size);
+
+    return rotr_internal(v, amount.intValue());
+  }
+
+  public static BitVector rotr(BitVector v, int to) {
+    checkNotNull(v);
+
+    final int amount = to % v.getBitSize();
+    return rotr_internal(v, amount);
+  }
+
+  private static BitVector rotr_internal(BitVector v, int amount) {
+    if (0 == amount) {
+      return v;
+    }
+
+    final int distance = Math.abs(amount);
+    final BitVector result = BitVector.newEmpty(v.getBitSize());
+
+    if (amount > 0) {
+      BitVectorAlgorithm.copy(v, distance, result, 0, result.getBitSize() - distance);
+      BitVectorAlgorithm.copy(v, 0, result, result.getBitSize() - distance, distance);
+    } else {
+      BitVectorAlgorithm.copy(v, result.getBitSize() - distance, result, 0, distance);
+      BitVectorAlgorithm.copy(v, 0, result, distance, result.getBitSize() - distance);
+    }
+
+    return result;
   }
 
   public static BitVector add(BitVector lhs, BitVector rhs) {
