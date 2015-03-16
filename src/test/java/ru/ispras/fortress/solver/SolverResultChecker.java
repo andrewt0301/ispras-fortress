@@ -40,7 +40,7 @@ public final class SolverResultChecker {
       expected.put(v.getName(), v);
     }
 
-    Assert.assertTrue("Wrong variable number", results.size() == expected.size());
+    Assert.assertEquals("Wrong variable number", results.size(), expected.size());
 
     for (Variable variable : results.values()) {
       final Variable expectedVariable = expected.get(variable.getName());
