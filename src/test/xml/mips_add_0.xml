@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>129a8bb7-5b88-4573-9ec7-cee6f067cdf2</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="CIA!4" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="GPR!1" type="(MAP (BIT_VECTOR 32) (BIT_VECTOR 32))" value=""/>
+        <Variable name="CIA!2" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="jump_address!2" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="GPR!3" type="(MAP (BIT_VECTOR 32) (BIT_VECTOR 32))" value=""/>
+        <Variable name="CIA!3" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="GPR!2" type="(MAP (BIT_VECTOR 32) (BIT_VECTOR 32))" value=""/>
+        <Variable name="__tmp_4!1" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="CIA!1" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="GPR!4" type="(MAP (BIT_VECTOR 32) (BIT_VECTOR 32))" value=""/>
+        <Variable name="mips_add.block_1!1" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="__tmp_3!1" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="is_delay_slot!2" type="(BIT_VECTOR 1)" value=""/>
+        <Variable name="__tmp_1!2" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="mips_add.command.rd.i!1" type="(BIT_VECTOR 5)" value=""/>
+        <Variable name="__tmp_1!1" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="temp!2" type="(BIT_VECTOR 33)" value=""/>
+        <Variable name="temp!1" type="(BIT_VECTOR 33)" value=""/>
+        <Variable name="__tmp_2!1" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="mips_add.block_5!1" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="JMPADDR!2" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="JMPADDR!1" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="mips_add.command.normal!1" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="mips_add.command.rs.i!1" type="(BIT_VECTOR 5)" value=""/>
+        <Variable name="BRANCH!1" type="(BIT_VECTOR 1)" value=""/>
+        <Variable name="BRANCH!2" type="(BIT_VECTOR 1)" value=""/>
+        <Variable name="mips_add.command.rt.i!1" type="(BIT_VECTOR 5)" value=""/>
+        <Variable name="mips_add.block_4!1" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="__tmp_0!2" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="__tmp_0!1" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="__tmp_0!4" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="__tmp_0!3" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="__tmp_0!5" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="mips_add.command.overflow!1" type="LOGIC_BOOLEAN" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="STORE">
+                    <VariableRef name="GPR!1"/>
+                    <Value type="(BIT_VECTOR 32)" value="00000000000000000000000000000000"/>
+                    <VariableRef name="__tmp_0!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="__tmp_0!2"/>
+                <Value type="(BIT_VECTOR 32)" value="00000000000000000000000000000000"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="is_delay_slot!2"/>
+                <VariableRef name="BRANCH!1"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="jump_address!2"/>
+                <VariableRef name="JMPADDR!1"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="BRANCH!2"/>
+                <Value type="(BIT_VECTOR 1)" value="0"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="JMPADDR!2"/>
+                <Value type="(BIT_VECTOR 32)" value="00000000000000000000000000000000"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="GPR!2"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVZEROEXT">
+                        <Value type="LOGIC_INTEGER" value="27"/>
+                        <VariableRef name="mips_add.command.rs.i!1"/>
+                    </Operation>
+                </Operation>
+                <VariableRef name="__tmp_0!1"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="GPR!2"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVZEROEXT">
+                        <Value type="LOGIC_INTEGER" value="27"/>
+                        <VariableRef name="mips_add.command.rs.i!1"/>
+                    </Operation>
+                </Operation>
+                <VariableRef name="__tmp_1!1"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="GPR!2"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVZEROEXT">
+                        <Value type="LOGIC_INTEGER" value="27"/>
+                        <VariableRef name="mips_add.command.rt.i!1"/>
+                    </Operation>
+                </Operation>
+                <VariableRef name="__tmp_2!1"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="GPR!2"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVZEROEXT">
+                        <Value type="LOGIC_INTEGER" value="27"/>
+                        <VariableRef name="mips_add.command.rt.i!1"/>
+                    </Operation>
+                </Operation>
+                <VariableRef name="__tmp_3!1"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="temp!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVCONCAT">
+                        <VariableRef name="__tmp_0!1"/>
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                            <Value type="LOGIC_INTEGER" value="31"/>
+                            <Value type="LOGIC_INTEGER" value="31"/>
+                            <VariableRef name="__tmp_1!1"/>
+                        </Operation>
+                    </Operation>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVCONCAT">
+                        <VariableRef name="__tmp_2!1"/>
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                            <Value type="LOGIC_INTEGER" value="31"/>
+                            <Value type="LOGIC_INTEGER" value="31"/>
+                            <VariableRef name="__tmp_3!1"/>
+                        </Operation>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="mips_add.command.overflow!1"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="NOTEQ">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                        <Value type="LOGIC_INTEGER" value="32"/>
+                        <Value type="LOGIC_INTEGER" value="32"/>
+                        <VariableRef name="temp!2"/>
+                    </Operation>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                        <Value type="LOGIC_INTEGER" value="31"/>
+                        <Value type="LOGIC_INTEGER" value="31"/>
+                        <VariableRef name="temp!2"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="mips_add.command.normal!1"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="NOT">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="OR">
+                        <VariableRef name="mips_add.command.overflow!1"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="OR">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="AND">
+                    <VariableRef name="mips_add.command.overflow!1"/>
+                </Operation>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="AND">
+                    <VariableRef name="mips_add.command.normal!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                        <VariableRef name="GPR!3"/>
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="STORE">
+                            <VariableRef name="GPR!2"/>
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVZEROEXT">
+                                <Value type="LOGIC_INTEGER" value="27"/>
+                                <VariableRef name="mips_add.command.rd.i!1"/>
+                            </Operation>
+                            <VariableRef name="__tmp_1!2"/>
+                        </Operation>
+                    </Operation>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                        <VariableRef name="__tmp_1!2"/>
+                        <VariableRef name="__tmp_4!1"/>
+                    </Operation>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                        <VariableRef name="__tmp_4!1"/>
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                            <Value type="LOGIC_INTEGER" value="31"/>
+                            <Value type="LOGIC_INTEGER" value="0"/>
+                            <VariableRef name="temp!1"/>
+                        </Operation>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="AND">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                    <VariableRef name="GPR!4"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="ITE">
+                        <VariableRef name="mips_add.command.normal!1"/>
+                        <VariableRef name="GPR!3"/>
+                        <VariableRef name="GPR!2"/>
+                    </Operation>
+                </Operation>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                    <VariableRef name="__tmp_0!5"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="ITE">
+                        <VariableRef name="mips_add.command.normal!1"/>
+                        <VariableRef name="__tmp_0!4"/>
+                        <VariableRef name="__tmp_0!3"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="mips_add.block_1!1"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="AND">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                        <VariableRef name="is_delay_slot!2"/>
+                        <Value type="(BIT_VECTOR 1)" value="1"/>
+                    </Operation>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                        <VariableRef name="BRANCH!2"/>
+                        <Value type="(BIT_VECTOR 1)" value="1"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="OR">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="AND">
+                    <VariableRef name="mips_add.block_1!1"/>
+                </Operation>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="AND">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="NOT">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="OR">
+                            <VariableRef name="mips_add.block_1!1"/>
+                        </Operation>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="AND"/>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="mips_add.block_4!1"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                    <VariableRef name="is_delay_slot!2"/>
+                    <Value type="(BIT_VECTOR 1)" value="1"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="mips_add.block_5!1"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="NOT">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="OR">
+                        <VariableRef name="mips_add.block_4!1"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="OR">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="AND">
+                    <VariableRef name="mips_add.block_4!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                        <VariableRef name="CIA!2"/>
+                        <VariableRef name="jump_address!2"/>
+                    </Operation>
+                </Operation>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="AND">
+                    <VariableRef name="mips_add.block_5!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                        <VariableRef name="CIA!3"/>
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                            <VariableRef name="CIA!1"/>
+                            <Value type="(BIT_VECTOR 32)" value="00000000000000000000000000000100"/>
+                        </Operation>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="AND">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                    <VariableRef name="CIA!4"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="ITE">
+                        <VariableRef name="mips_add.block_5!1"/>
+                        <VariableRef name="CIA!3"/>
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="ITE">
+                            <VariableRef name="mips_add.block_4!1"/>
+                            <VariableRef name="CIA!2"/>
+                            <VariableRef name="CIA!3"/>
+                        </Operation>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="AND">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="OR">
+                    <VariableRef name="mips_add.command.overflow!1"/>
+                    <VariableRef name="mips_add.command.normal!1"/>
+                </Operation>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="OR">
+                    <VariableRef name="mips_add.block_1!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="NOT">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="OR">
+                            <VariableRef name="mips_add.block_1!1"/>
+                        </Operation>
+                    </Operation>
+                </Operation>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="OR">
+                    <VariableRef name="mips_add.block_4!1"/>
+                    <VariableRef name="mips_add.block_5!1"/>
+                </Operation>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>
