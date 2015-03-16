@@ -17,7 +17,6 @@ package ru.ispras.fortress.data;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -229,7 +228,7 @@ public enum DataTypeId {
       final Object keyType = DataType.typeOf(keyTypeText);
       final Object valueType = DataType.typeOf(valueTypeText);
 
-      return DataType.newDataType(this, Arrays.asList(keyType, valueType));
+      return DataType.newDataType(this, keyType, valueType);
     }
 
     Object getAttribute(Attribute a, List<Object> params) {
