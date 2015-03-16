@@ -16,12 +16,14 @@ package ru.ispras.fortress.data.types.datamap;
 
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
+import ru.ispras.fortress.solver.engine.z3.SMTRegExp;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * The DataMap class represents mappings using Fortress data types with
@@ -231,7 +233,17 @@ public final class DataMap implements Map<Data, Data> {
    */
 
   private static Data readData(String s, DataType type) {
-    return type.valueOf(s, type.getTypeRadix());
+    final int radix;
+
+    if (Pattern.compile(SMTRegExp.LINE_START + SMTRegExp.VALUE_BIN).matcher(s).matches()) {
+      radix = 2;
+    } else if (Pattern.compile(SMTRegExp.LINE_START + SMTRegExp.VALUE_HEX).matcher(s).matches()) {
+      radix = 16;
+    } else {
+      radix = 10; // decimal value by default
+    }
+
+    return type.valueOf(s.replaceAll(SMTRegExp.VALUE_TRIM_PTRN, ""), radix);
   }
 
   /**
