@@ -16,9 +16,6 @@ package ru.ispras.fortress.solver.constraint;
 
 import java.util.Arrays;
 
-import org.junit.Assert;
-
-import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.Node;
@@ -57,10 +54,6 @@ public class BitVectorLiteralTestCase extends GenericSolverTestBase {
 final class BitVectorLiteralConstraint implements GenericSolverTestBase.SampleConstraint {
   private static final DataType BitVector32 = DataType.BIT_VECTOR(32);
   private static final DataType BitVector1 = DataType.BIT_VECTOR(1);
-
-  private static Node INTEGER(int n) {
-    return new NodeValue(Data.newInteger(n));
-  }
 
   public Constraint getConstraint() {
     final ConstraintBuilder builder = new ConstraintBuilder();
