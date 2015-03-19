@@ -19,6 +19,7 @@ import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public final class NodeOperation extends Node {
    * Creates an operation node that has a variable number of operands (from 0 to infinity).
    * 
    * @param operation Operation identifier.
-   * @param operands Operands packed into an array of syntax elements.
+   * @param operands Operands packed into an array of expression nodes.
    * 
    * @throws NullPointerException if any parameter (including every operand) is {@code null}.
    */
@@ -57,6 +58,21 @@ public final class NodeOperation extends Node {
     this.operation = operation;
     this.operands = operands;
     this.dataType = DataType.UNKNOWN;
+  }
+
+  /**
+   * Creates an operation node that has a variable number of operands (from 0 to infinity)
+   * packed into a collection.
+   * 
+   * @param operation Operation identifier.
+   * @param operands Operands packed into a collection of expression nodes.
+   * 
+   * @throws NullPointerException if any parameter (including every operand) is {@code null}.
+   */
+
+  public <T extends Enum<? extends T>> NodeOperation(
+      T operation, Collection<? extends Node> operands) {
+    this(operation, operands != null ? operands.toArray(new Node[operands.size()]) : null);
   }
 
   /**
