@@ -35,7 +35,7 @@ public final class InvariantChecks {
    * @throws NullPointerException if the invariant is violated ({@code o} is {@code null}).
    */
 
-  public static void checkNotNull(Object o) {
+  public static <T> void checkNotNull(T o) {
     if (null == o) {
       throw new NullPointerException();
     }
@@ -87,7 +87,7 @@ public final class InvariantChecks {
    * @throws NullPointerException if the invariant is violated ({@code o} is {@code null}).
    */
 
-  public static void checkNotNull(Object o, String name) {
+  public static <T> void checkNotNull(T o, String name) {
     if (null == o) {
       throw new NullPointerException(
           String.format("%s must not be equal null", name));
@@ -106,7 +106,7 @@ public final class InvariantChecks {
   public static void checkGreaterThanZero(int n) {
     if (n <= 0) {
       throw new IllegalArgumentException(
-          String.format("%d must be > 0", n));      
+          String.format("%d must be > 0", n));
     }
   }
 
@@ -122,7 +122,7 @@ public final class InvariantChecks {
   public static void checkGreaterOrEqZero(int n) {
     if (n < 0) {
       throw new IllegalArgumentException(
-          String.format("%d must be >= 0", n));      
+          String.format("%d must be >= 0", n));
     }
   }
 
