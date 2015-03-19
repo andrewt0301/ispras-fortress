@@ -140,8 +140,8 @@ enum TypeRules implements TypeRule {
       }
 
       final int m = sourceType.getSize();
-      final int i = params[0];      
-      final int j = params[1];
+      final int i = Math.max(params[0], params[1]);
+      final int j = Math.min(params[0], params[1]);
 
       if (!((m > i) && (i >= j) && (j >= 0))) {
         return DataType.UNKNOWN;
