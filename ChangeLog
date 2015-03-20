@@ -12,6 +12,13 @@
  (like Yices, Z3, CVC4, etc.)
 
 --------------------------------------------------------------------------------
+ 2015/03/20 Fortress 0.3.6 beta
+
+ The new build contains the following changes:
+
+ - Some bug fixes and code improvements were made
+
+--------------------------------------------------------------------------------
  2015/03/05 Fortress 0.3.5 beta
 
  The new build contains the following changes:
