@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2013-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,6 +13,8 @@
  */
 
 package ru.ispras.fortress.solver.constraint;
+
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -58,9 +60,7 @@ public final class ConstraintBuilder {
    */
 
   public ConstraintBuilder(ConstraintKind kind) {
-    if (null == kind) {
-      throw new NullPointerException();
-    }
+    checkNotNull(kind);
 
     this.name = UUID.randomUUID().toString();
     this.description = "";
@@ -79,9 +79,7 @@ public final class ConstraintBuilder {
    */
 
   public ConstraintBuilder(Constraint constraint) {
-    if (null == constraint) {
-      throw new NullPointerException();
-    }
+    checkNotNull(constraint);
 
     this.name = constraint.getName();
     this.kind = constraint.getKind();
@@ -109,10 +107,7 @@ public final class ConstraintBuilder {
    */
 
   public void setName(String name) {
-    if (null == name) {
-      throw new NullPointerException();
-    }
-
+    checkNotNull(name);
     this.name = name;
   }
 
@@ -125,10 +120,7 @@ public final class ConstraintBuilder {
    */
 
   public void setDescription(String description) {
-    if (null == description) {
-      throw new NullPointerException();
-    }
-
+    checkNotNull(description);
     this.description = description;
   }
 
@@ -141,10 +133,7 @@ public final class ConstraintBuilder {
    */
 
   public void setKind(ConstraintKind kind) {
-    if (null == kind) {
-      throw new NullPointerException();
-    }
-
+    checkNotNull(kind);
     this.kind = kind;
   }
 
@@ -157,10 +146,7 @@ public final class ConstraintBuilder {
    */
 
   public void setInnerRep(Object value) {
-    if (null == value) {
-      throw new NullPointerException();
-    }
-
+    checkNotNull(value);
     this.representation = value;
   }
 
@@ -177,9 +163,7 @@ public final class ConstraintBuilder {
    */
 
   public void addVariables(Iterable<Variable> variables) {
-    if (null == variables) {
-      throw new NullPointerException();
-    }
+    checkNotNull(variables);
 
     for (Variable variable : variables) {
       addVariable(variable);
@@ -198,9 +182,7 @@ public final class ConstraintBuilder {
    */
 
   public void addVariableCopies(Iterable<Variable> variables) {
-    if (null == variables) {
-      throw new NullPointerException();
-    }
+    checkNotNull(variables);
 
     for (Variable variable : variables) {
       addVariable(variable.getName(), variable.getData());
@@ -222,13 +204,8 @@ public final class ConstraintBuilder {
    */
 
   public Variable addVariable(String name, DataType type) {
-    if (null == name) {
-      throw new NullPointerException();
-    }
-
-    if (null == type) {
-      throw new NullPointerException();
-    }
+    checkNotNull(name);
+    checkNotNull(type);
 
     return addVariable(new Variable(name, type));
   }
@@ -248,13 +225,8 @@ public final class ConstraintBuilder {
    */
 
   public Variable addVariable(String name, Data data) {
-    if (null == name) {
-      throw new NullPointerException();
-    }
-
-    if (null == data) {
-      throw new NullPointerException();
-    }
+    checkNotNull(name);
+    checkNotNull(data);
 
     return addVariable(new Variable(name, data));
   }
@@ -276,9 +248,7 @@ public final class ConstraintBuilder {
    */
 
   private Variable addVariable(Variable variable) {
-    if (null == variable) {
-      throw new NullPointerException();
-    }
+    checkNotNull(variable);
 
     if (!variables.containsKey(variable.getName())) {
       variables.put(variable.getName(), variable);

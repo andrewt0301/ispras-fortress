@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,7 +14,11 @@
 
 package ru.ispras.fortress.solver.constraint;
 
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
+
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -54,11 +58,11 @@ public final class Constraint {
 
   public Constraint(String name, ConstraintKind kind, String description,
       Map<String, Variable> variables, Object representation) {
-    notNullCheck(name, "name");
-    notNullCheck(kind, "kind");
-    notNullCheck(description, "description");
-    notNullCheck(variables, "variables");
-    notNullCheck(representation, "representation");
+    checkNotNull(name, "name");
+    checkNotNull(kind, "kind");
+    checkNotNull(description, "description");
+    checkNotNull(variables, "variables");
+    checkNotNull(representation, "representation");
 
     if (representation.getClass() != kind.getInnerRepClass()) {
       throw new IllegalArgumentException(String.format(ILLEGAL_IR_CLASS,
@@ -70,12 +74,6 @@ public final class Constraint {
     this.kind = kind;
     this.variables = variables;
     this.representation = representation;
-  }
-
-  private static void notNullCheck(Object o, String name) {
-    if (null == o) {
-      throw new NullPointerException(name + " is null");
-    }
   }
 
   /**
@@ -131,8 +129,8 @@ public final class Constraint {
    */
 
   public void setVariableValue(String name, Data value) {
-    notNullCheck(name, "name");
-    notNullCheck(value, "value");
+    checkNotNull(name, "name");
+    checkNotNull(value, "value");
 
     if (!variables.containsKey(name)) {
       throw new IllegalArgumentException(String.format(UNDEFINED_VARIABLE, name));
@@ -157,29 +155,27 @@ public final class Constraint {
    */
 
   public Variable findVariable(String name) {
-    notNullCheck(name, "name");
+    checkNotNull(name, "name");
     return variables.get(name);
   }
 
   /**
-   * Returns an Iterable object that provides an iterator for the collection of constraint
-   * variables.
+   * Returns a collection of constraint variables.
    * 
-   * @return variables An Iterable object to access constraint variables.
+   * @return variables A collection of constraint variables.
    */
 
-  public Iterable<Variable> getVariables() {
-    return variables.values();
+  public Collection<Variable> getVariables() {
+    return Collections.unmodifiableCollection(variables.values());
   }
 
   /**
-   * Returns an Iterable object to access unknown constraint variables (that have no assigned
-   * value).
+   * Returns a collection of unknown constraint variables (that have no assigned value).
    * 
-   * @return An Iterable object to access constraint variables.
+   * @return A collection of constraint variables.
    */
 
-  public Iterable<Variable> getUnknownVariables() {
+  public Collection<Variable> getUnknownVariables() {
     final List<Variable> result = new ArrayList<Variable>(variables.size());
 
     for (Variable variable : variables.values()) {
