@@ -16,6 +16,7 @@ package ru.ispras.fortress.solver;
 
 import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
+import java.util.Collections;
 import java.util.List;
 import ru.ispras.fortress.data.Variable;
 
@@ -64,8 +65,8 @@ public final class SolverResult {
     checkNotNull(variables);
 
     this.status = status;
-    this.errors = errors;
-    this.variables = variables;
+    this.errors = Collections.unmodifiableList(errors);
+    this.variables = Collections.unmodifiableList(variables);
   }
 
   /**
@@ -89,22 +90,22 @@ public final class SolverResult {
   }
 
   /**
-   * Returns the lists of errors that occurred during the process of solving a constraint.
+   * Returns the list of errors that occurred during the process of solving a constraint.
    * 
-   * @return An iterator for the list of errors.
+   * @return The list of errors.
    */
 
-  public Iterable<String> getErrors() {
+  public List<String> getErrors() {
     return errors;
   }
 
   /**
-   * Returns an iterator for the collection of variables that store a solution to a constraint.
+   * Returns the list of variables that store a solution to a constraint.
    * 
-   * @return An iterator for the collection of output variables.
+   * @return The list of output variables.
    */
 
-  public Iterable<Variable> getVariables() {
+  public List<Variable> getVariables() {
     return variables;
   }
 

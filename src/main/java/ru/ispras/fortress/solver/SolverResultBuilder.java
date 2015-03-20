@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2013-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,6 +13,8 @@
  */
 
 package ru.ispras.fortress.solver;
+
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +33,7 @@ public final class SolverResultBuilder {
    */
 
   public SolverResultBuilder(SolverResult.Status status) {
-    if (null == status) {
-      throw new NullPointerException();
-    }
+    checkNotNull(status);
 
     this.status = status;
     this.errors = new ArrayList<String>();
