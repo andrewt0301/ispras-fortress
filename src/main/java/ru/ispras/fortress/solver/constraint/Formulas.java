@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2011-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,6 +13,8 @@
  */
 
 package ru.ispras.fortress.solver.constraint;
+
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,10 +53,7 @@ public final class Formulas {
    */
 
   public Formulas(Formulas formulas) {
-    if (null == formulas) {
-      throw new NullPointerException();
-    }
-
+    checkNotNull(formulas);
     this.exprs = new ArrayList<Node>(formulas.exprs);
   }
 
@@ -78,10 +77,7 @@ public final class Formulas {
    */
 
   public void add(Node formula) {
-    if (null == formula) {
-      throw new NullPointerException();
-    }
-
+    checkNotNull(formula);
     exprs.add(formula);
   }
 
@@ -93,14 +89,9 @@ public final class Formulas {
    * @throws NullPointerException if the parameter equals null.
    */
 
-  public void addAll(Iterable<Node> formulas) {
-    if (null == formulas) {
-      throw new NullPointerException();
-    }
-
-    for (Node formula : formulas) {
-      add(formula);
-    }
+  public void addAll(Collection<? extends Node> formulas) {
+    checkNotNull(formulas);
+    exprs.addAll(formulas);
   }
 
   /**
@@ -113,21 +104,18 @@ public final class Formulas {
    */
 
   public void addAll(Formulas formulas) {
-    if (null == formulas) {
-      throw new NullPointerException();
-    }
-
-    addAll(formulas.exprs());
+    checkNotNull(formulas);
+    addAll(formulas.exprs);
   }
 
   /**
-   * Provides access to the collection of formula expressions
+   * Provides access to the list of formula expressions
    * 
-   * @return Iterable for the collection of formula expressions
+   * @return List of formula expressions
    */
 
-  public Iterable<Node> exprs() {
-    return exprs;
+  public List<Node> exprs() {
+    return Collections.unmodifiableList(exprs);
   }
 
   /**
@@ -150,7 +138,7 @@ public final class Formulas {
   /**
    * Finds all variables used in the stored formula expressions and returns them to the client.
    * 
-   * @return A collection of all variables used in the stored formula expressions.
+   * @return A list of all variables used in the stored formula expressions.
    * 
    * @throws IllegalStateException if the method finds nodes that refer to different variable
    *         instances that have the same name. This is illegal because all variables used in
@@ -158,7 +146,7 @@ public final class Formulas {
    *         signature of the constraint).
    */
 
-  public Iterable<Variable> getVariables() {
+  public List<Variable> getVariables() {
     final Collection<NodeVariable> nodeVariables = ExprUtils.getVariables(exprs());
     final List<Variable> variables = new ArrayList<Variable>(nodeVariables.size());
 
