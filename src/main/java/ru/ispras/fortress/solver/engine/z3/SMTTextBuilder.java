@@ -34,6 +34,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashSet;
@@ -486,7 +487,7 @@ final class FunctionDefinitionBuilders {
     level.add(entry);
   }
 
-  public Iterable<StringBuilder> getBuilders() {
-    return entries;
+  public List<StringBuilder> getBuilders() {
+    return Collections.unmodifiableList(entries);
   }
 }

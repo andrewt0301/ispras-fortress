@@ -109,7 +109,7 @@ public final class Z3TextSolver extends SolverBase {
     try {
       walker.visit(((Formulas) constraint.getInnerRep()).exprs());
       tempFile = File.createTempFile(TEMP_FILE, TEMP_FILE_SUFFIX);
-      
+
       final String tempFilePath = tempFile.getPath();
       smtTextBuilder.saveToFile(tempFilePath, textBuilder);
 
