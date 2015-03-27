@@ -113,7 +113,7 @@ enum TypeRules implements TypeRule {
       return DataType.UNKNOWN;
     }
   },
-  
+
   /**
    * Semantics of the BVEXTRACT operation as described in the SMT-LIB bit vector theory:
    * <p>
@@ -151,8 +151,7 @@ enum TypeRules implements TypeRule {
       return DataType.BIT_VECTOR(n);
     }
   },
-  
-  
+
   BVCONCAT {
     @Override
     public DataType getResultType(DataType[] operandTypes, int[] params) {

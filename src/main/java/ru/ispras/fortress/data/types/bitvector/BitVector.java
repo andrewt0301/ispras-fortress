@@ -621,7 +621,7 @@ public abstract class BitVector implements Comparable<BitVector> {
           return;
         }
 
-        result.value |= (v & 0xFF) << bitCount;
+        result.value |= ((long)v & 0xFFL) << bitCount;
         bitCount += BITS_IN_BYTE;
       }
     };

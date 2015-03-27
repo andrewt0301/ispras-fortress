@@ -511,9 +511,34 @@ public class BitVectorTestCase {
 
   @Test
   public void toLongTests() {
-    // TODO IMPLEMENT
+    checkLongConversion(0);
+    checkLongConversion(1);
+    checkLongConversion(-1);
+
+    checkLongConversion(0x00000000000000FFL);
+    checkLongConversion(0x000000000000FF00L);
+    checkLongConversion(0x0000000000FF0000L);
+    checkLongConversion(0x00000000FF000000L);
+    checkLongConversion(0x000000FF00000000L);
+    checkLongConversion(0x0000FF0000000000L);
+    checkLongConversion(0x00FF000000000000L);
+    checkLongConversion(0xFF00000000000000L);
+
+    checkLongConversion(0x00000000000A0000L);
+    checkLongConversion(0xFFFFFFFFFFF5FFFFL);
+    checkLongConversion(0xFFFFFFFFFFF5FFFFL);
+
+    checkLongConversion(0xDEADBEEF);
+    checkLongConversion(0xDEADBEEF00000000L);
+    checkLongConversion(0xDEADBEEFBAADF00DL);
   }
-  
+
+  private void checkLongConversion(long value) {
+    final BitVector bv = BitVector.valueOf(value, 64);
+    System.out.println(bv.toHexString() + " must be == " + Long.toHexString(bv.longValue()));
+    Assert.assertEquals(value, bv.longValue());
+  }
+
   @Test
   public void toBigIntegerTests() {
     for (int bitSize = 1; bitSize <= 32; ++bitSize) {
