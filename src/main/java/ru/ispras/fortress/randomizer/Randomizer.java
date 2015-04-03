@@ -159,7 +159,7 @@ public final class Randomizer {
   }
 
   /**
-   * Returns a random number from the given range.
+   * Returns a random number from the given range (inclusive).
    * 
    * @param min the low bound of the range.
    * @param max the high bound of the range.
