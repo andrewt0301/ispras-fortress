@@ -18,6 +18,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +26,9 @@ import java.util.regex.Pattern;
 
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
+import ru.ispras.fortress.data.DataTypeId;
 import ru.ispras.fortress.data.Variable;
+import ru.ispras.fortress.data.types.datamap.DataMap;
 import ru.ispras.fortress.esexpr.ESExpr;
 import ru.ispras.fortress.esexpr.ESExprMatcher;
 import ru.ispras.fortress.esexpr.ESExprParser;
@@ -39,6 +42,7 @@ import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintKind;
 import ru.ispras.fortress.solver.constraint.Formulas;
 import ru.ispras.fortress.solver.function.StandardFunction;
+import ru.ispras.fortress.util.Pair;
 
 /**
  * The Z3TextSolver class implements logic of a constraint solver that uses the Z3 tool by Microsoft
@@ -120,10 +124,8 @@ public final class Z3TextSolver extends SolverBase {
 
       boolean isStatusSet = false;
 
-      final Map<String, Variable> required =
-          variablesMap(constraint.getUnknownVariables());
-
-      final Map<String, Variable> deferred = new HashMap<>();
+      final Context context =
+          new Context(variablesMap(constraint.getUnknownVariables()));
 
       final ESExprParser parser = new ESExprParser(reader);
       ESExpr e = parser.next();
@@ -140,9 +142,9 @@ public final class Z3TextSolver extends SolverBase {
             isStatusSet = true;
           }
         } else if (isModel(e)) {
-          parseModel(resultBuilder, e, deferred);
+          parseModel(resultBuilder, e, context);
         } else if (!e.isNil() && e.isList()) {
-          parseVariables(resultBuilder, e, required, deferred);
+          parseVariables(resultBuilder, e, context);
         } else {
           assert false : String.format(UNK_OUTPUT_ERR_FRMT, e.toString());
           resultBuilder.addError(String.format(UNK_OUTPUT_ERR_FRMT, e.toString()));
@@ -221,117 +223,199 @@ public final class Z3TextSolver extends SolverBase {
     return pb.start();
   }
 
+  private static final class Context {
+    public final Map<String, Variable> required;
+    public final Map<String, Variable> deferred;
+
+    public final Map<String, ESExpr> model;
+    public final Map<String, Data> parsed;
+
+    public final ESExprMatcher CAST_ARRAY =
+        new ESExprMatcher("(_ as-array %a)");
+
+    public final ESExprMatcher CONST_ARRAY_Z3 =
+        new ESExprMatcher("((as const (Array %s %s)) %s)");
+
+    public final ESExprMatcher CONST_ARRAY_CVC4 =
+        new ESExprMatcher("(__array_store_all__ (Array %s %s) %s)");
+
+    public final ESExprMatcher STORE = new ESExprMatcher("(store %s %s %s)");
+    public final ESExprMatcher MINUS = new ESExprMatcher("(- %a)");
+    public final ESExprMatcher CAST = new ESExprMatcher("(_ %a %a)");
+    public final ESExprMatcher ITE = new ESExprMatcher("(ite (= %a %s) %s %s)");
+
+    public Context(Map<String, Variable> required) {
+      this.required = required;
+      this.deferred = new HashMap<>();
+      this.model = new HashMap<>();
+      this.parsed = new HashMap<>();
+    }
+  }
+
   private static void parseVariables(SolverResultBuilder builder,
                                      ESExpr results,
-                                     Map<String, Variable> required,
-                                     Map<String, Variable> deferred) {
-    final ESExprMatcher asArray =
-        new ESExprMatcher("(_ as-array %a)");
-    final ESExprMatcher constArray =
-        new ESExprMatcher("((as const (Array %s %s)) %s)");
-    final ESExprMatcher minus = new ESExprMatcher("(- %a)");
-
+                                     Context ctx) {
     for (ESExpr e : results.getListItems()) {
       final ESExpr value = e.getItems().get(1);
       final String reqName = getLiteral(e, 0);
 
-      if (value.isAtom() || minus.matches(value)) {
-        final Variable var = required.remove(reqName);
-        String val = value.getLiteral();
-        if (!value.isAtom()) {
-          val = getLiteral(value, 0) + getLiteral(value, 1);
-        }
-        builder.addVariable(parseVariable(var.getName(), var.getType(), val));
-      } else if (asArray.matches(value)) {
-        deferred.put(getLiteral(value, 2), required.get(getLiteral(e, 0)));
-      } else if (constArray.matches(value)) {
-        // FIXME What are const arrays in Fortress?
-        final Variable var = required.remove(reqName);
-        builder.addVariable(new Variable(var.getName(), var.getType().valueOf("()", 10)));
+      if (ctx.CAST_ARRAY.matches(value)) {
+        ctx.deferred.put(getLiteral(value, 2),
+                         ctx.required.get(getLiteral(e, 0)));
+      } else {
+        final Variable image = ctx.required.remove(reqName);
+        final Data data = parseValueExpr(value, image.getType(), ctx);
+        builder.addVariable(new Variable(image.getName(), data));
       }
     }
   }
 
-  private static Variable parseVariable(String name, DataType typeInfo, String valueText) {
-    final int radix;
+  private static Data parseValueExpr(ESExpr e, DataType type, Context ctx) {
+    switch (type.getTypeId()) {
+    case BIT_VECTOR:
+      if (ctx.CAST.matches(e)) {
+        return parseAtom(getLiteral(e, 2), type);
+      }
+      return parseAtom(e.getLiteral(), type);
 
-    if (Pattern.compile(SMTRegExp.LINE_START + SMTRegExp.VALUE_BIN).matcher(valueText).matches()) {
+    case MAP:
+      return parseArray(e, type, ctx);
+    }
+    if (ctx.MINUS.matches(e)) {
+      return parseAtom("-" + getLiteral(e, 1), type);
+    }
+    return parseAtom(e.getLiteral(), type);
+  }
+
+  private static Data parseArray(ESExpr e, DataType type, Context ctx) {
+    if (ctx.CAST_ARRAY.matches(e)) {
+      return valueReference(getLiteral(e, 2), type, ctx);
+    }
+
+    if (e.isAtom() && ctx.model.containsKey(e.getLiteral())) {
+        return valueReference(e.getLiteral(), type, ctx);
+    }
+
+    final DataType keyType =
+        (DataType) type.getAttribute(DataTypeId.Attribute.KEY);
+    final DataType valueType =
+        (DataType) type.getAttribute(DataTypeId.Attribute.VALUE);
+
+    if (ctx.CONST_ARRAY_Z3.matches(e)) {
+      final Data constant = parseValueExpr(e.getItems().get(1), valueType, ctx);
+      return Data.newArray(constantArray(keyType, constant));
+    }
+
+    if (ctx.CONST_ARRAY_CVC4.matches(e)) {
+      final Data constant = parseValueExpr(e.getItems().get(2), valueType, ctx);
+      return Data.newArray(constantArray(keyType, constant));
+    }
+
+    if (ctx.ITE.matches(e)) {
+      return Data.newArray(parseIteArray(e, type, ctx));
+    }
+
+    if (ctx.STORE.matches(e)) {
+      return Data.newArray(parseStoreArray(e, type, ctx));
+    }
+
+    final Data constant = parseValueExpr(e, valueType, ctx);
+    return Data.newArray(constantArray(keyType, constant));
+  }
+
+  private static DataMap parseIteArray(ESExpr e, DataType type, Context ctx) {
+    final DataType keyType =
+        (DataType) type.getAttribute(DataTypeId.Attribute.KEY);
+    final DataType valueType =
+        (DataType) type.getAttribute(DataTypeId.Attribute.VALUE);
+
+    final DataMap map = new DataMap(keyType, valueType);
+    while (ctx.ITE.matches(e)) {
+      final ESExpr key = e.getItems().get(1).getItems().get(2);
+      final ESExpr value = e.getItems().get(2);
+
+      map.put(parseValueExpr(key, keyType, ctx),
+              parseValueExpr(value, valueType, ctx));
+
+      e = e.getItems().get(3);
+    }
+    map.setConstant(parseValueExpr(e, valueType, ctx));
+
+    return map;
+  }
+
+  private static DataMap parseStoreArray(ESExpr e, DataType type, Context ctx) {
+    final DataType keyType =
+        (DataType) type.getAttribute(DataTypeId.Attribute.KEY);
+    final DataType valueType =
+        (DataType) type.getAttribute(DataTypeId.Attribute.VALUE);
+
+    final ArrayList<Pair<Data, Data>> pairs = new ArrayList<>();
+    while (ctx.STORE.matches(e)) {
+      final ESExpr key = e.getItems().get(2);
+      final ESExpr value = e.getItems().get(3);
+
+      pairs.add(new Pair(parseValueExpr(key, keyType, ctx),
+                         parseValueExpr(value, valueType, ctx)));
+
+      e = e.getItems().get(1);
+    }
+    final DataMap map = ((DataMap) parseArray(e, type, ctx).getValue()).copy();
+    for (Pair<Data, Data> pair : pairs) {
+      map.put(pair.first, pair.second);
+    }
+    return map;
+  }
+
+  private static Data valueReference(String name, DataType type, Context ctx) {
+    final Data cached = ctx.parsed.get(name);
+    if (cached == null) {
+      final Data data = parseValueExpr(ctx.model.get(name), type, ctx);
+      ctx.parsed.put(name, data);
+      return data;
+    }
+    return cached;
+  }
+
+  private static DataMap constantArray(DataType keyType, Data value) {
+    final DataMap map = new DataMap(keyType, value.getType());
+    map.setConstant(value);
+
+    return map;
+  }
+
+  private static Variable parseVariable(String name, DataType typeInfo, String valueText) {
+    return new Variable(name, parseAtom(valueText, typeInfo)); }
+
+  private static Data parseAtom(String atom, DataType type) {
+    final int radix;
+    if (Pattern.compile(SMTRegExp.LINE_START + SMTRegExp.VALUE_BIN).matcher(atom).matches()) {
       radix = 2;
-    } else if (Pattern.compile(SMTRegExp.LINE_START + SMTRegExp.VALUE_HEX).matcher(valueText).matches()) {
+    } else if (Pattern.compile(SMTRegExp.LINE_START + SMTRegExp.VALUE_HEX).matcher(atom).matches()) {
       radix = 16;
     } else {
       radix = 10; // decimal value by default
     }
-
-    final Data data = typeInfo.valueOf(valueText.replaceAll(SMTRegExp.VALUE_TRIM_PTRN, ""), radix);
-    return new Variable(name, data);
+    return type.valueOf(atom.replaceAll(SMTRegExp.VALUE_TRIM_PTRN, ""), radix);
   }
 
   private static void parseModel(SolverResultBuilder builder,
                                  ESExpr model,
-                                 Map<String, Variable> deferred) {
+                                 Context ctx) {
     final ESExprMatcher define = new ESExprMatcher("(define-fun %a %s %s %s)");
-
-    final Map<String, ESExpr> values = new HashMap<>(model.getItems().size());
     for (ESExpr e : model.getListItems()) {
       if (!define.matches(e)) {
         continue;
       }
-      values.put(getLiteral(e, 1), e.getItems().get(4));
+      ctx.model.put(getLiteral(e, 1), e.getItems().get(4));
     }
     final Map<String, String> cache = new HashMap<>();
-    for (Map.Entry<String, Variable> entry : deferred.entrySet()) {
-      final String array = arrayModelToText(entry.getKey(), values, cache);
-      final Variable origin = entry.getValue();
-      builder.addVariable(new Variable(origin.getName(), origin.getType().valueOf(array, 10)));
+    for (Map.Entry<String, Variable> entry : ctx.deferred.entrySet()) {
+      final Variable var = entry.getValue();
+      final Data data =
+          parseArray(ctx.model.get(var.getName()), var.getType(), ctx);
+      builder.addVariable(new Variable(var.getName(), data));
     }
-  }
-
-  private static String arrayModelToText(String name,
-                                         Map<String, ESExpr> model,
-                                         Map<String, String> cache) {
-    if (cache.containsKey(name)) {
-      return cache.get(name);
-    }
-    final ESExprMatcher ite = new ESExprMatcher("(ite (= %a %s) %s %s)");
-    final ESExprMatcher asArray = new ESExprMatcher("(_ as-array %a)");
-    final ESExprMatcher minus = new ESExprMatcher("(- %a)");
-
-    ESExpr e = model.get(name);
-    if (asArray.matches(e)) {
-      final String value = arrayModelToText(getLiteral(e, 2), model, cache);
-      cache.put(name, value);
-      return value;
-    }
-
-    final StringBuilder builder = new StringBuilder();
-    builder.append('(');
-
-    while (ite.matches(e)) {
-      final ESExpr esKey = e.getItems().get(1).getItems().get(2);
-      final ESExpr esValue = e.getItems().get(2);
-
-      String key = esKey.getLiteral();
-      if (asArray.matches(esKey)) {
-        key = arrayModelToText(getLiteral(esKey, 2), model, cache);
-      } else if (minus.matches(esKey)) {
-        key = getLiteral(esKey, 0) + getLiteral(esKey, 1);
-      }
-      String value = esValue.getLiteral();
-      if (asArray.matches(esValue)) {
-        value = arrayModelToText(getLiteral(esValue, 2), model, cache);
-      } else if (minus.matches(esValue)) {
-        value = getLiteral(esValue, 0) + getLiteral(esValue, 1);
-      }
-      builder.append('(').append(key).append(':').append(value).append(')');
-
-      e = e.getItems().get(3);
-    }
-    builder.append(')');
-
-    final String array = builder.toString();
-    cache.put(name, array);
-    return array;
   }
 
   private void initStandardOperations() {
