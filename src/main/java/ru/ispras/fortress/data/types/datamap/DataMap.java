@@ -34,6 +34,7 @@ public final class DataMap implements Map<Data, Data> {
   private final DataType keyType;
   private final DataType valueType;
   private final Map<Data, Data> map;
+  private Data constant;
 
   /**
    * Create map for given key type and value type.
@@ -53,6 +54,15 @@ public final class DataMap implements Map<Data, Data> {
     this.keyType = keyType;
     this.valueType = valueType;
     this.map = map;
+    this.constant = null;
+  }
+
+  public Data getConstant() {
+    return this.constant;
+  }
+
+  public void setConstant(Data data) {
+    this.constant = data;
   }
 
   @Override
@@ -72,15 +82,19 @@ public final class DataMap implements Map<Data, Data> {
 
   @Override
   public boolean containsValue(Object o) {
-    return isValue(o) && map.containsValue(o);
+    return isValue(o) && map.containsValue(o) || o.equals(constant);
   }
 
   @Override
   public Data get(Object o) {
     if (isKey(o)) {
-      return map.get(o);
+      final Data data = map.get(o);
+      if (data == null) {
+        return constant;
+      }
+      return data;
     }
-    return null;
+    throw new IllegalArgumentException("Invalid key type, expected " + keyType);
   }
 
   @Override
@@ -88,10 +102,11 @@ public final class DataMap implements Map<Data, Data> {
     if (isKey(key) && isValue(value)) {
       return map.put(key, value);
     }
+    final String fmt = "Invalid %s type: expected %s, got %s";
     if (!isKey(key)) {
-      throw new IllegalArgumentException("Key type doesn't match");
+      throw new IllegalArgumentException(String.format(fmt, "key", keyType, key.getType()));
     }
-    throw new IllegalArgumentException("Value type doesn't match");
+    throw new IllegalArgumentException(String.format(fmt, "value", valueType, value.getType()));
   }
 
   @Override
@@ -139,8 +154,12 @@ public final class DataMap implements Map<Data, Data> {
       return false;
     }
     final DataMap rhs = (DataMap) o;
+    final boolean constEq = constant != null && constant.equals(rhs.constant) ||
+                            constant == rhs.constant;
+                            
     return rhs.keyType.equals(keyType) &&
            rhs.valueType.equals(valueType) &&
+           constEq &&
            rhs.map.equals(map);
   }
 
