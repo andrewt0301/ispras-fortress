@@ -70,7 +70,8 @@ public enum DataTypeId {
       return DataType.newDataType(this, (Object) Integer.valueOf(matcher.group(1)));
     }
 
-    Object getAttribute(Attribute a, List<Object> params) {
+    @Override
+    public Object getAttribute(Attribute a, List<Object> params) {
       if (a == Attribute.SIZE) {
         return params.get(0);
       }
@@ -231,7 +232,8 @@ public enum DataTypeId {
       return DataType.newDataType(this, keyType, valueType);
     }
 
-    Object getAttribute(Attribute a, List<Object> params) {
+    @Override
+    public Object getAttribute(Attribute a, List<Object> params) {
       if (a == Attribute.KEY) {
         return params.get(0);
       }
@@ -360,7 +362,7 @@ public enum DataTypeId {
     }
   }
 
-  Object getAttribute(Attribute a, List<Object> params) {
+  public Object getAttribute(Attribute a, List<Object> params) {
     return null;
   }
 }

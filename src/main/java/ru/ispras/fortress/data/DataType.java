@@ -154,6 +154,10 @@ public final class DataType {
     return parameters.toArray(EMPTY_PARAMETERS_LIST);
   }
 
+  public Object getAttribute(DataTypeId.Attribute attr) {
+    return typeId.getAttribute(attr, parameters);
+  }
+
   /**
    * Returns a radix to be used for conversion data of this type to a string or vice versa.
    * 
