@@ -12,35 +12,24 @@
  * the License.
  */
 
-package ru.ispras.fortress.solver.engine.z3;
+package ru.ispras.fortress.solver.engine.cvc4;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-import ru.ispras.fortress.expression.StandardOperation;
-import ru.ispras.fortress.solver.Environment;
 import ru.ispras.fortress.solver.engine.smt.SmtTextSolver;
 
-/**
- * The Z3TextSolver class implements logic of a constraint solver that uses the Z3 tool by Microsoft
- * Research. The constraint is translated to STM-LIB code that is then saved to a file and processed
- * to the tool.
- * 
- * @author Andrei Tatarnikov
- */
-
-public final class Z3TextSolver extends SmtTextSolver {
-  private static final String NAME = "Z3 (text-based interface)";
+public final class CVC4Solver extends SmtTextSolver {
+  private static final String NAME = "CVC4 (text-based interface)";
 
   private static final String DESCRIPTION =
-    "Solves constraints using the Z3 solver. " + 
+    "Solves constraints using the CVC4 solver. " + 
     "Interacts with the solver via text files and command line.";
 
-  public Z3TextSolver() {
+  public CVC4Solver() {
     super(NAME, DESCRIPTION);
-    initZ3Operations();
   }
 
   @Override
@@ -51,15 +40,11 @@ public final class Z3TextSolver extends SmtTextSolver {
   @Override
   public Reader invokeSolver(String path) throws IOException {
     final Process process =
-        new ProcessBuilder(Environment.getSolverPath(), path).start();
+        new ProcessBuilder(getSolverPath(), "-m", path).start();
 
     final BufferedReader reader = 
         new BufferedReader(new InputStreamReader(process.getInputStream()));
 
     return reader;
-  }
-
-  private void initZ3Operations() {
-    addStandardOperation(StandardOperation.REM, "rem");
   }
 }
