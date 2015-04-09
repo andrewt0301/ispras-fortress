@@ -14,10 +14,8 @@
 
 package ru.ispras.fortress.solver.engine.smt;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -343,7 +341,7 @@ public abstract class SmtTextSolver extends SolverBase {
       final ESExpr key = e.getItems().get(2);
       final ESExpr value = e.getItems().get(3);
 
-      pairs.add(new Pair(parseValueExpr(key, keyType, ctx),
+      pairs.add(new Pair<>(parseValueExpr(key, keyType, ctx),
                          parseValueExpr(value, valueType, ctx)));
 
       e = e.getItems().get(1);
