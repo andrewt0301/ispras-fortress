@@ -59,7 +59,7 @@ public final class SolverResultChecker {
     }
   }
 
-  private static void checkErrors(Iterable<String> errors) {
+  public static void checkErrors(Iterable<String> errors) {
     final Iterator<String> errorIterator = errors.iterator();
 
     if (!errorIterator.hasNext()) {
