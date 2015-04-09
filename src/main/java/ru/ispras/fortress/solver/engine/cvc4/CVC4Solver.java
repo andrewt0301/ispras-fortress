@@ -34,7 +34,7 @@ public final class CVC4Solver extends SmtTextSolver {
 
   @Override
   public String getSolverPath() {
-    return Environment.getSolverPath();
+    return System.getenv("CVC4_PATH");
   }
 
   @Override

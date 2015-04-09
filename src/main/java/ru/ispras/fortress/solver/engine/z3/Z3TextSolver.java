@@ -45,13 +45,13 @@ public final class Z3TextSolver extends SmtTextSolver {
 
   @Override
   public String getSolverPath() {
-    return Environment.getSolverPath();
+    return System.getenv("Z3_PATH");
   }
 
   @Override
   public Reader invokeSolver(String path) throws IOException {
     final Process process =
-        new ProcessBuilder(Environment.getSolverPath(), path).start();
+        new ProcessBuilder(getSolverPath(), path).start();
 
     final BufferedReader reader = 
         new BufferedReader(new InputStreamReader(process.getInputStream()));
