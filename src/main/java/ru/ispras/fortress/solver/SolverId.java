@@ -14,6 +14,7 @@
 
 package ru.ispras.fortress.solver;
 
+import ru.ispras.fortress.solver.engine.cvc4.CVC4Solver;
 import ru.ispras.fortress.solver.engine.z3.Z3TextSolver;
 
 /**
@@ -31,6 +32,12 @@ public enum SolverId {
   Z3_TEXT {
     protected Solver createSolver() {
       return new Z3TextSolver();
+    }
+  },
+
+  CVC4_TEXT {
+    protected Solver createSolver() {
+      return new CVC4Solver();
     }
   },
 
