@@ -200,6 +200,34 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
 
       return Data.newBoolean(value1.compareTo(value2) <= 0);
     }
+  },
+
+  MAX(StandardOperation.MAX, ArityRange.UNARY_UNBOUNDED) {
+    @Override
+    public Data calculate(Data... operands) {
+      BigInteger value = operands[0].getInteger();
+      for (int i = 1; i < operands.length; ++i) {
+        final BigInteger operand = operands[i].getInteger();
+        if (operand.compareTo(value) > 0) {
+          value = operand;
+        }
+      }
+      return Data.newInteger(value);
+    }
+  },
+
+  MIN(StandardOperation.MIN, ArityRange.UNARY_UNBOUNDED) {
+    @Override
+    public Data calculate(Data... operands) {
+      BigInteger value = operands[0].getInteger();
+      for (int i = 1; i < operands.length; ++i) {
+        final BigInteger operand = operands[i].getInteger();
+        if (operand.compareTo(value) < 0) {
+          value = operand;
+        }
+      }
+      return Data.newInteger(value);
+    }
   };
 
   private static final Map<StandardOperation, Operation<StandardOperation>> operations;
