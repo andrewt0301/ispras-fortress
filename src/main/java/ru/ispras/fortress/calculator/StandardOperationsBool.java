@@ -59,7 +59,7 @@ enum StandardOperationsBool implements Operation<StandardOperation> {
     }
   },
 
-  AND(StandardOperation.AND, ArityRange.BINARY_UNBOUNDED) {
+  AND(StandardOperation.AND, ArityRange.UNARY_UNBOUNDED) {
     @Override
     public Data calculate(Data... operands) {
       for (int index = 0; index < operands.length; ++index) {
@@ -71,7 +71,7 @@ enum StandardOperationsBool implements Operation<StandardOperation> {
     }
   },
 
-  OR(StandardOperation.OR, ArityRange.BINARY_UNBOUNDED) {
+  OR(StandardOperation.OR, ArityRange.UNARY_UNBOUNDED) {
     @Override
     public Data calculate(Data... operands) {
       for (int index = 0; index < operands.length; ++index) {

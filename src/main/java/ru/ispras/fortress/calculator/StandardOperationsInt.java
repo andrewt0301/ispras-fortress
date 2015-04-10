@@ -139,13 +139,16 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
     }
   },
 
-  EQ(StandardOperation.EQ, ArityRange.BINARY) {
+  EQ(StandardOperation.EQ, ArityRange.BINARY_UNBOUNDED) {
     @Override
     public Data calculate(Data... operands) {
-      final BigInteger value1 = operands[0].getInteger();
-      final BigInteger value2 = operands[1].getInteger();
-
-      return Data.newBoolean(value1.compareTo(value2) == 0);
+      final BigInteger value = operands[0].getInteger();
+      for (int i = 1; i < operands.length; ++i) {
+        if (value.compareTo(operands[i].getInteger()) != 0) {
+          return Data.newBoolean(false);
+        }
+      }
+      return Data.newBoolean(true);
     }
   },
 
