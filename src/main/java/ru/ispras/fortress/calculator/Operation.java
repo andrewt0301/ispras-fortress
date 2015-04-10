@@ -53,4 +53,13 @@ public interface Operation<OperationId extends Enum<OperationId>> {
    */
 
   public Data calculate(Data... operands);
+
+
+  /**
+   * Performs type check on the specified operands.
+   * 
+   * @return true if operand types are valid for the operation.
+   */
+
+  public boolean validTypes(Data... operands);
 }

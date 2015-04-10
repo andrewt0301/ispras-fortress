@@ -79,15 +79,12 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
     notNullCheck(operationId);
     notNullCheck(operands);
 
-    if (!equalTypes(operands)) {
-      return false;
-    }
-
     if (0 == operands.length) {
       return false;
     }
 
-    if (operationId == StandardOperation.EQ || operationId == StandardOperation.NOTEQ) {
+    if (operationId == StandardOperation.EQ ||
+        operationId == StandardOperation.NOTEQ) {
       return true;
     }
 
@@ -105,8 +102,7 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
     if (!operation.getOperationArity().isWithinRange(operands.length)) {
       return false;
     }
-
-    return true;
+    return operation.validTypes(operands);
   }
 
   /**
@@ -129,17 +125,25 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
 
     final DataTypeId typeId = operands[0].getType().getTypeId();
     final Map<OperationId, Operation<OperationId>> operationsForType = operations.get(typeId);
-    final Operation<OperationId> operation = operationsForType.get(operationId);
+    if (operationsForType == null) {
+      return evalEquality(operationId, operands);
+    }
 
+    final Operation<OperationId> operation = operationsForType.get(operationId);
     if (operation == null) {
-      if (operationId == StandardOperation.EQ) {
-        return Data.newBoolean(equalData(operands));
-      } else if (operationId == StandardOperation.NOTEQ) {
-        return Data.newBoolean(!equalData(operands));
-      }
+      return evalEquality(operationId, operands);
     }
 
     return operation.calculate(operands);
+  }
+
+  private static Data evalEquality(Enum<?> operationId, Data ... operands) {
+    if (operationId == StandardOperation.EQ) {
+      return Data.newBoolean(equalData(operands));
+    } else if (operationId == StandardOperation.NOTEQ) {
+      return Data.newBoolean(!equalData(operands));
+    }
+    throw new IllegalArgumentException();
   }
 
   private static boolean equalData(Data ... operands) {
@@ -162,7 +166,7 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
    * @throws NullPointerException is the parameter equals null.
    */
 
-  private static boolean equalTypes(Data[] operands) {
+  static boolean equalTypes(Data[] operands) {
     notNullCheck(operands);
 
     if (operands.length <= 1) {

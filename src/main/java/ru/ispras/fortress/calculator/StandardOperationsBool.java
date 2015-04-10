@@ -142,4 +142,9 @@ enum StandardOperationsBool implements Operation<StandardOperation> {
   public final ArityRange getOperationArity() {
     return operationArity;
   }
+
+  @Override
+  public boolean validTypes(Data... operands) {
+    return OperationGroup.equalTypes(operands);
+  }
 }
