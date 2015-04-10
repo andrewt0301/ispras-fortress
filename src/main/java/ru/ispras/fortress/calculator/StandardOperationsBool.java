@@ -19,6 +19,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import ru.ispras.fortress.data.Data;
+import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.DataTypeId;
 import ru.ispras.fortress.expression.StandardOperation;
 
@@ -101,6 +102,22 @@ enum StandardOperationsBool implements Operation<StandardOperation> {
       final boolean value2 = operands[1].getBoolean();
 
       return Data.newBoolean(!value1 || value2);
+    }
+  },
+  
+  ITE(StandardOperation.ITE, ArityRange.TERNARY) {
+    @Override
+    public Data calculate(Data... operands) {
+      if (operands[0].getBoolean()) {
+        return operands[1];
+      }
+      return operands[2];
+    }
+
+    @Override
+    public boolean validTypes(Data... operands) {
+      return operands[0].getType().equals(DataType.BOOLEAN) &&
+             operands[1].getType().equals(operands[2].getType());
     }
   };
 
