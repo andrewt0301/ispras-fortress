@@ -166,10 +166,21 @@ public abstract class GenericSolverTestBase {
     final NodeOperation expr =
         new NodeOperation(StandardOperation.AND, formulas.exprs());
     final Node value = Transformer.substituteBinding(new NodeBinding(expr, bindings));
-    final Node reduced = Transformer.reduce(ReduceOptions.NEW_INSTANCE, value);
+    final Node reduced = reduceAll(value);
 
     Assert.assertTrue(String.format("Calculator failed to substitute result: %s", reduced),
                       nodeIsTrue(reduced));
+  }
+
+  private static Node reduceAll(final Node input) {
+    Node node = null;
+    Node reduced = input;
+    do {
+      node = reduced;
+      reduced = Transformer.reduce(ReduceOptions.NEW_INSTANCE, node);
+    } while (reduced != node);
+
+    return reduced;
   }
 
   private static boolean nodeIsTrue(Node node) {
