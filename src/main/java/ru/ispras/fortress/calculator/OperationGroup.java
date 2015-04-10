@@ -20,6 +20,7 @@ import java.util.Map;
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.DataTypeId;
+import ru.ispras.fortress.expression.StandardOperation;
 
 /**
  * The OperationGroup class is an implementation of a calculator engine that encapsulates a
@@ -86,6 +87,10 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
       return false;
     }
 
+    if (operationId == StandardOperation.EQ || operationId == StandardOperation.NOTEQ) {
+      return true;
+    }
+
     final DataTypeId typeId = operands[0].getType().getTypeId();
     if (!operations.containsKey(typeId)) {
       return false;
@@ -126,7 +131,25 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
     final Map<OperationId, Operation<OperationId>> operationsForType = operations.get(typeId);
     final Operation<OperationId> operation = operationsForType.get(operationId);
 
+    if (operation == null) {
+      if (operationId == StandardOperation.EQ) {
+        return Data.newBoolean(equalData(operands));
+      } else if (operationId == StandardOperation.NOTEQ) {
+        return Data.newBoolean(!equalData(operands));
+      }
+    }
+
     return operation.calculate(operands);
+  }
+
+  private static boolean equalData(Data ... operands) {
+    final Data data = operands[0];
+    for (int i = 1; i < operands.length; ++i) {
+      if (!data.equals(operands[i])) {
+        return false;
+      }
+    }
+    return true;
   }
 
   /**
