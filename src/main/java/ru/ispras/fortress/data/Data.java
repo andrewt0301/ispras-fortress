@@ -288,6 +288,18 @@ public final class Data {
   }
 
   /**
+   * Returns an object of given type that holds the data.
+   * 
+   * @param c A type of value object.
+   * @return A type-dependent object that stores the data.
+   */
+
+  public <T> T getValue(Class<T> c) {
+    checkConvertibleTo(c);
+    return c.cast(value);
+  }
+
+  /**
    * Returns the value of the used-defined property.
    * 
    * @return User-defined object.
