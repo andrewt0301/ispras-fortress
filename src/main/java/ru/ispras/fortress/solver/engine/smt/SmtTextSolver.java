@@ -260,7 +260,7 @@ public abstract class SmtTextSolver extends SolverBase {
     switch (type.getTypeId()) {
     case BIT_VECTOR:
       if (ctx.CAST.matches(e)) {
-        return parseAtom(getLiteral(e, 2), type);
+        return parseAtom(getLiteral(e, 1), type);
       }
       return parseAtom(e.getLiteral(), type);
 

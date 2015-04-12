@@ -28,6 +28,6 @@ public final class SMTRegExp {
   public static final String VALUE_HEX = "[#][x][\\d|a-f|A-F]{1,}";
   public static final String VALUE_DEC = "\\(?(-\\s)?\\d+(\\.\\d+)?\\)?";
 
-  public static final String VALUE_TRIM_PTRN = "^([#][b|x]){0,1}";
+  public static final String VALUE_TRIM_PTRN = "^([#][b|x]|[b][v]){0,1}";
   public static final String LINE_START = "^";
 }
