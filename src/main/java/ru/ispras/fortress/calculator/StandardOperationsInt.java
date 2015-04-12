@@ -15,12 +15,14 @@
 package ru.ispras.fortress.calculator;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
 
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataTypeId;
+import ru.ispras.fortress.data.types.bitvector.BitVector;
 import ru.ispras.fortress.expression.StandardOperation;
 
 /**
@@ -227,6 +229,52 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
         }
       }
       return Data.newInteger(value);
+    }
+  },
+
+  BVREPEAT(StandardOperation.BVREPEAT, ArityRange.BINARY) {
+    @Override
+    public Data calculate(Data... operands) {
+      final BitVector[] repeat = new BitVector[operands[0].getInteger().intValue()];
+      Arrays.fill(repeat, operands[1].getBitVector());
+
+      return Data.newBitVector(BitVector.newMapping(repeat));
+    }
+
+    @Override
+    public boolean validTypes(Data... operands) {
+      return operands[0].isType(DataTypeId.LOGIC_INTEGER) &&
+             operands[1].isType(DataTypeId.BIT_VECTOR);
+    }
+  },
+
+  BVEXTRACT(StandardOperation.BVEXTRACT, ArityRange.TERNARY) {
+    @Override
+    public Data calculate(Data... operands) {
+      int end = operands[0].getInteger().intValue();
+      int start = operands[1].getInteger().intValue();
+
+      final int tmp = Math.max(start, end);
+      start = Math.min(start, end);
+      end = tmp;
+
+      final BitVector bv = 
+          BitVector.newMapping(operands[2].getBitVector(), start, end - start + 1);
+      return Data.newBitVector(bv);
+    }
+
+    @Override
+    public boolean validTypes(Data... operands) {
+      return operands[0].isType(DataTypeId.LOGIC_INTEGER) &&
+             operands[1].isType(DataTypeId.LOGIC_INTEGER) &&
+             operands[2].isType(DataTypeId.BIT_VECTOR);
+    }
+  },
+
+  ABS(StandardOperation.ABS, ArityRange.UNARY) {
+    @Override
+    public Data calculate(Data... operands) {
+      return Data.newInteger(operands[0].getInteger().abs());
     }
   };
 

@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ru.ispras.fortress.data.Data;
+import ru.ispras.fortress.data.DataTypeId;
 import ru.ispras.fortress.expression.StandardOperation;
 
 /**
@@ -61,6 +62,11 @@ public final class Calculator {
     // Register operation for Int values.
     standardOperations.registerOperations(StandardOperationsInt.dataTypeId(),
       StandardOperationsInt.operations());
+
+    standardOperations.registerOperations(DataTypeId.LOGIC_REAL, StandardOperations.realOps());
+    standardOperations.registerOperations(DataTypeId.MAP, StandardOperations.arrayOps());
+    standardOperations.registerOperations(DataTypeId.BIT_VECTOR,
+                                          StandardOperations.bitVectorOps());
 
     STANDARD = standardOperations;
     registerEngine(StandardOperation.class, STANDARD);
