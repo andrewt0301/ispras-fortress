@@ -20,6 +20,7 @@ import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
+import ru.ispras.fortress.expression.NodeVariable;
 
 /**
  * The OperationReducer class implements constant expression evaluation. OperationReducer relies on
@@ -103,7 +104,7 @@ final class OperationReducer {
           break;
 
         case VARIABLE:
-          hasValueOperandsOnly = false;
+          hasValueOperandsOnly = hasValueOperandsOnly && ((NodeVariable) o).getVariable().hasValue();
           break;
 
         case BINDING:
@@ -179,8 +180,7 @@ final class OperationReducer {
     final Data[] dataOperands = new Data[operands.length];
 
     for (int index = 0; index < operands.length; ++index) {
-      final NodeValue value = ((NodeValue) operands[index]);
-      dataOperands[index] = value.getData();
+      dataOperands[index] = getValueData(operands[index]);
     }
 
     if (!isSupported(engine, operation, dataOperands)) {
@@ -189,6 +189,14 @@ final class OperationReducer {
 
     final Data result = calculateData(engine, operation, dataOperands);
     return new NodeValue(result);
+  }
+
+  private static Data getValueData(Node node) {
+      switch (node.getKind()) {
+      case VALUE: return ((NodeValue) node).getData();
+      case VARIABLE: return ((NodeVariable) node).getData();
+      }
+      throw new IllegalArgumentException();
   }
 
   /**
