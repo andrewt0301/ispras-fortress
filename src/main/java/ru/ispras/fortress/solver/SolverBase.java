@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2013-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,6 +13,8 @@
  */
 
 package ru.ispras.fortress.solver;
+
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -34,11 +36,14 @@ public abstract class SolverBase implements Solver {
   private final boolean isGeneric;
   private final Map<Enum<?>, SolverOperation> operations;
 
-  public SolverBase(String name, String description, Set<ConstraintKind> supportedKinds,
-      boolean isGeneric) {
-    notNullCheck(name, "name");
-    notNullCheck(description, "description");
-    notNullCheck(supportedKinds, "supportedKinds");
+  public SolverBase(
+      final String name,
+      final String description,
+      final Set<ConstraintKind> supportedKinds,
+      final boolean isGeneric) {
+    checkNotNull(name, "name");
+    checkNotNull(description, "description");
+    checkNotNull(supportedKinds, "supportedKinds");
 
     this.name = name;
     this.description = description;
@@ -47,13 +52,7 @@ public abstract class SolverBase implements Solver {
     this.operations = new HashMap<Enum<?>, SolverOperation>();
   }
 
-  protected static void notNullCheck(Object o, String name) {
-    if (null == o) {
-      throw new NullPointerException(name + " is null");
-    }
-  }
-
-  protected final void supportedKindCheck(ConstraintKind kind) {
+  protected final void supportedKindCheck(final ConstraintKind kind) {
     if (!isSupported(kind)) {
       throw new IllegalArgumentException(String.format(
         ERR_UNSUPPORTED_KIND, kind.getClass().getSimpleName(), kind));
@@ -71,7 +70,7 @@ public abstract class SolverBase implements Solver {
   }
 
   @Override
-  public final boolean isSupported(ConstraintKind kind) {
+  public final boolean isSupported(final ConstraintKind kind) {
     return supportedKinds.contains(kind);
   }
 
@@ -86,19 +85,19 @@ public abstract class SolverBase implements Solver {
 
   @Override
   public final boolean addCustomOperation(Function function) {
-    notNullCheck(function, "function");
+    checkNotNull(function, "function");
     return null == operations.put(function.getId(), SolverOperation.newFunction(function));
   }
 
   @Override
-  public final boolean addCustomOperation(FunctionTemplate template) {
-    notNullCheck(template, "template");
+  public final boolean addCustomOperation(final FunctionTemplate template) {
+    checkNotNull(template, "template");
     return null == operations.put(template.getId(), SolverOperation.newTemplate(template));
   }
 
-  protected final void addStandardOperation(StandardOperation id, String text) {
-    notNullCheck(id, "id");
-    notNullCheck(text, "text");
+  protected final void addStandardOperation(final StandardOperation id, String text) {
+    checkNotNull(id, "id");
+    checkNotNull(text, "text");
 
     if (operations.containsKey(id)) {
       throw new IllegalArgumentException(String.format(

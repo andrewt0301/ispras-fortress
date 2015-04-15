@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2011-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,6 +13,8 @@
  */
 
 package ru.ispras.fortress.solver.engine.smt;
+
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -92,16 +94,16 @@ public abstract class SmtTextSolver extends SolverBase {
 
   @Override
   public SolverResult solve(Constraint constraint) {
-    notNullCheck(constraint, "constraint");
+    checkNotNull(constraint, "constraint");
 
     supportedKindCheck(constraint.getKind());
     solverFileExistsCheck(getSolverPath());
-    
+
     final StringBuilder textBuilder = new StringBuilder();
     final SolverResultBuilder resultBuilder = new SolverResultBuilder(SolverResult.Status.ERROR);
 
     final SMTTextBuilder smtTextBuilder =
-      new SMTTextBuilder(constraint.getVariables(), getOperations());
+        new SMTTextBuilder(constraint.getVariables(), getOperations());
 
     final ExprTreeWalker walker = new ExprTreeWalker(smtTextBuilder);
 
@@ -390,13 +392,13 @@ public abstract class SmtTextSolver extends SolverBase {
                                  ESExpr model,
                                  Context ctx) {
     final ESExprMatcher define = new ESExprMatcher("(define-fun %a %s %s %s)");
-    for (ESExpr e : model.getListItems()) {
+    for (final ESExpr e : model.getListItems()) {
       if (!define.matches(e)) {
         continue;
       }
       ctx.model.put(getLiteral(e, 1), e.getItems().get(4));
     }
-    final Map<String, String> cache = new HashMap<>();
+
     for (Map.Entry<String, Variable> entry : ctx.deferred.entrySet()) {
       final Variable var = entry.getValue();
       final Data data =
