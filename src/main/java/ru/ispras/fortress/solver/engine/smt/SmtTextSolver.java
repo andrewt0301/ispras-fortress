@@ -372,10 +372,6 @@ public abstract class SmtTextSolver extends SolverBase {
     return map;
   }
 
-  private static Variable parseVariable(String name, DataType typeInfo, String valueText) {
-    return new Variable(name, parseAtom(valueText, typeInfo));
-  }
-
   private static Data parseAtom(String atom, DataType type) {
     final int radix;
     if (Pattern.compile(SMTRegExp.LINE_START + SMTRegExp.VALUE_BIN).matcher(atom).matches()) {
@@ -399,7 +395,7 @@ public abstract class SmtTextSolver extends SolverBase {
       ctx.model.put(getLiteral(e, 1), e.getItems().get(4));
     }
 
-    for (Map.Entry<String, Variable> entry : ctx.deferred.entrySet()) {
+    for (final Map.Entry<String, Variable> entry : ctx.deferred.entrySet()) {
       final Variable var = entry.getValue();
       final Data data =
           parseArray(ctx.model.get(var.getName()), var.getType(), ctx);
@@ -480,7 +476,7 @@ public abstract class SmtTextSolver extends SolverBase {
     addStandardOperation(StandardOperation.SELECT, "select");
     addStandardOperation(StandardOperation.STORE, "store");
 
-    for (StandardFunction template : StandardFunction.values()) {
+    for (final StandardFunction template : StandardFunction.values()) {
       addCustomOperation(template);
     }
   }
