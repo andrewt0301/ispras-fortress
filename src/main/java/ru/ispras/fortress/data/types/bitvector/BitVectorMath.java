@@ -663,7 +663,7 @@ public final class BitVectorMath {
     checkArguments(lhs, rhs);
 
     final BigInteger result =
-        lhs.bigIntegerValue().abs().multiply(rhs.bigIntegerValue().abs());
+        lhs.bigIntegerValue(false).multiply(rhs.bigIntegerValue(false));
 
     return BitVector.valueOf(result, lhs.getBitSize());
   }
@@ -672,7 +672,7 @@ public final class BitVectorMath {
     checkArguments(lhs, rhs);
 
     final BigInteger result =
-        lhs.bigIntegerValue().abs().divide(rhs.bigIntegerValue().abs());
+        lhs.bigIntegerValue(false).divide(rhs.bigIntegerValue(false));
 
     return BitVector.valueOf(result, lhs.getBitSize());
   }
@@ -689,8 +689,10 @@ public final class BitVectorMath {
   public static BitVector urem(BitVector lhs, BitVector rhs) {
     checkArguments(lhs, rhs);
 
-    return BitVector.valueOf(modulo(1, lhs.bigIntegerValue(), rhs.bigIntegerValue()),
-                             lhs.getBitSize());
+    final BigInteger lint = lhs.bigIntegerValue(false);
+    final BigInteger rint = rhs.bigIntegerValue(false);
+
+    return BitVector.valueOf(modulo(1, lint, rint), lhs.getBitSize());
   }
 
   public static BitVector srem(BitVector lhs, BitVector rhs) {
