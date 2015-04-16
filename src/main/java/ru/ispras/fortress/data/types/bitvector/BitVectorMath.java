@@ -110,6 +110,16 @@ public final class BitVectorMath {
       }
     },
 
+    USHL(BINARY) {
+      @Override
+      public BitVector execute(BitVector lhs, BitVector rhs) {
+        if (rhs.bigIntegerValue(false).compareTo(BigInteger.valueOf(lhs.getBitSize())) >= 0) {
+          return BitVector.valueOf(0, lhs.getBitSize());
+        }
+        return shl(lhs, rhs);
+      }
+    },
+
     LSHR(BINARY) {
       @Override
       public BitVector execute(BitVector lhs, BitVector rhs) {
@@ -149,6 +159,48 @@ public final class BitVectorMath {
       @Override
       public BitVector execute(BitVector lhs, BitVector rhs) {
         return sub(lhs, rhs);
+      }
+    },
+
+    MUL(BINARY) {
+      @Override
+      public BitVector execute(BitVector lhs, BitVector rhs) {
+        return mul(lhs, rhs);
+      }
+    },
+
+    UDIV(BINARY) {
+      @Override
+      public BitVector execute(BitVector lhs, BitVector rhs) {
+        return udiv(lhs, rhs);
+      }
+    },
+
+    SDIV(BINARY) {
+      @Override
+      public BitVector execute(BitVector lhs, BitVector rhs) {
+        return sdiv(lhs, rhs);
+      }
+    },
+
+    UREM(BINARY) {
+      @Override
+      public BitVector execute(BitVector lhs, BitVector rhs) {
+        return urem(lhs, rhs);
+      }
+    },
+
+    SREM(BINARY) {
+      @Override
+      public BitVector execute(BitVector lhs, BitVector rhs) {
+        return srem(lhs, rhs);
+      }
+    },
+
+    SMOD(BINARY) {
+      @Override
+      public BitVector execute(BitVector lhs, BitVector rhs) {
+        return smod(lhs, rhs);
       }
     },
 
@@ -607,6 +659,66 @@ public final class BitVectorMath {
     return add(lhs, neg(rhs));
   }
 
+  public static BitVector mul(BitVector lhs, BitVector rhs) {
+    checkArguments(lhs, rhs);
+
+    final BigInteger result =
+        lhs.bigIntegerValue().abs().multiply(rhs.bigIntegerValue().abs());
+
+    return BitVector.valueOf(result, lhs.getBitSize());
+  }
+
+  public static BitVector udiv(BitVector lhs, BitVector rhs) {
+    checkArguments(lhs, rhs);
+
+    final BigInteger result =
+        lhs.bigIntegerValue().abs().divide(rhs.bigIntegerValue().abs());
+
+    return BitVector.valueOf(result, lhs.getBitSize());
+  }
+
+  public static BitVector sdiv(BitVector lhs, BitVector rhs) {
+    checkArguments(lhs, rhs);
+
+    final BigInteger result =
+        lhs.bigIntegerValue().divide(rhs.bigIntegerValue());
+
+    return BitVector.valueOf(result, lhs.getBitSize());
+  }
+
+  public static BitVector urem(BitVector lhs, BitVector rhs) {
+    checkArguments(lhs, rhs);
+
+    return BitVector.valueOf(modulo(1, lhs.bigIntegerValue(), rhs.bigIntegerValue()),
+                             lhs.getBitSize());
+  }
+
+  public static BitVector srem(BitVector lhs, BitVector rhs) {
+    checkArguments(lhs, rhs);
+
+    final BigInteger lint = lhs.bigIntegerValue();
+    final BigInteger rint = rhs.bigIntegerValue();
+
+    return BitVector.valueOf(modulo(lint.signum(), lint, rint), lhs.getBitSize());
+  }
+
+  public static BitVector smod(BitVector lhs, BitVector rhs) {
+    checkArguments(lhs, rhs);
+
+    final BigInteger lint = lhs.bigIntegerValue();
+    final BigInteger rint = rhs.bigIntegerValue();
+
+    return BitVector.valueOf(modulo(rint.signum(), lint, rint), lhs.getBitSize());
+  }
+
+  private static BigInteger modulo(int signum, BigInteger lhs, BigInteger rhs) {
+    final BigInteger result = lhs.abs().mod(rhs.abs());
+    if (signum < 0) {
+      return result.negate();
+    }
+    return result;
+  }
+
   public static BitVector plus(BitVector v) {
     checkNotNull(v);
     return v;
@@ -757,6 +869,12 @@ public final class BitVectorMath {
     BitVectorAlgorithm.transform(v, result, op);
 
     return result;
+  }
+
+  private static void checkArguments(BitVector lhs, BitVector rhs) {
+    checkNotNull(lhs);
+    checkNotNull(rhs);
+    checkEqualSize(lhs, rhs);
   }
 
   private static void checkEqualSize(BitVector lhs, BitVector rhs) {
