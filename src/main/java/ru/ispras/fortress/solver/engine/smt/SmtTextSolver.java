@@ -437,6 +437,8 @@ public abstract class SmtTextSolver extends SolverBase {
     addStandardOperation(StandardOperation.BVSUB, "bvsub");
     addStandardOperation(StandardOperation.BVNEG, "bvneg");
     addStandardOperation(StandardOperation.BVMUL, "bvmul");
+    addStandardOperation(StandardOperation.BVUDIV, "bvudiv");
+    addStandardOperation(StandardOperation.BVSDIV, "bvsdiv");
     addStandardOperation(StandardOperation.BVUREM, "bvurem");
     addStandardOperation(StandardOperation.BVSREM, "bvsrem");
     addStandardOperation(StandardOperation.BVSMOD, "bvsmod");
