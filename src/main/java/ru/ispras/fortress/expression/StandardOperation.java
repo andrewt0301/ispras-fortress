@@ -135,6 +135,12 @@ public enum StandardOperation implements TypeRule {
   /** Group: Bitvector, Operation: Multiplication */
   BVMUL(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG),
 
+  /** Group: Bitvector, Operation: Unsigned division */
+  BVUDIV(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG),
+
+  /** Group: Bitvector, Operation: Signed division */
+  BVSDIV(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG),
+
   /** Group: Bitvector, Operation: Unsigned remainder */
   BVUREM(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG),
 
