@@ -637,6 +637,17 @@ public abstract class BitVector implements Comparable<BitVector> {
    */
 
   public final BigInteger bigIntegerValue() {
+    return bigIntegerValue(true);
+  }
+
+  /**
+   * Converts the stored data to a BigInteger value.
+   * 
+   * @param signed boolean value indicating should the bit vector be treated as signed integer.
+   * @return BigInteger representation of the stored value.
+   */
+
+  public final BigInteger bigIntegerValue(boolean signed) {
     final byte[] byteArray = new byte[this.getByteSize()];
 
     final IAction op = new IAction() {
@@ -664,11 +675,15 @@ public abstract class BitVector implements Comparable<BitVector> {
      */
 
     final int incompleteBits = getBitSize() % BITS_IN_BYTE;
-    if (0 != incompleteBits & 0 != (byteArray[0] & (1 << (incompleteBits - 1)))) {
+    final int signBit = byteArray[0] & (1 << (incompleteBits - 1));
+    if (signed && 0 != incompleteBits && 0 != signBit) {
       byteArray[0] = (byte)(byteArray[0] | (0xFF << incompleteBits));
     }
 
-    return new BigInteger(byteArray);
+    if (signed) {
+      return new BigInteger(byteArray);
+    }
+    return new BigInteger(1, byteArray);
   }
 
   /**
