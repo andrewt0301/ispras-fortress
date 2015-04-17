@@ -41,7 +41,7 @@ public final class Data {
    * @throws NullPointerException if the parameter equals {@code null}.
    */
 
-  public static Data newInteger(BigInteger value) {
+  public static Data newInteger(final BigInteger value) {
     checkNotNull(value);
     return new Data(DataType.INTEGER, value);
   }
@@ -53,7 +53,7 @@ public final class Data {
    * @return New data object.
    */
 
-  public static Data newInteger(long value) {
+  public static Data newInteger(final long value) {
     return newInteger(BigInteger.valueOf(value));
   }
 
@@ -64,7 +64,7 @@ public final class Data {
    * @return New data object.
    */
 
-  public static Data newInteger(int value) {
+  public static Data newInteger(final int value) {
     return newInteger((long) value);
   }
 
@@ -79,7 +79,7 @@ public final class Data {
    * @throws NumberFormatException if failed to parse the string. 
    */
 
-  public static Data newInteger(String text, int radix) {
+  public static Data newInteger(final String text, final int radix) {
     checkNotNull(text);
     return newInteger(new BigInteger(text, radix));
   }
@@ -91,7 +91,7 @@ public final class Data {
    * @return An new data object.
    */
 
-  public static Data newReal(double value) {
+  public static Data newReal(final double value) {
     return new Data(DataType.REAL, value);
   }
 
@@ -120,7 +120,7 @@ public final class Data {
    * @return A new data object.
    */
 
-  public static Data newBoolean(boolean value) {
+  public static Data newBoolean(final boolean value) {
     return value ? TRUE : FALSE;
   }
 
@@ -132,7 +132,7 @@ public final class Data {
    * @return New data object.
    */
 
-  public static Data newUnknown(Object value) {
+  public static Data newUnknown(final Object value) {
     return new Data(DataType.UNKNOWN, value);
   }
 
@@ -146,7 +146,9 @@ public final class Data {
    * @throws NullPointerException if the {@code value} parameter equals {@code null}.
    */
 
-  public static Data newBitVector(BigInteger value, int size) {
+  public static Data newBitVector(
+      final BigInteger value,
+      final int size) {
     checkNotNull(value);
 
     final DataType dt = DataType.BIT_VECTOR(size);
@@ -164,7 +166,7 @@ public final class Data {
    * @throws NullPointerException if the {@code value} parameter equals {@code null}.
    */
 
-  public static Data newBitVector(BitVector value) {
+  public static Data newBitVector(final BitVector value) {
     checkNotNull(value);
 
     final DataType dt = DataType.BIT_VECTOR(value.getBitSize());
@@ -184,7 +186,10 @@ public final class Data {
    * @throws NullPointerException if the {@code s} parameter equals {@code null}.
    */
 
-  public static Data newBitVector(String s, int radix, int size) {
+  public static Data newBitVector(
+      final String s,
+      final int radix,
+      final int size) {
     checkNotNull(s);
 
     final DataType dt = DataType.BIT_VECTOR(size);
@@ -201,7 +206,7 @@ public final class Data {
    * @return A new data object.
    */
 
-  public static Data newBitVector(int value, int size) {
+  public static Data newBitVector(final int value, final int size) {
     return newBitVector((long) value, size);
   }
 
@@ -213,7 +218,7 @@ public final class Data {
    * @return A new data object.
    */
 
-  public static Data newBitVector(long value, int size) {
+  public static Data newBitVector(final long value, final int size) {
     final DataType dt = DataType.BIT_VECTOR(size);
     final Object v = BitVector.unmodifiable(BitVector.valueOf(value, size));
 
@@ -229,7 +234,7 @@ public final class Data {
    * @throws NullPointerException if the {@code map} parameter equals {@code null}.
    */
 
-  public static Data newArray(DataMap map) {
+  public static Data newArray(final DataMap map) {
     checkNotNull(map);
     return new Data(DataType.MAP(
         map.getKeyType(), map.getValueType()), map.copy());
@@ -243,7 +248,7 @@ public final class Data {
    * @param value An object of related type that stores the data.
    */
 
-  public Data(DataType type, Object value) {
+  public Data(final DataType type, final Object value) {
     checkNotNull(type);
 
     if (null != value && !type.getValueClass().isAssignableFrom(value.getClass())) {
@@ -294,7 +299,7 @@ public final class Data {
    * @return A type-dependent object that stores the data.
    */
 
-  public <T> T getValue(Class<T> c) {
+  public <T> T getValue(final Class<T> c) {
     checkConvertibleTo(c);
     return c.cast(value);
   }
@@ -315,7 +320,7 @@ public final class Data {
    * @param obj User-defined object.
    */
 
-  public void setUserData(Object obj) {
+  public void setUserData(final Object obj) {
     this.userData = obj;
   }
 
@@ -326,7 +331,7 @@ public final class Data {
   }
 
   @Override
-  public boolean equals(Object obj) {
+  public boolean equals(final Object obj) {
     if (this == obj) {
       return true;
     }
@@ -366,7 +371,7 @@ public final class Data {
    * argument or {@code false} otherwise.
    */
 
-  public boolean isType(DataTypeId typeId) {
+  public boolean isType(final DataTypeId typeId) {
     return this.type.getTypeId() == typeId;
   }
 
@@ -379,7 +384,7 @@ public final class Data {
    * argument or {@code false} otherwise.
    */
 
-  public boolean isType(DataType type) {
+  public boolean isType(final DataType type) {
     return this.type.equals(type);
   }
 
