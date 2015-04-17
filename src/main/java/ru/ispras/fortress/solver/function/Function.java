@@ -14,6 +14,9 @@
 
 package ru.ispras.fortress.solver.function;
 
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
+import static ru.ispras.fortress.util.InvariantChecks.checkBounds;
+
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.Node;
@@ -44,21 +47,15 @@ public final class Function {
    */
 
   public Function(Enum<?> id, DataType returnType, Node body, Variable... parameters) {
-    notNullCheck(id);
-    notNullCheck(returnType);
-    notNullCheck(body);
-    notNullCheck(parameters);
+    checkNotNull(id);
+    checkNotNull(returnType);
+    checkNotNull(body);
+    checkNotNull(parameters);
 
     this.id = id;
     this.returnType = returnType;
     this.body = body;
     this.parameters = parameters;
-  }
-
-  private static void notNullCheck(Object o) {
-    if (null == o) {
-      throw new NullPointerException();
-    }
   }
 
   /**
@@ -152,10 +149,7 @@ public final class Function {
    */
 
   public Variable getParameter(int index) {
-    if (!((0 <= index) && (index < parameters.length))) {
-      throw new IndexOutOfBoundsException();
-    }
-
+    checkBounds(index, parameters.length);
     return parameters[index];
   }
 }

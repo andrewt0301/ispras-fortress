@@ -16,6 +16,7 @@ package ru.ispras.fortress.solver.function;
 
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.expression.StandardOperation;
+import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * The StandardFunction enumeration describes function templates describing functions that perform
@@ -141,9 +142,7 @@ public enum StandardFunction implements FunctionTemplate {
 
   @Override
   public final Function instantiate(DataType[] argTypes) {
-    if (null == argTypes) {
-      throw new NullPointerException();
-    }
+    InvariantChecks.checkNotNull(argTypes);
 
     if (argTypes.length != argCount) {
       throw new IllegalArgumentException(String.format(

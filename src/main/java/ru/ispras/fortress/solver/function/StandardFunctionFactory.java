@@ -14,6 +14,8 @@
 
 package ru.ispras.fortress.solver.function;
 
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
+
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.DataTypeId;
@@ -205,12 +207,6 @@ public final class StandardFunctionFactory {
       StandardOperation.BVNOT, makeBVRecursizeXOR(new NodeVariable(operand), size, size));
 
     return new Function(id, BIT_BOOL, body, operand);
-  }
-
-  private static void checkNotNull(Object o) {
-    if (null == o) {
-      throw new NullPointerException();
-    }
   }
 
   private static void checkEqualTypes(DataType leftType, DataType rightType) {
