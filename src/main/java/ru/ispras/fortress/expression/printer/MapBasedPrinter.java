@@ -23,6 +23,7 @@ import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
+import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * This class implements an abstract map-based expression printer.
@@ -53,10 +54,7 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
      */
 
     public ExprTreeVisitor(final EnumMap<StandardOperation, OperationDescription> map) {
-      if (map == null) {
-        throw new NullPointerException();
-      }
-
+      InvariantChecks.checkNotNull(map);
       this.map = map;
     }
 

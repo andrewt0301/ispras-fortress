@@ -15,6 +15,7 @@
 package ru.ispras.fortress.expression.printer;
 
 import ru.ispras.fortress.expression.Node;
+import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * This enumeration contains identifiers of particular expression tree printers.
@@ -36,10 +37,7 @@ public enum ExprPrinter implements ExprTreePrinter {
   private ExprTreePrinter printer;
 
   private ExprPrinter(final ExprTreePrinter printer) {
-    if (printer == null) {
-      throw new NullPointerException();
-    }
-
+    InvariantChecks.checkNotNull(printer);
     this.printer = printer;
   }
 
