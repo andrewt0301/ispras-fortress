@@ -14,6 +14,8 @@
 
 package ru.ispras.fortress.expression;
 
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
@@ -100,13 +102,8 @@ public final class NodeBinding extends Node {
   public NodeBinding(Node expression, List<BoundVariable> bindings) {
     super(Kind.BINDING);
 
-    if (expression == null) {
-      throw new NullPointerException();
-    }
-
-    if (bindings == null) {
-      throw new NullPointerException();
-    }
+    checkNotNull(expression);
+    checkNotNull(bindings);
 
     this.expr = expression;
 
@@ -118,14 +115,8 @@ public final class NodeBinding extends Node {
 
     final Comparator<BoundVariable> cmp = new Comparator<BoundVariable>() {
       public int compare(BoundVariable lhs, BoundVariable rhs) {
-        if (lhs == null) {
-          throw new NullPointerException();
-        }
-
-        if (rhs == null) {
-          throw new NullPointerException();
-        }
-
+        checkNotNull(lhs);
+        checkNotNull(rhs);
         return lhs.getVariable().getName().compareTo(rhs.getVariable().getName());
       }
     };
@@ -211,14 +202,8 @@ public final class NodeBinding extends Node {
    */
 
   public static BoundVariable bindVariable(NodeVariable variable, Node value) {
-    if (variable == null) {
-      throw new NullPointerException();
-    }
-
-    if (value == null) {
-      throw new NullPointerException();
-    }
-
+    checkNotNull(variable);
+    checkNotNull(value);
     return new BoundVariable(variable, value);
   }
 
