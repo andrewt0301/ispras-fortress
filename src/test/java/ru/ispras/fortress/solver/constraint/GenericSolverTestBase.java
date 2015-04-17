@@ -136,11 +136,6 @@ public abstract class GenericSolverTestBase {
                           localStatus == globalStatus);
 
         SolverResultChecker.checkErrors(result.getErrors());
-        
-        System.out.printf("Solving with %s...\n", solver.getName());
-        System.out.println(constraint);
-        System.out.println(result);
-        System.out.println("Checking result...");
         checkResult(getCalculator(), constraint, result);
 
         globalStatus = localStatus;
