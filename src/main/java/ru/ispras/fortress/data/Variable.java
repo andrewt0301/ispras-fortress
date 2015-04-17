@@ -17,6 +17,7 @@ package ru.ispras.fortress.data;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import ru.ispras.fortress.jaxb.JaxbVariableAdapter;
+import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * The Variable class describes a variable that can be used as input or output data in constraints.
@@ -39,13 +40,8 @@ public final class Variable {
    */
 
   public Variable(String name, Data data) {
-    if (null == name) {
-      throw new NullPointerException();
-    }
-
-    if (null == data) {
-      throw new NullPointerException();
-    }
+    InvariantChecks.checkNotNull(name);
+    InvariantChecks.checkNotNull(data);
 
     this.name = name;
     this.data = data;
@@ -85,10 +81,7 @@ public final class Variable {
    */
 
   public void setData(Data data) {
-    if (null == data) {
-      throw new NullPointerException();
-    }
-
+    InvariantChecks.checkNotNull(data);
     this.data = data;
   }
 
