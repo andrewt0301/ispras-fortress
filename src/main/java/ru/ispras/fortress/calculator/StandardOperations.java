@@ -157,6 +157,12 @@ final class StandardOperations {
         new BitVectorOp(StandardOperation.BVUREM, BitVectorMath.Operations.UREM),
         new BitVectorOp(StandardOperation.BVSREM, BitVectorMath.Operations.SREM),
         new BitVectorOp(StandardOperation.BVSMOD, BitVectorMath.Operations.SMOD),
+        new BitVectorOp(StandardOperation.BVANDR, BitVectorMath.Operations.ANDR),
+        new BitVectorOp(StandardOperation.BVNANDR, BitVectorMath.Operations.NANDR),
+        new BitVectorOp(StandardOperation.BVORR, BitVectorMath.Operations.ORR),
+        new BitVectorOp(StandardOperation.BVNORR, BitVectorMath.Operations.NORR),
+        new BitVectorOp(StandardOperation.BVXORR, BitVectorMath.Operations.XORR),
+        new BitVectorOp(StandardOperation.BVXNORR, BitVectorMath.Operations.XNORR),
 
         new BitVectorCmp(StandardOperation.BVULE, BitVectorMath.Operations.ULE),
         new BitVectorCmp(StandardOperation.BVULT, BitVectorMath.Operations.ULT),
