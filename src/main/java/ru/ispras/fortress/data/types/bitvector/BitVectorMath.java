@@ -286,6 +286,48 @@ public final class BitVectorMath {
       public BitVector execute(BitVector lhs, BitVector rhs) {
         return neq(lhs, rhs);
       }
+    },
+
+    ANDR(UNARY) {
+      @Override
+      public BitVector execute(BitVector v) {
+        return andr(v);
+      }
+    },
+
+    NANDR(UNARY) {
+      @Override
+      public BitVector execute(BitVector v) {
+        return not(andr(v));
+      }
+    },
+
+    ORR(UNARY) {
+      @Override
+      public BitVector execute(BitVector v) {
+        return orr(v);
+      }
+    },
+
+    NORR(UNARY) {
+      @Override
+      public BitVector execute(BitVector v) {
+        return not(orr(v));
+      }
+    },
+
+    XORR(UNARY) {
+      @Override
+      public BitVector execute(BitVector v) {
+        return xorr(v);
+      }
+    },
+
+    XNORR(UNARY) {
+      @Override
+      public BitVector execute(BitVector v) {
+        return not(xorr(v));
+      }
     };
 
     private final Operands operands;
@@ -850,6 +892,36 @@ public final class BitVectorMath {
     checkEqualSize(lhs, rhs);
 
     return BitVector.valueOf(!lhs.equals(rhs));
+  }
+
+  public static BitVector andr(BitVector bv) {
+    checkNotNull(bv);
+
+    if (bv.equals(not(BitVector.valueOf(0, bv.getBitSize())))) {
+      return BitVector.TRUE;
+    }
+    return BitVector.FALSE;
+  }
+
+  public static BitVector orr(BitVector bv) {
+    checkNotNull(bv);
+
+    if (bv.equals(BitVector.valueOf(0, bv.getBitSize()))) {
+      return BitVector.FALSE;
+    }
+    return BitVector.TRUE;
+  }
+
+  public static BitVector xorr(BitVector bv) {
+      checkNotNull(bv);
+
+      int ones = 0;
+      for (int i = 0; i < bv.getBitSize(); ++i) {
+        if (bv.getBit(i)) {
+          ++ones;
+        }
+      }
+      return (ones % 2 == 0) ? BitVector.FALSE : BitVector.TRUE;
   }
 
   private static BitVector transform(BitVector lhs, BitVector rhs,
