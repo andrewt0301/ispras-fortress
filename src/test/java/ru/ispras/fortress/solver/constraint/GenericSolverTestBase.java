@@ -20,6 +20,8 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 
+import ru.ispras.fortress.calculator.Calculator;
+import ru.ispras.fortress.calculator.CalculatorEngine;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.ExprUtils;
 import ru.ispras.fortress.expression.Node;
@@ -119,6 +121,8 @@ public abstract class GenericSolverTestBase {
     for (SolverId id : SolverId.values()) {
       if (!id.equals(SolverId.DEFAULT)) {
         final Solver solver = id.getSolver();
+        registerCustomOperations(solver);
+
         final SolverResult result = solver.solve(constraint);
 
         final Status localStatus = refineResult(globalStatus, result.getStatus());
@@ -132,7 +136,12 @@ public abstract class GenericSolverTestBase {
                           localStatus == globalStatus);
 
         SolverResultChecker.checkErrors(result.getErrors());
-        checkResult(constraint, result);
+        
+        System.out.printf("Solving with %s...\n", solver.getName());
+        System.out.println(constraint);
+        System.out.println(result);
+        System.out.println("Checking result...");
+        checkResult(getCalculator(), constraint, result);
 
         globalStatus = localStatus;
         name = solver.getName();
@@ -147,7 +156,7 @@ public abstract class GenericSolverTestBase {
     return known;
   }
 
-  private static void checkResult(Constraint constraint, SolverResult result) {
+  private static void checkResult(CalculatorEngine calculator, Constraint constraint, SolverResult result) {
     final Formulas formulas = (Formulas) constraint.getInnerRep();
     final Collection<NodeVariable> variables =
         ExprUtils.getVariables(formulas.exprs());
@@ -165,19 +174,20 @@ public abstract class GenericSolverTestBase {
     }
     final NodeOperation expr =
         new NodeOperation(StandardOperation.AND, formulas.exprs());
-    final Node value = Transformer.substituteBinding(new NodeBinding(expr, bindings));
-    final Node reduced = reduceAll(value);
+    final NodeBinding nodeBind = new NodeBinding(expr, bindings);
+    final Node value = Transformer.substituteBinding(nodeBind);
+    final Node reduced = reduceAll(calculator, value);
 
-    Assert.assertTrue(String.format("Calculator failed to substitute result: %s", reduced),
+    Assert.assertTrue(String.format("Calculator failed to substitute result:\n%s\n-> %s\n-> %s\n-> %s", expr, nodeBind, value, reduced),
                       nodeIsTrue(reduced));
   }
 
-  private static Node reduceAll(final Node input) {
+  private static Node reduceAll(final CalculatorEngine calculator, final Node input) {
     Node node = null;
     Node reduced = input;
     do {
       node = reduced;
-      reduced = Transformer.reduce(ReduceOptions.NEW_INSTANCE, node);
+      reduced = Transformer.reduce(calculator, ReduceOptions.NEW_INSTANCE, node);
     } while (reduced != node);
 
     return reduced;
@@ -187,5 +197,13 @@ public abstract class GenericSolverTestBase {
     return node.getKind() == Node.Kind.VALUE &&
            ExprUtils.isCondition(node) &&
            (Boolean) ((NodeValue) node).getValue();
+  }
+
+  protected CalculatorEngine getCalculator() {
+    return Calculator.STANDARD;
+  }
+
+  protected void registerCustomOperations(Solver solver) {
+    return;
   }
 }

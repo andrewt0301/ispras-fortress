@@ -15,10 +15,23 @@
 package ru.ispras.fortress.solver.constraint;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
+import ru.ispras.fortress.calculator.ArityRange;
+import ru.ispras.fortress.calculator.Calculator;
+import ru.ispras.fortress.calculator.CalculatorEngine;
+import ru.ispras.fortress.calculator.CalculatorOperation;
+import ru.ispras.fortress.calculator.CompositeCalculator;
+import ru.ispras.fortress.calculator.Operation;
+import ru.ispras.fortress.calculator.OperationGroup;
+import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
+import ru.ispras.fortress.data.DataTypeId;
 import ru.ispras.fortress.data.Variable;
+import ru.ispras.fortress.data.types.bitvector.BitVector;
+import ru.ispras.fortress.data.types.bitvector.BitVectorMath;
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
@@ -64,33 +77,63 @@ public final class PowerOfTwoCustomTestCase extends GenericSolverTestBase {
    * </pre>
    */
 
+  private static final int BIT_VECTOR_SIZE = 32;
+  private static final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_SIZE);
+  private static final CalculatorEngine CALCULATOR =
+      new CompositeCalculator(Arrays.asList(customCalculator(), Calculator.STANDARD));
+
+  public static enum ECustomOperation {
+    ISPOWOFTWO
+  }
+
+  @Override
+  protected void registerCustomOperations(Solver solver) {
+    final Variable param = new Variable("a", BIT_VECTOR_TYPE);
+
+    final Node body =
+        new NodeOperation(StandardOperation.EQ, new NodeOperation(StandardOperation.BVAND,
+            new NodeVariable(param), new NodeOperation(StandardOperation.BVSUB, new NodeVariable(
+                param), new NodeValue(BIT_VECTOR_TYPE.valueOf("1", 10)))), new NodeValue(
+            BIT_VECTOR_TYPE.valueOf("0", 10)));
+
+    solver.addCustomOperation(new Function(ECustomOperation.ISPOWOFTWO,
+        DataType.BOOLEAN, body, param));
+  }
+
+  @Override
+  public CalculatorEngine getCalculator() {
+    return CALCULATOR;
+  }
+
+  private static CalculatorEngine customCalculator() {
+    final BitVector ZERO = BitVector.valueOf(0, BIT_VECTOR_SIZE);
+    final BitVector ONE = BitVector.valueOf(1, BIT_VECTOR_SIZE);
+
+    final CalculatorOperation<ECustomOperation> ispot =
+        new CalculatorOperation<ECustomOperation>(
+            ECustomOperation.ISPOWOFTWO, ArityRange.UNARY) {
+          @Override
+          public Data calculate(Data... operands) {
+            final BitVector x = operands[0].getBitVector();
+            final BitVector test =
+                BitVectorMath.and(x, BitVectorMath.sub(x, ONE));
+            return Data.newBoolean(test.equals(ZERO));
+          }
+    };
+
+    final OperationGroup<ECustomOperation> group = new OperationGroup<>();
+    final List<? extends Operation<ECustomOperation>> operations =
+        Collections.singletonList(ispot);
+
+    group.registerOperations(
+        DataTypeId.BIT_VECTOR,
+        OperationGroup.operationMap(ECustomOperation.class, operations));
+
+    return group;
+  }
+
   public static class PowerOfTwoCustom implements SampleConstraint {
-    private static final int BIT_VECTOR_SIZE = 32;
-    private static final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_SIZE);
-
-    public static enum EPowerOfTwoCustomOperation {
-      ISPOWOFTWO
-    }
-
-    private void registerCustomOperations(Solver solver) {
-      final Variable param = new Variable("a", BIT_VECTOR_TYPE);
-
-      final Node body =
-          new NodeOperation(StandardOperation.EQ, new NodeOperation(StandardOperation.BVAND,
-              new NodeVariable(param), new NodeOperation(StandardOperation.BVSUB, new NodeVariable(
-                  param), new NodeValue(BIT_VECTOR_TYPE.valueOf("1", 10)))), new NodeValue(
-              BIT_VECTOR_TYPE.valueOf("0", 10)));
-
-      solver.addCustomOperation(new Function(EPowerOfTwoCustomOperation.ISPOWOFTWO,
-          DataType.BOOLEAN, body, param));
-    }
-
     public Constraint getConstraint() {
-      final Solver solver = SolverId.Z3_TEXT.getSolver();
-      assert null != solver;
-
-      registerCustomOperations(solver);
-
       final ConstraintBuilder builder = new ConstraintBuilder();
 
       builder.setName("PowerOfTwoCustomText");
@@ -108,7 +151,7 @@ public final class PowerOfTwoCustomTestCase extends GenericSolverTestBase {
       formulas.add(new NodeOperation(StandardOperation.BVULT, x, new NodeValue(BIT_VECTOR_TYPE
           .valueOf("200", 10))));
 
-      formulas.add(new NodeOperation(EPowerOfTwoCustomOperation.ISPOWOFTWO, x));
+      formulas.add(new NodeOperation(ECustomOperation.ISPOWOFTWO, x));
 
       return builder.build();
     }

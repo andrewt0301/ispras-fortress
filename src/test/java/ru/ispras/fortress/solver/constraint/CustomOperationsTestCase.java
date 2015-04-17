@@ -14,11 +14,19 @@
 
 package ru.ispras.fortress.solver.constraint;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import ru.ispras.fortress.calculator.ArityRange;
+import ru.ispras.fortress.calculator.Calculator;
+import ru.ispras.fortress.calculator.CalculatorEngine;
+import ru.ispras.fortress.calculator.CalculatorOperation;
+import ru.ispras.fortress.calculator.CompositeCalculator;
+import ru.ispras.fortress.calculator.OperationGroup;
+import ru.ispras.fortress.calculator.Operation;
+import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
+import ru.ispras.fortress.data.DataTypeId;
 import ru.ispras.fortress.data.Variable;
+import ru.ispras.fortress.data.types.bitvector.BitVector;
+import ru.ispras.fortress.data.types.bitvector.BitVectorMath;
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
@@ -28,7 +36,17 @@ import ru.ispras.fortress.solver.Solver;
 import ru.ispras.fortress.solver.SolverId;
 import ru.ispras.fortress.solver.function.Function;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+
 public class CustomOperationsTestCase extends GenericSolverTestBase {
+  private static final CalculatorEngine CALCULATOR =
+      new CompositeCalculator(Arrays.asList(customCalculator(), Calculator.STANDARD));
+
   public CustomOperationsTestCase() {
     super(new CustomOperations());
   }
@@ -76,102 +94,98 @@ public class CustomOperationsTestCase extends GenericSolverTestBase {
    * </pre>
    */
 
-  public static class CustomOperations implements SampleConstraint {
-    private final int BV_LENGTH = 64;
-    private final DataType Int_t = DataType.BIT_VECTOR(BV_LENGTH);
+  private static final int BV_LENGTH = 64;
+  private static final DataType Int_t = DataType.BIT_VECTOR(BV_LENGTH);
 
-    private enum ECustomOperation {
+  enum ECustomOperation {
       INT_ZERO, INT_BASE_SIZE, INT_SIGN_MASK, IS_VALID_POS, IS_VALID_NEG, IS_VALID_SIGNED_INT
-    }
+  }
 
-    private void registerCustomOperations(Solver solver) {
-      registerINT_ZERO(solver);
-      registerINT_BASE_SIZE(solver);
-      registerINT_SIGN_MASK(solver);
-      registerIS_VALID_POS(solver);
-      registerIS_VALID_NEG(solver);
-      registerIS_VALID_SIGNED_INT(solver);
-    }
+  @Override
+  protected void registerCustomOperations(Solver solver) {
+    registerINT_ZERO(solver);
+    registerINT_BASE_SIZE(solver);
+    registerINT_SIGN_MASK(solver);
+    registerIS_VALID_POS(solver);
+    registerIS_VALID_NEG(solver);
+    registerIS_VALID_SIGNED_INT(solver);
+  }
 
-    // (define-fun INT_ZERO () Int_t (_ bv0 64))
-    private void registerINT_ZERO(Solver solver) {
-      final Node body = new NodeValue(Int_t.valueOf("0", 10));
-      solver.addCustomOperation(new Function(ECustomOperation.INT_ZERO, Int_t, body));
-    }
+  // (define-fun INT_ZERO () Int_t (_ bv0 64))
+  private void registerINT_ZERO(Solver solver) {
+    final Node body = new NodeValue(Int_t.valueOf("0", 10));
+    solver.addCustomOperation(new Function(ECustomOperation.INT_ZERO, Int_t, body));
+  }
 
-    // (define-fun INT_BASE_SIZE () Int_t (_ bv32 64))
-    private void registerINT_BASE_SIZE(Solver solver) {
-      final Node body = new NodeValue(Int_t.valueOf("32", 10));
-      solver.addCustomOperation(new Function(ECustomOperation.INT_BASE_SIZE, Int_t, body));
-    }
+  // (define-fun INT_BASE_SIZE () Int_t (_ bv32 64))
+  private void registerINT_BASE_SIZE(Solver solver) {
+    final Node body = new NodeValue(Int_t.valueOf("32", 10));
+    solver.addCustomOperation(new Function(ECustomOperation.INT_BASE_SIZE, Int_t, body));
+  }
 
-    // (define-fun INT_SIGN_MASK () Int_t (bvshl (bvnot INT_ZERO) INT_BASE_SIZE))
-    private void registerINT_SIGN_MASK(Solver solver) {
-      final Node body = new NodeOperation(
-        StandardOperation.BVLSHL,
-        new NodeOperation(StandardOperation.BVNOT, new NodeOperation(ECustomOperation.INT_ZERO)),
-        new NodeOperation(ECustomOperation.INT_BASE_SIZE)
+  // (define-fun INT_SIGN_MASK () Int_t (bvshl (bvnot INT_ZERO) INT_BASE_SIZE))
+  private void registerINT_SIGN_MASK(Solver solver) {
+    final Node body = new NodeOperation(
+      StandardOperation.BVLSHL,
+      new NodeOperation(StandardOperation.BVNOT, new NodeOperation(ECustomOperation.INT_ZERO)),
+      new NodeOperation(ECustomOperation.INT_BASE_SIZE)
+    );
+
+    solver.addCustomOperation(new Function(ECustomOperation.INT_SIGN_MASK, Int_t, body));
+  }
+
+  // (define-fun IS_VALID_POS ((x!1 Int_t)) Bool (ite (= (bvand x!1 INT_SIGN_MASK) INT_ZERO) true
+  // false))
+  private void registerIS_VALID_POS(Solver solver) {
+    final Variable param = new Variable("x", Int_t);
+
+    final Node body = new NodeOperation(
+      StandardOperation.EQ,
+      new NodeOperation(
+        StandardOperation.BVAND,
+        new NodeVariable(param),
+        new NodeOperation(ECustomOperation.INT_SIGN_MASK)),
+      new NodeOperation(ECustomOperation.INT_ZERO)
+    );
+
+    solver.addCustomOperation(new Function(
+      ECustomOperation.IS_VALID_POS, DataType.BOOLEAN, body, param));
+  }
+
+  // (define-fun IS_VALID_NEG ((x!1 Int_t)) Bool (ite (= (bvand x!1 INT_SIGN_MASK) INT_SIGN_MASK)
+  // true false))
+  private void registerIS_VALID_NEG(Solver solver) {
+    final Variable param = new Variable("x", Int_t);
+
+    final Node body = new NodeOperation(
+      StandardOperation.EQ,
+      new NodeOperation(
+        StandardOperation.BVAND,
+        new NodeVariable(param),
+        new NodeOperation(ECustomOperation.INT_SIGN_MASK)),
+        new NodeOperation(ECustomOperation.INT_SIGN_MASK)
       );
 
-      solver.addCustomOperation(new Function(ECustomOperation.INT_SIGN_MASK, Int_t, body));
-    }
+    solver.addCustomOperation(
+      new Function(ECustomOperation.IS_VALID_NEG, DataType.BOOLEAN, body, param));
+  }
 
-    // (define-fun IS_VALID_POS ((x!1 Int_t)) Bool (ite (= (bvand x!1 INT_SIGN_MASK) INT_ZERO) true
-    // false))
-    private void registerIS_VALID_POS(Solver solver) {
-      final Variable param = new Variable("x", Int_t);
+  // (define-fun IS_VALID_SIGNED_INT ((x!1 Int_t)) Bool (ite (or (IsValidPos x!1) (IsValidNeg
+  // x!1)) true false))
+  private void registerIS_VALID_SIGNED_INT(Solver solver) {
+    final Variable param = new Variable("x", Int_t);
 
-      final Node body = new NodeOperation(
-        StandardOperation.EQ,
-        new NodeOperation(
-          StandardOperation.BVAND,
-          new NodeVariable(param),
-          new NodeOperation(ECustomOperation.INT_SIGN_MASK)),
-        new NodeOperation(ECustomOperation.INT_ZERO)
-      );
+    final Node body = new NodeOperation(StandardOperation.OR,
+      new NodeOperation(ECustomOperation.IS_VALID_POS, new NodeVariable(param)),
+      new NodeOperation(ECustomOperation.IS_VALID_NEG, new NodeVariable(param)));
 
-      solver.addCustomOperation(new Function(
-        ECustomOperation.IS_VALID_POS, DataType.BOOLEAN, body, param));
-    }
+    solver.addCustomOperation(new Function(
+      ECustomOperation.IS_VALID_SIGNED_INT, DataType.BOOLEAN, body, param));
+  }
 
-    // (define-fun IS_VALID_NEG ((x!1 Int_t)) Bool (ite (= (bvand x!1 INT_SIGN_MASK) INT_SIGN_MASK)
-    // true false))
-    private void registerIS_VALID_NEG(Solver solver) {
-      final Variable param = new Variable("x", Int_t);
-
-      final Node body = new NodeOperation(
-        StandardOperation.EQ,
-        new NodeOperation(
-          StandardOperation.BVAND,
-          new NodeVariable(param),
-          new NodeOperation(ECustomOperation.INT_SIGN_MASK)),
-          new NodeOperation(ECustomOperation.INT_SIGN_MASK)
-        );
-
-      solver.addCustomOperation(
-        new Function(ECustomOperation.IS_VALID_NEG, DataType.BOOLEAN, body, param));
-    }
-
-    // (define-fun IS_VALID_SIGNED_INT ((x!1 Int_t)) Bool (ite (or (IsValidPos x!1) (IsValidNeg
-    // x!1)) true false))
-    private void registerIS_VALID_SIGNED_INT(Solver solver) {
-      final Variable param = new Variable("x", Int_t);
-
-      final Node body = new NodeOperation(StandardOperation.OR,
-        new NodeOperation(ECustomOperation.IS_VALID_POS, new NodeVariable(param)),
-        new NodeOperation(ECustomOperation.IS_VALID_NEG, new NodeVariable(param)));
-
-      solver.addCustomOperation(new Function(
-        ECustomOperation.IS_VALID_SIGNED_INT, DataType.BOOLEAN, body, param));
-    }
-
+  public static class CustomOperations implements SampleConstraint {
     @Override
     public Constraint getConstraint() {
-      final Solver solver = SolverId.Z3_TEXT.getSolver();
-      assert null != solver;
-
-      registerCustomOperations(solver);
-
       final ConstraintBuilder builder = new ConstraintBuilder();
 
       builder.setName("CustomOpIntegerOverflow");
@@ -223,5 +237,36 @@ public class CustomOperationsTestCase extends GenericSolverTestBase {
 
       return result;
     }
+  }
+
+  private static CalculatorEngine customCalculator() {
+    final BitVector ZERO = BitVector.valueOf(0, 64);
+    final BitVector MASK = BitVectorMath.shl(BitVectorMath.not(ZERO), 32);
+
+    final CalculatorOperation<ECustomOperation> validSigned =
+        new CalculatorOperation<ECustomOperation>(
+            ECustomOperation.IS_VALID_SIGNED_INT, ArityRange.UNARY) {
+          @Override
+          public Data calculate(Data... operands) {
+            final BitVector bv =
+                BitVectorMath.and(operands[0].getBitVector(), MASK);
+            return Data.newBoolean(bv.equals(MASK) || bv.equals(ZERO));
+          }
+    };
+
+    final OperationGroup<ECustomOperation> group = new OperationGroup<>();
+    final List<? extends Operation<ECustomOperation>> operations =
+        Collections.singletonList(validSigned);
+
+    group.registerOperations(
+        DataTypeId.BIT_VECTOR,
+        OperationGroup.operationMap(ECustomOperation.class, operations));
+
+    return group;
+  }
+
+  @Override
+  protected CalculatorEngine getCalculator() {
+    return CALCULATOR;
   }
 }
