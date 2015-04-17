@@ -39,7 +39,7 @@ public final class Variable {
    * @throws NullPointerException if any of the parameters equals null.
    */
 
-  public Variable(String name, Data data) {
+  public Variable(final String name, final Data data) {
     InvariantChecks.checkNotNull(name);
     InvariantChecks.checkNotNull(data);
 
@@ -57,7 +57,7 @@ public final class Variable {
    * @throws NullPointerException if any of the parameters equals null.
    */
 
-  public Variable(String name, DataType type) {
+  public Variable(final String name, final DataType type) {
     this(name, type != null ? type.valueUninitialized() : null);
   }
 
@@ -68,7 +68,7 @@ public final class Variable {
    * @param variable Variable object to be copied.
    */
 
-  public Variable(Variable variable) {
+  public Variable(final Variable variable) {
     this(variable != null ? variable.name : null, variable != null ? variable.data : null);
   }
 
@@ -80,7 +80,7 @@ public final class Variable {
    * @throws NullPointerException if the parameter equals null.
    */
 
-  public void setData(Data data) {
+  public void setData(final Data data) {
     InvariantChecks.checkNotNull(data);
     this.data = data;
   }
