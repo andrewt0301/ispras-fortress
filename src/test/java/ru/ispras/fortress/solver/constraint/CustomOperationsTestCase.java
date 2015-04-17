@@ -33,15 +33,12 @@ import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.solver.Solver;
-import ru.ispras.fortress.solver.SolverId;
 import ru.ispras.fortress.solver.function.Function;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 
 public class CustomOperationsTestCase extends GenericSolverTestBase {
   private static final CalculatorEngine CALCULATOR =
