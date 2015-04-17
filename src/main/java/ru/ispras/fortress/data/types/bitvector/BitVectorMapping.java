@@ -74,7 +74,10 @@ final class BitVectorMapping extends BitVector {
    * @param bitSize The length of the mapping in bits.
    */
 
-  public BitVectorMapping(BitVector src, int beginBitPos, int bitSize) {
+  public BitVectorMapping(
+      final BitVector src,
+      final int beginBitPos,
+      final int bitSize) {
     checkNotNull(src);
     checkGreaterThanZero(bitSize);
 
@@ -109,7 +112,7 @@ final class BitVectorMapping extends BitVector {
    */
 
   @Override
-  public byte getByte(int index) {
+  public byte getByte(final int index) {
     // TODO: Refactoring is needed. The implementation is not perfectly clear
     // and may contain subtle bugs.
 
@@ -155,7 +158,7 @@ final class BitVectorMapping extends BitVector {
    */
 
   @Override
-  public void setByte(int index, byte value) {
+  public void setByte(final int index, final byte value) {
     // TODO: Refactoring is needed. The implementation is not perfectly clear
     // and may contain subtle bugs.
 
@@ -234,7 +237,7 @@ final class BitVectorMapping extends BitVector {
     source.setByte(byteIndex + 1, highByte);
   }
 
-  private int getByteIndex(int index) {
+  private int getByteIndex(final int index) {
     return beginBitPos / BITS_IN_BYTE + index;
   }
 

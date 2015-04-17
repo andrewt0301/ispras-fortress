@@ -26,7 +26,7 @@ import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 final class BitVectorUnmodifiable extends BitVector {
   private final BitVector bitVector;
 
-  public BitVectorUnmodifiable(BitVector bitVector) {
+  public BitVectorUnmodifiable(final BitVector bitVector) {
     checkNotNull(bitVector);
     this.bitVector = bitVector;
   }
@@ -42,12 +42,12 @@ final class BitVectorUnmodifiable extends BitVector {
   }
 
   @Override
-  public byte getByte(int index) {
+  public byte getByte(final int index) {
     return bitVector.getByte(index);
   }
 
   @Override
-  public void setByte(int index, byte value) {
+  public void setByte(final int index, final byte value) {
     throw new UnsupportedOperationException();
   }
 }

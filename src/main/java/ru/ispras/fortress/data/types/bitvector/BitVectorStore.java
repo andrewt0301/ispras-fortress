@@ -57,7 +57,7 @@ final class BitVectorStore extends BitVector {
    * @param bitSize Data size in bits.
    */
 
-  public BitVectorStore(int bitSize) {
+  public BitVectorStore(final int bitSize) {
     checkGreaterThanZero(bitSize);
 
     final int byteSize = bitSize / BITS_IN_BYTE + (0 == (bitSize % BITS_IN_BYTE) ? 0 : 1);
@@ -74,7 +74,7 @@ final class BitVectorStore extends BitVector {
    * @param src An existing bit vector to be copied.
    */
 
-  public BitVectorStore(BitVector src) {
+  public BitVectorStore(final BitVector src) {
     checkNotNull(src);
 
     this.dataBytes = new byte[src.getByteSize()];
@@ -106,7 +106,7 @@ final class BitVectorStore extends BitVector {
    */
 
   @Override
-  public byte getByte(int index) {
+  public byte getByte(final int index) {
     checkBounds(index, getByteSize());
     return (byte) (dataBytes[index] & getByteBitMask(index));
   }
@@ -116,7 +116,7 @@ final class BitVectorStore extends BitVector {
    */
 
   @Override
-  public void setByte(int index, byte value) {
+  public void setByte(final int index, final byte value) {
     checkBounds(index, getByteSize());
 
     final byte mask = getByteBitMask(index);

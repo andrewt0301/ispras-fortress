@@ -19,6 +19,8 @@ import static ru.ispras.fortress.util.InvariantChecks.checkBounds;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.ispras.fortress.util.InvariantChecks;
+
 /**
  * The RawDataMultiMapping class implements logic that allows concatenating several data objects
  * together (allows accessing a group of data objects as a single data object).
@@ -171,7 +173,7 @@ final class BitVectorMultiMapping extends BitVector {
      * @param index The relative index of the byte in the data array.
      */
 
-    public ByteAccessor(BitVector data, int index) {
+    public ByteAccessor(final BitVector data, final int index) {
       this.data = data;
       this.index = index;
     }
@@ -192,7 +194,7 @@ final class BitVectorMultiMapping extends BitVector {
      * @param value The value to be assign to the target byte.
      */
 
-    public void setByte(byte value) {
+    public void setByte(final byte value) {
       data.setByte(index, value);
     }
   }
@@ -208,7 +210,7 @@ final class BitVectorMultiMapping extends BitVector {
    * @return The size of processed data in bits (number of bits in the source data array).
    */
 
-  private int addByteAcessors(BitVector data) {
+  private int addByteAcessors(final BitVector data) {
     for (int index = 0; index < data.getByteSize(); ++index) {
       byteAccessors.add(new ByteAccessor(data, index));
     }
@@ -216,13 +218,14 @@ final class BitVectorMultiMapping extends BitVector {
     return data.getBitSize();
   }
 
-  public BitVectorMultiMapping(BitVector[] dataArray) {
+  public BitVectorMultiMapping(final BitVector[] dataArray) {
+    InvariantChecks.checkNotNull(dataArray);
     byteAccessors = new ArrayList<ByteAccessor>();
 
     BitVector unusedPrevPart = null;
     int processedBitSize = 0;
 
-    for (BitVector data : dataArray) {
+    for (final BitVector data : dataArray) {
       int offset = 0;
       if (null != unusedPrevPart) {
         final int bitsToCompleteByte = BITS_IN_BYTE - unusedPrevPart.getBitSize();
@@ -304,7 +307,7 @@ final class BitVectorMultiMapping extends BitVector {
    */
 
   @Override
-  public byte getByte(int index) {
+  public byte getByte(final int index) {
     checkBounds(index, getByteSize());
 
     final ByteAccessor accessors = byteAccessors.get(index);
@@ -316,7 +319,7 @@ final class BitVectorMultiMapping extends BitVector {
    */
 
   @Override
-  public void setByte(int index, byte value) {
+  public void setByte(final int index, final byte value) {
     checkBounds(index, getByteSize());
 
     final ByteAccessor accessors = byteAccessors.get(index);
