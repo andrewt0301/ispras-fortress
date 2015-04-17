@@ -15,6 +15,7 @@
 package ru.ispras.fortress.solver.constraint;
 
 import ru.ispras.fortress.expression.Node;
+import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * The ConstraintCombiner class provides methods to create new constraints by combining existing
@@ -127,10 +128,7 @@ public final class ConstraintCombiner {
   }
 
   private static void formulaBasedCheck(Constraint c) {
-    if (null == c) {
-      throw new NullPointerException();
-    }
-
+    InvariantChecks.checkNotNull(c);
     if (ConstraintKind.FORMULA_BASED != c.getKind()) {
       throw new IllegalArgumentException(String.format(
         "The %s constraint is not formula based.", c.getName()));
