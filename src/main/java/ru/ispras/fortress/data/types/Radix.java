@@ -32,7 +32,7 @@ public enum Radix {
 
   private final int value;
 
-  private Radix(int value) {
+  private Radix(final int value) {
     this.value = value;
   }
 

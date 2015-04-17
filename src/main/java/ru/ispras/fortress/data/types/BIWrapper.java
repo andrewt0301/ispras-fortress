@@ -46,7 +46,7 @@ public final class BIWrapper {
    * @param radix The radix that will be used in data conversions.
    */
 
-  public BIWrapper(BigInteger value, int size, int radix) {
+  public BIWrapper(final BigInteger value, final int size, final int radix) {
     InvariantChecks.checkNotNull(value);
     InvariantChecks.checkGreaterThanZero(size);
     InvariantChecks.checkGreaterThanZero(radix);
@@ -66,7 +66,11 @@ public final class BIWrapper {
    * @return object of BitVectorWrapper
    */
 
-  public static BIWrapper valueOf(String value, int radix, int size, int typeRadix) {
+  public static BIWrapper valueOf(
+      final String value,
+      final int radix,
+      final int size,
+      final int typeRadix) {
     return new BIWrapper(new BigInteger(value, radix), size, typeRadix);
   }
 
