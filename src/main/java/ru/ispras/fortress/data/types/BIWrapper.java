@@ -16,6 +16,8 @@ package ru.ispras.fortress.data.types;
 
 import java.math.BigInteger;
 
+import ru.ispras.fortress.util.InvariantChecks;
+
 /**
  * The BIWrapper class provides a wrapper around the BigInteger class to conveniently store and
  * convert binary data.
@@ -45,9 +47,9 @@ public final class BIWrapper {
    */
 
   public BIWrapper(BigInteger value, int size, int radix) {
-    if (null == value) {
-      throw new NullPointerException();
-    }
+    InvariantChecks.checkNotNull(value);
+    InvariantChecks.checkGreaterThanZero(size);
+    InvariantChecks.checkGreaterThanZero(radix);
 
     this.value = value;
     this.size = size;
