@@ -44,17 +44,17 @@ public final class DataMap implements Map<Data, Data> {
    */
 
   public DataMap(DataType keyType, DataType valueType) {
-    this(keyType, valueType, new LinkedHashMap<Data, Data>());
+    this(keyType, valueType, null, new LinkedHashMap<Data, Data>());
 
     notnull(keyType);
     notnull(valueType);
   }
 
-  private DataMap(DataType keyType, DataType valueType, Map<Data, Data> map) {
+  private DataMap(DataType keyType, DataType valueType, Data constant, Map<Data, Data> map) {
     this.keyType = keyType;
     this.valueType = valueType;
     this.map = map;
-    this.constant = null;
+    this.constant = constant;
   }
 
   public Data getConstant() {
@@ -159,8 +159,17 @@ public final class DataMap implements Map<Data, Data> {
                             
     return rhs.keyType.equals(keyType) &&
            rhs.valueType.equals(valueType) &&
-           constEq &&
-           rhs.map.equals(map);
+           observeEquals(this, rhs) &&
+           observeEquals(rhs, this);
+  }
+
+  private static boolean observeEquals(Map<Data, Data> source, Map<Data, Data> target) {
+    for (Map.Entry<Data, Data> entry : source.entrySet()) {
+      if (!entry.getValue().equals(target.get(entry.getKey()))) {
+        return false;
+      }
+    }
+    return true;
   }
 
   @Override
@@ -272,7 +281,7 @@ public final class DataMap implements Map<Data, Data> {
    */
 
   public final DataMap copy() {
-    return new DataMap(keyType, valueType, new LinkedHashMap<>(map));
+    return new DataMap(keyType, valueType, constant, new LinkedHashMap<>(map));
   }
 
   /**
@@ -284,6 +293,7 @@ public final class DataMap implements Map<Data, Data> {
   public final DataMap unmodifiableCopy() {
     return new DataMap(keyType,
                        valueType,
+                       constant,
                        Collections.unmodifiableMap(new LinkedHashMap<>(map)));
   }
 
