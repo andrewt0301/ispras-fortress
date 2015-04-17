@@ -14,6 +14,8 @@
 
 package ru.ispras.fortress.expression;
 
+import ru.ispras.fortress.util.InvariantChecks;
+
 /**
  * The ExprTreeVisitorDefault abstract class provides a default implementation for the
  * ExprTreeVisitor interface. This implementation does not perform any actions and does not collect
@@ -56,9 +58,7 @@ public abstract class ExprTreeVisitorDefault implements ExprTreeVisitor {
    */
 
   public final void setStatus(Status status) {
-    if (null == status)
-      throw new NullPointerException();
-
+    InvariantChecks.checkNotNull(status);
     this.status = status;
   }
 
