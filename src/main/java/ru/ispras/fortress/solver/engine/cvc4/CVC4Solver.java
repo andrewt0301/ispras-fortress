@@ -52,10 +52,7 @@ public final class CVC4Solver extends SmtTextSolver {
     final Process process =
         new ProcessBuilder(getSolverPath(), "-m", path).start();
 
-    final BufferedReader reader = 
-        new BufferedReader(new InputStreamReader(process.getInputStream()));
-
-    return reader;
+    return new BufferedReader(new InputStreamReader(process.getInputStream()));
   }
 
   public static Function customRem() {

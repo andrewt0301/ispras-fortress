@@ -125,7 +125,7 @@ enum StandardOperationsBool implements Operation<StandardOperation> {
 
   static {
     final Map<StandardOperation, Operation<StandardOperation>> map =
-      new EnumMap<StandardOperation, Operation<StandardOperation>>(StandardOperation.class);
+      new EnumMap<>(StandardOperation.class);
 
     for (Operation<StandardOperation> value : values()) {
       map.put(value.getOperationId(), value);

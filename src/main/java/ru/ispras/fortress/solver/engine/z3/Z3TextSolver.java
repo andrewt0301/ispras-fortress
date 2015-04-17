@@ -20,7 +20,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 import ru.ispras.fortress.expression.StandardOperation;
-import ru.ispras.fortress.solver.Environment;
 import ru.ispras.fortress.solver.engine.smt.SmtTextSolver;
 
 /**
@@ -53,10 +52,7 @@ public final class Z3TextSolver extends SmtTextSolver {
     final Process process =
         new ProcessBuilder(getSolverPath(), path).start();
 
-    final BufferedReader reader = 
-        new BufferedReader(new InputStreamReader(process.getInputStream()));
-
-    return reader;
+    return new BufferedReader(new InputStreamReader(process.getInputStream()));
   }
 
   private void initZ3Operations() {

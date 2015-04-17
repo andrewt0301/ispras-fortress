@@ -46,14 +46,14 @@ public final class Calculator {
   // Key: class of the operation group enumeration, value: engine implementing
   // operations from the group.
   private static final Map<Class<? extends Enum<?>>, CalculatorEngine> engines =
-    new HashMap<Class<? extends Enum<?>>, CalculatorEngine>();
+    new HashMap<>();
 
   static {
     // Creates and registers an engine that performs calculation using
     // standard operations.
 
     final OperationGroup<StandardOperation> standardOperations =
-      new OperationGroup<StandardOperation>();
+      new OperationGroup<>();
 
     // Register operation for Bool values.
     standardOperations.registerOperations(StandardOperationsBool.dataTypeId(),

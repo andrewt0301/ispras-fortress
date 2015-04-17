@@ -154,9 +154,7 @@ public final class DataMap implements Map<Data, Data> {
       return false;
     }
     final DataMap rhs = (DataMap) o;
-    final boolean constEq = constant != null && constant.equals(rhs.constant) ||
-                            constant == rhs.constant;
-                            
+
     return rhs.keyType.equals(keyType) &&
            rhs.valueType.equals(valueType) &&
            observeEquals(this, rhs) &&
