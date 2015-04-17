@@ -16,6 +16,7 @@ package ru.ispras.fortress.solver;
 
 import ru.ispras.fortress.solver.function.Function;
 import ru.ispras.fortress.solver.function.FunctionTemplate;
+import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * The SolverOperation class stores information about a solver operation. The information explains
@@ -40,31 +41,19 @@ public abstract class SolverOperation {
   private final Enum<?> id;
 
   public static final SolverOperation newText(Enum<?> id, String text) {
-    if (null == id) {
-      throw new NullPointerException();
-    }
-
-    if (null == text) {
-      throw new NullPointerException();
-    }
+    InvariantChecks.checkNotNull(id);
+    InvariantChecks.checkNotNull(text);
 
     return new TextOperation(id, text);
-
   }
 
   public static final SolverOperation newFunction(Function function) {
-    if (null == function) {
-      throw new NullPointerException();
-    }
-
+    InvariantChecks.checkNotNull(function);
     return new FunctionOperation(function);
   }
 
   public static final SolverOperation newTemplate(FunctionTemplate template) {
-    if (null == template) {
-      throw new NullPointerException();
-    }
-
+    InvariantChecks.checkNotNull(template);
     return new TemplateOperation(template);
   }
 
