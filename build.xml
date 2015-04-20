@@ -57,11 +57,13 @@ Please, prepare build environment:
       <cutdirsmapper dirs="1"/> 
     </move>
     <delete dir="${tools.dir}/z3-tmp"/>
+    <property name="z3.path" location="${tools.dir}/z3/bin/z3.exe"/>
   </target>
 
   <target name="unpack.z3.unix" depends="init" if="platform.unix">
     <untar src="${tools.dir}/z3-unix.tar.gz" dest="${tools.dir}" compression="gzip"/>
     <chmod file="${tools.dir}/z3/bin/z3" perm="+x"/>
+    <property name="z3.path" location="${tools.dir}/z3/bin/z3"/>
   </target>
 
   <target name="unpack.z3.mac" depends="init" if="platform.mac">
@@ -73,6 +75,7 @@ Please, prepare build environment:
       <cutdirsmapper dirs="1"/> 
     </move>
     <delete dir="${tools.dir}/z3-tmp"/>
+    <property name="z3.path" location="${tools.dir}/z3/bin/z3"/>
   </target>
 
   <target name="unpack.z3" depends="init.properties,unpack.z3.windows,unpack.z3.unix,unpack.z3.mac"/>
@@ -101,7 +104,8 @@ Please, prepare build environment:
 
     <mkdir dir="${output.dir}/tests/reports"/>
 
-    <junit fork="no" printsummary="yes" showoutput="yes">
+    <junit fork="yes" printsummary="yes" showoutput="yes">
+      <env key="Z3_PATH" value="${z3.path}"/>
       <classpath refid="classpath.test"/>
       <formatter type="plain" usefile="false"/>
       <formatter type="xml" usefile="true"/>
@@ -111,6 +115,6 @@ Please, prepare build environment:
       </batchtest>
     </junit>
   </target>
-	
+
 </project>
 
