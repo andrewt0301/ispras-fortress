@@ -22,6 +22,7 @@ import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.DataTypeId;
 import ru.ispras.fortress.data.types.bitvector.BitVector;
+import ru.ispras.fortress.util.InvariantChecks;
 
 public final class SMTStrings {
   private SMTStrings() {}
@@ -74,10 +75,8 @@ public final class SMTStrings {
     return result;
   }
 
-  public static String textForType(DataType type) {
-    if (null == type) {
-      throw new NullPointerException();
-    }
+  public static String textForType(final DataType type) {
+    InvariantChecks.checkNotNull(type);
 
     if (!typeMap.containsKey(type.getTypeId())) {
       throw new IllegalArgumentException("Unsupported type: " + type.getTypeId());
@@ -93,10 +92,8 @@ public final class SMTStrings {
     return String.format(typeMap.get(type.getTypeId()), parameters);
   }
 
-  public static String textForData(Data data) {
-    if (null == data) {
-      throw new NullPointerException();
-    }
+  public static String textForData(final Data data) {
+    InvariantChecks.checkNotNull(data);
 
     switch (data.getType().getTypeId()) {
       case BIT_VECTOR: {

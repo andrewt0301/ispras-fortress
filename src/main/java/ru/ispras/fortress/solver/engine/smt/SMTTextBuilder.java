@@ -14,19 +14,19 @@
 
 package ru.ispras.fortress.solver.engine.smt;
 
-import static ru.ispras.fortress.solver.engine.z3.SMTStrings.sASSERT;
-import static ru.ispras.fortress.solver.engine.z3.SMTStrings.sBRACKET_CLOSE;
-import static ru.ispras.fortress.solver.engine.z3.SMTStrings.sBRACKET_OPEN;
-import static ru.ispras.fortress.solver.engine.z3.SMTStrings.sCHECK_SAT;
-import static ru.ispras.fortress.solver.engine.z3.SMTStrings.sDECLARE_CONST;
-import static ru.ispras.fortress.solver.engine.z3.SMTStrings.sDEFAULT_ARRAY;
-import static ru.ispras.fortress.solver.engine.z3.SMTStrings.sDEFINE_FUN;
-import static ru.ispras.fortress.solver.engine.z3.SMTStrings.sEXIT;
-import static ru.ispras.fortress.solver.engine.z3.SMTStrings.sGET_MODEL;
-import static ru.ispras.fortress.solver.engine.z3.SMTStrings.sGET_VALUE;
-import static ru.ispras.fortress.solver.engine.z3.SMTStrings.sPARAM_DEF;
-import static ru.ispras.fortress.solver.engine.z3.SMTStrings.sSPACE;
-import static ru.ispras.fortress.solver.engine.z3.SMTStrings.sUNDERLINE;
+import static ru.ispras.fortress.solver.engine.z3.SMTStrings.ASSERT;
+import static ru.ispras.fortress.solver.engine.z3.SMTStrings.BRACKET_CLOSE;
+import static ru.ispras.fortress.solver.engine.z3.SMTStrings.BRACKET_OPEN;
+import static ru.ispras.fortress.solver.engine.z3.SMTStrings.CHECK_SAT;
+import static ru.ispras.fortress.solver.engine.z3.SMTStrings.DECLARE_CONST;
+import static ru.ispras.fortress.solver.engine.z3.SMTStrings.DEFAULT_ARRAY;
+import static ru.ispras.fortress.solver.engine.z3.SMTStrings.DEFINE_FUN;
+import static ru.ispras.fortress.solver.engine.z3.SMTStrings.EXIT;
+import static ru.ispras.fortress.solver.engine.z3.SMTStrings.GET_MODEL;
+import static ru.ispras.fortress.solver.engine.z3.SMTStrings.GET_VALUE;
+import static ru.ispras.fortress.solver.engine.z3.SMTStrings.PARAM_DEF;
+import static ru.ispras.fortress.solver.engine.z3.SMTStrings.SPACE;
+import static ru.ispras.fortress.solver.engine.z3.SMTStrings.UNDERLINE;
 import static ru.ispras.fortress.solver.engine.z3.SMTStrings.textForData;
 import static ru.ispras.fortress.solver.engine.z3.SMTStrings.textForType;
 
@@ -150,7 +150,7 @@ final class SMTTextBuilder implements ExprTreeVisitor {
 
       int i = 0;
       for (DataType type : arraysInUse) {
-        out.printf(sDECLARE_CONST, String.format(sDEFAULT_ARRAY, i++), textForType(type));
+        out.printf(DECLARE_CONST, String.format(DEFAULT_ARRAY, i++), textForType(type));
       }
 
       final StringBuilder variablesListBuilder = new StringBuilder();
@@ -158,29 +158,29 @@ final class SMTTextBuilder implements ExprTreeVisitor {
         // Variables that have values don't need declarations
         // because their values are used in expression as constants.
         if (!variable.hasValue()) {
-          out.printf(sDECLARE_CONST, variable.getName(), textForType(variable.getData().getType()));
+          out.printf(DECLARE_CONST, variable.getName(), textForType(variable.getData().getType()));
 
-          variablesListBuilder.append(sSPACE);
+          variablesListBuilder.append(SPACE);
           variablesListBuilder.append(variable.getName());
         }
       }
 
       for (StringBuilder builder : functions.getBuilders()) {
-        out.printf(sDEFINE_FUN, builder.toString());
+        out.printf(DEFINE_FUN, builder.toString());
       }
 
       for (StringBuilder builder : formulas) {
-        out.printf(sASSERT, builder.toString());
+        out.printf(ASSERT, builder.toString());
       }
 
-      out.println(sCHECK_SAT);
+      out.println(CHECK_SAT);
 
       if (variablesListBuilder.length() > 0) {
-        out.printf(sGET_VALUE, variablesListBuilder.toString());
+        out.printf(GET_VALUE, variablesListBuilder.toString());
       }
 
-      out.println(sGET_MODEL);
-      out.println(sEXIT);
+      out.println(GET_MODEL);
+      out.println(EXIT);
     } finally {
       if (null != out) {
         out.close();
@@ -196,19 +196,19 @@ final class SMTTextBuilder implements ExprTreeVisitor {
     final StringBuilder builder = new StringBuilder();
 
     builder.append(function.getUniqueName());
-    builder.append(sSPACE);
+    builder.append(SPACE);
 
     // Forms the parameter list.
-    builder.append(sBRACKET_OPEN);
+    builder.append(BRACKET_OPEN);
     for (int index = 0; index < function.getParameterCount(); ++index) {
       final Variable param = function.getParameter(index);
-      builder.append(String.format(sPARAM_DEF,
+      builder.append(String.format(PARAM_DEF,
         param.getName(), textForType(param.getData().getType())));
     }
-    builder.append(sBRACKET_CLOSE);
+    builder.append(BRACKET_CLOSE);
 
     // Appends the return type
-    builder.append(sSPACE);
+    builder.append(SPACE);
     builder.append(textForType(function.getReturnType()));
 
     // Forms the function body
@@ -296,16 +296,16 @@ final class SMTTextBuilder implements ExprTreeVisitor {
       }
     }
 
-    appendToCurrent(sSPACE);
+    appendToCurrent(SPACE);
 
     if (expr.getOperandCount() > 0) {
-      appendToCurrent(sBRACKET_OPEN);
+      appendToCurrent(BRACKET_OPEN);
     }
 
     if (StandardOperation.isParametric(op)) {
-      appendToCurrent(sBRACKET_OPEN);
-      appendToCurrent(sUNDERLINE);
-      appendToCurrent(sSPACE);
+      appendToCurrent(BRACKET_OPEN);
+      appendToCurrent(UNDERLINE);
+      appendToCurrent(SPACE);
     }
 
     appendToCurrent(operationText);
@@ -314,7 +314,7 @@ final class SMTTextBuilder implements ExprTreeVisitor {
   @Override
   public void onOperationEnd(NodeOperation expr) {
     if (expr.getOperandCount() > 0) {
-      appendToCurrent(sBRACKET_CLOSE);
+      appendToCurrent(BRACKET_CLOSE);
     }
   }
 
@@ -329,8 +329,8 @@ final class SMTTextBuilder implements ExprTreeVisitor {
     if (StandardOperation.isFamily(operationId, StandardOperation.Family.BV) &&
         (node.getDataType().getTypeId() == DataTypeId.LOGIC_BOOLEAN)) {
 
-      appendToCurrent(sSPACE);
-      appendToCurrent(sBRACKET_OPEN);
+      appendToCurrent(SPACE);
+      appendToCurrent(BRACKET_OPEN);
 
       final SolverOperation ite = operations.get(StandardOperation.ITE);
       appendToCurrent(ite.getText());
@@ -346,14 +346,14 @@ final class SMTTextBuilder implements ExprTreeVisitor {
   public void onOperandEnd(NodeOperation expr, Node node, int index) {
     if (StandardOperation.isParametric(expr.getOperationId())
         && index == StandardOperation.getParameterCount(expr.getOperationId()) - 1) {
-      appendToCurrent(sBRACKET_CLOSE);
+      appendToCurrent(BRACKET_CLOSE);
     }
 
     final boolean isCastToBVNeeded = castsToBV.pop();
     if (isCastToBVNeeded) {
       onValue(Data.newBitVector(BitVector.TRUE));
       onValue(Data.newBitVector(BitVector.FALSE));
-      appendToCurrent(sBRACKET_CLOSE);
+      appendToCurrent(BRACKET_CLOSE);
     }
   }
 
@@ -363,7 +363,7 @@ final class SMTTextBuilder implements ExprTreeVisitor {
   }
 
   private void onValue(Data data) {
-    appendToCurrent(sSPACE);
+    appendToCurrent(SPACE);
     if (data.getType().getTypeId() == DataTypeId.MAP) {
       int i = 0;
       final String type = data.getType().toString();
@@ -390,7 +390,7 @@ final class SMTTextBuilder implements ExprTreeVisitor {
     if (variable.getData().hasValue()) {
       onValue(variable.getData());
     } else {
-      appendToCurrent(sSPACE);
+      appendToCurrent(SPACE);
       appendToCurrent(variable.getName());
     }
   }
@@ -402,24 +402,24 @@ final class SMTTextBuilder implements ExprTreeVisitor {
 
   @Override
   public void onBindingListEnd(NodeBinding node) {
-    appendToCurrent(sBRACKET_CLOSE);
+    appendToCurrent(BRACKET_CLOSE);
   }
 
   @Override
   public void onBindingEnd(NodeBinding node) {
-    appendToCurrent(sBRACKET_CLOSE);
+    appendToCurrent(BRACKET_CLOSE);
   }
 
   @Override
   public void onBoundVariableBegin(NodeBinding node, NodeVariable variable, Node value) {
-    appendToCurrent(sBRACKET_OPEN);
+    appendToCurrent(BRACKET_OPEN);
     appendToCurrent(variable.getName());
-    appendToCurrent(sSPACE);
+    appendToCurrent(SPACE);
   }
 
   @Override
   public void onBoundVariableEnd(NodeBinding node, NodeVariable variable, Node value) {
-    appendToCurrent(sBRACKET_CLOSE);
+    appendToCurrent(BRACKET_CLOSE);
   }
 }
 
