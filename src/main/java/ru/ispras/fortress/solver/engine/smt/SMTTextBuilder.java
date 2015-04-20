@@ -87,7 +87,9 @@ final class SMTTextBuilder implements ExprTreeVisitor {
    * @param operations Operation dictionary.
    */
 
-  SMTTextBuilder(Iterable<Variable> variables, Map<Enum<?>, SolverOperation> operations) {
+  SMTTextBuilder(
+      final Iterable<Variable> variables,
+      final Map<Enum<?>, SolverOperation> operations) {
     this.operations = operations;
     this.variables = variables;
   }
@@ -97,12 +99,12 @@ final class SMTTextBuilder implements ExprTreeVisitor {
     return currentBuilder;
   }
 
-  private void appendToCurrent(String s) {
+  private void appendToCurrent(final String s) {
     assert null != currentBuilder : "The current builder is not assigned.";
     currentBuilder.append(s);
   }
 
-  private void setCurrentBuilder(StringBuilder builder) {
+  private void setCurrentBuilder(final StringBuilder builder) {
     currentBuilder = builder;
   }
 
@@ -113,7 +115,9 @@ final class SMTTextBuilder implements ExprTreeVisitor {
    * @throws IOException if failed to create the output file.
    */
 
-  public void saveToFile(String fileName, StringBuilder textBuilder) throws IOException {
+  public void saveToFile(
+      final String fileName,
+      final StringBuilder textBuilder) throws IOException {
     class TextWriter {
       private final PrintWriter fileOut;
       private final StringBuilder textOut;
@@ -149,12 +153,12 @@ final class SMTTextBuilder implements ExprTreeVisitor {
       out = new TextWriter(fileName, textBuilder);
 
       int i = 0;
-      for (DataType type : arraysInUse) {
+      for (final DataType type : arraysInUse) {
         out.printf(DECLARE_CONST, String.format(DEFAULT_ARRAY, i++), textForType(type));
       }
 
       final StringBuilder variablesListBuilder = new StringBuilder();
-      for (Variable variable : variables) {
+      for (final Variable variable : variables) {
         // Variables that have values don't need declarations
         // because their values are used in expression as constants.
         if (!variable.hasValue()) {
@@ -165,11 +169,11 @@ final class SMTTextBuilder implements ExprTreeVisitor {
         }
       }
 
-      for (StringBuilder builder : functions.getBuilders()) {
+      for (final StringBuilder builder : functions.getBuilders()) {
         out.printf(DEFINE_FUN, builder.toString());
       }
 
-      for (StringBuilder builder : formulas) {
+      for (final StringBuilder builder : formulas) {
         out.printf(ASSERT, builder.toString());
       }
 
@@ -188,7 +192,7 @@ final class SMTTextBuilder implements ExprTreeVisitor {
     }
   }
 
-  private void addFunctionDefinition(Function function) {
+  private void addFunctionDefinition(final Function function) {
     if (functions.isDefined(function.getUniqueName())) {
       return;
     }
@@ -255,7 +259,7 @@ final class SMTTextBuilder implements ExprTreeVisitor {
   }
 
   @Override
-  public void onOperationBegin(NodeOperation expr) {
+  public void onOperationBegin(final NodeOperation expr) {
     final Enum<?> op = expr.getOperationId();
 
     if (!operations.containsKey(op)) {
@@ -312,7 +316,7 @@ final class SMTTextBuilder implements ExprTreeVisitor {
   }
 
   @Override
-  public void onOperationEnd(NodeOperation expr) {
+  public void onOperationEnd(final NodeOperation expr) {
     if (expr.getOperandCount() > 0) {
       appendToCurrent(BRACKET_CLOSE);
     }
@@ -324,7 +328,10 @@ final class SMTTextBuilder implements ExprTreeVisitor {
   }
 
   @Override
-  public void onOperandBegin(NodeOperation expr, Node node, int index) {
+  public void onOperandBegin(
+      final NodeOperation expr,
+      final Node node,
+      final int index) {
     final Enum<?> operationId = expr.getOperationId();
     if (StandardOperation.isFamily(operationId, StandardOperation.Family.BV) &&
         (node.getDataType().getTypeId() == DataTypeId.LOGIC_BOOLEAN)) {
@@ -343,7 +350,10 @@ final class SMTTextBuilder implements ExprTreeVisitor {
   }
 
   @Override
-  public void onOperandEnd(NodeOperation expr, Node node, int index) {
+  public void onOperandEnd(
+      final NodeOperation expr,
+      final Node node,
+      final int index) {
     if (StandardOperation.isParametric(expr.getOperationId())
         && index == StandardOperation.getParameterCount(expr.getOperationId()) - 1) {
       appendToCurrent(BRACKET_CLOSE);
@@ -358,11 +368,11 @@ final class SMTTextBuilder implements ExprTreeVisitor {
   }
 
   @Override
-  public void onValue(NodeValue value) {
+  public void onValue(final NodeValue value) {
     onValue(value.getData());
   }
 
-  private void onValue(Data data) {
+  private void onValue(final Data data) {
     appendToCurrent(SPACE);
     if (data.getType().getTypeId() == DataTypeId.MAP) {
       int i = 0;
@@ -386,7 +396,7 @@ final class SMTTextBuilder implements ExprTreeVisitor {
   }
 
   @Override
-  public void onVariable(NodeVariable variable) {
+  public void onVariable(final NodeVariable variable) {
     if (variable.getData().hasValue()) {
       onValue(variable.getData());
     } else {
@@ -396,29 +406,35 @@ final class SMTTextBuilder implements ExprTreeVisitor {
   }
 
   @Override
-  public void onBindingBegin(NodeBinding node) {
+  public void onBindingBegin(final NodeBinding node) {
     appendToCurrent("(let (");
   }
 
   @Override
-  public void onBindingListEnd(NodeBinding node) {
+  public void onBindingListEnd(final NodeBinding node) {
     appendToCurrent(BRACKET_CLOSE);
   }
 
   @Override
-  public void onBindingEnd(NodeBinding node) {
+  public void onBindingEnd(final NodeBinding node) {
     appendToCurrent(BRACKET_CLOSE);
   }
 
   @Override
-  public void onBoundVariableBegin(NodeBinding node, NodeVariable variable, Node value) {
+  public void onBoundVariableBegin(
+      final NodeBinding node,
+      final NodeVariable variable,
+      final Node value) {
     appendToCurrent(BRACKET_OPEN);
     appendToCurrent(variable.getName());
     appendToCurrent(SPACE);
   }
 
   @Override
-  public void onBoundVariableEnd(NodeBinding node, NodeVariable variable, Node value) {
+  public void onBoundVariableEnd(
+      final NodeBinding node,
+      final NodeVariable variable,
+      final Node value) {
     appendToCurrent(BRACKET_CLOSE);
   }
 }
@@ -454,8 +470,8 @@ final class FunctionDefinitionBuilders {
   public void endCallTree() {
     assert callTreeStarted;
 
-    for (List<StringBuilder> level : queue.values()) {
-      for (StringBuilder entry : level) {
+    for (final List<StringBuilder> level : queue.values()) {
+      for (final StringBuilder entry : level) {
         entries.add(entry);
       }
     }
@@ -464,11 +480,14 @@ final class FunctionDefinitionBuilders {
     callTreeStarted = false;
   }
 
-  public boolean isDefined(String name) {
+  public boolean isDefined(final String name) {
     return names.contains(name);
   }
 
-  public void addEntry(String name, Integer depth, StringBuilder entry) {
+  public void addEntry(
+      final String name,
+      final Integer depth,
+      final StringBuilder entry) {
     if (names.contains(name)) {
       throw new IllegalStateException(String.format(
         "The function %s function is already defined.", name));
