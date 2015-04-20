@@ -14,6 +14,8 @@
 
 package ru.ispras.fortress.calculator;
 
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
+
 import java.util.Collection;
 import java.util.EnumMap;
 import java.util.Map;
@@ -48,7 +50,7 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
 
   public OperationGroup() {
     this.operations =
-      new EnumMap<DataTypeId, Map<OperationId, Operation<OperationId>>>(DataTypeId.class);
+        new EnumMap<DataTypeId, Map<OperationId, Operation<OperationId>>>(DataTypeId.class);
   }
 
   /**
@@ -61,10 +63,11 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
    * @throws NullPointerException if any of the parameters equals null.
    */
 
-  public final void registerOperations(DataTypeId typeId,
-      Map<OperationId, Operation<OperationId>> operationsForType) {
-    notNullCheck(typeId);
-    notNullCheck(operationsForType);
+  public final void registerOperations(
+      final DataTypeId typeId,
+      final Map<OperationId, Operation<OperationId>> operationsForType) {
+    checkNotNull(typeId);
+    checkNotNull(operationsForType);
 
     operations.put(typeId, operationsForType);
   }
@@ -76,9 +79,9 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
    */
 
   @Override
-  public final boolean isSupported(Enum<?> operationId, Data... operands) {
-    notNullCheck(operationId);
-    notNullCheck(operands);
+  public final boolean isSupported(final Enum<?> operationId, final Data... operands) {
+    checkNotNull(operationId);
+    checkNotNull(operands);
 
     if (0 == operands.length) {
       return false;
@@ -115,9 +118,9 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
    */
 
   @Override
-  public final Data calculate(Enum<?> operationId, Data... operands) {
-    notNullCheck(operationId);
-    notNullCheck(operands);
+  public final Data calculate(final Enum<?> operationId, final Data... operands) {
+    checkNotNull(operationId);
+    checkNotNull(operands);
 
     if (!isSupported(operationId, operands)) {
       throw new UnsupportedOperationException(String.format(
@@ -138,7 +141,7 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
     return operation.calculate(operands);
   }
 
-  private static Data evalEquality(Enum<?> operationId, Data ... operands) {
+  private static Data evalEquality(final Enum<?> operationId, final Data ... operands) {
     if (operationId == StandardOperation.EQ) {
       return Data.newBoolean(equalData(operands));
     } else if (operationId == StandardOperation.NOTEQ) {
@@ -147,7 +150,7 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
     throw new IllegalArgumentException();
   }
 
-  private static boolean equalData(Data ... operands) {
+  private static boolean equalData(final Data ... operands) {
     final Data data = operands[0];
     for (int i = 1; i < operands.length; ++i) {
       if (!data.equals(operands[i])) {
@@ -167,8 +170,8 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
    * @throws NullPointerException is the parameter equals null.
    */
 
-  static boolean equalTypes(Data[] operands) {
-    notNullCheck(operands);
+  static boolean equalTypes(final Data[] operands) {
+    checkNotNull(operands);
 
     if (operands.length <= 1) {
       return true;
@@ -184,18 +187,13 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
     return true;
   }
 
-  private static void notNullCheck(Object o) {
-    if (null == o) {
-      throw new NullPointerException();
-    }
-  }
-
   private final String MSG_UNSUPPORTED_FRMT =
     "Failed to calculate: the %s is not supported for the %s type, " +
      "operand types are mismatched or it does not accept %d operands.";
 
   public static <T extends Enum<T>>
-  Map<T, Operation<T>> operationMap(Class<T> c, Collection<? extends Operation<T>> operations) {
+  Map<T, Operation<T>> operationMap(
+      final Class<T> c, Collection<? extends Operation<T>> operations) {
     final Map<T, Operation<T>> map = new EnumMap<T, Operation<T>>(c);
     for (Operation<T> op : operations) {
       map.put(op.getOperationId(), op);

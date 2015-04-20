@@ -47,7 +47,7 @@ public final class ArityRange {
 
     private final int value;
 
-    private Bound(int value) {
+    private Bound(final int value) {
       this.value = value;
     }
 
@@ -90,7 +90,7 @@ public final class ArityRange {
    * @param max Upper bound.
    */
 
-  public ArityRange(Bound min, Bound max) {
+  public ArityRange(final Bound min, final Bound max) {
     this(min.value(), max.value());
   }
 
@@ -103,7 +103,7 @@ public final class ArityRange {
    * @throws IllegalArgumentException if the range is specified incorrectly.
    */
 
-  public ArityRange(int min, int max) {
+  public ArityRange(final int min, final int max) {
     checkGreaterThanZero(min);
 
     if (!((min <= max) || (max == Bound.UNBOUNDED.value()))) {
@@ -121,7 +121,7 @@ public final class ArityRange {
    * @return {@code true} if value is in the range or {@code false} otherwise.
    */
 
-  public boolean isWithinRange(int value) {
+  public boolean isWithinRange(final int value) {
     return (min <= value) && ((value <= max) || (Bound.UNBOUNDED.value() == max));
   }
 }

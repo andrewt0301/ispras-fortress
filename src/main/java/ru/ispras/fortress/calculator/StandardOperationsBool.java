@@ -55,14 +55,14 @@ enum StandardOperationsBool implements Operation<StandardOperation> {
 
   NOT(StandardOperation.NOT, ArityRange.UNARY) {
     @Override
-    public Data calculate(Data... operands) {
+    public Data calculate(final Data... operands) {
       return Data.newBoolean(!operands[0].getBoolean());
     }
   },
 
   AND(StandardOperation.AND, ArityRange.UNARY_UNBOUNDED) {
     @Override
-    public Data calculate(Data... operands) {
+    public Data calculate(final Data... operands) {
       for (int index = 0; index < operands.length; ++index) {
         if (!operands[index].getBoolean()) {
           return Data.newBoolean(false);
@@ -74,7 +74,7 @@ enum StandardOperationsBool implements Operation<StandardOperation> {
 
   OR(StandardOperation.OR, ArityRange.UNARY_UNBOUNDED) {
     @Override
-    public Data calculate(Data... operands) {
+    public Data calculate(final Data... operands) {
       for (int index = 0; index < operands.length; ++index) {
         if (operands[index].getBoolean()) {
           return Data.newBoolean(true);
@@ -86,7 +86,7 @@ enum StandardOperationsBool implements Operation<StandardOperation> {
 
   XOR(StandardOperation.XOR, ArityRange.BINARY_UNBOUNDED) {
     @Override
-    public Data calculate(Data... operands) {
+    public Data calculate(final Data... operands) {
       boolean result = operands[0].getBoolean();
       for (int index = 1; index < operands.length; ++index) {
         result ^= operands[index].getBoolean();
@@ -97,7 +97,7 @@ enum StandardOperationsBool implements Operation<StandardOperation> {
 
   IMPL(StandardOperation.IMPL, ArityRange.BINARY) {
     @Override
-    public Data calculate(Data... operands) {
+    public Data calculate(final Data... operands) {
       final boolean value1 = operands[0].getBoolean();
       final boolean value2 = operands[1].getBoolean();
 
@@ -107,7 +107,7 @@ enum StandardOperationsBool implements Operation<StandardOperation> {
   
   ITE(StandardOperation.ITE, ArityRange.TERNARY) {
     @Override
-    public Data calculate(Data... operands) {
+    public Data calculate(final Data... operands) {
       if (operands[0].getBoolean()) {
         return operands[1];
       }
@@ -115,7 +115,7 @@ enum StandardOperationsBool implements Operation<StandardOperation> {
     }
 
     @Override
-    public boolean validTypes(Data... operands) {
+    public boolean validTypes(final Data... operands) {
       return operands[0].getType().equals(DataType.BOOLEAN) &&
              operands[1].getType().equals(operands[2].getType());
     }
@@ -127,7 +127,7 @@ enum StandardOperationsBool implements Operation<StandardOperation> {
     final Map<StandardOperation, Operation<StandardOperation>> map =
       new EnumMap<>(StandardOperation.class);
 
-    for (Operation<StandardOperation> value : values()) {
+    for (final Operation<StandardOperation> value : values()) {
       map.put(value.getOperationId(), value);
     }
 
@@ -141,7 +141,9 @@ enum StandardOperationsBool implements Operation<StandardOperation> {
   private final StandardOperation operationId;
   private final ArityRange operationArity;
 
-  private StandardOperationsBool(StandardOperation operationId, ArityRange operationArity) {
+  private StandardOperationsBool(
+      final StandardOperation operationId,
+      final ArityRange operationArity) {
     this.operationId = operationId;
     this.operationArity = operationArity;
   }
@@ -161,7 +163,7 @@ enum StandardOperationsBool implements Operation<StandardOperation> {
   }
 
   @Override
-  public boolean validTypes(Data... operands) {
+  public boolean validTypes(final Data... operands) {
     return OperationGroup.equalTypes(operands);
   }
 }

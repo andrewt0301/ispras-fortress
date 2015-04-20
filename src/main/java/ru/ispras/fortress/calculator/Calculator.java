@@ -55,15 +55,15 @@ public final class Calculator {
     // standard operations.
 
     final OperationGroup<StandardOperation> standardOperations =
-      new OperationGroup<>();
+        new OperationGroup<>();
 
     // Register operation for Bool values.
     standardOperations.registerOperations(StandardOperationsBool.dataTypeId(),
-      StandardOperationsBool.operations());
+        StandardOperationsBool.operations());
 
     // Register operation for Int values.
     standardOperations.registerOperations(StandardOperationsInt.dataTypeId(),
-      StandardOperationsInt.operations());
+        StandardOperationsInt.operations());
 
     standardOperations.registerOperations(DataTypeId.LOGIC_REAL, StandardOperations.realOps());
     standardOperations.registerOperations(DataTypeId.MAP, StandardOperations.arrayOps());
@@ -90,7 +90,8 @@ public final class Calculator {
    */
 
   public static boolean registerEngine(
-      Class<? extends Enum<?>> operationIdClass, CalculatorEngine engine) {
+        final Class<? extends Enum<?>> operationIdClass,
+        final CalculatorEngine engine) {
     checkNotNull(operationIdClass);
     checkNotNull(engine);
 
@@ -110,7 +111,7 @@ public final class Calculator {
    * @throws NullPointerException if the parameter equals null.
    */
 
-  public static CalculatorEngine getEngine(Class<?> operationIdClass) {
+  public static CalculatorEngine getEngine(final Class<?> operationIdClass) {
     checkNotNull(operationIdClass);
     return engines.get(operationIdClass);
   }
@@ -127,7 +128,7 @@ public final class Calculator {
    * @throws NullPointerException if any of the parameters equals null.
    */
 
-  public static boolean isSupported(Enum<?> operationId, Data... operands) {
+  public static boolean isSupported(final Enum<?> operationId, final Data... operands) {
     checkNotNull(operationId);
     checkNotNull(operands);
 
@@ -152,7 +153,10 @@ public final class Calculator {
    *         violated (e.g. operand types do not match).
    */
 
-  public static Data calculate(CalculatorEngine engine, Enum<?> operationId, Data... operands) {
+  public static Data calculate(
+      final CalculatorEngine engine,
+      final Enum<?> operationId,
+      final Data... operands) {
     checkNotNull(engine);
     checkNotNull(operationId);
     checkNotNull(operands);
@@ -172,7 +176,7 @@ public final class Calculator {
    *         violated (e.g. operand types do not match).
    */
 
-  public static Data calculate(Enum<?> operationId, Data... operands) {
+  public static Data calculate(final Enum<?> operationId, final Data... operands) {
     checkNotNull(operationId);
     checkNotNull(operands);
 
