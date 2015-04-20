@@ -137,7 +137,7 @@ enum XMLNodeType {
     nameToTypeMap = new HashMap<String, XMLNodeType>();
     for (final XMLNodeType type : values()) {
       if (null == type.parents) {
-        throw new NullPointerException(String.format(
+        throw new IllegalStateException(String.format(
           "%s.parents is not initialized.", type.name()));
       }
 
