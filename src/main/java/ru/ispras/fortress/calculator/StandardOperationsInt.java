@@ -57,21 +57,21 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
 
   PLUS(StandardOperation.PLUS, ArityRange.UNARY) {
     @Override
-    public Data calculate(Data... operands) {
+    public Data calculate(final Data... operands) {
       return operands[0];
     }
   },
 
   MINUS(StandardOperation.MINUS, ArityRange.UNARY) {
     @Override
-    public Data calculate(Data... operands) {
+    public Data calculate(final Data... operands) {
       return Data.newInteger(operands[0].getInteger().negate());
     }
   },
 
   ADD(StandardOperation.ADD, ArityRange.BINARY_UNBOUNDED) {
     @Override
-    public Data calculate(Data... operands) {
+    public Data calculate(final Data... operands) {
       BigInteger result = operands[0].getInteger();
       for (int index = 1; index < operands.length; ++index) {
         result = result.add(operands[index].getInteger());
@@ -83,7 +83,7 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
 
   SUB(StandardOperation.SUB, ArityRange.BINARY_UNBOUNDED) {
     @Override
-    public Data calculate(Data... operands) {
+    public Data calculate(final Data... operands) {
       BigInteger result = operands[0].getInteger();
       for (int index = 1; index < operands.length; ++index) {
         result = result.subtract(operands[index].getInteger());
@@ -95,7 +95,7 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
 
   MUL(StandardOperation.MUL, ArityRange.BINARY_UNBOUNDED) {
     @Override
-    public Data calculate(Data... operands) {
+    public Data calculate(final Data... operands) {
       BigInteger result = operands[0].getInteger();
       for (int index = 1; index < operands.length; ++index) {
         result = result.multiply(operands[index].getInteger());
@@ -107,7 +107,7 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
 
   DIV(StandardOperation.DIV, ArityRange.BINARY) {
     @Override
-    public Data calculate(Data... operands) {
+    public Data calculate(final Data... operands) {
       final BigInteger value1 = operands[0].getInteger();
       final BigInteger value2 = operands[1].getInteger();
 
@@ -117,7 +117,7 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
 
   REM(StandardOperation.REM, ArityRange.BINARY) {
     @Override
-    public Data calculate(Data... operands) {
+    public Data calculate(final Data... operands) {
       // Implemented like in Z3: the result is negative only
       // if the second operand is negative.
 
@@ -131,7 +131,7 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
 
   MOD(StandardOperation.MOD, ArityRange.BINARY) {
     @Override
-    public Data calculate(Data... operands) {
+    public Data calculate(final Data... operands) {
       // Implemented like in Z3: The result is always non-negative.
 
       final BigInteger value1 = operands[0].getInteger();
@@ -143,7 +143,7 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
 
   EQ(StandardOperation.EQ, ArityRange.BINARY_UNBOUNDED) {
     @Override
-    public Data calculate(Data... operands) {
+    public Data calculate(final Data... operands) {
       final BigInteger value = operands[0].getInteger();
       for (int i = 1; i < operands.length; ++i) {
         if (value.compareTo(operands[i].getInteger()) != 0) {
@@ -156,7 +156,7 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
 
   NOTEQ(StandardOperation.NOTEQ, ArityRange.BINARY) {
     @Override
-    public Data calculate(Data... operands) {
+    public Data calculate(final Data... operands) {
       final BigInteger value1 = operands[0].getInteger();
       final BigInteger value2 = operands[1].getInteger();
 
@@ -166,7 +166,7 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
 
   GREATER(StandardOperation.GREATER, ArityRange.BINARY) {
     @Override
-    public Data calculate(Data... operands) {
+    public Data calculate(final Data... operands) {
       final BigInteger value1 = operands[0].getInteger();
       final BigInteger value2 = operands[1].getInteger();
 
@@ -176,7 +176,7 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
 
   GREATEREQ(StandardOperation.GREATEREQ, ArityRange.BINARY) {
     @Override
-    public Data calculate(Data... operands) {
+    public Data calculate(final Data... operands) {
       final BigInteger value1 = operands[0].getInteger();
       final BigInteger value2 = operands[1].getInteger();
 
@@ -186,7 +186,7 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
 
   LESS(StandardOperation.LESS, ArityRange.BINARY) {
     @Override
-    public Data calculate(Data... operands) {
+    public Data calculate(final Data... operands) {
       final BigInteger value1 = operands[0].getInteger();
       final BigInteger value2 = operands[1].getInteger();
 
@@ -196,7 +196,7 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
 
   LESSEQ(StandardOperation.LESSEQ, ArityRange.BINARY) {
     @Override
-    public Data calculate(Data... operands) {
+    public Data calculate(final Data... operands) {
       final BigInteger value1 = operands[0].getInteger();
       final BigInteger value2 = operands[1].getInteger();
 
@@ -206,7 +206,7 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
 
   MAX(StandardOperation.MAX, ArityRange.UNARY_UNBOUNDED) {
     @Override
-    public Data calculate(Data... operands) {
+    public Data calculate(final Data... operands) {
       BigInteger value = operands[0].getInteger();
       for (int i = 1; i < operands.length; ++i) {
         final BigInteger operand = operands[i].getInteger();
@@ -220,7 +220,7 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
 
   MIN(StandardOperation.MIN, ArityRange.UNARY_UNBOUNDED) {
     @Override
-    public Data calculate(Data... operands) {
+    public Data calculate(final Data... operands) {
       BigInteger value = operands[0].getInteger();
       for (int i = 1; i < operands.length; ++i) {
         final BigInteger operand = operands[i].getInteger();
@@ -234,7 +234,7 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
 
   BVREPEAT(StandardOperation.BVREPEAT, ArityRange.BINARY) {
     @Override
-    public Data calculate(Data... operands) {
+    public Data calculate(final Data... operands) {
       final BitVector[] repeat = new BitVector[operands[0].getInteger().intValue()];
       Arrays.fill(repeat, operands[1].getBitVector());
 
@@ -242,7 +242,7 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
     }
 
     @Override
-    public boolean validTypes(Data... operands) {
+    public boolean validTypes(final Data... operands) {
       return operands[0].isType(DataTypeId.LOGIC_INTEGER) &&
              operands[1].isType(DataTypeId.BIT_VECTOR);
     }
@@ -250,7 +250,7 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
 
   BVEXTRACT(StandardOperation.BVEXTRACT, ArityRange.TERNARY) {
     @Override
-    public Data calculate(Data... operands) {
+    public Data calculate(final Data... operands) {
       int end = operands[0].getInteger().intValue();
       int start = operands[1].getInteger().intValue();
 
@@ -264,7 +264,7 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
     }
 
     @Override
-    public boolean validTypes(Data... operands) {
+    public boolean validTypes(final Data... operands) {
       return operands[0].isType(DataTypeId.LOGIC_INTEGER) &&
              operands[1].isType(DataTypeId.LOGIC_INTEGER) &&
              operands[2].isType(DataTypeId.BIT_VECTOR);
@@ -273,7 +273,7 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
 
   ABS(StandardOperation.ABS, ArityRange.UNARY) {
     @Override
-    public Data calculate(Data... operands) {
+    public Data calculate(final Data... operands) {
       return Data.newInteger(operands[0].getInteger().abs());
     }
   };
@@ -284,7 +284,7 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
     final Map<StandardOperation, Operation<StandardOperation>> map =
       new EnumMap<>(StandardOperation.class);
 
-    for (Operation<StandardOperation> value : values())
+    for (final Operation<StandardOperation> value : values())
       map.put(value.getOperationId(), value);
 
     operations = Collections.unmodifiableMap(map);
@@ -297,7 +297,9 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
   private final StandardOperation operationId;
   private final ArityRange operationArity;
 
-  private StandardOperationsInt(StandardOperation operationId, ArityRange operationArity) {
+  private StandardOperationsInt(
+      final StandardOperation operationId,
+      final ArityRange operationArity) {
     this.operationId = operationId;
     this.operationArity = operationArity;
   }
@@ -317,7 +319,7 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
   }
 
   @Override
-  public boolean validTypes(Data... operands) {
+  public boolean validTypes(final Data... operands) {
     return OperationGroup.equalTypes(operands);
   }
 }
