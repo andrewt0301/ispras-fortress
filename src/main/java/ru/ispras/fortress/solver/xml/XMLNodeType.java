@@ -135,7 +135,7 @@ enum XMLNodeType {
     BOUND_VARIABLE.parents = EnumSet.of(BINDING_LIST);
 
     nameToTypeMap = new HashMap<String, XMLNodeType>();
-    for (XMLNodeType type : values()) {
+    for (final XMLNodeType type : values()) {
       if (null == type.parents) {
         throw new NullPointerException(String.format(
           "%s.parents is not initialized.", type.name()));
@@ -148,7 +148,7 @@ enum XMLNodeType {
   private final String nodeName;
   private Set<XMLNodeType> parents;
 
-  private XMLNodeType(String nodeName) {
+  private XMLNodeType(final String nodeName) {
     this.nodeName = nodeName;
     this.parents = null;
   }
@@ -157,7 +157,7 @@ enum XMLNodeType {
     return nodeName;
   }
 
-  boolean isChildOf(XMLNodeType parent) {
+  boolean isChildOf(final XMLNodeType parent) {
     if ((null == parent) && parents.isEmpty()) {
       return true;
     }
@@ -165,7 +165,7 @@ enum XMLNodeType {
     return parents.contains(parent);
   }
 
-  static XMLNodeType fromNodeName(String name) {
+  static XMLNodeType fromNodeName(final String name) {
     return nameToTypeMap.get(name);
   }
 }
