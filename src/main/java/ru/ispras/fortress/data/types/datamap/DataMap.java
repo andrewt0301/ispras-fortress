@@ -14,6 +14,8 @@
 
 package ru.ispras.fortress.data.types.datamap;
 
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
+
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.solver.engine.z3.SMTRegExp;
@@ -43,14 +45,18 @@ public final class DataMap implements Map<Data, Data> {
    * @param valueType {@link ru.ispras.fortress.data.DataType DataType} instance for values
    */
 
-  public DataMap(DataType keyType, DataType valueType) {
+  public DataMap(final DataType keyType, final DataType valueType) {
     this(keyType, valueType, null, new LinkedHashMap<Data, Data>());
 
-    notnull(keyType);
-    notnull(valueType);
+    checkNotNull(keyType);
+    checkNotNull(valueType);
   }
 
-  private DataMap(DataType keyType, DataType valueType, Data constant, Map<Data, Data> map) {
+  private DataMap(
+      final DataType keyType,
+      final DataType valueType,
+      final Data constant,
+      final Map<Data, Data> map) {
     this.keyType = keyType;
     this.valueType = valueType;
     this.map = map;
@@ -61,7 +67,7 @@ public final class DataMap implements Map<Data, Data> {
     return this.constant;
   }
 
-  public void setConstant(Data data) {
+  public void setConstant(final Data data) {
     this.constant = data;
   }
 
@@ -76,17 +82,17 @@ public final class DataMap implements Map<Data, Data> {
   }
 
   @Override
-  public boolean containsKey(Object o) {
+  public boolean containsKey(final Object o) {
     return isKey(o) && map.containsKey(o);
   }
 
   @Override
-  public boolean containsValue(Object o) {
+  public boolean containsValue(final Object o) {
     return isValue(o) && map.containsValue(o) || o.equals(constant);
   }
 
   @Override
-  public Data get(Object o) {
+  public Data get(final Object o) {
     if (isKey(o)) {
       final Data data = map.get(o);
       if (data == null) {
@@ -98,7 +104,7 @@ public final class DataMap implements Map<Data, Data> {
   }
 
   @Override
-  public Data put(Data key, Data value) {
+  public Data put(final Data key, final Data value) {
     if (isKey(key) && isValue(value)) {
       return map.put(key, value);
     }
@@ -110,7 +116,7 @@ public final class DataMap implements Map<Data, Data> {
   }
 
   @Override
-  public Data remove(Object o) {
+  public Data remove(final Object o) {
     if (isKey(o)) {
       return map.remove(o);
     }
@@ -118,7 +124,7 @@ public final class DataMap implements Map<Data, Data> {
   }
 
   @Override
-  public void putAll(Map<? extends Data, ? extends Data> m) {
+  public void putAll(final Map<? extends Data, ? extends Data> m) {
     throw new UnsupportedOperationException("DataMap doesn't support putAll() method");
   }
 
@@ -143,7 +149,7 @@ public final class DataMap implements Map<Data, Data> {
   }
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (o == null) {
       return false;
     }
@@ -161,8 +167,10 @@ public final class DataMap implements Map<Data, Data> {
            observeEquals(rhs, this);
   }
 
-  private static boolean observeEquals(Map<Data, Data> source, Map<Data, Data> target) {
-    for (Map.Entry<Data, Data> entry : source.entrySet()) {
+  private static boolean observeEquals(
+      final Map<Data, Data> source,
+      final Map<Data, Data> target) {
+    for (final Map.Entry<Data, Data> entry : source.entrySet()) {
       if (!entry.getValue().equals(target.get(entry.getKey()))) {
         return false;
       }
@@ -199,7 +207,7 @@ public final class DataMap implements Map<Data, Data> {
   public String toString() {
     final StringBuilder builder = new StringBuilder();
     builder.append('(');
-    for (Map.Entry<Data, Data> entry : map.entrySet()) {
+    for (final Map.Entry<Data, Data> entry : map.entrySet()) {
       builder.append(String.format("(%s:%s)",
                                    entry.getKey().getValue(),
                                    entry.getValue().getValue()));
@@ -219,10 +227,13 @@ public final class DataMap implements Map<Data, Data> {
    * @throws IllegalArgumentException if {@code s} is not valid string representation
    */
 
-  public static DataMap valueOf(String s, DataType keyType, DataType valueType) {
-    notnull(s);
-    notnull(keyType);
-    notnull(valueType);
+  public static DataMap valueOf(
+      final String s, 
+      final DataType keyType,
+      final DataType valueType) {
+    checkNotNull(s);
+    checkNotNull(keyType);
+    checkNotNull(valueType);
 
     final char LPAREN = '(';
     final char RPAREN = ')';
@@ -258,7 +269,7 @@ public final class DataMap implements Map<Data, Data> {
    * @return {@link ru.ispras.fortress.data.Data Data} instance for given string representation
    */
 
-  private static Data readData(String s, DataType type) {
+  private static Data readData(final String s, final DataType type) {
     final int radix;
 
     if (Pattern.compile(SMTRegExp.LINE_START + SMTRegExp.VALUE_BIN).matcher(s).matches()) {
@@ -300,7 +311,7 @@ public final class DataMap implements Map<Data, Data> {
    * type conforming to key type of this map.
    */
 
-  private boolean isKey(Object o) {
+  private boolean isKey(final Object o) {
     return getData(o).getType().equals(keyType);
   }
 
@@ -309,7 +320,7 @@ public final class DataMap implements Map<Data, Data> {
    * type conforming to value type of this map.
    */
 
-  private boolean isValue(Object o) {
+  private boolean isValue(final Object o) {
     return getData(o).getType().equals(valueType);
   }
 
@@ -317,14 +328,8 @@ public final class DataMap implements Map<Data, Data> {
    * Cast from {@code Object} to {@code Data} instance.
    */
 
-  private static Data getData(Object o) {
-    notnull(o);
+  private static Data getData(final Object o) {
+    checkNotNull(o);
     return (Data) o;
-  }
-
-  private static void notnull(Object o) {
-    if (o == null) {
-      throw new NullPointerException();
-    }
   }
 }
