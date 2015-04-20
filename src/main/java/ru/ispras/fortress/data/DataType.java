@@ -30,12 +30,10 @@ import java.util.HashMap;
  */
 
 public final class DataType {
-  /**
-   * Table that stores singleton instances of data types.
-   */
+  /** Table that stores singleton instances of data types. */
+  private static final HashMap<String, DataType> DATA_TYPE = new HashMap<>();
 
-  private static HashMap<String, DataType> dataTypes = new HashMap<String, DataType>();
-  private static Object[] EMPTY_PARAMETERS_LIST = new Object[0];
+  private static final Object[] EMPTY_PARAMETERS_LIST = new Object[0];
 
   /**
    * The LOGIC_TYPE_SIZE constant specifies the size of logic data types. Such types are not related
@@ -57,6 +55,11 @@ public final class DataType {
   /** Predefined unknown type. */
   public static final DataType UNKNOWN = newDataType(DataTypeId.UNKNOWN);
 
+  private final DataTypeId typeId;
+  private final String name;
+  private final List<Object> parameters;
+
+
   /**
    * Returns a type describing a bit vector of the specified size.
    * 
@@ -64,7 +67,7 @@ public final class DataType {
    * @return Bit vector type
    */
 
-  public static DataType BIT_VECTOR(int size) {
+  public static DataType BIT_VECTOR(final int size) {
     checkGreaterThanZero(size);
     return newDataType(DataTypeId.BIT_VECTOR, size);
   }
@@ -76,7 +79,9 @@ public final class DataType {
     return newDataType(DataTypeId.MAP, keyType, valueType);
   }
 
-  public static DataType newDataType(DataTypeId typeId, int size) {
+  public static DataType newDataType(
+      final DataTypeId typeId,
+      final int size) {
     if (typeId == DataTypeId.BIT_VECTOR) {
       return newDataType(typeId, (Object) Integer.valueOf(size));
     }
@@ -93,26 +98,24 @@ public final class DataType {
    * @return A data type object
    */
 
-  public static DataType newDataType(DataTypeId typeId, Object... parameters) {
+  public static DataType newDataType(
+      final DataTypeId typeId,
+      final Object... parameters) {
     checkNotNull(typeId);
 
     final List<Object> list = Arrays.asList(parameters);
     typeId.validate(list);
 
     final String key = typeId.format(list);
-    if (dataTypes.containsKey(key)) {
-      return dataTypes.get(key);
+    if (DATA_TYPE.containsKey(key)) {
+      return DATA_TYPE.get(key);
     }
 
     final DataType dataType = new DataType(typeId, key, list);
-    dataTypes.put(key, dataType);
+    DATA_TYPE.put(key, dataType);
 
     return dataType;
   }
-
-  private final DataTypeId typeId;
-  private final String name;
-  private final List<Object> parameters;
 
   /**
    * Constructs a data type object based on its attributes.
@@ -121,7 +124,10 @@ public final class DataType {
    * @param size The size of data in bits.
    */
 
-  private DataType(DataTypeId typeId, String name, List<Object> parameters) {
+  private DataType(
+      final DataTypeId typeId,
+      final String name,
+      final List<Object> parameters) {
     this.typeId = typeId;
     this.name = name;
     this.parameters = parameters;
@@ -186,18 +192,19 @@ public final class DataType {
    * @return A new data object.
    */
 
-  public Data valueOf(String value, int radix) {
+  public Data valueOf(final String value, final int radix) {
     checkNotNull(value);
 
-    value = value.replaceAll("\\s?", ""); // Removes extra spaces
-    return new Data(this, typeId.valueOf(value, radix, parameters));
+    // Cleans extra spaces
+    final String cleanValue = value.replaceAll("\\s?", "");
+    return new Data(this, typeId.valueOf(cleanValue, radix, parameters));
   }
 
-  public static DataType typeOf(String value) {
+  public static DataType typeOf(final String value) {
     checkNotNull(value);
 
-    if (dataTypes.containsKey(value)) {
-      return dataTypes.get(value);
+    if (DATA_TYPE.containsKey(value)) {
+      return DATA_TYPE.get(value);
     }
 
     DataType type;
@@ -243,7 +250,7 @@ public final class DataType {
    */
 
   @Override
-  public boolean equals(Object obj) {
+  public boolean equals(final Object obj) {
     if (this == obj) {
       return true;
     }
