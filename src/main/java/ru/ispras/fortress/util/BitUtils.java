@@ -20,6 +20,7 @@ package ru.ispras.fortress.util;
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
 public final class BitUtils {
+  private BitUtils() {}
 
   /**
    * Returns a bit mask of the given width.
@@ -27,7 +28,7 @@ public final class BitUtils {
    * @param width Mask width.
    * @return Integer bit mask.
    */
-  public static int maskInt(int width) {
+  public static int maskInt(final int width) {
     return width >= Integer.SIZE ? -1 : (1 << width) - 1;
   }
 
@@ -38,7 +39,7 @@ public final class BitUtils {
    * @param hi Higher bound.
    * @return Integer bit mask.
    */
-  public static int maskInt(int lo, int hi) {
+  public static int maskInt(final int lo, final int hi) {
     int x = lo < hi ? lo : hi;
     int y = lo < hi ? hi : lo;
 
@@ -55,7 +56,7 @@ public final class BitUtils {
    * @param width Mask width.
    * @return Long bit mask.
    */
-  public static long maskLong(int width) {
+  public static long maskLong(final int width) {
     return width >= Long.SIZE ? -1 : (1 << width) - 1;
   }
 
@@ -66,7 +67,7 @@ public final class BitUtils {
    * @param hi Higher bound.
    * @return Long bit mask.
    */
-  public static long maskLong(int lo, int hi) {
+  public static long maskLong(final int lo, final int hi) {
     int x = lo < hi ? lo : hi;
     int y = lo < hi ? hi : lo;
 
