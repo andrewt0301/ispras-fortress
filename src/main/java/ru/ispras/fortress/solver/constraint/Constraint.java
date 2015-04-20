@@ -56,8 +56,12 @@ public final class Constraint {
    *         required by the constraint type.
    */
 
-  public Constraint(String name, ConstraintKind kind, String description,
-      Map<String, Variable> variables, Object representation) {
+  public Constraint(
+      final String name,
+      final ConstraintKind kind,
+      final String description,
+      final Map<String, Variable> variables,
+      final Object representation) {
     checkNotNull(name, "name");
     checkNotNull(kind, "kind");
     checkNotNull(description, "description");
@@ -128,7 +132,7 @@ public final class Constraint {
    *         value type does not match the type of the variable.
    */
 
-  public void setVariableValue(String name, Data value) {
+  public void setVariableValue(final String name, final Data value) {
     checkNotNull(name, "name");
     checkNotNull(value, "value");
 
@@ -154,7 +158,7 @@ public final class Constraint {
    * @throws NullPointerException if the name parameter equals null.
    */
 
-  public Variable findVariable(String name) {
+  public Variable findVariable(final String name) {
     checkNotNull(name, "name");
     return variables.get(name);
   }
@@ -178,7 +182,7 @@ public final class Constraint {
   public Collection<Variable> getUnknownVariables() {
     final List<Variable> result = new ArrayList<Variable>(variables.size());
 
-    for (Variable variable : variables.values()) {
+    for (final Variable variable : variables.values()) {
       if (!variable.hasValue()) {
         result.add(variable);
       }
@@ -201,7 +205,7 @@ public final class Constraint {
   }
 
   @Override
-  public boolean equals(Object obj) {
+  public boolean equals(final Object obj) {
     if (this == obj) {
       return true;
     }

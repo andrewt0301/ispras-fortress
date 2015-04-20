@@ -52,7 +52,7 @@ public final class Formulas {
    * @throws NullPointerException if the parameter equals null.
    */
 
-  public Formulas(Formulas formulas) {
+  public Formulas(final Formulas formulas) {
     checkNotNull(formulas);
     this.exprs = new ArrayList<Node>(formulas.exprs);
   }
@@ -63,7 +63,7 @@ public final class Formulas {
    * @param formula A formula to be placed in the container.
    */
 
-  public Formulas(Node formula) {
+  public Formulas(final Node formula) {
     this();
     add(formula);
   }
@@ -76,7 +76,7 @@ public final class Formulas {
    * @throws NullPointerException if the parameter equals null.
    */
 
-  public void add(Node formula) {
+  public void add(final Node formula) {
     checkNotNull(formula);
     exprs.add(formula);
   }
@@ -89,7 +89,7 @@ public final class Formulas {
    * @throws NullPointerException if the parameter equals null.
    */
 
-  public void addAll(Collection<? extends Node> formulas) {
+  public void addAll(final Collection<? extends Node> formulas) {
     checkNotNull(formulas);
     exprs.addAll(formulas);
   }
@@ -103,7 +103,7 @@ public final class Formulas {
    * @throws NullPointerException if the parameter equals null.
    */
 
-  public void addAll(Formulas formulas) {
+  public void addAll(final Formulas formulas) {
     checkNotNull(formulas);
     addAll(formulas.exprs);
   }
@@ -150,7 +150,7 @@ public final class Formulas {
     final Collection<NodeVariable> nodeVariables = ExprUtils.getVariables(exprs());
     final List<Variable> variables = new ArrayList<Variable>(nodeVariables.size());
 
-    for (NodeVariable nodeVariable : nodeVariables) {
+    for (final NodeVariable nodeVariable : nodeVariables) {
       variables.add(nodeVariable.getVariable());
     }
 
@@ -163,7 +163,7 @@ public final class Formulas {
   }
 
   @Override
-  public boolean equals(Object obj) {
+  public boolean equals(final Object obj) {
     if (this == obj) {
       return true;
     }

@@ -42,7 +42,7 @@ public final class ConstraintCombiner {
    *         is not ConstraintKind.FORMULA_BASED).
    */
 
-  public static Constraint makeNegation(Constraint a) {
+  public static Constraint makeNegation(final Constraint a) {
     formulaBasedCheck(a);
 
     final ConstraintBuilder builder = new ConstraintBuilder(a.getKind());
@@ -72,7 +72,7 @@ public final class ConstraintCombiner {
    *         (its type is not ConstraintKind.FORMULA_BASED).
    */
 
-  public static Constraint makeConjunction(Constraint a, Constraint b) {
+  public static Constraint makeConjunction(final Constraint a, final Constraint b) {
     formulaBasedCheck(a);
     formulaBasedCheck(b);
 
@@ -105,7 +105,7 @@ public final class ConstraintCombiner {
    *         (its type is not ConstraintKind.FORMULA_BASED).
    */
 
-  public static Constraint makeDisjunction(Constraint a, Constraint b) {
+  public static Constraint makeDisjunction(final Constraint a, final Constraint b) {
     formulaBasedCheck(a);
     formulaBasedCheck(b);
 
@@ -127,7 +127,7 @@ public final class ConstraintCombiner {
     return builder.build();
   }
 
-  private static void formulaBasedCheck(Constraint c) {
+  private static void formulaBasedCheck(final Constraint c) {
     InvariantChecks.checkNotNull(c);
     if (ConstraintKind.FORMULA_BASED != c.getKind()) {
       throw new IllegalArgumentException(String.format(

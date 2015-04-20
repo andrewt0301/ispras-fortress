@@ -59,7 +59,7 @@ public final class ConstraintBuilder {
    * @throws NullPointerException if the parameter equals null.
    */
 
-  public ConstraintBuilder(ConstraintKind kind) {
+  public ConstraintBuilder(final ConstraintKind kind) {
     checkNotNull(kind);
 
     this.name = UUID.randomUUID().toString();
@@ -78,7 +78,7 @@ public final class ConstraintBuilder {
    * @throws NullPointerException if the parameter is null.
    */
 
-  public ConstraintBuilder(Constraint constraint) {
+  public ConstraintBuilder(final Constraint constraint) {
     checkNotNull(constraint);
 
     this.name = constraint.getName();
@@ -88,10 +88,10 @@ public final class ConstraintBuilder {
     this.representation = constraint.getInnerRep();
   }
 
-  private static Map<String, Variable> createVariableMap(Iterable<Variable> variables) {
+  private static Map<String, Variable> createVariableMap(final Iterable<Variable> variables) {
     final Map<String, Variable> result = new LinkedHashMap<String, Variable>();
 
-    for (Variable v : variables) {
+    for (final Variable v : variables) {
       result.put(v.getName(), v);
     }
 
@@ -106,7 +106,7 @@ public final class ConstraintBuilder {
    * @throws NullPointerException if the parameter equals null.
    */
 
-  public void setName(String name) {
+  public void setName(final String name) {
     checkNotNull(name);
     this.name = name;
   }
@@ -119,7 +119,7 @@ public final class ConstraintBuilder {
    * @throws NullPointerException if the parameter equals null.
    */
 
-  public void setDescription(String description) {
+  public void setDescription(final String description) {
     checkNotNull(description);
     this.description = description;
   }
@@ -132,7 +132,7 @@ public final class ConstraintBuilder {
    * @throws NullPointerException if the parameter equals null.
    */
 
-  public void setKind(ConstraintKind kind) {
+  public void setKind(final ConstraintKind kind) {
     checkNotNull(kind);
     this.kind = kind;
   }
@@ -145,7 +145,7 @@ public final class ConstraintBuilder {
    * @throws NullPointerException if the parameter equals null.
    */
 
-  public void setInnerRep(Object value) {
+  public void setInnerRep(final Object value) {
     checkNotNull(value);
     this.representation = value;
   }
@@ -162,7 +162,7 @@ public final class ConstraintBuilder {
    *         variable). See the internal addVariable method.
    */
 
-  public void addVariables(Iterable<Variable> variables) {
+  public void addVariables(final Iterable<Variable> variables) {
     checkNotNull(variables);
 
     for (Variable variable : variables) {
@@ -181,10 +181,10 @@ public final class ConstraintBuilder {
    *         variable). See the internal addVariable method.
    */
 
-  public void addVariableCopies(Iterable<Variable> variables) {
+  public void addVariableCopies(final Iterable<Variable> variables) {
     checkNotNull(variables);
 
-    for (Variable variable : variables) {
+    for (final Variable variable : variables) {
       addVariable(variable.getName(), variable.getData());
     }
   }
@@ -203,7 +203,7 @@ public final class ConstraintBuilder {
    *         variable). See the internal addVariable method.
    */
 
-  public Variable addVariable(String name, DataType type) {
+  public Variable addVariable(final String name, final DataType type) {
     checkNotNull(name);
     checkNotNull(type);
 
@@ -224,7 +224,7 @@ public final class ConstraintBuilder {
    *         variable). See the internal addVariable method.
    */
 
-  public Variable addVariable(String name, Data data) {
+  public Variable addVariable(final String name, final Data data) {
     checkNotNull(name);
     checkNotNull(data);
 
@@ -247,7 +247,7 @@ public final class ConstraintBuilder {
    *         variable).
    */
 
-  private Variable addVariable(Variable variable) {
+  private Variable addVariable(final Variable variable) {
     checkNotNull(variable);
 
     if (!variables.containsKey(variable.getName())) {
@@ -278,6 +278,6 @@ public final class ConstraintBuilder {
     return new Constraint(name, kind, description, variables, representation);
   }
 
-  private final String ILLEGAL_VARIABLE_REDEFINITION =
+  private static final String ILLEGAL_VARIABLE_REDEFINITION =
     "Illegal attempt to redefine the existing variable %s with a different type or value.";
 }

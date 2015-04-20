@@ -39,11 +39,11 @@ public final class ConstraintUtils {
    * @throws NullPointerException if the parameter equals {@code null}.
    */
 
-  public static Constraint newConstraint(Node expr) {
+  public static Constraint newConstraint(final Node expr) {
     checkNotNull(expr);
 
     final ConstraintBuilder builder =
-      new ConstraintBuilder(ConstraintKind.FORMULA_BASED);
+        new ConstraintBuilder(ConstraintKind.FORMULA_BASED);
 
     final Formulas formulas = new Formulas(expr);
     builder.setInnerRep(formulas);
@@ -62,7 +62,7 @@ public final class ConstraintUtils {
    * @throws NullPointerException if the parameter equals {@code null}.
    */
 
-  public static SolverResult solve(Constraint constraint) {
+  public static SolverResult solve(final Constraint constraint) {
     checkNotNull(constraint);
 
     final SolverId solverId = constraint.getKind().getDefaultSolverId();

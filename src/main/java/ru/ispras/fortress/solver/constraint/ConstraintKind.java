@@ -42,7 +42,7 @@ public enum ConstraintKind {
    *        given type.
    */
 
-  private ConstraintKind(Class<?> innerRepClass, SolverId defaultSolverId) {
+  private ConstraintKind(final Class<?> innerRepClass, final SolverId defaultSolverId) {
     this.innerRepClass = innerRepClass;
     this.defaultSolverId = defaultSolverId;
   }
