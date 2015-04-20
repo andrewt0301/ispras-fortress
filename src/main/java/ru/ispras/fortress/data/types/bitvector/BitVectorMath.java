@@ -38,7 +38,7 @@ public final class BitVectorMath {
 
     private final int count;
 
-    private Operands(int count) {
+    private Operands(final int count) {
       this.count = count;
     }
 
@@ -56,63 +56,63 @@ public final class BitVectorMath {
 
     AND(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         return and(lhs, rhs);
       }
     },
 
     OR(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         return or(lhs, rhs);
       }
     },
 
     XOR(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         return xor(lhs, rhs);
       }
     },
 
     NOT(UNARY) {
       @Override
-      public BitVector execute(BitVector v) {
+      public BitVector execute(final BitVector v) {
         return not(v);
       }
     },
 
     NAND(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         return nand(lhs, rhs);
       }
     },
 
     NOR(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         return nor(lhs, rhs);
       }
     },
 
     XNOR(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         return xnor(lhs, rhs);
       }
     },
 
     SHL(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         return shl(lhs, rhs);
       }
     },
 
     USHL(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         if (rhs.bigIntegerValue(false).compareTo(BigInteger.valueOf(lhs.getBitSize())) >= 0) {
           return BitVector.valueOf(0, lhs.getBitSize());
         }
@@ -122,217 +122,217 @@ public final class BitVectorMath {
 
     LSHR(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         return lshr(lhs, rhs);
       }
     },
 
     ASHR(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         return ashr(lhs, rhs);
       }
     },
 
     ROTL(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         return rotl(lhs, rhs);
       }
     },
 
     ROTR(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         return rotr(lhs, rhs);
       }
     },
 
     ADD(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         return add(lhs, rhs);
       }
     },
 
     SUB(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         return sub(lhs, rhs);
       }
     },
 
     MUL(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         return mul(lhs, rhs);
       }
     },
 
     UDIV(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         return udiv(lhs, rhs);
       }
     },
 
     SDIV(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         return sdiv(lhs, rhs);
       }
     },
 
     UREM(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         return urem(lhs, rhs);
       }
     },
 
     SREM(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         return srem(lhs, rhs);
       }
     },
 
     SMOD(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         return smod(lhs, rhs);
       }
     },
 
     PLUS(UNARY) {
       @Override
-      public BitVector execute(BitVector v) {
+      public BitVector execute(final BitVector v) {
         return plus(v);
       }
     },
 
     NEG(UNARY) {
       @Override
-      public BitVector execute(BitVector v) {
+      public BitVector execute(final BitVector v) {
         return neg(v);
       }
     },
 
     ULE(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         return ule(lhs, rhs);
       }
     },
 
     ULT(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         return ult(lhs, rhs);
       }
     },
 
     UGE(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         return uge(lhs, rhs);
       }
     },
 
     UGT(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         return ugt(lhs, rhs);
       }
     },
 
     SLE(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         return sle(lhs, rhs);
       }
     },
 
     SLT(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         return slt(lhs, rhs);
       }
     },
 
     SGE(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         return sge(lhs, rhs);
       }
     },
 
     SGT(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         return sgt(lhs, rhs);
       }
     },
 
     EQ(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         return eq(lhs, rhs);
       }
     },
 
     NEQ(BINARY) {
       @Override
-      public BitVector execute(BitVector lhs, BitVector rhs) {
+      public BitVector execute(final BitVector lhs, final BitVector rhs) {
         return neq(lhs, rhs);
       }
     },
 
     ANDR(UNARY) {
       @Override
-      public BitVector execute(BitVector v) {
+      public BitVector execute(final BitVector v) {
         return andr(v);
       }
     },
 
     NANDR(UNARY) {
       @Override
-      public BitVector execute(BitVector v) {
+      public BitVector execute(final BitVector v) {
         return not(andr(v));
       }
     },
 
     ORR(UNARY) {
       @Override
-      public BitVector execute(BitVector v) {
+      public BitVector execute(final BitVector v) {
         return orr(v);
       }
     },
 
     NORR(UNARY) {
       @Override
-      public BitVector execute(BitVector v) {
+      public BitVector execute(final BitVector v) {
         return not(orr(v));
       }
     },
 
     XORR(UNARY) {
       @Override
-      public BitVector execute(BitVector v) {
+      public BitVector execute(final BitVector v) {
         return xorr(v);
       }
     },
 
     XNORR(UNARY) {
       @Override
-      public BitVector execute(BitVector v) {
+      public BitVector execute(final BitVector v) {
         return not(xorr(v));
       }
     };
 
     private final Operands operands;
 
-    private Operations(Operands operands) {
+    private Operations(final Operands operands) {
       this.operands = operands;
     }
 
@@ -341,43 +341,43 @@ public final class BitVectorMath {
     }
 
     // IMPORTANT: must be overridden if supported by a specific operation.
-    public BitVector execute(BitVector v) {
+    public BitVector execute(final BitVector v) {
       throw new UnsupportedOperationException(String.format(
         "Unary %s operation is not supported", name()));
     }
 
     // IMPORTANT: must be overridden if supported by a specific operation.
-    public BitVector execute(BitVector lhs, BitVector rhs) {
+    public BitVector execute(final BitVector lhs, final BitVector rhs) {
       throw new UnsupportedOperationException(String.format(
         "Binary %s operation is not supported", name()));
     }
   }
 
-  public static BitVector and(BitVector lhs, BitVector rhs) {
+  public static BitVector and(final BitVector lhs, final BitVector rhs) {
     return transform(lhs, rhs, BitVectorAlgorithm.BinaryOperation.AND);
   }
 
-  public static BitVector or(BitVector lhs, BitVector rhs) {
+  public static BitVector or(final BitVector lhs, final BitVector rhs) {
     return transform(lhs, rhs, BitVectorAlgorithm.BinaryOperation.OR);
   }
 
-  public static BitVector xor(BitVector lhs, BitVector rhs) {
+  public static BitVector xor(final BitVector lhs, final BitVector rhs) {
     return transform(lhs, rhs, BitVectorAlgorithm.BinaryOperation.XOR);
   }
 
-  public static BitVector not(BitVector v) {
+  public static BitVector not(final BitVector v) {
     return transform(v, BitVectorAlgorithm.UnaryOperation.NOT);
   }
 
-  public static BitVector nand(BitVector lhs, BitVector rhs) {
+  public static BitVector nand(final BitVector lhs, final BitVector rhs) {
     return not(and(lhs, rhs));
   }
 
-  public static BitVector nor(BitVector lhs, BitVector rhs) {
+  public static BitVector nor(final BitVector lhs, final BitVector rhs) {
     return not(or(lhs, rhs));
   }
 
-  public static BitVector xnor(BitVector lhs, BitVector rhs) {
+  public static BitVector xnor(final BitVector lhs, final BitVector rhs) {
     return not(xor(lhs, rhs));
   }
 
@@ -396,14 +396,14 @@ public final class BitVectorMath {
    * @throws NullPointerException if any of the parameters is {@code null}.
    */
 
-  public static BitVector shl(BitVector v, BitVector to) {
+  public static BitVector shl(final BitVector v, final BitVector to) {
     checkNotNull(v);
     checkNotNull(to);
 
     return shl(v, to.bigIntegerValue());
   }
 
-  public static BitVector shl(BitVector v, BigInteger to) {
+  public static BitVector shl(final BitVector v, final BigInteger to) {
     checkNotNull(v);
     checkNotNull(to);
 
@@ -413,14 +413,14 @@ public final class BitVectorMath {
     return shl_internal(v, amount.intValue());
   }
 
-  public static BitVector shl(BitVector v, int to) {
+  public static BitVector shl(final BitVector v, final int to) {
     checkNotNull(v);
 
     final int amount = to % v.getBitSize();
     return shl_internal(v, amount);
   }
 
-  private static BitVector shl_internal(BitVector v, int amount) {
+  private static BitVector shl_internal(final BitVector v, final int amount) {
     if (0 == amount) {
       return v;
     }
@@ -452,14 +452,14 @@ public final class BitVectorMath {
    * @throws NullPointerException if any of the parameters is {@code null}.
    */
 
-  public static BitVector lshr(BitVector v, BitVector to) {
+  public static BitVector lshr(final BitVector v, final BitVector to) {
     checkNotNull(v);
     checkNotNull(to);
 
     return lshr(v, to.bigIntegerValue());
   }
 
-  public static BitVector lshr(BitVector v, BigInteger to) {
+  public static BitVector lshr(final BitVector v, final BigInteger to) {
     checkNotNull(v);
     checkNotNull(to);
 
@@ -469,14 +469,14 @@ public final class BitVectorMath {
     return lshr_internal(v, amount.intValue());
   }
 
-  public static BitVector lshr(BitVector v, int to) {
+  public static BitVector lshr(final BitVector v, final int to) {
     checkNotNull(v);
 
     final int amount = to % v.getBitSize();
     return lshr_internal(v, amount);
   }
 
-  private static BitVector lshr_internal(BitVector v, int amount) {
+  private static BitVector lshr_internal(final BitVector v, final int amount) {
     if (0 == amount) {
       return v;
     }
@@ -508,14 +508,14 @@ public final class BitVectorMath {
    * @throws NullPointerException if any of the parameters is {@code null}.
    */
 
-  public static BitVector ashr(BitVector v, BitVector to) {
+  public static BitVector ashr(final BitVector v, final BitVector to) {
     checkNotNull(v);
     checkNotNull(to);
 
     return ashr(v, to.bigIntegerValue());
   }
 
-  public static BitVector ashr(BitVector v, BigInteger to) {
+  public static BitVector ashr(final BitVector v, final BigInteger to) {
     checkNotNull(v);
     checkNotNull(to);
 
@@ -525,14 +525,14 @@ public final class BitVectorMath {
     return ashr_internal(v, amount.intValue());
   }
 
-  public static BitVector ashr(BitVector v, int to) {
+  public static BitVector ashr(final BitVector v, final int to) {
     checkNotNull(v);
 
     final int amount = to % v.getBitSize();
     return ashr_internal(v, amount);
   }
 
-  private static BitVector ashr_internal(BitVector v, int amount) {
+  private static BitVector ashr_internal(final BitVector v, final int amount) {
     if (0 == amount) {
       return v;
     }
@@ -569,14 +569,14 @@ public final class BitVectorMath {
    * @throws NullPointerException if any of the parameters is {@code null}.
    */
 
-  public static BitVector rotl(BitVector v, BitVector to) {
+  public static BitVector rotl(final BitVector v, final BitVector to) {
     checkNotNull(v);
     checkNotNull(to);
 
     return rotl(v, to.bigIntegerValue());
   }
 
-  public static BitVector rotl(BitVector v, BigInteger to) {
+  public static BitVector rotl(final BitVector v, final BigInteger to) {
     checkNotNull(v);
     checkNotNull(to);
 
@@ -586,7 +586,7 @@ public final class BitVectorMath {
     return rotl_internal(v, amount.intValue());
   }
 
-  public static BitVector rotl(BitVector v, int to) {
+  public static BitVector rotl(final BitVector v, final int to) {
     checkNotNull(v);
 
     final int distance = Math.abs(to % v.getBitSize());
@@ -607,7 +607,7 @@ public final class BitVectorMath {
     return result;
   }
   
-  private static BitVector rotl_internal(BitVector v, int amount) {
+  private static BitVector rotl_internal(final BitVector v, final int amount) {
     if (0 == amount) {
       return v;
     }
@@ -641,14 +641,14 @@ public final class BitVectorMath {
    * @throws NullPointerException if any of the parameters is {@code null}.
    */
 
-  public static BitVector rotr(BitVector v, BitVector to) {
+  public static BitVector rotr(final BitVector v, final BitVector to) {
     checkNotNull(v);
     checkNotNull(to);
 
     return rotr(v, to.bigIntegerValue());
   }
 
-  public static BitVector rotr(BitVector v, BigInteger to) {
+  public static BitVector rotr(final BitVector v, final BigInteger to) {
     checkNotNull(v);
     checkNotNull(to);
 
@@ -658,14 +658,14 @@ public final class BitVectorMath {
     return rotr_internal(v, amount.intValue());
   }
 
-  public static BitVector rotr(BitVector v, int to) {
+  public static BitVector rotr(final BitVector v, final int to) {
     checkNotNull(v);
 
     final int amount = to % v.getBitSize();
     return rotr_internal(v, amount);
   }
 
-  private static BitVector rotr_internal(BitVector v, int amount) {
+  private static BitVector rotr_internal(final BitVector v, final int amount) {
     if (0 == amount) {
       return v;
     }
@@ -684,7 +684,7 @@ public final class BitVectorMath {
     return result;
   }
 
-  public static BitVector add(BitVector lhs, BitVector rhs) {
+  public static BitVector add(final BitVector lhs, final BitVector rhs) {
     return transform(lhs, rhs, new BitVectorAlgorithm.IBinaryOperation() {
       private byte carry = 0;
 
@@ -697,11 +697,11 @@ public final class BitVectorMath {
     });
   }
 
-  public static BitVector sub(BitVector lhs, BitVector rhs) {
+  public static BitVector sub(final BitVector lhs, final BitVector rhs) {
     return add(lhs, neg(rhs));
   }
 
-  public static BitVector mul(BitVector lhs, BitVector rhs) {
+  public static BitVector mul(final BitVector lhs, final BitVector rhs) {
     checkArguments(lhs, rhs);
 
     final BigInteger result =
@@ -710,7 +710,7 @@ public final class BitVectorMath {
     return BitVector.valueOf(result, lhs.getBitSize());
   }
 
-  public static BitVector udiv(BitVector lhs, BitVector rhs) {
+  public static BitVector udiv(final BitVector lhs, final BitVector rhs) {
     checkArguments(lhs, rhs);
 
     final BigInteger result =
@@ -719,7 +719,7 @@ public final class BitVectorMath {
     return BitVector.valueOf(result, lhs.getBitSize());
   }
 
-  public static BitVector sdiv(BitVector lhs, BitVector rhs) {
+  public static BitVector sdiv(final BitVector lhs, final BitVector rhs) {
     checkArguments(lhs, rhs);
 
     final BigInteger result =
@@ -728,7 +728,7 @@ public final class BitVectorMath {
     return BitVector.valueOf(result, lhs.getBitSize());
   }
 
-  public static BitVector urem(BitVector lhs, BitVector rhs) {
+  public static BitVector urem(final BitVector lhs, final BitVector rhs) {
     checkArguments(lhs, rhs);
 
     final BigInteger lint = lhs.bigIntegerValue(false);
@@ -737,7 +737,7 @@ public final class BitVectorMath {
     return BitVector.valueOf(modulo(1, lint, rint), lhs.getBitSize());
   }
 
-  public static BitVector srem(BitVector lhs, BitVector rhs) {
+  public static BitVector srem(final BitVector lhs, final BitVector rhs) {
     checkArguments(lhs, rhs);
 
     final BigInteger lint = lhs.bigIntegerValue();
@@ -746,7 +746,7 @@ public final class BitVectorMath {
     return BitVector.valueOf(modulo(lint.signum(), lint, rint), lhs.getBitSize());
   }
 
-  public static BitVector smod(BitVector lhs, BitVector rhs) {
+  public static BitVector smod(final BitVector lhs, final BitVector rhs) {
     checkArguments(lhs, rhs);
 
     final BigInteger lint = lhs.bigIntegerValue();
@@ -763,18 +763,18 @@ public final class BitVectorMath {
     return result;
   }
 
-  public static BitVector plus(BitVector v) {
+  public static BitVector plus(final BitVector v) {
     checkNotNull(v);
     return v;
   }
 
-  public static BitVector neg(BitVector v) {
+  public static BitVector neg(final BitVector v) {
     checkNotNull(v);
     // Negation algorithm: "-arg = ~arg + 1".
     return add(not(v), BitVector.valueOf(1, v.getBitSize()));
   }
 
-  public static BitVector ule(BitVector lhs, BitVector rhs) {
+  public static BitVector ule(final BitVector lhs, BitVector rhs) {
     checkNotNull(lhs);
     checkNotNull(rhs);
     checkEqualSize(lhs, rhs);
@@ -782,7 +782,7 @@ public final class BitVectorMath {
     return BitVector.valueOf(lhs.compareTo(rhs) <= 0);
   }
 
-  public static BitVector ult(BitVector lhs, BitVector rhs) {
+  public static BitVector ult(final BitVector lhs, final BitVector rhs) {
     checkNotNull(lhs);
     checkNotNull(rhs);
     checkEqualSize(lhs, rhs);
@@ -790,7 +790,7 @@ public final class BitVectorMath {
     return BitVector.valueOf(lhs.compareTo(rhs) < 0);
   }
 
-  public static BitVector uge(BitVector lhs, BitVector rhs) {
+  public static BitVector uge(final BitVector lhs, final BitVector rhs) {
     checkNotNull(lhs);
     checkNotNull(rhs);
     checkEqualSize(lhs, rhs);
@@ -798,7 +798,7 @@ public final class BitVectorMath {
     return BitVector.valueOf(lhs.compareTo(rhs) >= 0);
   }
 
-  public static BitVector ugt(BitVector lhs, BitVector rhs) {
+  public static BitVector ugt(final BitVector lhs, final BitVector rhs) {
     checkNotNull(lhs);
     checkNotNull(rhs);
     checkEqualSize(lhs, rhs);
@@ -806,7 +806,7 @@ public final class BitVectorMath {
     return BitVector.valueOf(lhs.compareTo(rhs) > 0);
   }
 
-  public static BitVector sle(BitVector lhs, BitVector rhs) {
+  public static BitVector sle(final BitVector lhs, final BitVector rhs) {
     checkNotNull(lhs);
     checkNotNull(rhs);
     checkEqualSize(lhs, rhs);
@@ -824,7 +824,7 @@ public final class BitVectorMath {
     return BitVector.valueOf(lhs.compareTo(rhs) <= 0);
   }
 
-  public static BitVector slt(BitVector lhs, BitVector rhs) {
+  public static BitVector slt(final BitVector lhs, final BitVector rhs) {
     checkNotNull(lhs);
     checkNotNull(rhs);
     checkEqualSize(lhs, rhs);
@@ -842,7 +842,7 @@ public final class BitVectorMath {
     return BitVector.valueOf(lhs.compareTo(rhs) < 0);
   }
 
-  public static BitVector sge(BitVector lhs, BitVector rhs) {
+  public static BitVector sge(final BitVector lhs, final BitVector rhs) {
     checkNotNull(lhs);
     checkNotNull(rhs);
     checkEqualSize(lhs, rhs);
@@ -860,7 +860,7 @@ public final class BitVectorMath {
     return BitVector.valueOf(lhs.compareTo(rhs) >= 0);
   }
 
-  public static BitVector sgt(BitVector lhs, BitVector rhs) {
+  public static BitVector sgt(final BitVector lhs, final BitVector rhs) {
     checkNotNull(lhs);
     checkNotNull(rhs);
     checkEqualSize(lhs, rhs);
@@ -878,7 +878,7 @@ public final class BitVectorMath {
     return BitVector.valueOf(lhs.compareTo(rhs) > 0);
   }
 
-  public static BitVector eq(BitVector lhs, BitVector rhs) {
+  public static BitVector eq(final BitVector lhs, final BitVector rhs) {
     checkNotNull(lhs);
     checkNotNull(rhs);
     checkEqualSize(lhs, rhs);
@@ -886,7 +886,7 @@ public final class BitVectorMath {
     return BitVector.valueOf(lhs.equals(rhs));
   }
 
-  public static BitVector neq(BitVector lhs, BitVector rhs) {
+  public static BitVector neq(final BitVector lhs, final BitVector rhs) {
     checkNotNull(lhs);
     checkNotNull(rhs);
     checkEqualSize(lhs, rhs);
@@ -894,7 +894,7 @@ public final class BitVectorMath {
     return BitVector.valueOf(!lhs.equals(rhs));
   }
 
-  public static BitVector andr(BitVector bv) {
+  public static BitVector andr(final BitVector bv) {
     checkNotNull(bv);
 
     if (bv.equals(not(BitVector.valueOf(0, bv.getBitSize())))) {
@@ -903,7 +903,7 @@ public final class BitVectorMath {
     return BitVector.FALSE;
   }
 
-  public static BitVector orr(BitVector bv) {
+  public static BitVector orr(final BitVector bv) {
     checkNotNull(bv);
 
     if (bv.equals(BitVector.valueOf(0, bv.getBitSize()))) {
@@ -912,7 +912,7 @@ public final class BitVectorMath {
     return BitVector.TRUE;
   }
 
-  public static BitVector xorr(BitVector bv) {
+  public static BitVector xorr(final BitVector bv) {
       checkNotNull(bv);
 
       int ones = 0;
@@ -924,8 +924,10 @@ public final class BitVectorMath {
       return (ones % 2 == 0) ? BitVector.FALSE : BitVector.TRUE;
   }
 
-  private static BitVector transform(BitVector lhs, BitVector rhs,
-      BitVectorAlgorithm.IBinaryOperation op) {
+  private static BitVector transform(
+      final BitVector lhs,
+      final BitVector rhs,
+      final BitVectorAlgorithm.IBinaryOperation op) {
     checkNotNull(lhs);
     checkNotNull(rhs);
     checkEqualSize(lhs, rhs);
@@ -936,7 +938,9 @@ public final class BitVectorMath {
     return result;
   }
 
-  private static BitVector transform(BitVector v, BitVectorAlgorithm.IUnaryOperation op) {
+  private static BitVector transform(
+      final BitVector v,
+      final BitVectorAlgorithm.IUnaryOperation op) {
     checkNotNull(v);
 
     final BitVector result = BitVector.newEmpty(v.getBitSize());
@@ -945,13 +949,13 @@ public final class BitVectorMath {
     return result;
   }
 
-  private static void checkArguments(BitVector lhs, BitVector rhs) {
+  private static void checkArguments(final BitVector lhs, final BitVector rhs) {
     checkNotNull(lhs);
     checkNotNull(rhs);
     checkEqualSize(lhs, rhs);
   }
 
-  private static void checkEqualSize(BitVector lhs, BitVector rhs) {
+  private static void checkEqualSize(final BitVector lhs, final BitVector rhs) {
     if (lhs.getBitSize() != rhs.getBitSize()) {
       throw new IllegalArgumentException(String.format(
         "Bit vector sizes do not match: %d != %d.", lhs.getBitSize(), rhs.getBitSize()));
