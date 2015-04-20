@@ -63,44 +63,44 @@ public abstract class ExprTreeVisitorDefault implements ExprTreeVisitor {
   }
 
   @Override
-  public void onRootBegin() { /* Empty */}
+  public void onRootBegin() { /* Empty */ ; }
 
   @Override
-  public void onRootEnd() { /* Empty */}
+  public void onRootEnd() { /* Empty */ ; }
 
   @Override
-  public void onOperationBegin(NodeOperation node) { /* Empty */}
+  public void onOperationBegin(NodeOperation node) { /* Empty */ ; }
 
   @Override
-  public void onOperationEnd(NodeOperation node) { /* Empty */}
+  public void onOperationEnd(NodeOperation node) { /* Empty */ ; }
 
   @Override
   public int[] getOperandOrder() { return null; }
 
   @Override
-  public void onOperandBegin(NodeOperation operation, Node operand, int index) { /* Empty */}
+  public void onOperandBegin(NodeOperation operation, Node operand, int index) { /* Empty */ ; }
 
   @Override
-  public void onOperandEnd(NodeOperation operation, Node operand, int index) { /* Empty */}
+  public void onOperandEnd(NodeOperation operation, Node operand, int index) { /* Empty */ ; }
 
   @Override
   public void onValue(NodeValue value) { /* Empty */}
 
   @Override
-  public void onVariable(NodeVariable variable) { /* Empty */}
+  public void onVariable(NodeVariable variable) { /* Empty */ ; }
 
   @Override
-  public void onBindingBegin(NodeBinding node) { /* Empty */}
+  public void onBindingBegin(NodeBinding node) { /* Empty */ ; }
 
   @Override
-  public void onBindingListEnd(NodeBinding node) { /* Empty */}
+  public void onBindingListEnd(NodeBinding node) { /* Empty */ ; }
 
   @Override
   public void onBindingEnd(NodeBinding node) { /* Empty */}
 
   @Override
-  public void onBoundVariableBegin(NodeBinding node, NodeVariable variable, Node value) { /* Empty */}
+  public void onBoundVariableBegin(NodeBinding node, NodeVariable variable, Node value) { /* Empty */ ; }
 
   @Override
-  public void onBoundVariableEnd(NodeBinding node, NodeVariable variable, Node value) { /* Empty */}
+  public void onBoundVariableEnd(NodeBinding node, NodeVariable variable, Node value) { /* Empty */ ; }
 }
