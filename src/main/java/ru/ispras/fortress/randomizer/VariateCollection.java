@@ -31,7 +31,7 @@ import ru.ispras.fortress.util.InvariantChecks;
 public final class VariateCollection<T> implements Variate<T> {
 
   /** The value area of the random variate. */
-  private List<T> values;
+  private final List<T> values;
 
   /**
    * Constructs a finite-set random variate.

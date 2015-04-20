@@ -27,7 +27,7 @@ import java.util.List;
 public final class VariateComposite<T> implements Variate<T> {
 
   /** The composition of random variates (a random variate whose values are random variates). */
-  private Variate<Variate<T>> composite;
+  private final Variate<Variate<T>> composite;
 
   /**
    * Constructs a composite random variate.

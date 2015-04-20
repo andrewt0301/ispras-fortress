@@ -101,12 +101,12 @@ public final class VariateInterval<T> implements Variate<T> {
   }
 
   /** The type information. */
-  private Type type;
+  private final Type type;
 
   /** The lower bound of the interval. */
-  private T min;
+  private final T min;
   /** The upper bound of the interval. */
-  private T max;
+  private final T max;
 
   /**
    * Constructs an interval random variate.
