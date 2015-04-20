@@ -51,7 +51,7 @@ public final class ExprUtils {
    * @throws NullPointerException if the parameter is {@code null}.
    */
 
-  public static boolean isCondition(Node expr) {
+  public static boolean isCondition(final Node expr) {
     checkNotNull(expr);
     return expr.getDataType().equals(DataType.BOOLEAN);
   }
@@ -68,7 +68,7 @@ public final class ExprUtils {
    * @throws NullPointerException if the parameter is {@code null}.
    */
 
-  public static boolean isAtomicCondition(Node expr) {
+  public static boolean isAtomicCondition(final Node expr) {
     if (!isCondition(expr)) {
       return false;
     }
@@ -102,7 +102,7 @@ public final class ExprUtils {
    * @throws NullPointerException if the parameter is {@code null}.
    */
 
-  public static boolean hasBindings(Node expr) {
+  public static boolean hasBindings(final Node expr) {
     checkNotNull(expr);
 
     final ExprTreeVisitor visitor = new ExprTreeVisitorDefault() {
@@ -129,7 +129,7 @@ public final class ExprUtils {
    * @throws NullPointerException if the parameter is {@code null}.
    */
 
-  public static boolean isConstant(Node expr) {
+  public static boolean isConstant(final Node expr) {
     checkNotNull(expr);
 
     final ExprTreeVisitor visitor = new ExprTreeVisitorDefault() {
@@ -186,7 +186,7 @@ public final class ExprUtils {
    * @throws NullPointerException if any argument in the array is {@code null}.
    */
 
-  public static Node getConjunction(Node... exprs) {
+  public static Node getConjunction(final Node... exprs) {
     checkNotEmpty(exprs);
     checkAllConditions(exprs);
 
@@ -209,7 +209,7 @@ public final class ExprUtils {
    * @throws NullPointerException if any argument in the array is {@code null}.
    */
 
-  public static Node getDisjunction(Node... exprs) {
+  public static Node getDisjunction(final Node... exprs) {
     checkNotEmpty(exprs);
     checkAllConditions(exprs);
 
@@ -232,7 +232,7 @@ public final class ExprUtils {
    * @throws NullPointerException if any argument in the array is {@code null}.
    */
 
-  public static Node getNegation(Node... exprs) {
+  public static Node getNegation(final Node... exprs) {
     return new NodeOperation(StandardOperation.NOT, getConjunction(exprs));
   }
 
@@ -248,7 +248,7 @@ public final class ExprUtils {
    * @throws NullPointerException if any argument in the array is {@code null}.
    */
 
-  public static Node getComplement(Node... exprs) {
+  public static Node getComplement(final Node... exprs) {
     return new NodeOperation(StandardOperation.NOT, getDisjunction(exprs));
   }
 
@@ -265,9 +265,8 @@ public final class ExprUtils {
    * @throws NullPointerException if any argument in the array is {@code null}.
    */
 
-  public static boolean areComplete(Node... exprs) {
+  public static boolean areComplete(final Node... exprs) {
     final Node target = getComplement(exprs);
-
     return !isSAT(target);
   }
 
@@ -284,9 +283,8 @@ public final class ExprUtils {
    * @throws NullPointerException if any argument in the array is {@code null}.
    */
 
-  public static boolean areCompatible(Node... exprs) {
+  public static boolean areCompatible(final Node... exprs) {
     final Node target = getConjunction(exprs);
-
     return isSAT(target);
   }
 
@@ -304,7 +302,7 @@ public final class ExprUtils {
    * @throws IllegalStateException if the solver engine returned results with an unknown status.    
    */
 
-  public static boolean isSAT(Node expr) {
+  public static boolean isSAT(final Node expr) {
     final Constraint constraint = ConstraintUtils.newConstraint(expr);
     final SolverResult result = ConstraintUtils.solve(constraint);
 
@@ -340,7 +338,7 @@ public final class ExprUtils {
    *         have the same name.
    */
 
-  public static Collection<NodeVariable> getVariables(Node expr) {
+  public static Collection<NodeVariable> getVariables(final Node expr) {
     checkNotNull(expr);
     return getVariables(Collections.singletonList(expr));
   }
@@ -356,7 +354,7 @@ public final class ExprUtils {
    *         have the same name.
    */
 
-  public static Collection<NodeVariable> getVariables(Iterable<Node> exprs) {
+  public static Collection<NodeVariable> getVariables(final Iterable<Node> exprs) {
     checkNotNull(exprs);
 
     final String ERR_MULTIPLE_VARS =
@@ -384,14 +382,14 @@ public final class ExprUtils {
     return variables.values();
   }
 
-  private static void checkNotEmpty(Node... exprs) {
+  private static void checkNotEmpty(final Node... exprs) {
     if (0 == exprs.length) {
       throw new IllegalArgumentException("No expressions are provided.");
     }
   }
 
-  private static void checkAllConditions(Node... exprs) {
-    for (Node expr : exprs) {
+  private static void checkAllConditions(final Node... exprs) {
+    for (final Node expr : exprs) {
       if (!isCondition(expr)) {
         throw new IllegalArgumentException("Expression is not a condition: " + expr.toString());
       }
