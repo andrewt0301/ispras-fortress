@@ -84,7 +84,7 @@ public abstract class SolverBase implements Solver {
   }
 
   @Override
-  public final boolean addCustomOperation(Function function) {
+  public final boolean addCustomOperation(final Function function) {
     checkNotNull(function, "function");
     return null == operations.put(function.getId(), SolverOperation.newFunction(function));
   }

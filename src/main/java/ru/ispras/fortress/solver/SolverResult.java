@@ -59,7 +59,10 @@ public final class SolverResult {
    * @throws NullPointerException if any of the parameters equals null.
    */
 
-  public SolverResult(Status status, List<String> errors, List<Variable> variables) {
+  public SolverResult(
+      final Status status,
+      final List<String> errors,
+      final List<Variable> variables) {
     checkNotNull(status);
     checkNotNull(errors);
     checkNotNull(variables);

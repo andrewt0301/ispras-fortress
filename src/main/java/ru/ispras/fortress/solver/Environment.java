@@ -60,7 +60,7 @@ public final class Environment {
    * @param value Path
    */
 
-  public static void setSolverPath(String value) {
+  public static void setSolverPath(final String value) {
     solverPath = value;
   }
 
@@ -80,7 +80,7 @@ public final class Environment {
    * @param value Path
    */
 
-  public static void setConstraintDir(String value) {
+  public static void setConstraintDir(final String value) {
     constraintDir = value;
   }
 
@@ -143,7 +143,7 @@ public final class Environment {
    * @param isDebugMode Status of debug mode to be set ({@code true} or {@code false}).
    */
 
-  public static void setDebugMode(boolean isDebugMode) {
+  public static void setDebugMode(final boolean isDebugMode) {
     Environment.isDebugMode = isDebugMode;
   }
 }

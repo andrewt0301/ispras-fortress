@@ -23,8 +23,8 @@ import ru.ispras.fortress.data.Variable;
 
 public final class SolverResultBuilder {
   private SolverResult.Status status;
-  private List<String> errors;
-  private List<Variable> variables;
+  private final List<String> errors;
+  private final List<Variable> variables;
 
   /**
    * Constructs a SolverResultBuilder object.
@@ -56,7 +56,7 @@ public final class SolverResultBuilder {
    * @param status Result status.
    */
 
-  public void setStatus(SolverResult.Status status) {
+  public void setStatus(final SolverResult.Status status) {
     this.status = status;
   }
 
@@ -66,7 +66,7 @@ public final class SolverResultBuilder {
    * @param error An error description.
    */
 
-  public void addError(String error) {
+  public void addError(final String error) {
     errors.add(error);
   }
 
@@ -76,7 +76,7 @@ public final class SolverResultBuilder {
    * @param variable A variable object.
    */
 
-  public void addVariable(Variable variable) {
+  public void addVariable(final Variable variable) {
     variables.add(variable);
   }
 

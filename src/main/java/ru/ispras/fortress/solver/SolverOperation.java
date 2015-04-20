@@ -40,19 +40,19 @@ public abstract class SolverOperation {
   private final Kind kind;
   private final Enum<?> id;
 
-  public static final SolverOperation newText(Enum<?> id, String text) {
+  public static final SolverOperation newText(final Enum<?> id, final String text) {
     InvariantChecks.checkNotNull(id);
     InvariantChecks.checkNotNull(text);
 
     return new TextOperation(id, text);
   }
 
-  public static final SolverOperation newFunction(Function function) {
+  public static final SolverOperation newFunction(final Function function) {
     InvariantChecks.checkNotNull(function);
     return new FunctionOperation(function);
   }
 
-  public static final SolverOperation newTemplate(FunctionTemplate template) {
+  public static final SolverOperation newTemplate(final FunctionTemplate template) {
     InvariantChecks.checkNotNull(template);
     return new TemplateOperation(template);
   }
@@ -65,7 +65,7 @@ public abstract class SolverOperation {
    *        expression).
    */
 
-  private SolverOperation(Kind kind, Enum<?> id) {
+  private SolverOperation(final Kind kind, final Enum<?> id) {
     this.kind = kind;
     this.id = id;
   }
@@ -135,7 +135,7 @@ public abstract class SolverOperation {
   private static class FunctionOperation extends SolverOperation {
     private final Function function;
 
-    private FunctionOperation(Function function) {
+    private FunctionOperation(final Function function) {
       super(Kind.FUNCTION, function.getId());
       this.function = function;
     }
@@ -159,7 +159,7 @@ public abstract class SolverOperation {
   private static class TemplateOperation extends SolverOperation {
     private final FunctionTemplate template;
 
-    private TemplateOperation(FunctionTemplate template) {
+    private TemplateOperation(final FunctionTemplate template) {
       super(Kind.TEMPLATE, template.getId());
       this.template = template;
     }
