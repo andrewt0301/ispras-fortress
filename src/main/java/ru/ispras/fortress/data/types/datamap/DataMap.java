@@ -289,7 +289,7 @@ public final class DataMap implements Map<Data, Data> {
    * @return copy of this map
    */
 
-  public final DataMap copy() {
+  public DataMap copy() {
     return new DataMap(keyType, valueType, constant, new LinkedHashMap<>(map));
   }
 
@@ -299,7 +299,7 @@ public final class DataMap implements Map<Data, Data> {
    * @return unmodifiable copy of this map
    */
 
-  public final DataMap unmodifiableCopy() {
+  public DataMap unmodifiableCopy() {
     return new DataMap(keyType,
                        valueType,
                        constant,
