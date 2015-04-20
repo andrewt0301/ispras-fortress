@@ -80,7 +80,18 @@ Please, prepare build environment:
 
   <target name="unpack.z3" depends="init.properties,unpack.z3.windows,unpack.z3.unix,unpack.z3.mac"/>
 
-  <target name="test" depends="compile.java,unpack.z3">
+  <target name="setup.cvc4" depends="setup.cvc4.windows, setup.cvc4.unix" />
+
+  <target name="setup.cvc4.windows" depends="init" if="platform.windows">
+    <property name="cvc4.path" location="${tools.dir}/cvc4-windows.exe"/>
+  </target>
+
+  <target name="setup.cvc4.unix" depends="init" if="platform.unix">
+    <chmod file="${tools.dir}/cvc4-unix.bin" perm="+x"/>
+    <property name="cvc4.path" location="${tools.dir}/cvc4-unix.bin"/>
+  </target>
+
+  <target name="test" depends="compile.java,unpack.z3,setup.cvc4">
     <delete dir="${output.dir}/tests"/>
 
     <mkdir dir="${output.dir}/tests/classes"/>
@@ -106,6 +117,7 @@ Please, prepare build environment:
 
     <junit fork="yes" printsummary="yes" showoutput="yes">
       <env key="Z3_PATH" value="${z3.path}"/>
+      <env key="CVC4_PATH" value="${cvc4.path}"/> 
       <classpath refid="classpath.test"/>
       <formatter type="plain" usefile="false"/>
       <formatter type="xml" usefile="true"/>
