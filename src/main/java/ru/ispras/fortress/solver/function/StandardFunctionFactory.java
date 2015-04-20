@@ -32,6 +32,7 @@ import ru.ispras.fortress.expression.StandardOperation;
  * HDL).
  * 
  * @author Sergey Smolov (ssedai@ispras.ru)
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 
 public final class StandardFunctionFactory {
@@ -41,7 +42,7 @@ public final class StandardFunctionFactory {
   private static final String LEFT_NAME = "x";
   private static final String RIGHT_NAME = "y";
 
-  public static Function makeAbs(Enum<?> id, DataType operandType) {
+  public static Function makeAbs(final Enum<?> id, final DataType operandType) {
     checkNotNull(id);
     checkNotNull(operandType);
     checkLogicNumeric(OPERAND_NAME, operandType);
@@ -75,7 +76,10 @@ public final class StandardFunctionFactory {
     return new Function(id, returnType, body, operand);
   }
 
-  public static Function makeMin(Enum<?> id, DataType leftType, DataType rightType) {
+  public static Function makeMin(
+      final Enum<?> id,
+      final DataType leftType,
+      final DataType rightType) {
     checkNotNull(id);
     checkNotNull(leftType);
     checkNotNull(rightType);
@@ -102,7 +106,10 @@ public final class StandardFunctionFactory {
     return new Function(id, returnType, body, left, right);
   }
 
-  public static Function makeMax(Enum<?> id, DataType leftType, DataType rightType) {
+  public static Function makeMax(
+      final Enum<?> id,
+      final DataType leftType,
+      final DataType rightType) {
     checkNotNull(id);
     checkNotNull(leftType);
     checkNotNull(rightType);
@@ -129,7 +136,7 @@ public final class StandardFunctionFactory {
     return new Function(id, returnType, body, left, right);
   }
 
-  public static Function makeBVANDR(Enum<?> id, DataType operandType) {
+  public static Function makeBVANDR(final Enum<?> id, final DataType operandType) {
     checkNotNull(id);
     checkNotNull(operandType);
     checkBitVector(OPERAND_NAME, operandType);
@@ -142,7 +149,7 @@ public final class StandardFunctionFactory {
     return new Function(id, BIT_BOOL, body, operand);
   }
 
-  public static Function makeBVNANDR(Enum<?> id, DataType operandType) {
+  public static Function makeBVNANDR(final Enum<?> id, final DataType operandType) {
     checkNotNull(id);
     checkNotNull(operandType);
     checkBitVector(OPERAND_NAME, operandType);
@@ -155,7 +162,7 @@ public final class StandardFunctionFactory {
     return new Function(id, BIT_BOOL, body, operand);
   }
 
-  public static Function makeBVORR(Enum<?> id, DataType operandType) {
+  public static Function makeBVORR(final Enum<?> id, final DataType operandType) {
     checkNotNull(id);
     checkNotNull(operandType);
     checkBitVector(OPERAND_NAME, operandType);
@@ -168,7 +175,7 @@ public final class StandardFunctionFactory {
     return new Function(id, BIT_BOOL, body, operand);
   }
 
-  public static Function makeBVNORR(Enum<?> id, DataType operandType) {
+  public static Function makeBVNORR(final Enum<?> id, final DataType operandType) {
     checkNotNull(id);
     checkNotNull(operandType);
     checkBitVector(OPERAND_NAME, operandType);
@@ -181,7 +188,7 @@ public final class StandardFunctionFactory {
     return new Function(id, BIT_BOOL, body, operand);
   }
 
-  public static Function makeBVXORR(Enum<?> id, DataType operandType) {
+  public static Function makeBVXORR(final Enum<?> id, final DataType operandType) {
     checkNotNull(id);
     checkNotNull(operandType);
     checkBitVector(OPERAND_NAME, operandType);
@@ -194,7 +201,7 @@ public final class StandardFunctionFactory {
     return new Function(id, BIT_BOOL, body, operand);
   }
 
-  public static Function makeBVXNORR(Enum<?> id, DataType operandType) {
+  public static Function makeBVXNORR(final Enum<?> id, final DataType operandType) {
     checkNotNull(id);
     checkNotNull(operandType);
     checkBitVector(OPERAND_NAME, operandType);
@@ -218,10 +225,10 @@ public final class StandardFunctionFactory {
       String.format(ERR_UNEQUAL_ARG_TYPES, leftType, rightType));
   }
 
-  private static void checkLogicNumeric(String name, DataType type) {
+  private static void checkLogicNumeric(final String name, final DataType type) {
     final DataTypeId typeId = type.getTypeId();
 
-    if ((DataTypeId.LOGIC_INTEGER == typeId) || (DataTypeId.LOGIC_REAL == typeId)) {
+    if (DataTypeId.LOGIC_INTEGER == typeId || DataTypeId.LOGIC_REAL == typeId) {
       return;
     }
 
@@ -229,7 +236,7 @@ public final class StandardFunctionFactory {
       name, type, DataTypeId.LOGIC_INTEGER + " and " + DataTypeId.LOGIC_REAL));
   }
 
-  private static void checkBitVector(String name, DataType type) {
+  private static void checkBitVector(final String name, final DataType type) {
     final DataTypeId typeId = type.getTypeId();
     if (DataTypeId.BIT_VECTOR == typeId) {
       return;
@@ -239,7 +246,10 @@ public final class StandardFunctionFactory {
       name, type, DataTypeId.BIT_VECTOR));
   }
 
-  private static final Node makeBVRecursizeXOR(Node source, int size, int partSize) {
+  private static Node makeBVRecursizeXOR(
+      final Node source, 
+      final int size, 
+      final int partSize) {
     if (1 == size) {
       return source;
     }
@@ -269,7 +279,7 @@ public final class StandardFunctionFactory {
     return makeBVRecursizeXOR(newSource, size, newPartSize);
   }
 
-  private static final Node makeBVTwoBitPartXOR(Node source, int size) {
+  private static Node makeBVTwoBitPartXOR(final Node source, final int size) {
     final NodeValue TWO_ZEROS = new NodeValue(DataType.BIT_VECTOR(size).valueOf("00", 2));
     final NodeValue TWO_ONES = new NodeValue(DataType.BIT_VECTOR(size).valueOf("11", 2));
 
@@ -284,7 +294,7 @@ public final class StandardFunctionFactory {
     );
   }
 
-  private static final Node makeBVEqualsAllZeros(Variable operand) {
+  private static Node makeBVEqualsAllZeros(final Variable operand) {
     final DataType operandType = operand.getType();
 
     final NodeVariable operandNode = new NodeVariable(operand);
@@ -293,7 +303,7 @@ public final class StandardFunctionFactory {
     return new NodeOperation(StandardOperation.EQ, operandNode, zeroNode);
   }
 
-  private static final Node makeBVEqualsAllOnes(Variable operand) {
+  private static Node makeBVEqualsAllOnes(final Variable operand) {
     final DataType operandType = operand.getType();
 
     final NodeVariable operandNode = new NodeVariable(operand);
