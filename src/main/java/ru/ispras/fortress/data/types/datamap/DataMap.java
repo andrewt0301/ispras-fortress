@@ -18,7 +18,7 @@ import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
-import ru.ispras.fortress.solver.engine.z3.SMTRegExp;
+import ru.ispras.fortress.solver.engine.smt.SMTRegExp;
 
 import java.util.Collection;
 import java.util.Collections;
