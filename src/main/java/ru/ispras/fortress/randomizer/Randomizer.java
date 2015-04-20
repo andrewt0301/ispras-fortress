@@ -76,7 +76,7 @@ public final class Randomizer {
    * 
    * @param seed the seed to be set.
    */
-  public void setSeed(int seed) {
+  public void setSeed(final int seed) {
     generator.seed(seed);
   }
 
@@ -146,11 +146,11 @@ public final class Randomizer {
     return (nextInt() & (-1 >>> 1));
   }
 
-  private int nextNonNegativeIntLess(int max) {
+  private int nextNonNegativeIntLess(final int max) {
     return nextNonNegativeInt() % max;
   }
 
-  private int nextNonNegativeIntLessOrEqual(int max) {
+  private int nextNonNegativeIntLessOrEqual(final int max) {
     if (max == Integer.MAX_VALUE) {
       return nextNonNegativeInt();
     }
@@ -165,7 +165,7 @@ public final class Randomizer {
    * @param max the high bound of the range.
    * @return a random number.
    */
-  public int nextIntRange(int min, int max) {
+  public int nextIntRange(final int min, final int max) {
     if (min > max) {
       throw new IllegalArgumentException("min is greater than max");
     }
@@ -193,7 +193,7 @@ public final class Randomizer {
    * @param width the bit size.
    * @return a random number.
    */
-  public int nextIntField(int width) {
+  public int nextIntField(final int width) {
     return next() & BitUtils.maskInt(width);
   }
 
@@ -204,7 +204,7 @@ public final class Randomizer {
    * @param hi the high bound of the field.
    * @return a random number.
    */
-  public int nextIntField(int lo, int hi) {
+  public int nextIntField(final int lo, final int hi) {
     return next() & BitUtils.maskInt(lo, hi);
   }
 
@@ -216,11 +216,11 @@ public final class Randomizer {
     return (nextLong() & (-1L >>> 1));
   }
 
-  private long nextNonNegativeLongLess(long max) {
+  private long nextNonNegativeLongLess(final long max) {
     return nextNonNegativeLong() % max;
   }
 
-  private long nextNonNegativeLongLessOrEqual(long max) {
+  private long nextNonNegativeLongLessOrEqual(final long max) {
     if (max == Long.MAX_VALUE) {
       return nextNonNegativeLong();
     }
@@ -236,7 +236,7 @@ public final class Randomizer {
    * @param max the high bound of the range.
    * @return a random number.
    */
-  public long nextLongRange(long min, long max) {
+  public long nextLongRange(final long min, final long max) {
     if (min > max) {
       throw new IllegalArgumentException("min is greater than max");
     }
@@ -264,7 +264,7 @@ public final class Randomizer {
    * @param width the bit size.
    * @return a random number.
    */
-  public long nextLongField(int width) {
+  public long nextLongField(final int width) {
     return nextLong() & BitUtils.maskLong(width);
   }
 
@@ -275,7 +275,7 @@ public final class Randomizer {
    * @param hi the high bound of the field.
    * @return a random number.
    */
-  public long nextLongField(int lo, int hi) {
+  public long nextLongField(final int lo, final int hi) {
     return nextLong() & BitUtils.maskLong(lo, hi);
   }
 

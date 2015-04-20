@@ -24,7 +24,7 @@ package ru.ispras.fortress.randomizer;
 public final class VariateSingleValue<T> implements Variate<T> {
 
   /** The single value. */
-  private T value;
+  private final T value;
 
   /**
    * Constructs a single-value random variate.
