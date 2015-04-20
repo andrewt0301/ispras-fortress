@@ -80,11 +80,11 @@ public abstract class SmtTextSolver extends SolverBase {
 
   private static void solverFileExistsCheck(String solverPath) {
     if (null == solverPath) {
-      throw new NullPointerException(String.format(NO_SOLVER_PATH_ERR_FRMT, "null"));
+      throw new IllegalStateException(String.format(NO_SOLVER_PATH_ERR_FRMT, "null"));
     }
 
     if (solverPath.isEmpty()) {
-      throw new NullPointerException(String.format(NO_SOLVER_PATH_ERR_FRMT, "empty string"));
+      throw new IllegalStateException(String.format(NO_SOLVER_PATH_ERR_FRMT, "empty string"));
     }
 
     if (!new File(solverPath).isFile()) {
