@@ -70,7 +70,7 @@ public abstract class SmtTextSolver extends SolverBase {
   private static final String IO_EXCEPTION_ERR =
     "I/O exception in the process of a solving the constraint. Details: ";
 
-  public SmtTextSolver(String name, String desc) {
+  public SmtTextSolver(final String name, final String desc) {
     super(name, desc, EnumSet.of(ConstraintKind.FORMULA_BASED), true);
     initStandardOperations();
   }
@@ -78,7 +78,7 @@ public abstract class SmtTextSolver extends SolverBase {
   protected abstract Reader invokeSolver(String path) throws IOException;
   protected abstract String getSolverPath();
 
-  private static void solverFileExistsCheck(String solverPath) {
+  private static void solverFileExistsCheck(final String solverPath) {
     if (null == solverPath) {
       throw new IllegalStateException(String.format(NO_SOLVER_PATH_ERR_FRMT, "null"));
     }
@@ -93,7 +93,7 @@ public abstract class SmtTextSolver extends SolverBase {
   }
 
   @Override
-  public SolverResult solve(Constraint constraint) {
+  public SolverResult solve(final Constraint constraint) {
     checkNotNull(constraint, "constraint");
 
     supportedKindCheck(constraint.getKind());
@@ -161,7 +161,7 @@ public abstract class SmtTextSolver extends SolverBase {
     return resultBuilder.build();
   }
 
-  private static Map<String, Variable> variablesMap(Iterable<Variable> vars) {
+  private static Map<String, Variable> variablesMap(final Iterable<Variable> vars) {
     final Map<String, Variable> map = new HashMap<>();
     for (Variable var : vars) {
       map.put(var.getName(), var);
@@ -169,7 +169,7 @@ public abstract class SmtTextSolver extends SolverBase {
     return map;
   }
 
-  private static boolean isStatus(ESExpr e) {
+  private static boolean isStatus(final ESExpr e) {
     if (!e.isAtom()) {
       return false;
     }
@@ -179,7 +179,9 @@ public abstract class SmtTextSolver extends SolverBase {
            literal.equals(SMTRegExp.UNKNOWN);
   }
 
-  private static void setStatus(SolverResultBuilder builder, String statusStr) {
+  private static void setStatus(
+      final SolverResultBuilder builder,
+      final String statusStr) {
     final SolverResult.Status status;
     switch (statusStr) {
       case SMTRegExp.SAT:
@@ -196,16 +198,16 @@ public abstract class SmtTextSolver extends SolverBase {
     builder.setStatus(status);
   }
 
-  private static boolean isError(ESExpr e) {
+  private static boolean isError(final ESExpr e) {
     final ESExprMatcher matcher = new ESExprMatcher("(error %a)");
     return matcher.matches(e);
   }
 
-  private static String getLiteral(ESExpr e, int n) {
+  private static String getLiteral(final ESExpr e, final int n) {
     return e.getItems().get(n).getLiteral();
   }
 
-  private static boolean isModel(ESExpr e) {
+  private static boolean isModel(final ESExpr e) {
     return e.isList() &&
            !e.isNil() &&
            getLiteral(e, 0).equals("model");
@@ -240,10 +242,11 @@ public abstract class SmtTextSolver extends SolverBase {
     }
   }
 
-  private static void parseVariables(SolverResultBuilder builder,
-                                     ESExpr results,
-                                     Context ctx) {
-    for (ESExpr e : results.getListItems()) {
+  private static void parseVariables(
+      final SolverResultBuilder builder,
+      final ESExpr results,
+      final Context ctx) {
+    for (final ESExpr e : results.getListItems()) {
       final ESExpr value = e.getItems().get(1);
       final String reqName = getLiteral(e, 0);
 
@@ -258,7 +261,10 @@ public abstract class SmtTextSolver extends SolverBase {
     }
   }
 
-  private static Data parseValueExpr(ESExpr e, DataType type, Context ctx) {
+  private static Data parseValueExpr(
+      final ESExpr e,
+      final DataType type,
+      final Context ctx) {
     switch (type.getTypeId()) {
     case BIT_VECTOR:
       if (ctx.CAST.matches(e)) {
@@ -355,7 +361,10 @@ public abstract class SmtTextSolver extends SolverBase {
     return map;
   }
 
-  private static Data valueReference(String name, DataType type, Context ctx) {
+  private static Data valueReference(
+      final String name,
+      final DataType type,
+      final Context ctx) {
     final Data cached = ctx.parsed.get(name);
     if (cached == null) {
       final Data data = parseValueExpr(ctx.model.get(name), type, ctx);
@@ -365,14 +374,14 @@ public abstract class SmtTextSolver extends SolverBase {
     return cached;
   }
 
-  private static DataMap constantArray(DataType keyType, Data value) {
+  private static DataMap constantArray(final DataType keyType, final Data value) {
     final DataMap map = new DataMap(keyType, value.getType());
     map.setConstant(value);
 
     return map;
   }
 
-  private static Data parseAtom(String atom, DataType type) {
+  private static Data parseAtom(final String atom, final DataType type) {
     final int radix;
     if (Pattern.compile(SMTRegExp.LINE_START + SMTRegExp.VALUE_BIN).matcher(atom).matches()) {
       radix = 2;
@@ -384,9 +393,10 @@ public abstract class SmtTextSolver extends SolverBase {
     return type.valueOf(atom.replaceAll(SMTRegExp.VALUE_TRIM_PTRN, ""), radix);
   }
 
-  private static void parseModel(SolverResultBuilder builder,
-                                 ESExpr model,
-                                 Context ctx) {
+  private static void parseModel(
+      final SolverResultBuilder builder,
+      final ESExpr model,
+      final Context ctx) {
     final ESExprMatcher define = new ESExprMatcher("(define-fun %a %s %s %s)");
     for (final ESExpr e : model.getListItems()) {
       if (!define.matches(e)) {
