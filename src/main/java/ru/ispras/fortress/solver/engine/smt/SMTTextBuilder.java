@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2011-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,21 +14,21 @@
 
 package ru.ispras.fortress.solver.engine.smt;
 
-import static ru.ispras.fortress.solver.engine.z3.SMTStrings.ASSERT;
-import static ru.ispras.fortress.solver.engine.z3.SMTStrings.BRACKET_CLOSE;
-import static ru.ispras.fortress.solver.engine.z3.SMTStrings.BRACKET_OPEN;
-import static ru.ispras.fortress.solver.engine.z3.SMTStrings.CHECK_SAT;
-import static ru.ispras.fortress.solver.engine.z3.SMTStrings.DECLARE_CONST;
-import static ru.ispras.fortress.solver.engine.z3.SMTStrings.DEFAULT_ARRAY;
-import static ru.ispras.fortress.solver.engine.z3.SMTStrings.DEFINE_FUN;
-import static ru.ispras.fortress.solver.engine.z3.SMTStrings.EXIT;
-import static ru.ispras.fortress.solver.engine.z3.SMTStrings.GET_MODEL;
-import static ru.ispras.fortress.solver.engine.z3.SMTStrings.GET_VALUE;
-import static ru.ispras.fortress.solver.engine.z3.SMTStrings.PARAM_DEF;
-import static ru.ispras.fortress.solver.engine.z3.SMTStrings.SPACE;
-import static ru.ispras.fortress.solver.engine.z3.SMTStrings.UNDERLINE;
-import static ru.ispras.fortress.solver.engine.z3.SMTStrings.textForData;
-import static ru.ispras.fortress.solver.engine.z3.SMTStrings.textForType;
+import static ru.ispras.fortress.solver.engine.smt.SMTStrings.ASSERT;
+import static ru.ispras.fortress.solver.engine.smt.SMTStrings.BRACKET_CLOSE;
+import static ru.ispras.fortress.solver.engine.smt.SMTStrings.BRACKET_OPEN;
+import static ru.ispras.fortress.solver.engine.smt.SMTStrings.CHECK_SAT;
+import static ru.ispras.fortress.solver.engine.smt.SMTStrings.DECLARE_CONST;
+import static ru.ispras.fortress.solver.engine.smt.SMTStrings.DEFAULT_ARRAY;
+import static ru.ispras.fortress.solver.engine.smt.SMTStrings.DEFINE_FUN;
+import static ru.ispras.fortress.solver.engine.smt.SMTStrings.EXIT;
+import static ru.ispras.fortress.solver.engine.smt.SMTStrings.GET_MODEL;
+import static ru.ispras.fortress.solver.engine.smt.SMTStrings.GET_VALUE;
+import static ru.ispras.fortress.solver.engine.smt.SMTStrings.PARAM_DEF;
+import static ru.ispras.fortress.solver.engine.smt.SMTStrings.SPACE;
+import static ru.ispras.fortress.solver.engine.smt.SMTStrings.UNDERLINE;
+import static ru.ispras.fortress.solver.engine.smt.SMTStrings.textForData;
+import static ru.ispras.fortress.solver.engine.smt.SMTStrings.textForType;
 
 import java.io.FileWriter;
 import java.io.IOException;
