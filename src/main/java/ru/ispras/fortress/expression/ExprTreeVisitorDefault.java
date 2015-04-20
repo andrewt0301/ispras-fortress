@@ -84,7 +84,7 @@ public abstract class ExprTreeVisitorDefault implements ExprTreeVisitor {
   public void onOperandEnd(NodeOperation operation, Node operand, int index) { /* Empty */ ; }
 
   @Override
-  public void onValue(NodeValue value) { /* Empty */}
+  public void onValue(NodeValue value) { /* Empty */ ; }
 
   @Override
   public void onVariable(NodeVariable variable) { /* Empty */ ; }
@@ -96,7 +96,7 @@ public abstract class ExprTreeVisitorDefault implements ExprTreeVisitor {
   public void onBindingListEnd(NodeBinding node) { /* Empty */ ; }
 
   @Override
-  public void onBindingEnd(NodeBinding node) { /* Empty */}
+  public void onBindingEnd(NodeBinding node) { /* Empty */ ; }
 
   @Override
   public void onBoundVariableBegin(NodeBinding node, NodeVariable variable, Node value) { /* Empty */ ; }
