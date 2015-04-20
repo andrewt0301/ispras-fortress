@@ -296,29 +296,29 @@ public enum StandardOperation implements TypeRule {
   private final TypeRule typeRule;
   private final int numParams;
 
-  private StandardOperation(Family family, TypeRule typeRule) {
+  private StandardOperation(final Family family, final TypeRule typeRule) {
     this(EnumSet.of(family), typeRule);
   }
 
-  private StandardOperation(Set<Family> family, TypeRule typeRule) {
+  private StandardOperation(final Set<Family> family, final TypeRule typeRule) {
     this(family, typeRule, 0);
   }
 
-  private StandardOperation(Family family, TypeRule typeRule, int numParams) {
+  private StandardOperation(final Family family, final TypeRule typeRule, final int numParams) {
     this(EnumSet.of(family), typeRule, numParams);
   }
 
-  private StandardOperation(Set<Family> family, TypeRule typeRule, int numParams) {
+  private StandardOperation(final Set<Family> family, final TypeRule typeRule, final int numParams) {
     this.family = family;
     this.typeRule = typeRule;
     this.numParams = numParams;
   }
 
-  public static boolean isParametric(Enum<?> id) {
+  public static boolean isParametric(final Enum<?> id) {
     return getParameterCount(id) != 0;
   }
 
-  public static int getParameterCount(Enum<?> id) {
+  public static int getParameterCount(final Enum<?> id) {
     if (!(id instanceof StandardOperation)) {
       return 0;
     }
@@ -326,7 +326,7 @@ public enum StandardOperation implements TypeRule {
     return ((StandardOperation) id).numParams;
   }
 
-  public static boolean isFamily(Enum<?> id, Family family) {
+  public static boolean isFamily(final Enum<?> id, final Family family) {
     if (!(id instanceof StandardOperation)) {
       return false;
     }
@@ -335,7 +335,7 @@ public enum StandardOperation implements TypeRule {
   }
 
   @Override
-  public final DataType getResultType(DataType[] operandTypes, int[] params) {
+  public final DataType getResultType(final DataType[] operandTypes, final int[] params) {
     checkNotNull(operandTypes);
     return typeRule.getResultType(operandTypes, params);
   }

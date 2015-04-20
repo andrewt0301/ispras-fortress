@@ -77,7 +77,7 @@ public abstract class Node {
    * @throws NullPointerException if the parameter equals null.
    */
 
-  protected Node(Kind kind) {
+  protected Node(final Kind kind) {
     checkNotNull(kind);
     this.kind = kind;
   }
@@ -91,7 +91,7 @@ public abstract class Node {
    * @throws NullPointerException if the parameter equals null.
    */
 
-  protected Node(Node node) {
+  protected Node(final Node node) {
     checkNotNull(node);
     this.kind = node.kind;
     this.userData = node.userData;
@@ -143,7 +143,7 @@ public abstract class Node {
    * the {@code typeId} argument or {@code false} otherwise.
    */
 
-  public final boolean isType(DataTypeId typeId) {
+  public final boolean isType(final DataTypeId typeId) {
     return getDataTypeId() == typeId;
   }
 
@@ -156,7 +156,7 @@ public abstract class Node {
    * the {@code type} argument or {@code false} otherwise.
    */
 
-  public final boolean isType(DataType type) {
+  public final boolean isType(final DataType type) {
     return getDataType().equals(type);
   }
 
@@ -166,7 +166,7 @@ public abstract class Node {
    * @param obj User data object.
    */
 
-  public final void setUserData(Object obj) {
+  public final void setUserData(final Object obj) {
     this.userData = obj;
   }
 
@@ -188,7 +188,7 @@ public abstract class Node {
    * @return A new expression.
    */
 
-  public static Node AND(Node left, Node right) {
+  public static Node AND(final Node left, final Node right) {
     checkNotNull(left);
     checkNotNull(right);
     return new NodeOperation(StandardOperation.AND, left, right);
@@ -202,7 +202,7 @@ public abstract class Node {
    * @return A new expression.
    */
 
-  public static Node OR(Node left, Node right) {
+  public static Node OR(final Node left, final Node right) {
     checkNotNull(left);
     checkNotNull(right);
     return new NodeOperation(StandardOperation.OR, left, right);
@@ -215,7 +215,7 @@ public abstract class Node {
    * @return A new expression.
    */
 
-  public static Node NOT(Node expr) {
+  public static Node NOT(final Node expr) {
     checkNotNull(expr);
     return new NodeOperation(StandardOperation.NOT, expr);
   }

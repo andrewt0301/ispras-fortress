@@ -37,7 +37,7 @@ public final class NodeBinding extends Node {
     private final NodeVariable variable;
     private final Node value;
 
-    private BoundVariable(NodeVariable variable, Node value) {
+    private BoundVariable(final NodeVariable variable, final Node value) {
       this.variable = variable;
       this.value = value;
     }
@@ -69,7 +69,7 @@ public final class NodeBinding extends Node {
     }
 
     @Override
-    public boolean equals(Object rhs) {
+    public boolean equals(final Object rhs) {
       if (rhs == null) {
         return false;
       }
@@ -99,7 +99,9 @@ public final class NodeBinding extends Node {
    * @param bindings List of bound variables.
    */
 
-  public NodeBinding(Node expression, List<BoundVariable> bindings) {
+  public NodeBinding(
+      final Node expression,
+      final List<BoundVariable> bindings) {
     super(Kind.BINDING);
 
     checkNotNull(expression);
@@ -133,7 +135,7 @@ public final class NodeBinding extends Node {
    * @param bindings Bound variables.
    */
 
-  public NodeBinding(Node expression, BoundVariable... bindings) {
+  public NodeBinding(final Node expression, final BoundVariable... bindings) {
     this(expression, Arrays.asList(bindings));
   }
 
@@ -144,7 +146,10 @@ public final class NodeBinding extends Node {
    * @param bindings List of bound variables.
    */
 
-  private NodeBinding(Node expr, List<BoundVariable> bindings, int unused) {
+  private NodeBinding(
+      final Node expr,
+      final List<BoundVariable> bindings,
+      final int unused) {
     super(Kind.BINDING);
 
     this.expr = expr;
@@ -188,7 +193,7 @@ public final class NodeBinding extends Node {
    * @return A binding node object.
    */
 
-  public NodeBinding bindTo(Node expression) {
+  public NodeBinding bindTo(final Node expression) {
     return new NodeBinding(expression, this.bindings, 0);
   }
 
@@ -201,7 +206,9 @@ public final class NodeBinding extends Node {
    * @return A bound variable object.
    */
 
-  public static BoundVariable bindVariable(NodeVariable variable, Node value) {
+  public static BoundVariable bindVariable(
+      final NodeVariable variable,
+      final Node value) {
     checkNotNull(variable);
     checkNotNull(value);
     return new BoundVariable(variable, value);
@@ -221,7 +228,7 @@ public final class NodeBinding extends Node {
     final StringBuilder builder = new StringBuilder();
 
     builder.append("(LET (");
-    for (BoundVariable bound : getBindings()) {
+    for (final BoundVariable bound : getBindings()) {
       builder.append("(");
       builder.append(bound.getVariable().toString());
       builder.append(" ");
