@@ -24,7 +24,7 @@ public final class BitVectorAlgorithm {
   }
 
   public static interface IBinaryOperation {
-    public byte run(byte lhs, byte rhs);
+    public byte run(final byte lhs, final byte rhs);
   }
 
   public static interface IOperation {
@@ -36,13 +36,13 @@ public final class BitVectorAlgorithm {
   }
 
   public static interface IBinaryPredicate {
-    public boolean test(byte lhs, byte rhs);
+    public boolean test(final byte lhs, final byte rhs);
   }
 
   public static enum UnaryOperation implements IUnaryOperation {
     NOT {
       @Override
-      public byte run(byte v) {
+      public byte run(final byte v) {
         return (byte) ~v;
       }
     };
@@ -51,19 +51,19 @@ public final class BitVectorAlgorithm {
   public static enum BinaryOperation implements IBinaryOperation {
     AND {
       @Override
-      public byte run(byte lhs, byte rhs) {
+      public byte run(final byte lhs, final byte rhs) {
         return (byte) (lhs & rhs);
       }
     },
     OR {
       @Override
-      public byte run(byte lhs, byte rhs) {
+      public byte run(final byte lhs, final byte rhs) {
         return (byte) (lhs | rhs);
       }
     },
     XOR {
       @Override
-      public byte run(byte lhs, byte rhs) {
+      public byte run(final byte lhs, final byte rhs) {
         return (byte) (lhs ^ rhs);
       }
     };
@@ -73,31 +73,31 @@ public final class BitVectorAlgorithm {
   public static enum BinaryPredicate implements IBinaryPredicate {
     LE {
       @Override
-      public boolean test(byte lhs, byte rhs) {
+      public boolean test(final byte lhs, final byte rhs) {
         return (lhs & 0xFF) <= (rhs & 0xFF);
       }
     },
     LT {
       @Override
-      public boolean test(byte lhs, byte rhs) {
+      public boolean test(final byte lhs, final byte rhs) {
         return (lhs & 0xFF) < (rhs & 0xFF);
       }
     },
     GE {
       @Override
-      public boolean test(byte lhs, byte rhs) {
+      public boolean test(final byte lhs, final byte rhs) {
         return (lhs & 0xFF) >= (rhs & 0xFF);
       }
     },
     GT {
       @Override
-      public boolean test(byte lhs, byte rhs) {
+      public boolean test(final byte lhs, final byte rhs) {
         return (lhs & 0xFF) > (rhs & 0xFF);
       }
     };
   }
 
-  public static void fill(BitVector dest, byte value) {
+  public static void fill(final BitVector dest, final byte value) {
     checkNotNull(dest, "dest");
 
     for (int index = 0; index < dest.getByteSize(); ++index) {
@@ -105,7 +105,7 @@ public final class BitVectorAlgorithm {
     }
   }
 
-  public static void generate(BitVector dest, IOperation op) {
+  public static void generate(final BitVector dest, final IOperation op) {
     checkNotNull(dest, "dest");
 
     for (int index = 0; index < dest.getByteSize(); ++index) {
@@ -113,7 +113,7 @@ public final class BitVectorAlgorithm {
     }
   }
 
-  public static void copy(BitVector src, BitVector dest) {
+  public static void copy(final BitVector src, final BitVector dest) {
     checkNotNull(src, "src");
     checkNotNull(dest, "dest");
 
@@ -126,7 +126,12 @@ public final class BitVectorAlgorithm {
     }
   }
 
-  public static void copy(BitVector src, int srcPos, BitVector dest, int destPos, int bitSize) {
+  public static void copy(
+      final BitVector src,
+      final int srcPos,
+      final BitVector dest,
+      final int destPos,
+      final int bitSize) {
     checkNotNull(src, "src");
     checkNotNull(dest, "dest");
 
@@ -140,7 +145,7 @@ public final class BitVectorAlgorithm {
     copy(srcMapping, destMapping);
   }
 
-  public static void for_each(BitVector src, IAction op) {
+  public static void for_each(final BitVector src, final IAction op) {
     checkNotNull(src, "src");
     checkNotNull(op, "op");
 
@@ -149,7 +154,7 @@ public final class BitVectorAlgorithm {
     }
   }
 
-  public static void for_each_reverse(BitVector src, IAction op) {
+  public static void for_each_reverse(final BitVector src, final IAction op) {
     checkNotNull(src, "src");
     checkNotNull(op, "op");
 
@@ -158,7 +163,7 @@ public final class BitVectorAlgorithm {
     }
   }
 
-  public static int mismatch(BitVector src1, BitVector src2) {
+  public static int mismatch(final BitVector src1, final BitVector src2) {
     checkNotNull(src1, "src1");
     checkNotNull(src2, "src2");
 
@@ -177,7 +182,10 @@ public final class BitVectorAlgorithm {
     return -1;
   }
 
-  public static int mismatch(BitVector src1, BitVector src2, IBinaryPredicate op) {
+  public static int mismatch(
+      final BitVector src1,
+      final BitVector src2,
+      final IBinaryPredicate op) {
     checkNotNull(src1, "src1");
     checkNotNull(src2, "src2");
     checkNotNull(op, "op");
@@ -197,7 +205,7 @@ public final class BitVectorAlgorithm {
     return -1;
   }
 
-  public static int mismatch_reverse(BitVector src1, BitVector src2) {
+  public static int mismatch_reverse(final BitVector src1, final BitVector src2) {
     checkNotNull(src1, "src1");
     checkNotNull(src2, "src2");
 
@@ -216,7 +224,10 @@ public final class BitVectorAlgorithm {
     return -1;
   }
 
-  public static int mismatch_reverse(BitVector src1, BitVector src2, IBinaryPredicate op) {
+  public static int mismatch_reverse(
+      final BitVector src1, 
+      final BitVector src2,
+      final IBinaryPredicate op) {
     checkNotNull(src1, "src1");
     checkNotNull(src2, "src2");
     checkNotNull(op, "op");
@@ -236,7 +247,10 @@ public final class BitVectorAlgorithm {
     return -1;
   }
 
-  public static void transform(BitVector src, BitVector dest, IUnaryOperation op) {
+  public static void transform(
+      final BitVector src,
+      final BitVector dest,
+      final IUnaryOperation op) {
     checkNotNull(src, "src");
     checkNotNull(dest, "dest");
     checkNotNull(op, "op");
@@ -248,7 +262,11 @@ public final class BitVectorAlgorithm {
     }
   }
 
-  public static void transform(BitVector src1, BitVector src2, BitVector dest, IBinaryOperation op) {
+  public static void transform(
+      final BitVector src1,
+      final BitVector src2,
+      final BitVector dest,
+      final IBinaryOperation op) {
     checkNotNull(src1, "src1");
     checkNotNull(src2, "src2");
     checkNotNull(dest, "dest");
@@ -262,7 +280,7 @@ public final class BitVectorAlgorithm {
     }
   }
 
-  private static void checkEqualSize(int size1, int size2) {
+  private static void checkEqualSize(final int size1, final int size2) {
     if (size1 != size2) {
       throw new IllegalArgumentException("Invariant is violated: " + size1 + " != " + size2);
     }
