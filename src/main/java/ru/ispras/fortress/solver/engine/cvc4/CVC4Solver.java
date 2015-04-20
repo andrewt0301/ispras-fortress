@@ -48,7 +48,7 @@ public final class CVC4Solver extends SmtTextSolver {
   }
 
   @Override
-  public Reader invokeSolver(String path) throws IOException {
+  public Reader invokeSolver(final String path) throws IOException {
     final Process process =
         new ProcessBuilder(getSolverPath(), "-m", path).start();
 
