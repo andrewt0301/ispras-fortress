@@ -128,7 +128,7 @@ public final class Formulas {
   public Node asSingleExpr() {
     Node root = null;
 
-    for (Node item : exprs()) {
+    for (final Node item : exprs()) {
       root = (null == root) ? item : Node.AND(root, item);
     }
 

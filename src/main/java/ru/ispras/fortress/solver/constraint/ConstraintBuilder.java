@@ -165,7 +165,7 @@ public final class ConstraintBuilder {
   public void addVariables(final Iterable<Variable> variables) {
     checkNotNull(variables);
 
-    for (Variable variable : variables) {
+    for (final Variable variable : variables) {
       addVariable(variable);
     }
   }
