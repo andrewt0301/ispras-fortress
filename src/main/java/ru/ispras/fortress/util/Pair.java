@@ -20,7 +20,7 @@ public final class Pair<T, U> {
   public final T first;
   public final U second;
 
-  public Pair(T first, U second) {
+  public Pair(final T first, final U second) {
     checkNotNull(first);
     checkNotNull(second);
 
@@ -29,16 +29,12 @@ public final class Pair<T, U> {
   }
 
   @Override
-  public boolean equals(Object obj) {
+  public boolean equals(final Object obj) {
     if (this == obj) {
       return true;
     }
 
-    if (obj == null) {
-      return false;
-    }
-
-    if (getClass() != obj.getClass()) {
+    if (obj == null || getClass() != obj.getClass()) {
       return false;
     }
 

@@ -35,7 +35,7 @@ public final class InvariantChecks {
    * @throws NullPointerException if the invariant is violated ({@code o} is {@code null}).
    */
 
-  public static <T> void checkNotNull(T o) {
+  public static <T> void checkNotNull(final T o) {
     if (null == o) {
       throw new NullPointerException();
     }
@@ -87,7 +87,7 @@ public final class InvariantChecks {
    * @throws NullPointerException if the invariant is violated ({@code o} is {@code null}).
    */
 
-  public static <T> void checkNotNull(T o, String name) {
+  public static <T> void checkNotNull(final T o, final String name) {
     if (null == o) {
       throw new NullPointerException(
           String.format("%s must not be equal null", name));
@@ -103,7 +103,7 @@ public final class InvariantChecks {
    * @throws IllegalArgumentException if the invariant is violated ({@code n} <= {@code 0}).
    */
 
-  public static void checkGreaterThanZero(int n) {
+  public static void checkGreaterThanZero(final int n) {
     if (n <= 0) {
       throw new IllegalArgumentException(
           String.format("%d must be > 0", n));
@@ -119,7 +119,7 @@ public final class InvariantChecks {
    * @throws IllegalArgumentException if the invariant is violated ({@code n} < {@code 0}).
    */
 
-  public static void checkGreaterOrEqZero(int n) {
+  public static void checkGreaterOrEqZero(final int n) {
     if (n < 0) {
       throw new IllegalArgumentException(
           String.format("%d must be >= 0", n));
@@ -137,7 +137,7 @@ public final class InvariantChecks {
    * ({@code index} is not within range {@code [0..length)}).
    */
 
-  public static void checkBounds(int index, int length) {
+  public static void checkBounds(final int index, final int length) {
     if (!(0 <= index && index < length)) {
       throw new IndexOutOfBoundsException(String.format(
           "%d must be within range [0, %d)", index, length));
@@ -155,7 +155,7 @@ public final class InvariantChecks {
    * ({@code index} is not within range {@code [0..length]}).
    */
 
-  public static void checkBoundsInclusive(int index, int length) {
+  public static void checkBoundsInclusive(final int index, final int length) {
     if (!(0 <= index && index <= length)) {
       throw new IndexOutOfBoundsException(String.format(
           "%d must be within range [0, %d]", index, length));
