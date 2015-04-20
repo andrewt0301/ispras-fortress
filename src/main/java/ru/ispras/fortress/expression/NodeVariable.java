@@ -40,7 +40,7 @@ public final class NodeVariable extends Node {
    * @throws NullPointerException if any of the arguments is {@code null}.
    */
 
-  public NodeVariable(String name, DataType type) {
+  public NodeVariable(final String name, final DataType type) {
     this(new Variable(name, type));
   }
 
@@ -51,7 +51,7 @@ public final class NodeVariable extends Node {
    * @throws NullPointerException if the argument is {@code null}.
    */
 
-  public NodeVariable(Variable variable) {
+  public NodeVariable(final Variable variable) {
     super(Kind.VARIABLE);
 
     checkNotNull(variable);
@@ -66,7 +66,7 @@ public final class NodeVariable extends Node {
    * @throws NullPointerException if the argument is {@code null}.
    */
 
-  private NodeVariable(NodeVariable nodeVariable) {
+  private NodeVariable(final NodeVariable nodeVariable) {
     super(nodeVariable);
     this.variable = new Variable(nodeVariable.variable);
   }
@@ -118,7 +118,7 @@ public final class NodeVariable extends Node {
    * @throws NullPointerException if the argument is {@code null}.
    */
 
-  public void setData(Data data) {
+  public void setData(final Data data) {
     checkNotNull(data);
     variable.setData(data);
   }
@@ -152,7 +152,7 @@ public final class NodeVariable extends Node {
   }
 
   @Override
-  public boolean equals(Object obj) {
+  public boolean equals(final Object obj) {
     if (this == obj) {
       return true;
     }
@@ -171,6 +171,6 @@ public final class NodeVariable extends Node {
 
   @Override
   public String toString() {
-    return (variable.hasValue()) ? variable.getData().getValue().toString() : variable.getName();
+    return variable.hasValue() ? variable.getData().getValue().toString() : variable.getName();
   }
 }

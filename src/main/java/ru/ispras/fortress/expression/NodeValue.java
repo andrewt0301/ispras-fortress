@@ -32,32 +32,32 @@ import ru.ispras.fortress.data.types.datamap.DataMap;
 
 public final class NodeValue extends Node {
   /** Creates a new value node based on an integer value. */
-  public static NodeValue newInteger(int value) {
+  public static NodeValue newInteger(final int value) {
     return new NodeValue(Data.newInteger(value));
   }
 
   /** Creates a new value node based on a textual representation of an integer value. */
-  public static NodeValue newInteger(String text, int radix) {
+  public static NodeValue newInteger(final String text, final int radix) {
     return new NodeValue(Data.newInteger(text, radix));
   }
 
   /** Creates a new value node based on a double value. */
-  public static NodeValue newReal(double value) {
+  public static NodeValue newReal(final double value) {
     return new NodeValue(Data.newReal(value));
   }
 
   /** Creates a new value node based on a boolean value. */
-  public static NodeValue newBoolean(boolean value) {
+  public static NodeValue newBoolean(final boolean value) {
     return new NodeValue(Data.newBoolean(value));
   }
 
   /** Creates a new value node based on a value of an unknown type. */
-  public static NodeValue newUnknown(Object value) {
+  public static NodeValue newUnknown(final Object value) {
     return new NodeValue(Data.newUnknown(value));
   }
 
   /** Creates a new value node based on a bit vector. */
-  public static NodeValue newBitVector(BitVector value) {
+  public static NodeValue newBitVector(final BitVector value) {
     return new NodeValue(Data.newBitVector(value));
   }
 
@@ -71,7 +71,7 @@ public final class NodeValue extends Node {
    * @throws NullPointerException if the argument is {@code null}.
    */
 
-  public NodeValue(Data data) {
+  public NodeValue(final Data data) {
     super(Kind.VALUE);
 
     checkNotNull(data);
@@ -85,7 +85,7 @@ public final class NodeValue extends Node {
    * @param nodeValue Node value object to be copied.
    */
 
-  private NodeValue(NodeValue nodeValue) {
+  private NodeValue(final NodeValue nodeValue) {
     super(nodeValue);
     this.data = nodeValue.data;
   }
@@ -117,7 +117,7 @@ public final class NodeValue extends Node {
    * @throws NullPointerException if the argument is {@code null}. 
    */
 
-  public void setData(Data data) {
+  public void setData(final Data data) {
     checkNotNull(data);
     this.data = data;
   }
@@ -148,7 +148,7 @@ public final class NodeValue extends Node {
   }
 
   @Override
-  public boolean equals(Object obj) {
+  public boolean equals(final Object obj) {
     if (this == obj) {
       return true;
     }

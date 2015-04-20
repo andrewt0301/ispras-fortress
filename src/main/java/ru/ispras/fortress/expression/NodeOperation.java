@@ -47,7 +47,8 @@ public final class NodeOperation extends Node {
    * @throws NullPointerException if any parameter (including every operand) is {@code null}.
    */
 
-  public <T extends Enum<? extends T>> NodeOperation(T operation, Node ... operands) {
+  public <T extends Enum<? extends T>> NodeOperation(
+      final T operation, final Node ... operands) {
     super(Kind.OPERATION);
 
     checkNotNull(operation);
@@ -71,7 +72,8 @@ public final class NodeOperation extends Node {
    */
 
   public <T extends Enum<? extends T>> NodeOperation(
-      T operation, Collection<? extends Node> operands) {
+      final T operation,
+      final Collection<? extends Node> operands) {
     this(operation, operands != null ? operands.toArray(new Node[operands.size()]) : null);
   }
 
@@ -83,7 +85,7 @@ public final class NodeOperation extends Node {
    * @param node Node operation object to be copied.
    */
 
-  private NodeOperation(NodeOperation node) {
+  private NodeOperation(final NodeOperation node) {
     super(node);
 
     this.operation = node.operation;
@@ -122,7 +124,7 @@ public final class NodeOperation extends Node {
    * @return An operand of the expression.
    */
 
-  public Node getOperand(int index) {
+  public Node getOperand(final int index) {
     checkBounds(index, operands.length);
     return operands[index];
   }
