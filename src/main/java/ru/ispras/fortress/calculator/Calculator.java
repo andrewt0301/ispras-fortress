@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2013-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,6 +13,8 @@
  */
 
 package ru.ispras.fortress.calculator;
+
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -89,8 +91,8 @@ public final class Calculator {
 
   public static boolean registerEngine(
       Class<? extends Enum<?>> operationIdClass, CalculatorEngine engine) {
-    notNullCheck(operationIdClass);
-    notNullCheck(engine);
+    checkNotNull(operationIdClass);
+    checkNotNull(engine);
 
     return null == engines.put(operationIdClass, engine);
   }
@@ -109,7 +111,7 @@ public final class Calculator {
    */
 
   public static CalculatorEngine getEngine(Class<?> operationIdClass) {
-    notNullCheck(operationIdClass);
+    checkNotNull(operationIdClass);
     return engines.get(operationIdClass);
   }
 
@@ -126,8 +128,8 @@ public final class Calculator {
    */
 
   public static boolean isSupported(Enum<?> operationId, Data... operands) {
-    notNullCheck(operationId);
-    notNullCheck(operands);
+    checkNotNull(operationId);
+    checkNotNull(operands);
 
     final CalculatorEngine engine = getEngine(operationId.getClass());
     if (null == engine) {
@@ -151,9 +153,9 @@ public final class Calculator {
    */
 
   public static Data calculate(CalculatorEngine engine, Enum<?> operationId, Data... operands) {
-    notNullCheck(engine);
-    notNullCheck(operationId);
-    notNullCheck(operands);
+    checkNotNull(engine);
+    checkNotNull(operationId);
+    checkNotNull(operands);
 
     return engine.calculate(operationId, operands);
   }
@@ -171,8 +173,8 @@ public final class Calculator {
    */
 
   public static Data calculate(Enum<?> operationId, Data... operands) {
-    notNullCheck(operationId);
-    notNullCheck(operands);
+    checkNotNull(operationId);
+    checkNotNull(operands);
 
     final CalculatorEngine engine = getEngine(operationId.getClass());
     if (null == engine) {
@@ -181,12 +183,6 @@ public final class Calculator {
     }
 
     return engine.calculate(operationId, operands);
-  }
-
-  private static void notNullCheck(Object o) {
-    if (null == o) {
-      throw new NullPointerException();
-    }
   }
 
   private static final String MSG_UNSUPPORTED_GROUP_FRMT =
