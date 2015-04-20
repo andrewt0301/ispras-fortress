@@ -64,10 +64,10 @@ public final class VariateInterval<T> implements Variate<T> {
       }
     };
 
-    private static final Map<Class<?>, Type> types = new HashMap<>();
+    private static final Map<Class<?>, Type> TYPES = new HashMap<>();
     static {
       for (Type type : values()) {
-        types.put(type.typeClass, type);
+        TYPES.put(type.typeClass, type);
       }
     }
 
@@ -78,7 +78,7 @@ public final class VariateInterval<T> implements Variate<T> {
     }
 
     static Type fromClass(Class<?> typeClass) {
-      return types.get(typeClass);
+      return TYPES.get(typeClass);
     }
 
     /**
