@@ -40,6 +40,7 @@ import ru.ispras.fortress.expression.*;
 import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintKind;
 import ru.ispras.fortress.solver.constraint.Formulas;
+import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * The XMLConstraintSaver class provides functionality to save a constraint with all its attributes
@@ -64,10 +65,8 @@ public final class XMLConstraintSaver {
    *         implemented.
    */
 
-  public XMLConstraintSaver(Constraint constraint) {
-    if (null == constraint) {
-      throw new NullPointerException();
-    }
+  public XMLConstraintSaver(final Constraint constraint) {
+    InvariantChecks.checkNotNull(constraint);
 
     if (ConstraintKind.FORMULA_BASED != constraint.getKind()) {
       throw new IllegalArgumentException(Messages.ERR_BAD_CONSTRAINT_KIND + constraint.getKind());
@@ -105,10 +104,8 @@ public final class XMLConstraintSaver {
    * @throws XMLNotSavedException if failed to save the constraint to a file.
    */
 
-  public void saveToFile(String fileName) throws XMLNotSavedException {
-    if (null == fileName) {
-      throw new NullPointerException();
-    }
+  public void saveToFile(final String fileName) throws XMLNotSavedException {
+    InvariantChecks.checkNotNull(fileName);
 
     try {
       document = newDocument();
@@ -146,7 +143,7 @@ public final class XMLConstraintSaver {
     return docBuilder.newDocument();
   }
 
-  private static void saveDocumentToFile(Document document, String fileName)
+  private static void saveDocumentToFile(final Document document, final String fileName)
       throws TransformerConfigurationException, TransformerException {
     final DOMSource source = new DOMSource(document);
     final StreamResult streamResult = new StreamResult(new File(fileName));
@@ -154,7 +151,7 @@ public final class XMLConstraintSaver {
     newTransformer().transform(source, streamResult);
   }
 
-  private static String saveDocumentToString(Document document)
+  private static String saveDocumentToString(final Document document)
       throws TransformerConfigurationException, TransformerException {
     final DOMSource source = new DOMSource(document);
     final OutputStream os = new ByteArrayOutputStream();
@@ -181,13 +178,13 @@ public final class XMLConstraintSaver {
     final Element result = document.createElement(XMLConst.NODE_CONSTRAINT);
 
     final String versionText = String.format("%d.%d",
-      XMLFormatVersion.MAJOR, XMLFormatVersion.MINOR);
+        XMLFormatVersion.MAJOR, XMLFormatVersion.MINOR);
 
     result.setAttribute(XMLConst.ATTR_FORMAT_VERSION, versionText);
     return result;
   }
 
-  private Element newTextBasedElement(String name, String text) {
+  private Element newTextBasedElement(final String name, final String text) {
     final Element result = document.createElement(name);
     result.appendChild(document.createTextNode(text));
     return result;
@@ -196,14 +193,14 @@ public final class XMLConstraintSaver {
   private Element newSignatureElement() {
     final Element result = document.createElement(XMLConst.NODE_SIGNATURE);
 
-    for (Variable variable : constraint.getVariables()) {
+    for (final Variable variable : constraint.getVariables()) {
       result.appendChild(newVariableElement(variable.getName(), variable.getData()));
     }
 
     return result;
   }
 
-  private Element newVariableElement(String name, Data data) {
+  private Element newVariableElement(final String name, final Data data) {
     final Element result = document.createElement(XMLConst.NODE_VARIABLE);
 
     result.setAttribute(XMLConst.ATTR_VARIABLE_NAME, name);
@@ -233,14 +230,9 @@ class XMLBuilderForExprs implements ExprTreeVisitor {
    * @param root The root element of the document to be built.
    */
 
-  public XMLBuilderForExprs(Document document, Element root) {
-    if (null == document) {
-      throw new NullPointerException();
-    }
-
-    if (null == root) {
-      throw new NullPointerException();
-    }
+  public XMLBuilderForExprs(final Document document, final Element root) {
+    InvariantChecks.checkNotNull(document);
+    InvariantChecks.checkNotNull(root);
 
     this.document = document;
     this.elements = new LinkedList<Element>();
@@ -272,7 +264,7 @@ class XMLBuilderForExprs implements ExprTreeVisitor {
   }
 
   @Override
-  public void onOperationBegin(NodeOperation expr) {
+  public void onOperationBegin(final NodeOperation expr) {
     final Enum<?> op = expr.getOperationId();
 
     assert !elements.isEmpty();
@@ -286,7 +278,7 @@ class XMLBuilderForExprs implements ExprTreeVisitor {
   }
 
   @Override
-  public void onOperationEnd(NodeOperation expr) {
+  public void onOperationEnd(final NodeOperation expr) {
     assert !elements.isEmpty();
 
     elements.removeLast();
@@ -298,17 +290,23 @@ class XMLBuilderForExprs implements ExprTreeVisitor {
   }
 
   @Override
-  public void onOperandBegin(NodeOperation expr, Node node, int index) {
+  public void onOperandBegin(
+      final NodeOperation expr,
+      final Node node,
+      final int index) {
     // Do nothing.
   }
 
   @Override
-  public void onOperandEnd(NodeOperation expr, Node node, int index) {
+  public void onOperandEnd(
+      final NodeOperation expr,
+      final Node node,
+      final int index) {
     // Do nothing.
   }
 
   @Override
-  public void onValue(NodeValue value) {
+  public void onValue(final NodeValue value) {
     final Data data = value.getData();
 
     assert !elements.isEmpty();
@@ -321,7 +319,7 @@ class XMLBuilderForExprs implements ExprTreeVisitor {
   }
 
   @Override
-  public void onVariable(NodeVariable variable) {
+  public void onVariable(final NodeVariable variable) {
     assert !elements.isEmpty();
 
     final Element variableRef = document.createElement(XMLConst.NODE_VARIABLE_REF);
@@ -331,7 +329,7 @@ class XMLBuilderForExprs implements ExprTreeVisitor {
   }
 
   @Override
-  public void onBindingBegin(NodeBinding node) {
+  public void onBindingBegin(final NodeBinding node) {
     assert !elements.isEmpty();
 
     final Element binding = document.createElement(XMLConst.NODE_BINDING);
@@ -345,19 +343,22 @@ class XMLBuilderForExprs implements ExprTreeVisitor {
   }
 
   @Override
-  public void onBindingListEnd(NodeBinding node) {
+  public void onBindingListEnd(final NodeBinding node) {
     assert !elements.isEmpty();
     elements.removeLast();
   }
 
   @Override
-  public void onBindingEnd(NodeBinding node) {
+  public void onBindingEnd(final NodeBinding node) {
     assert !elements.isEmpty();
     elements.removeLast();
   }
 
   @Override
-  public void onBoundVariableBegin(NodeBinding node, NodeVariable variable, Node value) {
+  public void onBoundVariableBegin(
+      final NodeBinding node,
+      final NodeVariable variable,
+      final Node value) {
     assert !elements.isEmpty();
 
     final Element binding = document.createElement(XMLConst.NODE_BOUND_VARIABLE);
@@ -368,7 +369,10 @@ class XMLBuilderForExprs implements ExprTreeVisitor {
   }
 
   @Override
-  public void onBoundVariableEnd(NodeBinding node, NodeVariable variable, Node value) {
+  public void onBoundVariableEnd(
+      final NodeBinding node,
+      final NodeVariable variable,
+      final Node value) {
     assert !elements.isEmpty();
     elements.removeLast();
   }
