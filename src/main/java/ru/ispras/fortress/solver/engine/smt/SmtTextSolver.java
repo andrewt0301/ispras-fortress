@@ -102,8 +102,8 @@ public abstract class SmtTextSolver extends SolverBase {
     final StringBuilder textBuilder = new StringBuilder();
     final SolverResultBuilder resultBuilder = new SolverResultBuilder(SolverResult.Status.ERROR);
 
-    final SMTTextBuilder smtTextBuilder =
-        new SMTTextBuilder(constraint.getVariables(), getOperations());
+    final SmtTextBuilder smtTextBuilder =
+        new SmtTextBuilder(constraint.getVariables(), getOperations());
 
     final ExprTreeWalker walker = new ExprTreeWalker(smtTextBuilder);
 
@@ -174,9 +174,9 @@ public abstract class SmtTextSolver extends SolverBase {
       return false;
     }
     final String literal = e.getLiteral();
-    return literal.equals(SMTRegExp.SAT) ||
-           literal.equals(SMTRegExp.UNSAT) ||
-           literal.equals(SMTRegExp.UNKNOWN);
+    return literal.equals(SmtRegExp.SAT) ||
+           literal.equals(SmtRegExp.UNSAT) ||
+           literal.equals(SmtRegExp.UNKNOWN);
   }
 
   private static void setStatus(
@@ -184,11 +184,11 @@ public abstract class SmtTextSolver extends SolverBase {
       final String statusStr) {
     final SolverResult.Status status;
     switch (statusStr) {
-      case SMTRegExp.SAT:
+      case SmtRegExp.SAT:
         status = SolverResult.Status.SAT;
         break;
 
-      case SMTRegExp.UNSAT:
+      case SmtRegExp.UNSAT:
         status = SolverResult.Status.UNSAT;
         break;
 
@@ -355,7 +355,7 @@ public abstract class SmtTextSolver extends SolverBase {
       e = e.getItems().get(1);
     }
     final DataMap map = ((DataMap) parseArray(e, type, ctx).getValue()).copy();
-    for (Pair<Data, Data> pair : pairs) {
+    for (final Pair<Data, Data> pair : pairs) {
       map.put(pair.first, pair.second);
     }
     return map;
@@ -383,14 +383,14 @@ public abstract class SmtTextSolver extends SolverBase {
 
   private static Data parseAtom(final String atom, final DataType type) {
     final int radix;
-    if (Pattern.compile(SMTRegExp.LINE_START + SMTRegExp.VALUE_BIN).matcher(atom).matches()) {
+    if (Pattern.compile(SmtRegExp.LINE_START + SmtRegExp.VALUE_BIN).matcher(atom).matches()) {
       radix = 2;
-    } else if (Pattern.compile(SMTRegExp.LINE_START + SMTRegExp.VALUE_HEX).matcher(atom).matches()) {
+    } else if (Pattern.compile(SmtRegExp.LINE_START + SmtRegExp.VALUE_HEX).matcher(atom).matches()) {
       radix = 16;
     } else {
       radix = 10; // decimal value by default
     }
-    return type.valueOf(atom.replaceAll(SMTRegExp.VALUE_TRIM_PTRN, ""), radix);
+    return type.valueOf(atom.replaceAll(SmtRegExp.VALUE_TRIM_PTRN, ""), radix);
   }
 
   private static void parseModel(

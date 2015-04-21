@@ -18,7 +18,7 @@ import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
-import ru.ispras.fortress.solver.engine.smt.SMTRegExp;
+import ru.ispras.fortress.solver.engine.smt.SmtRegExp;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -272,15 +272,15 @@ public final class DataMap implements Map<Data, Data> {
   private static Data readData(final String s, final DataType type) {
     final int radix;
 
-    if (Pattern.compile(SMTRegExp.LINE_START + SMTRegExp.VALUE_BIN).matcher(s).matches()) {
+    if (Pattern.compile(SmtRegExp.LINE_START + SmtRegExp.VALUE_BIN).matcher(s).matches()) {
       radix = 2;
-    } else if (Pattern.compile(SMTRegExp.LINE_START + SMTRegExp.VALUE_HEX).matcher(s).matches()) {
+    } else if (Pattern.compile(SmtRegExp.LINE_START + SmtRegExp.VALUE_HEX).matcher(s).matches()) {
       radix = 16;
     } else {
       radix = 10; // decimal value by default
     }
 
-    return type.valueOf(s.replaceAll(SMTRegExp.VALUE_TRIM_PTRN, ""), radix);
+    return type.valueOf(s.replaceAll(SmtRegExp.VALUE_TRIM_PTRN, ""), radix);
   }
 
   /**

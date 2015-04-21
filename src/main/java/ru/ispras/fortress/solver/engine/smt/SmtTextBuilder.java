@@ -14,21 +14,21 @@
 
 package ru.ispras.fortress.solver.engine.smt;
 
-import static ru.ispras.fortress.solver.engine.smt.SMTStrings.ASSERT;
-import static ru.ispras.fortress.solver.engine.smt.SMTStrings.BRACKET_CLOSE;
-import static ru.ispras.fortress.solver.engine.smt.SMTStrings.BRACKET_OPEN;
-import static ru.ispras.fortress.solver.engine.smt.SMTStrings.CHECK_SAT;
-import static ru.ispras.fortress.solver.engine.smt.SMTStrings.DECLARE_CONST;
-import static ru.ispras.fortress.solver.engine.smt.SMTStrings.DEFAULT_ARRAY;
-import static ru.ispras.fortress.solver.engine.smt.SMTStrings.DEFINE_FUN;
-import static ru.ispras.fortress.solver.engine.smt.SMTStrings.EXIT;
-import static ru.ispras.fortress.solver.engine.smt.SMTStrings.GET_MODEL;
-import static ru.ispras.fortress.solver.engine.smt.SMTStrings.GET_VALUE;
-import static ru.ispras.fortress.solver.engine.smt.SMTStrings.PARAM_DEF;
-import static ru.ispras.fortress.solver.engine.smt.SMTStrings.SPACE;
-import static ru.ispras.fortress.solver.engine.smt.SMTStrings.UNDERLINE;
-import static ru.ispras.fortress.solver.engine.smt.SMTStrings.textForData;
-import static ru.ispras.fortress.solver.engine.smt.SMTStrings.textForType;
+import static ru.ispras.fortress.solver.engine.smt.SmtStrings.ASSERT;
+import static ru.ispras.fortress.solver.engine.smt.SmtStrings.BRACKET_CLOSE;
+import static ru.ispras.fortress.solver.engine.smt.SmtStrings.BRACKET_OPEN;
+import static ru.ispras.fortress.solver.engine.smt.SmtStrings.CHECK_SAT;
+import static ru.ispras.fortress.solver.engine.smt.SmtStrings.DECLARE_CONST;
+import static ru.ispras.fortress.solver.engine.smt.SmtStrings.DEFAULT_ARRAY;
+import static ru.ispras.fortress.solver.engine.smt.SmtStrings.DEFINE_FUN;
+import static ru.ispras.fortress.solver.engine.smt.SmtStrings.EXIT;
+import static ru.ispras.fortress.solver.engine.smt.SmtStrings.GET_MODEL;
+import static ru.ispras.fortress.solver.engine.smt.SmtStrings.GET_VALUE;
+import static ru.ispras.fortress.solver.engine.smt.SmtStrings.PARAM_DEF;
+import static ru.ispras.fortress.solver.engine.smt.SmtStrings.SPACE;
+import static ru.ispras.fortress.solver.engine.smt.SmtStrings.UNDERLINE;
+import static ru.ispras.fortress.solver.engine.smt.SmtStrings.textForData;
+import static ru.ispras.fortress.solver.engine.smt.SmtStrings.textForType;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -68,7 +68,7 @@ import ru.ispras.fortress.solver.function.FunctionTemplate;
  * @author Andrei Tatarnikov
  */
 
-final class SMTTextBuilder implements ExprTreeVisitor {
+final class SmtTextBuilder implements ExprTreeVisitor {
   private final Map<Enum<?>, SolverOperation> operations;
   private final Iterable<Variable> variables;
 
@@ -87,7 +87,7 @@ final class SMTTextBuilder implements ExprTreeVisitor {
    * @param operations Operation dictionary.
    */
 
-  SMTTextBuilder(
+  SmtTextBuilder(
       final Iterable<Variable> variables,
       final Map<Enum<?>, SolverOperation> operations) {
     this.operations = operations;
