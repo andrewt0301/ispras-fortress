@@ -88,7 +88,7 @@ public final class VariateBiased<T> implements Variate<T> {
   public VariateBiased(final T[] values, final int[] biases) {
     this(Arrays.asList(values), new AbstractList<Integer>() {
       @Override
-      public Integer get(int i) {
+      public Integer get(final int i) {
         return biases[i];
       }
       @Override

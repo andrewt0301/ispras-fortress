@@ -44,7 +44,7 @@ public final class LaggedFibonacci implements RandomGenerator {
    * 
    * @param s the seed to be set.
    */
-  public LaggedFibonacci(int s) {
+  public LaggedFibonacci(final int s) {
     seed(s);
   }
 
