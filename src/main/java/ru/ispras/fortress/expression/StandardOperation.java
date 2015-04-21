@@ -275,6 +275,16 @@ public enum StandardOperation implements TypeRule {
   BVXNORR(Family.BV, TypeRules.BIT_BOOLEAN),
 
   /**
+   * The items below belong to the "Bit Vector Cast Operations" group.
+   */
+
+  /** Group: Bit Vector Cast, Operation: Cast to boolean */
+  BV2BOOL(Family.BV, TypeRules.BOOLEAN),
+
+  /** Group: Bit Vector Cast, Operation: Cast boolean to bit vector of size 1 */
+  BOOL2BV(Family.BV, TypeRules.BIT_BOOLEAN),
+
+  /**
    * The items below belong to the "Array Operations" group.
    */
 
