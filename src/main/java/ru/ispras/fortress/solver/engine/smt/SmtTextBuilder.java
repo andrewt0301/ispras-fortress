@@ -79,7 +79,6 @@ final class SmtTextBuilder implements ExprTreeVisitor {
   private int functionCallDepth = 0;
 
   private final List<DataType> arraysInUse = new ArrayList<DataType>();
-  private final Deque<Boolean> castsToBV = new LinkedList<Boolean>();
 
   /**
    * Creates an instance of a SMT text builder.
@@ -332,21 +331,7 @@ final class SmtTextBuilder implements ExprTreeVisitor {
       final NodeOperation expr,
       final Node node,
       final int index) {
-    final Enum<?> operationId = expr.getOperationId();
-    if (StandardOperation.isFamily(operationId, StandardOperation.Family.BV) &&
-        (node.getDataType().getTypeId() == DataTypeId.LOGIC_BOOLEAN)) {
-
-      appendToCurrent(SPACE);
-      appendToCurrent(BRACKET_OPEN);
-
-      final SolverOperation ite = operations.get(StandardOperation.ITE);
-      appendToCurrent(ite.getText());
-
-      castsToBV.push(true);
-    }
-    else {
-      castsToBV.push(false);
-    }
+    return;
   }
 
   @Override
@@ -356,13 +341,6 @@ final class SmtTextBuilder implements ExprTreeVisitor {
       final int index) {
     if (StandardOperation.isParametric(expr.getOperationId())
         && index == StandardOperation.getParameterCount(expr.getOperationId()) - 1) {
-      appendToCurrent(BRACKET_CLOSE);
-    }
-
-    final boolean isCastToBVNeeded = castsToBV.pop();
-    if (isCastToBVNeeded) {
-      onValue(Data.newBitVector(BitVector.TRUE));
-      onValue(Data.newBitVector(BitVector.FALSE));
       appendToCurrent(BRACKET_CLOSE);
     }
   }
