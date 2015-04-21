@@ -266,7 +266,10 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @return A bit vector mapping.
    */
 
-  public static BitVector newMapping(final BitVector source, final int startBitPos, int bitSize) {
+  public static BitVector newMapping(
+      final BitVector source,
+      final int startBitPos,
+      final int bitSize) {
     checkNotNull(source);
 
     if ((0 == startBitPos) && (source.getBitSize() == bitSize)) {
@@ -587,7 +590,7 @@ public abstract class BitVector implements Comparable<BitVector> {
       private int bitCount = 0;
 
       @Override
-      public void run(byte v) {
+      public void run(final byte v) {
         if (bitCount >= Integer.SIZE) {
           return;
         }
@@ -616,7 +619,7 @@ public abstract class BitVector implements Comparable<BitVector> {
       private int bitCount = 0;
 
       @Override
-      public void run(byte v) {
+      public void run(final byte v) {
         if (bitCount >= Long.SIZE) {
           return;
         }
@@ -653,7 +656,7 @@ public abstract class BitVector implements Comparable<BitVector> {
     final IAction op = new IAction() {
       private int index = 0;
       @Override
-      public void run(byte v) {
+      public void run(final byte v) {
         byteArray[index++] = v;
       }
     };
@@ -699,7 +702,7 @@ public abstract class BitVector implements Comparable<BitVector> {
       private int totalBitCount = getBitSize();
 
       @Override
-      public void run(byte v) {
+      public void run(final byte v) {
         final int highBits = totalBitCount % BITS_IN_BYTE;
         final int bitCount = (highBits == 0) ? BITS_IN_BYTE : highBits;
 
@@ -727,7 +730,7 @@ public abstract class BitVector implements Comparable<BitVector> {
 
     final IAction op = new IAction() {
       @Override
-      public void run(byte v) {
+      public void run(final byte v) {
         sb.append(String.format("%0" + HEX_CHARS_IN_BYTE + "X", v));
       }
     };
