@@ -14,8 +14,8 @@
 
 package ru.ispras.fortress.solver;
 
-import ru.ispras.fortress.solver.engine.cvc4.CVC4Solver;
-import ru.ispras.fortress.solver.engine.z3.Z3TextSolver;
+import ru.ispras.fortress.solver.engine.smt.CVC4Solver;
+import ru.ispras.fortress.solver.engine.smt.Z3TextSolver;
 
 /**
  * The SolverId enumeration specifies which solver should be used to solve a particular constraint.
