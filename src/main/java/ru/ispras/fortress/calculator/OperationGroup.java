@@ -194,7 +194,7 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
   public static <T extends Enum<T>> Map<T, Operation<T>> operationMap(
       final Class<T> c,
       final Collection<? extends Operation<T>> operations) {
-    final Map<T, Operation<T>> map = new EnumMap<T, Operation<T>>(c);
+    final Map<T, Operation<T>> map = new EnumMap<>(c);
     for (final Operation<T> op : operations) {
       map.put(op.getOperationId(), op);
     }
