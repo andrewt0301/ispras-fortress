@@ -28,14 +28,14 @@ import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.solver.function.Function;
 
-public final class CVC4Solver extends SmtTextSolver {
+public final class Cvc4Solver extends SmtTextSolver {
   private static final String NAME = "CVC4 (text-based interface)";
 
   private static final String DESCRIPTION =
     "Solves constraints using the CVC4 solver. " + 
     "Interacts with the solver via text files and command line.";
 
-  public CVC4Solver() {
+  public Cvc4Solver() {
     super(NAME, DESCRIPTION);
     addCustomOperation(customRem());
     addCustomOperation(customPlus());

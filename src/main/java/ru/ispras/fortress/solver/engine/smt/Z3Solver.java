@@ -26,17 +26,17 @@ import ru.ispras.fortress.expression.StandardOperation;
  * Research. The constraint is translated to STM-LIB code that is then saved to a file and processed
  * to the tool.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 
-public final class Z3TextSolver extends SmtTextSolver {
+public final class Z3Solver extends SmtTextSolver {
   private static final String NAME = "Z3 (text-based interface)";
 
   private static final String DESCRIPTION =
     "Solves constraints using the Z3 solver. " + 
     "Interacts with the solver via text files and command line.";
 
-  public Z3TextSolver() {
+  public Z3Solver() {
     super(NAME, DESCRIPTION);
     initZ3Operations();
   }

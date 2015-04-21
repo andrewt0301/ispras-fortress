@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,13 +14,13 @@
 
 package ru.ispras.fortress.solver;
 
-import ru.ispras.fortress.solver.engine.smt.CVC4Solver;
-import ru.ispras.fortress.solver.engine.smt.Z3TextSolver;
+import ru.ispras.fortress.solver.engine.smt.Cvc4Solver;
+import ru.ispras.fortress.solver.engine.smt.Z3Solver;
 
 /**
  * The SolverId enumeration specifies which solver should be used to solve a particular constraint.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 
 public enum SolverId {
@@ -31,13 +31,13 @@ public enum SolverId {
 
   Z3_TEXT {
     protected Solver createSolver() {
-      return new Z3TextSolver();
+      return new Z3Solver();
     }
   },
 
   CVC4_TEXT {
     protected Solver createSolver() {
-      return new CVC4Solver();
+      return new Cvc4Solver();
     }
   },
 
@@ -47,7 +47,7 @@ public enum SolverId {
 
   DEFAULT {
     protected Solver createSolver() {
-      return new Z3TextSolver();
+      return new Z3Solver();
     }
   };
 
