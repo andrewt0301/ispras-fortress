@@ -131,7 +131,7 @@ public abstract class SolverBase implements Solver {
   }
 
   @Override
-  public final void setSolverPath(String value) {
+  public final void setSolverPath(final String value) {
     solverPath = value;
   }
 }
