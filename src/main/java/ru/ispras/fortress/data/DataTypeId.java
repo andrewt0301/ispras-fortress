@@ -102,7 +102,7 @@ public enum DataTypeId {
       return name();
     }
 
-    DataType typeOf(String text) {
+    DataType typeOf(final String text) {
       if (!text.equals(name())) {
         return null;
       }
@@ -163,7 +163,7 @@ public enum DataTypeId {
       return name();
     }
 
-    DataType typeOf(String text) {
+    DataType typeOf(final String text) {
       if (!text.equals(name())) {
         return null;
       }
@@ -177,7 +177,7 @@ public enum DataTypeId {
    */
 
   MAP(DataMap.class, true) {
-    Object valueOf(String s, int radix, List<Object> params) {
+    Object valueOf(final String s, final int radix, final List<Object> params) {
       final DataType keyType = (DataType) params.get(0);
       final DataType valueType = (DataType) params.get(1);
       return DataMap.valueOf(s, keyType, valueType);
@@ -191,15 +191,15 @@ public enum DataTypeId {
       return 0;
     }
 
-    void validate(List<Object> params) {
+    void validate(final List<Object> params) {
       report(params, DataType.class, DataType.class);
     }
 
-    String format(List<Object> params) {
+    String format(final List<Object> params) {
       return String.format("(%s %s %s)", name(), params.get(0), params.get(1));
     }
 
-    DataType typeOf(String text) {
+    DataType typeOf(final String text) {
       final Matcher matcher =
         Pattern.compile(String.format("^\\(%s[ ](.+)[ ](.+)\\)$", name())).matcher(text);
 
@@ -233,7 +233,7 @@ public enum DataTypeId {
     }
 
     @Override
-    public Object getAttribute(Attribute a, List<Object> params) {
+    public Object getAttribute(final Attribute a, final List<Object> params) {
       if (a == Attribute.KEY) {
         return params.get(0);
       }
@@ -251,7 +251,7 @@ public enum DataTypeId {
    */
   UNKNOWN(Object.class, true) {
     Object valueOf(String s, int radix, List<Object> params) {
-      throw new RuntimeException("Unable to create a value of an unknown type.");
+      throw new UnsupportedOperationException("Unable to create a value of an unknown type.");
     }
 
     int radix(int size) {
@@ -284,7 +284,7 @@ public enum DataTypeId {
    * mathematical and is not associated with data types implemented in real hardware.
    */
 
-  private DataTypeId(Class<?> valueClass, boolean isLogic) {
+  private DataTypeId(final Class<?> valueClass, final boolean isLogic) {
     this.valueClass = valueClass;
     this.isLogic = isLogic;
   }
@@ -320,7 +320,7 @@ public enum DataTypeId {
    * @return Value of the given type packed into an Object value.
    */
 
-  Object valueOf(String s, int radix, int size) {
+  Object valueOf(final String s, final int radix, final int size) {
     final List<Object> list = new ArrayList<Object>();
     list.add(size);
     return valueOf(s, radix, list);
@@ -347,7 +347,7 @@ public enum DataTypeId {
 
   abstract DataType typeOf(String text);
 
-  private static void report(List<Object> passed, Class<?>... required) {
+  private static void report(final List<Object> passed, final Class<?>... required) {
     if (passed.size() != required.length) {
       throw new IllegalArgumentException(String.format(
         "Invalid number of type parameters: %d, expected: %d.", passed.size(), required.length));
