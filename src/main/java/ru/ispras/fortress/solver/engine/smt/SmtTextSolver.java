@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,11 +30,15 @@ import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.DataTypeId;
 import ru.ispras.fortress.data.Variable;
+import ru.ispras.fortress.data.types.bitvector.BitVector;
 import ru.ispras.fortress.data.types.datamap.DataMap;
 import ru.ispras.fortress.esexpr.ESExpr;
 import ru.ispras.fortress.esexpr.ESExprMatcher;
 import ru.ispras.fortress.esexpr.ESExprParser;
 import ru.ispras.fortress.expression.ExprTreeWalker;
+import ru.ispras.fortress.expression.NodeOperation;
+import ru.ispras.fortress.expression.NodeValue;
+import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.solver.Environment;
 import ru.ispras.fortress.solver.SolverBase;
@@ -42,6 +47,7 @@ import ru.ispras.fortress.solver.SolverResultBuilder;
 import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintKind;
 import ru.ispras.fortress.solver.constraint.Formulas;
+import ru.ispras.fortress.solver.function.Function;
 import ru.ispras.fortress.solver.function.StandardFunction;
 import ru.ispras.fortress.util.Pair;
 
@@ -493,8 +499,37 @@ public abstract class SmtTextSolver extends SolverBase {
     addStandardOperation(StandardOperation.SELECT, "select");
     addStandardOperation(StandardOperation.STORE, "store");
 
+    for (final Function f : standardFunctions()) {
+      addCustomOperation(f);
+    }
+
     for (final StandardFunction template : StandardFunction.values()) {
       addCustomOperation(template);
     }
+  }
+
+  private static Collection<Function> standardFunctions() {
+    final Collection<Function> functions = new ArrayList<>();
+
+    final DataType bit = DataType.BIT_VECTOR(1);
+
+    final Variable xBit = new Variable("x", bit);
+    final NodeOperation bv2bool =
+        new NodeOperation(StandardOperation.EQ,
+                          new NodeVariable(xBit),
+                          NodeValue.newBitVector(BitVector.TRUE));
+
+    functions.add(new Function(StandardOperation.BV2BOOL, DataType.BOOLEAN, bv2bool, xBit));
+
+    final Variable xBool = new Variable("x", DataType.BOOLEAN);
+    final NodeOperation bool2bv =
+        new NodeOperation(StandardOperation.ITE,
+                          new NodeVariable(xBool),
+                          NodeValue.newBitVector(BitVector.TRUE),
+                          NodeValue.newBitVector(BitVector.FALSE));
+
+    functions.add(new Function(StandardOperation.BOOL2BV, bit, bool2bv, xBool));
+
+    return functions;
   }
 }
