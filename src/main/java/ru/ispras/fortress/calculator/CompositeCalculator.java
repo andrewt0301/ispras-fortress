@@ -21,17 +21,17 @@ import java.util.List;
 public class CompositeCalculator implements CalculatorEngine {
   private final List<CalculatorEngine> engines;
 
-  public CompositeCalculator(List<CalculatorEngine> engines) {
+  public CompositeCalculator(final List<CalculatorEngine> engines) {
     this.engines = engines;
   }
 
   @Override
-  public boolean isSupported(Enum<?> opId, Data... operands) {
+  public boolean isSupported(final Enum<?> opId, final Data... operands) {
     return findSupporting(opId, operands) != null;
   }
 
   @Override
-  public Data calculate(Enum<?> opId, Data... operands) {
+  public Data calculate(final Enum<?> opId, final Data... operands) {
     final CalculatorEngine engine = findSupporting(opId, operands);
     if (engine != null) {
       return engine.calculate(opId, operands);
@@ -39,8 +39,8 @@ public class CompositeCalculator implements CalculatorEngine {
     return null;
   }
 
-  private CalculatorEngine findSupporting(Enum<?> opId, Data... operands) {
-    for (CalculatorEngine engine : engines) {
+  private CalculatorEngine findSupporting(final Enum<?> opId, final Data... operands) {
+    for (final CalculatorEngine engine : engines) {
       if (engine.isSupported(opId, operands)) {
         return engine;
       }
