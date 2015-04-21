@@ -22,7 +22,7 @@ public abstract class CalculatorOperation<OperationId extends Enum<OperationId>>
   private final OperationId id;
   private final ArityRange arity;
 
-  public CalculatorOperation(OperationId id, ArityRange arity) {
+  public CalculatorOperation(final OperationId id, final ArityRange arity) {
     this.id = id;
     this.arity = arity;
   }
@@ -35,7 +35,7 @@ public abstract class CalculatorOperation<OperationId extends Enum<OperationId>>
     return arity;
   }
 
-  public boolean validTypes(Data... operands) {
+  public boolean validTypes(final Data... operands) {
     return OperationGroup.equalTypes(operands);
   }
 
