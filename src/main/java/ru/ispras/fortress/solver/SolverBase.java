@@ -114,8 +114,6 @@ public abstract class SolverBase implements Solver {
     operations.put(id, SolverOperation.newText(id, text));
   }
 
-  
-  @SuppressWarnings("deprecation")
   @Override
   public final String getSolverPath() {
     if (null != solverPath) {
@@ -127,7 +125,7 @@ public abstract class SolverBase implements Solver {
       return pathFromEnvVar;
     }
 
-    return Environment.getSolverPath();
+    return null;
   }
 
   @Override

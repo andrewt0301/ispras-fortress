@@ -23,72 +23,8 @@ package ru.ispras.fortress.solver;
 public final class Environment {
   private Environment() {}
 
-  private static String solverPath;
-  private static String constraintDir;
-
   private static boolean isDebugMode = false;
-
   private static final String PRP_OS_NAME = "os.name";
-
-  static // Sets the default path to the external solver engine.
-  {
-    if (isUnix()) {
-      solverPath = "tools/z3/bin/z3";
-    } else if (isWindows()) {
-      solverPath = "tools/z3/bin/z3.exe";
-    } else if (Environment.isOSX()) {
-      solverPath = "tools/z3/bin/z3";
-    } else {
-      throw new IllegalStateException(String.format(
-        "Unsupported platform: %s.", getOSName()));
-    }
-  }
-
-  /**
-   * Returns the path to the external constraint solver executable.
-   * 
-   * <p>Deprecated. Please use the getSolverPath method of a corresponding solver.
-   * 
-   * @return Path
-   */
-
-  @Deprecated
-  public static String getSolverPath() {
-    return solverPath;
-  }
-
-  /**
-   * Sets the path to the external constraint solver executable.
-   * 
-   * <p>Deprecated. Please use the setSolverPath method of a corresponding solver. 
-   * 
-   * @param value Path
-   */
-
-  @Deprecated
-  public static void setSolverPath(final String value) {
-    solverPath = value;
-  }
-
-  /**
-   * Returns the path to the folder where constraints are stored.
-   * 
-   * @return Path
-   */
-
-  public static String getConstraintDir() {
-    return constraintDir;
-  }
-
-  /**
-   * Sets the path to the folder where constraints are stored.
-   * 
-   * @param value Path
-   */
-
-  public static void setConstraintDir(final String value) {
-    constraintDir = value;
-  }
 
   /**
    * Gets the name of the operating system the tool is running under.
