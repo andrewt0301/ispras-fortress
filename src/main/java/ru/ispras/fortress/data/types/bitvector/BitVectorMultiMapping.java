@@ -89,7 +89,7 @@ final class BitVectorMultiMapping extends BitVector {
      *        8).
      */
 
-    public LinkingByteMapping(BitVector lowPart, BitVector highPart) {
+    public LinkingByteMapping(final BitVector lowPart, final BitVector highPart) {
       assert ((0 < lowPart.getBitSize()) && (lowPart.getBitSize() < BITS_IN_BYTE));
       assert ((0 < highPart.getBitSize()) && (highPart.getBitSize() < BITS_IN_BYTE));
       assert ((lowPart.getBitSize() + highPart.getBitSize()) <= BITS_IN_BYTE);
@@ -123,7 +123,7 @@ final class BitVectorMultiMapping extends BitVector {
      */
 
     @Override
-    public byte getByte(int index) {
+    public byte getByte(final int index) {
       assert (0 == index) : "ONE-BYTE DATA ARRAY!";
 
       final byte lowValue = lowPart.getByte(0);
@@ -141,7 +141,7 @@ final class BitVectorMultiMapping extends BitVector {
      */
 
     @Override
-    public void setByte(int index, byte value) {
+    public void setByte(final int index, final byte value) {
       assert (0 == index) : "ONE-BYTE DATA ARRAY!";
 
       final byte lowValue = (byte) ((value & ~(0xFF << lowPart.getBitSize())));
