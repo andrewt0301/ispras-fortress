@@ -21,6 +21,7 @@ import java.util.Map;
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.DataTypeId;
+import ru.ispras.fortress.data.types.bitvector.BitVector;
 import ru.ispras.fortress.expression.StandardOperation;
 
 /**
@@ -118,6 +119,16 @@ enum StandardOperationsBool implements Operation<StandardOperation> {
     public boolean validTypes(final Data... operands) {
       return operands[0].getType().equals(DataType.BOOLEAN) &&
              operands[1].getType().equals(operands[2].getType());
+    }
+  },
+  
+  BOOL2BV(StandardOperation.BOOL2BV, ArityRange.UNARY) {
+    @Override
+    public Data calculate(final Data... operands) {
+      if (operands[0].getBoolean()) {
+        return Data.newBitVector(BitVector.TRUE);
+      }
+      return Data.newBitVector(BitVector.FALSE);
     }
   };
 

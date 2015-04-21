@@ -175,6 +175,18 @@ final class StandardOperations {
             }
             return true;
           }
+        },
+        
+        new StdOperation(StandardOperation.BV2BOOL, ArityRange.UNARY) {
+          @Override
+          public Data calculate(final Data... operands) {
+            return Data.newBoolean(operands[0].getBitVector().equals(BitVector.TRUE));
+          }
+
+          @Override
+          public boolean validTypes(final Data... operands) {
+            return operands[0].isType(DataType.BIT_VECTOR(1));
+          }
         });
 
     return OperationGroup.operationMap(StandardOperation.class, operations);
