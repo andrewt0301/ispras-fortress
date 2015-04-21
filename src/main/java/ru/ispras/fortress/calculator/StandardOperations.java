@@ -76,30 +76,33 @@ final class StandardOperations {
   private static class BitVectorOp extends StdOperation {
     private final BitVectorMath.Operations operation;
 
-    public BitVectorOp(StandardOperation opId, BitVectorMath.Operations operation) {
+    public BitVectorOp(
+        final StandardOperation opId,
+        final BitVectorMath.Operations operation) {
       super(opId, translate(operation.getOperands()));
       this.operation = operation;
     }
 
-    private static ArityRange translate(BitVectorMath.Operands arity) {
+    private static ArityRange translate(final BitVectorMath.Operands arity) {
       switch (arity) {
       case UNARY: return ArityRange.UNARY;
       case BINARY: return ArityRange.BINARY;
       case TERNARY: return ArityRange.TERNARY;
+      default: throw new IllegalArgumentException(); 
       }
-      throw new IllegalArgumentException();
     }
 
     @Override
-    public Data calculate(Data... operands) {
+    public Data calculate(final Data... operands) {
       switch (operation.getOperands()) {
       case UNARY:
         return Data.newBitVector(operation.execute(bvarg(operands, 0)));
       case BINARY:
         return Data.newBitVector(operation.execute(bvarg(operands, 0), bvarg(operands, 1)));
+      default:
+        throw new UnsupportedOperationException(
+            "Invalid operation arity: " + operation.getOperands());
       }
-      throw new UnsupportedOperationException(
-          "Invalid operation arity: " + operation.getOperands());
     }
   }
 
@@ -157,15 +160,15 @@ final class StandardOperations {
 
         new StdOperation(StandardOperation.BVCONCAT, ArityRange.BINARY) {
           @Override
-          public Data calculate(Data... operands) {
+          public Data calculate(final Data... operands) {
             final BitVector bv =
                 BitVector.newMapping(bvarg(operands, 1), bvarg(operands, 0));
             return Data.newBitVector(bv);
           }
 
           @Override
-          public boolean validTypes(Data... operands) {
-            for (Data data : operands) {
+          public boolean validTypes(final Data... operands) {
+            for (final Data data : operands) {
               if (!data.isType(DataTypeId.BIT_VECTOR)) {
                 return false;
               }
