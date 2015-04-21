@@ -33,17 +33,14 @@ public final class Z3Solver extends SmtTextSolver {
   private static final String NAME = "Z3 (text-based interface)";
 
   private static final String DESCRIPTION =
-    "Solves constraints using the Z3 solver. " + 
-    "Interacts with the solver via text files and command line.";
+      "Solves constraints using the Z3 solver. " + 
+      "Interacts with the solver via text files and command line.";
+
+  private static final String ENV_VAR_NAME = "Z3_PATH";
 
   public Z3Solver() {
-    super(NAME, DESCRIPTION);
+    super(NAME, DESCRIPTION, ENV_VAR_NAME);
     initZ3Operations();
-  }
-
-  @Override
-  public String getSolverPath() {
-    return System.getenv("Z3_PATH");
   }
 
   @Override

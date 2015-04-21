@@ -32,18 +32,15 @@ public final class Cvc4Solver extends SmtTextSolver {
   private static final String NAME = "CVC4 (text-based interface)";
 
   private static final String DESCRIPTION =
-    "Solves constraints using the CVC4 solver. " + 
-    "Interacts with the solver via text files and command line.";
+      "Solves constraints using the CVC4 solver. " + 
+      "Interacts with the solver via text files and command line.";
+
+  private static final String ENV_VAR_NAME = "CVC4_PATH";
 
   public Cvc4Solver() {
-    super(NAME, DESCRIPTION);
+    super(NAME, DESCRIPTION, ENV_VAR_NAME);
     addCustomOperation(customRem());
     addCustomOperation(customPlus());
-  }
-
-  @Override
-  public String getSolverPath() {
-    return System.getenv("CVC4_PATH");
   }
 
   @Override

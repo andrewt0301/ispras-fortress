@@ -36,11 +36,15 @@ public abstract class SolverBase implements Solver {
   private final boolean isGeneric;
   private final Map<Enum<?>, SolverOperation> operations;
 
+  private final String envVarName;
+  private String solverPath;
+
   public SolverBase(
       final String name,
       final String description,
       final Set<ConstraintKind> supportedKinds,
-      final boolean isGeneric) {
+      final boolean isGeneric,
+      final String envVarName) {
     checkNotNull(name, "name");
     checkNotNull(description, "description");
     checkNotNull(supportedKinds, "supportedKinds");
@@ -50,12 +54,15 @@ public abstract class SolverBase implements Solver {
     this.supportedKinds = supportedKinds;
     this.isGeneric = isGeneric;
     this.operations = new HashMap<Enum<?>, SolverOperation>();
+
+    this.envVarName = envVarName;
+    this.solverPath = null;
   }
 
   protected final void supportedKindCheck(final ConstraintKind kind) {
     if (!isSupported(kind)) {
       throw new IllegalArgumentException(String.format(
-        ERR_UNSUPPORTED_KIND, kind.getClass().getSimpleName(), kind));
+          ERR_UNSUPPORTED_KIND, kind.getClass().getSimpleName(), kind));
     }
   }
 
@@ -101,9 +108,30 @@ public abstract class SolverBase implements Solver {
 
     if (operations.containsKey(id)) {
       throw new IllegalArgumentException(String.format(
-        ERR_ALREADY_REGISTERED, id.getClass().getSimpleName(), id.name()));
+          ERR_ALREADY_REGISTERED, id.getClass().getSimpleName(), id.name()));
     }
 
     operations.put(id, SolverOperation.newText(id, text));
+  }
+
+  
+  @SuppressWarnings("deprecation")
+  @Override
+  public final String getSolverPath() {
+    if (null != solverPath) {
+      return solverPath;
+    }
+
+    final String pathFromEnvVar = System.getenv(envVarName);
+    if (null != pathFromEnvVar) {
+      return pathFromEnvVar;
+    }
+
+    return Environment.getSolverPath();
+  }
+
+  @Override
+  public final void setSolverPath(String value) {
+    solverPath = value;
   }
 }

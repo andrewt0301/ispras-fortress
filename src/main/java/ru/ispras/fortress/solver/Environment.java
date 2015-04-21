@@ -47,9 +47,12 @@ public final class Environment {
   /**
    * Returns the path to the external constraint solver executable.
    * 
+   * <p>Deprecated. Please use the getSolverPath method of a corresponding solver.
+   * 
    * @return Path
    */
 
+  @Deprecated
   public static String getSolverPath() {
     return solverPath;
   }
@@ -57,9 +60,12 @@ public final class Environment {
   /**
    * Sets the path to the external constraint solver executable.
    * 
+   * <p>Deprecated. Please use the setSolverPath method of a corresponding solver. 
+   * 
    * @param value Path
    */
 
+  @Deprecated
   public static void setSolverPath(final String value) {
     solverPath = value;
   }

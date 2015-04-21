@@ -70,13 +70,15 @@ public abstract class SmtTextSolver extends SolverBase {
   private static final String IO_EXCEPTION_ERR =
     "I/O exception in the process of a solving the constraint. Details: ";
 
-  public SmtTextSolver(final String name, final String desc) {
-    super(name, desc, EnumSet.of(ConstraintKind.FORMULA_BASED), true);
+  public SmtTextSolver(
+      final String name,
+      final String desc,
+      final String envVarName) {
+    super(name, desc, EnumSet.of(ConstraintKind.FORMULA_BASED), true, envVarName);
     initStandardOperations();
   }
 
   protected abstract Reader invokeSolver(String path) throws IOException;
-  protected abstract String getSolverPath();
 
   private static void solverFileExistsCheck(final String solverPath) {
     if (null == solverPath) {
