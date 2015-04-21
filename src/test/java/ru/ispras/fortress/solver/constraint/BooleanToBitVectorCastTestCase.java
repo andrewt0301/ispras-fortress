@@ -93,7 +93,7 @@ public class BooleanToBitVectorCastTestCase extends GenericSolverTestBase {
               StandardOperation.EQ,
               new NodeOperation(
                   StandardOperation.BVOR,
-                  new NodeOperation(StandardOperation.EQ, x, y), z),
+                  new NodeOperation(StandardOperation.BOOL2BV, new NodeOperation(StandardOperation.EQ, x, y)), z),
               NodeValue.newBitVector(BitVector.valueOf(true)))
               );
 
