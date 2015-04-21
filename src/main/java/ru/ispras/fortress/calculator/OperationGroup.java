@@ -191,11 +191,11 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
     "Failed to calculate: the %s is not supported for the %s type, " +
      "operand types are mismatched or it does not accept %d operands.";
 
-  public static <T extends Enum<T>>
-  Map<T, Operation<T>> operationMap(
-      final Class<T> c, Collection<? extends Operation<T>> operations) {
+  public static <T extends Enum<T>> Map<T, Operation<T>> operationMap(
+      final Class<T> c,
+      final Collection<? extends Operation<T>> operations) {
     final Map<T, Operation<T>> map = new EnumMap<T, Operation<T>>(c);
-    for (Operation<T> op : operations) {
+    for (final Operation<T> op : operations) {
       map.put(op.getOperationId(), op);
     }
     return map;
