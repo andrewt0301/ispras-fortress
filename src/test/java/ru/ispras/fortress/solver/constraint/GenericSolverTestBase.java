@@ -119,28 +119,26 @@ public abstract class GenericSolverTestBase {
     Status globalStatus = Status.UNKNOWN;
 
     for (SolverId id : SolverId.values()) {
-      if (!id.equals(SolverId.DEFAULT)) {
-        final Solver solver = id.getSolver();
-        registerCustomOperations(solver);
+      final Solver solver = id.getSolver();
+      registerCustomOperations(solver);
 
-        final SolverResult result = solver.solve(constraint);
+      final SolverResult result = solver.solve(constraint);
 
-        final Status localStatus = refineResult(globalStatus, result.getStatus());
-        final String message =
-            String.format("Mismatching solver results: %s returns %s, %s returns %s",
-                          name, globalStatus,
-                          solver.getName(), localStatus);
+      final Status localStatus = refineResult(globalStatus, result.getStatus());
+      final String message =
+          String.format("Mismatching solver results: %s returns %s, %s returns %s",
+                        name, globalStatus,
+                        solver.getName(), localStatus);
 
-        Assert.assertTrue(message,
-                          globalStatus == Status.UNKNOWN ||
-                          localStatus == globalStatus);
+      Assert.assertTrue(message,
+                        globalStatus == Status.UNKNOWN ||
+                        localStatus == globalStatus);
 
-        SolverResultChecker.checkErrors(result.getErrors());
-        checkResult(getCalculator(), constraint, result);
+      SolverResultChecker.checkErrors(result.getErrors());
+      checkResult(getCalculator(), constraint, result);
 
-        globalStatus = localStatus;
-        name = solver.getName();
-      }
+      globalStatus = localStatus;
+      name = solver.getName();
     }
   }
 

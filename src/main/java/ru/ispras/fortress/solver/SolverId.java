@@ -39,16 +39,6 @@ public enum SolverId {
     protected Solver createSolver() {
       return new Cvc4Solver();
     }
-  },
-
-  /**
-   * The solver which is used by default. Currently, it is Z3_TEXT.
-   */
-
-  DEFAULT {
-    protected Solver createSolver() {
-      return new Z3Solver();
-    }
   };
 
   private Solver solver = null;
