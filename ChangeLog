@@ -12,6 +12,17 @@
  (like Yices, Z3, CVC4, etc.)
 
 --------------------------------------------------------------------------------
+ 2015/04/21 Fortress 0.4.0 beta
+
+ The new build contains the following changes:
+
+ - Support for CVC4 was implemented
+ - Support for bit vectors, arrays and real numbers in calculator
+   were implemented
+ - Additional rules for expression transformer were implemented
+ - Some bug fixes and general code improvements were made
+
+--------------------------------------------------------------------------------
  2015/03/20 Fortress 0.3.6 beta
 
  The new build contains the following changes:
