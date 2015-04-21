@@ -50,7 +50,7 @@ import ru.ispras.fortress.util.Pair;
  * Research. The constraint is translated to STM-LIB code that is then saved to a file and processed
  * to the tool.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 
 public abstract class SmtTextSolver extends SolverBase {
@@ -58,17 +58,17 @@ public abstract class SmtTextSolver extends SolverBase {
   private static final String TEMP_FILE_SUFFIX = ".smt2";
 
   private static final String UNK_OUTPUT_ERR_FRMT =
-    "Unexpected solver output: \"%s\"";
+      "%s: Unexpected solver output: \"%s\"";
 
   private static final String NO_SOLVER_PATH_ERR_FRMT =
-    "The path to the external constraint solver executable " + "is not assigned (equals %s).";
+      "%s: The path to the external constraint solver executable is not assigned (equals %s).";
 
   private static final String NO_SOLVER_FILE_ERR_FRMT =
-    "The external constraint solver executable (%s) does not exist or " +
-    "the path is not a valid file path.";
+      "%s: The external constraint solver executable (%s) does not exist or " +
+      "the path is not a valid file path.";
 
   private static final String IO_EXCEPTION_ERR =
-    "I/O exception in the process of a solving the constraint. Details: ";
+      "%s: I/O exception in the process of a solving the constraint. Details: %s";
 
   public SmtTextSolver(
       final String name,
@@ -80,17 +80,20 @@ public abstract class SmtTextSolver extends SolverBase {
 
   protected abstract Reader invokeSolver(String path) throws IOException;
 
-  private static void solverFileExistsCheck(final String solverPath) {
+  private void solverFileExistsCheck(final String solverPath) {
     if (null == solverPath) {
-      throw new IllegalStateException(String.format(NO_SOLVER_PATH_ERR_FRMT, "null"));
+      throw new IllegalStateException(String.format(
+          NO_SOLVER_PATH_ERR_FRMT, getName(), "null"));
     }
 
     if (solverPath.isEmpty()) {
-      throw new IllegalStateException(String.format(NO_SOLVER_PATH_ERR_FRMT, "empty string"));
+      throw new IllegalStateException(String.format(
+          NO_SOLVER_PATH_ERR_FRMT, getName(), "empty string"));
     }
 
     if (!new File(solverPath).isFile()) {
-      throw new IllegalStateException(String.format(NO_SOLVER_FILE_ERR_FRMT, solverPath));
+      throw new IllegalStateException(String.format(
+          NO_SOLVER_FILE_ERR_FRMT, getName(), solverPath));
     }
   }
 
@@ -142,14 +145,14 @@ public abstract class SmtTextSolver extends SolverBase {
         } else if (!e.isNil() && e.isList()) {
           parseVariables(resultBuilder, e, context);
         } else {
-          assert false : String.format(UNK_OUTPUT_ERR_FRMT, e.toString());
-          resultBuilder.addError(String.format(UNK_OUTPUT_ERR_FRMT, e.toString()));
+          assert false : String.format(UNK_OUTPUT_ERR_FRMT, getName(), e.toString());
+          resultBuilder.addError(String.format(UNK_OUTPUT_ERR_FRMT, getName(), e.toString()));
         }
         e = parser.next();
       }
     } catch (IOException e) {
       resultBuilder.setStatus(SolverResult.Status.ERROR);
-      resultBuilder.addError(IO_EXCEPTION_ERR + e.getMessage());
+      resultBuilder.addError(String.format(IO_EXCEPTION_ERR, getName(), e.getMessage()));
     } finally {
       if (null != tempFile && !Environment.isDebugMode()) {
         tempFile.delete();

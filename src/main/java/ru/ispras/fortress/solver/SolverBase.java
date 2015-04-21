@@ -115,7 +115,7 @@ public abstract class SolverBase implements Solver {
   }
 
   @Override
-  public final String getSolverPath() {
+  public String getSolverPath() {
     if (null != solverPath) {
       return solverPath;
     }
@@ -129,7 +129,7 @@ public abstract class SolverBase implements Solver {
   }
 
   @Override
-  public final void setSolverPath(final String value) {
+  public void setSolverPath(final String value) {
     solverPath = value;
   }
 }
