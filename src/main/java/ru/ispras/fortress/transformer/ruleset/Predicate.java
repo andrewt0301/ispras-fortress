@@ -83,7 +83,7 @@ abstract class OperationRule extends DependentRule {
    * @param rules Ruleset to register the rule in.
    */
 
-  public OperationRule(Enum<?> opId, Map<Enum<?>, TransformerRule> rules) {
+  public OperationRule(final Enum<?> opId, final Map<Enum<?>, TransformerRule> rules) {
     super(rules);
     InvariantChecks.checkNotNull(opId);
 
@@ -106,7 +106,7 @@ abstract class OperationRule extends DependentRule {
   }
 
   @Override
-  public boolean isApplicable(Node node) {
+  public boolean isApplicable(final Node node) {
     return isOperation(node, opId) && isApplicable((NodeOperation) node);
   }
 
@@ -128,10 +128,10 @@ abstract class OperationRule extends DependentRule {
    * @param node Operation node to extract operands from.
    */
 
-  public static Node[] extractOperands(Node node) {
+  public static Node[] extractOperands(final Node node) {
     final NodeOperation in = (NodeOperation) node;
     final Node[] operands = new Node[in.getOperandCount()];
-    
+
     for (int i = 0; i < operands.length; ++i) {
       operands[i] = in.getOperand(i);
     }
@@ -147,7 +147,7 @@ abstract class OperationRule extends DependentRule {
    * @return true if node is NodeValue instance with boolean type.
    */
 
-  public static boolean isBoolean(Node node) {
+  public static boolean isBoolean(final Node node) {
     return node.getKind() == Node.Kind.VALUE
       && node.getDataType() == DataType.BOOLEAN;
   }
@@ -160,7 +160,7 @@ abstract class OperationRule extends DependentRule {
    * @return boolean value of given node.
    */
 
-  public static boolean getBoolean(Node node) {
+  public static boolean getBoolean(final Node node) {
     return (Boolean) ((NodeValue) node).getValue();
   }
 
@@ -173,7 +173,7 @@ abstract class OperationRule extends DependentRule {
    * @return true if node is NodeOperations instance with given operation id.
    */
 
-  public static boolean isOperation(Node node, Enum<?> opId) {
+  public static boolean isOperation(final Node node, final Enum<?> opId) {
     return node.getKind() == Node.Kind.OPERATION && ((NodeOperation) node).getOperationId() == opId;
   }
 
@@ -186,7 +186,7 @@ abstract class OperationRule extends DependentRule {
    * @return Operand index of boolean value, -1 if none found.
    */
 
-  public static int booleanOperandIndex(NodeOperation op, int start) {
+  public static int booleanOperandIndex(final NodeOperation op, int start) {
     for (int i = start; i < op.getOperandCount(); ++i) {
       if (isBoolean(op.getOperand(i))) {
         return i;
@@ -214,7 +214,7 @@ final class UnrollClause extends OperationRule {
   }
   
   @Override
-  public boolean isApplicable(NodeOperation in) {
+  public boolean isApplicable(final NodeOperation in) {
     for (int i = 0; i < in.getOperandCount(); ++i) {
       final Node operand = in.getOperand(i);
       if (isBoolean(operand) ||
@@ -226,7 +226,7 @@ final class UnrollClause extends OperationRule {
     return false;
   }
 
-  private boolean isEquality(Node operand) {
+  private boolean isEquality(final Node operand) {
     if (isOperation(operand, StandardOperation.EQ) ||
         isOperation(operand, StandardOperation.NOTEQ)) {
       return true;
@@ -239,7 +239,7 @@ final class UnrollClause extends OperationRule {
   }
 
   @Override
-  public Node apply(Node in) {
+  public Node apply(final Node in) {
     final NodeOperation op = (NodeOperation) in;
 
     int numBoolean = 0;
@@ -284,7 +284,7 @@ final class UnrollClause extends OperationRule {
     }
   }
 
-  private boolean postprocess(List<Node> operands) {
+  private boolean postprocess(final List<Node> operands) {
     if (this.getOperationId() != StandardOperation.AND) {
       return true;
     }
@@ -307,7 +307,9 @@ final class UnrollClause extends OperationRule {
     return true;
   }
 
-  private static EqualityConstraint filterEqualities(Collection<? extends Node> operands) {
+  private static EqualityConstraint filterEqualities(
+      final Collection<? extends Node> operands) {
+
     final EqualityConstraint constraint = new EqualityConstraint();
 
     Iterator<? extends Node> it = operands.iterator();
@@ -496,13 +498,13 @@ public final class Predicate {
     // (eq false expr0 ...) -> (and (not expr0) ...)
     new OperationRule(StandardOperation.EQ, ruleset) {
       @Override
-      public boolean isApplicable(NodeOperation in) {
+      public boolean isApplicable(final NodeOperation in) {
         return countImmediateOperands(in) > 1 ||
                booleanOperandIndex(in, 0) >= 0;
       }
 
       @Override
-      public Node apply(Node in) {
+      public Node apply(final Node in) {
         final NodeOperation op = (NodeOperation) in;
 
         final int count = countEqualImmediates(op);
@@ -518,7 +520,7 @@ public final class Predicate {
         return reduceBoolean(op, booleanOperandIndex(op, 0));
       }
 
-      private int countImmediateOperands(NodeOperation node) {
+      private int countImmediateOperands(final NodeOperation node) {
         int n = 0;
         for (int i = 0; i < node.getOperandCount(); ++i) {
           if (node.getOperand(i).getKind() == Node.Kind.VALUE) {
@@ -528,7 +530,7 @@ public final class Predicate {
         return n;
       }
 
-      private Node reduceEqualImmediates(NodeOperation node, int count) {
+      private Node reduceEqualImmediates(final NodeOperation node, final int count) {
         final Node[] operands = new Node[node.getOperandCount() - count + 1];
         final Node immediate = node.getOperand(immediateIndex(node, 0));
         operands[0] = immediate;
@@ -550,7 +552,7 @@ public final class Predicate {
         return reduced;
       }
 
-      private int countEqualImmediates(NodeOperation node) {
+      private int countEqualImmediates(final NodeOperation node) {
         int index = immediateIndex(node, 0);
         final Node immediate = node.getOperand(index);
 
@@ -565,7 +567,7 @@ public final class Predicate {
         return count;
       }
 
-      private int immediateIndex(NodeOperation node, int start) {
+      private int immediateIndex(final NodeOperation node, final int start) {
         for (int i = start; i < node.getOperandCount(); ++i) {
           if (node.getOperand(i).getKind() == Node.Kind.VALUE) {
             return i;
@@ -574,7 +576,7 @@ public final class Predicate {
         return -1;
       }
 
-      private Node reduceBoolean(NodeOperation op, int index) {
+      private Node reduceBoolean(final NodeOperation op, final int index) {
         final boolean value = ((Boolean) ((NodeValue) op.getOperand(index)).getValue());
 
         // For simple equalities just return plain or negated expression
@@ -603,7 +605,7 @@ public final class Predicate {
 
     new OperationRule(StandardOperation.IMPL, ruleset) {
       @Override
-      public Node apply(Node in) {
+      public Node apply(final Node in) {
         final Node[] operands = extractOperands(in);
         for (int i = 0; i < operands.length - 1; ++i) {
           operands[i] = reduce(StandardOperation.NOT, operands[i]);
@@ -614,12 +616,12 @@ public final class Predicate {
 
     new OperationRule(StandardOperation.ITE, ruleset) {
       @Override
-      public boolean isApplicable(NodeOperation ite) {
+      public boolean isApplicable(final NodeOperation ite) {
         return isBoolean(ite.getOperand(0));
       }
 
       @Override
-      public Node apply(Node node) {
+      public Node apply(final Node node) {
         final NodeOperation ite = (NodeOperation) node;
         if (getBoolean(ite.getOperand(0))) {
           return ite.getOperand(1);
