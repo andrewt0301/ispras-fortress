@@ -29,7 +29,7 @@ import java.util.Map;
 
 final class StandardOperations {
   private static abstract class StdOperation extends CalculatorOperation<StandardOperation> {
-    public StdOperation(StandardOperation id, ArityRange arity) {
+    public StdOperation(final StandardOperation id, final ArityRange arity) {
       super(id, arity);
     }
  
@@ -46,7 +46,7 @@ final class StandardOperations {
         }
 
         @Override
-        public boolean validTypes(Data... operands) {
+        public boolean validTypes(final Data... operands) {
           final DataType arrayType = operands[0].getType();
           return operands[0].isType(DataTypeId.MAP) &&
                  operands[1].isType((DataType) arrayType.getAttribute(DataTypeId.Attribute.KEY));
@@ -62,7 +62,7 @@ final class StandardOperations {
         }
 
         @Override
-        public boolean validTypes(Data... operands) {
+        public boolean validTypes(final Data... operands) {
           final DataType arrayType = operands[0].getType();
           return operands[0].isType(DataTypeId.MAP) &&
                  operands[1].isType((DataType) arrayType.getAttribute(DataTypeId.Attribute.KEY)) &&
@@ -192,7 +192,7 @@ final class StandardOperations {
     return OperationGroup.operationMap(StandardOperation.class, operations);
   }
 
-  private static BitVector bvarg(Data[] operands, int i) {
+  private static BitVector bvarg(final Data[] operands, final int i) {
     return operands[i].getBitVector();
   }
 
