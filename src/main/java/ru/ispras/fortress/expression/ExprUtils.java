@@ -79,7 +79,7 @@ public final class ExprUtils {
 
     final ExprTreeVisitor visitor = new ExprTreeVisitorDefault() {
       @Override
-      public void onOperationBegin(NodeOperation node) {
+      public void onOperationBegin(final NodeOperation node) {
         if (logicOperations.contains(node.getOperationId())) {
           setStatus(Status.ABORT);
         }
@@ -107,7 +107,7 @@ public final class ExprUtils {
 
     final ExprTreeVisitor visitor = new ExprTreeVisitorDefault() {
       @Override
-      public void onBindingBegin(NodeBinding node) {
+      public void onBindingBegin(final NodeBinding node) {
         setStatus(Status.ABORT);
       }
     };
@@ -137,12 +137,12 @@ public final class ExprUtils {
       private final Deque<Set<String>> knownVariables = new LinkedList<Set<String>>();
 
       @Override
-      public void onVariable(NodeVariable variable) {
+      public void onVariable(final NodeVariable variable) {
         if (variable.getVariable().hasValue()) {
           return;
         }
 
-        for (Set<String> scope : knownVariables) {
+        for (final Set<String> scope : knownVariables) {
           if (scope.contains(variable.getName())) {
             return;
           }
@@ -152,17 +152,20 @@ public final class ExprUtils {
       }
 
       @Override
-      public void onBindingBegin(NodeBinding node) {
+      public void onBindingBegin(final NodeBinding node) {
         knownVariables.push(new HashSet<String>());
       }
 
       @Override
-      public void onBindingEnd(NodeBinding node) {
+      public void onBindingEnd(final NodeBinding node) {
         knownVariables.pop();
       }
 
       @Override
-      public void onBoundVariableEnd(NodeBinding node, NodeVariable variable, Node value) {
+      public void onBoundVariableEnd(
+          final NodeBinding node,
+          final NodeVariable variable,
+          final Node value) {
         final Set<String> currentScope = knownVariables.peek();
         currentScope.add(variable.getName());
       }
@@ -363,7 +366,7 @@ public final class ExprUtils {
     final Map<String, NodeVariable> variables = new HashMap<String, NodeVariable>();
     final ExprTreeWalker walker = new ExprTreeWalker(new ExprTreeVisitorDefault() {
       @Override
-      public void onVariable(NodeVariable variable) {
+      public void onVariable(final NodeVariable variable) {
         checkNotNull(variable);
         final String name = variable.getName();
 
