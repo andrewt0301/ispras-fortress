@@ -216,7 +216,7 @@ public final class StandardFunctionFactory {
     return new Function(id, BIT_BOOL, body, operand);
   }
 
-  private static void checkEqualTypes(DataType leftType, DataType rightType) {
+  private static void checkEqualTypes(final DataType leftType, final DataType rightType) {
     if (leftType.equals(rightType)) {
       return;
     }

@@ -33,7 +33,7 @@ public enum StandardFunction implements FunctionTemplate {
   /** Group: Logic, Operation: Absolute value */
   ABS(StandardOperation.ABS, 1) {
     @Override
-    protected Function newFunction(DataType[] argTypes) {
+    protected Function newFunction(final DataType[] argTypes) {
       return StandardFunctionFactory.makeAbs(getId(), argTypes[0]);
     }
   },
@@ -41,7 +41,7 @@ public enum StandardFunction implements FunctionTemplate {
   /** Group: Logic, Operation: Minimum */
   MIN(StandardOperation.MIN, 2) {
     @Override
-    protected Function newFunction(DataType[] argTypes) {
+    protected Function newFunction(final DataType[] argTypes) {
       return StandardFunctionFactory.makeMin(getId(), argTypes[0], argTypes[1]);
     }
   },
@@ -49,7 +49,7 @@ public enum StandardFunction implements FunctionTemplate {
   /** Group: Logic, Operation: Maximum */
   MAX(StandardOperation.MAX, 2) {
     @Override
-    protected Function newFunction(DataType[] argTypes) {
+    protected Function newFunction(final DataType[] argTypes) {
       return StandardFunctionFactory.makeMax(getId(), argTypes[0], argTypes[1]);
     }
   },
@@ -78,7 +78,7 @@ public enum StandardFunction implements FunctionTemplate {
   /** Group: Bit Vector Reduction, Operation: Reduction AND (&) */
   BVANDR(StandardOperation.BVANDR, 1) {
     @Override
-    protected Function newFunction(DataType[] argTypes) {
+    protected Function newFunction(final DataType[] argTypes) {
       return StandardFunctionFactory.makeBVANDR(getId(), argTypes[0]);
     }
   },
@@ -86,7 +86,7 @@ public enum StandardFunction implements FunctionTemplate {
   /** Group: Bit Vector Reduction, Operation: Reduction NAND (~&) */
   BVNANDR(StandardOperation.BVNANDR, 1) {
     @Override
-    protected Function newFunction(DataType[] argTypes) {
+    protected Function newFunction(final DataType[] argTypes) {
       return StandardFunctionFactory.makeBVNANDR(getId(), argTypes[0]);
     }
   },
@@ -94,7 +94,7 @@ public enum StandardFunction implements FunctionTemplate {
   /** Group: Bit Vector Reduction, Operation: Reduction OR (|) */
   BVORR(StandardOperation.BVORR, 1) {
     @Override
-    protected Function newFunction(DataType[] argTypes) {
+    protected Function newFunction(final DataType[] argTypes) {
       return StandardFunctionFactory.makeBVORR(getId(), argTypes[0]);
     }
   },
@@ -102,7 +102,7 @@ public enum StandardFunction implements FunctionTemplate {
   /** Group: Bit Vector Reduction, Operation: Reduction NOR (~|) */
   BVNORR(StandardOperation.BVNORR, 1) {
     @Override
-    protected Function newFunction(DataType[] argTypes) {
+    protected Function newFunction(final DataType[] argTypes) {
       return StandardFunctionFactory.makeBVNORR(getId(), argTypes[0]);
     }
   },
@@ -110,7 +110,7 @@ public enum StandardFunction implements FunctionTemplate {
   /** Group: Bit Vector Reduction, Operation: Reduction XOR (^) */
   BVXORR(StandardOperation.BVXORR, 1) {
     @Override
-    protected Function newFunction(DataType[] argTypes) {
+    protected Function newFunction(final DataType[] argTypes) {
       return StandardFunctionFactory.makeBVXORR(getId(), argTypes[0]);
     }
   },
@@ -118,7 +118,7 @@ public enum StandardFunction implements FunctionTemplate {
   /** Group: Bit Vector Reduction, Operation: Reduction XNOR (~^) */
   BVXNORR(StandardOperation.BVXNORR, 1) {
     @Override
-    protected Function newFunction(DataType[] argTypes) {
+    protected Function newFunction(final DataType[] argTypes) {
       return StandardFunctionFactory.makeBVXNORR(getId(), argTypes[0]);
     }
   };
@@ -126,7 +126,7 @@ public enum StandardFunction implements FunctionTemplate {
   private final Enum<?> id;
   private final int argCount;
 
-  private StandardFunction(Enum<?> id, int argCount) {
+  private StandardFunction(final Enum<?> id, final int argCount) {
     this.id = id;
     this.argCount = argCount;
   }
@@ -141,7 +141,7 @@ public enum StandardFunction implements FunctionTemplate {
   }
 
   @Override
-  public final Function instantiate(DataType[] argTypes) {
+  public final Function instantiate(final DataType[] argTypes) {
     InvariantChecks.checkNotNull(argTypes);
 
     if (argTypes.length != argCount) {
