@@ -393,7 +393,7 @@ public final class BitVectorMath {
    * @param to Shift amount.
    * @return Logical left shift result.
    * 
-   * @throws NullPointerException if any of the parameters is {@code null}.
+   * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
 
   public static BitVector shl(final BitVector v, final BitVector to) {
@@ -449,7 +449,7 @@ public final class BitVectorMath {
    * @param to Shift amount.
    * @return Logical right shift result.
    * 
-   * @throws NullPointerException if any of the parameters is {@code null}.
+   * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
 
   public static BitVector lshr(final BitVector v, final BitVector to) {
@@ -505,7 +505,7 @@ public final class BitVectorMath {
    * @param to Shift amount.
    * @return Arithmetical right shift result.
    * 
-   * @throws NullPointerException if any of the parameters is {@code null}.
+   * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
 
   public static BitVector ashr(final BitVector v, final BitVector to) {
@@ -566,7 +566,7 @@ public final class BitVectorMath {
    * @param to Shift amount.
    * @return Left rotation result.
    * 
-   * @throws NullPointerException if any of the parameters is {@code null}.
+   * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
 
   public static BitVector rotl(final BitVector v, final BitVector to) {
@@ -638,7 +638,7 @@ public final class BitVectorMath {
    * @param to Shift amount.
    * @return Right rotation result.
    * 
-   * @throws NullPointerException if any of the parameters is {@code null}.
+   * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
 
   public static BitVector rotr(final BitVector v, final BitVector to) {

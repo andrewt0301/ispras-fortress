@@ -27,18 +27,46 @@ public final class InvariantChecks {
   private InvariantChecks() {}
 
   /**
+   * Checks the invariant "Condition is true" and throws an exception
+   * if it is violated.
+   * 
+   * @param condition Condition to be checked.
+   * 
+   * @throws IllegalArgumentException if the invariant is violated
+   * ({@code condition} is {@code false}).
+   */
+
+  public static void checkTrue(final boolean condition) {
+    if (!condition) {
+      throw new IllegalArgumentException();
+    }
+  }
+
+  /**
+   * Checks the invariant "Condition is false" and throws an exception
+   * if it is violated.
+   * 
+   * @param condition Condition to be checked.
+   * 
+   * @throws IllegalArgumentException if the invariant is violated
+   * ({@code condition} is {@code true}).
+   */
+
+  public static void checkFalse(final boolean condition) {
+    checkTrue(!condition);
+  }
+
+  /**
    * Checks the invariant "Object reference is not null" and
    * throws an exception if it is violated. 
    * 
    * @param o Object reference to be checked.
    * 
-   * @throws NullPointerException if the invariant is violated ({@code o} is {@code null}).
+   * @throws IllegalArgumentException if the invariant is violated ({@code o} is {@code null}).
    */
 
   public static <T> void checkNotNull(final T o) {
-    if (null == o) {
-      throw new NullPointerException();
-    }
+    checkTrue(null != o);
   }
 
   /**
@@ -47,8 +75,8 @@ public final class InvariantChecks {
    * 
    * @param o Collection to be checked.
    * 
-   * @throws NullPointerException if the invariant is violated ({@code o} is {@code null}).
-   * @throws IllegalArgumentException if the invariant is violated ({@code o.isEmpty}).
+   * @throws IllegalArgumentException if the invariant is violated ({@code o} is {@code null});
+   *         if the invariant is violated ({@code o.isEmpty}).
    */
 
   public static <T> void checkNotEmpty(final Collection<T> o) {
@@ -65,8 +93,8 @@ public final class InvariantChecks {
    * 
    * @param o Array to be checked.
    * 
-   * @throws NullPointerException if the invariant is violated ({@code o} is {@code null}).
-   * @throws IllegalArgumentException if the invariant is violated ({@code o.length} is 0).
+   * @throws IllegalArgumentException if the invariant is violated ({@code o} is {@code null});
+   *         if the invariant is violated ({@code o.length} is 0).
    */
 
   public static <T> void checkNotEmpty(final T[] o) {
@@ -74,23 +102,6 @@ public final class InvariantChecks {
 
     if (o.length == 0) {
       throw new IllegalArgumentException(String.format("%s must not be empty", o));
-    }
-  }
-
-  /**
-   * Checks the invariant "Object reference is not {@code null}" and
-   * throws an exception if it is violated. 
-   * 
-   * @param o Object reference to be checked.
-   * @param name Name of the variable that stores the object reference. 
-   * 
-   * @throws NullPointerException if the invariant is violated ({@code o} is {@code null}).
-   */
-
-  public static <T> void checkNotNull(final T o, final String name) {
-    if (null == o) {
-      throw new NullPointerException(
-          String.format("%s must not be equal null", name));
     }
   }
 

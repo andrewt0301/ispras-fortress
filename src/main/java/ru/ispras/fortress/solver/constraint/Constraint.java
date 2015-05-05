@@ -51,7 +51,7 @@ public final class Constraint {
    * @param representation Description of the constraint internals (internal representation) in a
    *        format that depends on the type of the constraint.
    * 
-   * @throws NullPointerException if any of the parameters equals null.
+   * @throws IllegalArgumentException if any of the parameters equals null.
    * @throws IllegalArgumentException if the internal representation class does not match the class
    *         required by the constraint type.
    */
@@ -62,11 +62,11 @@ public final class Constraint {
       final String description,
       final Map<String, Variable> variables,
       final Object representation) {
-    checkNotNull(name, "name");
-    checkNotNull(kind, "kind");
-    checkNotNull(description, "description");
-    checkNotNull(variables, "variables");
-    checkNotNull(representation, "representation");
+    checkNotNull(name);
+    checkNotNull(kind);
+    checkNotNull(description);
+    checkNotNull(variables);
+    checkNotNull(representation);
 
     if (representation.getClass() != kind.getInnerRepClass()) {
       throw new IllegalArgumentException(String.format(ILLEGAL_IR_CLASS,
@@ -127,14 +127,14 @@ public final class Constraint {
    * @param name The name of the variable.
    * @param value The data object that stores the variable value.
    * 
-   * @throws NullPointerException if any of the parameters equals null.
+   * @throws IllegalArgumentException if any of the parameters equals null.
    * @throws IllegalArgumentException (1) if a variable with such name is not defined; (2) if the
    *         value type does not match the type of the variable.
    */
 
   public void setVariableValue(final String name, final Data value) {
-    checkNotNull(name, "name");
-    checkNotNull(value, "value");
+    checkNotNull(name);
+    checkNotNull(value);
 
     if (!variables.containsKey(name)) {
       throw new IllegalArgumentException(String.format(UNDEFINED_VARIABLE, name));
@@ -155,11 +155,11 @@ public final class Constraint {
    * @param name The name of the variable to be searched for.
    * @return variable Variable object or null if the variable is not defined.
    * 
-   * @throws NullPointerException if the name parameter equals null.
+   * @throws IllegalArgumentException if the name parameter equals null.
    */
 
   public Variable findVariable(final String name) {
-    checkNotNull(name, "name");
+    checkNotNull(name);
     return variables.get(name);
   }
 

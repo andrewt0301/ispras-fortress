@@ -98,7 +98,7 @@ public final class BitVectorAlgorithm {
   }
 
   public static void fill(final BitVector dest, final byte value) {
-    checkNotNull(dest, "dest");
+    checkNotNull(dest);
 
     for (int index = 0; index < dest.getByteSize(); ++index) {
       dest.setByte(index, value);
@@ -106,7 +106,7 @@ public final class BitVectorAlgorithm {
   }
 
   public static void generate(final BitVector dest, final IOperation op) {
-    checkNotNull(dest, "dest");
+    checkNotNull(dest);
 
     for (int index = 0; index < dest.getByteSize(); ++index) {
       dest.setByte(index, op.run());
@@ -114,8 +114,8 @@ public final class BitVectorAlgorithm {
   }
 
   public static void copy(final BitVector src, final BitVector dest) {
-    checkNotNull(src, "src");
-    checkNotNull(dest, "dest");
+    checkNotNull(src);
+    checkNotNull(dest);
 
     if (src == dest) {
       return;
@@ -132,8 +132,8 @@ public final class BitVectorAlgorithm {
       final BitVector dest,
       final int destPos,
       final int bitSize) {
-    checkNotNull(src, "src");
-    checkNotNull(dest, "dest");
+    checkNotNull(src);
+    checkNotNull(dest);
 
     if ((src == dest) && (srcPos == destPos)) {
       return;
@@ -146,8 +146,8 @@ public final class BitVectorAlgorithm {
   }
 
   public static void for_each(final BitVector src, final IAction op) {
-    checkNotNull(src, "src");
-    checkNotNull(op, "op");
+    checkNotNull(src);
+    checkNotNull(op);
 
     for (int index = 0; index < src.getByteSize(); ++index) {
       op.run(src.getByte(index));
@@ -155,8 +155,8 @@ public final class BitVectorAlgorithm {
   }
 
   public static void for_each_reverse(final BitVector src, final IAction op) {
-    checkNotNull(src, "src");
-    checkNotNull(op, "op");
+    checkNotNull(src);
+    checkNotNull(op);
 
     for (int index = src.getByteSize() - 1; index >= 0; --index) {
       op.run(src.getByte(index));
@@ -164,8 +164,8 @@ public final class BitVectorAlgorithm {
   }
 
   public static int mismatch(final BitVector src1, final BitVector src2) {
-    checkNotNull(src1, "src1");
-    checkNotNull(src2, "src2");
+    checkNotNull(src1);
+    checkNotNull(src2);
 
     checkEqualSize(src1.getBitSize(), src2.getBitSize());
 
@@ -186,9 +186,9 @@ public final class BitVectorAlgorithm {
       final BitVector src1,
       final BitVector src2,
       final IBinaryPredicate op) {
-    checkNotNull(src1, "src1");
-    checkNotNull(src2, "src2");
-    checkNotNull(op, "op");
+    checkNotNull(src1);
+    checkNotNull(src2);
+    checkNotNull(op);
 
     checkEqualSize(src1.getBitSize(), src2.getBitSize());
 
@@ -206,8 +206,8 @@ public final class BitVectorAlgorithm {
   }
 
   public static int mismatch_reverse(final BitVector src1, final BitVector src2) {
-    checkNotNull(src1, "src1");
-    checkNotNull(src2, "src2");
+    checkNotNull(src1);
+    checkNotNull(src2);
 
     checkEqualSize(src1.getBitSize(), src2.getBitSize());
 
@@ -228,9 +228,9 @@ public final class BitVectorAlgorithm {
       final BitVector src1, 
       final BitVector src2,
       final IBinaryPredicate op) {
-    checkNotNull(src1, "src1");
-    checkNotNull(src2, "src2");
-    checkNotNull(op, "op");
+    checkNotNull(src1);
+    checkNotNull(src2);
+    checkNotNull(op);
 
     checkEqualSize(src1.getBitSize(), src2.getBitSize());
 
@@ -251,9 +251,9 @@ public final class BitVectorAlgorithm {
       final BitVector src,
       final BitVector dest,
       final IUnaryOperation op) {
-    checkNotNull(src, "src");
-    checkNotNull(dest, "dest");
-    checkNotNull(op, "op");
+    checkNotNull(src);
+    checkNotNull(dest);
+    checkNotNull(op);
 
     checkEqualSize(src.getBitSize(), dest.getBitSize());
 
@@ -267,10 +267,10 @@ public final class BitVectorAlgorithm {
       final BitVector src2,
       final BitVector dest,
       final IBinaryOperation op) {
-    checkNotNull(src1, "src1");
-    checkNotNull(src2, "src2");
-    checkNotNull(dest, "dest");
-    checkNotNull(op, "op");
+    checkNotNull(src1);
+    checkNotNull(src2);
+    checkNotNull(dest);
+    checkNotNull(op);
 
     checkEqualSize(src1.getBitSize(), dest.getBitSize());
     checkEqualSize(src2.getBitSize(), dest.getBitSize());

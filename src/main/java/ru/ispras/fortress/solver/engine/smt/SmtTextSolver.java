@@ -105,7 +105,7 @@ public abstract class SmtTextSolver extends SolverBase {
 
   @Override
   public SolverResult solve(final Constraint constraint) {
-    checkNotNull(constraint, "constraint");
+    checkNotNull(constraint);
 
     supportedKindCheck(constraint.getKind());
     solverFileExistsCheck(getSolverPath());

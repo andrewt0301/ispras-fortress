@@ -190,10 +190,10 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @param other A raw data object.
    * @return 0 if data in both object equals, -1 if the data in the current object is less and 1 of
    *         it is greater.
-   *         
-   * @throws NullPointerException if the parameter is {@code other}.
-   * @throws IllegalArgumentException if the size of the {@code other} bit vector is different from
-   * the size of the current bit vector.       
+   * 
+   * @throws IllegalArgumentException if the {@code other} parameter is {@code null};
+   *         if the size of the {@code other} bit vector is different from the size of
+   *         the current bit vector.
    */
 
   @Override
@@ -366,8 +366,8 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @param bitSize Size of the resulting bit vector in bits.
    * @return New bit vector.
    * 
-   * @throws NullPointerException if the {@code text} parameter is {@code null}.
-   * @throws IllegalArgumentException if the {@code bitSize} parameter is zero or negative.
+   * @throws IllegalArgumentException if the {@code text} parameter is {@code null};
+   *         if the {@code bitSize} parameter is zero or negative.
    */
 
   public static BitVector valueOf(final String text, final int radix, final int bitSize) {
@@ -486,8 +486,8 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @param bitSize Size of the resulting bit vector in bits.
    * @return New bit vector.
    * 
-   * @throws NullPointerException if the {@code data} parameter is {@code null}.
-   * @throws IllegalArgumentException if the {@code bitSize} parameter is zero or negative.
+   * @throws IllegalArgumentException if the {@code data} parameter is {@code null};
+   *         if the {@code bitSize} parameter is zero or negative.
    */
 
   public static BitVector valueOf(final byte[] data, final int bitSize) {
@@ -535,8 +535,8 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @param bitSize Size of the resulting bit vector (in bits).
    * @return New bit vector.
    * 
-   * @throws NullPointerException if the {@code value} parameter is {@code null}.
-   * @throws IllegalArgumentException if the {@code bitSize} parameter is zero or negative.
+   * @throws IllegalArgumentException if the {@code value} parameter is {@code null};
+   *         if the {@code bitSize} parameter is zero or negative.
    */
 
   public static BitVector valueOf(final BigInteger value, final int bitSize) {

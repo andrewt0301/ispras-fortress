@@ -45,9 +45,9 @@ public abstract class SolverBase implements Solver {
       final Set<ConstraintKind> supportedKinds,
       final boolean isGeneric,
       final String envVarName) {
-    checkNotNull(name, "name");
-    checkNotNull(description, "description");
-    checkNotNull(supportedKinds, "supportedKinds");
+    checkNotNull(name);
+    checkNotNull(description);
+    checkNotNull(supportedKinds);
 
     this.name = name;
     this.description = description;
@@ -92,19 +92,19 @@ public abstract class SolverBase implements Solver {
 
   @Override
   public final boolean addCustomOperation(final Function function) {
-    checkNotNull(function, "function");
+    checkNotNull(function);
     return null == operations.put(function.getId(), SolverOperation.newFunction(function));
   }
 
   @Override
   public final boolean addCustomOperation(final FunctionTemplate template) {
-    checkNotNull(template, "template");
+    checkNotNull(template);
     return null == operations.put(template.getId(), SolverOperation.newTemplate(template));
   }
 
   protected final void addStandardOperation(final StandardOperation id, String text) {
-    checkNotNull(id, "id");
-    checkNotNull(text, "text");
+    checkNotNull(id);
+    checkNotNull(text);
 
     if (operations.containsKey(id)) {
       throw new IllegalArgumentException(String.format(
