@@ -51,7 +51,7 @@ public class NodeTransformer implements ExprTreeVisitor {
    * @param root Root of a tree to be traversed.
    */
 
-  public void walk(Node root) {
+  public void walk(final Node root) {
     final ExprTreeWalker walker = new ExprTreeWalker(this);
     walker.visit(root);
   }
@@ -63,7 +63,7 @@ public class NodeTransformer implements ExprTreeVisitor {
    * @param trees Collections of root nodes of trees to be traversed.
    */
 
-  public void walk(Iterable<? extends Node> trees) {
+  public void walk(final Iterable<? extends Node> trees) {
     final ExprTreeWalker walker = new ExprTreeWalker(this);
     walker.visit(trees);
   }
@@ -93,7 +93,7 @@ public class NodeTransformer implements ExprTreeVisitor {
    * @param rules Map of rules. See {@link #addRule addRule()} for details.
    */
 
-  public NodeTransformer(Map<Enum<?>, TransformerRule> rules) {
+  public NodeTransformer(final Map<Enum<?>, TransformerRule> rules) {
     checkNotNull(rules);
 
     ruleset = new IdentityHashMap<>(rules);
@@ -114,7 +114,7 @@ public class NodeTransformer implements ExprTreeVisitor {
    * @param rule Rule to be added.
    */
 
-  public void addRule(Enum<?> opId, TransformerRule rule) {
+  public void addRule(final Enum<?> opId, final TransformerRule rule) {
     checkNotNull(opId);
     checkNotNull(rule);
 
@@ -139,7 +139,7 @@ public class NodeTransformer implements ExprTreeVisitor {
    * @return Transformed expression or node itself if no applicable rule can be found.
    */
 
-  private Node applyRule(Enum<?> id, Node node) {
+  private Node applyRule(final Enum<?> id, final Node node) {
     final TransformerRule rule = ruleset.get(id);
     if (rule != null && rule.isApplicable(node)) {
       return rule.apply(node);
@@ -151,7 +151,7 @@ public class NodeTransformer implements ExprTreeVisitor {
    * Helper methods to find and apply relevant rule to node given.
    */
 
-  private Node updateNode(Node node) {
+  private Node updateNode(final Node node) {
     return applyRule(node.getKind(), node);
   }
 
@@ -174,14 +174,14 @@ public class NodeTransformer implements ExprTreeVisitor {
   }
 
   @Override
-  public void onOperationBegin(NodeOperation expr) {
+  public void onOperationBegin(final NodeOperation expr) {
     if (expr.getOperandCount() > 0) {
       operandStack.add(new Node[expr.getOperandCount()]);
     }
   }
 
   @Override
-  public void onOperationEnd(NodeOperation expr) {
+  public void onOperationEnd(final NodeOperation expr) {
     if (expr.getOperandCount() == 0) {
       exprStack.add(applyRule(expr.getOperationId(), expr));
       return;
@@ -191,7 +191,7 @@ public class NodeTransformer implements ExprTreeVisitor {
     final Enum<?> opId = expr.getOperationId();
 
     // TODO consequtive rule application
-    Node node = applyRule(opId, new NodeOperation(opId, operandStack.remove(pos)));
+    final Node node = applyRule(opId, new NodeOperation(opId, operandStack.remove(pos)));
     exprStack.add(node);
   }
 
@@ -210,12 +210,12 @@ public class NodeTransformer implements ExprTreeVisitor {
   }
 
   @Override
-  public void onValue(NodeValue value) {
+  public void onValue(final NodeValue value) {
     exprStack.add(updateNode(value));
   }
 
   @Override
-  public void onVariable(NodeVariable variable) {
+  public void onVariable(final NodeVariable variable) {
     exprStack.add(updateNode(variable));
   }
 
@@ -223,7 +223,7 @@ public class NodeTransformer implements ExprTreeVisitor {
   public void onBindingBegin(NodeBinding node) {}
 
   @Override
-  public void onBindingListEnd(NodeBinding node) {
+  public void onBindingListEnd(final NodeBinding node) {
     final int fromIndex = boundStack.size() - node.getBindings().size();
 
     final List<NodeBinding.BoundVariable> bindings =
@@ -238,7 +238,7 @@ public class NodeTransformer implements ExprTreeVisitor {
   }
 
   @Override
-  public void onBindingEnd(NodeBinding node) {
+  public void onBindingEnd(final NodeBinding node) {
     final RejectBoundVariablesRule rule =
         (RejectBoundVariablesRule) ruleset.get(Node.Kind.VARIABLE);
     ruleset.put(Node.Kind.VARIABLE, rule.getShadowedRule());
@@ -252,7 +252,10 @@ public class NodeTransformer implements ExprTreeVisitor {
   public void onBoundVariableBegin(NodeBinding node, NodeVariable variable, Node value) {}
 
   @Override
-  public void onBoundVariableEnd(NodeBinding node, NodeVariable variable, Node value) {
+  public void onBoundVariableEnd(
+      final NodeBinding node,
+      final NodeVariable variable,
+      final Node value) {
     final Node updatedValue = exprStack.remove(exprStack.size() - 1);
     boundStack.add(NodeBinding.bindVariable(variable, updatedValue));
   }
@@ -281,10 +284,12 @@ abstract class ScopedBindingRule implements TransformerRule {
    * @param bindingList List of bound variables in current scope.
    */
 
-  public ScopedBindingRule(TransformerRule previous, List<NodeBinding.BoundVariable> bindingList) {
+  public ScopedBindingRule(
+      final TransformerRule previous,
+      final List<NodeBinding.BoundVariable> bindingList) {
     this.shadowed = previous;
     this.bindings = new HashMap<>();
-    for (NodeBinding.BoundVariable bound : bindingList) {
+    for (final NodeBinding.BoundVariable bound : bindingList) {
       bindings.put(bound.getVariable().getName(), bound.getValue());
     }
     this.applicableCache = null;
@@ -324,7 +329,7 @@ final class RejectBoundVariablesRule extends ScopedBindingRule {
    * @param node NodeBinding instance is to check for.
    */
 
-  public RejectBoundVariablesRule(TransformerRule previous, NodeBinding node) {
+  public RejectBoundVariablesRule(final TransformerRule previous, final NodeBinding node) {
     super(previous, node.getBindings());
     this.node = node;
   }
@@ -338,7 +343,7 @@ final class RejectBoundVariablesRule extends ScopedBindingRule {
   }
 
   @Override
-  public boolean isApplicable(Node node) {
+  public boolean isApplicable(final Node node) {
     if (node.getKind() != Node.Kind.VARIABLE) {
       return false;
     }
