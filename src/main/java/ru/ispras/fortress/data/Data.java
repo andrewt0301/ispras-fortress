@@ -453,7 +453,7 @@ public final class Data {
     return (DataMap) value;
   }
 
-  private void checkConvertibleTo(Class<?> c) {
+  private void checkConvertibleTo(final Class<?> c) {
     if (!c.isAssignableFrom(value.getClass())) {
       throw new IllegalStateException(String.format(
           "%s data is not convertible to %s.",

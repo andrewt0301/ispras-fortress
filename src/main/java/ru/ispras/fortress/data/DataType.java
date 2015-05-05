@@ -72,7 +72,9 @@ public final class DataType {
     return newDataType(DataTypeId.BIT_VECTOR, size);
   }
 
-  public static DataType MAP(DataType keyType, DataType valueType) {
+  public static DataType MAP(
+      final DataType keyType,
+      final DataType valueType) {
     checkNotNull(keyType);
     checkNotNull(valueType);
 
@@ -160,7 +162,7 @@ public final class DataType {
     return parameters.toArray(EMPTY_PARAMETERS_LIST);
   }
 
-  public Object getAttribute(DataTypeId.Attribute attr) {
+  public Object getAttribute(final DataTypeId.Attribute attr) {
     return typeId.getAttribute(attr, parameters);
   }
 
@@ -208,7 +210,7 @@ public final class DataType {
     }
 
     DataType type;
-    for (DataTypeId tid : DataTypeId.values()) {
+    for (final DataTypeId tid : DataTypeId.values()) {
       if ((type = tid.typeOf(value)) != null) {
         return type;
       }
