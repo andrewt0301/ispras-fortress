@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2013-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,6 +13,8 @@
  */
 
 package ru.ispras.fortress.transformer;
+
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,17 +47,12 @@ public final class Transformer {
    * @return Reduced expression (value or another operation expression with minimal subexpressions)
    *         or the initial expression if it is impossible to reduce it.
    * 
-   * @throws NullPointerException if any of the parameters is <code>null</code>.
+   * @throws IllegalArgumentException if any of the parameters is <code>null</code>.
    */
 
   public static Node reduce(CalculatorEngine engine, ReduceOptions options, Node expression) {
-    if (null == options) {
-      throw new NullPointerException();
-    }
-
-    if (null == expression) {
-      throw new NullPointerException();
-    }
+    checkNotNull(options);
+    checkNotNull(expression);
 
     // Only operation expressions can be reduced.
     if (expression.getKind() == Node.Kind.VARIABLE || 
@@ -107,21 +104,13 @@ public final class Transformer {
    * @param term Term to replace variables.
    * @return An expression where all variables with given name are replaced with term specified.
    * 
-   * @throws NullPointerException if any of the parameters is <code>null</code>.
+   * @throws IllegalArgumentException if any of the parameters is <code>null</code>.
    */
 
   public static Node substitute(Node expression, final String name, final Node term) {
-    if (expression == null) {
-      throw new NullPointerException();
-    }
-
-    if (name == null) {
-      throw new NullPointerException();
-    }
-
-    if (term == null) {
-      throw new NullPointerException();
-    }
+    checkNotNull(expression);
+    checkNotNull(name);
+    checkNotNull(term);
 
     final TransformerRule rule = new TransformerRule() {
       @Override
@@ -150,13 +139,11 @@ public final class Transformer {
    * @param binding Binding node to be substituted.
    * @return An underlying expression with all bindings specified being substituted.
    * 
-   * @throws NullPointerException if any of the parameters is <code>null</code>.
+   * @throws IllegalArgumentException if any of the parameters is <code>null</code>.
    */
 
   public static Node substituteBinding(NodeBinding binding) {
-    if (binding == null) {
-      throw new NullPointerException();
-    }
+    checkNotNull(binding);
 
     final Map<String, Node> exprs = new HashMap<>();
     for (NodeBinding.BoundVariable bound : binding.getBindings()) {
@@ -196,12 +183,11 @@ public final class Transformer {
    * @param expression Expression to be substituted.
    * @return An expression resulting from substitution of all bindings found in initial expression.
    * 
-   * @throws NullPointerException if any of the parameters is <code>null</code>.
+   * @throws IllegalArgumentException if any of the parameters is <code>null</code>.
    */
 
   public static Node substituteAllBindings(Node expression) {
-    if (expression == null)
-      throw new NullPointerException();
+    checkNotNull(expression);
 
     final TransformerRule rule = new TransformerRule() {
       @Override
@@ -232,19 +218,17 @@ public final class Transformer {
    * @param expression Expression to be transformed.
    * @return Expression with non-standard operations being replaced.
    * 
-   * @throws NullPointerException if any of the parameters is <code>null</code>.
+   * @throws IllegalArgumentException if any of the parameters is <code>null</code>.
    */
 
-  public static Node standardize(Node expression) {
-    if (expression == null) {
-      throw new NullPointerException();
-    }
+  public static Node standardize(final Node expression) {
+    checkNotNull(expression);
 
     /* Reduce expression before standardizing. */
-    expression = Transformer.reduce(ReduceOptions.NEW_INSTANCE, expression);
+    final Node reducedExpression = Transformer.reduce(ReduceOptions.NEW_INSTANCE, expression);
 
     final NodeTransformer tl = new NodeTransformer(Predicate.getStandardRuleset());
-    tl.walk(expression);
+    tl.walk(reducedExpression);
     return tl.getResult().iterator().next();
   }
 }

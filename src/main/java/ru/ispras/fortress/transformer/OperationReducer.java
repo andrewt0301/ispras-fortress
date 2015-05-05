@@ -14,6 +14,8 @@
 
 package ru.ispras.fortress.transformer;
 
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
+
 import ru.ispras.fortress.calculator.Calculator;
 import ru.ispras.fortress.calculator.CalculatorEngine;
 import ru.ispras.fortress.data.Data;
@@ -49,13 +51,8 @@ final class OperationReducer {
    */
 
   public OperationReducer(CalculatorEngine engine, NodeOperation operation, ReduceOptions options) {
-    if (null == operation) {
-      throw new NullPointerException();
-    }
-
-    if (null == options) {
-      throw new NullPointerException();
-    }
+    checkNotNull(operation);
+    checkNotNull(options);
 
     this.engine = engine;
     this.operation = operation;
