@@ -116,7 +116,7 @@ public final class NodeBinding extends Node {
     }
 
     final Comparator<BoundVariable> cmp = new Comparator<BoundVariable>() {
-      public int compare(BoundVariable lhs, BoundVariable rhs) {
+      public int compare(final BoundVariable lhs, final BoundVariable rhs) {
         checkNotNull(lhs);
         checkNotNull(rhs);
         return lhs.getVariable().getName().compareTo(rhs.getVariable().getName());
@@ -250,7 +250,7 @@ public final class NodeBinding extends Node {
   }
 
   @Override
-  public boolean equals(Object rhs) {
+  public boolean equals(final Object rhs) {
     if (rhs == null) {
       return false;
     }
