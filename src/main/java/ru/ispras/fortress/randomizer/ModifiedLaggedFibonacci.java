@@ -37,13 +37,13 @@ public final class ModifiedLaggedFibonacci implements RandomGenerator {
    * 
    * @param s the seed to be set.
    */
-  public ModifiedLaggedFibonacci(int s) {
+  public ModifiedLaggedFibonacci(final int s) {
     x = new LaggedFibonacci(s);
     y = new LaggedFibonacci(s + 1);
   }
 
   @Override
-  public void seed(int s) {
+  public void seed(final int s) {
     // Two consequent seeds are used.
     x.seed(s);
     y.seed(s + 1);
