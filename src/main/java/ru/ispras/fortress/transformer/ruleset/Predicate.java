@@ -27,6 +27,7 @@ import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.transformer.TransformerRule;
+import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * DependentRule is a base class for rules dedicated for use in set.
@@ -41,9 +42,7 @@ abstract class DependentRule implements TransformerRule {
    */
 
   protected DependentRule(Map<Enum<?>, TransformerRule> rules) {
-    if (rules == null) {
-      throw new NullPointerException();
-    }
+    InvariantChecks.checkNotNull(rules);
     this.rules = rules;
   }
 
@@ -86,9 +85,8 @@ abstract class OperationRule extends DependentRule {
 
   public OperationRule(Enum<?> opId, Map<Enum<?>, TransformerRule> rules) {
     super(rules);
-    if (opId == null) {
-      throw new NullPointerException();
-    }
+    InvariantChecks.checkNotNull(opId);
+
     if (rules.containsKey(opId)) {
       throw new IllegalArgumentException("Attempt to override " + opId + " rule");
     }

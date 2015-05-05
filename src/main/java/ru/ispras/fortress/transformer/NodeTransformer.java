@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2015 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,16 +14,24 @@
 
 package ru.ispras.fortress.transformer;
 
-import java.util.List;
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
+
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Map;
 
-import ru.ispras.fortress.expression.*;
+import ru.ispras.fortress.expression.ExprTreeVisitor;
+import ru.ispras.fortress.expression.ExprTreeWalker;
+import ru.ispras.fortress.expression.Node;
+import ru.ispras.fortress.expression.NodeBinding;
+import ru.ispras.fortress.expression.NodeOperation;
+import ru.ispras.fortress.expression.NodeValue;
+import ru.ispras.fortress.expression.NodeVariable;
 
 /**
- * NodeTransformer is an experssion tree visitor with bottom-up substitution policy. Substitutions
+ * NodeTransformer is an expression tree visitor with bottom-up substitution policy. Substitutions
  * take place accordingly to set of rules passed to transformer before traversal.
  */
 
@@ -86,9 +94,7 @@ public class NodeTransformer implements ExprTreeVisitor {
    */
 
   public NodeTransformer(Map<Enum<?>, TransformerRule> rules) {
-    if (rules == null) {
-      throw new NullPointerException();
-    }
+    checkNotNull(rules);
 
     ruleset = new IdentityHashMap<>(rules);
     operandStack = new ArrayList<>();
@@ -109,9 +115,8 @@ public class NodeTransformer implements ExprTreeVisitor {
    */
 
   public void addRule(Enum<?> opId, TransformerRule rule) {
-    if (opId == null || rule == null) {
-      throw new NullPointerException();
-    }
+    checkNotNull(opId);
+    checkNotNull(rule);
 
     // TODO check for replacements or/and add to end of queue
     ruleset.put(opId, rule);
