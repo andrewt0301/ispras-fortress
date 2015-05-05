@@ -132,7 +132,7 @@ public final class Random {
      * @param initializer Initializer to be used to set up the randomizer.
      */
 
-    public CompositeEngine(Initializer initializer) {
+    public CompositeEngine(final Initializer initializer) {
       checkNotNull(initializer);
       this.initializer = initializer;
       this.generators = new EnumMap<DataTypeId, TypedGenerator>(DataTypeId.class);
@@ -147,7 +147,7 @@ public final class Random {
      * @throws NullPointerException if any of the parameters equals null.
      */
 
-    public void setGenerator(DataTypeId typeId, TypedGenerator generator) {
+    public void setGenerator(final DataTypeId typeId, final TypedGenerator generator) {
       checkNotNull(typeId);
       checkNotNull(generator);
       generators.put(typeId, generator);
@@ -163,7 +163,7 @@ public final class Random {
     /** {@inheritDoc} */
 
     @Override
-    public void setSeed(int seed) {
+    public void setSeed(final int seed) {
       initializer.setSeed(seed);
     }
 
@@ -176,7 +176,7 @@ public final class Random {
      */
 
     @Override
-    public Data random(DataTypeId typeId, int size) {
+    public Data random(final DataTypeId typeId, final int size) {
       checkNotNull(typeId);
 
       if (!generators.containsKey(typeId)) {
@@ -203,7 +203,7 @@ public final class Random {
   private static Engine createDefaultEngine() {
     final CompositeEngine result = new CompositeEngine(new Initializer() {
       @Override
-      public void setSeed(int seed) {
+      public void setSeed(final int seed) {
         Randomizer.get().setSeed(seed);
       }
 
@@ -213,21 +213,21 @@ public final class Random {
 
     result.setGenerator(DataTypeId.LOGIC_BOOLEAN, new TypedGenerator() {
       @Override
-      public Data generate(int size) {
+      public Data generate(final int size) {
         return Data.newBoolean(Randomizer.get().next() % 2 == 0);
       }
     });
 
     result.setGenerator(DataTypeId.LOGIC_INTEGER, new TypedGenerator() {
       @Override
-      public Data generate(int size) {
+      public Data generate(final int size) {
         return Data.newInteger(Randomizer.get().nextInt());
       }
     });
 
     result.setGenerator(DataTypeId.BIT_VECTOR, new TypedGenerator() {
       @Override
-      public Data generate(int size) {
+      public Data generate(final int size) {
         final BitVector data = BitVector.newEmpty(size);
         Randomizer.get().fill(data);
         return Data.newBitVector(data);
@@ -261,7 +261,7 @@ public final class Random {
    * @throws NullPointerException if the parameter equals null.
    */
 
-  public static void setEngine(Engine value) {
+  public static void setEngine(final Engine value) {
     checkNotNull(value);
     engine = value;
   }
@@ -272,7 +272,7 @@ public final class Random {
    * @param seed The seed to be set.
    */
 
-  public static void setSeed(int seed) {
+  public static void setSeed(final int seed) {
     getEngine().setSeed(seed);
   }
 
@@ -287,7 +287,7 @@ public final class Random {
    *         data type.
    */
 
-  public static Data newValue(DataType type) {
+  public static Data newValue(final DataType type) {
     checkNotNull(type);
     return getEngine().random(type.getTypeId(), type.getSize());
   }
@@ -304,7 +304,7 @@ public final class Random {
    *         data type.
    */
 
-  public static Variable newVariable(String name, DataType type) {
+  public static Variable newVariable(final String name, final DataType type) {
     checkNotNull(name);
     checkNotNull(type);
     return new Variable(name, newValue(type));
@@ -321,7 +321,7 @@ public final class Random {
    *         data type.
    */
 
-  public static Variable assignValue(Variable variable) {
+  public static Variable assignValue(final Variable variable) {
     checkNotNull(variable);
     variable.setData(newValue(variable.getType()));
     return variable;
