@@ -48,10 +48,10 @@ public final class ExprTreeWalker {
    * 
    * @param visitor Visitor to be applied to tree nodes.
    * 
-   * @throws NullPointerException if the visitor parameter is null.
+   * @throws IllegalArgumentException if the visitor parameter is null.
    */
 
-  public ExprTreeWalker(ExprTreeVisitor visitor) {
+  public ExprTreeWalker(final ExprTreeVisitor visitor) {
     checkNotNull(visitor);
     this.visitor = visitor;
   }
@@ -64,7 +64,7 @@ public final class ExprTreeWalker {
    *         <code>false</code> otherwise.
    */
 
-  private boolean isStatus(Status status) {
+  private boolean isStatus(final Status status) {
     return visitor.getStatus() == status;
   }
 
@@ -75,13 +75,13 @@ public final class ExprTreeWalker {
    * 
    * @param trees A sequence of expression trees to be visited.
    * 
-   * @throws NullPointerException if the parameter equals null. IllegalArgumentException if any of
+   * @throws IllegalArgumentException if the parameter equals null; if any of
    *         the child nodes of the expression nodes in the sequence has a unknown type.
    */
 
-  public void visit(Iterable<? extends Node> trees) {
+  public void visit(final Iterable<? extends Node> trees) {
     checkNotNull(trees);
-    for (Node tree : trees) {
+    for (final Node tree : trees) {
       visit(tree);
       if (isStatus(Status.ABORT)) {
         return;
@@ -95,11 +95,11 @@ public final class ExprTreeWalker {
    * 
    * @param tree Expression tree to be visited.
    * 
-   * @throws NullPointerException if the parameter equals null.
-   * @throws IllegalArgumentException if any of the expression tree nodes has a unknown type.
+   * @throws IllegalArgumentException if the parameter equals null;
+   *         if any of the expression tree nodes has a unknown type.
    */
 
-  public void visit(Node tree) {
+  public void visit(final Node tree) {
     checkNotNull(tree);
 
     visitor.onRootBegin();
@@ -122,11 +122,11 @@ public final class ExprTreeWalker {
    * 
    * @param node Node to be visited.
    * 
-   * @throws NullPointerException if the parameter equals null.
-   * @throws IllegalArgumentException if the node or any of its child nodes has a unknown type.
+   * @throws IllegalArgumentException if the parameter equals null;
+   *         if the node or any of its child nodes has a unknown type.
    */
 
-  public void visitNode(Node node) {
+  public void visitNode(final Node node) {
     checkNotNull(node);
 
     switch (node.getKind()) {
@@ -152,7 +152,7 @@ public final class ExprTreeWalker {
     }
   }
 
-  private void visitOperation(NodeOperation node) {
+  private void visitOperation(final NodeOperation node) {
     checkNotNull(node);
 
     visitor.onOperationBegin(node);
@@ -192,17 +192,17 @@ public final class ExprTreeWalker {
     visitor.onOperationEnd(node);
   }
 
-  private void visitValue(NodeValue node) {
+  private void visitValue(final NodeValue node) {
     checkNotNull(node);
     visitor.onValue(node);
   }
 
-  private void visitVariable(NodeVariable node) {
+  private void visitVariable(final NodeVariable node) {
     checkNotNull(node);
     visitor.onVariable(node);
   }
 
-  private void visitBinding(NodeBinding node) {
+  private void visitBinding(final NodeBinding node) {
     checkNotNull(node);
 
     visitor.onBindingBegin(node);
@@ -211,7 +211,7 @@ public final class ExprTreeWalker {
     }
 
     if (isStatus(Status.OK)) {
-      for (NodeBinding.BoundVariable bound : node.getBindings()) {
+      for (final NodeBinding.BoundVariable bound : node.getBindings()) {
         visitor.onBoundVariableBegin(node, bound.getVariable(), bound.getValue());
         if (isStatus(Status.ABORT)) {
           return;
