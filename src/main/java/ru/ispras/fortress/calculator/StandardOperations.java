@@ -40,7 +40,7 @@ final class StandardOperations {
     final List<StdOperation> operations = Arrays.asList(
       new StdOperation(StandardOperation.SELECT, ArityRange.BINARY) {
         @Override
-        public Data calculate(Data... operands) {
+        public Data calculate(final Data... operands) {
           final DataMap map = operands[0].getArray();
           return map.get(operands[1]);
         }
@@ -55,7 +55,7 @@ final class StandardOperations {
 
       new StdOperation(StandardOperation.STORE, ArityRange.TERNARY) {
         @Override
-        public Data calculate(Data... operands) {
+        public Data calculate(final Data... operands) {
           final DataMap map = operands[0].getArray().copy();
           map.put(operands[1], operands[2]);
           return Data.newArray(map);
@@ -107,12 +107,12 @@ final class StandardOperations {
   }
 
   private static class BitVectorCmp extends BitVectorOp {
-    public BitVectorCmp(StandardOperation id, BitVectorMath.Operations operation) {
+    public BitVectorCmp(final StandardOperation id, final BitVectorMath.Operations operation) {
       super(id, operation);
     }
 
     @Override
-    public Data calculate(Data... operands) {
+    public Data calculate(final Data... operands) {
       final BitVector bv = super.calculate(operands).getBitVector();
       return Data.newBoolean(bv.equals(BitVector.TRUE));
     }
@@ -202,21 +202,21 @@ final class StandardOperations {
     operations.addAll(Arrays.<Operation<StandardOperation>>asList(
         new StdOperation(StandardOperation.PLUS, ArityRange.UNARY) {
           @Override
-          public Data calculate(Data... operands) {
+          public Data calculate(final Data... operands) {
             return operands[0];
           }
         },
 
         new StdOperation(StandardOperation.MINUS, ArityRange.UNARY) {
           @Override
-          public Data calculate(Data... operands) {
+          public Data calculate(final Data... operands) {
             return Data.newReal(-operands[0].getReal());
           }
         },
 
         new StdOperation(StandardOperation.ADD, ArityRange.BINARY_UNBOUNDED) {
           @Override
-          public Data calculate(Data... operands) {
+          public Data calculate(final Data... operands) {
             double result = operands[0].getReal();
             for (int index = 1; index < operands.length; ++index) {
               result += operands[index].getReal();
@@ -227,7 +227,7 @@ final class StandardOperations {
 
         new StdOperation(StandardOperation.SUB, ArityRange.BINARY_UNBOUNDED) {
           @Override
-          public Data calculate(Data... operands) {
+          public Data calculate(final Data... operands) {
             double result = operands[0].getReal();
             for (int index = 1; index < operands.length; ++index) {
               result -= operands[index].getReal();
@@ -238,7 +238,7 @@ final class StandardOperations {
 
         new StdOperation(StandardOperation.MUL, ArityRange.BINARY_UNBOUNDED) {
           @Override
-          public Data calculate(Data... operands) {
+          public Data calculate(final Data... operands) {
             double result = operands[0].getReal();
             for (int index = 1; index < operands.length; ++index) {
               result *= operands[index].getReal();
@@ -249,7 +249,7 @@ final class StandardOperations {
 
         new StdOperation(StandardOperation.DIV, ArityRange.BINARY) {
           @Override
-          public Data calculate(Data... operands) {
+          public Data calculate(final Data... operands) {
             final double value1 = operands[0].getReal();
             final double value2 = operands[1].getReal();
 
@@ -259,7 +259,7 @@ final class StandardOperations {
 
         new StdOperation(StandardOperation.ABS, ArityRange.UNARY) {
           @Override
-          public Data calculate(Data... operands) {
+          public Data calculate(final Data... operands) {
             final double value = operands[0].getReal();
             if (value < 0) {
               return Data.newReal(-value);
@@ -277,35 +277,35 @@ final class StandardOperations {
     return Arrays.<Operation<StandardOperation>>asList(
         new StdOperation(StandardOperation.GREATER, ArityRange.BINARY) {
           @Override
-          public Data calculate(Data... operands) {
+          public Data calculate(final Data... operands) {
             return Data.newBoolean(compare(c, operands[0], operands[1]) > 0);
           }
         },
 
         new StdOperation(StandardOperation.GREATEREQ, ArityRange.BINARY) {
           @Override
-          public Data calculate(Data... operands) {
+          public Data calculate(final Data... operands) {
             return Data.newBoolean(compare(c, operands[0], operands[1]) >= 0);
           }
         },
 
         new StdOperation(StandardOperation.LESS, ArityRange.BINARY) {
           @Override
-          public Data calculate(Data... operands) {
+          public Data calculate(final Data... operands) {
             return Data.newBoolean(compare(c, operands[0], operands[1]) < 0);
           }
         },
 
         new StdOperation(StandardOperation.LESSEQ, ArityRange.BINARY) {
           @Override
-          public Data calculate(Data... operands) {
+          public Data calculate(final Data... operands) {
             return Data.newBoolean(compare(c, operands[0], operands[1]) <= 0);
           }
         },
 
         new StdOperation(StandardOperation.MAX, ArityRange.UNARY_UNBOUNDED) {
           @Override
-          public Data calculate(Data... operands) {
+          public Data calculate(final Data... operands) {
             Data value = operands[0];
             for (int i = 1; i < operands.length; ++i) {
               if (compare(c, operands[i], value) > 0) {
@@ -318,7 +318,7 @@ final class StandardOperations {
 
         new StdOperation(StandardOperation.MIN, ArityRange.UNARY_UNBOUNDED) {
           @Override
-          public Data calculate(Data... operands) {
+          public Data calculate(final Data... operands) {
             Data value = operands[0];
             for (int i = 1; i < operands.length; ++i) {
               if (compare(c, operands[i], value) < 0) {
@@ -331,7 +331,7 @@ final class StandardOperations {
   }
 
   private static <T extends Comparable<T>>
-  int compare(Class<T> c, Data lhs, Data rhs) {
+  int compare(final Class<T> c, final Data lhs, final Data rhs) {
     return lhs.getValue(c).compareTo(rhs.getValue(c));
   }
 }
