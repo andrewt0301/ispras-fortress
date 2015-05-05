@@ -43,10 +43,14 @@ public final class Function {
    * @param body The body of the function (underlying expression).
    * @param parameters An variable-length list of parameters.
    * 
-   * @throws NullPointerException if any of the parameters equals null.
+   * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
 
-  public Function(Enum<?> id, DataType returnType, Node body, Variable... parameters) {
+  public Function(
+      final Enum<?> id,
+      final DataType returnType,
+      final Node body,
+      final Variable... parameters) {
     checkNotNull(id);
     checkNotNull(returnType);
     checkNotNull(body);
@@ -94,7 +98,7 @@ public final class Function {
       sb.append("_PARAMS");
     }
 
-    for (Variable v : parameters) {
+    for (final Variable v : parameters) {
       final DataType type = v.getType();
 
       sb.append('_');
@@ -148,7 +152,7 @@ public final class Function {
    *         array.
    */
 
-  public Variable getParameter(int index) {
+  public Variable getParameter(final int index) {
     checkBounds(index, parameters.length);
     return parameters[index];
   }
