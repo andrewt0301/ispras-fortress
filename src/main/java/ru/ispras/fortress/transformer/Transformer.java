@@ -50,7 +50,10 @@ public final class Transformer {
    * @throws IllegalArgumentException if any of the parameters is <code>null</code>.
    */
 
-  public static Node reduce(CalculatorEngine engine, ReduceOptions options, Node expression) {
+  public static Node reduce(
+      final CalculatorEngine engine,
+      final ReduceOptions options,
+      final Node expression) {
     checkNotNull(options);
     checkNotNull(expression);
 
@@ -79,8 +82,10 @@ public final class Transformer {
     return reduce(null, options, expression);
   }
 
-  private static Node reduceBinding(CalculatorEngine engine, ReduceOptions options,
-      NodeBinding binding) {
+  private static Node reduceBinding(
+      final CalculatorEngine engine,
+      final ReduceOptions options,
+      final NodeBinding binding) {
     final Node reduced = reduce(engine, options, binding.getExpression());
     if (reduced == null || reduced == binding.getExpression()) {
       return binding;
@@ -107,14 +112,15 @@ public final class Transformer {
    * @throws IllegalArgumentException if any of the parameters is <code>null</code>.
    */
 
-  public static Node substitute(Node expression, final String name, final Node term) {
+  public static Node substitute(
+      final Node expression, final String name, final Node term) {
     checkNotNull(expression);
     checkNotNull(name);
     checkNotNull(term);
 
     final TransformerRule rule = new TransformerRule() {
       @Override
-      public boolean isApplicable(Node node) {
+      public boolean isApplicable(final Node node) {
         return node.getKind() == Node.Kind.VARIABLE && ((NodeVariable) node).getName().equals(name);
       }
 
@@ -142,17 +148,17 @@ public final class Transformer {
    * @throws IllegalArgumentException if any of the parameters is <code>null</code>.
    */
 
-  public static Node substituteBinding(NodeBinding binding) {
+  public static Node substituteBinding(final NodeBinding binding) {
     checkNotNull(binding);
 
     final Map<String, Node> exprs = new HashMap<>();
-    for (NodeBinding.BoundVariable bound : binding.getBindings()) {
+    for (final NodeBinding.BoundVariable bound : binding.getBindings()) {
       exprs.put(bound.getVariable().getName(), bound.getValue());
     }
 
     final TransformerRule rule = new TransformerRule() {
       @Override
-      public boolean isApplicable(Node node) {
+      public boolean isApplicable(final Node node) {
         if (node.getKind() != Node.Kind.VARIABLE) {
           return false;
         }
@@ -161,7 +167,7 @@ public final class Transformer {
       }
 
       @Override
-      public Node apply(Node node) {
+      public Node apply(final Node node) {
         return exprs.get(((NodeVariable) node).getName());
       }
     };
@@ -186,17 +192,17 @@ public final class Transformer {
    * @throws IllegalArgumentException if any of the parameters is <code>null</code>.
    */
 
-  public static Node substituteAllBindings(Node expression) {
+  public static Node substituteAllBindings(final Node expression) {
     checkNotNull(expression);
 
     final TransformerRule rule = new TransformerRule() {
       @Override
-      public boolean isApplicable(Node node) {
+      public boolean isApplicable(final Node node) {
         return node.getKind() == Node.Kind.BINDING;
       }
 
       @Override
-      public Node apply(Node node) {
+      public Node apply(final Node node) {
         return substituteBinding((NodeBinding) node);
       }
     };
