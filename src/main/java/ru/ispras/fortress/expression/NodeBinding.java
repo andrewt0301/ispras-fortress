@@ -229,16 +229,16 @@ public final class NodeBinding extends Node {
 
     builder.append("(LET (");
     for (final BoundVariable bound : getBindings()) {
-      builder.append("(");
+      builder.append('(');
       builder.append(bound.getVariable().toString());
-      builder.append(" ");
+      builder.append(' ');
       builder.append(bound.getValue().toString());
-      builder.append(")");
+      builder.append(')');
     }
 
     builder.append(") ");
     builder.append(getExpression().toString());
-    builder.append(")");
+    builder.append(')');
 
     return builder.toString();
   }
