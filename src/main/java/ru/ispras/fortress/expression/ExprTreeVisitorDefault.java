@@ -26,7 +26,7 @@ import ru.ispras.fortress.util.InvariantChecks;
  * to minimum when it is required to implement only a small number of {@code ExprTreeVisitor}
  * methods to perform some actions on the expression tree being visited.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 
 public abstract class ExprTreeVisitorDefault implements ExprTreeVisitor {
@@ -57,7 +57,7 @@ public abstract class ExprTreeVisitorDefault implements ExprTreeVisitor {
    * @throws NullPointerException if the parameter is {@code null}.
    */
 
-  public final void setStatus(Status status) {
+  public final void setStatus(final Status status) {
     InvariantChecks.checkNotNull(status);
     this.status = status;
   }
@@ -69,38 +69,50 @@ public abstract class ExprTreeVisitorDefault implements ExprTreeVisitor {
   public void onRootEnd() { /* Empty */ ; }
 
   @Override
-  public void onOperationBegin(NodeOperation node) { /* Empty */ ; }
+  public void onOperationBegin(final NodeOperation node) { /* Empty */ ; }
 
   @Override
-  public void onOperationEnd(NodeOperation node) { /* Empty */ ; }
+  public void onOperationEnd(final NodeOperation node) { /* Empty */ ; }
 
   @Override
   public int[] getOperandOrder() { return null; }
 
   @Override
-  public void onOperandBegin(NodeOperation operation, Node operand, int index) { /* Empty */ ; }
+  public void onOperandBegin(
+      final NodeOperation operation,
+      final Node operand,
+      final int index) { /* Empty */ ; }
 
   @Override
-  public void onOperandEnd(NodeOperation operation, Node operand, int index) { /* Empty */ ; }
+  public void onOperandEnd(
+      final NodeOperation operation,
+      final Node operand,
+      final int index) { /* Empty */ ; }
 
   @Override
-  public void onValue(NodeValue value) { /* Empty */ ; }
+  public void onValue(final NodeValue value) { /* Empty */ ; }
 
   @Override
-  public void onVariable(NodeVariable variable) { /* Empty */ ; }
+  public void onVariable(final NodeVariable variable) { /* Empty */ ; }
 
   @Override
-  public void onBindingBegin(NodeBinding node) { /* Empty */ ; }
+  public void onBindingBegin(final NodeBinding node) { /* Empty */ ; }
 
   @Override
-  public void onBindingListEnd(NodeBinding node) { /* Empty */ ; }
+  public void onBindingListEnd(final NodeBinding node) { /* Empty */ ; }
 
   @Override
-  public void onBindingEnd(NodeBinding node) { /* Empty */ ; }
+  public void onBindingEnd(final NodeBinding node) { /* Empty */ ; }
 
   @Override
-  public void onBoundVariableBegin(NodeBinding node, NodeVariable variable, Node value) { /* Empty */ ; }
+  public void onBoundVariableBegin(
+      final NodeBinding node,
+      final NodeVariable variable,
+      final Node value) { /* Empty */ ; }
 
   @Override
-  public void onBoundVariableEnd(NodeBinding node, NodeVariable variable, Node value) { /* Empty */ ; }
+  public void onBoundVariableEnd(
+      final NodeBinding node,
+      final NodeVariable variable,
+      final Node value) { /* Empty */ ; }
 }
