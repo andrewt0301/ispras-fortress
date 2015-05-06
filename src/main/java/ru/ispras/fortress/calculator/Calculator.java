@@ -47,8 +47,8 @@ public final class Calculator {
 
   // Key: class of the operation group enumeration, value: engine implementing
   // operations from the group.
-  private static final Map<Class<? extends Enum<?>>, CalculatorEngine> engines =
-    new HashMap<>();
+  private static final Map<Class<? extends Enum<?>>, CalculatorEngine> ENGINES =
+      new HashMap<>();
 
   static {
     // Creates and registers an engine that performs calculation using
@@ -95,7 +95,7 @@ public final class Calculator {
     checkNotNull(operationIdClass);
     checkNotNull(engine);
 
-    return null == engines.put(operationIdClass, engine);
+    return null == ENGINES.put(operationIdClass, engine);
   }
 
   /**
@@ -113,7 +113,7 @@ public final class Calculator {
 
   public static CalculatorEngine getEngine(final Class<?> operationIdClass) {
     checkNotNull(operationIdClass);
-    return engines.get(operationIdClass);
+    return ENGINES.get(operationIdClass);
   }
 
   /**
