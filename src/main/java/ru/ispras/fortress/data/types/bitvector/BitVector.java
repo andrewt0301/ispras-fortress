@@ -751,7 +751,7 @@ public abstract class BitVector implements Comparable<BitVector> {
     final IAction op = new IAction() {
       private int index = 0;
       @Override
-      public void run(byte v) {
+      public void run(final byte v) {
         byteArray[index++] = v;
       }
     };

@@ -102,7 +102,9 @@ public abstract class SolverBase implements Solver {
     return null == operations.put(template.getId(), SolverOperation.newTemplate(template));
   }
 
-  protected final void addStandardOperation(final StandardOperation id, String text) {
+  protected final void addStandardOperation(
+      final StandardOperation id,
+      final String text) {
     checkNotNull(id);
     checkNotNull(text);
 

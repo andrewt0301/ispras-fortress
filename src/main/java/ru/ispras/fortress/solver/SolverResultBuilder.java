@@ -32,7 +32,7 @@ public final class SolverResultBuilder {
    * @param status The initial status of the result.
    */
 
-  public SolverResultBuilder(SolverResult.Status status) {
+  public SolverResultBuilder(final SolverResult.Status status) {
     checkNotNull(status);
 
     this.status = status;

@@ -111,7 +111,7 @@ public abstract class SolverOperation {
   private static class TextOperation extends SolverOperation {
     private final String text;
 
-    private TextOperation(Enum<?> id, String text) {
+    private TextOperation(final Enum<?> id, final String text) {
       super(Kind.TEXT, id);
       this.text = text;
     }
