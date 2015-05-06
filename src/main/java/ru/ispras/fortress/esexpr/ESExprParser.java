@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
+import ru.ispras.fortress.util.InvariantChecks;
+
 /**
  * ESExprParser translates Lisp-like syntax into {@link ESExpr}.
  * Supports only ASCII characters, treats ';' as start of one-line comment,
@@ -40,10 +42,9 @@ public final class ESExprParser {
    * @param reader {@code Reader} instance to read input from
    */
 
-  public ESExprParser(Reader reader) {
-    if (reader == null) {
-      throw new NullPointerException();
-    }
+  public ESExprParser(final Reader reader) {
+    InvariantChecks.checkNotNull(reader);
+
     this.tokenizer = setUpTokenizer(reader);
     this.stack = new ArrayDeque<>();
   }
@@ -137,13 +138,11 @@ public final class ESExprParser {
    *
    * @param s string to parse
    * @return parser for given string
-   * @throws NullPointerException if {@code s} is {@code null}
+   * @throws IllegalArgumentException if {@code s} is {@code null}
    */
 
-  public static ESExprParser stringParser(String s) {
-    if (s == null) {
-      throw new NullPointerException();
-    }
+  public static ESExprParser stringParser(final String s) {
+    InvariantChecks.checkNotNull(s);
     return new ESExprParser(new StringReader(s));
   }
 
@@ -154,7 +153,7 @@ public final class ESExprParser {
    * @return tokenizer for given input reader
    */
 
-  private static StreamTokenizer setUpTokenizer(Reader reader) {
+  private static StreamTokenizer setUpTokenizer(final Reader reader) {
     final StreamTokenizer tokenizer = new StreamTokenizer(reader);
     tokenizer.resetSyntax();
 

@@ -14,6 +14,8 @@
 
 package ru.ispras.fortress.esexpr;
 
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull; 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -284,11 +286,11 @@ public final class ESExpr {
    *
    * @param literal string literal for atom being created
    * @return atom for given string literal
-   * @throws NullPointerException if {@code literal} is {@code null}
+   * @throws IllegalArgumentException if {@code literal} is {@code null}
    */
 
   public static ESExpr createAtom(String literal) {
-    notnull(literal);
+    checkNotNull(literal);
     if (literal.toUpperCase().equals(NIL.getLiteral())) {
       return NIL;
     }
@@ -301,11 +303,11 @@ public final class ESExpr {
    *
    * @param items list of S-expressions
    * @return list containing all expressions from {@code items} list
-   * @throws NullPointerException if {@code items} list is {@code null}
+   * @throws IllegalArgumentException if {@code items} list is {@code null}
    */
 
   public static ESExpr createList(List<ESExpr> items) {
-    notnull(items);
+    checkNotNull(items);
     if (items.isEmpty()) {
       return NIL;
     }
@@ -320,11 +322,11 @@ public final class ESExpr {
    *
    * @param items list of S-expressions
    * @return tuple containing all expressions from {@code items} list
-   * @throws NullPointerException if {@code items} list is {@code null}
+   * @throws IllegalArgumentException if {@code items} list is {@code null}
    */
 
   public static ESExpr createTuple(List<ESExpr> items) {
-    notnull(items);
+    checkNotNull(items);
     if (items.isEmpty()) {
       return NIL;
     }
@@ -341,19 +343,13 @@ public final class ESExpr {
    * @param lhs left expression in dotted pair
    * @param rhs right expression in dotted pair
    * @return tuple containing {@code lhs} and {@code rhs} expressions
-   * @throws NullPointerException if any of given expressions is {@code null}
+   * @throws IllegalArgumentException if any of given expressions is {@code null}
    */
 
   public static ESExpr cons(ESExpr lhs, ESExpr rhs) {
-    notnull(lhs);
-    notnull(rhs);
+    checkNotNull(lhs);
+    checkNotNull(rhs);
 
     return new ESExpr(TUPLE_LITERAL, Arrays.asList(lhs, rhs));
-  }
-
-  private static void notnull(Object o) {
-    if (o == null) {
-      throw new NullPointerException();
-    }
   }
 }

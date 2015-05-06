@@ -14,6 +14,8 @@
 
 package ru.ispras.fortress.esexpr;
 
+import ru.ispras.fortress.util.InvariantChecks;
+
 /**
  * The ESExprMatcher is expression structure matcher for {@link ESExpr}.
  * Matches expressions with patterns as-is, i.e. without normalization,
@@ -33,13 +35,12 @@ public final class ESExprMatcher {
    * Create new matcher for given pattern.
    *
    * @param pattern Lisp-syntax S-expression denoting pattern to match
-   * @throws NullPointerException if {@code pattern} is {@code null}
+   * @throws IllegalArgumentException if {@code pattern} is {@code null}
    */
 
   public ESExprMatcher(String pattern) {
-    if (pattern == null) {
-      throw new NullPointerException();
-    }
+    InvariantChecks.checkNotNull(pattern);
+
     ESExpr sexpr = ESExpr.NIL;
     try {
       final ESExprParser parser = ESExprParser.stringParser(pattern);
@@ -56,13 +57,11 @@ public final class ESExprMatcher {
    *
    * @param e S-expression to be checked for match
    * @return {@code true} if given expression matches
-   * @throws NullPointerException if {@code e} is {@code null}
+   * @throws IllegalArgumentException if {@code e} is {@code null}
    */
 
   public boolean matches(ESExpr e) {
-    if (e == null) {
-      throw new NullPointerException();
-    }
+    InvariantChecks.checkNotNull(e);
     return matches(e, pattern);
   }
 
