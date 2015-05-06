@@ -55,7 +55,10 @@ public final class OperationDescription {
    * @param order the order of operands.
    */
 
-  public OperationDescription(final String prefix, final String[] infix, final String suffix,
+  public OperationDescription(
+      final String prefix,
+      final String[] infix,
+      final String suffix,
       final int[] order) {
     this.prefix = prefix;
     this.infix = infix;
@@ -71,7 +74,10 @@ public final class OperationDescription {
    * @param suffix the operation suffix.
    */
 
-  public OperationDescription(final String prefix, final String[] infix, final String suffix) {
+  public OperationDescription(
+      final String prefix,
+      final String[] infix,
+      final String suffix) {
     this(prefix, infix, suffix, null);
   }
 
@@ -83,7 +89,10 @@ public final class OperationDescription {
    * @param suffix the operation suffix.
    */
 
-  public OperationDescription(final String prefix, final String infix, final String suffix) {
+  public OperationDescription(
+      final String prefix,
+      final String infix,
+      final String suffix) {
     this(prefix, new String[] {infix}, suffix);
   }
 
@@ -96,7 +105,10 @@ public final class OperationDescription {
    *        required.
    */
 
-  public OperationDescription(final String sign, final Type type, boolean addSpaces) {
+  public OperationDescription(
+      final String sign,
+      final Type type,
+      final boolean addSpaces) {
     final String modifiedSign = addSpaces ? String.format(" %s ", sign) : sign;
 
     switch (type) {
@@ -158,7 +170,7 @@ public final class OperationDescription {
    *        required.
    */
 
-  public OperationDescription(final String[] sign, boolean addSpaces) {
+  public OperationDescription(final String[] sign, final boolean addSpaces) {
     this(sign, addSpaces, null);
   }
 
@@ -210,7 +222,7 @@ public final class OperationDescription {
    * @return the <code>i</code>-th operation infix.
    */
 
-  public String getInfix(int i) {
+  public String getInfix(final int i) {
     return infix.length == 1 ? infix[0] : infix[i];
   }
 
