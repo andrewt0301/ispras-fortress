@@ -23,8 +23,8 @@ package ru.ispras.fortress.solver.xml;
 class XMLFormatVersion {
   private XMLFormatVersion() {}
 
-  static final int MAJOR = 1;
-  static final int MINOR = 0;
+  public static final int MAJOR = 1;
+  public static final int MINOR = 0;
 }
 
 
@@ -37,28 +37,28 @@ class XMLFormatVersion {
 class XMLConst {
   private XMLConst() {}
 
-  static final String NODE_CONSTRAINT = "Constraint";
-  static final String NODE_NAME = "Name";
-  static final String NODE_KIND = "Kind";
-  static final String NODE_DESCRIPTION = "Description";
-  static final String NODE_INNER_REP = "InnerRep";
-  static final String NODE_FORMULA = "Formula";
-  static final String NODE_OPERATION = "Operation";
-  static final String NODE_VARIABLE = "Variable";
-  static final String NODE_VARIABLE_REF = "VariableRef";
-  static final String NODE_VALUE = "Value";
-  static final String NODE_SIGNATURE = "Signature";
-  static final String NODE_BINDING = "Binding";
-  static final String NODE_BINDING_LIST = "BindingList";
-  static final String NODE_BOUND_VARIABLE = "BoundVariable";
+  public static final String NODE_CONSTRAINT = "Constraint";
+  public static final String NODE_NAME = "Name";
+  public static final String NODE_KIND = "Kind";
+  public static final String NODE_DESCRIPTION = "Description";
+  public static final String NODE_INNER_REP = "InnerRep";
+  public static final String NODE_FORMULA = "Formula";
+  public static final String NODE_OPERATION = "Operation";
+  public static final String NODE_VARIABLE = "Variable";
+  public static final String NODE_VARIABLE_REF = "VariableRef";
+  public static final String NODE_VALUE = "Value";
+  public static final String NODE_SIGNATURE = "Signature";
+  public static final String NODE_BINDING = "Binding";
+  public static final String NODE_BINDING_LIST = "BindingList";
+  public static final String NODE_BOUND_VARIABLE = "BoundVariable";
 
-  static final String ATTR_FORMAT_VERSION = "version";
-  static final String ATTR_OPERATION_ID = "id";
-  static final String ATTR_VARIABLE_NAME = "name";
-  static final String ATTR_TYPE_ID = "type";
-  static final String ATTR_VALUE = "value";
-  static final String ATTR_DATA_LENGTH = "length";
-  static final String ATTR_OPERATION_FAMILY = "family";
+  public static final String ATTR_FORMAT_VERSION = "version";
+  public static final String ATTR_OPERATION_ID = "id";
+  public static final String ATTR_VARIABLE_NAME = "name";
+  public static final String ATTR_TYPE_ID = "type";
+  public static final String ATTR_VALUE = "value";
+  public static final String ATTR_DATA_LENGTH = "length";
+  public static final String ATTR_OPERATION_FAMILY = "family";
 }
 
 
@@ -71,30 +71,30 @@ class XMLConst {
 class Messages {
   private Messages() {}
 
-  static final String ERR_XML_UNKNOWN_NODE =
+  public static final String ERR_XML_UNKNOWN_NODE =
     "The \"%s\" node is unexpected in the document.";
-  static final String ERR_XML_NO_ATTRIBUTE =
+  public static final String ERR_XML_NO_ATTRIBUTE =
     "The \"%s\" attribute is not found (the \"%s\" node).";
-  static final String ERR_XML_BAD_ATTIBUTE =
+  public static final String ERR_XML_BAD_ATTIBUTE =
     "The \"%s\" attribute has an invalid value %s (the \"%s\" node).";
-  static final String ERR_XML_BAD_VERSION =
+  public static final String ERR_XML_BAD_VERSION =
     "Wrong format version. It is %d.%d while %d.%d is expected.";
-  static final String ERR_XML_BAD_HIERARCHY =
+  public static final String ERR_XML_BAD_HIERARCHY =
     "Wrong node hierarchy. The \"%s\" node cannot be a child of " + "the \"%s\" node.";
 
-  static final String ERR_INVALID_CONSTRAINT = "Invalid constraint. ";
-  static final String ERR_BAD_CONSTRAINT_KIND = "Unsupported constraint kind: ";
-  static final String ERR_NO_CONSTRAINT_NAME = "The constraint name is not specified.";
-  static final String ERR_NO_CONSTRAINT_KIND = "The constraint kind is not specified.";
-  static final String ERR_ALREADY_STARTED = "Building %s has already been started.";
-  static final String ERR_NO_OPERATION = "No operation has been started.";
-  static final String ERR_NO_EXPRESSION_FOR_OP = "No expression is created for the %s operation.";
-  static final String ERR_FORMULA_ALREADY_ASSIGNED = "The formula is already assigned.";
+  public static final String ERR_INVALID_CONSTRAINT = "Invalid constraint. ";
+  public static final String ERR_BAD_CONSTRAINT_KIND = "Unsupported constraint kind: ";
+  public static final String ERR_NO_CONSTRAINT_NAME = "The constraint name is not specified.";
+  public static final String ERR_NO_CONSTRAINT_KIND = "The constraint kind is not specified.";
+  public static final String ERR_ALREADY_STARTED = "Building %s has already been started.";
+  public static final String ERR_NO_OPERATION = "No operation has been started.";
+  public static final String ERR_NO_EXPRESSION_FOR_OP = "No expression is created for the %s operation.";
+  public static final String ERR_FORMULA_ALREADY_ASSIGNED = "The formula is already assigned.";
 
-  static final String ERR_NO_OPERATION_ID = "The operation type is not specified.";
-  static final String ERR_EXTRA_OPERATION_ID = "The operation type is already set.";
+  public static final String ERR_NO_OPERATION_ID = "The operation type is not specified.";
+  public static final String ERR_EXTRA_OPERATION_ID = "The operation type is already set.";
 
-  static final String ERR_UNDEFINED_VARIABLE =
+  public static final String ERR_UNDEFINED_VARIABLE =
     "The \"%s\" variable cannot be appended to the expression. " +
     "It is absent from the variable definition list.";
 }
