@@ -689,7 +689,7 @@ public final class BitVectorMath {
       private byte carry = 0;
 
       @Override
-      public byte run(byte lhs, byte rhs) {
+      public byte run(final byte lhs, final byte rhs) {
         final int sum = (lhs & 0xFF) + (rhs & 0xFF) + (carry & 0xFF);
         carry = (byte) (sum >>> BitVector.BITS_IN_BYTE);
         return (byte) sum;
@@ -755,7 +755,10 @@ public final class BitVectorMath {
     return BitVector.valueOf(modulo(rint.signum(), lint, rint), lhs.getBitSize());
   }
 
-  private static BigInteger modulo(int signum, BigInteger lhs, BigInteger rhs) {
+  private static BigInteger modulo(
+      final int signum,
+      final BigInteger lhs,
+      final BigInteger rhs) {
     final BigInteger result = lhs.abs().mod(rhs.abs());
     if (signum < 0) {
       return result.negate();
@@ -774,7 +777,7 @@ public final class BitVectorMath {
     return add(not(v), BitVector.valueOf(1, v.getBitSize()));
   }
 
-  public static BitVector ule(final BitVector lhs, BitVector rhs) {
+  public static BitVector ule(final BitVector lhs, final BitVector rhs) {
     checkNotNull(lhs);
     checkNotNull(rhs);
     checkEqualSize(lhs, rhs);
