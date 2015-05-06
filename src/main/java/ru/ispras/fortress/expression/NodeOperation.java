@@ -30,7 +30,7 @@ import ru.ispras.fortress.data.DataTypeId;
 /**
  * The NodeOperation class represents an expression node described by an operation and operands.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 
 public final class NodeOperation extends Node {
@@ -44,15 +44,16 @@ public final class NodeOperation extends Node {
    * @param operation Operation identifier.
    * @param operands Operands packed into an array of expression nodes.
    * 
-   * @throws NullPointerException if any parameter (including every operand) is {@code null}.
+   * @throws IllegalArgumentException if any parameter (including every operand) is {@code null}.
    */
 
   public <T extends Enum<? extends T>> NodeOperation(
-      final T operation, final Node ... operands) {
+      final T operation,
+      final Node ... operands) {
     super(Kind.OPERATION);
 
     checkNotNull(operation);
-    for (Node operand : operands) {
+    for (final Node operand : operands) {
       checkNotNull(operand);
     }
 
@@ -68,7 +69,7 @@ public final class NodeOperation extends Node {
    * @param operation Operation identifier.
    * @param operands Operands packed into a collection of expression nodes.
    * 
-   * @throws NullPointerException if any parameter (including every operand) is {@code null}.
+   * @throws IllegalArgumentException if any parameter (including every operand) is {@code null}.
    */
 
   public <T extends Enum<? extends T>> NodeOperation(
@@ -222,15 +223,15 @@ public final class NodeOperation extends Node {
   public String toString() {
     final StringBuilder sb = new StringBuilder();
 
-    sb.append("(");
+    sb.append('(');
     sb.append(operation.name());
 
-    for (Node operand : operands) {
-      sb.append(" ");
+    for (final Node operand : operands) {
+      sb.append(' ');
       sb.append(operand.toString());
     }
 
-    sb.append(")");
+    sb.append(')');
     return sb.toString();
   }
 }
