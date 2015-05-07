@@ -53,7 +53,7 @@ class EqualityConstraint {
     return equalityGroups.isEmpty() && inequalities.isEmpty();
   }
 
-  public void addEquality(Node node) {
+  public void addEquality(final Node node) {
     if (!isOperation(node, StandardOperation.EQ)) {
       throw new IllegalArgumentException("EQ operation expected");
     }
@@ -91,21 +91,23 @@ class EqualityConstraint {
     this.consistent = true;
   }
 
-  private void updateGroupLinks(EqualityGroup group) {
-    for (Node node : group.variables) {
+  private void updateGroupLinks(final EqualityGroup group) {
+    for (final Node node : group.variables) {
       equalLinks.put(node, group);
     }
-    for (Node node : group.constants) {
+    for (final Node node : group.constants) {
       equalLinks.put(node, group);
     }
-    for (Node node : group.remains) {
+    for (final Node node : group.remains) {
       equalLinks.put(node, group);
     }
   }
 
-  private EqualityGroup mergeGroupsAdd(Collection<EqualityGroup> groups, Collection<? extends Node> nodes) {
+  private EqualityGroup mergeGroupsAdd(
+      final Collection<EqualityGroup> groups,
+      final Collection<? extends Node> nodes) {
     final EqualityGroup merged = new EqualityGroup();
-    for (EqualityGroup group : groups) {
+    for (final EqualityGroup group : groups) {
       merged.constants.addAll(group.constants);
     }
     merged.addAll(nodes);
@@ -113,7 +115,7 @@ class EqualityConstraint {
       return null;
     }
 
-    for (EqualityGroup group : groups) {
+    for (final EqualityGroup group : groups) {
       merged.variables.addAll(group.variables);
       merged.remains.addAll(group.remains);
     }
@@ -151,7 +153,7 @@ class EqualityConstraint {
       return this.consistent;
     }
     final List<Node> operands = new ArrayList<>();
-    for (NodeOperation noteq : inequalities) {
+    for (final NodeOperation noteq : inequalities) {
       collectOperands(operands, noteq);
       for (int i = 0; i < operands.size() - 1; ++i) {
         if (!isNotEqual(operands.get(i), operands.subList(i + 1, operands.size()))) {
@@ -163,24 +165,28 @@ class EqualityConstraint {
     return evaluateTo(true);
   }
 
-  private static void collectOperands(List<Node> operands, NodeOperation op) {
+  private static void collectOperands(
+      final List<Node> operands,
+      final NodeOperation op) {
     for (int i = 0; i < op.getOperandCount(); ++i) {
       operands.add(op.getOperand(i));
     }
   }
 
-  private static List<Node> collectOperands(NodeOperation op) {
+  private static List<Node> collectOperands(final NodeOperation op) {
     final List<Node> operands = new ArrayList<>();
     collectOperands(operands, op);
     return operands;
   }
 
-  private boolean isNotEqual(Node item, Collection<? extends Node> inequal) {
+  private boolean isNotEqual(
+      final Node item, 
+      final Collection<? extends Node> inequal) {
     final EqualityGroup group = equalLinks.get(item);
     if (group == null) {
       return true;
     }
-    for (Node node : inequal) {
+    for (final Node node : inequal) {
       if (equalLinks.get(node) == group ||
           item.equals(node)) {
         return false;
@@ -196,7 +202,7 @@ class EqualityConstraint {
     final Set<Node> nodeSet = Collections.newSetFromMap(new IdentityHashMap<Node, Boolean>());
     final List<Node> reduced = new ArrayList<>();
 
-    for (EqualityGroup group : equalityGroups) {
+    for (final EqualityGroup group : equalityGroups) {
       if (group.size() > 1) {
         final Node[] nodes = group.toArray();
         nodeSet.addAll(Arrays.asList(nodes));
@@ -222,7 +228,7 @@ class EqualityConstraint {
     }
 
     private void populate() {
-      for (NodeOperation ineq : this.origin) {
+      for (final NodeOperation ineq : this.origin) {
         int nconst = 0;
         for (int i = 0; i < ineq.getOperandCount(); ++i) {
           final Node node = ineq.getOperand(i);
@@ -237,7 +243,9 @@ class EqualityConstraint {
       }
     }
 
-    private void putInequality(NodeValue node, NodeOperation noteq) {
+    private void putInequality(
+        final NodeValue node,
+        final NodeOperation noteq) {
       if (constantMap.containsKey(node)) {
         constantMap.get(node).add(noteq);
       } else {
@@ -250,7 +258,7 @@ class EqualityConstraint {
 
   private Collection<NodeOperation> filterInequalities(Collection<NodeOperation> inequalities) {
     final Set<Node> boundSet = new HashSet<>();
-    for (EqualityGroup group : this.equalityGroups) {
+    for (final EqualityGroup group : this.equalityGroups) {
       if (!group.constants.isEmpty()) {
         boundSet.addAll(group.variables);
         boundSet.addAll(group.remains);
@@ -258,9 +266,9 @@ class EqualityConstraint {
     }
 
     final InequalityCache cache = new InequalityCache(inequalities);
-    for (Map.Entry<NodeValue, List<NodeOperation>> entry : cache.constantMap.entrySet()) {
+    for (final Map.Entry<NodeValue, List<NodeOperation>> entry : cache.constantMap.entrySet()) {
       final NodeValue value = entry.getKey();
-      for (NodeOperation noteq : entry.getValue()) {
+      for (final NodeOperation noteq : entry.getValue()) {
         splitExclude(noteq, value, boundSet, cache.filtered);
       }
     }
@@ -275,19 +283,24 @@ class EqualityConstraint {
     return filtered;
   }
 
-  private void splitExclude(NodeOperation noteq, NodeValue constant, Set<Node> boundSet, Collection<NodeOperation> output) {
+  private void splitExclude(
+      final NodeOperation noteq,
+      final NodeValue constant,
+      final Set<Node> boundSet, Collection<NodeOperation> output) {
     final List<Node> operands = collectOperands(noteq);
     operands.remove(constant);
 
     splitNotEqualPairwise(operands, output);
-    for (Node node : operands) {
+    for (final Node node : operands) {
       if (!boundSet.contains(node)) {
         output.add(NOTEQ(node, constant));
       }
     }
   }
 
-  private static void splitNotEqualPairwise(List<Node> operands, Collection<NodeOperation> output) {
+  private static void splitNotEqualPairwise(
+      final List<Node> operands,
+      final Collection<NodeOperation> output) {
     for (int i = 0; i < operands.size() - 1; ++i) {
       for (int j = i + 1; j < operands.size(); ++j) {
         output.add(NOTEQ(operands.get(i), operands.get(j)));
@@ -295,12 +308,12 @@ class EqualityConstraint {
     }
   }
 
-  private static NodeOperation NOTEQ(Node lhs, Node rhs) {
+  private static NodeOperation NOTEQ(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.NOT,
                              new NodeOperation(StandardOperation.EQ, lhs, rhs));
   }
 
-  private static boolean isOperation(Node node, Enum<?> opId) {
+  private static boolean isOperation(final Node node, final Enum<?> opId) {
     checkNotNull(node);
     return node.getKind() == Node.Kind.OPERATION &&
            ((NodeOperation) node).getOperationId() == opId;
@@ -318,7 +331,7 @@ final class EqualityGroup {
     this.remains = new HashSet<>();
   }
 
-  public boolean contains(Node node) {
+  public boolean contains(final Node node) {
     switch (node.getKind()) {
     case VARIABLE:
       return variables.contains((NodeVariable) node);
@@ -335,7 +348,7 @@ final class EqualityGroup {
     return constants.size() + variables.size() + remains.size();
   }
 
-  public void add(Node node) {
+  public void add(final Node node) {
     switch (node.getKind()) {
     case VARIABLE:
       variables.add((NodeVariable) node);
@@ -350,8 +363,8 @@ final class EqualityGroup {
     }
   }
 
-  public void addAll(Collection<? extends Node> nodes) {
-    for (Node node : nodes) {
+  public void addAll(final Collection<? extends Node> nodes) {
+    for (final Node node : nodes) {
       this.add(node);
     }
   }
@@ -365,8 +378,9 @@ final class EqualityGroup {
     return nodes;
   }
 
-  private static int populate(Node[] nodes, int i, Collection<? extends Node> collection) {
-    for (Node node : collection) {
+  private static int populate(
+      final Node[] nodes, int i, final Collection<? extends Node> collection) {
+    for (final Node node : collection) {
       nodes[i++] = node;
     }
     return i;

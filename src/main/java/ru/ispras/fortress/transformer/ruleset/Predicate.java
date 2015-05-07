@@ -41,7 +41,7 @@ abstract class DependentRule implements TransformerRule {
    * @param rules Ruleset shared by all interdependent rules.
    */
 
-  protected DependentRule(Map<Enum<?>, TransformerRule> rules) {
+  protected DependentRule(final Map<Enum<?>, TransformerRule> rules) {
     InvariantChecks.checkNotNull(rules);
     this.rules = rules;
   }
@@ -56,7 +56,7 @@ abstract class DependentRule implements TransformerRule {
    * applying relevant rules in shared set to single operation.
    */
 
-  protected final Node reduce(Enum<?> opId, Node ... operands) {
+  protected final Node reduce(final Enum<?> opId, final Node ... operands) {
     final Node node = new NodeOperation(opId, operands);
     final TransformerRule rule = rules.get(opId);
     if (rule != null && rule.isApplicable(node)) {
@@ -116,7 +116,7 @@ abstract class OperationRule extends DependentRule {
    * @return true if derived class accepts given operation node.
    */
 
-  public boolean isApplicable(NodeOperation op) {
+  public boolean isApplicable(final NodeOperation op) {
     return true;
   }
 
@@ -202,7 +202,7 @@ abstract class OperationRule extends DependentRule {
 final class UnrollClause extends OperationRule {
   private final boolean symbol;
 
-  UnrollClause(StandardOperation op, Map<Enum<?>, TransformerRule> rules) {
+  UnrollClause(final StandardOperation op, final Map<Enum<?>, TransformerRule> rules) {
     super(op, rules);
     if (op == StandardOperation.AND) {
       this.symbol = false;
@@ -267,13 +267,13 @@ final class UnrollClause extends OperationRule {
                              operands.toArray(new Node[operands.size()]));
   }
 
-  private List<Node> flattenFilter(NodeOperation op) {
+  private List<Node> flattenFilter(final NodeOperation op) {
     final List<Node> operands = new ArrayList<>(op.getOperandCount());
     this.flattenFilter(op, operands);
     return operands;
   }
 
-  private void flattenFilter(NodeOperation op, List<Node> operands) {
+  private void flattenFilter(final NodeOperation op, final List<Node> operands) {
     for (int i = 0; i < op.getOperandCount(); ++i) {
       final Node operand = op.getOperand(i);
       if (isOperation(operand, this.getOperationId())) {
@@ -312,7 +312,7 @@ final class UnrollClause extends OperationRule {
 
     final EqualityConstraint constraint = new EqualityConstraint();
 
-    Iterator<? extends Node> it = operands.iterator();
+    final Iterator<? extends Node> it = operands.iterator();
     while (it.hasNext()) {
       final Node operand = it.next();
       if (isOperation(operand, StandardOperation.EQ)) {
