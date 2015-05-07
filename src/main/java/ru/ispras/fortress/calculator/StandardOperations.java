@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Map;
 
 final class StandardOperations {
+  private StandardOperations() {}
+
   private static abstract class StdOperation extends CalculatorOperation<StandardOperation> {
     public StdOperation(final StandardOperation id, final ArityRange arity) {
       super(id, arity);

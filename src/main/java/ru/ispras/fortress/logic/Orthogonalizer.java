@@ -26,6 +26,8 @@ import java.util.Set;
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
 public final class Orthogonalizer {
+  private Orthogonalizer() {}
+  
   /**
    * Checks whether two clauses (conjuncts), <code>lhs</code> and <code>rhs</code>, are disjoint
    * (mutually exclusive or orthogonal).
