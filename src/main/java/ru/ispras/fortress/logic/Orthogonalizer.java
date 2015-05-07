@@ -152,7 +152,10 @@ public final class Orthogonalizer {
    * @param conflicts the set of conflicts.
    * @return the index of the split clause or -1 if no one has been split.
    */
-  private static int orthogonalize(final Clause lhs, final Clause rhs, final NormalForm res,
+  private static int orthogonalize(
+      final Clause lhs,
+      final Clause rhs,
+      final NormalForm res,
       final Set<Conflict> conflicts) {
     // The specified clauses are disjoint.
     if (areDisjoint(lhs, rhs, conflicts)) {
@@ -218,8 +221,12 @@ public final class Orthogonalizer {
    * @param split the set of clauses to be substituted.
    * @return true iff the i-th clause is removed.
    */
-  private static boolean replace(ArrayList<Clause> clauses, Map<Integer, Integer> branches,
-      int pre_i, int i, final NormalForm split) {
+  private static boolean replace(
+      final ArrayList<Clause> clauses,
+      final Map<Integer, Integer> branches,
+      final int pre_i,
+      final int i,
+      final NormalForm split) {
     // The clause should be removed (because it is equal with another one).
     if (split.isEmpty()) {
       // The map is updated without removing the item from the list.
@@ -260,7 +267,9 @@ public final class Orthogonalizer {
    * @param i the index of the clause.
    * @return the successive clause index.
    */
-  private static int next(final Map<Integer, Integer> branches, int i) {
+  private static int next(
+      final Map<Integer, Integer> branches,
+      final int i) {
     if (i == -1) {
       return 0;
     }
@@ -276,7 +285,8 @@ public final class Orthogonalizer {
    * @param clauses the list of clauses.
    * @return the DNF.
    */
-  private static NormalForm construct(final Map<Integer, Integer> branches,
+  private static NormalForm construct(
+      final Map<Integer, Integer> branches,
       final ArrayList<Clause> clauses) {
     final NormalForm form = new NormalForm(NormalForm.Type.DNF);
 
