@@ -45,7 +45,7 @@ public final class NormalForm {
    * 
    * @param type the type of the form.
    */
-  public NormalForm(Type type) {
+  public NormalForm(final Type type) {
     this.type = type;
     this.clauses = new ArrayList<Clause>();
   }
@@ -56,7 +56,7 @@ public final class NormalForm {
    * @param type the type of the form.
    * @param clauses the clauses of the form.
    */
-  public NormalForm(Type type, Collection<Clause> clauses) {
+  public NormalForm(final Type type, final Collection<Clause> clauses) {
     this.type = type;
     this.clauses = new ArrayList<Clause>(clauses);
   }
