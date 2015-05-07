@@ -26,7 +26,7 @@ import java.util.Set;
  */
 public final class Clause {
   // / Contains the clause's literals (maps variables to negation flags).
-  private Map<Integer, Boolean> literals = new LinkedHashMap<Integer, Boolean>();
+  private final Map<Integer, Boolean> literals = new LinkedHashMap<Integer, Boolean>();
 
   /**
    * Constructs the empty clause.
