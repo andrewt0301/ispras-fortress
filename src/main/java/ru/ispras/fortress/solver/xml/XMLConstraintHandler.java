@@ -514,8 +514,9 @@ final class XMLConstraintBuilder {
       }
 
       formula = node;
-    } else
+    } else {
       pushElement(node);
+    }
   }
 
   public void pushElement(Node se) throws Exception {

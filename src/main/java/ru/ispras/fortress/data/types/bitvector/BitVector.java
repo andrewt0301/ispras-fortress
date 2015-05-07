@@ -416,8 +416,9 @@ public abstract class BitVector implements Comparable<BitVector> {
 
       @Override
       public byte run() {
-        if (charIndex < 0)
+        if (charIndex < 0) {
           return 0;
+        }
 
         final byte low = getNextCharValue();
         final byte high = getNextCharValue();

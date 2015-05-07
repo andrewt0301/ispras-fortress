@@ -246,8 +246,9 @@ final class BitVectorMultiMapping extends BitVector {
       }
 
       final int dataSize = data.getBitSize() - offset;
-      if (0 == dataSize)
+      if (0 == dataSize) {
         continue;
+      }
 
       /*
        * We split data in the current data object in to parts (excluding the part that was taken to
