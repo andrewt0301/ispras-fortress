@@ -295,13 +295,12 @@ final class UnrollClause extends OperationRule {
     }
 
     final List<Node> reduced = constraint.reduce();
-    if (reduced.size() == 0) { // everything is (eq x x)
+    if (reduced.isEmpty()) { // everything is (eq x x)
       return true;
     }
     if (reduced.size() == 1 && isBoolean(reduced.get(0))) {
       return getBoolean(reduced.get(0));
     }
-
     operands.addAll(reduced);
 
     return true;
