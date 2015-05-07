@@ -98,7 +98,7 @@ public final class Orthogonalizer {
    * @return the orthogonal DNF equivalent to the specified one.
    */
   public static NormalForm orthogonalize(final NormalForm form, final Set<Conflict> conflicts) {
-    final ArrayList<Clause> clauses = new ArrayList<Clause>(form.getClauses());
+    final List<Clause> clauses = new ArrayList<Clause>(form.getClauses());
 
     if (clauses.isEmpty()) {
       return new NormalForm(NormalForm.Type.DNF);
@@ -222,7 +222,7 @@ public final class Orthogonalizer {
    * @return true iff the i-th clause is removed.
    */
   private static boolean replace(
-      final ArrayList<Clause> clauses,
+      final List<Clause> clauses,
       final Map<Integer, Integer> branches,
       final int pre_i,
       final int i,
@@ -287,7 +287,7 @@ public final class Orthogonalizer {
    */
   private static NormalForm construct(
       final Map<Integer, Integer> branches,
-      final ArrayList<Clause> clauses) {
+      final List<Clause> clauses) {
     final NormalForm form = new NormalForm(NormalForm.Type.DNF);
 
     for (int i = 0; i != -1; i = next(branches, i)) {
