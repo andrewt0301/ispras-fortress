@@ -329,7 +329,6 @@ final class SmtTextBuilder implements ExprTreeVisitor {
       final NodeOperation expr,
       final Node node,
       final int index) {
-    ;
   }
 
   @Override
