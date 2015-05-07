@@ -102,7 +102,10 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
     }
 
     @Override
-    public void onOperandBegin(final NodeOperation expr, final Node operand, int index) {
+    public void onOperandBegin(
+        final NodeOperation expr,
+        final Node operand,
+        final int index) {
       final OperationDescription description = map.get(expr.getOperationId());
 
       if (index > 0) {
@@ -189,8 +192,11 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
    *        required.
    */
 
-  protected final void addMapping(final StandardOperation op, final String sign,
-      final OperationDescription.Type type, boolean addSpaces) {
+  protected final void addMapping(
+      final StandardOperation op,
+      final String sign,
+      final OperationDescription.Type type,
+      final boolean addSpaces) {
     map.put(op, new OperationDescription(sign, type, addSpaces));
   }
 
@@ -202,7 +208,9 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
    * @param type the operation type.
    */
 
-  protected final void addMapping(final StandardOperation op, final String sign,
+  protected final void addMapping(
+      final StandardOperation op,
+      final String sign,
       final OperationDescription.Type type) {
     map.put(op, new OperationDescription(sign, type));
   }
@@ -217,8 +225,11 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
    * @param order the order of operands.
    */
 
-  protected final void addMapping(final StandardOperation op, final String[] sign,
-      boolean addSpaces, final int[] order) {
+  protected final void addMapping(
+      final StandardOperation op,
+      final String[] sign,
+      final boolean addSpaces,
+      final int[] order) {
     map.put(op, new OperationDescription(sign, addSpaces, order));
   }
 
@@ -231,8 +242,10 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
    *        required.
    */
 
-  protected final void addMapping(final StandardOperation op, final String[] sign,
-      boolean addSpaces) {
+  protected final void addMapping(
+      final StandardOperation op,
+      final String[] sign,
+      final boolean addSpaces) {
     map.put(op, new OperationDescription(sign, addSpaces));
   }
 

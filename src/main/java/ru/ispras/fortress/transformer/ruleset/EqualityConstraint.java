@@ -256,7 +256,8 @@ class EqualityConstraint {
     }
   }
 
-  private Collection<NodeOperation> filterInequalities(Collection<NodeOperation> inequalities) {
+  private Collection<NodeOperation> filterInequalities(
+      final Collection<NodeOperation> inequalities) {
     final Set<Node> boundSet = new HashSet<>();
     for (final EqualityGroup group : this.equalityGroups) {
       if (!group.constants.isEmpty()) {
@@ -286,7 +287,8 @@ class EqualityConstraint {
   private void splitExclude(
       final NodeOperation noteq,
       final NodeValue constant,
-      final Set<Node> boundSet, Collection<NodeOperation> output) {
+      final Set<Node> boundSet,
+      final Collection<NodeOperation> output) {
     final List<Node> operands = collectOperands(noteq);
     operands.remove(constant);
 

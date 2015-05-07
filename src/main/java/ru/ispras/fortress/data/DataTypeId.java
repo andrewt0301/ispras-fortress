@@ -36,12 +36,12 @@ public enum DataTypeId {
    * A bit vector type. Represents some data buffer of a specified size.
    */
   BIT_VECTOR(BitVector.class, false) {
-    Object valueOf(String s, int radix, List<Object> params) {
+    Object valueOf(final String s, final int radix, final List<Object> params) {
       final int size = (Integer) params.get(0);
       return BitVector.unmodifiable(BitVector.valueOf(s, radix, size));
     }
 
-    int radix(int size) {
+    int radix(final int size) {
       // TODO: see this code. It is simplified to always use BIN_RADIX. Probably, it could be done
       // better.
       return Radix.BIN.value();
@@ -51,15 +51,15 @@ public enum DataTypeId {
       // return (0 == (size % BITS_IN_HEX)) ? HEX_RADIX : BIN_RADIX;
     }
 
-    void validate(List<Object> params) {
+    void validate(final List<Object> params) {
       report(params, Integer.class);
     }
 
-    String format(List<Object> params) {
+    String format(final List<Object> params) {
       return String.format("(%s %d)", name(), params.get(0));
     }
 
-    DataType typeOf(String text) {
+    DataType typeOf(final String text) {
       final Matcher matcher =
         Pattern.compile(String.format("^\\(%s[ ](\\d+)\\)$", name())).matcher(text);
 
@@ -71,7 +71,7 @@ public enum DataTypeId {
     }
 
     @Override
-    public Object getAttribute(Attribute a, List<Object> params) {
+    public Object getAttribute(final Attribute a, final List<Object> params) {
       if (a == Attribute.SIZE) {
         return params.get(0);
       }
@@ -86,19 +86,19 @@ public enum DataTypeId {
    * applicable.
    */
   LOGIC_BOOLEAN(Boolean.class, true) {
-    Object valueOf(String s, int radix, List<Object> params) {
+    Object valueOf(final String s, final int radix, final List<Object> params) {
       return Boolean.valueOf(s);
     }
 
-    int radix(int size) {
+    int radix(final int size) {
       return Radix.BIN.value();
     }
 
-    void validate(List<Object> params) {
+    void validate(final List<Object> params) {
       report(params);
     }
 
-    String format(List<Object> params) {
+    String format(final List<Object> params) {
       return name();
     }
 
@@ -117,23 +117,23 @@ public enum DataTypeId {
    * representations). The size attribute is not applicable.
    */
   LOGIC_INTEGER(BigInteger.class, true) {
-    Object valueOf(String s, int radix, List<Object> params) {
+    Object valueOf(final String s, final int radix, final List<Object> params) {
       return new BigInteger(s, radix);
     }
 
-    int radix(int size) {
+    int radix(final int size) {
       return Radix.DEC.value();
     }
 
-    void validate(List<Object> params) {
+    void validate(final List<Object> params) {
       report(params);
     }
 
-    String format(List<Object> params) {
+    String format(final List<Object> params) {
       return name();
     }
 
-    DataType typeOf(String text) {
+    DataType typeOf(final String text) {
       if (!text.equals(name())) {
         return null;
       }
@@ -147,19 +147,19 @@ public enum DataTypeId {
    * types used store to floating point numbers. The size attribute is not applicable.
    */
   LOGIC_REAL(Double.class, true) {
-    Object valueOf(String s, int radix, List<Object> params) {
+    Object valueOf(final String s, final int radix, final List<Object> params) {
       return Double.valueOf(s);
     }
 
-    int radix(int size) {
+    int radix(final int size) {
       return Radix.DEC.value();
     }
 
-    void validate(List<Object> params) {
+    void validate(final List<Object> params) {
       report(params);
     }
 
-    String format(List<Object> params) {
+    String format(final List<Object> params) {
       return name();
     }
 
@@ -187,7 +187,7 @@ public enum DataTypeId {
      * {@inheritDoc} Radix for composite types like MAP is undefined.
      */
 
-    int radix(int size) {
+    int radix(final int size) {
       return 0;
     }
 
@@ -250,21 +250,21 @@ public enum DataTypeId {
    * Uninterpreted data, that should not be passed to solver.
    */
   UNKNOWN(Object.class, true) {
-    Object valueOf(String s, int radix, List<Object> params) {
+    Object valueOf(final String s, final int radix, final List<Object> params) {
       throw new UnsupportedOperationException("Unable to create a value of an unknown type.");
     }
 
-    int radix(int size) {
+    int radix(final int size) {
       return 0;
     }
 
-    void validate(List<Object> params) {}
+    void validate(final List<Object> params) {}
 
-    String format(List<Object> params) {
+    String format(final List<Object> params) {
       return name();
     }
 
-    DataType typeOf(String text) {
+    DataType typeOf(final String text) {
       if (!text.equals(name())) {
         return null;
       }
@@ -362,7 +362,7 @@ public enum DataTypeId {
     }
   }
 
-  public Object getAttribute(Attribute a, List<Object> params) {
+  public Object getAttribute(final Attribute a, final List<Object> params) {
     return null;
   }
 }

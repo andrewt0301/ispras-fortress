@@ -64,10 +64,10 @@ public enum ExprPrinter implements ExprTreePrinter {
    * @return {@link ru.ispras.fortress.expression.printer.ExprTreePrinter} expression printer object
    *         or <code>null</code> if there is no printer with such name
    */
-  public static ExprTreePrinter getExprPrinter(String name) {
+  public static ExprTreePrinter getExprPrinter(final String name) {
     final ExprPrinter[] values = ExprPrinter.values();
 
-    for (ExprPrinter value : values) {
+    for (final ExprPrinter value : values) {
       if (value.name().equalsIgnoreCase(name)) {
         return value;
       }

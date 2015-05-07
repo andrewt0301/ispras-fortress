@@ -148,7 +148,10 @@ public final class OperationDescription {
    * @param order the order of operands.
    */
 
-  public OperationDescription(final String[] sign, boolean addSpaces, final int[] order) {
+  public OperationDescription(
+      final String[] sign,
+      final boolean addSpaces,
+      final int[] order) {
     final String[] modifiedSign = new String[sign.length];
 
     for (int i = 0; i < sign.length; i++) {
@@ -170,7 +173,9 @@ public final class OperationDescription {
    *        required.
    */
 
-  public OperationDescription(final String[] sign, final boolean addSpaces) {
+  public OperationDescription(
+      final String[] sign,
+      final boolean addSpaces) {
     this(sign, addSpaces, null);
   }
 
@@ -181,7 +186,9 @@ public final class OperationDescription {
    * @param order the order of operands.
    */
 
-  public OperationDescription(final String[] sign, final int[] order) {
+  public OperationDescription(
+      final String[] sign,
+      final int[] order) {
     this(sign, true, order);
   }
 
