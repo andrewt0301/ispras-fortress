@@ -25,12 +25,12 @@ public interface RandomGenerator {
    * 
    * @param s the seed to be set.
    */
-  public void seed(int s);
+  void seed(int s);
 
   /**
    * Returns the next random integer number.
    * 
    * @return the random int.
    */
-  public int next();
+  int next();
 }

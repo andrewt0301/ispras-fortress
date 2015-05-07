@@ -36,7 +36,7 @@ public interface CalculatorEngine {
    *         match).
    */
 
-  public boolean isSupported(Enum<?> operatorId, Data... operands);
+  boolean isSupported(Enum<?> operatorId, Data... operands);
 
   /**
    * Performs calculation by applying the specified operation to the operands.
@@ -49,5 +49,5 @@ public interface CalculatorEngine {
    *         violated (e.g. operand types do not match).
    */
 
-  public Data calculate(Enum<?> operatorId, Data... operands);
+  Data calculate(Enum<?> operatorId, Data... operands);
 }

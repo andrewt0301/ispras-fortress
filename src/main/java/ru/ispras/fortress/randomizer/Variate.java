@@ -28,5 +28,5 @@ public interface Variate<T> {
    * 
    * @return a random variate value.
    */
-  public T value();
+  T value();
 }

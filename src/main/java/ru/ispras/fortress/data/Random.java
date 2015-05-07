@@ -41,12 +41,12 @@ public final class Random {
    * @author Andrei Tatarnikov
    */
 
-  public static interface Engine {
+  public interface Engine {
     /**
      * Sets up the generation engine (if it requires some setup before being used).
      */
 
-    public void setUp();
+    void setUp();
 
     /**
      * Sets a new seed of the random data generation engine.
@@ -54,7 +54,7 @@ public final class Random {
      * @param seed The seed to be set.
      */
 
-    public void setSeed(int seed);
+    void setSeed(int seed);
 
     /**
      * Generated random data of the specified type and size.
@@ -67,7 +67,7 @@ public final class Random {
      *         data type.
      */
 
-    public Data random(DataTypeId typeId, int size);
+    Data random(DataTypeId typeId, int size);
   }
 
   /**
@@ -77,7 +77,7 @@ public final class Random {
    * @author Andrei Tatarnikov
    */
 
-  public static interface TypedGenerator {
+  public interface TypedGenerator {
     /**
      * Generates random data. Data type depends on the implementation.
      * 
@@ -85,7 +85,7 @@ public final class Random {
      * @return Random data.
      */
 
-    public Data generate(int size);
+    Data generate(int size);
   }
 
   /**
@@ -95,12 +95,12 @@ public final class Random {
    * @author Andrei Tatarnikov
    */
 
-  public static interface Initializer {
+  public interface Initializer {
     /**
      * Sets up the generation engine (if it requires some setup before being used).
      */
 
-    public void setUp();
+    void setUp();
 
     /**
      * Sets a new seed of the random data generation engine.
@@ -108,7 +108,7 @@ public final class Random {
      * @param seed The seed to be set.
      */
 
-    public void setSeed(int seed);
+    void setSeed(int seed);
   }
 
   /**
@@ -121,7 +121,7 @@ public final class Random {
 
   public static final class CompositeEngine implements Engine {
     private static final String ERR_UNSUPPORTED =
-      "Random data generation is not supported for the %s type.";
+        "Random data generation is not supported for the %s type.";
 
     private final Initializer initializer;
     private final Map<DataTypeId, TypedGenerator> generators;

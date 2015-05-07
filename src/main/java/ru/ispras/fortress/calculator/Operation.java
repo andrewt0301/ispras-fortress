@@ -31,7 +31,7 @@ public interface Operation<OperationId extends Enum<OperationId>> {
    * @return Operation identifier.
    */
 
-  public OperationId getOperationId();
+  OperationId getOperationId();
 
   /**
    * Returns the range that describes the allowed arity of the operation.
@@ -39,7 +39,7 @@ public interface Operation<OperationId extends Enum<OperationId>> {
    * @return Range of operation arity.
    */
 
-  public ArityRange getOperationArity();
+  ArityRange getOperationArity();
 
   /**
    * Performs an operation on the specified operands.
@@ -52,7 +52,7 @@ public interface Operation<OperationId extends Enum<OperationId>> {
    *         different from the one passed to the method.
    */
 
-  public Data calculate(Data... operands);
+  Data calculate(Data... operands);
 
 
   /**
@@ -61,5 +61,5 @@ public interface Operation<OperationId extends Enum<OperationId>> {
    * @return true if operand types are valid for the operation.
    */
 
-  public boolean validTypes(Data... operands);
+  boolean validTypes(Data... operands);
 }
