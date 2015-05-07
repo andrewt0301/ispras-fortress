@@ -33,9 +33,9 @@ public final class VariateBuilder<T> {
   private static final int DEFAULT_BIAS = Integer.MAX_VALUE;
 
   /** The random variates. */
-  private List<Variate<T>> values = new ArrayList<>();
+  private final List<Variate<T>> values = new ArrayList<>();
   /** The random biases. */
-  private List<Integer> biases = new ArrayList<>();
+  private final List<Integer> biases = new ArrayList<>();
 
   /**
    * Adds the random variate with the given bias.

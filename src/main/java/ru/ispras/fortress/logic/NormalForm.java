@@ -36,9 +36,9 @@ public final class NormalForm {
   }
 
   // / The type of the normal form.
-  private Type type;
+  private final Type type;
   // / Constains the clauses of the normal form.
-  private List<Clause> clauses;
+  private final List<Clause> clauses;
 
   /**
    * Constructs the empty normal form of the specified type.

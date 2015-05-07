@@ -70,8 +70,8 @@ final class SmtTextBuilder implements ExprTreeVisitor {
   private final Map<Enum<?>, SolverOperation> operations;
   private final Iterable<Variable> variables;
 
-  private List<StringBuilder> formulas = new LinkedList<StringBuilder>();
-  private FunctionDefinitionBuilders functions = new FunctionDefinitionBuilders();
+  private final List<StringBuilder> formulas = new LinkedList<StringBuilder>();
+  private final FunctionDefinitionBuilders functions = new FunctionDefinitionBuilders();
 
   private StringBuilder currentBuilder = null;
   private int functionCallDepth = 0;

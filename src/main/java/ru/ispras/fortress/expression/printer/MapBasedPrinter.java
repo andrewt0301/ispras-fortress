@@ -39,10 +39,10 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
 
   final class ExprTreeVisitor extends ExprTreeVisitorDefault {
     /** Maps the operation identifiers to the operation descriptions. */
-    private EnumMap<StandardOperation, OperationDescription> map;
+    private final EnumMap<StandardOperation, OperationDescription> map;
 
     /** Keeps the intermediate expression text. */
-    private StringBuffer buffer = new StringBuffer();
+    private final StringBuffer buffer = new StringBuffer();
 
     /** Specifies the order of operands traversal. */
     private int[] operandOrder;
@@ -130,8 +130,8 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
 
   /** Maps the operation identifiers to the operation descriptions. */
 
-  private EnumMap<StandardOperation, OperationDescription> map =
-      new EnumMap<StandardOperation, OperationDescription>(StandardOperation.class);
+  private final EnumMap<StandardOperation, OperationDescription> map =
+      new EnumMap<>(StandardOperation.class);
 
   /**
    * Constructs a map-based expression printer.
@@ -148,8 +148,11 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
    * @param suffix the operation suffix.
    */
 
-  protected final void addMapping(final StandardOperation op, final String prefix,
-      final String[] infix, final String suffix) {
+  protected final void addMapping(
+      final StandardOperation op,
+      final String prefix,
+      final String[] infix,
+      final String suffix) {
     map.put(op, new OperationDescription(prefix, infix, suffix));
   }
 
@@ -163,8 +166,12 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
    * @param order the order of operands.
    */
 
-  protected final void addMapping(final StandardOperation op, final String prefix,
-      final String[] infix, final String suffix, final int[] order) {
+  protected final void addMapping(
+      final StandardOperation op,
+      final String prefix,
+      final String[] infix,
+      final String suffix,
+      final int[] order) {
     map.put(op, new OperationDescription(prefix, infix, suffix, order));
   }
 
@@ -177,8 +184,11 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
    * @param suffix the operation suffix.
    */
 
-  protected final void addMapping(final StandardOperation op, final String prefix,
-      final String infix, final String suffix) {
+  protected final void addMapping(
+      final StandardOperation op,
+      final String prefix,
+      final String infix,
+      final String suffix) {
     map.put(op, new OperationDescription(prefix, infix, suffix));
   }
 
