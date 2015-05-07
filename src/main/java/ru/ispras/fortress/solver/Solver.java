@@ -33,7 +33,7 @@ public interface Solver {
    * @return Solver name.
    */
 
-  public String getName();
+  String getName();
 
   /**
    * Returns the description of the solver.
@@ -41,7 +41,7 @@ public interface Solver {
    * @return solver description.
    */
 
-  public String getDescription();
+  String getDescription();
 
   /**
    * Check whether the specified constraint kind is supported by the solver.
@@ -50,7 +50,7 @@ public interface Solver {
    * @return true if the constraint kind is supported or false otherwise.
    */
 
-  public boolean isSupported(ConstraintKind kind);
+  boolean isSupported(ConstraintKind kind);
 
   /**
    * Returns true if the solver is generic and false if it is custom.
@@ -58,7 +58,7 @@ public interface Solver {
    * @return true for generic solvers or false for custom ones.
    */
 
-  public boolean isGeneric();
+  boolean isGeneric();
 
   /**
    * Solves the specified constraint.
@@ -67,7 +67,7 @@ public interface Solver {
    * @return Result of solving the constraint.
    */
 
-  public SolverResult solve(Constraint constraint);
+  SolverResult solve(Constraint constraint);
 
   /**
    * Register a custom operation that extends the functionality of the solver. The operation is
@@ -76,7 +76,7 @@ public interface Solver {
    * @param function Object describing the semantics and syntax of the function.
    */
 
-  public boolean addCustomOperation(Function function);
+  boolean addCustomOperation(Function function);
 
   /**
    * Register a custom operation that extends the functionality of the solver. The operation is
@@ -87,7 +87,7 @@ public interface Solver {
    *        similar functions.
    */
 
-  public boolean addCustomOperation(FunctionTemplate template);
+  boolean addCustomOperation(FunctionTemplate template);
 
   /**
    * Returns the path to the external constraint solver executable used
@@ -96,7 +96,7 @@ public interface Solver {
    * @return Path
    */
 
-  public String getSolverPath();
+  String getSolverPath();
 
   /**
    * Sets the path to the external constraint solver executable used
@@ -105,5 +105,5 @@ public interface Solver {
    * @param value Path
    */
 
-  public void setSolverPath(String value);
+  void setSolverPath(String value);
 }

@@ -19,24 +19,24 @@ import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 public final class BitVectorAlgorithm {
   private BitVectorAlgorithm() {}
 
-  public static interface IUnaryOperation {
-    public byte run(byte v);
+  public interface IUnaryOperation {
+    byte run(byte v);
   }
 
-  public static interface IBinaryOperation {
-    public byte run(final byte lhs, final byte rhs);
+  public interface IBinaryOperation {
+    byte run(final byte lhs, final byte rhs);
   }
 
-  public static interface IOperation {
-    public byte run();
+  public interface IOperation {
+    byte run();
   }
 
-  public static interface IAction {
-    public void run(byte v);
+  public interface IAction {
+    void run(byte v);
   }
 
-  public static interface IBinaryPredicate {
-    public boolean test(final byte lhs, final byte rhs);
+  public interface IBinaryPredicate {
+    boolean test(final byte lhs, final byte rhs);
   }
 
   public static enum UnaryOperation implements IUnaryOperation {
