@@ -81,7 +81,7 @@ public final class Clause {
     final Set<Integer> x = lhs.size() < rhs.size() ? lhs.getVars() : rhs.getVars();
     final Set<Integer> y = lhs.size() < rhs.size() ? rhs.getVars() : lhs.getVars();
 
-    Set<Integer> result = new LinkedHashSet<Integer>(x);
+    final Set<Integer> result = new LinkedHashSet<Integer>(x);
     result.retainAll(y);
 
     return result;
@@ -106,7 +106,7 @@ public final class Clause {
    * @param var the variable.
    * @return true iff the variable is negated.
    */
-  public boolean getSign(int var) {
+  public boolean getSign(final int var) {
     return literals.get(var);
   }
 
@@ -116,7 +116,7 @@ public final class Clause {
    * @param var the variable to be checked.
    * @return true iff the clause contains the variable.
    */
-  public boolean contains(int var) {
+  public boolean contains(final int var) {
     return literals.containsKey(var);
   }
 
@@ -136,7 +136,7 @@ public final class Clause {
    * @param var the variable.
    * @param sign the negation.
    */
-  public void add(int var, boolean sign) {
+  public void add(final int var, final boolean sign) {
     literals.put(var, sign);
   }
 
@@ -146,7 +146,7 @@ public final class Clause {
    * @param vars the variables.
    * @param sign the negation (common for all variables).
    */
-  public void add(int[] vars, boolean sign) {
+  public void add(final int[] vars, final boolean sign) {
     for (int i = 0; i < vars.length; i++) {
       literals.put(vars[i], sign);
     }
@@ -158,7 +158,7 @@ public final class Clause {
    * @param vars the variables.
    * @param signs the negations.
    */
-  public void add(int[] vars, boolean[] signs) {
+  public void add(final int[] vars, final boolean[] signs) {
     assert vars.length == signs.length;
 
     for (int i = 0; i < vars.length; i++) {
@@ -180,7 +180,7 @@ public final class Clause {
    * 
    * @param var the variable to be removed.
    */
-  public void remove(int var) {
+  public void remove(final int var) {
     literals.remove(var);
   }
 
@@ -189,7 +189,7 @@ public final class Clause {
    * 
    * @param vars the variables to be removed.
    */
-  public void remove(int[] vars) {
+  public void remove(final int[] vars) {
     for (int i = 0; i < vars.length; i++) {
       literals.remove(vars[i]);
     }
@@ -201,7 +201,7 @@ public final class Clause {
    * @param clause the clause whose variables to be removed.
    */
   public void remove(final Clause clause) {
-    for (int var : clause.getVars()) {
+    for (final int var : clause.getVars()) {
       literals.remove(var);
     }
   }
