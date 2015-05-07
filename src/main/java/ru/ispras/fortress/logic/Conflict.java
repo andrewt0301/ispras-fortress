@@ -21,11 +21,11 @@ package ru.ispras.fortress.logic;
  */
 public final class Conflict {
   /** The left-hand-side variable (i.e., a variable with a lower identifier) of the conflict. */
-  private int lhs;
+  private final int lhs;
   /** The right-hand-side variable (i.e., a variable with a higher identifier) of the conflict. */
-  private int rhs;
+  private final int rhs;
   /** The flag indicating whether the conflicting variables have different signs. */
-  private boolean differentSigns;
+  private final boolean differentSigns;
 
   /**
    * Constructs a conflict.
@@ -34,7 +34,7 @@ public final class Conflict {
    * @param rhs variable 2.
    * @param differentSigns the different-signs flag.
    */
-  public Conflict(int lhs, int rhs, boolean differentSigns) {
+  public Conflict(final int lhs, final int rhs, final boolean differentSigns) {
     if (lhs == rhs) {
       throw new IllegalArgumentException("A variable cannot conflict with itself");
     }
@@ -51,7 +51,7 @@ public final class Conflict {
    * @param lhs variable 1.
    * @param rhs variable 2.
    */
-  public Conflict(int lhs, int rhs) {
+  public Conflict(final int lhs, final int rhs) {
     this(lhs, rhs, false);
   }
 
