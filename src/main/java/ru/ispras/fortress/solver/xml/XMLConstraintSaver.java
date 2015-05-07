@@ -36,7 +36,13 @@ import org.w3c.dom.Element;
 
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.Variable;
-import ru.ispras.fortress.expression.*;
+import ru.ispras.fortress.expression.ExprTreeVisitor;
+import ru.ispras.fortress.expression.ExprTreeWalker;
+import ru.ispras.fortress.expression.Node;
+import ru.ispras.fortress.expression.NodeBinding;
+import ru.ispras.fortress.expression.NodeOperation;
+import ru.ispras.fortress.expression.NodeValue;
+import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintKind;
 import ru.ispras.fortress.solver.constraint.Formulas;

@@ -14,8 +14,9 @@
 
 package ru.ispras.fortress.data.types.bitvector;
 
+import static ru.ispras.fortress.data.types.bitvector.BitVectorMath.Operands.BINARY;
+import static ru.ispras.fortress.data.types.bitvector.BitVectorMath.Operands.UNARY;
 import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
-import static ru.ispras.fortress.data.types.bitvector.BitVectorMath.Operands.*;
 
 import java.math.BigInteger;
 
