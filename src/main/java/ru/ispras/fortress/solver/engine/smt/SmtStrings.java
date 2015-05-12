@@ -61,10 +61,10 @@ public final class SmtStrings {
   public static final String NEGATION = "(- %s)";
   public static final String PARAM_DEF = "(%s %s)";
 
-  private static final Map<DataTypeId, String> typeMap = createTypeMap();
+  private static final Map<DataTypeId, String> TYPE_MAP = createTypeMap();
 
   private static Map<DataTypeId, String> createTypeMap() {
-    final Map<DataTypeId, String> result = new EnumMap<DataTypeId, String>(DataTypeId.class);
+    final Map<DataTypeId, String> result = new EnumMap<>(DataTypeId.class);
 
     result.put(DataTypeId.BIT_VECTOR, TYPE_BITVECTOR);
     result.put(DataTypeId.LOGIC_BOOLEAN, TYPE_BOOL);
@@ -78,7 +78,7 @@ public final class SmtStrings {
   public static String textForType(final DataType type) {
     InvariantChecks.checkNotNull(type);
 
-    if (!typeMap.containsKey(type.getTypeId())) {
+    if (!TYPE_MAP.containsKey(type.getTypeId())) {
       throw new IllegalArgumentException("Unsupported type: " + type.getTypeId());
     }
 
@@ -89,7 +89,7 @@ public final class SmtStrings {
       }
     }
 
-    return String.format(typeMap.get(type.getTypeId()), parameters);
+    return String.format(TYPE_MAP.get(type.getTypeId()), parameters);
   }
 
   public static String textForData(final Data data) {
