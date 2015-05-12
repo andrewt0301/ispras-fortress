@@ -114,7 +114,7 @@ enum XMLNodeType {
 
   BOUND_VARIABLE(XMLConst.NODE_BOUND_VARIABLE);
 
-  private static final Map<String, XMLNodeType> nameToTypeMap;
+  private static final Map<String, XMLNodeType> NAME_TO_TYPE_MAP;
   static {
     final Set<XMLNodeType> constraintSet = EnumSet.of(CONSTRAINT);
     final Set<XMLNodeType> nestingSet = EnumSet.of(FORMULA, OPERATION, BINDING, BOUND_VARIABLE);
@@ -134,14 +134,14 @@ enum XMLNodeType {
     BINDING_LIST.parents = EnumSet.of(BINDING);
     BOUND_VARIABLE.parents = EnumSet.of(BINDING_LIST);
 
-    nameToTypeMap = new HashMap<String, XMLNodeType>();
+    NAME_TO_TYPE_MAP = new HashMap<>();
     for (final XMLNodeType type : values()) {
       if (null == type.parents) {
         throw new IllegalStateException(String.format(
           "%s.parents is not initialized.", type.name()));
       }
 
-      nameToTypeMap.put(type.getNodeName(), type);
+      NAME_TO_TYPE_MAP.put(type.getNodeName(), type);
     }
   }
 
@@ -166,6 +166,6 @@ enum XMLNodeType {
   }
 
   static XMLNodeType fromNodeName(final String name) {
-    return nameToTypeMap.get(name);
+    return NAME_TO_TYPE_MAP.get(name);
   }
 }
