@@ -144,7 +144,7 @@ public final class NormalForm {
       buffer.append("(");
       {
         boolean int_sign = false;
-        for (int var : clause.getVars()) {
+        for (final int var : clause.getVars()) {
           if (int_sign) {
             buffer.append(int_op);
           }

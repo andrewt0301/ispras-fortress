@@ -112,7 +112,7 @@ public final class Orthogonalizer {
         final NormalForm split = new NormalForm(NormalForm.Type.DNF);
 
         // Split one of the clauses to make them disjoint.
-        int index = orthogonalize(clauses.get(j), clauses.get(i), split, conflicts);
+        final int index = orthogonalize(clauses.get(j), clauses.get(i), split, conflicts);
 
         // The left-hand-side clause is rewritten (#0).
         if (index == 0) {
@@ -190,12 +190,12 @@ public final class Orthogonalizer {
     boolean sign = false;
 
     // Additional literals to be added to the splitting clause.
-    Clause factor = new Clause();
+    final Clause factor = new Clause();
 
     // Iterate over the unique variables of the fixed clause.
     for (final int var : unique) {
       // One of the new clauses to be added.
-      Clause clause = new Clause(split);
+      final Clause clause = new Clause(split);
 
       if (prev != -1) {
         factor.add(prev, sign);
