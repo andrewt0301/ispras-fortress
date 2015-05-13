@@ -217,7 +217,7 @@ public final class ESExpr {
 
   private void printTuple(StringBuilder builder) {
     final String delim = " . ";
-    for (ESExpr e : items) {
+    for (final ESExpr e : items) {
       e.toString(builder);
       builder.append(delim);
     }
@@ -237,7 +237,7 @@ public final class ESExpr {
     }
     final ArrayList<ESExpr> normItems = new ArrayList<>(items.size());
     boolean update = false;
-    for (ESExpr e : items) {
+    for (final ESExpr e : items) {
       final ESExpr norm = e.normalizeTuples();
       normItems.add(norm);
       update = update || norm != e;

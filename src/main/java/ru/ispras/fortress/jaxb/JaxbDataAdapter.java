@@ -31,7 +31,7 @@ import ru.ispras.fortress.data.DataTypeId;
  */
 public class JaxbDataAdapter extends XmlAdapter<JaxbData, Data> {
   @Override
-  public JaxbData marshal(Data data) throws Exception {
+  public JaxbData marshal(final Data data) throws Exception {
     if (data == null) {
       return null;
     }
@@ -45,13 +45,13 @@ public class JaxbDataAdapter extends XmlAdapter<JaxbData, Data> {
   }
 
   @Override
-  public Data unmarshal(JaxbData jaxbData) throws Exception {
+  public Data unmarshal(final JaxbData jaxbData) throws Exception {
     if (jaxbData == null) {
       return null;
     }
 
-    DataType dataType =
-        DataType.newDataType(DataTypeId.valueOf(jaxbData.type.name()), jaxbData.size);
+    final DataType dataType = DataType.newDataType(
+        DataTypeId.valueOf(jaxbData.type.name()), jaxbData.size);
 
     return new Data(dataType, jaxbData.value);
   }
