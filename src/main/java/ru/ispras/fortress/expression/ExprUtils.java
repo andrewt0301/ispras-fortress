@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ru.ispras.fortress.data.DataType;
+import ru.ispras.fortress.data.DataTypeId;
 import ru.ispras.fortress.expression.ExprTreeVisitor.Status;
 import ru.ispras.fortress.solver.SolverResult;
 import ru.ispras.fortress.solver.constraint.Constraint;
@@ -42,13 +43,61 @@ public final class ExprUtils {
   private ExprUtils() {}
 
   /**
+   * Checks whether all of the specified expressions have the specified type
+   * (types are compared on the {@link DataTypeId} level).
+   * 
+   * @param typeId Expected data type identifier.
+   * @param exprs Expressions to be checked.
+   * @return {@code true} if all expression types match the type specified by
+   * the {@code typeId} argument or {@code false} otherwise.
+   * 
+   * @throws IllegalArgumentException if the expression array is empty;
+   *         if any expression in the array is {@code null}.
+   */
+
+  public static boolean isType(final DataTypeId typeId, final Node... exprs) {
+    checkNotEmpty(exprs);
+    for (final Node expr : exprs) {
+      checkNotNull(expr);
+      if (!expr.isType(typeId)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
+   * Checks whether all of the specified expressions have the specified type
+   * (types are compared on the {@link DataType} level).
+   * 
+   * @param type Expected data type.
+   * @param exprs Expressions to be checked.
+   * @return {@code true} if all expression types match the type specified by
+   * the {@code type} argument or {@code false} otherwise.
+   * 
+   * @throws IllegalArgumentException if the expression array is empty;
+   *         if any expression in the array is {@code null}.
+   */
+
+  public static boolean isType(final DataType type, final Node... exprs) {
+    checkNotEmpty(exprs);
+    for (final Node expr : exprs) {
+      checkNotNull(expr);
+      if (!expr.isType(type)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
    * Checks whether the specified expression is a logical expression (can be evaluated to boolean).
    * 
    * @param expr Expression to be checked.
    * @return {@code true} if the expression is logical (can be evaluated to boolean) or
    *         {@code false} otherwise.
    * 
-   * @throws NullPointerException if the parameter is {@code null}.
+   * @throws IllegalArgumentException if the parameter is {@code null}.
    */
 
   public static boolean isCondition(final Node expr) {
@@ -65,7 +114,7 @@ public final class ExprUtils {
    * @return {@code true} if the expression is an atomic logical expression or {@code false}
    *         otherwise.
    * 
-   * @throws NullPointerException if the parameter is {@code null}.
+   * @throws IllegalArgumentException if the parameter is {@code null}.
    */
 
   public static boolean isAtomicCondition(final Node expr) {
@@ -99,7 +148,7 @@ public final class ExprUtils {
    * @return {@code true} if the expression tree contains bindings (nodes of type BINDING) or
    *         {@code false} otherwise.
    * 
-   * @throws NullPointerException if the parameter is {@code null}.
+   * @throws IllegalArgumentException if the parameter is {@code null}.
    */
 
   public static boolean hasBindings(final Node expr) {
@@ -126,7 +175,7 @@ public final class ExprUtils {
    * @param expr Expression to be checked.
    * @return {@code true} if the expression is a constant expression or {@code false} otherwise.
    * 
-   * @throws NullPointerException if the parameter is {@code null}.
+   * @throws IllegalArgumentException if the parameter is {@code null}.
    */
 
   public static boolean isConstant(final Node expr) {
@@ -184,9 +233,8 @@ public final class ExprUtils {
    * @param exprs Expressions to be combined.
    * @return A logical conjunction of the specified expressions.
    * 
-   * @throws IllegalArgumentException if no arguments are provided; if an argument is not a logical
-   *         expression.
-   * @throws NullPointerException if any argument in the array is {@code null}.
+   * @throws IllegalArgumentException if any argument in the array is {@code null};
+   *         if no arguments are provided; if an argument is not a logical expression.
    */
 
   public static Node getConjunction(final Node... exprs) {
@@ -207,9 +255,8 @@ public final class ExprUtils {
    * @param exprs Expressions to be combined.
    * @return A logical disjunction of the specified expressions.
    * 
-   * @throws IllegalArgumentException if no arguments are provided; if an argument is not a logical
-   *         expression.
-   * @throws NullPointerException if any argument in the array is {@code null}.
+   * @throws IllegalArgumentException if any argument in the array is {@code null};
+   *         if no arguments are provided; if an argument is not a logical expression.
    */
 
   public static Node getDisjunction(final Node... exprs) {
@@ -230,9 +277,8 @@ public final class ExprUtils {
    * @param exprs Expressions to be combined.
    * @return A logical negation of the specified expressions.
    * 
-   * @throws IllegalArgumentException if no arguments are provided; if an argument is not a logical
-   *         expression.
-   * @throws NullPointerException if any argument in the array is {@code null}.
+   * @throws IllegalArgumentException if any argument in the array is {@code null}; if no arguments
+   *         are provided; if an argument is not a logical expression.
    */
 
   public static Node getNegation(final Node... exprs) {
@@ -246,9 +292,8 @@ public final class ExprUtils {
    * @param exprs Expressions to be combined.
    * @return A logical complement of the specified expressions.
    * 
-   * @throws IllegalArgumentException if no arguments are provided; if an argument is not a logical
-   *         expression.
-   * @throws NullPointerException if any argument in the array is {@code null}.
+   * @throws IllegalArgumentException if any argument in the array is {@code null}; if no arguments are
+   *         provided; if an argument is not a logical expression.
    */
 
   public static Node getComplement(final Node... exprs) {
@@ -263,9 +308,8 @@ public final class ExprUtils {
    * @param exprs Conditions (logical expressions) to be checked.
    * @return {@code true} if the conditions are complete or {@code false} otherwise.
    * 
-   * @throws IllegalArgumentException if no arguments are provided; if an argument is not a logical
-   *         expression.
-   * @throws NullPointerException if any argument in the array is {@code null}.
+   * @throws IllegalArgumentException if any argument in the array is {@code null};
+   *         if no arguments are provided; if an argument is not a logical expression.
    */
 
   public static boolean areComplete(final Node... exprs) {
@@ -281,9 +325,8 @@ public final class ExprUtils {
    * @param exprs Conditions (logical expressions) to be checked.
    * @return {@code true} if the conditions are compatible or {@code false} otherwise.
    * 
-   * @throws IllegalArgumentException if no arguments are provided; if an argument is not a logical
-   *         expression.
-   * @throws NullPointerException if any argument in the array is {@code null}.
+   * @throws IllegalArgumentException if any argument in the array is {@code null}; if no arguments are
+   *         provided; if an argument is not a logical expression.
    */
 
   public static boolean areCompatible(final Node... exprs) {
@@ -298,11 +341,11 @@ public final class ExprUtils {
    * @param expr Expression to be checked.
    * @return {@code true} if the expression is satisfiable or {@code false} otherwise.
    * 
-   * @throws NullPointerException if the parameter is {@code null}.
-   * @throws IllegalArgumentException (1) if the expression description contains errors that
-   * prevent the solver engine from solving it in a correct way or (2) if the solver is unable
-   * to solve a constraint based on the given expression due to limitations of its implementation.
-   * @throws IllegalStateException if the solver engine returned results with an unknown status.    
+   * @throws IllegalArgumentException (1) if the parameter is {@code null}; (2) if the expression
+   *         description contains errors that prevent the solver engine from solving it in
+   *         a correct way; (3) if the solver is unable to solve a constraint based on the given
+   *         expression due to limitations of its implementation.
+   * @throws IllegalStateException if the solver engine returned results with an unknown status.
    */
 
   public static boolean isSAT(final Node expr) {
@@ -336,7 +379,7 @@ public final class ExprUtils {
    * @param expr Expression to be processed.
    * @return A collection of all variables used in the specified expression.
    * 
-   * @throws NullPointerException if the parameter is {@code null}.
+   * @throws IllegalArgumentException if the parameter is {@code null}.
    * @throws IllegalStateException if the method finds nodes that refer to different variables that
    *         have the same name.
    */
@@ -352,9 +395,9 @@ public final class ExprUtils {
    * @param exprs Collection of expressions to be processed.
    * @return A collection of all variables used in the specified expressions.
    * 
-   * @throws NullPointerException if the parameter is {@code null}.
-   * @throws IllegalStateException if the method finds nodes that refer to different variables that
-   *         have the same name.
+   * @throws IllegalArgumentException if the parameter is {@code null}.
+   * @throws IllegalStateException if the method finds nodes that refer to different
+   *         variables that have the same name.
    */
 
   public static Collection<NodeVariable> getVariables(final Iterable<Node> exprs) {
