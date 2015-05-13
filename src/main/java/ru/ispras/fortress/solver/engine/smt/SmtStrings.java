@@ -131,8 +131,8 @@ public final class SmtStrings {
         }
         builder.append(DEFAULT_ARRAY).append(SPACE);
 
-        for (Map.Entry<?, ?> entry : map.entrySet()) {
-          builder.append(textForData((Data) entry.getKey())).append(" ")
+        for (final Map.Entry<?, ?> entry : map.entrySet()) {
+          builder.append(textForData((Data) entry.getKey())).append(' ')
                  .append(textForData((Data) entry.getValue())).append(") ");
         }
 

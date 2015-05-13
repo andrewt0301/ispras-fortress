@@ -353,7 +353,7 @@ final class SmtTextBuilder implements ExprTreeVisitor {
       int i = 0;
       final String type = data.getType().toString();
 
-      for (DataType arrayType : arraysInUse) {
+      for (final DataType arrayType : arraysInUse) {
         if (arrayType.toString().equals(type)) {
           break;
         }

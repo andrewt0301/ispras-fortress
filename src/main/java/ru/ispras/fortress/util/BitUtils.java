@@ -40,7 +40,7 @@ public final class BitUtils {
    * @return Integer bit mask.
    */
   public static int maskInt(final int lo, final int hi) {
-    int x = lo < hi ? lo : hi;
+    final int x = lo < hi ? lo : hi;
     int y = lo < hi ? hi : lo;
 
     if (y >= Integer.SIZE) {
@@ -68,7 +68,7 @@ public final class BitUtils {
    * @return Long bit mask.
    */
   public static long maskLong(final int lo, final int hi) {
-    int x = lo < hi ? lo : hi;
+    final int x = lo < hi ? lo : hi;
     int y = lo < hi ? hi : lo;
 
     if (y >= Long.SIZE) {

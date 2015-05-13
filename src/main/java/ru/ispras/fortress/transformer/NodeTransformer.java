@@ -359,7 +359,7 @@ final class RejectBoundVariablesRule extends ScopedBindingRule {
       return false;
     }
 
-    boolean applicable = shadowed.isApplicable(node);
+    final boolean applicable = shadowed.isApplicable(node);
     if (applicable) {
       applicableCache = shadowed.apply(node);
     }

@@ -174,7 +174,7 @@ public abstract class SmtTextSolver extends SolverBase {
 
   private static Map<String, Variable> variablesMap(final Iterable<Variable> vars) {
     final Map<String, Variable> map = new HashMap<>();
-    for (Variable var : vars) {
+    for (final Variable var : vars) {
       map.put(var.getName(), var);
     }
     return map;
