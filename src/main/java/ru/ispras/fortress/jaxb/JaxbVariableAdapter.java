@@ -32,7 +32,7 @@ import ru.ispras.fortress.data.Variable;
  */
 public class JaxbVariableAdapter extends XmlAdapter<JaxbVariable, Variable> {
   @Override
-  public JaxbVariable marshal(Variable variable) throws Exception {
+  public JaxbVariable marshal(final Variable variable) throws Exception {
     if (variable == null) {
       return null;
     }
@@ -49,7 +49,7 @@ public class JaxbVariableAdapter extends XmlAdapter<JaxbVariable, Variable> {
   }
 
   @Override
-  public Variable unmarshal(JaxbVariable jaxbVariable) throws Exception {
+  public Variable unmarshal(final JaxbVariable jaxbVariable) throws Exception {
     if (jaxbVariable == null) {
       return null;
     }

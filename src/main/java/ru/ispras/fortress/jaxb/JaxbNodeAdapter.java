@@ -33,7 +33,7 @@ import ru.ispras.fortress.expression.NodeValue;
  */
 public class JaxbNodeAdapter extends XmlAdapter<JaxbNode, Node> {
   @Override
-  public JaxbNode marshal(Node node) throws Exception {
+  public JaxbNode marshal(final Node node) throws Exception {
     if (node == null) {
       return null;
     }
