@@ -40,7 +40,7 @@ public final class ESExpr {
   final String literal;
   final List<ESExpr> items;
 
-  private ESExpr(String literal, List<ESExpr> items) {
+  private ESExpr(final String literal, final List<ESExpr> items) {
     this.literal = literal;
     this.items = items;
   }
@@ -129,7 +129,7 @@ public final class ESExpr {
   }
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (o == null) {
       return false;
     }
@@ -176,7 +176,7 @@ public final class ESExpr {
    * @param builder StringBuilder to write into.
    */
 
-  private void toString(StringBuilder builder) {
+  private void toString(final StringBuilder builder) {
     if (this.isAtom()) {
       builder.append(this.getLiteral());
       return;
@@ -198,7 +198,7 @@ public final class ESExpr {
    * @param builder StringBuilder to write into.
    */
 
-  private void printList(StringBuilder builder) {
+  private void printList(final StringBuilder builder) {
     final String delim = " ";
     for (int i = 0; i < items.size() - 1; ++i) {
       items.get(i).toString(builder);
@@ -215,7 +215,7 @@ public final class ESExpr {
    * @param builder StringBuilder to write into.
    */
 
-  private void printTuple(StringBuilder builder) {
+  private void printTuple(final StringBuilder builder) {
     final String delim = " . ";
     for (final ESExpr e : items) {
       e.toString(builder);
@@ -289,9 +289,9 @@ public final class ESExpr {
    * @throws IllegalArgumentException if {@code literal} is {@code null}
    */
 
-  public static ESExpr createAtom(String literal) {
+  public static ESExpr createAtom(final String literal) {
     checkNotNull(literal);
-    if (literal.toUpperCase().equals(NIL.getLiteral())) {
+    if (literal.equalsIgnoreCase(NIL.getLiteral())) {
       return NIL;
     }
     return new ESExpr(literal, Collections.<ESExpr>emptyList());
@@ -306,7 +306,7 @@ public final class ESExpr {
    * @throws IllegalArgumentException if {@code items} list is {@code null}
    */
 
-  public static ESExpr createList(List<ESExpr> items) {
+  public static ESExpr createList(final List<ESExpr> items) {
     checkNotNull(items);
     if (items.isEmpty()) {
       return NIL;
@@ -325,7 +325,7 @@ public final class ESExpr {
    * @throws IllegalArgumentException if {@code items} list is {@code null}
    */
 
-  public static ESExpr createTuple(List<ESExpr> items) {
+  public static ESExpr createTuple(final List<ESExpr> items) {
     checkNotNull(items);
     if (items.isEmpty()) {
       return NIL;
@@ -346,7 +346,7 @@ public final class ESExpr {
    * @throws IllegalArgumentException if any of given expressions is {@code null}
    */
 
-  public static ESExpr cons(ESExpr lhs, ESExpr rhs) {
+  public static ESExpr cons(final ESExpr lhs, final ESExpr rhs) {
     checkNotNull(lhs);
     checkNotNull(rhs);
 
