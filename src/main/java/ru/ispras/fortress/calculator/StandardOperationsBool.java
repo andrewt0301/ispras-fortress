@@ -132,21 +132,20 @@ enum StandardOperationsBool implements Operation<StandardOperation> {
     }
   };
 
-  private static final Map<StandardOperation, Operation<StandardOperation>> operations;
-
+  private static final Map<StandardOperation, Operation<StandardOperation>> OPERATIONS;
   static {
     final Map<StandardOperation, Operation<StandardOperation>> map =
-      new EnumMap<>(StandardOperation.class);
+       new EnumMap<>(StandardOperation.class);
 
     for (final Operation<StandardOperation> value : values()) {
       map.put(value.getOperationId(), value);
     }
 
-    operations = Collections.unmodifiableMap(map);
+    OPERATIONS = Collections.unmodifiableMap(map);
   }
 
   public static Map<StandardOperation, Operation<StandardOperation>> operations() {
-    return operations;
+    return OPERATIONS;
   }
 
   private final StandardOperation operationId;
