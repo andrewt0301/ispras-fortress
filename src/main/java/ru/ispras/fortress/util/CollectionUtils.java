@@ -158,17 +158,15 @@ public final class CollectionUtils {
    * @param elem Element to be added. 
    * @return Updated list that contains the appended element.
    * 
-   * @throws NullPointerException if the {@code lhs} parameter is {@code null}.
+   * @throws IllegalArgumentException if the {@code lhs} parameter is {@code null}.
    */
 
-  public  static <T> List<T> appendToList(List<T> lhs, T elem) {
+  public static <T> List<T> appendToList(final List<T> lhs, final T elem) {
     checkNotNull(lhs);
 
-    if (lhs.isEmpty()) {
-      lhs = new ArrayList<T>();
-    }
+    final List<T> result = lhs.isEmpty() ? new ArrayList<T>() : lhs;
+    result.add(elem);
 
-    lhs.add(elem);
     return lhs;
   }
 }
