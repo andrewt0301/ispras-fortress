@@ -245,7 +245,7 @@ public abstract class SmtTextSolver extends SolverBase {
     public final ESExprMatcher CAST = new ESExprMatcher("(_ %a %a)");
     public final ESExprMatcher ITE = new ESExprMatcher("(ite (= %a %s) %s %s)");
 
-    public Context(Map<String, Variable> required) {
+    public Context(final Map<String, Variable> required) {
       this.required = required;
       this.deferred = new HashMap<>();
       this.model = new HashMap<>();
@@ -292,7 +292,10 @@ public abstract class SmtTextSolver extends SolverBase {
     return parseAtom(e.getLiteral(), type);
   }
 
-  private static Data parseArray(ESExpr e, DataType type, Context ctx) {
+  private static Data parseArray(
+      final ESExpr e,
+      final DataType type,
+      final Context ctx) {
     if (ctx.CAST_ARRAY.matches(e)) {
       return valueReference(getLiteral(e, 2), type, ctx);
     }
@@ -328,7 +331,10 @@ public abstract class SmtTextSolver extends SolverBase {
     return Data.newArray(constantArray(keyType, constant));
   }
 
-  private static DataMap parseIteArray(ESExpr e, DataType type, Context ctx) {
+  private static DataMap parseIteArray(
+      ESExpr e,
+      final DataType type,
+      final Context ctx) {
     final DataType keyType =
         (DataType) type.getAttribute(DataTypeId.Attribute.KEY);
     final DataType valueType =
@@ -349,7 +355,10 @@ public abstract class SmtTextSolver extends SolverBase {
     return map;
   }
 
-  private static DataMap parseStoreArray(ESExpr e, DataType type, Context ctx) {
+  private static DataMap parseStoreArray(
+      ESExpr e,
+      final DataType type,
+      final Context ctx) {
     final DataType keyType =
         (DataType) type.getAttribute(DataTypeId.Attribute.KEY);
     final DataType valueType =
