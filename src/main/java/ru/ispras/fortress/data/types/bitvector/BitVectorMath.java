@@ -411,17 +411,17 @@ public final class BitVectorMath {
     final BigInteger size = BigInteger.valueOf(v.getBitSize());
     final BigInteger amount = to.mod(size);
 
-    return shl_internal(v, amount.intValue());
+    return doShl(v, amount.intValue());
   }
 
   public static BitVector shl(final BitVector v, final int to) {
     checkNotNull(v);
 
     final int amount = to % v.getBitSize();
-    return shl_internal(v, amount);
+    return doShl(v, amount);
   }
 
-  private static BitVector shl_internal(final BitVector v, final int amount) {
+  private static BitVector doShl(final BitVector v, final int amount) {
     if (0 == amount) {
       return v;
     }
@@ -467,17 +467,17 @@ public final class BitVectorMath {
     final BigInteger size = BigInteger.valueOf(v.getBitSize());
     final BigInteger amount = to.mod(size);
 
-    return lshr_internal(v, amount.intValue());
+    return doLshr(v, amount.intValue());
   }
 
   public static BitVector lshr(final BitVector v, final int to) {
     checkNotNull(v);
 
     final int amount = to % v.getBitSize();
-    return lshr_internal(v, amount);
+    return doLshr(v, amount);
   }
 
-  private static BitVector lshr_internal(final BitVector v, final int amount) {
+  private static BitVector doLshr(final BitVector v, final int amount) {
     if (0 == amount) {
       return v;
     }
@@ -523,17 +523,17 @@ public final class BitVectorMath {
     final BigInteger size = BigInteger.valueOf(v.getBitSize());
     final BigInteger amount = to.mod(size);
 
-    return ashr_internal(v, amount.intValue());
+    return doAshr(v, amount.intValue());
   }
 
   public static BitVector ashr(final BitVector v, final int to) {
     checkNotNull(v);
 
     final int amount = to % v.getBitSize();
-    return ashr_internal(v, amount);
+    return doAshr(v, amount);
   }
 
-  private static BitVector ashr_internal(final BitVector v, final int amount) {
+  private static BitVector doAshr(final BitVector v, final int amount) {
     if (0 == amount) {
       return v;
     }
@@ -584,7 +584,7 @@ public final class BitVectorMath {
     final BigInteger size = BigInteger.valueOf(v.getBitSize());
     final BigInteger amount = to.mod(size);
 
-    return rotl_internal(v, amount.intValue());
+    return doRotl(v, amount.intValue());
   }
 
   public static BitVector rotl(final BitVector v, final int to) {
@@ -608,7 +608,7 @@ public final class BitVectorMath {
     return result;
   }
   
-  private static BitVector rotl_internal(final BitVector v, final int amount) {
+  private static BitVector doRotl(final BitVector v, final int amount) {
     if (0 == amount) {
       return v;
     }
@@ -656,17 +656,17 @@ public final class BitVectorMath {
     final BigInteger size = BigInteger.valueOf(v.getBitSize());
     final BigInteger amount = to.mod(size);
 
-    return rotr_internal(v, amount.intValue());
+    return doRotr(v, amount.intValue());
   }
 
   public static BitVector rotr(final BitVector v, final int to) {
     checkNotNull(v);
 
     final int amount = to % v.getBitSize();
-    return rotr_internal(v, amount);
+    return doRotr(v, amount);
   }
 
-  private static BitVector rotr_internal(final BitVector v, final int amount) {
+  private static BitVector doRotr(final BitVector v, final int amount) {
     if (0 == amount) {
       return v;
     }
@@ -703,7 +703,7 @@ public final class BitVectorMath {
   }
 
   public static BitVector mul(final BitVector lhs, final BitVector rhs) {
-    checkArguments(lhs, rhs);
+    checkEqualSize(lhs, rhs);
 
     final BigInteger result =
         lhs.bigIntegerValue(false).multiply(rhs.bigIntegerValue(false));
@@ -712,7 +712,7 @@ public final class BitVectorMath {
   }
 
   public static BitVector udiv(final BitVector lhs, final BitVector rhs) {
-    checkArguments(lhs, rhs);
+    checkEqualSize(lhs, rhs);
 
     final BigInteger result =
         lhs.bigIntegerValue(false).divide(rhs.bigIntegerValue(false));
@@ -721,7 +721,7 @@ public final class BitVectorMath {
   }
 
   public static BitVector sdiv(final BitVector lhs, final BitVector rhs) {
-    checkArguments(lhs, rhs);
+    checkEqualSize(lhs, rhs);
 
     final BigInteger result =
         lhs.bigIntegerValue().divide(rhs.bigIntegerValue());
@@ -730,7 +730,7 @@ public final class BitVectorMath {
   }
 
   public static BitVector urem(final BitVector lhs, final BitVector rhs) {
-    checkArguments(lhs, rhs);
+    checkEqualSize(lhs, rhs);
 
     final BigInteger lint = lhs.bigIntegerValue(false);
     final BigInteger rint = rhs.bigIntegerValue(false);
@@ -739,7 +739,7 @@ public final class BitVectorMath {
   }
 
   public static BitVector srem(final BitVector lhs, final BitVector rhs) {
-    checkArguments(lhs, rhs);
+    checkEqualSize(lhs, rhs);
 
     final BigInteger lint = lhs.bigIntegerValue();
     final BigInteger rint = rhs.bigIntegerValue();
@@ -748,7 +748,7 @@ public final class BitVectorMath {
   }
 
   public static BitVector smod(final BitVector lhs, final BitVector rhs) {
-    checkArguments(lhs, rhs);
+    checkEqualSize(lhs, rhs);
 
     final BigInteger lint = lhs.bigIntegerValue();
     final BigInteger rint = rhs.bigIntegerValue();
@@ -779,40 +779,30 @@ public final class BitVectorMath {
   }
 
   public static BitVector ule(final BitVector lhs, final BitVector rhs) {
-    checkNotNull(lhs);
-    checkNotNull(rhs);
     checkEqualSize(lhs, rhs);
 
     return BitVector.valueOf(lhs.compareTo(rhs) <= 0);
   }
 
   public static BitVector ult(final BitVector lhs, final BitVector rhs) {
-    checkNotNull(lhs);
-    checkNotNull(rhs);
     checkEqualSize(lhs, rhs);
 
     return BitVector.valueOf(lhs.compareTo(rhs) < 0);
   }
 
   public static BitVector uge(final BitVector lhs, final BitVector rhs) {
-    checkNotNull(lhs);
-    checkNotNull(rhs);
     checkEqualSize(lhs, rhs);
 
     return BitVector.valueOf(lhs.compareTo(rhs) >= 0);
   }
 
   public static BitVector ugt(final BitVector lhs, final BitVector rhs) {
-    checkNotNull(lhs);
-    checkNotNull(rhs);
     checkEqualSize(lhs, rhs);
 
     return BitVector.valueOf(lhs.compareTo(rhs) > 0);
   }
 
   public static BitVector sle(final BitVector lhs, final BitVector rhs) {
-    checkNotNull(lhs);
-    checkNotNull(rhs);
     checkEqualSize(lhs, rhs);
 
     final int signBitIndex = lhs.getBitSize() - 1;
@@ -829,8 +819,6 @@ public final class BitVectorMath {
   }
 
   public static BitVector slt(final BitVector lhs, final BitVector rhs) {
-    checkNotNull(lhs);
-    checkNotNull(rhs);
     checkEqualSize(lhs, rhs);
 
     final int signBitIndex = lhs.getBitSize() - 1;
@@ -847,8 +835,6 @@ public final class BitVectorMath {
   }
 
   public static BitVector sge(final BitVector lhs, final BitVector rhs) {
-    checkNotNull(lhs);
-    checkNotNull(rhs);
     checkEqualSize(lhs, rhs);
 
     final int signBitIndex = lhs.getBitSize() - 1;
@@ -865,8 +851,6 @@ public final class BitVectorMath {
   }
 
   public static BitVector sgt(final BitVector lhs, final BitVector rhs) {
-    checkNotNull(lhs);
-    checkNotNull(rhs);
     checkEqualSize(lhs, rhs);
 
     final int signBitIndex = lhs.getBitSize() - 1;
@@ -883,16 +867,12 @@ public final class BitVectorMath {
   }
 
   public static BitVector eq(final BitVector lhs, final BitVector rhs) {
-    checkNotNull(lhs);
-    checkNotNull(rhs);
     checkEqualSize(lhs, rhs);
 
     return BitVector.valueOf(lhs.equals(rhs));
   }
 
   public static BitVector neq(final BitVector lhs, final BitVector rhs) {
-    checkNotNull(lhs);
-    checkNotNull(rhs);
     checkEqualSize(lhs, rhs);
 
     return BitVector.valueOf(!lhs.equals(rhs));
@@ -932,8 +912,6 @@ public final class BitVectorMath {
       final BitVector lhs,
       final BitVector rhs,
       final BitVectorAlgorithm.IBinaryOperation op) {
-    checkNotNull(lhs);
-    checkNotNull(rhs);
     checkEqualSize(lhs, rhs);
 
     final BitVector result = BitVector.newEmpty(lhs.getBitSize());
@@ -953,13 +931,10 @@ public final class BitVectorMath {
     return result;
   }
 
-  private static void checkArguments(final BitVector lhs, final BitVector rhs) {
+  private static void checkEqualSize(final BitVector lhs, final BitVector rhs) {
     checkNotNull(lhs);
     checkNotNull(rhs);
-    checkEqualSize(lhs, rhs);
-  }
 
-  private static void checkEqualSize(final BitVector lhs, final BitVector rhs) {
     if (lhs.getBitSize() != rhs.getBitSize()) {
       throw new IllegalArgumentException(String.format(
         "Bit vector sizes do not match: %d != %d.", lhs.getBitSize(), rhs.getBitSize()));
