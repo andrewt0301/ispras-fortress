@@ -74,7 +74,7 @@ public abstract class Node {
    * Creates a node of the specified kind.
    * 
    * @param kind Node kind identifier.
-   * @throws NullPointerException if the parameter equals null.
+   * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
 
   protected Node(final Kind kind) {
@@ -88,7 +88,7 @@ public abstract class Node {
    * it).
    * 
    * @param node Node object to be copied.
-   * @throws NullPointerException if the parameter equals null.
+   * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
 
   protected Node(final Node node) {
@@ -186,6 +186,8 @@ public abstract class Node {
    * @param left An existing expression.
    * @param right An existing expression.
    * @return A new expression.
+   * 
+   * @throws IllegalArgumentException if any of the parameters equals {@code null}.
    */
 
   public static Node AND(final Node left, final Node right) {
@@ -200,6 +202,8 @@ public abstract class Node {
    * @param left An existing expression.
    * @param right An existing expression.
    * @return A new expression.
+   * 
+   * @throws IllegalArgumentException if any of the parameters equals {@code null}.
    */
 
   public static Node OR(final Node left, final Node right) {
@@ -213,6 +217,8 @@ public abstract class Node {
    * 
    * @param expr An existing expression.
    * @return A new expression.
+   * 
+   * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
 
   public static Node NOT(final Node expr) {
