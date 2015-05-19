@@ -68,7 +68,7 @@ public final class NodeValue extends Node {
    * 
    * @param data A data object.
    * 
-   * @throws NullPointerException if the argument is {@code null}.
+   * @throws IllegalArgumentException if the argument is {@code null}.
    */
 
   public NodeValue(final Data data) {
@@ -114,7 +114,7 @@ public final class NodeValue extends Node {
    * 
    * @param data New data value to be associated with the node.
    * 
-   * @throws NullPointerException if the argument is {@code null}. 
+   * @throws IllegalArgumentException if the argument is {@code null}. 
    */
 
   public void setData(final Data data) {
