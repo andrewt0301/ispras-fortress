@@ -38,7 +38,7 @@ public final class Data {
    * @param value A BitInteger value.
    * @return New data object.
    * 
-   * @throws NullPointerException if the parameter equals {@code null}.
+   * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
 
   public static Data newInteger(final BigInteger value) {
@@ -75,7 +75,7 @@ public final class Data {
    * @param radix Radix to be used for parsing. 
    * @return New data object.
    * 
-   * @throws NullPointerException if the {@code text} parameter equals {@code null}.
+   * @throws IllegalArgumentException if the {@code text} parameter equals {@code null}.
    * @throws NumberFormatException if failed to parse the string. 
    */
 
@@ -143,7 +143,7 @@ public final class Data {
    * @param size The bit vector size (in bits).
    * @return A new data object.
    * 
-   * @throws NullPointerException if the {@code value} parameter equals {@code null}.
+   * @throws IllegalArgumentException if the {@code value} parameter equals {@code null}.
    */
 
   public static Data newBitVector(
@@ -163,7 +163,7 @@ public final class Data {
    * @param value A BitVector object.
    * @return A new data object.
    * 
-   * @throws NullPointerException if the {@code value} parameter equals {@code null}.
+   * @throws IllegalArgumentException if the {@code value} parameter equals {@code null}.
    */
 
   public static Data newBitVector(final BitVector value) {
@@ -183,7 +183,7 @@ public final class Data {
    * @param size Size of the resulting bit vector in bits.
    * @return A new data object.
    * 
-   * @throws NullPointerException if the {@code s} parameter equals {@code null}.
+   * @throws IllegalArgumentException if the {@code s} parameter equals {@code null}.
    */
 
   public static Data newBitVector(
@@ -231,7 +231,7 @@ public final class Data {
    * @param map A {@link DataMap} object.
    * @return A new data object.
    * 
-   * @throws NullPointerException if the {@code map} parameter equals {@code null}.
+   * @throws IllegalArgumentException if the {@code map} parameter equals {@code null}.
    */
 
   public static Data newArray(final DataMap map) {
@@ -246,6 +246,8 @@ public final class Data {
    * 
    * @param type The type of the data.
    * @param value An object of related type that stores the data.
+   * 
+   * @throws IllegalArgumentException if the {@code type} parameter is {@code null}.
    */
 
   public Data(final DataType type, final Object value) {
