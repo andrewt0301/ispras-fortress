@@ -56,7 +56,7 @@ public final class ConstraintBuilder {
    * 
    * @param kind Constraint type.
    * 
-   * @throws NullPointerException if the parameter equals null.
+   * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
 
   public ConstraintBuilder(final ConstraintKind kind) {
@@ -75,7 +75,7 @@ public final class ConstraintBuilder {
    * 
    * @param constraint An existing constraint.
    * 
-   * @throws NullPointerException if the parameter is null.
+   * @throws IllegalArgumentException if the parameter is {@code null}.
    */
 
   public ConstraintBuilder(final Constraint constraint) {
@@ -156,10 +156,10 @@ public final class ConstraintBuilder {
    * 
    * @param variables A collection of variables.
    * 
-   * @throws NullPointerException if the parameter equals null.
-   * @throws IllegalArgumentException if the specified variable name has already been use to define
-   *         a variable that has different type or value (an illegal attempt to redefine the
-   *         variable). See the internal addVariable method.
+   * @throws IllegalArgumentException if the parameter is {@code null};
+   *         if the specified variable name has already been use to define
+   *         a variable that has different type or value (an illegal attempt
+   *         to redefine the variable). See the internal addVariable method.
    */
 
   public void addVariables(final Iterable<Variable> variables) {
@@ -175,10 +175,9 @@ public final class ConstraintBuilder {
    * 
    * @param variables A collection of variables.
    * 
-   * @throws NullPointerException if the parameter equals null.
-   * @throws IllegalArgumentException if the specified variable name has already been use to define
-   *         a variable that has different type or value (an illegal attempt to redefine the
-   *         variable). See the internal addVariable method.
+   * @throws IllegalArgumentException if the parameter is {@code null}; if the specified variable
+   *         name has already been use to define a variable that has different type or value
+   *         (an illegal attempt to redefine the variable). See the internal addVariable method.
    */
 
   public void addVariableCopies(final Iterable<Variable> variables) {
@@ -197,10 +196,10 @@ public final class ConstraintBuilder {
    * @param type Variable type.
    * @return A reference to the created variable.
    * 
-   * @throws NullPointerException if any of the parameters equals null.
-   * @throws IllegalArgumentException if the specified variable name has already been use to define
-   *         a variable that has different type or value (an illegal attempt to redefine the
-   *         variable). See the internal addVariable method.
+   * @throws IllegalArgumentException if any of the parameters is {@code null};
+   *         if the specified variable name has already been use to define
+   *         a variable that has different type or value (an illegal attempt to
+   *         redefine the variable). See the internal addVariable method.
    */
 
   public Variable addVariable(final String name, final DataType type) {
@@ -218,8 +217,8 @@ public final class ConstraintBuilder {
    * @param data Data object that specifies the type and the value of the variable.
    * @return A reference to the created variable.
    * 
-   * @throws NullPointerException if any of the parameters equals null.
-   * @throws IllegalArgumentException if the specified variable name has already been use to define
+   * @throws IllegalArgumentException if any of the parameters equals {@code null};
+   *         if the specified variable name has already been use to define
    *         a variable that has different type or value (an illegal attempt to redefine the
    *         variable). See the internal addVariable method.
    */
@@ -241,8 +240,8 @@ public final class ConstraintBuilder {
    * @param variable Variable object.
    * @return A referent to the variable in the variable table.
    * 
-   * @throws NullPointerException if the parameter equals null.
-   * @throws IllegalArgumentException if the specified variable name has already been use to define
+   * @throws IllegalArgumentException if the parameter equals {@code null};
+   *         if the specified variable name has already been use to define
    *         a variable that has different type or value (an illegal attempt to redefine the
    *         variable).
    */
@@ -270,8 +269,7 @@ public final class ConstraintBuilder {
    * 
    * @return A new constraint.
    * 
-   * @throws NullPointerException see the invariants of the Constraint class constructor.
-   * @throws IllegalArgumentException see the invariants of the Constraint class constructor.
+   * @throws IllegalArgumentException see the invariants of the {@link Constraint} class constructor.
    */
 
   public Constraint build() {

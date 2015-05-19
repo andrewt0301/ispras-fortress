@@ -106,7 +106,7 @@ public final class CollectionUtils {
    * @param rhs Second set (right hand).
    * @return Relative complement of two sets.
    * 
-   * @throws NullPointerException if any of the parameters is {@code null}.
+   * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
 
   public static <E> Set<E> complementSets(final Set<E> lhs, final Set<E> rhs) {
@@ -131,7 +131,7 @@ public final class CollectionUtils {
    * @param rhs List which contains elements to be appended. 
    * @return Updated list that contains the appended elements.
    * 
-   * @throws NullPointerException if any of the parameters is {@code null}.
+   * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
 
   public static <T> List<T> appendToList(final List<T> lhs, final List<T> rhs) {

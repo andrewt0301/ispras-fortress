@@ -49,7 +49,7 @@ public final class Formulas {
    * 
    * @param formulas Existing formula container.
    * 
-   * @throws NullPointerException if the parameter equals null.
+   * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
 
   public Formulas(final Formulas formulas) {
@@ -73,7 +73,7 @@ public final class Formulas {
    * 
    * @param formula A formula expression.
    * 
-   * @throws NullPointerException if the parameter equals null.
+   * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
 
   public void add(final Node formula) {
@@ -86,7 +86,7 @@ public final class Formulas {
    * 
    * @param formulas A collection of formula expressions.
    * 
-   * @throws NullPointerException if the parameter equals null.
+   * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
 
   public void addAll(final Collection<? extends Node> formulas) {
@@ -100,7 +100,7 @@ public final class Formulas {
    * 
    * @param formulas Formula container to be copied.
    * 
-   * @throws NullPointerException if the parameter equals null.
+   * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
 
   public void addAll(final Formulas formulas) {

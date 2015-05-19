@@ -112,6 +112,8 @@ public class NodeTransformer implements ExprTreeVisitor {
    * 
    * @param opId Target node kind identifier.
    * @param rule Rule to be added.
+   * 
+   * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
 
   public void addRule(final Enum<?> opId, final TransformerRule rule) {

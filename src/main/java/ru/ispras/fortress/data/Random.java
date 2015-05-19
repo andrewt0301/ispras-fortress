@@ -316,9 +316,8 @@ public final class Random {
    * @param variable Variable to be assigned.
    * @return Variable with a value assigned (same instance).
    * 
-   * @throws NullPointerException if the parameter equals null.
-   * @throws UnsupportedOperationException if random data generation is not supported by the given
-   *         data type.
+   * @throws UnsupportedOperationException if the parameter equals {@code null};
+   *         if random data generation is not supported by the given data type.
    */
 
   public static Variable assignValue(final Variable variable) {

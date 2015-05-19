@@ -65,10 +65,10 @@ public final class XMLConstraintSaver {
    * 
    * @param constraint Constraint to be save.
    * 
-   * @throws NullPointerException if the parameter equals null.
-   * @throws IllegalArgumentException if the constraint is not formula-based (its type is not
-   *         FORMULA_BASED). Currently, the possibility of saving other constraint types is not
-   *         implemented.
+   * @throws IllegalArgumentException if the parameter equals {@code null};
+   *         if the constraint is not formula-based (its type is not
+   *         FORMULA_BASED). Currently, the possibility of saving other
+   *         constraint types is not implemented.
    */
 
   public XMLConstraintSaver(final Constraint constraint) {

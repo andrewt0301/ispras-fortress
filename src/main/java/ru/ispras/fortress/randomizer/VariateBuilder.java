@@ -42,8 +42,7 @@ public final class VariateBuilder<T> {
    * 
    * @param variate the random variate to be added.
    * @param bias the bias of the random variate.
-   * @throws NullPointerException if {@code variate == null}.
-   * @throws IllegalArgumentException if {@code bias <= 0}.
+   * @throws IllegalArgumentException if {@code variate == null}; if {@code bias <= 0}.
    */
   public void addVariate(final Variate<T> variate, final int bias) {
     InvariantChecks.checkNotNull(variate);
@@ -90,8 +89,9 @@ public final class VariateBuilder<T> {
    * 
    * @param min the lower bound of the interval.
    * @param max the upper bound of the interval.
-   * @throws NullPointerException if {@code min} or {@code max} is {@code null}.
-   * @throws IllegalArgumentException if {@code bias <= 0}.
+   * 
+   * @throws IllegalArgumentException if {@code min} or {@code max} is {@code null}; 
+   *         if {@code bias <= 0}.
    */
   public void addInterval(final T min, final T max, final int bias) {
     InvariantChecks.checkNotNull(min);
@@ -116,8 +116,7 @@ public final class VariateBuilder<T> {
    * 
    * @param values the values to be added.
    * @param bias the bias of the values.
-   * @throws NullPointerException if {@code values == null}.
-   * @throws IllegalArgumentException if {@code bias <= 0}.
+   * @throws IllegalArgumentException if {@code values == null}; if {@code bias <= 0}.
    */
   public void addArray(final T[] values, final int bias) {
     InvariantChecks.checkNotNull(values);
@@ -141,8 +140,7 @@ public final class VariateBuilder<T> {
    * 
    * @param values the values to be added.
    * @param bias the bias of the values.
-   * @throws NullPointerException if {@code values == null}.
-   * @throws IllegalArgumentException if {@code bias <= 0}.
+   * @throws IllegalArgumentException if {@code values == null}; if {@code bias <= 0}.
    */
   public void addCollection(final Collection<T> values, final int bias) {
     InvariantChecks.checkNotNull(values);
