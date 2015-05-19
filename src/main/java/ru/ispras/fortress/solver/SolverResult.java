@@ -56,7 +56,7 @@ public final class SolverResult {
    * @param errors List of errors.
    * @param variables List of variables.
    * 
-   * @throws NullPointerException if any of the parameters equals null.
+   * @throws IllegalArgumentException if any of the parameters equals {@code null}.
    */
 
   public SolverResult(
