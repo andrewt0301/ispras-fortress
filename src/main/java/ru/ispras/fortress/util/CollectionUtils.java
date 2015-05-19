@@ -40,7 +40,7 @@ public final class CollectionUtils {
    * @param rhs Second set (right hand).
    * @return Union of two sets.
    * 
-   * @throws NullPointerException if any of the parameters is {@code null}.
+   * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
 
   public static <E> Set<E> uniteSets(final Set<E> lhs, final Set<E> rhs) {
@@ -68,13 +68,13 @@ public final class CollectionUtils {
    * @param rhs Second set (right hand).
    * @return Intersection of two sets.
    * 
-   * @throws NullPointerException if any of the parameters is {@code null}.
+   * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
 
   public static <E> Set<E> intersectSets(final Set<E> lhs, final Set<E> rhs) {
     checkNotNull(lhs);
     checkNotNull(rhs);
-    
+
     if (lhs.isEmpty() || rhs.isEmpty()) {
       return Collections.emptySet();
     }
@@ -92,7 +92,7 @@ public final class CollectionUtils {
    * @param rhs Second set (right hand).
    * @return {@code true} if the sets are intersected, {@code false} otherwise.
    * 
-   * @throws NullPointerException if any of the parameters is {@code null}.
+   * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
 
   public static <E> boolean areIntersectedSets(final Set<E> lhs, final Set<E> rhs) {
