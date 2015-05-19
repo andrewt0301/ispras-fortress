@@ -36,7 +36,7 @@ public final class Variable {
    * @param name Variable name.
    * @param data Data the variable refers to.
    * 
-   * @throws NullPointerException if any of the parameters equals null.
+   * @throws IllegalArgumentException if any of the parameters equals {@code null}.
    */
 
   public Variable(final String name, final Data data) {
@@ -54,7 +54,7 @@ public final class Variable {
    * @param name Variable name.
    * @param type Variable type.
    * 
-   * @throws NullPointerException if any of the parameters equals null.
+   * @throws IllegalArgumentException if any of the parameters equals {@code null}.
    */
 
   public Variable(final String name, final DataType type) {
@@ -77,7 +77,7 @@ public final class Variable {
    * 
    * @param data A data value to be assigned to the variable.
    * 
-   * @throws NullPointerException if the parameter equals null.
+   * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
 
   public void setData(final Data data) {
