@@ -86,7 +86,7 @@ public final class Calculator {
    *         previously registered or <code>false</code> if an engine identified by the specified
    *         class had already been registered (in this case, it is replaced with a new engine).
    * 
-   * @throws NullPointerException if any of the parameters equals null.
+   * @throws IllegalArgumentException if any of the parameters equals {@code null}.
    */
 
   public static boolean registerEngine(
@@ -108,7 +108,7 @@ public final class Calculator {
    * @return Engine responsible for performing a specific group of operations or <code>null</code>
    *         if no such engine is registered.
    * 
-   * @throws NullPointerException if the parameter equals null.
+   * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
 
   public static CalculatorEngine getEngine(final Class<?> operationIdClass) {
@@ -125,7 +125,7 @@ public final class Calculator {
    * @return <code>true</code> if the operation is supported for the given operand types or
    *         <code>false</code> otherwise.
    * 
-   * @throws NullPointerException if any of the parameters equals null.
+   * @throws IllegalArgumentException if any of the parameters equals {@code null}.
    */
 
   public static boolean isSupported(final Enum<?> operationId, final Data... operands) {
@@ -148,7 +148,7 @@ public final class Calculator {
    * @param operands A variable number of operands.
    * @return Data object holding the calculated value.
    * 
-   * @throws NullPointerException if any of the parameters equals null.
+   * @throws IllegalArgumentException if any of the parameters equals {@code null}.
    * @throws UnsupportedOperationException if the operation is not supported or its invariants are
    *         violated (e.g. operand types do not match).
    */
@@ -171,7 +171,7 @@ public final class Calculator {
    * @param operands A variable number of operands.
    * @return Data object holding the calculated value.
    * 
-   * @throws NullPointerException if any of the parameters equals null.
+   * @throws IllegalArgumentException if any of the parameters equals {@code null}.
    * @throws UnsupportedOperationException if the operation is not supported or its invariants are
    *         violated (e.g. operand types do not match).
    */

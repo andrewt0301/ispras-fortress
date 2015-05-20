@@ -35,10 +35,9 @@ public final class VariateComposite<T> implements Variate<T> {
    * @param variates the random variates to be composed.
    * @param biases the biases of the random variates.
    * 
-   * @throws NullPointerException if {@code variates == null} or {@code biases == null}.
-   * @throws IllegalArgumentException if the {@code variates} and {@code biases} arrays have
-   *         different sizes or they are empty or the {@code biases} array contains negative
-   *         numbers.
+   * @throws IllegalArgumentException if {@code variates == null} or {@code biases == null};
+   *         if the {@code variates} and {@code biases} arrays have different sizes
+   *         or they are empty or the {@code biases} array contains negative numbers.
    */
   public VariateComposite(final Variate<T>[] variates, final int[] biases) {
     composite = new VariateBiased<Variate<T>>(variates, biases);
@@ -50,10 +49,9 @@ public final class VariateComposite<T> implements Variate<T> {
    * @param variates the random variates to be composed.
    * @param biases the biases of the random variates.
    * 
-   * @throws NullPointerException if {@code variates == null} or {@code biases == null}.
-   * @throws IllegalArgumentException if the {@code variates} and {@code biases} arrays have
-   *         different sizes or they are empty or the {@code biases} array contains negative
-   *         numbers.
+   * @throws IllegalArgumentException if {@code variates == null} or {@code biases == null};
+   *         if the {@code variates} and {@code biases} arrays have different sizes
+   *         or they are empty or the {@code biases} array contains negative numbers.
    */
   public VariateComposite(final List<Variate<T>> variates, final List<Integer> biases) {
     composite = new VariateBiased<Variate<T>>(variates, biases);
@@ -64,8 +62,8 @@ public final class VariateComposite<T> implements Variate<T> {
    * 
    * @param variates the random variates to be composed.
    * 
-   * @throws NullPointerException if {@code variates == null}.
-   * @throws IllegalArgumentException if {@code variates} is empty.
+   * @throws IllegalArgumentException if {@code variates == null};
+   *         if {@code variates} is empty.
    */
   public VariateComposite(final Variate<T>[] variates) {
     composite = new VariateCollection<Variate<T>>(variates);
@@ -76,8 +74,8 @@ public final class VariateComposite<T> implements Variate<T> {
    * 
    * @param variates the random variates to be composed.
    * 
-   * @throws NullPointerException if {@code variates == null}.
-   * @throws IllegalArgumentException if {@code variates} is empty.
+   * @throws IllegalArgumentException if {@code variates == null};
+   *         if {@code variates} is empty.
    */
   public VariateComposite(final Collection<Variate<T>> variates) {
     composite = new VariateCollection<Variate<T>>(variates);

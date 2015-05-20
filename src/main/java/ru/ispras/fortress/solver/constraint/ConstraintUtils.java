@@ -36,7 +36,7 @@ public final class ConstraintUtils {
    * @param expr Expression to be used as a source for the constraint.
    * @return New formula-based constraint. 
    * 
-   * @throws NullPointerException if the parameter equals {@code null}.
+   * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
 
   public static Constraint newConstraint(final Node expr) {
@@ -59,7 +59,7 @@ public final class ConstraintUtils {
    * @param constraint Constraint to be solved.
    * @return Result of solving the constraint.
    * 
-   * @throws NullPointerException if the parameter equals {@code null}.
+   * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
 
   public static SolverResult solve(final Constraint constraint) {

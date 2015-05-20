@@ -40,8 +40,8 @@ public interface FunctionTemplate {
    * @param argTypes Array of argument types.
    * @return Function for the given argument types.
    * 
-   * @throws NullPointerException if the parameter equals null.
-   * @throws IllegalArgumentException if the function cannot be instantiated for the given arguments
+   * @throws IllegalArgumentException if the parameter equals {@code null};
+   *         if the function cannot be instantiated for the given arguments
    *         (wrong number, wrong types, etc.).
    */
 

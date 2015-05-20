@@ -114,9 +114,10 @@ public final class VariateInterval<T> implements Variate<T> {
    * @param min the lower bound of the interval.
    * @param max the upper bound of the interval.
    * 
-   * @throws NullPointerException if {@code min == null} or {@code max == null}.
-   * @throws IllegalArgumentException (1) if min and max have different types,
-   *         (2) if {@code min > max} or (3) if the value type is unsupported.
+   * @throws IllegalArgumentException (1) if {@code min == null} or {@code max == null};
+   *         (2) if min and max have different types;
+   *         (3) if {@code min > max};
+   *         (4) if the value type is unsupported.
    */
   public VariateInterval(final T min, final T max) {
     InvariantChecks.checkNotNull(min);

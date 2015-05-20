@@ -45,9 +45,9 @@ public final class VariateBiased<T> implements Variate<T> {
    * @param values the value area of the random variate.
    * @param biases the random biases of the values.
    * 
-   * @throws NullPointerException if {@code values == null} or {@code biases == null}.
-   * @throws IllegalArgumentException if the {@code values} and {@code biases} arrays have different
-   *         sizes or they are empty or the {@code biases} array contains negative numbers.
+   * @throws IllegalArgumentException if {@code values == null} or {@code biases == null};
+   *         if the {@code values} and {@code biases} arrays have different sizes
+   *         or they are empty or the {@code biases} array contains negative numbers.
    */
   public VariateBiased(final List<T> values, final List<Integer> biases) {
     InvariantChecks.checkNotEmpty(values);
@@ -81,9 +81,9 @@ public final class VariateBiased<T> implements Variate<T> {
    * @param values the value area of the random variate.
    * @param biases the random biases of the values.
    * 
-   * @throws NullPointerException if {@code values == null} or {@code biases == null}.
-   * @throws IllegalArgumentException if the {@code values} and {@code biases} arrays have different
-   *         sizes or they are empty or the {@code biases} array contains negative numbers.
+   * @throws IllegalArgumentException if {@code values == null} or {@code biases == null};
+   *         if the {@code values} and {@code biases} arrays have different sizes
+   *         or they are empty or the {@code biases} array contains negative numbers.
    */
   public VariateBiased(final T[] values, final int[] biases) {
     this(Arrays.asList(values), new AbstractList<Integer>() {

@@ -42,7 +42,8 @@ public final class VariateBuilder<T> {
    * 
    * @param variate the random variate to be added.
    * @param bias the bias of the random variate.
-   * @throws IllegalArgumentException if {@code variate == null}; if {@code bias <= 0}.
+   * @throws IllegalArgumentException if {@code variate == null};
+   *         if {@code bias <= 0}.
    */
   public void addVariate(final Variate<T> variate, final int bias) {
     InvariantChecks.checkNotNull(variate);
@@ -56,7 +57,7 @@ public final class VariateBuilder<T> {
    * Adds the random variate with the default bias.
    * 
    * @param variate the random variate to be added.
-   * @throws NullPointerException if {@code variate == null}.
+   * @throws IllegalArgumentException if {@code variate == null}.
    */
   public void addVariate(final Variate<T> variate) {
     addVariate(variate, DEFAULT_BIAS);
@@ -129,7 +130,7 @@ public final class VariateBuilder<T> {
    * Adds the array of values with the default bias.
    * 
    * @param values the values to be added.
-   * @throws NullPointerException if {@code values == null}.
+   * @throws IllegalArgumentException if {@code values == null}.
    */
   public void addArray(final T[] values) {
     addArray(values, DEFAULT_BIAS);
@@ -153,7 +154,7 @@ public final class VariateBuilder<T> {
    * Adds the collection of values with the default bias.
    * 
    * @param values the values to be added.
-   * @throws NullPointerException if {@code values == null}.
+   * @throws IllegalArgumentException if {@code values == null}.
    */
   public void addCollection(final Collection<T> values) {
     addCollection(values, DEFAULT_BIAS);

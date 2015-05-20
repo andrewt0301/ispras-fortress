@@ -54,7 +54,7 @@ public abstract class ExprTreeVisitorDefault implements ExprTreeVisitor {
    * Sets the current visitor status.
    * 
    * @param status New visitor status.
-   * @throws NullPointerException if the parameter is {@code null}.
+   * @throws IllegalArgumentException if the parameter is {@code null}.
    */
 
   public final void setStatus(final Status status) {

@@ -315,8 +315,8 @@ public final class Randomizer {
    * 
    * @param array the array whose items are chosen.
    * @return a random item of the array.
-   * @throws NullPointerException if {@code array == null}.
-   * @throws IllegalArgumentException if {@code array} is empty.
+   * @throws IllegalArgumentException if {@code array == null};
+   *         if {@code array} is empty.
    */
   public <T> T choose(final T[] array) {
     InvariantChecks.checkNotEmpty(array);
@@ -329,8 +329,8 @@ public final class Randomizer {
    * 
    * @param collection the collection whose items are chosen.
    * @return a random item of the collection.
-   * @throws NullPointerException if {@code collection == null}.
-   * @throws IllegalArgumentException if {@code collection} is empty.
+   * @throws IllegalArgumentException if {@code collection == null};
+   *         if {@code collection} is empty.
    */
   public <T> T choose(final Collection<T> collection) {
     InvariantChecks.checkNotEmpty(collection);

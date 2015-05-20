@@ -144,7 +144,7 @@ public final class Random {
      * @param typeId Type identifier.
      * @param generator Generator to the specified type.
      * 
-     * @throws NullPointerException if any of the parameters equals null.
+     * @throws IllegalArgumentException if any of the parameters equals {@code null}.
      */
 
     public void setGenerator(final DataTypeId typeId, final TypedGenerator generator) {
@@ -170,7 +170,7 @@ public final class Random {
     /**
      * {@inheritDoc}
      * 
-     * @throws NullPointerException if the typeId parameter equals null.
+     * @throws IllegalArgumentException if the typeId parameter equals {@code null}.
      * @throws UnsupportedOperationException if random data generation is not supported by the given
      *         data type.
      */
@@ -258,7 +258,7 @@ public final class Random {
    * 
    * @param value Random data generation engine.
    * 
-   * @throws NullPointerException if the parameter equals null.
+   * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
 
   public static void setEngine(final Engine value) {
@@ -282,7 +282,7 @@ public final class Random {
    * @param type Data type.
    * @return Random data.
    * 
-   * @throws NullPointerException if the parameter equals null.
+   * @throws IllegalArgumentException if the parameter equals {@code null}.
    * @throws UnsupportedOperationException if random data generation is not supported by the given
    *         data type.
    */
@@ -299,7 +299,7 @@ public final class Random {
    * @param type Variable data type.
    * @return Variable initialized with a random value.
    * 
-   * @throws NullPointerException if any of the parameters equals null.
+   * @throws IllegalArgumentException if any of the parameters equals {@code null}.
    * @throws UnsupportedOperationException if random data generation is not supported by the given
    *         data type.
    */

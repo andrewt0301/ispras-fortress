@@ -103,7 +103,7 @@ public final class ConstraintBuilder {
    * 
    * @param name Constraint name.
    * 
-   * @throws NullPointerException if the parameter equals null.
+   * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
 
   public void setName(final String name) {
@@ -116,7 +116,7 @@ public final class ConstraintBuilder {
    * 
    * @param description Constraint description.
    * 
-   * @throws NullPointerException if the parameter equals null.
+   * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
 
   public void setDescription(final String description) {
@@ -129,7 +129,7 @@ public final class ConstraintBuilder {
    * 
    * @param kind Constraint type.
    * 
-   * @throws NullPointerException if the parameter equals null.
+   * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
 
   public void setKind(final ConstraintKind kind) {
@@ -142,7 +142,7 @@ public final class ConstraintBuilder {
    * 
    * @param value Internal representation of the constraint.
    * 
-   * @throws NullPointerException if the parameter equals null.
+   * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
 
   public void setInnerRep(final Object value) {

@@ -37,8 +37,8 @@ public final class ConstraintCombiner {
    * @param a A constraint object.
    * @return A new constraint object.
    * 
-   * @throws NullPointerException if the parameter equals null.
-   * @throws IllegalArgumentException if the parameter is not a formula-based constraint (its type
+   * @throws IllegalArgumentException if the parameter equals {@code null};
+   *         if the parameter is not a formula-based constraint (its type
    *         is not ConstraintKind.FORMULA_BASED).
    */
 
@@ -67,8 +67,8 @@ public final class ConstraintCombiner {
    * @param b A constraint object.
    * @return A new constraint object.
    * 
-   * @throws NullPointerException if any of the parameters equals null.
-   * @throws IllegalArgumentException if any of the parameters is not a formula-based constraint
+   * @throws IllegalArgumentException if any of the parameters equals {@code null};
+   *         if any of the parameters is not a formula-based constraint
    *         (its type is not ConstraintKind.FORMULA_BASED).
    */
 
@@ -100,8 +100,8 @@ public final class ConstraintCombiner {
    * @param b A constraint object.
    * @return A new constraint object.
    * 
-   * @throws NullPointerException if any of the parameters equals null.
-   * @throws IllegalArgumentException if any of the parameters is not a formula-based constraint
+   * @throws IllegalArgumentException if any of the parameters equals {@code null};
+   *         if any of the parameters is not a formula-based constraint
    *         (its type is not ConstraintKind.FORMULA_BASED).
    */
 

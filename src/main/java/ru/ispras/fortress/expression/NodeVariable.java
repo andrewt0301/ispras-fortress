@@ -37,7 +37,7 @@ public final class NodeVariable extends Node {
    * 
    * @param name Variable name.
    * @param type Variable type.
-   * @throws NullPointerException if any of the arguments is {@code null}.
+   * @throws IllegalArgumentException if any of the arguments is {@code null}.
    */
 
   public NodeVariable(final String name, final DataType type) {
@@ -48,7 +48,7 @@ public final class NodeVariable extends Node {
    * Creates a node based on a Variable object.
    * 
    * @param variable A variable node object.
-   * @throws NullPointerException if the argument is {@code null}.
+   * @throws IllegalArgumentException if the argument is {@code null}.
    */
 
   public NodeVariable(final Variable variable) {
@@ -63,7 +63,7 @@ public final class NodeVariable extends Node {
    * is mutable.
    * 
    * @param nodeVariable Node variable object to be copied.
-   * @throws NullPointerException if the argument is {@code null}.
+   * @throws IllegalArgumentException if the argument is {@code null}.
    */
 
   private NodeVariable(final NodeVariable nodeVariable) {
@@ -115,7 +115,7 @@ public final class NodeVariable extends Node {
    * 
    * @param data Data value to be assigned to the variable.
    * 
-   * @throws NullPointerException if the argument is {@code null}.
+   * @throws IllegalArgumentException if the argument is {@code null}.
    */
 
   public void setData(final Data data) {

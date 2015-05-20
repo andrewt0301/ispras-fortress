@@ -47,7 +47,7 @@ public interface Operation<OperationId extends Enum<OperationId>> {
    * @param operands A variable of operands.
    * @return Data object containing the calculated value.
    * 
-   * @throws NullPointerException if null is passed to the method.
+   * @throws IllegalArgumentException if {@code null} is passed to the method.
    * @throws UnsupportedOperationException if the operation requires a number of arguments which is
    *         different from the one passed to the method.
    */

@@ -37,8 +37,8 @@ public final class VariateCollection<T> implements Variate<T> {
    * Constructs a finite-set random variate.
    * 
    * @param values the value area of the random variate. 
-   * @throws NullPointerException if {@code values == null}.
-   * @throws IllegalArgumentException if {@code values} is empty.
+   * @throws IllegalArgumentException if {@code values == null};
+   *         if {@code values} is empty.
    */
   public VariateCollection(final T[] values) {
     InvariantChecks.checkNotEmpty(values);
@@ -50,8 +50,8 @@ public final class VariateCollection<T> implements Variate<T> {
    * Constructs a finite-set random variate.
    * 
    * @param values the value area of the random variate. 
-   * @throws NullPointerException if {@code values == null}.
-   * @throws IllegalArgumentException if {@code values} is empty.
+   * @throws IllegalArgumentException if {@code values == null};
+   *         if {@code values} is empty.
    */
   public VariateCollection(final Collection<T> values) {
     InvariantChecks.checkNotEmpty(values);

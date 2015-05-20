@@ -60,7 +60,7 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
    * @param operationsForType A map of operation on the specified data type. Key is the operation
    *        identifier and value is the operation implementation.
    * 
-   * @throws NullPointerException if any of the parameters equals null.
+   * @throws IllegalArgumentException if any of the parameters equals {@code null}.
    */
 
   public final void registerOperations(
@@ -75,7 +75,7 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
   /**
    * {@inheritDoc}
    * 
-   * @throws NullPointerException if any of the parameters equals null.
+   * @throws IllegalArgumentException if any of the parameters equals {@code null}.
    */
 
   @Override
@@ -112,7 +112,7 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
   /**
    * {@inheritDoc}
    * 
-   * @throws NullPointerException if any of the parameters equals null.
+   * @throws IllegalArgumentException if any of the parameters equals {@code null}.
    * @throws UnsupportedOperationException if the specified operation is not supported for the
    *         provided operands.
    */
@@ -167,7 +167,7 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
    * @param operands Array of data objects.
    * @return <code>true</code> if all objects have equal types or <code>false</code> otherwise.
    * 
-   * @throws NullPointerException is the parameter equals null.
+   * @throws IllegalArgumentException is the parameter equals {@code null}.
    */
 
   static boolean equalTypes(final Data[] operands) {

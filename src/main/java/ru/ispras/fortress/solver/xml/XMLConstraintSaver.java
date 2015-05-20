@@ -106,7 +106,7 @@ public final class XMLConstraintSaver {
    * 
    * @param fileName Target XML document file name.
    * 
-   * @throws NullPointerException if the parameter equals null.
+   * @throws IllegalArgumentException if the parameter equals {@code null}.
    * @throws XMLNotSavedException if failed to save the constraint to a file.
    */
 
