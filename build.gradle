@@ -53,7 +53,7 @@ unix {
   z3 = 'z3:z3:x64-4.1:@tar.gz'
   z3path = 'tools/z3/bin/z3'
 
-  cvc4 = 'cvc4:cvc4:2015-05-12-x86_64-linux-opt:@'
+  cvc4 = 'cvc4:cvc4:2015-05-12-x86_64-linux-opt:@bin'
   cvc4path = 'tools/cvc4-unix.bin'
 }
 
@@ -90,12 +90,13 @@ test.dependsOn getZ3
 task getCVC4(type: Copy) {
   windows {
     from configurations.testRuntime.fileCollection { dep -> dep.name == 'cvc4' }.singleFile
+    rename '.*', 'cvc4-windows.exe'
   }
   unix  {
     from configurations.testRuntime.fileCollection { dep -> dep.name == 'cvc4' }.singleFile
+    rename '.*', 'cvc4-unix.bin'
   }
   into 'tools'
-  rename '.*', 'cvc4-windows.exe'
 }
 
 test.dependsOn getCVC4
