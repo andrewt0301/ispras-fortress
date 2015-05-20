@@ -16,6 +16,7 @@ buildscript {
 
 apply plugin: 'os'
 apply plugin: "java"
+apply plugin: 'java-library-distribution'
 apply plugin: 'checkstyle'
 apply plugin: 'findbugs'
 apply plugin: 'pmd'
@@ -174,5 +175,11 @@ sonarRunner {
         property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
         property "sonar.jdbc.username", "sonar"
         property "sonar.jdbc.password", "sonar"
+    }
+}
+
+distributions {
+    main{
+        baseName = 'fortress'
     }
 }
