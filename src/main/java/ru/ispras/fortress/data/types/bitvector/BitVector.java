@@ -98,7 +98,7 @@ public abstract class BitVector implements Comparable<BitVector> {
    * Returns a boolean flag that corresponds to the value of the specified bit.
    * 
    * @param index Bit index.
-   * @return true if the bit is set to 1 or false otherwise.
+   * @return {@code true} if the bit is set to {@code 1} or {@code false} otherwise.
    * 
    * @throws IndexOutOfBoundsException if the index is out of range.
    */
@@ -106,6 +106,29 @@ public abstract class BitVector implements Comparable<BitVector> {
   public final boolean getBit(final int index) {
     checkBounds(index, getBitSize());
     return (getByte(index / BITS_IN_BYTE) & (1 << (index % BITS_IN_BYTE))) != 0;
+  }
+
+  /**
+   * Sets or resets the specified bit.
+   * 
+   * @param index Bit index.
+   * @param value {@code true} to set the bit to {@code 1} or {@code false} to set it to {@code 0}.
+   * 
+   * @throws IndexOutOfBoundsException if the index is out of range.
+   */
+
+  public final void setBit(final int index, final boolean value) {
+    checkBounds(index, getBitSize());
+
+    final int byteIndex = index / BITS_IN_BYTE;
+    final byte byteValue = getByte(byteIndex);
+    final byte byteMask = (byte) (1 << (index % BITS_IN_BYTE));
+
+    if (value) {
+      setByte(byteIndex, (byte)(byteValue | byteMask));
+    } else {
+      setByte(byteIndex, (byte)(byteValue & ~byteMask));
+    }
   }
 
   /**

@@ -668,6 +668,52 @@ public class BitVectorTestCase {
       Assert.assertTrue("Bit extracted doesn't match expected", value == bv.getBit(i));
       value = !value;
     }
+  }
 
+  @Test
+  public void bitSetTest() {
+    testSetBit(BitVector.valueOf("111"), 1, true);
+    testSetBit(BitVector.valueOf("111"), 1, false);
+
+    testSetBit(BitVector.valueOf("100100111"), 1, true);
+    testSetBit(BitVector.valueOf("100100111"), 1, false);
+    testSetBit(BitVector.valueOf("100100111"), 8, true);
+    testSetBit(BitVector.valueOf("100100111"), 8, false);
+
+    testSetBit(BitVector.valueOf(0xFFFFFFFF, 32), 0, true);
+    testSetBit(BitVector.valueOf(0xFFFFFFFF, 32), 0, false);
+    testSetBit(BitVector.valueOf(0xFFFFFFFF, 32), 31, true);
+    testSetBit(BitVector.valueOf(0xFFFFFFFF, 32), 31, false);
+    testSetBit(BitVector.valueOf(0xFFFFFFFF, 32), 20, true);
+    testSetBit(BitVector.valueOf(0xFFFFFFFF, 32), 20, false);
+
+    testSetBit(BitVector.valueOf(0x0, 32), 10, true);
+    testSetBit(BitVector.valueOf(0xDEADBEEF, 32), 10, false);
+
+    testSetBit(BitVector.valueOf("111"));
+    testSetBit(BitVector.valueOf("100100111"));
+    testSetBit(BitVector.valueOf("01010101010101010101"));
+    testSetBit(BitVector.valueOf(0xFFFFFFFF, 32));
+    testSetBit(BitVector.valueOf(0x0, 32));
+    testSetBit(BitVector.valueOf(0xDEADBEEF, 32));
+  }
+
+  private static void testSetBit(final BitVector bv, final int index, final boolean value) {
+    //System.out.println(bv);
+    bv.setBit(index, value);
+    //System.out.println(bv);
+    Assert.assertEquals(value, bv.getBit(index));
+  }
+
+  private static void testSetBit(final BitVector bv) {
+    final BitVector expected = BitVectorMath.not(bv.copy());
+
+    final BitVector actual = bv.copy();
+    for (int i = 0; i < bv.getBitSize(); ++i) {
+      actual.setBit(i, !actual.getBit(i));
+    }
+
+    //System.out.println("~ " + bv + " : " + expected + " : " + actual);
+    Assert.assertEquals(expected, actual);
   }
 }
