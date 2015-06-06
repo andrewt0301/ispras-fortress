@@ -458,9 +458,7 @@ public abstract class BitVector implements Comparable<BitVector> {
       generate(result, (2 == radix) ? new BinParser() : new HexParser());
       return result;
     }
-
-    final long value = Long.valueOf(text, radix);
-    return valueOf(value, bitSize);
+    return valueOf(new BigInteger(text, radix), bitSize);
   }
 
   /**
