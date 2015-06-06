@@ -165,5 +165,25 @@ enum TypeRules implements TypeRule {
 
       return DataType.BIT_VECTOR(totalSize);
     }
+  },
+
+  BVEXTEND {
+    public DataType getResultType(final DataType[] operandTypes, final int[] params) {
+      return DataType.BIT_VECTOR(operandTypes[1].getSize() + params[0]);
+    }
+  },
+
+  SELECT {
+    @Override
+    public DataType getResultType(final DataType[] operandTypes, final int[] params) {
+      return (DataType) operandTypes[0].getAttribute(DataTypeId.Attribute.VALUE);
+    }
+  },
+
+  STORE {
+    @Override
+    public DataType getResultType(final DataType[] operandTypes, final int[] params) {
+      return operandTypes[0];
+    }
   }
 }

@@ -175,10 +175,10 @@ public enum StandardOperation implements TypeRule {
   BVROR(Family.BV, TypeRules.SECOND_VB_ARG, 1),
 
   /** Group: Bitvector, Operation: Extension by zeros */
-  BVZEROEXT(Family.BV, TypeRules.UNKNOWN, 1),
+  BVZEROEXT(Family.BV, TypeRules.BVEXTEND, 1),
 
   /** Group: Bitvector, Operation: Extension to the signed equivalent */
-  BVSIGNEXT(Family.BV, TypeRules.UNKNOWN, 1),
+  BVSIGNEXT(Family.BV, TypeRules.BVEXTEND, 1),
 
   /** Group: Bitvector, Operation: Extraction of subvector */
   BVEXTRACT(Family.BV, TypeRules.BVEXTRACT, 2),
@@ -289,10 +289,10 @@ public enum StandardOperation implements TypeRule {
    */
 
   /** Group: Array, Operation: Get stored value */
-  SELECT(Family.ARRAY, TypeRules.UNKNOWN),
+  SELECT(Family.ARRAY, TypeRules.SELECT),
 
   /** Group: Array, Operation: Store value */
-  STORE(Family.ARRAY, TypeRules.UNKNOWN);
+  STORE(Family.ARRAY, TypeRules.STORE);
 
   /**
    * Describes the family of operands the operation manipulates with. 
