@@ -12,6 +12,15 @@
  (like Yices, Z3, CVC4, etc.)
 
 --------------------------------------------------------------------------------
+ 2015/06/11 Fortress 0.4.2 beta
+
+ The new build contains the following changes:
+
+ - Type calculation rules for the BVZEROEXT, BVSIGNEXT, SELECT and STORE
+   operators were implemented 
+ - The BitVector class was improved
+
+--------------------------------------------------------------------------------
  2015/05/20 Fortress 0.4.1 beta
 
  The new build contains the following changes:
