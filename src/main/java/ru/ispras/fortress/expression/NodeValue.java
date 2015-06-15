@@ -24,15 +24,20 @@ import ru.ispras.fortress.data.types.bitvector.BitVector;
 import ru.ispras.fortress.data.types.datamap.DataMap;
 
 /**
- * The NodeValue class represents a node that stores a constant value. The class serves as an
- * adapter to allow Data to be used in an expression.
+ * The {@code NodeValue} class represents a node that stores a constant value.
+ * The class serves as an adapter to allow Data to be used in an expression.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 
 public final class NodeValue extends Node {
   /** Creates a new value node based on an integer value. */
   public static NodeValue newInteger(final int value) {
+    return new NodeValue(Data.newInteger(value));
+  }
+
+  /** Creates a new value node based on a {@link BigInteger} value. */
+  public static NodeValue newInteger(final BigInteger value) {
     return new NodeValue(Data.newInteger(value));
   }
 
