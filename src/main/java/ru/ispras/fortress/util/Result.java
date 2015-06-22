@@ -49,4 +49,10 @@ public class Result<E extends Enum<E>, T> {
   public List<String> getErrors() {
     return errors;
   }
+
+  @Override
+  public String toString() {
+    return String.format("Result [status=%s, result=%s, errors=%s]",
+        status, result, errors);
+  }
 }
