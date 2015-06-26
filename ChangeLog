@@ -12,6 +12,15 @@
  (like Yices, Z3, CVC4, etc.)
 
 --------------------------------------------------------------------------------
+ 2015/06/26 Fortress 0.4.3 beta
+
+ The new build contains the following changes:
+
+- Utility general-purpose class Result was implemented
+- Utility method newInteger for BigInteger was added to NodeValue
+- Some general code improvements were made
+
+--------------------------------------------------------------------------------
  2015/06/11 Fortress 0.4.2 beta
 
  The new build contains the following changes:
