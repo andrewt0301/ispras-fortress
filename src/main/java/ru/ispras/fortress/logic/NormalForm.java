@@ -129,26 +129,26 @@ public final class NormalForm {
    */
   public String toString() {
     // final String neg_op = "~"; // andrewt >> unused local constraint
-    final String ext_op = type == Type.DNF ? " | " : " & ";
-    final String int_op = type == Type.DNF ? " & " : " | ";
+    final String extOp = type == Type.DNF ? " | " : " & ";
+    final String intOp = type == Type.DNF ? " & " : " | ";
 
     final StringBuffer buffer = new StringBuffer();
 
-    boolean ext_sign = false;
+    boolean extSign = false;
     for (final Clause clause : clauses) {
-      if (ext_sign) {
-        buffer.append(ext_op);
+      if (extSign) {
+        buffer.append(extOp);
       }
-      ext_sign = true;
+      extSign = true;
 
       buffer.append("(");
       {
-        boolean int_sign = false;
+        boolean intSign = false;
         for (final int var : clause.getVars()) {
-          if (int_sign) {
-            buffer.append(int_op);
+          if (intSign) {
+            buffer.append(intOp);
           }
-          int_sign = true;
+          intSign = true;
 
           buffer.append(clause.getSign(var) ? "~" : "");
           buffer.append("x" + var);
