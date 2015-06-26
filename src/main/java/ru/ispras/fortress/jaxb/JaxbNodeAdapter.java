@@ -53,7 +53,7 @@ public class JaxbNodeAdapter extends XmlAdapter<JaxbNode, Node> {
   }
 
   @Override
-  public Node unmarshal(JaxbNode node) throws Exception {
+  public Node unmarshal(final JaxbNode node) throws Exception {
     if (node == null) {
       return null;
     }
