@@ -20,6 +20,7 @@ import static ru.ispras.fortress.util.InvariantChecks.checkGreaterThanZero;
 import java.util.List;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The DataType class stores information about data types used by the solver engine. It maintains a
@@ -31,7 +32,7 @@ import java.util.HashMap;
 
 public final class DataType {
   /** Table that stores singleton instances of data types. */
-  private static final HashMap<String, DataType> DATA_TYPE = new HashMap<>();
+  private static final Map<String, DataType> DATA_TYPES = new HashMap<>();
 
   private static final Object[] EMPTY_PARAMETERS_LIST = new Object[0];
 
@@ -109,12 +110,12 @@ public final class DataType {
     typeId.validate(list);
 
     final String key = typeId.format(list);
-    if (DATA_TYPE.containsKey(key)) {
-      return DATA_TYPE.get(key);
+    if (DATA_TYPES.containsKey(key)) {
+      return DATA_TYPES.get(key);
     }
 
     final DataType dataType = new DataType(typeId, key, list);
-    DATA_TYPE.put(key, dataType);
+    DATA_TYPES.put(key, dataType);
 
     return dataType;
   }
@@ -205,8 +206,8 @@ public final class DataType {
   public static DataType typeOf(final String value) {
     checkNotNull(value);
 
-    if (DATA_TYPE.containsKey(value)) {
-      return DATA_TYPE.get(value);
+    if (DATA_TYPES.containsKey(value)) {
+      return DATA_TYPES.get(value);
     }
 
     DataType type;
