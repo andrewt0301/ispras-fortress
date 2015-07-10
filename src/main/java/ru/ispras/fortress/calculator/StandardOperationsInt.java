@@ -276,6 +276,16 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
     public Data calculate(final Data... operands) {
       return Data.newInteger(operands[0].getInteger().abs());
     }
+  },
+
+  POWER(StandardOperation.POWER, ArityRange.BINARY) {
+    @Override
+    public Data calculate(final Data... operands) {
+      final BigInteger base = operands[0].getInteger();
+      final int exponent = operands[1].getInteger().intValue();
+
+      return Data.newInteger(base.pow(exponent));
+    }
   };
 
   private static final Map<StandardOperation, Operation<StandardOperation>> OPERATIONS;
