@@ -135,7 +135,7 @@ public final class Randomizer {
    * @return A random long.
    */
   public long nextLong() {
-    return ((long) next() << Integer.SIZE) | next();
+    return ((long) next() << Integer.SIZE) | ((long) next() & 0xffffFFFFL);
   }
 
   //------------------------------------------------------------------------------------------------
