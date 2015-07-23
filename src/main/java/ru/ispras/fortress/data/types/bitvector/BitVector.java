@@ -15,10 +15,10 @@
 package ru.ispras.fortress.data.types.bitvector;
 
 import static ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.fill;
-import static ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.for_each;
-import static ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.for_each_reverse;
+import static ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.forEach;
+import static ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.forEachReverse;
 import static ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.generate;
-import static ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.mismatch_reverse;
+import static ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.mismatchReverse;
 
 import static ru.ispras.fortress.util.InvariantChecks.checkBounds;
 import static ru.ispras.fortress.util.InvariantChecks.checkBoundsInclusive;
@@ -178,7 +178,7 @@ public abstract class BitVector implements Comparable<BitVector> {
       return false;
     }
 
-    return (-1 == mismatch_reverse(this, other));
+    return -1 == mismatchReverse(this, other);
   }
 
   /**
@@ -202,7 +202,7 @@ public abstract class BitVector implements Comparable<BitVector> {
       }
     };
 
-    for_each(this, op);
+    forEach(this, op);
     return result.value;
   }
 
@@ -227,7 +227,7 @@ public abstract class BitVector implements Comparable<BitVector> {
       return 0;
     }
 
-    final int index = mismatch_reverse(this, other);
+    final int index = mismatchReverse(this, other);
 
     // Objects are equal (no mismatch was found)
     if (-1 == index) {
@@ -622,7 +622,7 @@ public abstract class BitVector implements Comparable<BitVector> {
       }
     };
 
-    for_each(this, op);
+    forEach(this, op);
     return result.value;
   }
 
@@ -651,7 +651,7 @@ public abstract class BitVector implements Comparable<BitVector> {
       }
     };
 
-    for_each(this, op);
+    forEach(this, op);
     return result.value;
   }
 
@@ -688,7 +688,7 @@ public abstract class BitVector implements Comparable<BitVector> {
      * constructor of BigInteger requires big-endian byte order (high bytes come first).
      */
 
-    for_each_reverse(this, op);
+    forEachReverse(this, op);
 
     /*
      * NOTE: If the highest byte is incomplete (only part of it stores a value from the bit vector),
@@ -736,7 +736,7 @@ public abstract class BitVector implements Comparable<BitVector> {
       }
     };
 
-    for_each_reverse(this, op);
+    forEachReverse(this, op);
     return sb.toString();
   }
 
@@ -757,7 +757,7 @@ public abstract class BitVector implements Comparable<BitVector> {
       }
     };
 
-    for_each_reverse(this, op);
+    forEachReverse(this, op);
     return sb.toString();
   }
 
@@ -778,7 +778,7 @@ public abstract class BitVector implements Comparable<BitVector> {
       }
     };
 
-    for_each(this, op);
+    forEach(this, op);
     return byteArray;
   }
 

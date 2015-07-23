@@ -145,7 +145,7 @@ public final class BitVectorAlgorithm {
     copy(srcMapping, destMapping);
   }
 
-  public static void for_each(final BitVector src, final IAction op) {
+  public static void forEach(final BitVector src, final IAction op) {
     checkNotNull(src);
     checkNotNull(op);
 
@@ -154,7 +154,7 @@ public final class BitVectorAlgorithm {
     }
   }
 
-  public static void for_each_reverse(final BitVector src, final IAction op) {
+  public static void forEachReverse(final BitVector src, final IAction op) {
     checkNotNull(src);
     checkNotNull(op);
 
@@ -205,7 +205,7 @@ public final class BitVectorAlgorithm {
     return -1;
   }
 
-  public static int mismatch_reverse(final BitVector src1, final BitVector src2) {
+  public static int mismatchReverse(final BitVector src1, final BitVector src2) {
     checkNotNull(src1);
     checkNotNull(src2);
 
@@ -224,7 +224,7 @@ public final class BitVectorAlgorithm {
     return -1;
   }
 
-  public static int mismatch_reverse(
+  public static int mismatchReverse(
       final BitVector src1, 
       final BitVector src2,
       final IBinaryPredicate op) {
