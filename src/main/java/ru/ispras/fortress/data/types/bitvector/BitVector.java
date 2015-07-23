@@ -255,6 +255,23 @@ public abstract class BitVector implements Comparable<BitVector> {
   }
 
   /**
+   * Returns a field of the bit vector limited by the specified bounds.
+   * 
+   * @return A field of the bit vector.
+   */
+
+  public final BitVector field(final int startBitPos, final int endBitPos) {
+    checkBounds(startBitPos, getBitSize());
+    checkBounds(endBitPos, getBitSize());
+
+    final int start = Math.min(startBitPos, endBitPos);
+    final int end = Math.max(startBitPos, endBitPos);
+    final int size = end - start + 1;
+
+    return newMapping(this, start, size);
+  }
+
+  /**
    * Creates a copy of the specified bit vector. Creates a new bit vector of the same size and fills
    * it with data from the current bit vector.
    * 
