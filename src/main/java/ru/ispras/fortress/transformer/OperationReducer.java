@@ -50,7 +50,10 @@ final class OperationReducer {
    * @param options Reduction policy configuration.
    */
 
-  public OperationReducer(CalculatorEngine engine, NodeOperation operation, ReduceOptions options) {
+  public OperationReducer(
+      final CalculatorEngine engine,
+      final NodeOperation operation,
+      final ReduceOptions options) {
     checkNotNull(operation);
     checkNotNull(options);
 
@@ -137,7 +140,10 @@ final class OperationReducer {
    * @return true if operation is supported.
    */
 
-  private boolean isSupported(CalculatorEngine engine, Enum<?> operation, Data[] operands) {
+  private boolean isSupported(
+      final CalculatorEngine engine,
+      final Enum<?> operation,
+      final Data[] operands) {
     if (engine != null) {
       return engine.isSupported(operation, operands);
     }
@@ -155,7 +161,10 @@ final class OperationReducer {
    * @return Data instance for operation result.
    */
 
-  private Data calculateData(CalculatorEngine engine, Enum<?> operation, Data[] operands) {
+  private Data calculateData(
+      final CalculatorEngine engine,
+      final Enum<?> operation,
+      final Data[] operands) {
     if (engine != null) {
       return engine.calculate(operation, operands);
     }
@@ -173,7 +182,10 @@ final class OperationReducer {
    * @return NodeValue instance for operation result.
    */
 
-  private NodeValue calculate(CalculatorEngine engine, Enum<?> operation, Node[] operands) {
+  private NodeValue calculate(
+      final CalculatorEngine engine,
+      final Enum<?> operation,
+      final Node[] operands) {
     final Data[] dataOperands = new Data[operands.length];
 
     for (int index = 0; index < operands.length; ++index) {
@@ -188,7 +200,7 @@ final class OperationReducer {
     return new NodeValue(result);
   }
 
-  private static Data getValueData(Node node) {
+  private static Data getValueData(final Node node) {
       switch (node.getKind()) {
       case VALUE: return ((NodeValue) node).getData();
       case VARIABLE: return ((NodeVariable) node).getData();
@@ -203,7 +215,7 @@ final class OperationReducer {
    * @return Array of operand nodes.
    */
 
-  private static Node[] copyOperands(NodeOperation operation) {
+  private static Node[] copyOperands(final NodeOperation operation) {
     final Node[] operands = new Node[operation.getOperandCount()];
 
     for (int index = 0; index < operands.length; ++index) {
