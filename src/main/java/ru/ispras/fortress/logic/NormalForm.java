@@ -141,7 +141,7 @@ public final class NormalForm {
       }
       extSign = true;
 
-      buffer.append("(");
+      buffer.append('(');
       {
         boolean intSign = false;
         for (final int var : clause.getVars()) {
@@ -154,7 +154,7 @@ public final class NormalForm {
           buffer.append("x" + var);
         }
       }
-      buffer.append(")");
+      buffer.append(')');
     }
 
     return buffer.toString();
