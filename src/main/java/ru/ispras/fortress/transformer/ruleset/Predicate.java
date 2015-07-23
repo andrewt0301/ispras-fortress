@@ -376,7 +376,7 @@ public final class Predicate {
 
     new OperationRule(StandardOperation.NOTEQ, ruleset) {
       @Override
-      public Node apply(Node in) {
+      public Node apply(final Node in) {
         return reduce(StandardOperation.NOT, 
                       reduce(StandardOperation.EQ, extractOperands(in)));
       }
@@ -384,7 +384,7 @@ public final class Predicate {
 
     new OperationRule(StandardOperation.LESSEQ, ruleset) {
       @Override
-      public Node apply(Node in) {
+      public Node apply(final Node in) {
         final Node[] operands = extractOperands(in);
         return reduce(StandardOperation.OR,
                       reduce(StandardOperation.LESS, operands),
@@ -394,7 +394,7 @@ public final class Predicate {
 
     new OperationRule(StandardOperation.GREATER, ruleset) {
       @Override
-      public Node apply(Node in) {
+      public Node apply(final Node in) {
         final Node[] operands = extractOperands(in);
         return reduce(StandardOperation.AND,
                       reduce(StandardOperation.NOT, reduce(StandardOperation.LESS, operands)),
@@ -404,7 +404,7 @@ public final class Predicate {
 
     new OperationRule(StandardOperation.GREATEREQ, ruleset) {
       @Override
-      public Node apply(Node in) {
+      public Node apply(final Node in) {
         return reduce(StandardOperation.NOT,
                       reduce(StandardOperation.LESS, extractOperands(in)));
       }
@@ -412,7 +412,7 @@ public final class Predicate {
 
     new OperationRule(StandardOperation.BVULE, ruleset) {
       @Override
-      public Node apply(Node in) {
+      public Node apply(final Node in) {
         final Node[] operands = extractOperands(in);
         return reduce(StandardOperation.OR, 
                       reduce(StandardOperation.BVULT, operands),
@@ -422,7 +422,7 @@ public final class Predicate {
 
     new OperationRule(StandardOperation.BVUGE, ruleset) {
       @Override
-      public Node apply(Node in) {
+      public Node apply(final Node in) {
         return reduce(StandardOperation.NOT,
                       reduce(StandardOperation.BVULT, extractOperands(in)));
       }
@@ -430,7 +430,7 @@ public final class Predicate {
 
     new OperationRule(StandardOperation.BVUGT, ruleset) {
       @Override
-      public Node apply(Node in) {
+      public Node apply(final Node in) {
         final Node[] operands = extractOperands(in);
         return reduce(StandardOperation.AND, 
                       reduce(StandardOperation.NOT, reduce(StandardOperation.BVULT, operands)),
@@ -440,7 +440,7 @@ public final class Predicate {
 
     new OperationRule(StandardOperation.BVSLE, ruleset) {
       @Override
-      public Node apply(Node in) {
+      public Node apply(final Node in) {
         final Node[] operands = extractOperands(in);
         return reduce(StandardOperation.OR,
                       reduce(StandardOperation.BVSLT, operands),
@@ -450,7 +450,7 @@ public final class Predicate {
 
     new OperationRule(StandardOperation.BVSGE, ruleset) {
       @Override
-      public Node apply(Node in) {
+      public Node apply(final Node in) {
         return reduce(StandardOperation.NOT,
                       reduce(StandardOperation.BVSLT, extractOperands(in)));
       }
@@ -458,7 +458,7 @@ public final class Predicate {
 
     new OperationRule(StandardOperation.BVSGT, ruleset) {
       @Override
-      public Node apply(Node in) {
+      public Node apply(final Node in) {
         final Node[] operands = extractOperands(in);
         return reduce(StandardOperation.AND,
                       reduce(StandardOperation.NOT, reduce(StandardOperation.BVSLT, operands)),
@@ -470,13 +470,13 @@ public final class Predicate {
     // (not (not expr)) -> expr
     new OperationRule(StandardOperation.NOT, ruleset) {
       @Override
-      public boolean isApplicable(NodeOperation op) {
+      public boolean isApplicable(final NodeOperation op) {
         final Node child = op.getOperand(0);
         return isBoolean(child) || isOperation(child, StandardOperation.NOT);
       }
 
       @Override
-      public Node apply(Node in) {
+      public Node apply(final Node in) {
         final Node child = ((NodeOperation) in).getOperand(0);
 
         if (isBoolean(child)) {
