@@ -698,6 +698,18 @@ public class BitVectorTestCase {
     testSetBit(BitVector.valueOf(0xDEADBEEF, 32));
   }
 
+  @Test
+  public void fieldTest() {
+    final BitVector bv = BitVector.valueOf(0xDEADBEEFBAADF00DL, 64);
+    final BitVector bvField = bv.field(16, 47);
+
+    Assert.assertEquals(BitVector.valueOf(0xBEEFBAAD, 32), bvField);
+    bvField.assign(BitVector.valueOf(0xBAADBEEF, 32));
+
+    Assert.assertEquals(BitVector.valueOf(0xBAADBEEF, 32), bvField);
+    Assert.assertEquals(BitVector.valueOf(0xDEADBAADBEEFF00DL, 64), bv);
+  }
+
   private static void testSetBit(final BitVector bv, final int index, final boolean value) {
     //System.out.println(bv);
     bv.setBit(index, value);
