@@ -14,7 +14,8 @@
 
 package ru.ispras.fortress.expression;
 
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull; 
+import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
+import static ru.ispras.fortress.util.InvariantChecks.checkNotEmpty;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -451,12 +452,6 @@ public final class ExprUtils {
 
     walker.visit(exprs);
     return variables.values();
-  }
-
-  private static void checkNotEmpty(final Node... exprs) {
-    if (0 == exprs.length) {
-      throw new IllegalArgumentException("No expressions are provided.");
-    }
   }
 
   private static void checkAllConditions(final Node... exprs) {
