@@ -36,7 +36,7 @@ import ru.ispras.fortress.solver.constraint.ConstraintUtils;
 /**
  * The ExprUtils class provides utility methods to work with logical expressions.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 
 public final class ExprUtils {
