@@ -90,6 +90,31 @@ public final class ExprUtils {
     return true;
   }
 
+
+  /**
+   * Checks whether all of the specified expressions are of the specified
+   * kind (see {@link Node.Kind}).
+   * 
+   * @param kind Expected expression kind.
+   * @param exprs Expressions to be checked.
+   * @return {@code true} if all expressions are of the specified kind or
+   *         {@code false} otherwise.
+   * 
+   * @throws IllegalArgumentException if the expression array is empty;
+   *         if any expression in the array is {@code null}.
+   */
+
+  public static boolean isKind(final Node.Kind kind, final Node... exprs) {
+    checkNotEmpty(exprs);
+    for (final Node expr : exprs) {
+      checkNotNull(expr);
+      if (expr.getKind() != kind) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   /**
    * Checks whether the specified expression is a logical expression (can be evaluated to boolean).
    * 

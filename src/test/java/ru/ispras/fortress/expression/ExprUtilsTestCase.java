@@ -20,6 +20,7 @@ import org.junit.Test;
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
+import ru.ispras.fortress.data.types.bitvector.BitVector;
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeBinding;
 import ru.ispras.fortress.expression.NodeOperation;
@@ -246,5 +247,27 @@ public final class ExprUtilsTestCase {
     assertFalse(ExprUtils
         .isSAT(new NodeOperation(StandardOperation.EQ, NodeValue.newInteger(5), new NodeOperation(
             StandardOperation.ADD, NodeValue.newInteger(2), NodeValue.newInteger(-3)))));
+  }
+
+  @Test
+  public void testIsKind() {
+    assertTrue(ExprUtils.isKind(
+        Node.Kind.VALUE,
+        NodeValue.newInteger(10),
+        NodeValue.newReal(3.14),
+        NodeValue.newBitVector(BitVector.valueOf(0xDEADBEEF, 32))));
+
+    assertFalse(ExprUtils.isKind(
+        Node.Kind.VALUE,
+        NodeValue.newInteger(10),
+        NodeValue.newReal(3.14),
+        new NodeOperation(StandardOperation.ADD, NodeValue.newInteger(10), NodeValue.newInteger(20)),
+        NodeValue.newBitVector(BitVector.valueOf(0xDEADBEEF, 32))));
+
+    assertTrue(ExprUtils.isKind(
+        Node.Kind.OPERATION,
+        new NodeOperation(StandardOperation.ADD, NodeValue.newInteger(10), NodeValue.newInteger(20)),
+        new NodeOperation(StandardOperation.SUB, NodeValue.newInteger(10), NodeValue.newInteger(20)),
+        new NodeOperation(StandardOperation.MOD, NodeValue.newInteger(10), NodeValue.newInteger(20))));
   }
 }
