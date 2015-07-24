@@ -12,6 +12,14 @@
  (like Yices, Z3, CVC4, etc.)
 
 --------------------------------------------------------------------------------
+ 2015/07/24 Fortress 0.4.5 beta
+
+ The new build contains the following changes:
+
+ - Convenience methods BitVector.field and ExprUtils.isKind were implemented
+ - Some bug fixes and general code improvements were made
+
+--------------------------------------------------------------------------------
  2015/07/17 Fortress 0.4.4 beta
 
  The new build contains the following changes:
