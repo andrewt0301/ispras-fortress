@@ -20,11 +20,11 @@ public final class XMLNotSavedException extends Exception {
   private static final String MESSAGE_FILE = "Failed to save data to the '%s' XML document.";
   private static final String MESSAGE_TEXT = "Failed to save data to XML text.";
 
-  public XMLNotSavedException(String fileName, Throwable cause) {
+  public XMLNotSavedException(final String fileName, final Throwable cause) {
     super(String.format(MESSAGE_FILE, fileName), cause);
   }
 
-  public XMLNotSavedException(Throwable cause) {
+  public XMLNotSavedException(final Throwable cause) {
     super(MESSAGE_TEXT, cause);
   }
 
