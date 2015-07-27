@@ -90,9 +90,9 @@ final class BitVectorMultiMapping extends BitVector {
      */
 
     public LinkingByteMapping(final BitVector lowPart, final BitVector highPart) {
-      assert ((0 < lowPart.getBitSize()) && (lowPart.getBitSize() < BITS_IN_BYTE));
-      assert ((0 < highPart.getBitSize()) && (highPart.getBitSize() < BITS_IN_BYTE));
-      assert ((lowPart.getBitSize() + highPart.getBitSize()) <= BITS_IN_BYTE);
+      assert 0 < lowPart.getBitSize()  && lowPart.getBitSize() < BITS_IN_BYTE;
+      assert 0 < highPart.getBitSize() && highPart.getBitSize() < BITS_IN_BYTE;
+      assert (lowPart.getBitSize() + highPart.getBitSize()) <= BITS_IN_BYTE;
 
       this.lowPart = lowPart;
       this.highPart = highPart;

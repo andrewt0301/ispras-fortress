@@ -135,7 +135,7 @@ public final class BitVectorAlgorithm {
     checkNotNull(src);
     checkNotNull(dest);
 
-    if ((src == dest) && (srcPos == destPos)) {
+    if (src == dest && srcPos == destPos) {
       return;
     }
 

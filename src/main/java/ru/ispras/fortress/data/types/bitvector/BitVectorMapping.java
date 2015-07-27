@@ -175,7 +175,7 @@ final class BitVectorMapping extends BitVector {
     final byte lowByteMask = (0 == excludedLowBits) ? 0 : (byte) (0xFF << excludedLowBits);
     final byte highByteMask = (0 == excludedHighBits) ? 0 : (byte) (0xFF >>> excludedHighBits);
 
-    final boolean isHighByteMaskApplied = (byteIndex == endByteIndex) && (0 != excludedHighBits);
+    final boolean isHighByteMaskApplied = byteIndex == endByteIndex && 0 != excludedHighBits;
 
     // If no lower bites are excluded this means that data is aligned by bytes
     // (start position is multiple of 8) and no byte split is needed.
