@@ -17,10 +17,10 @@ package ru.ispras.fortress.util;
 import java.util.Collection;
 
 /**
- * The InvariantChecks class provides static methods for checking different kinds
- * of invariants. If a check fails a corresponding exception is thrown.
+ * The {@code InvariantChecks} class provides static methods for checking different
+ * kinds of invariants. If a check fails a corresponding exception is thrown.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 
 public final class InvariantChecks {
@@ -37,8 +37,24 @@ public final class InvariantChecks {
    */
 
   public static void checkTrue(final boolean condition) {
+    checkTrue(condition, null);
+  }
+
+  /**
+   * Checks the invariant "Condition is true" and throws an exception
+   * if it is violated.
+   * 
+   * @param condition Condition to be checked.
+   * @param message Exception message.
+   * 
+   * @throws IllegalArgumentException if the invariant is violated
+   * ({@code condition} is {@code false}).
+   */
+
+  public static void checkTrue(final boolean condition, final String message) {
     if (!condition) {
-      throw new IllegalArgumentException();
+      throw message != null ? new IllegalArgumentException(message) :
+                              new IllegalArgumentException();
     }
   }
 
@@ -57,6 +73,21 @@ public final class InvariantChecks {
   }
 
   /**
+   * Checks the invariant "Condition is false" and throws an exception
+   * if it is violated.
+   * 
+   * @param condition Condition to be checked.
+   * @param message Exception message.
+   * 
+   * @throws IllegalArgumentException if the invariant is violated
+   * ({@code condition} is {@code true}).
+   */
+
+  public static void checkFalse(final boolean condition, final String message) {
+    checkTrue(!condition, message);
+  }
+
+  /**
    * Checks the invariant "Object reference is not null" and
    * throws an exception if it is violated. 
    * 
@@ -67,6 +98,20 @@ public final class InvariantChecks {
 
   public static <T> void checkNotNull(final T o) {
     checkTrue(null != o);
+  }
+
+  /**
+   * Checks the invariant "Object reference is not null" and
+   * throws an exception if it is violated. 
+   * 
+   * @param o Object reference to be checked.
+   * @param message Exception message.
+   * 
+   * @throws IllegalArgumentException if the invariant is violated ({@code o} is {@code null}).
+   */
+
+  public static <T> void checkNotNull(final T o, final String message) {
+    checkTrue(null != o, message);
   }
 
   /**
