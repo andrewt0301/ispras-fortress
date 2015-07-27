@@ -29,27 +29,21 @@ import ru.ispras.fortress.expression.StandardOperation;
  * responsible for performing standard operations (StandardOperation) on data objects that hold
  * booleans (DataTypeId.LOGIC_BOOLEAN).
  * 
- * <p>
- * Implementation details and conventions common for all operation groups implemented as
- * enumerations:
+ * <p>Implementation details and conventions common for all operation groups implemented
+ * as enumerations:
  * 
- * <ol>
- * <li>The enumeration implements the Operation interface parameterized with the StandardOperation
- * type.
- * 
+ * <ol><li>The enumeration implements the Operation interface parameterized with
+ * the StandardOperation type.
  * <li>Each operation is represented by an element of the enumeration that provides implementation
  * for the "calculate" methods with one and two parameters. If one of the overloaded "calculate"
  * method is not applicable for the operation the UnsupportedOperationException runtime exception is
  * thrown.
- * 
  * <li>Each enumeration elements holds operation identifier and the range of the allowed operand
  * number.
- * 
  * <li>The enumeration provides the "dataTypeId" static method that returns the identifier of the
- * data type for which the enumeration provides operations.
- * </ol>
+ * data type for which the enumeration provides operations.</ol>
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 
 enum StandardOperationsBool implements Operation<StandardOperation> {
