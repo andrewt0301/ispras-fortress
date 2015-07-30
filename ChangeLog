@@ -12,6 +12,14 @@
  (like Yices, Z3, CVC4, etc.)
 
 --------------------------------------------------------------------------------
+ 2015/07/30 Fortress 0.4.6 beta
+
+ The new build contains the following changes:
+
+ - InvariantChecks methods with the message parameter were implemented
+ - Some bug fixes and general code improvements were made
+
+--------------------------------------------------------------------------------
  2015/07/24 Fortress 0.4.5 beta
 
  The new build contains the following changes:
