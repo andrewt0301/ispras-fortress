@@ -37,10 +37,7 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
    * operation identifiers to operation descriptions.
    */
 
-  final class ExprTreeVisitor extends ExprTreeVisitorDefault {
-    /** Maps the operation identifiers to the operation descriptions. */
-    private final EnumMap<StandardOperation, OperationDescription> map;
-
+  protected class ExprTreeVisitor extends ExprTreeVisitorDefault {
     /** Keeps the intermediate expression text. */
     private final StringBuffer buffer = new StringBuffer();
 
@@ -48,23 +45,12 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
     private int[] operandOrder;
 
     /**
-     * Constructs an expression tree visitor.
-     * 
-     * @param map the map of operations to operation descriptions.
-     */
-
-    public ExprTreeVisitor(final EnumMap<StandardOperation, OperationDescription> map) {
-      InvariantChecks.checkNotNull(map);
-      this.map = map;
-    }
-
-    /**
      * Returns the string representation of the expression tree.
      * 
      * @return the string representation of the expression tree.
      */
 
-    public String toString() {
+    public final String toString() {
       return buffer.toString();
     }
 
@@ -129,15 +115,30 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
   }
 
   /** Maps the operation identifiers to the operation descriptions. */
+  private final EnumMap<StandardOperation, OperationDescription> map;
 
-  private final EnumMap<StandardOperation, OperationDescription> map =
-      new EnumMap<>(StandardOperation.class);
+  /** Creates textual representation of specific nodes by visiting them. */
+  private ExprTreeVisitor visitor;
 
   /**
    * Constructs a map-based expression printer.
    */
 
-  protected MapBasedPrinter() {}
+  protected MapBasedPrinter() {
+    this.map = new EnumMap<>(StandardOperation.class);
+    this.visitor = new ExprTreeVisitor();
+  }
+
+  /**
+   * Customizes printer behavior by setting a customized visitor. 
+   * 
+   * @param visitor Custom visitor implementation.
+   */
+
+  protected void setVisitor(final ExprTreeVisitor visitor) {
+    InvariantChecks.checkNotNull(visitor);
+    this.visitor = visitor;
+  }
 
   /**
    * Adds a mapping between the operation identifier and the operation description.
@@ -285,7 +286,6 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
 
   @Override
   public final String toString(final Node node) {
-    final ExprTreeVisitor visitor = new ExprTreeVisitor(map);
     final ExprTreeWalker walker = new ExprTreeWalker(visitor);
 
     walker.visit(node);
