@@ -54,6 +54,17 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
     }
 
     /**
+     * Appends text to the string representation of the expression tree.
+     * 
+     * @param text Text to be appended.
+     */
+
+    protected final void appendText(final String text) {
+      InvariantChecks.checkNotNull(buffer, "Visitor is not initialized");
+      buffer.append(text);
+    }
+
+    /**
      * Returns the string representation of the expression tree.
      * 
      * @return the string representation of the expression tree.
@@ -75,7 +86,7 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
       final String prefix = description.getPrefix();
 
       if (prefix != null) {
-        buffer.append(prefix);
+        appendText(prefix);
       }
 
       operandOrder = description.getOrder();
@@ -92,7 +103,7 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
       final String suffix = description.getSuffix();
 
       if (suffix != null) {
-        buffer.append(suffix);
+        appendText(suffix);
       }
     }
 
@@ -107,19 +118,19 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
         final String infix = description.getInfix(index - 1);
 
         if (infix != null) {
-          buffer.append(infix);
+          appendText(infix);
         }
       }
     }
 
     @Override
     public void onValue(final NodeValue value) {
-      buffer.append(value.toString());
+      appendText(value.toString());
     }
 
     @Override
     public void onVariable(final NodeVariable variable) {
-      buffer.append(variable.getName());
+      appendText(variable.getName());
     }
   }
 
