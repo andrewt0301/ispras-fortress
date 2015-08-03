@@ -39,10 +39,19 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
 
   protected class ExprTreeVisitor extends ExprTreeVisitorDefault {
     /** Keeps the intermediate expression text. */
-    private final StringBuffer buffer = new StringBuffer();
+    private StringBuffer buffer;
 
     /** Specifies the order of operands traversal. */
     private int[] operandOrder;
+
+    /**
+     * Sets up the initial state of the walker before starting visiting
+     * an expression tree.
+     */
+
+    private final void init() {
+      buffer = new StringBuffer();
+    }
 
     /**
      * Returns the string representation of the expression tree.
@@ -287,6 +296,7 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
   @Override
   public final String toString(final Node node) {
     final ExprTreeWalker walker = new ExprTreeWalker(visitor);
+    visitor.init();
 
     walker.visit(node);
     return visitor.toString();
