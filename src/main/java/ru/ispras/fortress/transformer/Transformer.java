@@ -78,7 +78,7 @@ public final class Transformer {
     return result;
   }
 
-  public static Node reduce(ReduceOptions options, Node expression) {
+  public static Node reduce(final ReduceOptions options, final Node expression) {
     return reduce(null, options, expression);
   }
 
@@ -125,7 +125,7 @@ public final class Transformer {
       }
 
       @Override
-      public Node apply(Node node) {
+      public Node apply(final Node node) {
         return term;
       }
     };
