@@ -203,10 +203,10 @@ public class NodeTransformer implements ExprTreeVisitor {
   }
 
   @Override
-  public void onOperandBegin(NodeOperation expr, Node operand, int index) {}
+  public void onOperandBegin(final NodeOperation expr, final Node operand, final int index) {}
 
   @Override
-  public void onOperandEnd(NodeOperation expr, Node operand, int index) {
+  public void onOperandEnd(final NodeOperation expr, final Node operand, final int index) {
     Node[] operands = operandStack.get(operandStack.size() - 1);
     operands[index] = exprStack.remove(exprStack.size() - 1);
   }
@@ -222,7 +222,7 @@ public class NodeTransformer implements ExprTreeVisitor {
   }
 
   @Override
-  public void onBindingBegin(NodeBinding node) {}
+  public void onBindingBegin(final NodeBinding node) {}
 
   @Override
   public void onBindingListEnd(final NodeBinding node) {
@@ -251,7 +251,10 @@ public class NodeTransformer implements ExprTreeVisitor {
   }
 
   @Override
-  public void onBoundVariableBegin(NodeBinding node, NodeVariable variable, Node value) {}
+  public void onBoundVariableBegin(
+      final NodeBinding node,
+      final NodeVariable variable,
+      final Node value) {}
 
   @Override
   public void onBoundVariableEnd(
@@ -298,7 +301,7 @@ abstract class ScopedBindingRule implements TransformerRule {
   }
 
   @Override
-  public Node apply(Node node) {
+  public Node apply(final Node node) {
     return applicableCache;
   }
 
