@@ -14,12 +14,6 @@
 
 package ru.ispras.fortress.data.types.bitvector;
 
-import static ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.fill;
-import static ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.forEach;
-import static ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.forEachReverse;
-import static ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.generate;
-import static ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.mismatchReverse;
-
 import static ru.ispras.fortress.util.InvariantChecks.checkBounds;
 import static ru.ispras.fortress.util.InvariantChecks.checkBoundsInclusive;
 import static ru.ispras.fortress.util.InvariantChecks.checkGreaterThanZero;
@@ -34,7 +28,7 @@ import ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.IOperation;
  * The BitVector class provides an interface for working with bit vectors ("raw" binary data) of
  * arbitrary size. It provides basic methods for accessing and modifying stored bytes.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 
 public abstract class BitVector implements Comparable<BitVector> {
@@ -136,7 +130,7 @@ public abstract class BitVector implements Comparable<BitVector> {
    */
 
   public final void reset() {
-    fill(this, (byte) 0);
+    BitVectorAlgorithm.fill(this, (byte) 0);
   }
 
   /**
@@ -178,7 +172,7 @@ public abstract class BitVector implements Comparable<BitVector> {
       return false;
     }
 
-    return -1 == mismatchReverse(this, other);
+    return -1 == BitVectorAlgorithm.mismatchReverse(this, other);
   }
 
   /**
@@ -202,7 +196,7 @@ public abstract class BitVector implements Comparable<BitVector> {
       }
     };
 
-    forEach(this, op);
+    BitVectorAlgorithm.forEach(this, op);
     return result.value;
   }
 
@@ -227,7 +221,7 @@ public abstract class BitVector implements Comparable<BitVector> {
       return 0;
     }
 
-    final int index = mismatchReverse(this, other);
+    final int index = BitVectorAlgorithm.mismatchReverse(this, other);
 
     // Objects are equal (no mismatch was found)
     if (-1 == index) {
@@ -269,6 +263,36 @@ public abstract class BitVector implements Comparable<BitVector> {
     final int size = end - start + 1;
 
     return newMapping(this, start, size);
+  }
+
+  /**
+   * Returns a resized copy of the current bit vector.
+   * 
+   * @param newBitSize New size in bits.
+   * @param signExt Flag that specifies whether sign extension is required.
+   * @return Resized copy of the bit vector.
+   * 
+   * @throws IllegalArgumentException if the new size is {@code <= 0}.
+   */
+
+  public BitVector resize(final int newBitSize, final boolean signExt) {
+    checkGreaterThanZero(newBitSize);
+
+    if (newBitSize == getBitSize()) {
+      return copy();
+    }
+
+    if (newBitSize < getBitSize()) {
+      return copyOf(newMapping(this, 0, newBitSize));
+    }
+
+    final BitVector newBitVector = BitVector.newEmpty(newBitSize);
+    if (signExt && getBit(getBitSize() - 1)) {
+      BitVectorAlgorithm.fill(newBitVector, (byte) 0xFF);
+    }
+
+    BitVectorAlgorithm.copy(this, 0, newBitVector, 0, getBitSize());
+    return newBitVector;
   }
 
   /**
@@ -472,7 +496,7 @@ public abstract class BitVector implements Comparable<BitVector> {
 
     if (2 == radix || 16 == radix) {
       final BitVector result = new BitVectorStore(bitSize);
-      generate(result, 2 == radix ? new BinParser() : new HexParser());
+      BitVectorAlgorithm.generate(result, 2 == radix ? new BinParser() : new HexParser());
       return result;
     }
     return valueOf(new BigInteger(text, radix), bitSize);
@@ -511,7 +535,7 @@ public abstract class BitVector implements Comparable<BitVector> {
     };
 
     final BitVector result = new BitVectorStore(bitSize);
-    generate(result, op);
+    BitVectorAlgorithm.generate(result, op);
 
     return result;
   }
@@ -542,7 +566,7 @@ public abstract class BitVector implements Comparable<BitVector> {
       }
     };
 
-    generate(result, op);
+    BitVectorAlgorithm.generate(result, op);
     return result;
   }
 
@@ -608,7 +632,7 @@ public abstract class BitVector implements Comparable<BitVector> {
       }
     };
 
-    generate(result, op);
+    BitVectorAlgorithm.generate(result, op);
     return result;
   }
 
@@ -639,7 +663,7 @@ public abstract class BitVector implements Comparable<BitVector> {
       }
     };
 
-    forEach(this, op);
+    BitVectorAlgorithm.forEach(this, op);
     return result.value;
   }
 
@@ -668,7 +692,7 @@ public abstract class BitVector implements Comparable<BitVector> {
       }
     };
 
-    forEach(this, op);
+    BitVectorAlgorithm.forEach(this, op);
     return result.value;
   }
 
@@ -705,7 +729,7 @@ public abstract class BitVector implements Comparable<BitVector> {
      * constructor of BigInteger requires big-endian byte order (high bytes come first).
      */
 
-    forEachReverse(this, op);
+    BitVectorAlgorithm.forEachReverse(this, op);
 
     /*
      * NOTE: If the highest byte is incomplete (only part of it stores a value from the bit vector),
@@ -753,7 +777,7 @@ public abstract class BitVector implements Comparable<BitVector> {
       }
     };
 
-    forEachReverse(this, op);
+    BitVectorAlgorithm.forEachReverse(this, op);
     return sb.toString();
   }
 
@@ -774,7 +798,7 @@ public abstract class BitVector implements Comparable<BitVector> {
       }
     };
 
-    forEachReverse(this, op);
+    BitVectorAlgorithm.forEachReverse(this, op);
     return sb.toString();
   }
 
@@ -795,7 +819,7 @@ public abstract class BitVector implements Comparable<BitVector> {
       }
     };
 
-    forEach(this, op);
+    BitVectorAlgorithm.forEach(this, op);
     return byteArray;
   }
 

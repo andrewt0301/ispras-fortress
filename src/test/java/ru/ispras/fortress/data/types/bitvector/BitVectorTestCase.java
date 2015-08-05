@@ -710,6 +710,42 @@ public class BitVectorTestCase {
     Assert.assertEquals(BitVector.valueOf(0xDEADBAADBEEFF00DL, 64), bv);
   }
 
+  @Test
+  public void resizeTest() {
+    final BitVector bv1 = BitVector.valueOf(0x1, 32);
+    final BitVector bv2 = BitVector.valueOf(0xFFFFFFFF, 32);
+    final BitVector bv3 = BitVector.valueOf(0xFFFFFFF, 32);
+    final BitVector bv4 = BitVector.valueOf(0xDEADBEEF, 32);
+
+    Assert.assertEquals(BitVector.valueOf(0x1, 16), bv1.resize(16, false));
+    Assert.assertEquals(BitVector.valueOf(0x1, 16), bv1.resize(16, true));
+    Assert.assertEquals(BitVector.valueOf(0x1, 32), bv1.resize(32, false));
+    Assert.assertEquals(BitVector.valueOf(0x1, 32), bv1.resize(32, true));
+    Assert.assertEquals(BitVector.valueOf(0x1, 64), bv1.resize(64, false));
+    Assert.assertEquals(BitVector.valueOf(0x1, 64), bv1.resize(64, true));
+
+    Assert.assertEquals(BitVector.valueOf(0xFFFF, 16), bv2.resize(16, false));
+    Assert.assertEquals(BitVector.valueOf(0xFFFF, 16), bv2.resize(16, true));
+    Assert.assertEquals(BitVector.valueOf(0xFFFFFFFF, 32), bv2.resize(32, false));
+    Assert.assertEquals(BitVector.valueOf(0xFFFFFFFF, 32), bv2.resize(32, true));
+    Assert.assertEquals(BitVector.valueOf(0x00000000FFFFFFFFL, 64), bv2.resize(64, false));
+    Assert.assertEquals(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64), bv2.resize(64, true));
+
+    Assert.assertEquals(BitVector.valueOf(0xFFFF, 16), bv3.resize(16, false));
+    Assert.assertEquals(BitVector.valueOf(0xFFFF, 16), bv3.resize(16, true));
+    Assert.assertEquals(BitVector.valueOf(0xFFFFFFF, 32), bv3.resize(32, false));
+    Assert.assertEquals(BitVector.valueOf(0xFFFFFFF, 32), bv3.resize(32, true));
+    Assert.assertEquals(BitVector.valueOf(0x000000000FFFFFFFL, 64), bv3.resize(64, false));
+    Assert.assertEquals(BitVector.valueOf(0x000000000FFFFFFFL, 64), bv3.resize(64, true));
+
+    Assert.assertEquals(BitVector.valueOf(0xBEEF, 16), bv4.resize(16, false));
+    Assert.assertEquals(BitVector.valueOf(0xBEEF, 16), bv4.resize(16, true));
+    Assert.assertEquals(BitVector.valueOf(0xDEADBEEF, 32), bv4.resize(32, false));
+    Assert.assertEquals(BitVector.valueOf(0xDEADBEEF, 32), bv4.resize(32, true));
+    Assert.assertEquals(BitVector.valueOf(0x00000000DEADBEEFL, 64), bv4.resize(64, false));
+    Assert.assertEquals(BitVector.valueOf(0xFFFFFFFFDEADBEEFL, 64), bv4.resize(64, true));
+  }
+
   private static void testSetBit(final BitVector bv, final int index, final boolean value) {
     //System.out.println(bv);
     bv.setBit(index, value);
