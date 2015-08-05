@@ -312,7 +312,7 @@ public abstract class BitVector implements Comparable<BitVector> {
       final int bitSize) {
     checkNotNull(source);
 
-    if ((0 == startBitPos) && (source.getBitSize() == bitSize)) {
+    if (0 == startBitPos && source.getBitSize() == bitSize) {
       return source;
     }
 
@@ -424,7 +424,7 @@ public abstract class BitVector implements Comparable<BitVector> {
           if (bitIndex >= 0) {
             final char c = text.charAt(bitIndex);
 
-            if (('0' != c) && ('1' != c)) {
+            if ('0' != c && '1' != c) {
               throw new NumberFormatException(text);
             }
 
@@ -447,7 +447,7 @@ public abstract class BitVector implements Comparable<BitVector> {
         }
 
         final char ch = text.charAt(charIndex--);
-        if (!((('0' <= ch) && (ch <= '9')) || (('A' <= ch) && (ch <= 'F')) || (('a' <= ch) && (ch <= 'f')))) {
+        if (!(('0' <= ch && ch <= '9') || ('A' <= ch && ch <= 'F') || ('a' <= ch && ch <= 'f'))) {
           throw new NumberFormatException(text);
         }
 
@@ -470,9 +470,9 @@ public abstract class BitVector implements Comparable<BitVector> {
     checkNotNull(text);
     checkGreaterThanZero(bitSize);
 
-    if ((2 == radix) || (16 == radix)) {
+    if (2 == radix || 16 == radix) {
       final BitVector result = new BitVectorStore(bitSize);
-      generate(result, (2 == radix) ? new BinParser() : new HexParser());
+      generate(result, 2 == radix ? new BinParser() : new HexParser());
       return result;
     }
     return valueOf(new BigInteger(text, radix), bitSize);
