@@ -119,20 +119,20 @@ final class SmtTextBuilder implements ExprTreeVisitor {
       private final PrintWriter fileOut;
       private final StringBuilder textOut;
 
-      TextWriter(String fileName, StringBuilder textBuilder) throws IOException {
+      TextWriter(final String fileName, final StringBuilder textBuilder) throws IOException {
         final FileWriter file = new FileWriter(fileName);
         this.fileOut = new PrintWriter(file);
         this.textOut = textBuilder;
       }
 
-      public void printf(String format, Object ... args) {
+      public void printf(final String format, final Object ... args) {
         fileOut.printf(format, args);
         if (null != textOut) {
           textOut.append(String.format(format, args));
         }
       }
 
-      public void println(String x) {
+      public void println(final String x) {
         fileOut.println(x);
         if (null != textOut) {
           textOut.append(x);
