@@ -251,6 +251,24 @@ public abstract class BitVector implements Comparable<BitVector> {
   /**
    * Returns a field of the bit vector limited by the specified bounds.
    * 
+   * @param startBitPos Bit vector that holds start position in bits.
+   * @param endBitPos Bit vector that holds end position in bits.
+   * 
+   * @return A field of the bit vector.
+   */
+
+  public final BitVector field(final BitVector startBitPos, final BitVector endBitPos) {
+    checkNotNull(startBitPos);
+    checkNotNull(endBitPos);
+    return field(startBitPos.intValue(), endBitPos.intValue());
+  }
+
+  /**
+   * Returns a field of the bit vector limited by the specified bounds.
+   * 
+   * @param startBitPos Start position in bits.
+   * @param endBitPos End position in bits.
+   * 
    * @return A field of the bit vector.
    */
 
