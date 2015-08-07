@@ -12,6 +12,17 @@
  (like Yices, Z3, CVC4, etc.)
 
 --------------------------------------------------------------------------------
+ 2015/08/07 Fortress 0.4.7 beta
+
+ The new build contains the following changes:
+
+ - Method BitVector.resize that supports zero extension and sign extension
+   was implemented
+ - More flexible expression printing facilities are available: visitor used
+   in map-based expression printer can be overridden
+ - Some general code improvements were made
+
+--------------------------------------------------------------------------------
  2015/07/30 Fortress 0.4.6 beta
 
  The new build contains the following changes:
