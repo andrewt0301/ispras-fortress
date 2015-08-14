@@ -12,6 +12,15 @@
  (like Yices, Z3, CVC4, etc.)
 
 --------------------------------------------------------------------------------
+ 2015/08/14 Fortress 0.4.8 beta
+
+ The new build contains the following changes:
+
+ - Operations right shift (StandardOperation.BVASHR) and
+   left shift (StandardOperation.BVLSHL) for LOGIC_INTEGER type
+   are now supported in calculator
+
+--------------------------------------------------------------------------------
  2015/08/07 Fortress 0.4.7 beta
 
  The new build contains the following changes:
