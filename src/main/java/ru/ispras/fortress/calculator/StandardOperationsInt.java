@@ -271,6 +271,24 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
     }
   },
 
+  BVLSHL(StandardOperation.BVLSHL, ArityRange.BINARY) {
+    @Override
+    public Data calculate(final Data... operands) {
+      final BigInteger value = operands[0].getInteger();
+      final int amount = operands[1].getInteger().intValue();
+      return Data.newInteger(value.shiftLeft(amount));
+    }
+  },
+
+  BVASHR(StandardOperation.BVASHR, ArityRange.BINARY) {
+    @Override
+    public Data calculate(final Data... operands) {
+      final BigInteger value = operands[0].getInteger();
+      final int amount = operands[1].getInteger().intValue();
+      return Data.newInteger(value.shiftRight(amount));
+    }
+  },
+
   ABS(StandardOperation.ABS, ArityRange.UNARY) {
     @Override
     public Data calculate(final Data... operands) {
