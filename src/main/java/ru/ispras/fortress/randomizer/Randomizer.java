@@ -289,12 +289,12 @@ public final class Randomizer {
    * @param width the bit size.
    * @return a random number.
    */
-  public BigInteger nextBigIntegerField(final int width) {
+  public BigInteger nextBigIntegerField(final int width, final boolean signed) {
     final BitVector data = BitVector.newEmpty(width);
 
     fill(data);
 
-    return data.bigIntegerValue();
+    return data.bigIntegerValue(signed);
   }
 
   /**
