@@ -194,7 +194,7 @@ public final class Randomizer {
    * @return a random number.
    */
   public int nextIntField(final int width) {
-    return next() & BitUtils.maskInt(width);
+    return next() & BitUtils.getIntegerMask(width);
   }
 
   /**
@@ -205,7 +205,7 @@ public final class Randomizer {
    * @return a random number.
    */
   public int nextIntField(final int lo, final int hi) {
-    return next() & BitUtils.maskInt(lo, hi);
+    return next() & BitUtils.getIntegerMask(lo, hi);
   }
 
   //------------------------------------------------------------------------------------------------
@@ -265,7 +265,7 @@ public final class Randomizer {
    * @return a random number.
    */
   public long nextLongField(final int width) {
-    return nextLong() & BitUtils.maskLong(width);
+    return nextLong() & BitUtils.getLongMask(width);
   }
 
   /**
@@ -276,12 +276,26 @@ public final class Randomizer {
    * @return a random number.
    */
   public long nextLongField(final int lo, final int hi) {
-    return nextLong() & BitUtils.maskLong(lo, hi);
+    return nextLong() & BitUtils.getLongMask(lo, hi);
   }
 
   //------------------------------------------------------------------------------------------------
   // Next Big Integer Methods
   //------------------------------------------------------------------------------------------------
+
+  /**
+   * Returns a random number of the given bit size (width).
+   * 
+   * @param width the bit size.
+   * @return a random number.
+   */
+  public BigInteger nextBigIntegerField(final int width) {
+    final BitVector data = BitVector.newEmpty(width);
+
+    fill(data);
+
+    return data.bigIntegerValue();
+  }
 
   /**
    * Returns a random number from the given range.

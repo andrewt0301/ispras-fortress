@@ -14,8 +14,10 @@
 
 package ru.ispras.fortress.util;
 
+import java.math.BigInteger;
+
 /**
- * This class implements some methods for manipulating with bits.
+ * {@link BitUtils} class implements some methods for manipulating with bits.
  *
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
@@ -28,7 +30,8 @@ public final class BitUtils {
    * @param width Mask width.
    * @return Integer bit mask.
    */
-  public static int maskInt(final int width) {
+  public static int getIntegerMask(final int width) {
+    InvariantChecks.checkBoundsInclusive(width, Integer.SIZE);
     return width >= Integer.SIZE ? -1 : (1 << width) - 1;
   }
 
@@ -39,42 +42,163 @@ public final class BitUtils {
    * @param hi Higher bound.
    * @return Integer bit mask.
    */
-  public static int maskInt(final int lo, final int hi) {
-    final int x = lo < hi ? lo : hi;
-    int y = lo < hi ? hi : lo;
+  public static int getIntegerMask(final int lo, final int hi) {
+    InvariantChecks.checkBounds(lo, Integer.SIZE);
+    InvariantChecks.checkBounds(hi, Integer.SIZE);
+    InvariantChecks.checkGreaterOrEq(hi, lo);
 
-    if (y >= Integer.SIZE) {
-      y = Integer.SIZE - 1;
-    }
-
-    return maskInt((y - x) + 1) << x;
+    return getIntegerMask((hi - lo) + 1) << lo;
   }
 
   /**
-   * Returns a bit mask of the given width.
+   * Returns the field of the given value.
+   * 
+   * @param value Value.
+   * @param lo Lower bound.
+   * @param hi Higher bound.
+   * @return Value field.
+   */
+  public static int getField(final int value, final int lo, final int hi) {
+    InvariantChecks.checkBounds(lo, Integer.SIZE);
+    InvariantChecks.checkBounds(hi, Integer.SIZE);
+    InvariantChecks.checkGreaterOrEq(hi, lo);
+
+    return (value & getIntegerMask(lo, hi)) >>> lo;
+  }
+
+  /**
+   * Sets the field to the given value.
+   * 
+   * @param value Value.
+   * @param lo Lower bound.
+   * @param hi Higher bound.
+   * @return Value with the updated field.
+   */
+  public static int setField(final int value, final int lo, final int hi, final int field) {
+    InvariantChecks.checkBounds(lo, Integer.SIZE);
+    InvariantChecks.checkBounds(hi, Integer.SIZE);
+    InvariantChecks.checkGreaterOrEq(hi, lo);
+
+    return (value & ~getIntegerMask(lo, hi)) | (field << lo);
+  }
+
+  /**
+   * Returns the bit mask of the given width.
    * 
    * @param width Mask width.
-   * @return Long bit mask.
+   * @return {@link Long} bit mask.
    */
-  public static long maskLong(final int width) {
-    return width >= Long.SIZE ? -1 : (1 << width) - 1;
+  public static long getLongMask(final int width) {
+    InvariantChecks.checkBoundsInclusive(width, Long.SIZE);
+    return width >= Long.SIZE ? -1L : (1L << width) - 1;
   }
 
   /**
-   * Returns a bit mask for the given range.
+   * Returns the bit mask for the given range.
    * 
    * @param lo Lower bound.
    * @param hi Higher bound.
-   * @return Long bit mask.
+   * @return {@link Long} bit mask.
    */
-  public static long maskLong(final int lo, final int hi) {
-    final int x = lo < hi ? lo : hi;
-    int y = lo < hi ? hi : lo;
+  public static long getLongMask(final int lo, final int hi) {
+    InvariantChecks.checkBounds(lo, Long.SIZE);
+    InvariantChecks.checkBounds(hi, Long.SIZE);
+    InvariantChecks.checkGreaterOrEq(hi, lo);
 
-    if (y >= Long.SIZE) {
-      y = Long.SIZE - 1;
-    }
+    return getLongMask((hi - lo) + 1) << lo;
+  }
 
-    return maskLong((y - x) + 1) << x;
+  /**
+   * Returns the field of the given value.
+   * 
+   * @param value Value.
+   * @param lo Lower bound.
+   * @param hi Higher bound.
+   * @return Value field.
+   */
+  public static long getField(final long value, final int lo, final int hi) {
+    InvariantChecks.checkBounds(lo, Long.SIZE);
+    InvariantChecks.checkBounds(hi, Long.SIZE);
+    InvariantChecks.checkGreaterOrEq(hi, lo);
+
+    return (value & getLongMask(lo, hi)) >>> lo;
+  }
+
+  /**
+   * Sets the field to the given value.
+   * 
+   * @param value Value.
+   * @param lo Lower bound.
+   * @param hi Higher bound.
+   * @return Value with the updated field.
+   */
+  public static long setField(final long value, final int lo, final int hi, final long field) {
+    InvariantChecks.checkBounds(lo, Long.SIZE);
+    InvariantChecks.checkBounds(hi, Long.SIZE);
+    InvariantChecks.checkGreaterOrEq(hi, lo);
+
+    return (value & ~getLongMask(lo, hi)) | (field << lo);
+  }
+
+  /**
+   * Returns the bit mask for the given width.
+   * 
+   * @param width Mask width.
+   * @return {@link BigInteger} bit mask.
+   */
+  public static BigInteger getBigIntegerMask(final int width) {
+    InvariantChecks.checkGreaterOrEqZero(width);
+    return BigInteger.ONE.shiftLeft(width).subtract(BigInteger.ONE);
+  }
+
+  /**
+   * Returns the bit mask for the given range.
+   * 
+   * @param lo Lower bound.
+   * @param hi Higher bound.
+   * @return {@link BigInteger} bit mask.
+   */
+  public static BigInteger getBigIntegerMask(final int lo, final int hi) {
+    InvariantChecks.checkGreaterOrEqZero(lo);
+    InvariantChecks.checkGreaterOrEqZero(hi);
+    InvariantChecks.checkGreaterOrEq(hi, lo);
+
+    return getBigIntegerMask((hi - lo) + 1).shiftLeft(lo);
+  }
+
+  /**
+   * Returns the field of the given value.
+   * 
+   * @param value Value.
+   * @param lo Lower bound.
+   * @param hi Higher bound.
+   * @return Value field.
+   */
+  public static BigInteger getField(final BigInteger value, final int lo, final int hi) {
+    InvariantChecks.checkNotNull(value);
+    InvariantChecks.checkGreaterOrEqZero(lo);
+    InvariantChecks.checkGreaterOrEqZero(hi);
+    InvariantChecks.checkGreaterOrEq(hi, lo);
+
+    return value.and(getBigIntegerMask(lo, hi)).shiftRight(lo);
+  }
+
+  /**
+   * Sets the field to the given value.
+   * 
+   * @param value Value.
+   * @param lo Lower bound.
+   * @param hi Higher bound.
+   * @return Value with the updated field.
+   */
+  public static BigInteger setField(
+      final BigInteger value, final int lo, final int hi, final BigInteger field) {
+    InvariantChecks.checkNotNull(value);
+    InvariantChecks.checkNotNull(field);
+    InvariantChecks.checkGreaterOrEqZero(lo);
+    InvariantChecks.checkGreaterOrEqZero(hi);
+    InvariantChecks.checkGreaterOrEq(hi, lo);
+
+    return value.andNot(getBigIntegerMask(lo, hi)).or(field.shiftLeft(lo));
   }
 }
