@@ -12,6 +12,16 @@
  (like Yices, Z3, CVC4, etc.)
 
 --------------------------------------------------------------------------------
+ 2015/08/21 Fortress 0.4.9 beta
+
+ The new build contains the following changes:
+
+ - Methods getBigIntegerMask, getField and setField were added in BitUtils
+ - Method nextBigIntegerField was added in Randomizer
+ - Methods maskInt and maskLong of BitUtils were renamed to 
+   getIntegerMask and getLongMask respectively
+
+--------------------------------------------------------------------------------
  2015/08/14 Fortress 0.4.8 beta
 
  The new build contains the following changes:
