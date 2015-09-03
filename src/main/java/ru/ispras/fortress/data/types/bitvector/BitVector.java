@@ -126,11 +126,49 @@ public abstract class BitVector implements Comparable<BitVector> {
   }
 
   /**
-   * Resets (set to zero) all bytes in the bit vector.
+   * Sets (sets to one) all bits in the bit vector.
+   */
+
+  public final void setAll() {
+    BitVectorAlgorithm.fill(this, (byte) -1);
+  }
+
+  /**
+   * Resets (set to zero) all bits in the bit vector.
    */
 
   public final void reset() {
     BitVectorAlgorithm.fill(this, (byte) 0);
+  }
+
+  /**
+   * Checks whether all bits in the bit vector are set (equal to 1).
+   * 
+   * @return {@code true} if all bits are set or {@code false} otherwise.
+   */
+
+  public final boolean isAllSet() {
+    for (int index = 0; index < getByteSize(); ++index) {
+      if (-1 != getByte(index)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
+   * Checks whether all bits in the bit vector are reset (equal to 0).
+   * 
+   * @return {@code true} if all bits are reset or {@code false} otherwise.
+   */
+
+  public final boolean isAllReset() {
+    for (int index = 0; index < getByteSize(); ++index) {
+      if (0 != getByte(index)) {
+        return false;
+      }
+    }
+    return true;
   }
 
   /**

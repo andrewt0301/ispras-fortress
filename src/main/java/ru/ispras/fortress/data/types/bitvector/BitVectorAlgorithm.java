@@ -20,7 +20,7 @@ public final class BitVectorAlgorithm {
   private BitVectorAlgorithm() {}
 
   public interface IUnaryOperation {
-    byte run(byte v);
+    byte run(final byte v);
   }
 
   public interface IBinaryOperation {
@@ -32,7 +32,7 @@ public final class BitVectorAlgorithm {
   }
 
   public interface IAction {
-    void run(byte v);
+    void run(final byte v);
   }
 
   public interface IBinaryPredicate {

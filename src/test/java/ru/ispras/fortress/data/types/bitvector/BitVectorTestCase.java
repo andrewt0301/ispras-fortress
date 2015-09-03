@@ -746,6 +746,47 @@ public class BitVectorTestCase {
     Assert.assertEquals(BitVector.valueOf(0xFFFFFFFFDEADBEEFL, 64), bv4.resize(64, true));
   }
 
+  @Test
+  public void setResetTest() {
+    Assert.assertTrue(BitVector.valueOf(-1L, 64).isAllSet());
+    Assert.assertFalse(BitVector.valueOf(-1L, 64).isAllReset());
+
+    Assert.assertFalse(BitVector.valueOf(0, 64).isAllSet());
+    Assert.assertTrue(BitVector.valueOf(0, 64).isAllReset());
+
+    Assert.assertFalse(BitVector.valueOf(0xDEADBEEF, 32).isAllSet());
+    Assert.assertFalse(BitVector.valueOf(0xDEADBEEF, 32).isAllReset());
+
+    final BitVector bv1 = BitVector.valueOf(-1L, 64);
+    Assert.assertTrue(bv1.isAllSet());
+    bv1.reset();
+    Assert.assertTrue(bv1.isAllReset());
+    bv1.setAll();
+    Assert.assertTrue(bv1.isAllSet());
+
+    final BitVector bv2 = BitVector.valueOf(0xDEADFFFFFFFFBEEFL, 64);
+    final BitVector bv2Mask1 = BitVector.newMapping(bv2, 0, 16);
+    final BitVector bv2Mask2 = BitVector.newMapping(bv2, 16, 32);
+    final BitVector bv2Mask3 = BitVector.newMapping(bv2, 48, 16);
+
+    Assert.assertFalse(bv2Mask1.isAllSet());
+    Assert.assertFalse(bv2Mask1.isAllReset());
+    Assert.assertTrue(bv2Mask2.isAllSet());
+    Assert.assertFalse(bv2Mask3.isAllSet());
+    Assert.assertFalse(bv2Mask3.isAllReset());
+
+    bv2Mask1.setAll();
+    bv2Mask3.setAll();
+    Assert.assertTrue(bv2.isAllSet());
+
+    bv2Mask1.reset();
+    bv2Mask3.reset();
+    Assert.assertFalse(bv2.isAllSet());
+
+    bv2Mask2.reset();
+    Assert.assertTrue(bv2.isAllReset());
+  }
+
   private static void testSetBit(final BitVector bv, final int index, final boolean value) {
     //System.out.println(bv);
     bv.setBit(index, value);
