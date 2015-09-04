@@ -12,6 +12,13 @@
  (like Yices, Z3, CVC4, etc.)
 
 --------------------------------------------------------------------------------
+ 2015/09/04 Fortress 0.4.10 beta
+
+ The new build contains the following changes:
+
+ - New BitVector methods: setAll, isAllSet and isAllReset
+
+--------------------------------------------------------------------------------
  2015/08/21 Fortress 0.4.9 beta
 
  The new build contains the following changes:
