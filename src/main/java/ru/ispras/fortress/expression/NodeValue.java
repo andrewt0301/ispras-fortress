@@ -18,10 +18,15 @@ import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
 import java.math.BigInteger;
 
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.types.bitvector.BitVector;
 import ru.ispras.fortress.data.types.datamap.DataMap;
+import ru.ispras.fortress.jaxb.JaxbNodeValue;
+import ru.ispras.fortress.jaxb.JaxbNodeValueAdapter;
 
 /**
  * The {@code NodeValue} class represents a node that stores a constant value.
@@ -30,6 +35,8 @@ import ru.ispras.fortress.data.types.datamap.DataMap;
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 
+@XmlSeeAlso(JaxbNodeValue.class)
+@XmlJavaTypeAdapter(JaxbNodeValueAdapter.class)
 public final class NodeValue extends Node {
   /** Creates a new value node based on an integer value. */
   public static NodeValue newInteger(final int value) {
