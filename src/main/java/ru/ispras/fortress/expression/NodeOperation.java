@@ -173,7 +173,7 @@ public final class NodeOperation extends Node {
           }
 
           final Data operandData = ((NodeValue) operand).getData();
-          if (DataTypeId.LOGIC_INTEGER != operandData.getType().getTypeId()) {
+          if (!operandData.isType(DataTypeId.LOGIC_INTEGER)) {
             throw new IllegalStateException(
                 "Operand is not a constant integer value: " + operand);
           }
