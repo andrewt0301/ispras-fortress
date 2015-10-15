@@ -21,7 +21,7 @@ import java.util.Collections;
 
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.data.DataType;
-
+import ru.ispras.fortress.data.types.bitvector.BitVector;
 import ru.ispras.fortress.expression.*;
 
 public class SimpleTransformTestCase {
@@ -361,5 +361,16 @@ public class SimpleTransformTestCase {
     final Node std = Transformer.standardize(expr);
 
     Assert.assertTrue(equalNodes(std, EQ(x, eqValue)) || equalNodes(std, EQ(eqValue, x)));
+  }
+
+  @Test
+  public void equalNotEqual() {
+    final NodeVariable a = new NodeVariable("a", DataType.BIT_VECTOR(2));
+    final NodeVariable b = new NodeVariable("b", DataType.BIT_VECTOR(2));
+    final NodeValue zero = NodeValue.newBitVector(BitVector.valueOf(0, 2));
+    
+    final Node expr = AND(EQ(a, zero), NOT(EQ(a, b, zero)));
+    final Node std = Transformer.standardize(expr);
+    Assert.assertTrue(ExprUtils.isSAT(expr) == ExprUtils.isSAT(std));
   }
 }
