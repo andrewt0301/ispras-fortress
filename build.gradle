@@ -51,10 +51,10 @@ windows {
 
 unix {
   z3 = 'z3:z3:x64-4.1:@tar.gz'
-  z3path = '${projectDir}/tools/z3/bin/z3'
+  z3path = 'tools/z3/bin/z3'
 
   cvc4 = 'cvc4:cvc4:2015-05-12-x86_64-linux-opt:@bin'
-  cvc4path = '${projectDir}/tools/cvc4-unix.bin'
+  cvc4path = 'tools/cvc4-unix.bin'
 }
 
 macOs {
@@ -96,6 +96,7 @@ task getCVC4(type: Copy) {
     from configurations.testRuntime.fileCollection { dep -> dep.name == 'cvc4' }.singleFile
     rename '.*', 'cvc4-unix.bin'
   }
+  fileMode 0555
   into 'tools'
 }
 
