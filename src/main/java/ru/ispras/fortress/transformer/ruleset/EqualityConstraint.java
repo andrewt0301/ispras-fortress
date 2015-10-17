@@ -15,6 +15,7 @@
 package ru.ispras.fortress.transformer.ruleset;
 
 import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
+import static ru.ispras.fortress.util.InvariantChecks.checkTrue;
 
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeOperation;
@@ -54,9 +55,9 @@ class EqualityConstraint {
   }
 
   public void addEquality(final Node node) {
-    if (!isOperation(node, StandardOperation.EQ)) {
-      throw new IllegalArgumentException("EQ operation expected");
-    }
+    checkNotNull(node);
+    checkTrue(isOperation(node, StandardOperation.EQ));
+
     if (this.hasKnownConflict()) {
       return;
     }
@@ -123,10 +124,9 @@ class EqualityConstraint {
   }
 
   public void addInequality(Node node) {
-    if (!isOperation(node, StandardOperation.EQ) &&
-        !isOperation(node, StandardOperation.NOTEQ)) {
-      throw new IllegalArgumentException("EQ or NOTEQ operation expected");
-    }
+    checkNotNull(node);
+    checkTrue(isOperation(node, StandardOperation.NOTEQ));
+
     if (this.hasKnownConflict()) {
       return;
     }
@@ -154,7 +154,7 @@ class EqualityConstraint {
     }
     final List<Node> operands = new ArrayList<>();
     for (final NodeOperation noteq : inequalities) {
-      collectOperands(operands, noteq);
+      operands.addAll(noteq.getOperands());
       for (int i = 0; i < operands.size() - 1; ++i) {
         if (!isNotEqual(operands.get(i), operands.subList(i + 1, operands.size()))) {
           return evaluateTo(false);
@@ -163,20 +163,6 @@ class EqualityConstraint {
       operands.clear();
     }
     return evaluateTo(true);
-  }
-
-  private static void collectOperands(
-      final List<Node> operands,
-      final NodeOperation op) {
-    for (int i = 0; i < op.getOperandCount(); ++i) {
-      operands.add(op.getOperand(i));
-    }
-  }
-
-  private static List<Node> collectOperands(final NodeOperation op) {
-    final List<Node> operands = new ArrayList<>();
-    collectOperands(operands, op);
-    return operands;
   }
 
   private boolean isNotEqual(
@@ -277,8 +263,9 @@ class EqualityConstraint {
     final List<NodeOperation> filtered = cache.filtered;
     for (int i = 0; i < filtered.size(); ++i) {
       final NodeOperation op = filtered.get(i);
-      if (isOperation(op, StandardOperation.EQ)) {
-        filtered.set(i, new NodeOperation(StandardOperation.NOT, op));
+      if (isOperation(op, StandardOperation.NOTEQ)) {
+        // inequalities are split pairwise
+        filtered.set(i, NOTEQ(op.getOperand(0), op.getOperand(1)));
       }
     }
     return filtered;
@@ -289,7 +276,7 @@ class EqualityConstraint {
       final NodeValue constant,
       final Set<Node> boundSet,
       final Collection<NodeOperation> output) {
-    final List<Node> operands = collectOperands(noteq);
+    final List<Node> operands = new ArrayList<>(noteq.getOperands());
     operands.remove(constant);
 
     splitNotEqualPairwise(operands, output);

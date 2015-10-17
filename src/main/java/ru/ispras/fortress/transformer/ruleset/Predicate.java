@@ -16,6 +16,7 @@ package ru.ispras.fortress.transformer.ruleset;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -63,6 +64,10 @@ abstract class DependentRule implements TransformerRule {
       return rule.apply(node);
     }
     return node;
+  }
+
+  protected final Node reduce(final Enum<?> opId, final Collection<? extends Node> operands) {
+    return reduce(opId, operands.toArray(new Node[operands.size()]));
   }
 
   abstract public boolean isApplicable(Node node);
@@ -120,7 +125,12 @@ abstract class OperationRule extends DependentRule {
     return true;
   }
 
-  public abstract Node apply(Node node);
+  @Override
+  public final Node apply(final Node node) {
+    return apply((NodeOperation) node);
+  }
+
+  public abstract Node apply(NodeOperation node);
 
   /**
    * Helper method to extract operands from node.
@@ -194,6 +204,31 @@ abstract class OperationRule extends DependentRule {
     }
     return -1;
   }
+
+  static boolean isDistinct(final Node node) {
+    return getDistinct(node) != null;
+  }
+
+  static NodeOperation getDistinct(final Node node) {
+    if (isOperation(node, StandardOperation.NOTEQ)) {
+      return (NodeOperation) node;
+    }
+    final List<Node> operands = getNotEqOperands(node);
+    if (operands.size() == 2) {
+      return new NodeOperation(StandardOperation.NOTEQ, operands);
+    }
+    return null;
+  }
+
+  private static List<Node> getNotEqOperands(final Node node) {
+    if (isOperation(node, StandardOperation.NOT)) {
+      final Node child = ((NodeOperation) node).getOperand(0);
+      if (isOperation(child, StandardOperation.EQ)) {
+        return ((NodeOperation) child).getOperands();
+      }
+    }
+    return Collections.emptyList();
+  }
 }
 
 /**
@@ -219,32 +254,24 @@ final class UnrollClause extends OperationRule {
       final Node operand = in.getOperand(i);
       if (isBoolean(operand) ||
           isOperation(operand, this.getOperationId()) ||
-          this.getOperationId() == StandardOperation.AND && isEquality(operand)) {
+          appliesTo(operand)) {
         return true;
       }
     }
     return false;
   }
 
-  private boolean isEquality(final Node operand) {
-    if (isOperation(operand, StandardOperation.EQ) ||
-        isOperation(operand, StandardOperation.NOTEQ)) {
-      return true;
-    }
-    if (isOperation(operand, StandardOperation.NOT)) {
-      final Node candidate = ((NodeOperation) operand).getOperand(0);
-      return isOperation(candidate, StandardOperation.EQ);
+  private boolean appliesTo(final Node node) {
+    if (getOperationId().equals(StandardOperation.AND)) {
+      return isOperation(node, StandardOperation.EQ) || isDistinct(node);
     }
     return false;
   }
 
   @Override
-  public Node apply(final Node in) {
-    final NodeOperation op = (NodeOperation) in;
-
+  public Node apply(final NodeOperation op) {
     int numBoolean = 0;
-    for (int i = 0; i < op.getOperandCount(); ++i) {
-      final Node operand = op.getOperand(i);
+    for (final Node operand : op.getOperands()) {
       if (isBoolean(operand)) {
         if (getBoolean(operand) == this.symbol) {
           return operand;
@@ -263,8 +290,7 @@ final class UnrollClause extends OperationRule {
     if (operands.size() == 1) {
       return operands.get(0);
     }
-    return new NodeOperation(this.getOperationId(),
-                             operands.toArray(new Node[operands.size()]));
+    return new NodeOperation(this.getOperationId(), operands);
   }
 
   private List<Node> flattenFilter(final NodeOperation op) {
@@ -274,8 +300,7 @@ final class UnrollClause extends OperationRule {
   }
 
   private void flattenFilter(final NodeOperation op, final List<Node> operands) {
-    for (int i = 0; i < op.getOperandCount(); ++i) {
-      final Node operand = op.getOperand(i);
+    for (final Node operand : op.getOperands()) {
       if (isOperation(operand, this.getOperationId())) {
         this.flattenFilter((NodeOperation) operand, operands);
       } else if (!isBoolean(operand)) {
@@ -317,15 +342,9 @@ final class UnrollClause extends OperationRule {
       if (isOperation(operand, StandardOperation.EQ)) {
         constraint.addEquality(operand);
         it.remove();
-      } else if (isOperation(operand, StandardOperation.NOTEQ)) {
-        constraint.addInequality(operand);
+      } else if (isDistinct(operand)) {
+        constraint.addInequality(getDistinct(operand));
         it.remove();
-      } else if (isOperation(operand, StandardOperation.NOT)) {
-        final Node candidate = ((NodeOperation) operand).getOperand(0);
-        if (isOperation(candidate, StandardOperation.EQ)) {
-          constraint.addInequality(candidate);
-          it.remove();
-        }
       }
     }
     return constraint;
@@ -346,7 +365,7 @@ public final class Predicate {
    * <pre>
    * {@code
    * en - expression, cn - constant
-   * (neq ...) -> (not (= ...))
+   * (neq x y z ...) -> (and (not (= x y)) (not (= x z)) (not (= y z)) ...)
    * (<= ...) -> (or (< ...) (= ...))
    * (> ...) -> (and (not (< ...)) (not (= ...)))
    * (>= ...) -> (not (< ...))
@@ -376,15 +395,23 @@ public final class Predicate {
 
     new OperationRule(StandardOperation.NOTEQ, ruleset) {
       @Override
-      public Node apply(final Node in) {
-        return reduce(StandardOperation.NOT, 
-                      reduce(StandardOperation.EQ, extractOperands(in)));
+      public Node apply(final NodeOperation in) {
+        final int n = in.getOperandCount();
+        final List<Node> pairwise = new ArrayList<>(n * (n - 1));
+        for (int i = 0; i < in.getOperandCount() - 1; ++i) {
+          final Node lhs = in.getOperand(i);
+          for (int j = i + 1; j < in.getOperandCount(); ++j) {
+            final Node eq = reduce(StandardOperation.EQ, lhs, in.getOperand(j));
+            pairwise.add(reduce(StandardOperation.NOT, eq));
+          }
+        }
+        return reduce(StandardOperation.AND, pairwise);
       }
     };
 
     new OperationRule(StandardOperation.LESSEQ, ruleset) {
       @Override
-      public Node apply(final Node in) {
+      public Node apply(final NodeOperation in) {
         final Node[] operands = extractOperands(in);
         return reduce(StandardOperation.OR,
                       reduce(StandardOperation.LESS, operands),
@@ -394,7 +421,7 @@ public final class Predicate {
 
     new OperationRule(StandardOperation.GREATER, ruleset) {
       @Override
-      public Node apply(final Node in) {
+      public Node apply(final NodeOperation in) {
         final Node[] operands = extractOperands(in);
         return reduce(StandardOperation.AND,
                       reduce(StandardOperation.NOT, reduce(StandardOperation.LESS, operands)),
@@ -404,7 +431,7 @@ public final class Predicate {
 
     new OperationRule(StandardOperation.GREATEREQ, ruleset) {
       @Override
-      public Node apply(final Node in) {
+      public Node apply(final NodeOperation in) {
         return reduce(StandardOperation.NOT,
                       reduce(StandardOperation.LESS, extractOperands(in)));
       }
@@ -412,7 +439,7 @@ public final class Predicate {
 
     new OperationRule(StandardOperation.BVULE, ruleset) {
       @Override
-      public Node apply(final Node in) {
+      public Node apply(final NodeOperation in) {
         final Node[] operands = extractOperands(in);
         return reduce(StandardOperation.OR, 
                       reduce(StandardOperation.BVULT, operands),
@@ -422,7 +449,7 @@ public final class Predicate {
 
     new OperationRule(StandardOperation.BVUGE, ruleset) {
       @Override
-      public Node apply(final Node in) {
+      public Node apply(final NodeOperation in) {
         return reduce(StandardOperation.NOT,
                       reduce(StandardOperation.BVULT, extractOperands(in)));
       }
@@ -430,7 +457,7 @@ public final class Predicate {
 
     new OperationRule(StandardOperation.BVUGT, ruleset) {
       @Override
-      public Node apply(final Node in) {
+      public Node apply(final NodeOperation in) {
         final Node[] operands = extractOperands(in);
         return reduce(StandardOperation.AND, 
                       reduce(StandardOperation.NOT, reduce(StandardOperation.BVULT, operands)),
@@ -440,7 +467,7 @@ public final class Predicate {
 
     new OperationRule(StandardOperation.BVSLE, ruleset) {
       @Override
-      public Node apply(final Node in) {
+      public Node apply(final NodeOperation in) {
         final Node[] operands = extractOperands(in);
         return reduce(StandardOperation.OR,
                       reduce(StandardOperation.BVSLT, operands),
@@ -450,7 +477,7 @@ public final class Predicate {
 
     new OperationRule(StandardOperation.BVSGE, ruleset) {
       @Override
-      public Node apply(final Node in) {
+      public Node apply(final NodeOperation in) {
         return reduce(StandardOperation.NOT,
                       reduce(StandardOperation.BVSLT, extractOperands(in)));
       }
@@ -458,7 +485,7 @@ public final class Predicate {
 
     new OperationRule(StandardOperation.BVSGT, ruleset) {
       @Override
-      public Node apply(final Node in) {
+      public Node apply(final NodeOperation in) {
         final Node[] operands = extractOperands(in);
         return reduce(StandardOperation.AND,
                       reduce(StandardOperation.NOT, reduce(StandardOperation.BVSLT, operands)),
@@ -476,7 +503,7 @@ public final class Predicate {
       }
 
       @Override
-      public Node apply(final Node in) {
+      public Node apply(final NodeOperation in) {
         final Node child = ((NodeOperation) in).getOperand(0);
 
         if (isBoolean(child)) {
@@ -503,7 +530,7 @@ public final class Predicate {
       }
 
       @Override
-      public Node apply(final Node in) {
+      public Node apply(final NodeOperation in) {
         final NodeOperation op = (NodeOperation) in;
 
         final int count = countEqualImmediates(op);
@@ -604,7 +631,7 @@ public final class Predicate {
 
     new OperationRule(StandardOperation.IMPL, ruleset) {
       @Override
-      public Node apply(final Node in) {
+      public Node apply(final NodeOperation in) {
         final Node[] operands = extractOperands(in);
         for (int i = 0; i < operands.length - 1; ++i) {
           operands[i] = reduce(StandardOperation.NOT, operands[i]);
@@ -620,7 +647,7 @@ public final class Predicate {
       }
 
       @Override
-      public Node apply(final Node node) {
+      public Node apply(final NodeOperation node) {
         final NodeOperation ite = (NodeOperation) node;
         if (getBoolean(ite.getOperand(0))) {
           return ite.getOperand(1);
