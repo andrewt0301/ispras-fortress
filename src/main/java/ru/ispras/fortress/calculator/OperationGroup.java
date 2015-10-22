@@ -170,7 +170,7 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
    * @throws IllegalArgumentException is the parameter equals {@code null}.
    */
 
-  static boolean equalTypes(final Data[] operands) {
+  public static boolean equalTypes(final Data[] operands) {
     checkNotNull(operands);
 
     if (operands.length <= 1) {
