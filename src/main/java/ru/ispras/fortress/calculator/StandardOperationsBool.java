@@ -168,6 +168,6 @@ enum StandardOperationsBool implements Operation<StandardOperation> {
 
   @Override
   public boolean validTypes(final Data... operands) {
-    return OperationGroup.equalTypes(operands);
+    return Data.equalTypes(operands);
   }
 }

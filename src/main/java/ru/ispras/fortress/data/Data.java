@@ -455,6 +455,65 @@ public final class Data {
     return (DataMap) value;
   }
 
+  /**
+   * Checks whether all {@link Data} objects in the specified array have equal values.
+   * 
+   * @param args Array of Data objects to be checked.
+   * @return {@code true} if all objects have equal values or {@code false} otherwise.
+   * 
+   * @throws IllegalArgumentException if any of the arguments equals {@code null}.
+   */
+
+  public static boolean equalValues(final Data... args) {
+    if (args.length <= 1) {
+      return true;
+    }
+
+    final Data first = args[0];
+    checkNotNull(first);
+
+    for (int index = 1; index < args.length; ++index) {
+      final Data current = args[index];
+      checkNotNull(current);
+
+      if (!first.equals(current)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  /**
+   * Checks whether all {@link Data} objects in the specified array have equal types.
+   * 
+   * @param args Array of Data objects to be checked.
+   * @return {@code true} if all objects have equal types or {@code false} otherwise.
+   * 
+   * @throws IllegalArgumentException if any of the arguments equals {@code null}.
+   */
+
+  public static boolean equalTypes(final Data... args) {
+    if (args.length <= 1) {
+      return true;
+    }
+
+    final Data first = args[0];
+    checkNotNull(first);
+
+    final DataType type = first.getType();
+    for (int index = 1; index < args.length; ++index) {
+      final Data current = args[index];
+      checkNotNull(current);
+
+      if (!current.isType(type)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   private void checkConvertibleTo(final Class<?> c) {
     if (!c.isAssignableFrom(value.getClass())) {
       throw new IllegalStateException(String.format(

@@ -21,7 +21,6 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import ru.ispras.fortress.data.Data;
-import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.DataTypeId;
 import ru.ispras.fortress.expression.StandardOperation;
 
@@ -143,48 +142,11 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
 
   private static Data evalEquality(final Enum<?> operationId, final Data ... operands) {
     if (operationId == StandardOperation.EQ) {
-      return Data.newBoolean(equalData(operands));
+      return Data.newBoolean(Data.equalValues(operands));
     } else if (operationId == StandardOperation.NOTEQ) {
-      return Data.newBoolean(!equalData(operands));
+      return Data.newBoolean(!Data.equalValues(operands));
     }
     throw new IllegalArgumentException();
-  }
-
-  private static boolean equalData(final Data ... operands) {
-    final Data data = operands[0];
-    for (int i = 1; i < operands.length; ++i) {
-      if (!data.equals(operands[i])) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  /**
-   * Checks whether all data objects in the specified array have equal types. This is an invariant:
-   * operations require data objects that have equal types.
-   * 
-   * @param operands Array of data objects.
-   * @return <code>true</code> if all objects have equal types or <code>false</code> otherwise.
-   * 
-   * @throws IllegalArgumentException is the parameter equals {@code null}.
-   */
-
-  public static boolean equalTypes(final Data[] operands) {
-    checkNotNull(operands);
-
-    if (operands.length <= 1) {
-      return true;
-    }
-
-    final DataType type = operands[0].getType();
-    for (int index = 1; index < operands.length; ++index) {
-      if (!operands[index].getType().equals(type)) {
-        return false;
-      }
-    }
-
-    return true;
   }
 
   private final String MSG_UNSUPPORTED_FRMT =
