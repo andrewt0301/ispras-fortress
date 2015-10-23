@@ -12,6 +12,14 @@
  (like Yices, Z3, CVC4, etc.)
 
 --------------------------------------------------------------------------------
+ 2015/10/23 Fortress 0.4.11 beta
+
+ The new build contains the following changes:
+
+ - New Data methods: equalTypes' and equalValues
+ - Bugs in Transformer were fixed
+
+--------------------------------------------------------------------------------
  2015/09/04 Fortress 0.4.10 beta
 
  The new build contains the following changes:
