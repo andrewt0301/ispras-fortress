@@ -132,7 +132,36 @@ findbugs {
 pmd {
   toolVersion = '5.3.2'
   ignoreFailures = true
-    ruleSets = [ "config/pmd/java/comments.xml"
+    ruleSets = [ "config/pmd/java/comments.xml",
+                 "config/pmd/java/clone.xml",
+                 "config/pmd/java/basic.xml",
+                 "config/pmd/java/strings.xml",
+                 "config/pmd/java/sunsecure.xml",
+                 "config/pmd/java/codesize.xml",
+                 "config/pmd/java/naming.xml",
+                 "config/pmd/java/logging-java.xml",
+                 "config/pmd/java/android.xml",
+                 "config/pmd/java/empty.xml",
+                 "config/pmd/java/unusedcode.xml",
+                 "config/pmd/java/imports.xml",
+                 "config/pmd/java/controversial.xml",
+                 "config/pmd/java/migrating.xml",
+                 "config/pmd/java/migrating_to_14.xml",
+                 "config/pmd/java/migrating_to_13.xml",
+                 "config/pmd/java/migrating_to_junit4.xml",
+                 "config/pmd/java/junit.xml",
+                 "config/pmd/java/optimizations.xml",
+                 "config/pmd/java/design.xml",
+                 "config/pmd/java/finalizers.xml",
+                 "config/pmd/java/javabeans.xml",
+                 "config/pmd/java/typeresolution.xml",
+                 "config/pmd/java/strictexception.xml",
+                 "config/pmd/java/migrating_to_15.xml",
+                 "config/pmd/java/unnecessary.xml",
+                 "config/pmd/java/braces.xml",
+                 "config/pmd/java/j2ee.xml",
+                 "config/pmd/java/logging-jakarta-commons.xml"
+
             // The first two better work since it's right in the Javadoc...
 //            "rulesets/java/basic.xml",
 //            "rulesets/java/braces.xml",
