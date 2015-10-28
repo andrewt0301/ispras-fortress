@@ -12,6 +12,9 @@
  * the License.
  */
 
+import java.text.SimpleDateFormat
+import java.util.regex.Matcher
+
 buildscript {
   repositories {
     ivy {
@@ -26,6 +29,11 @@ buildscript {
   dependencies {
     classpath 'gradle:gradle-os-plugin:1.0'
   }
+}
+
+plugins {
+  // https://github.com/researchgate/gradle-release
+  id 'net.researchgate.release' version '2.0.2'
 }
 
 apply plugin: 'os'
@@ -47,6 +55,26 @@ repositories {
     }
   }
   mavenCentral();
+}
+
+def getVersionWithUpdatedDate() {
+  return project.version.replace("SNAPSHOT", "") + new SimpleDateFormat("yyMMdd").format(new Date())
+}
+
+task updateVersionDate << {
+  project.version = getVersionWithUpdatedDate()
+}
+
+compileJava.dependsOn updateVersionDate
+
+release {
+  //failOnCommitNeeded = false
+  versionPatterns = [
+      // Increments build number: "0.2.5-alpha-150428" => "0.2.6-alpha-150428"
+      /(^\d+\.\d+\.)(\d+)(-[^-]*)(-[^-]*$)/: { Matcher m, Project p ->
+          m.replaceAll("${ m[0][1] }${ (m[0][2] as int) + 1 }${ m[0][3] }" )
+      }
+  ]
 }
 
 String z3
@@ -225,12 +253,26 @@ sonarRunner {
     }
 }
 
+jar {
+   from('LICENSE.txt') {
+     into('META-INF/')
+   }
+
+   manifest {
+     attributes 'Title'  : 'Fortress'
+     attributes 'Version': getVersionWithUpdatedDate()
+     attributes 'Vendor' : 'ISP RAS (http://www.ispras.ru)'
+     attributes 'Built-By': System.getProperty('user.name')
+     attributes 'Built-JDK': System.getProperty('java.version')
+   }
+}
+
 distributions {
     main{
         baseName = 'fortress'
         contents {
             from { 'ChangeLog' }
-            from { 'README' }
+            from { 'LICENSE.txt' }
         }
     }
 }
