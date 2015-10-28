@@ -254,9 +254,9 @@ sonarRunner {
 }
 
 jar {
-   from('LICENSE.txt') {
-     into('META-INF/')
-   }
+  from('LICENSE.txt') {
+    into('META-INF/')
+  }
 
    manifest {
      attributes 'Title'  : 'Fortress'
@@ -268,34 +268,34 @@ jar {
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
+  classifier = 'sources'
+  from sourceSets.main.allSource
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
+  classifier = 'javadoc'
+  from javadoc.destinationDir
 }
 
 artifacts {
-    archives sourcesJar
-    archives javadocJar
+  archives sourcesJar
+  archives javadocJar
 }
 
 distributions {
-    main{
-        baseName = 'fortress'
-        contents {
-            from { 'ChangeLog' }
-            from { 'LICENSE.txt' }
+  main{
+    baseName = 'fortress'
+    contents {
+      from('ChangeLog')
+      from('LICENSE.txt')
 
-            from(sourcesJar) {
-              into("src")
-            }
+      from(sourcesJar) {
+        into("src")
+      }
 
-            from(javadocJar) {
-              into("javadoc")
-            }
-        }
+      from(javadocJar) {
+        into("javadoc")
+      }
     }
+  }
 }
