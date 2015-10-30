@@ -17,6 +17,7 @@ package ru.ispras.fortress.transformer;
 import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -60,10 +61,10 @@ public class NodeTransformer implements ExprTreeVisitor {
    * Traverse and apply substitutions to expression forest. Resulting expression can be acquired via
    * {@link #getResult()}.
    * 
-   * @param trees Collections of root nodes of trees to be traversed.
+   * @param trees Collection of root nodes of trees to be traversed.
    */
 
-  public void walk(final Iterable<? extends Node> trees) {
+  public void walk(final Collection<? extends Node> trees) {
     final ExprTreeWalker walker = new ExprTreeWalker(this);
     walker.visit(trees);
   }
@@ -126,9 +127,11 @@ public class NodeTransformer implements ExprTreeVisitor {
 
   /**
    * Get collection of expression trees resulting from substitutions done during traversals.
+   *
+   * @return List of results in order of base forest iteration.
    */
 
-  public Iterable<Node> getResult() {
+  public List<Node> getResult() {
     return result;
   }
 
