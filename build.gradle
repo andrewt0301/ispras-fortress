@@ -271,7 +271,15 @@ jar {
 
 task sourcesJar(type: Jar, dependsOn: classes) {
   archiveName = 'fortress-src.jar'
-  from sourceSets.main.allSource
+  from(projectDir) {
+    into('fortress')
+    include('src/')
+    include('config/')
+  }
+
+  from(files { projectDir.listFiles() }.filter { File file -> file.isFile() ? file : null }) {
+    into('fortress')
+  }
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
