@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ru.ispras.fortress.calculator.Calculator;
@@ -66,6 +67,41 @@ public abstract class GenericSolverTestBase {
     }
 
     this.sample = sample;
+  }
+
+  @BeforeClass
+  public static void initSolvers() {
+    final ru.ispras.fortress.solver.Solver z3Solver = SolverId.Z3_TEXT.getSolver(); 
+    if (null == z3Solver.getSolverPath()) {
+      // If the Z3_PATH environment variable is not set, we set up default solver path
+      // in hope to find the the tool there.
+      final String z3Path = "./tools/";
+      if (Environment.isUnix()) {
+        z3Solver.setSolverPath(z3Path + "z3/bin/z3");
+      } else if (Environment.isWindows()) {
+        z3Solver.setSolverPath(z3Path + "z3/bin/z3.exe");
+      } else if (Environment.isOSX()) {
+        z3Solver.setSolverPath(z3Path + "z3/bin/z3");
+      } else {
+        throw new UnsupportedOperationException(String.format(
+          "Unsupported platform: %s.", Environment.getOSName()));
+      }
+    }
+
+    final ru.ispras.fortress.solver.Solver cvc4Solver = SolverId.CVC4_TEXT.getSolver();
+    if (null == cvc4Solver.getSolverPath()) {
+      // If the CVC4_PATH environment variable is not set, we set up default solver path
+      // in hope to find the the tool there.
+      final String cvc4Path = "./tools/";
+      if (Environment.isUnix()) {
+        cvc4Solver.setSolverPath(cvc4Path + "cvc4-unix.bin");
+      } else if (Environment.isWindows()) {
+        cvc4Solver.setSolverPath(cvc4Path + "cvc4-windows.exe");
+      } else {
+        throw new UnsupportedOperationException(String.format(
+          "Unsupported platform: %s.", Environment.getOSName()));
+      }
+    }
   }
 
   @Test
