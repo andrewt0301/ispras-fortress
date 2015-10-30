@@ -232,48 +232,50 @@ pmd {
 }
 
 jacoco {
-    toolVersion = "0.7.4.201502262128"
+  toolVersion = "0.7.4.201502262128"
 }
 
 jacocoTestReport {
-    reports {
-        xml.enabled true
-        csv.enabled false
-    }
+  reports {
+    xml.enabled true
+    csv.enabled false
+  }
 }
 
 sonarRunner {
-    toolVersion = '2.4'
-     sonarProperties {
-        property "sonar.host.url", "http://forge.ispras.ru:9000"
-        property "sonar.jdbc.url", "jdbc:mysql://localhost:3306/sonar"
-        property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
-        property "sonar.jdbc.username", "sonar"
-        property "sonar.jdbc.password", "sonar"
-    }
+  toolVersion = '2.4'
+  sonarProperties {
+    property "sonar.host.url", "http://forge.ispras.ru:9000"
+    property "sonar.jdbc.url", "jdbc:mysql://localhost:3306/sonar"
+    property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
+    property "sonar.jdbc.username", "sonar"
+    property "sonar.jdbc.password", "sonar"
+  }
 }
 
 jar {
+  archiveName = 'fortress.jar'
+
   from('LICENSE.txt') {
     into('META-INF/')
   }
 
-   manifest {
-     attributes 'Title'  : 'Fortress'
-     attributes 'Version': getVersionWithUpdatedDate()
-     attributes 'Vendor' : 'ISP RAS (http://www.ispras.ru)'
-     attributes 'Built-By': System.getProperty('user.name')
-     attributes 'Built-JDK': System.getProperty('java.version')
-   }
+  manifest {
+    attributes 'Title'  : 'Fortress'
+    attributes 'Version': getVersionWithUpdatedDate()
+    attributes 'Vendor' : 'ISP RAS (http://www.ispras.ru)'
+    attributes 'Built-By': System.getProperty('user.name')
+    attributes 'Built-JDK': System.getProperty('java.version')
+  }
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-  classifier = 'sources'
+  archiveName = 'fortress-src.jar'
   from sourceSets.main.allSource
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-  classifier = 'javadoc'
+  archiveName = 'fortress-javadoc.jar'
   from javadoc.destinationDir
 }
 
@@ -286,15 +288,17 @@ distributions {
   main{
     baseName = 'fortress'
     contents {
+      rename('fortress.jar', 'lib/fortress.jar')
+
       from('ChangeLog')
       from('LICENSE.txt')
 
       from(sourcesJar) {
-        into("src")
+        into('src')
       }
 
       from(javadocJar) {
-        into("javadoc")
+        into('javadoc')
       }
     }
   }
