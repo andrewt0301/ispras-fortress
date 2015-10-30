@@ -193,7 +193,10 @@ public class NodeTransformer implements ExprTreeVisitor {
     final Enum<?> opId = expr.getOperationId();
 
     // TODO consequtive rule application
-    final Node node = applyRule(opId, new NodeOperation(opId, operandStack.remove(pos)));
+    final NodeOperation updated = new NodeOperation(opId, operandStack.remove(pos));
+    updated.setUserData(expr.getUserData());
+
+    final Node node = applyRule(opId, updated);
     exprStack.add(node);
   }
 
@@ -231,9 +234,11 @@ public class NodeTransformer implements ExprTreeVisitor {
     final List<NodeBinding.BoundVariable> bindings =
         boundStack.subList(fromIndex, boundStack.size());
 
+    final NodeBinding updated = new NodeBinding(node.getExpression(), bindings);
+    updated.setUserData(node.getUserData());
+
     final TransformerRule scopedRule =
-        new RejectBoundVariablesRule(ruleset.get(Node.Kind.VARIABLE), new NodeBinding(
-            node.getExpression(), bindings));
+        new RejectBoundVariablesRule(ruleset.get(Node.Kind.VARIABLE), updated);
 
     ruleset.put(Node.Kind.VARIABLE, scopedRule);
     bindings.clear();
