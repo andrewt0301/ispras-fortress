@@ -12,6 +12,14 @@
  (like Yices, Z3, CVC4, etc.)
 
 --------------------------------------------------------------------------------
+ 2015/10/30 Fortress 0.4.12 beta
+
+ The new build contains the following changes:
+
+ - Usability improvements in Transformer
+ - Some general improvements
+
+--------------------------------------------------------------------------------
  2015/10/23 Fortress 0.4.11 beta
 
  The new build contains the following changes:
