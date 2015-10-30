@@ -129,11 +129,7 @@ public final class Transformer {
         return term;
       }
     };
-
-    final NodeTransformer transformer = new NodeTransformer();
-    transformer.addRule(Node.Kind.VARIABLE, rule);
-    transformer.walk(expression);
-    return transformer.getResult().iterator().next();
+    return transform(expression, Node.Kind.VARIABLE, rule);
   }
 
   /**
@@ -171,12 +167,7 @@ public final class Transformer {
         return exprs.get(((NodeVariable) node).getName());
       }
     };
-
-    final NodeTransformer transformer = new NodeTransformer();
-    transformer.addRule(Node.Kind.VARIABLE, rule);
-    transformer.walk(binding.getExpression());
-
-    return transformer.getResult().iterator().next();
+    return transform(binding.getExpression(), Node.Kind.VARIABLE, rule);
   }
 
   /**
@@ -206,12 +197,7 @@ public final class Transformer {
         return substituteBinding((NodeBinding) node);
       }
     };
-
-    final NodeTransformer transformer = new NodeTransformer();
-    transformer.addRule(Node.Kind.BINDING, rule);
-    transformer.walk(expression);
-
-    return transformer.getResult().iterator().next();
+    return transform(expression, Node.Kind.BINDING, rule);
   }
 
   /**
@@ -236,5 +222,29 @@ public final class Transformer {
     final NodeTransformer tl = new NodeTransformer(Predicate.getStandardRuleset());
     tl.walk(reducedExpression);
     return tl.getResult().iterator().next();
+  }
+
+  /**
+   * Transform expression using given rule.
+   * 
+   * @param tree Expression to be transformed.
+   * @param indicator Node kind or operation id of nodes rule is to be applied to.
+   * @param rule Transformation rule.
+   *
+   * @return Transformed expression.
+   * 
+   * @throws IllegalArgumentException if any of the parameters is <code>null</code>.
+   */
+
+  public static Node transform(final Node tree, final Enum<?> indicator, final TransformerRule rule) {
+    checkNotNull(tree);
+    checkNotNull(indicator);
+    checkNotNull(rule);
+
+    final NodeTransformer transformer = new NodeTransformer();
+    transformer.addRule(indicator, rule);
+    transformer.walk(tree);
+
+    return transformer.getResult().iterator().next();
   }
 }
