@@ -16,7 +16,10 @@ package ru.ispras.fortress.transformer;
 
 import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import ru.ispras.fortress.calculator.CalculatorEngine;
@@ -238,13 +241,34 @@ public final class Transformer {
 
   public static Node transform(final Node tree, final Enum<?> indicator, final TransformerRule rule) {
     checkNotNull(tree);
+
+    return transformAll(Collections.singleton(tree), indicator, rule).get(0);
+  }
+
+  /**
+   * Transform collection of expressions using given rule.
+   * 
+   * @param forest Collecton of expressions to be transformed.
+   * @param indicator Node kind or operation id of nodes rule is to be applied to.
+   * @param rule Transformation rule.
+   *
+   * @return List of transformed expressions in order of base collection iteration.
+   * 
+   * @throws IllegalArgumentException if any of the parameters is <code>null</code>.
+   */
+
+  public static List<Node> transformAll(
+      final Collection<Node> forest,
+      final Enum<?> indicator,
+      final TransformerRule rule) {
+    checkNotNull(forest);
     checkNotNull(indicator);
     checkNotNull(rule);
 
     final NodeTransformer transformer = new NodeTransformer();
     transformer.addRule(indicator, rule);
-    transformer.walk(tree);
+    transformer.walk(forest);
 
-    return transformer.getResult().iterator().next();
+    return transformer.getResult();
   }
 }
