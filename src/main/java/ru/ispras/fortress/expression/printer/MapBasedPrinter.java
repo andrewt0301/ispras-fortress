@@ -76,11 +76,11 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
 
     @Override
     public void onOperationBegin(final NodeOperation expr) {
-      final Enum<?> op = expr.getOperationId();
-      final OperationDescription description = map.get(op);
+      final OperationDescription description = getOperationDescription(expr);
 
       if (description == null) {
-        throw new IllegalArgumentException(String.format("Unknown operation '%s'", op.name()));
+        throw new IllegalArgumentException(
+            String.format("Unknown operation '%s'", expr.getOperationId()));
       }
 
       final String prefix = description.getPrefix();
@@ -99,7 +99,7 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
 
     @Override
     public void onOperationEnd(final NodeOperation expr) {
-      final OperationDescription description = map.get(expr.getOperationId());
+      final OperationDescription description = getOperationDescription(expr);
       final String suffix = description.getSuffix();
 
       if (suffix != null) {
@@ -112,7 +112,7 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
         final NodeOperation expr,
         final Node operand,
         final int index) {
-      final OperationDescription description = map.get(expr.getOperationId());
+      final OperationDescription description = getOperationDescription(expr);
 
       if (index > 0) {
         final String infix = description.getInfix(index - 1);
@@ -147,6 +147,17 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
   protected MapBasedPrinter() {
     this.map = new EnumMap<>(StandardOperation.class);
     this.visitor = new ExprTreeVisitor();
+  }
+
+  /**
+   * Returns operation description for the specified operation expression.
+   * 
+   * @param expr Operation expression.
+   * @return {@link OperationDescription} object or {@code null} if the operation
+   *         is not registered.
+   */
+  protected OperationDescription getOperationDescription(final NodeOperation expr) {
+    return map.get(expr.getOperationId());
   }
 
   /**
