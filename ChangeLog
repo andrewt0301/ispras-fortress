@@ -12,6 +12,14 @@
  (like Yices, Z3, CVC4, etc.)
 
 --------------------------------------------------------------------------------
+ 2015/11/06 Fortress 0.4.13 beta
+
+ The new build contains the following changes:
+
+ - Reusability improvements in MapBasedPrinter
+ - New Value<T> utility interface for storing mutable values
+
+--------------------------------------------------------------------------------
  2015/10/30 Fortress 0.4.12 beta
 
  The new build contains the following changes:
