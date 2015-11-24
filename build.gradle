@@ -169,7 +169,8 @@ findbugs {
 
 pmd {
   ignoreFailures = true
-  ruleSets = ["java-comments"]
+  ruleSets = ["java-basic,java-braces"]
+  ruleSetFiles = files("config/pmd/java/comments.xml")
 }
 
 jacoco {
