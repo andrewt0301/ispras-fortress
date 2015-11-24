@@ -169,7 +169,7 @@ findbugs {
 
 pmd {
   ignoreFailures = true
-  ruleSets = ["Comments"]
+  ruleSets = ["java-comments"]
 }
 
 jacoco {
