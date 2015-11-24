@@ -13,7 +13,7 @@ The Unnecessary Ruleset contains a collection of rules for unnecessary code.
     		 since="0.1"
           message="Avoid unnecessary temporaries when converting primitives to Strings"
           class="net.sourceforge.pmd.lang.java.rule.unnecessary.UnnecessaryConversionTemporaryRule"
-          externalInfoUrl="http://pmd.sourceforge.net/pmd-5.3.2/pmd-java/rules/java/unnecessary.html#UnnecessaryConversionTemporary">
+          externalInfoUrl="https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/unnecessary.html#UnnecessaryConversionTemporary">
       <description>
 Avoid the use temporary objects when converting primitives to Strings. Use the static conversion methods
 on the wrapper classes instead.
@@ -36,7 +36,7 @@ public String convert(int x) {
     		 since="1.3"
           message="Avoid unnecessary return statements"
           class="net.sourceforge.pmd.lang.java.rule.unnecessary.UnnecessaryReturnRule"
-          externalInfoUrl="http://pmd.sourceforge.net/pmd-5.3.2/pmd-java/rules/java/unnecessary.html#UnnecessaryReturn">
+          externalInfoUrl="https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/unnecessary.html#UnnecessaryReturn">
       <description>
 Avoid the use of unnecessary return statements.
       </description>
@@ -59,7 +59,7 @@ public class Foo {
     	  since="3.0"
           message="Unnecessary final modifier in final class"
           class="net.sourceforge.pmd.lang.rule.XPathRule"
-          externalInfoUrl="http://pmd.sourceforge.net/pmd-5.3.2/pmd-java/rules/java/unnecessary.html#UnnecessaryFinalModifier">
+          externalInfoUrl="https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/unnecessary.html#UnnecessaryFinalModifier">
       <description>
 When a class has the final modifier, all the methods are automatically final and do not need to be
 tagged as such.
@@ -93,7 +93,7 @@ public final class Foo {
     since="3.3"
     message="Overriding method merely calls super"
     class="net.sourceforge.pmd.lang.java.rule.unnecessary.UselessOverridingMethodRule"
-          externalInfoUrl="http://pmd.sourceforge.net/pmd-5.3.2/pmd-java/rules/java/unnecessary.html#UselessOverridingMethod">
+          externalInfoUrl="https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/unnecessary.html#UselessOverridingMethod">
         <description>
 The overriding method merely calls the same method defined in a superclass.
         </description>
@@ -118,7 +118,7 @@ public Long getId() {
            since="3.5"
            message="An operation on an Immutable object (String, BigDecimal or BigInteger) won't change the object itself"
            class="net.sourceforge.pmd.lang.java.rule.unnecessary.UselessOperationOnImmutableRule"
-           externalInfoUrl="http://pmd.sourceforge.net/pmd-5.3.2/pmd-java/rules/java/unnecessary.html#UselessOperationOnImmutable">
+           externalInfoUrl="https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/unnecessary.html#UselessOperationOnImmutable">
       <description>
 An operation on an Immutable object (String, BigDecimal or BigInteger) won't change the object itself
 since the result of the operation is a new object. Therefore, ignoring the operation result is an error.
@@ -147,7 +147,7 @@ class Test {
         since="3.5"
         message="Invoke equals() on the object you''ve already ensured is not null"
         class="net.sourceforge.pmd.lang.rule.XPathRule"
-        externalInfoUrl="http://pmd.sourceforge.net/pmd-5.3.2/pmd-java/rules/java/unnecessary.html#UnusedNullCheckInEquals">
+        externalInfoUrl="https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/unnecessary.html#UnusedNullCheckInEquals">
     <description>
 After checking an object reference for null, you should invoke equals() on that object rather than passing it to another object's equals() method.
     </description>
@@ -213,7 +213,7 @@ public class Test {
         since="5.0"
         message="Useless parentheses."
         class="net.sourceforge.pmd.lang.rule.XPathRule"
-        externalInfoUrl="http://pmd.sourceforge.net/pmd-5.3.2/pmd-java/rules/java/unnecessary.html#UselessParentheses">
+        externalInfoUrl="https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/unnecessary.html#UselessParentheses">
     <description>Useless parentheses should be removed.</description>
     <priority>4</priority>
     <properties>
@@ -243,8 +243,17 @@ public class Test {
 //Expression/AdditiveExpression[not(./PrimaryExpression/PrimaryPrefix/Literal[@StringLiteral = 'true'])]/PrimaryExpression[1]/PrimaryPrefix/Expression[
     count(*)=1 and
     not(./CastExpression) and
-    not(./ConditionalExpression) and
-    not(./ShiftExpression)]
+    not(./AdditiveExpression[@Image = '-']) and
+    not(./ShiftExpression) and
+    not(./RelationalExpression) and
+    not(./InstanceOfExpression) and
+    not(./EqualityExpression) and
+    not(./AndExpression) and
+    not(./ExclusiveOrExpression) and
+    not(./InclusiveOrExpression) and
+    not(./ConditionalAndExpression) and
+    not(./ConditionalOrExpression) and
+    not(./ConditionalExpression)]
 |
 //Expression/EqualityExpression/PrimaryExpression/PrimaryPrefix/Expression[
     count(*)=1 and
@@ -253,7 +262,8 @@ public class Test {
     count(./InclusiveOrExpression)=0 and
     count(./ExclusiveOrExpression)=0 and
     count(./ConditionalAndExpression)=0 and
-    count(./ConditionalOrExpression)=0]
+    count(./ConditionalOrExpression)=0 and
+    count(./EqualityExpression)=0]
           ]]>
           </value>
        </property>
@@ -274,5 +284,55 @@ public class Foo {
     ]]>
     </example>
   </rule>
-  
+
+  <rule name="UselessQualifiedThis"
+      language="java"
+      since="5.4.0"
+      message="Useless qualified this usage in the same class."
+      class="net.sourceforge.pmd.lang.rule.XPathRule"
+      externalInfoUrl="https://pmd.github.io/pmd-5.4.0/pmd-java/rules/java/unnecessary.html#UselessQualifiedThis">
+    <description>Look for qualified this usages in the same class.</description>
+    <priority>3</priority>
+    <properties>
+       <property name="xpath">
+          <value>
+          <![CDATA[
+//PrimaryExpression[
+  PrimaryPrefix/Name[@Image] and PrimarySuffix[@Arguments='false']
+  and ancestor::ClassOrInterfaceBodyDeclaration[1][@AnonymousInnerClass='false']
+]/PrimaryPrefix/Name[@Image = ancestor::ClassOrInterfaceDeclaration[1]/@Image]
+          ]]>
+          </value>
+       </property>
+    </properties>
+    <example>
+    <![CDATA[
+public class Foo {
+    final Foo otherFoo = Foo.this;  // use "this" directly
+
+    public void doSomething() {
+         final Foo anotherFoo = Foo.this;  // use "this" directly
+    }
+
+    private ActionListener returnListener() {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                doSomethingWithQualifiedThis(Foo.this);  // This is fine
+            }
+        };
+    }
+
+    private class Foo3 {
+        final Foo myFoo = Foo.this;  // This is fine
+    }
+
+    private class Foo2 {
+        final Foo2 myFoo2 = Foo2.this;  // Use "this" direclty
+    }
+}
+    ]]>
+    </example>
+  </rule>
+
 </ruleset>
