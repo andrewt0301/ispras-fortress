@@ -352,6 +352,21 @@ public abstract class BitVector implements Comparable<BitVector> {
   }
 
   /**
+   * Returns a copy of the bit vector extended by the specified amount.
+   * 
+   * @param amount Amount in bits.
+   * @param signExt Flag that specifies whether sign extension is required.
+   * @return Extended copy of the bit vector.
+   * 
+   * @throws IllegalArgumentException if {@code amount} is {@code <= 0}.
+   */
+
+  public BitVector extend(final int amount, final boolean signExt) {
+    checkGreaterThanZero(amount);
+    return resize(getBitSize() + amount, signExt);
+  }
+
+  /**
    * Creates a copy of the specified bit vector. Creates a new bit vector of the same size and fills
    * it with data from the current bit vector.
    * 
