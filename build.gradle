@@ -62,6 +62,16 @@ uploadArchives {
   }
 }
 
+def getVersionWithUpdatedDate() {
+  return project.version + '-' + new SimpleDateFormat("yyMMdd").format(new Date())
+}
+
+task updateVersionDate << {
+  project.version = getVersionWithUpdatedDate()
+}
+
+compileJava.dependsOn updateVersionDate
+
 release {
   //failOnCommitNeeded = false
   versionPatterns = [
