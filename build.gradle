@@ -56,15 +56,11 @@ repositories {
   jcenter();
 }
 
-def getVersionWithUpdatedDate() {
-  return project.version.replace("SNAPSHOT", "") + new SimpleDateFormat("yyMMdd").format(new Date())
+uploadArchives {
+  repositories {
+    mavenLocal()
+  }
 }
-
-task updateVersionDate << {
-  project.version = getVersionWithUpdatedDate()
-}
-
-compileJava.dependsOn updateVersionDate
 
 release {
   //failOnCommitNeeded = false
@@ -75,6 +71,12 @@ release {
       }
   ]
 }
+
+task setReleaseData << {
+  project.version=project.version+'-'+new SimpleDateFormat("yyMMdd").format(new Date())
+}
+
+confirmReleaseVersion.dependsOn setReleaseData
 
 String z3
 String z3path
@@ -148,6 +150,10 @@ task getCVC4(type: Copy) {
 
 test.dependsOn getCVC4
 
+javadoc {
+  failOnError = false
+}
+
 test {
   environment 'Z3_PATH', z3path
   environment 'CVC4_PATH', cvc4path
@@ -208,7 +214,7 @@ jar {
 
   manifest {
     attributes 'Title'  : 'Fortress'
-    attributes 'Version': getVersionWithUpdatedDate()
+    attributes 'Version': project.version
     attributes 'Vendor' : 'ISP RAS (http://www.ispras.ru)'
     attributes 'Built-By': System.getProperty('user.name')
     attributes 'Built-JDK': System.getProperty('java.version')
@@ -233,13 +239,18 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
   from javadoc.destinationDir
 }
 
-artifacts {
-  archives sourcesJar
-  archives javadocJar
-}
+//configurations {
+//  repo
+//}
+
+//artifacts {
+//  archives sourcesJar
+//  archives javadocJar
+//  repo jar
+//}
 
 distributions {
-  main{
+  main {
     baseName = 'fortress'
     contents {
       rename('fortress.jar', 'lib/fortress.jar')
