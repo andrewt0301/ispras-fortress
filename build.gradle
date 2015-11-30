@@ -62,31 +62,26 @@ uploadArchives {
   }
 }
 
-def getVersionWithUpdatedDate() {
-  return project.version + '-' + new SimpleDateFormat("yyMMdd").format(new Date())
-}
-
-task updateVersionDate << {
-  project.version = getVersionWithUpdatedDate()
-}
-
-compileJava.dependsOn updateVersionDate
-
 release {
-  //failOnCommitNeeded = false
+  failOnCommitNeeded = false
+
   versionPatterns = [
-      // Increments build number: "0.2.5-alpha-150428" => "0.2.6-alpha-150428"
-      /(^\d+\.\d+\.)(\d+)(-[^-]*)(-[^-]*$)/: { Matcher m, Project p ->
-          m.replaceAll("${ m[0][1] }${ (m[0][2] as int) + 1 }${ m[0][3] }" )
-      }
+    // Increments build number: "0.2.5-alpha-150428" => "0.2.6-alpha-150428"
+    /(^\d+\.\d+\.)(\d+)(-[^-]*)(-[^-]*$)/: 
+    { Matcher m, Project p -> m.replaceAll("${ m[0][1] }${ (m[0][2] as int) + 1 }${ m[0][3] }" ) }
   ]
 }
 
-task setReleaseData << {
-  project.version=project.version+'-'+new SimpleDateFormat("yyMMdd").format(new Date())
+String getCurrentDateString()  {
+  new SimpleDateFormat( "yyMMdd" ).format( new Date() )
 }
 
-confirmReleaseVersion.dependsOn setReleaseData
+task unSnapshotVersion.doLast {
+  def version = project.version.toString()
+  version += '-' + getCurrentDateString()
+   project.plugins.getPlugin( net.researchgate.release.ReleasePlugin.class )
+  .updateVersionProperty( version )
+}
 
 String z3
 String z3path
