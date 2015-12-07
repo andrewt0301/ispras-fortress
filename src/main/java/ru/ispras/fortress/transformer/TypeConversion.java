@@ -54,8 +54,10 @@ public final class TypeConversion {
 
     case VARIABLE:
     case OPERATION:
-      checkTrue(!bv2natRequired(srcType, type), "Bit-vector expression can not be cast to integer");
-      checkTrue(!bv2natRequired(type, srcType), "Integer expression can not be cast to bit-vector");
+      if (bv2natRequired(srcType, type) ||
+          bv2natRequired(type, srcType)) {
+        return null;
+      }
 
       if (node.isType(DataTypeId.LOGIC_BOOLEAN)) {
         if (type.getTypeId().equals(DataTypeId.LOGIC_INTEGER)) {
