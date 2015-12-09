@@ -248,7 +248,7 @@ public final class Transformer {
   /**
    * Transform collection of expressions using given rule.
    * 
-   * @param forest Collecton of expressions to be transformed.
+   * @param forest Collection of expressions to be transformed.
    * @param indicator Node kind or operation id of nodes rule is to be applied to.
    * @param rule Transformation rule.
    *
