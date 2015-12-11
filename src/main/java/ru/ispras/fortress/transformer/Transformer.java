@@ -81,8 +81,26 @@ public final class Transformer {
     return result;
   }
 
+  /**
+   * Attempts to reduce the specified expression including to a value.
+   * Uses default {@code engine}.
+   *
+   * @see Transformer#reduce(CalculatorEngine, ReduceOptions, Node)
+   */
+
   public static Node reduce(final ReduceOptions options, final Node expression) {
     return reduce(null, options, expression);
+  }
+
+  /**
+   * Attempts to reduce the specified expression including to a value.
+   * Uses default {@code engine} with {@link ReduceOptions#NEW_INSTANCE} policy.
+   *
+   * @see Transformer#reduce(CalculatorEngine, ReduceOptions, Node)
+   */
+
+  public static Node reduce(final Node e) {
+    return reduce(null, ReduceOptions.NEW_INSTANCE, e);
   }
 
   private static Node reduceBinding(
