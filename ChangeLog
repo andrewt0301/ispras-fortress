@@ -12,6 +12,14 @@
  (like Yices, Z3, CVC4, etc.)
 
 --------------------------------------------------------------------------------
+ 2015/12/11 Fortress 0.4.15 beta
+
+ The new build contains the following changes:
+
+ - New utility class TypeConversion providing methods for coercing
+   expressions of integral types (BV, Int, Bool) has been implemented
+
+--------------------------------------------------------------------------------
  2015/11/27 Fortress 0.4.14 beta
 
  The new build contains the following changes:
