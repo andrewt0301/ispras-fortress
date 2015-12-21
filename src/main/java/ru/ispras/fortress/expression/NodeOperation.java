@@ -18,8 +18,8 @@ import static ru.ispras.fortress.util.InvariantChecks.checkBounds;
 import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,21 +35,74 @@ import ru.ispras.fortress.data.DataTypeId;
 
 public final class NodeOperation extends Node {
   private final Enum<?> operation;
-  private final Node[] operands;
-  private DataType dataType;
+  private final List<Node> operands;
+  private final DataType dataType;
 
   /**
    * Creates an operation node that has a variable number of operands (from 0 to infinity).
    * 
    * @param operation Operation identifier.
-   * @param operands Operands packed into an array of expression nodes.
+   * @param operands Array of expression operands.
    * 
    * @throws IllegalArgumentException if any parameter (including every operand) is {@code null}.
    */
 
   public <T extends Enum<? extends T>> NodeOperation(
       final T operation,
-      final Node ... operands) {
+      final Node... operands) {
+    this(operation, null, operands != null ? Arrays.asList(operands) : null);
+  }
+
+  /**
+   * Creates an operation node that has a variable number of operands (from 0 to infinity).
+   * 
+   * @param operation Operation identifier.
+   * @param operands Array of expression operands.
+   * @param dataType Data type associated with the expression or {@code null} to rely
+   *        on automated type calculation.
+   * 
+   * @throws IllegalArgumentException if any parameter (including every operand) is {@code null}.
+   */
+
+  public <T extends Enum<? extends T>> NodeOperation(
+      final T operation,
+      final DataType dataType,
+      final Node... operands) {
+    this(operation, dataType, operands != null ? Arrays.asList(operands) : null);
+  }
+
+  /**
+   * Creates an operation node that has a variable number of operands (from 0 to infinity)
+   * packed into a collection.
+   * 
+   * @param operation Operation identifier.
+   * @param operands List of expression operands.
+   * 
+   * @throws IllegalArgumentException if any parameter (including every operand) is {@code null}.
+   */
+
+  public <T extends Enum<? extends T>> NodeOperation(
+      final T operation,
+      final List<? extends Node> operands) {
+    this(operation, null, operands);
+  }
+
+  /**
+   * Creates an operation node that has a variable number of operands (from 0 to infinity)
+   * packed into a collection.
+   * 
+   * @param operation Operation identifier.
+   * @param dataType Data type associated with the expression or {@code null} to rely
+   *        on automated type calculation.
+   * @param operands List of expression operands.
+   * 
+   * @throws IllegalArgumentException if any parameter (including every operand) is {@code null}.
+   */
+
+  public <T extends Enum<? extends T>> NodeOperation(
+      final T operation,
+      final DataType dataType,
+      final List<? extends Node> operands) {
     super(Kind.OPERATION);
 
     checkNotNull(operation);
@@ -58,24 +111,8 @@ public final class NodeOperation extends Node {
     }
 
     this.operation = operation;
-    this.operands = operands;
-    this.dataType = DataType.UNKNOWN;
-  }
-
-  /**
-   * Creates an operation node that has a variable number of operands (from 0 to infinity)
-   * packed into a collection.
-   * 
-   * @param operation Operation identifier.
-   * @param operands Operands packed into a collection of expression nodes.
-   * 
-   * @throws IllegalArgumentException if any parameter (including every operand) is {@code null}.
-   */
-
-  public <T extends Enum<? extends T>> NodeOperation(
-      final T operation,
-      final Collection<? extends Node> operands) {
-    this(operation, operands != null ? operands.toArray(new Node[operands.size()]) : null);
+    this.dataType = dataType;
+    this.operands = Collections.unmodifiableList(operands);
   }
 
   /**
@@ -89,13 +126,13 @@ public final class NodeOperation extends Node {
   private NodeOperation(final NodeOperation node) {
     super(node);
 
-    this.operation = node.operation;
-    this.operands = new Node[node.operands.length];
-
-    for (int index = 0; index < node.operands.length; index++) {
-      this.operands[index] = node.operands[index].deepCopy();
+    final List<Node> operandCopies = new ArrayList<>(node.operands.size());
+    for (final Node operand : node.operands) {
+      operandCopies.add(operand.deepCopy());
     }
 
+    this.operation = node.operation;
+    this.operands = Collections.unmodifiableList(operandCopies);
     this.dataType = node.dataType;
   }
 
@@ -115,7 +152,7 @@ public final class NodeOperation extends Node {
    */
 
   public int getOperandCount() {
-    return operands.length;
+    return operands.size();
   }
 
   /**
@@ -126,8 +163,8 @@ public final class NodeOperation extends Node {
    */
 
   public Node getOperand(final int index) {
-    checkBounds(index, operands.length);
-    return operands[index];
+    checkBounds(index, operands.size());
+    return operands.get(index);
   }
 
   /**
@@ -137,7 +174,7 @@ public final class NodeOperation extends Node {
    */
 
   public List<Node> getOperands() {
-    return Collections.unmodifiableList(Arrays.asList(operands));	  
+    return operands;
   }
 
   /**
@@ -156,49 +193,22 @@ public final class NodeOperation extends Node {
 
   @Override
   public DataType getDataType() {
-    if (operation instanceof TypeRule) {
-      final DataType[] types = new DataType[getOperandCount()];
-
-      final int paramCount = StandardOperation.getParameterCount(operation);
-      final int[] params = new int[paramCount];
-
-      for (int index = 0, paramIndex = 0; index < getOperandCount(); ++index) {
-        final Node operand = getOperand(index);
-        types[index] = operand.getDataType();
-
-        if (paramIndex < paramCount) {
-          if (Node.Kind.VALUE != operand.getKind()) {
-            throw new IllegalStateException(
-                "Operand is not a value: " + operand);
-          }
-
-          final Data operandData = ((NodeValue) operand).getData();
-          if (!operandData.isType(DataTypeId.LOGIC_INTEGER)) {
-            throw new IllegalStateException(
-                "Operand is not a constant integer value: " + operand);
-          }
-
-          final BigInteger value = (BigInteger) operandData.getValue();
-          if (value.compareTo(BigInteger.valueOf(Integer.MIN_VALUE)) < 0 || 
-              value.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) > 0) {
-            throw new IndexOutOfBoundsException(value + " is out of bounds.");
-          }
-
-          params[paramIndex] = value.intValue();
-          paramIndex++;
-        }
-      }
-
-      dataType = ((TypeRule) operation).getResultType(types, params);
+    if (null != dataType) {
+      return dataType;
     }
 
-    return dataType;
+    if (operation instanceof TypeRule) {
+      return ((TypeRule) operation).getResultType(
+          getOperandDataTypes(), getParams());
+    }
+
+    return DataType.UNKNOWN;
   }
 
   @Override
   public int hashCode() {
     final int prime = 31;
-    return prime * operation.hashCode() + Arrays.hashCode(operands);
+    return prime * operation.hashCode() + operands.hashCode();
   }
 
   @Override
@@ -216,7 +226,7 @@ public final class NodeOperation extends Node {
     }
 
     final NodeOperation other = (NodeOperation) obj;
-    return operation.equals(other.operation) && Arrays.equals(operands, other.operands);
+    return operation.equals(other.operation) && operands.equals(other.operands);
   }
 
   @Override
@@ -233,5 +243,41 @@ public final class NodeOperation extends Node {
 
     sb.append(')');
     return sb.toString();
+  }
+
+  private DataType[] getOperandDataTypes() {
+    final DataType[] types = new DataType[getOperandCount()];
+
+    for (int index = 0; index < operands.size(); ++index) {
+      final Node operand = operands.get(index);
+      types[index] = operand.getDataType();
+    }
+
+    return types;
+  }
+
+  private int[] getParams() {
+    final int paramCount = StandardOperation.getParameterCount(operation);
+    final int[] params = new int[paramCount];
+
+    for (int index = 0; index < paramCount; ++index) {
+      final Node operand = operands.get(index);
+      final Data data = ((NodeValue) operand).getData();
+
+      if (!data.isType(DataTypeId.LOGIC_INTEGER)) {
+        throw new IllegalStateException(
+            "Operand is not a constant integer value: " + operand);
+      }
+
+      final BigInteger value = (BigInteger) data.getValue();
+      if (value.compareTo(BigInteger.valueOf(Integer.MIN_VALUE)) < 0 || 
+          value.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) > 0) {
+        throw new IndexOutOfBoundsException(value + " is out of bounds.");
+      }
+
+      params[index] = value.intValue();
+    }
+
+    return params;
   }
 }
