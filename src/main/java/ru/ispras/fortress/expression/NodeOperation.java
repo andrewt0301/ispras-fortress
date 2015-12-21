@@ -262,11 +262,15 @@ public final class NodeOperation extends Node {
 
     for (int index = 0; index < paramCount; ++index) {
       final Node operand = operands.get(index);
-      final Data data = ((NodeValue) operand).getData();
+      if (Node.Kind.VALUE != operand.getKind()) {
+        throw new IllegalStateException(
+            "Parameter is not a value: " + operand);
+      }
 
+      final Data data = ((NodeValue) operand).getData();
       if (!data.isType(DataTypeId.LOGIC_INTEGER)) {
         throw new IllegalStateException(
-            "Operand is not a constant integer value: " + operand);
+            "Parameter is not a constant integer value: " + operand);
       }
 
       final BigInteger value = (BigInteger) data.getValue();
