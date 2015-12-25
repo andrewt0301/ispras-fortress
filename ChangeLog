@@ -16,7 +16,9 @@
 
  The new build contains the following changes:
 
- - Some general improvements
+ - Transformer.reduce convenience method was implemented
+ - NodeOperation takes a data type as a constructor argument to prevent dynamic
+   type calculation
 
 --------------------------------------------------------------------------------
  2015/12/11 Fortress 0.4.15 beta
