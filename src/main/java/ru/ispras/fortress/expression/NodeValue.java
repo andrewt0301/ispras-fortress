@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2011-2016 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -56,6 +56,11 @@ public final class NodeValue extends Node {
   /** Creates a new value node based on a double value. */
   public static NodeValue newReal(final double value) {
     return new NodeValue(Data.newReal(value));
+  }
+
+  /** Creates a new value node based on a String value. */
+  public static NodeValue newString(final String value) {
+    return new NodeValue(Data.newString(value));
   }
 
   /** Creates a new value node based on a boolean value. */

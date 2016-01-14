@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2016 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -24,7 +24,7 @@ import ru.ispras.fortress.data.types.datamap.DataMap;
  * The Data class is a storage of data being processed. This data will be used as an input or an
  * output parameter of a constraint solver.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 
 public final class Data {
@@ -93,6 +93,18 @@ public final class Data {
 
   public static Data newReal(final double value) {
     return new Data(DataType.REAL, value);
+  }
+
+  /**
+   * Creates a data object of the STRING type from a String value.
+   * 
+   * @param value A String value.
+   * @return An new data object.
+   */
+
+  public static Data newString(final String value) {
+    checkNotNull(value);
+    return new Data(DataType.STRING, value);
   }
 
   /**

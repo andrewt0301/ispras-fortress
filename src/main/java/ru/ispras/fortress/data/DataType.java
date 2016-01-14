@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2016 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -27,7 +27,7 @@ import java.util.Map;
  * single instance for each data type (uniqueness is based on the data type identifier and the data
  * size).
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 
 public final class DataType {
@@ -49,6 +49,9 @@ public final class DataType {
 
   /** Predefined logic real type. */
   public static final DataType REAL = newDataType(DataTypeId.LOGIC_REAL);
+
+  /** Predefined logic string type. */
+  public static final DataType STRING = newDataType(DataTypeId.LOGIC_STRING);
 
   /** Predefined logic boolean type. */
   public static final DataType BOOLEAN = newDataType(DataTypeId.LOGIC_BOOLEAN);

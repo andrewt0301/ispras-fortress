@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2016 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -28,7 +28,7 @@ import ru.ispras.fortress.data.types.datamap.DataMap;
 /**
  * The DataTypeId enumeration is used to specify type of data a solver operates with.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 
 public enum DataTypeId {
@@ -169,6 +169,28 @@ public enum DataTypeId {
       }
 
       return DataType.REAL;
+    }
+  },
+
+  /**
+   * A string  type. It is a logic type. This means that it has no connection with
+   * machine-dependent types. The size attribute is not applicable.
+   */
+  LOGIC_STRING(String.class, true) {
+    Object valueOf(final String s, final int radix, final List<Object> params) {
+      return s;
+    }
+
+    int radix(final int size) { return 0; }
+    void validate(final List<Object> params) {}
+    String format(final List<Object> params) { return name(); }
+
+    DataType typeOf(final String text) {
+      if (!text.equals(name())) {
+        return null;
+      }
+
+      return DataType.STRING;
     }
   },
 
