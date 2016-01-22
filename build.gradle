@@ -219,7 +219,7 @@ jar {
 
   manifest {
     attributes 'Title'  : 'Fortress'
-    attributes 'Version': project.version+'-'+new SimpleDateFormat("yyMMdd").format(new Date())
+    attributes 'Version': project.version
     attributes 'Vendor' : 'ISP RAS (http://www.ispras.ru)'
     attributes 'Built-By': System.getProperty('user.name')
     attributes 'Built-JDK': System.getProperty('java.version')
