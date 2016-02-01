@@ -167,6 +167,6 @@ public final class CollectionUtils {
     final List<T> result = lhs.isEmpty() ? new ArrayList<T>() : lhs;
     result.add(elem);
 
-    return lhs;
+    return result;
   }
 }
