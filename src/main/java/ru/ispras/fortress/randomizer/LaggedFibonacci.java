@@ -36,7 +36,7 @@ public final class LaggedFibonacci implements RandomGenerator {
    * Constructs an additive lagged Fibonacci random number generator with the default (zero) seed.
    */
   public LaggedFibonacci() {
-    seed(0);
+    this(0);
   }
 
   /**
@@ -45,7 +45,14 @@ public final class LaggedFibonacci implements RandomGenerator {
    * @param s the seed to be set.
    */
   public LaggedFibonacci(final int s) {
+    reset();
     seed(s);
+  }
+
+  @Override
+  public void reset() {
+    this.j = K - J;
+    this.k = 0;
   }
 
   @Override
