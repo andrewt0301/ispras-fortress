@@ -45,12 +45,10 @@ public final class LaggedFibonacci implements RandomGenerator {
    * @param s the seed to be set.
    */
   public LaggedFibonacci(final int s) {
-    reset();
     seed(s);
   }
 
-  @Override
-  public void reset() {
+  private void reset() {
     this.j = K - J;
     this.k = 0;
   }
@@ -88,6 +86,9 @@ public final class LaggedFibonacci implements RandomGenerator {
         state[j] |= (1 << k);
       }
     }
+
+    // Setting a seed resets indices.
+    reset();
   }
 
   @Override

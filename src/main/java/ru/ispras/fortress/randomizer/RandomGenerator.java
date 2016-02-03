@@ -21,11 +21,6 @@ package ru.ispras.fortress.randomizer;
  */
 public interface RandomGenerator {
   /**
-   * Resets the state of generation (seed is not modified).
-   */
-  void reset();
-
-  /**
    * Sets the seed of the random number generator.
    * 
    * @param s the seed to be set.

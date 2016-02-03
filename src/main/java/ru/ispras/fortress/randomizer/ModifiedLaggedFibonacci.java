@@ -43,12 +43,6 @@ public final class ModifiedLaggedFibonacci implements RandomGenerator {
   }
 
   @Override
-  public void reset() {
-    x.reset();
-    y.reset();
-  }
-
-  @Override
   public void seed(final int s) {
     // Two consequent seeds are used.
     x.seed(s);
