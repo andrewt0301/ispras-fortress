@@ -72,6 +72,13 @@ public final class Randomizer {
   }
 
   /**
+   * Resets the state of the random number generator (seed is not modified).
+   */
+  public void reset() {
+    generator.reset();
+  }
+
+  /**
    * Sets the new seed of the random number generator.
    * 
    * @param seed the seed to be set.
