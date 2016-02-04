@@ -50,13 +50,11 @@ public final class VariateBiased<T> implements Variate<T> {
    *         or they are empty or the {@code biases} array contains negative numbers.
    */
   public VariateBiased(final List<T> values, final List<Integer> biases) {
+    InvariantChecks.checkNotNull(values);
     InvariantChecks.checkNotEmpty(values);
     InvariantChecks.checkNotNull(biases);
-
-    if (values.size() != biases.size()) {
-      throw new IllegalArgumentException(String.format(
-          "values.size()=%d is not equal to biases.size()=%d", values.size(), biases.size()));
-    }
+    InvariantChecks.checkTrue(values.size() == biases.size(), String.format(
+        "values.size()=%d is not equal to biases.size()=%d", values.size(), biases.size()));
 
     this.values = values;
     this.biasSums = new int[biases.size()];
@@ -65,14 +63,13 @@ public final class VariateBiased<T> implements Variate<T> {
 
     for (int i = 0; i < biases.size(); i++) {
       final int bias = biases.get(i);
-
-      if (bias < 0) {
-        throw new IllegalArgumentException(String.format(
-            "biases[%d]=%d is less than 0.", i, bias));
-      }
+      InvariantChecks.checkTrue(bias >= 0, String.format(
+          "biases[%d]=%d is less than 0.", i, bias));
 
       this.biasSums[i] = (biasSum += bias);
     }
+
+    InvariantChecks.checkTrue(biasSum > 0);
   }
 
   /**
