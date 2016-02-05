@@ -12,12 +12,20 @@
  (like Yices, Z3, CVC4, etc.)
 
 --------------------------------------------------------------------------------
+ 2016/02/05 Fortress 0.4.18 beta
+
+ The new build contains the following changes:
+
+ - Several bug fixes were made
+
+--------------------------------------------------------------------------------
  2016/01/22 Fortress 0.4.17 beta
 
  The new build contains the following changes:
 
  - New type DataTypeId.LOGIC_STRING for representing strings was added
 
+--------------------------------------------------------------------------------
  2015/12/25 Fortress 0.4.16 beta
 
  The new build contains the following changes:
