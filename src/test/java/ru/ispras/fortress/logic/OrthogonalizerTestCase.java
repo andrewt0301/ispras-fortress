@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2016 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -16,67 +16,67 @@ package ru.ispras.fortress.logic;
 
 import org.junit.*;
 
-public class DnfTestCase {
-  protected NormalForm createDnf() {
-    NormalForm a = new NormalForm(NormalForm.Type.DNF);
+public final class OrthogonalizerTestCase {
+  private NormalForm createDnf() {
+    final NormalForm.Builder a = new NormalForm.Builder(NormalForm.Type.DNF);
 
-    Clause x0 = new Clause();
+    final Clause.Builder x0 = new Clause.Builder();
 
     for (int i = 0; i < 10; i++) {
       x0.add(i + 100, false);
     }
 
-    Clause x = new Clause();
+    final Clause.Builder x = new Clause.Builder();
     x.add(0, false);
 
-    Clause x1 = new Clause();
+    final Clause.Builder x1 = new Clause.Builder();
     x1.add(0, false);
 
-    Clause y = new Clause();
+    final Clause.Builder y = new Clause.Builder();
     y.add(0, true);
     y.add(1, false);
     y.add(2, false);
     y.add(3, false);
 
-    Clause z = new Clause();
+    final Clause.Builder z = new Clause.Builder();
     z.add(0, true);
     z.add(1, false);
     z.add(4, true);
     z.add(5, false);
 
-    Clause u = new Clause();
+    final Clause.Builder u = new Clause.Builder();
     u.add(1, false);
     u.add(6, false);
 
-    a.add(x0);
-    a.add(x);
-    a.add(x1);
-    a.add(y);
-    a.add(z);
-    a.add(u);
+    a.add(x0.build());
+    a.add(x.build());
+    a.add(x1.build());
+    a.add(y.build());
+    a.add(z.build());
+    a.add(u.build());
 
     for (int i = 0; i < 10; i++) {
-      a.add(y);
+      a.add(y.build());
     }
 
     for (int i = 0; i < 10; i += 4) {
       u.add(i, (i & 1) == 0);
-      a.add(u);
+      a.add(u.build());
     }
 
     for (int i = 0; i < 10; i++) {
       z.add(i, (i & 1) == 0);
       z.add(i + 1000, (i & 1) == 0);
-      a.add(z);
+      a.add(z.build());
     }
 
-    return a;
+    return a.build();
   }
 
   @Test
   public void run() {
-    NormalForm x = createDnf();
-    NormalForm y = Orthogonalizer.orthogonalize(x);
+    final NormalForm x = createDnf();
+    final NormalForm y = Orthogonalizer.orthogonalize(x);
 
     System.out.println(x);
     System.out.println(y);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2016 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -19,19 +19,90 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import ru.ispras.fortress.util.InvariantChecks;
+
 /**
- * This class represents a clause, which is a set of literals.
+ * {@link Clause} represents a clause, which is a set of literals.
  * 
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
 public final class Clause {
-  // / Contains the clause's literals (maps variables to negation flags).
-  private final Map<Integer, Boolean> literals = new LinkedHashMap<Integer, Boolean>();
+  /**
+   * {@link Builder} implements a clause builder.
+   */
+  public static final class Builder {
+    /** Contains the clause's literals (maps variables to negation flags). */
+    private final Map<Integer, Boolean> literals = new LinkedHashMap<>();
+
+    /**
+     * Appends the specified literal to the clause.
+     * 
+     * @param var the variable.
+     * @param sign the negation.
+     */
+    public void add(final int var, final boolean sign) {
+      literals.put(var, sign);
+    }
+
+    /**
+     * Appends the specified literals to the clause.
+     * 
+     * @param vars the variables.
+     * @param sign the negation (common for all variables).
+     */
+    public void add(final int[] vars, final boolean sign) {
+      for (int i = 0; i < vars.length; i++) {
+        literals.put(vars[i], sign);
+      }
+    }
+
+    /**
+     * Appends the specified literals to the clause.
+     * 
+     * @param vars the variables.
+     * @param signs the negations.
+     */
+    public void add(final int[] vars, final boolean[] signs) {
+      assert vars.length == signs.length;
+
+      for (int i = 0; i < vars.length; i++) {
+        literals.put(vars[i], signs[i]);
+      }
+    }
+
+    /**
+     * Appends the specified clause to the clause.
+     * 
+     * @param clause the clause to be added.
+     */
+    public void add(final Clause clause) {
+      literals.putAll(clause.literals);
+    }
+
+    public Clause build() {
+      return new Clause(literals);
+    }
+  }
+
+  /** Contains the clause's literals (maps variables to negation flags). */
+  private final Map<Integer, Boolean> literals;
 
   /**
-   * Constructs the empty clause.
+   * Constructs a clause with the given set of literals.
+   * 
+   * @param literals the literals.
    */
-  public Clause() {}
+  public Clause(final Map<Integer, Boolean> literals) {
+    InvariantChecks.checkNotNull(literals);
+    this.literals = literals;
+  }
+
+  /**
+   * Constructs an empty clause.
+   */
+  public Clause() {
+    this(new LinkedHashMap<Integer, Boolean>());
+  }
 
   /**
    * Constructs a copy of the specified clause.
@@ -39,17 +110,18 @@ public final class Clause {
    * @param rhs the clause to be copied.
    */
   public Clause(final Clause rhs) {
-    literals.putAll(rhs.literals);
+    this(rhs.literals);
   }
 
   /**
    * Checks whether the clause is empty.
    * 
-   * @return true iff the clause is empty.
+   * @return {@code true} if the clause is empty; {@code false} otherwise.
    */
   public boolean isEmpty() {
     return literals.isEmpty();
   }
+
 
   /**
    * Returns the number of literals in the clause.
@@ -130,86 +202,31 @@ public final class Clause {
     return literals.entrySet().containsAll(clause.literals.entrySet());
   }
 
-  /**
-   * Appends the specified literal to the clause.
-   * 
-   * @param var the variable.
-   * @param sign the negation.
-   */
-  public void add(final int var, final boolean sign) {
-    literals.put(var, sign);
-  }
+  public String toString(final String op) {
+    final String negOp = "~";
 
-  /**
-   * Appends the specified literals to the clause.
-   * 
-   * @param vars the variables.
-   * @param sign the negation (common for all variables).
-   */
-  public void add(final int[] vars, final boolean sign) {
-    for (int i = 0; i < vars.length; i++) {
-      literals.put(vars[i], sign);
+    final StringBuilder buffer = new StringBuilder();
+
+    buffer.append('(');
+    {
+      boolean intSign = false;
+      for (final int var : getVars()) {
+        if (intSign) {
+          buffer.append(op);
+        }
+        intSign = true;
+
+        buffer.append(getSign(var) ? negOp : "");
+        buffer.append("x" + var);
+      }
     }
+    buffer.append(')');
+
+    return buffer.toString();
   }
 
-  /**
-   * Appends the specified literals to the clause.
-   * 
-   * @param vars the variables.
-   * @param signs the negations.
-   */
-  public void add(final int[] vars, final boolean[] signs) {
-    assert vars.length == signs.length;
-
-    for (int i = 0; i < vars.length; i++) {
-      literals.put(vars[i], signs[i]);
-    }
-  }
-
-  /**
-   * Appends the specified clause to the clause.
-   * 
-   * @param clause the clause to be added.
-   */
-  public void add(final Clause clause) {
-    literals.putAll(clause.literals);
-  }
-
-  /**
-   * Removes the literal for the specified variable.
-   * 
-   * @param var the variable to be removed.
-   */
-  public void remove(final int var) {
-    literals.remove(var);
-  }
-
-  /**
-   * Removes the literals for the specified variables.
-   * 
-   * @param vars the variables to be removed.
-   */
-  public void remove(final int[] vars) {
-    for (int i = 0; i < vars.length; i++) {
-      literals.remove(vars[i]);
-    }
-  }
-
-  /**
-   * Removes the literals for the variables of the specified clause.
-   * 
-   * @param clause the clause whose variables to be removed.
-   */
-  public void remove(final Clause clause) {
-    for (final int var : clause.getVars()) {
-      literals.remove(var);
-    }
-  }
-
-  /**
-   * Removes all literals of the clause.
-   */
-  public void clear() {
-    literals.clear();
+  @Override
+  public String toString() {
+    return toString(" & ");
   }
 }

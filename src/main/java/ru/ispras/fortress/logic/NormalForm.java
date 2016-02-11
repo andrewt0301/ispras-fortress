@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2016 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import ru.ispras.fortress.util.InvariantChecks;
+
 /**
  * This class represents a normal form, which is a set of clauses. The representation can be
  * interpreted as either DNF or CNF.
@@ -29,26 +31,55 @@ public final class NormalForm {
    * This enumeration contains the type of the normal form.
    */
   public enum Type {
-    // / Disjunctive normal form (DNF).
+    /** Disjunctive normal form (DNF). */
     DNF,
-    // / Conjunctive normal form (CNF).
+    /** Conjunctive normal form (CNF). */
     CNF
   }
 
-  // / The type of the normal form.
-  private final Type type;
-  // / Constains the clauses of the normal form.
-  private final List<Clause> clauses;
-
   /**
-   * Constructs the empty normal form of the specified type.
-   * 
-   * @param type the type of the form.
+   * {@link Builder} implements a clause builder.
    */
-  public NormalForm(final Type type) {
-    this.type = type;
-    this.clauses = new ArrayList<Clause>();
-  }
+  public static final class Builder {
+    /** The type of the normal form. */
+    private final Type type;
+    /** Contains the clauses of the normal form. */
+    private final List<Clause> clauses = new ArrayList<>();
+
+    public Builder(final Type type) {
+      InvariantChecks.checkNotNull(type);
+      this.type = type;
+    }
+
+    /**
+     * Appends the specified clause to the normal form.
+     * 
+     * @param clause the clause to be added.
+     */
+    public void add(final Clause clause) {
+      InvariantChecks.checkNotNull(clause);
+      clauses.add(clause);
+    }
+
+    /**
+     * Appends the clauses of the normal form specified as a parameter to this normal form.
+     * 
+     * @param form the form whose clauses to be added.
+     */
+    public void add(final NormalForm form) {
+      InvariantChecks.checkNotNull(form);
+      clauses.addAll(form.clauses);
+    }
+
+    public NormalForm build() {
+      return new NormalForm(type, clauses);
+    }
+  }  
+
+  /** The type of the normal form. */
+  private final Type type;
+  /** Contains the clauses of the normal form. */
+  private final List<Clause> clauses;
 
   /**
    * Constructs the normal form of the specified type consisting of the specified clauses.
@@ -57,12 +88,25 @@ public final class NormalForm {
    * @param clauses the clauses of the form.
    */
   public NormalForm(final Type type, final Collection<Clause> clauses) {
+    InvariantChecks.checkNotNull(type);
+    InvariantChecks.checkNotNull(clauses);
+
     this.type = type;
     this.clauses = new ArrayList<Clause>(clauses);
   }
 
   /**
-   * Returns the type of the normal form (<code>DNF</code> or <code>CNF</code>).
+   * Constructs the empty normal form of the specified type.
+   * 
+   * @param type the type of the form.
+   */
+  public NormalForm(final Type type) {
+    this(type, new ArrayList<Clause>());
+  }
+
+
+  /**
+   * Returns the type of the normal form ({@code DNF} or {@code CNF}).
    * 
    * @return the type of the form.
    */
@@ -73,7 +117,7 @@ public final class NormalForm {
   /**
    * Checks whether the normal form is empty.
    * 
-   * @return true iff the form is empty.
+   * @return {@code true} if the normal form is empty; {@code false} otherwise.
    */
   public boolean isEmpty() {
     return clauses.isEmpty();
@@ -98,37 +142,11 @@ public final class NormalForm {
   }
 
   /**
-   * Appends the specified clause to the normal form.
-   * 
-   * @param clause the clause to be added.
-   */
-  public void add(final Clause clause) {
-    clauses.add(clause);
-  }
-
-  /**
-   * Appends the clauses of the normal form specified as a parameter to this normal form.
-   * 
-   * @param form the form whose clauses to be added.
-   */
-  public void add(final NormalForm form) {
-    clauses.addAll(form.clauses);
-  }
-
-  /**
-   * Removes all clauses of the normal form.
-   */
-  public void clear() {
-    clauses.clear();
-  }
-
-  /**
    * Returns the string representation of the normal form.
    * 
    * @return the string representing the form.
    */
   public String toString() {
-    // final String neg_op = "~"; // andrewt >> unused local constraint
     final String extOp = type == Type.DNF ? " | " : " & ";
     final String intOp = type == Type.DNF ? " & " : " | ";
 
@@ -141,20 +159,7 @@ public final class NormalForm {
       }
       extSign = true;
 
-      buffer.append('(');
-      {
-        boolean intSign = false;
-        for (final int var : clause.getVars()) {
-          if (intSign) {
-            buffer.append(intOp);
-          }
-          intSign = true;
-
-          buffer.append(clause.getSign(var) ? "~" : "");
-          buffer.append("x" + var);
-        }
-      }
-      buffer.append(')');
+      buffer.append(clause.toString(intOp));
     }
 
     return buffer.toString();

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2016 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * This class contains a set of utils dealing with disjunctive normal forms.
+ * {@link Orthogonalizer} contains a set of utils dealing with disjunctive normal forms.
  * 
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
@@ -30,7 +30,7 @@ public final class Orthogonalizer {
   
   /**
    * Checks whether two clauses (conjuncts), <code>lhs</code> and <code>rhs</code>, are disjoint
-   * (mutually exclusive or orthogonal).
+   * (mutually exclusive, or orthogonal).
    * 
    * @param lhs the left-hand-side clause.
    * @param rhs the right-hand-side clause.
@@ -52,15 +52,17 @@ public final class Orthogonalizer {
 
   /**
    * Checks whether two clauses (conjuncts), <code>lhs</code> and <code>rhs</code>, are disjoint
-   * (mutually exclusive or orthogonal) w.r.t. the given set of conflicts.
+   * (mutually exclusive, or orthogonal) w.r.t. the given set of conflicts.
    * 
    * @param lhs the left-hand-side clause.
    * @param rhs the right-hand-side clause.
    * @param conflicts the set of conflicts.
    * @return <code>true</code> if the clauses are disjoint; <code>false</code> otherwise.
    */
-  public static boolean areDisjoint(final Clause lhs, final Clause rhs,
-      final Set<Conflict> conflicts) {
+  public static boolean areDisjoint(
+      final Clause lhs,
+      final Clause rhs,
+      final Set<Clause> conflicts) {
     if (areDisjoint(lhs, rhs)) {
       return true;
     }
@@ -69,20 +71,14 @@ public final class Orthogonalizer {
       return false;
     }
 
-    for (final Conflict conflict : conflicts) {
-      final int var1 = conflict.getLhsVar();
-      final int var2 = conflict.getRhsVar();
+    for (final Clause conflict : conflicts) {
+      final Clause.Builder clauseBuilder = new Clause.Builder();
 
-      final boolean neg = conflict.areDifferentSigns();
+      clauseBuilder.add(lhs);
+      clauseBuilder.add(rhs);
 
-      if (lhs.contains(var1) && rhs.contains(var2)) {
-        if ((lhs.getSign(var1) != rhs.getSign(var2)) == neg) {
-          return true;
-        }
-      } else if (lhs.contains(var2) && rhs.contains(var1)) {
-        if ((lhs.getSign(var2) != rhs.getSign(var1)) == neg) {
-          return true;
-        }
+      if (clauseBuilder.build().contains(conflict)) {
+        return true;
       }
     }
 
@@ -97,7 +93,7 @@ public final class Orthogonalizer {
    * @param conflicts the set of conflicts.
    * @return the orthogonal DNF equivalent to the specified one.
    */
-  public static NormalForm orthogonalize(final NormalForm form, final Set<Conflict> conflicts) {
+  public static NormalForm orthogonalize(final NormalForm form, final Set<Clause> conflicts) {
     final List<Clause> clauses = new ArrayList<Clause>(form.getClauses());
 
     if (clauses.isEmpty()) {
@@ -109,20 +105,20 @@ public final class Orthogonalizer {
 
     for (int pre_i, i = next(branches, pre_i = 0); i != -1; i = next(branches, pre_i = i))
       for (int pre_j, j = next(branches, pre_j = -1); j != i; j = next(branches, pre_j = j)) {
-        final NormalForm split = new NormalForm(NormalForm.Type.DNF);
+        final NormalForm.Builder splitBuilder = new NormalForm.Builder(NormalForm.Type.DNF);
 
         // Split one of the clauses to make them disjoint.
-        final int index = orthogonalize(clauses.get(j), clauses.get(i), split, conflicts);
+        final int index = orthogonalize(clauses.get(j), clauses.get(i), splitBuilder, conflicts);
 
         // The left-hand-side clause is rewritten (#0).
         if (index == 0) {
-          if (replace(clauses, branches, pre_j, j, split)) {
+          if (replace(clauses, branches, pre_j, j, splitBuilder.build())) {
             j = pre_j;
           }
         }
         // The right-hand-side clause is rewritten (#1).
         else if (index == 1) {
-          if (replace(clauses, branches, pre_i, i, split)) {
+          if (replace(clauses, branches, pre_i, i, splitBuilder.build())) {
             i = pre_i;
             break;
           }
@@ -155,8 +151,8 @@ public final class Orthogonalizer {
   private static int orthogonalize(
       final Clause lhs,
       final Clause rhs,
-      final NormalForm res,
-      final Set<Conflict> conflicts) {
+      final NormalForm.Builder res,
+      final Set<Clause> conflicts) {
     // The specified clauses are disjoint.
     if (areDisjoint(lhs, rhs, conflicts)) {
       return -1;
@@ -190,21 +186,23 @@ public final class Orthogonalizer {
     boolean sign = false;
 
     // Additional literals to be added to the splitting clause.
-    final Clause factor = new Clause();
+    final Clause.Builder factorBuilder = new Clause.Builder();
 
     // Iterate over the unique variables of the fixed clause.
     for (final int var : unique) {
       // One of the new clauses to be added.
-      final Clause clause = new Clause(split);
+      final Clause.Builder clauseBuilder = new Clause.Builder();
+
+      clauseBuilder.add(split);
 
       if (prev != -1) {
-        factor.add(prev, sign);
+        factorBuilder.add(prev, sign);
       }
 
-      factor.add((prev = var), !(sign = fixed.getSign(var)));
-      clause.add(factor);
+      factorBuilder.add((prev = var), !(sign = fixed.getSign(var)));
+      clauseBuilder.add(factorBuilder.build());
 
-      res.add(clause);
+      res.add(clauseBuilder.build());
     }
 
     // Return the index of the split clause.
@@ -288,12 +286,12 @@ public final class Orthogonalizer {
   private static NormalForm construct(
       final Map<Integer, Integer> branches,
       final List<Clause> clauses) {
-    final NormalForm form = new NormalForm(NormalForm.Type.DNF);
+    final NormalForm.Builder formBuilder = new NormalForm.Builder(NormalForm.Type.DNF);
 
     for (int i = 0; i != -1; i = next(branches, i)) {
-      form.add(clauses.get(i));
+      formBuilder.add(clauses.get(i));
     }
 
-    return form;
+    return formBuilder.build();
   }
 }
