@@ -187,7 +187,6 @@ public final class OrthogonalizerBugTestCase {
             }
           }
         }
-
       }
     }
 
