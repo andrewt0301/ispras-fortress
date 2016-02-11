@@ -33,6 +33,7 @@ import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.solver.constraint.GenericSolverTestBase;
+import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * @author <a href="mailto:smolov@ispras.ru">Sergey Smolov</a>
@@ -159,25 +160,37 @@ public final class OrthogonalizerBugTestCase {
   private Set<Clause> getConflicts(final Map<Integer, Node> literalMap) {
 
     final Set<Clause> conflicts = new LinkedHashSet<>();
+    final Integer[] variables = literalMap.keySet().toArray(new Integer[]{});
 
-    for (final Integer one : literalMap.keySet()) {
-      for (final Integer another : literalMap.keySet()) {
+    for (int i = 0; i < variables.length - 1; i++) {
+      for (int j = i + 1; j < variables.length; j++) {
+        final int variableI = variables[i];
+        final int variableJ = variables[j];
 
-        if (!one.equals(another)) {
-          final Node oneNode = literalMap.get(one);
-          final Node anotherNode = literalMap.get(another);
+        final Node nodeI = literalMap.get(variableI);
+        final Node nodeJ = literalMap.get(variableJ);
+        InvariantChecks.checkFalse(nodeI.equals(nodeJ));
 
-          if (!oneNode.equals(anotherNode) && !ExprUtils.areCompatible(oneNode, anotherNode)) {
-            final Clause.Builder conflictBuilder = new Clause.Builder();
+        for (final boolean signI : new boolean[] {false, true}) {
+          final Node signedNodeI = signI ? ExprUtils.getNegation(nodeI) : nodeI;
 
-            conflictBuilder.add(one, false);
-            conflictBuilder.add(another, false);
+          for (final boolean signJ : new boolean[] {false, true}) {
+            final Node signedNodeJ = signJ ? ExprUtils.getNegation(nodeJ) : nodeJ;
 
-            conflicts.add(conflictBuilder.build());
+            if (!ExprUtils.areCompatible(signedNodeI, signedNodeJ)) {
+              final Clause.Builder conflictBuilder = new Clause.Builder();
+
+              conflictBuilder.add(variableI, signI);
+              conflictBuilder.add(variableJ, signJ);
+
+              conflicts.add(conflictBuilder.build());
+            }
           }
         }
+
       }
     }
+
     return conflicts;
   }
 
