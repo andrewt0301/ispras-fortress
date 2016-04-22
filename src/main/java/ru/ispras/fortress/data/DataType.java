@@ -1,11 +1,11 @@
 /*
  * Copyright 2012-2016 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -26,7 +26,7 @@ import java.util.Map;
  * The DataType class stores information about data types used by the solver engine. It maintains a
  * single instance for each data type (uniqueness is based on the data type identifier and the data
  * size).
- * 
+ *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 
@@ -66,7 +66,7 @@ public final class DataType {
 
   /**
    * Returns a type describing a bit vector of the specified size.
-   * 
+   *
    * @param size Bit vector size in bits
    * @return Bit vector type
    */
@@ -98,7 +98,7 @@ public final class DataType {
   /**
    * Returns an instance of a data type object based on its attributes. For objects of the same type
    * (type identifier and sizes are equal), the same instance is returned.
-   * 
+   *
    * @param typeId A type identifier
    * @param parameters The list of type parameters
    * @return A data type object
@@ -125,9 +125,10 @@ public final class DataType {
 
   /**
    * Constructs a data type object based on its attributes.
-   * 
+   *
    * @param typeId A type identifier.
-   * @param size The size of data in bits.
+   * @param name A type name.
+   * @param parameters The list of type parameters.
    */
 
   private DataType(
@@ -141,7 +142,7 @@ public final class DataType {
 
   /**
    * Returns a data type identifier.
-   * 
+   *
    * @return Data type identifier.
    */
 
@@ -151,7 +152,7 @@ public final class DataType {
 
   /**
    * Returns the size of binary data in bits. Returns LOGIC_TYPE_SIZE for logic types.
-   * 
+   *
    * @return Data size in bits.
    */
 
@@ -172,7 +173,7 @@ public final class DataType {
 
   /**
    * Returns a radix to be used for conversion data of this type to a string or vice versa.
-   * 
+   *
    * @return A radix value.
    */
 
@@ -182,7 +183,7 @@ public final class DataType {
 
   /**
    * Returns the class that is used to store data (internal representation).
-   * 
+   *
    * @return The class that is used to store data.
    */
 
@@ -192,7 +193,7 @@ public final class DataType {
 
   /**
    * Creates an instance of a data object of a corresponding data type.
-   * 
+   *
    * @param value The text representation of a value.
    * @param radix The radix to be used for parsing.
    * @return A new data object.
@@ -225,7 +226,7 @@ public final class DataType {
 
   /**
    * Creates an uninitialized data object (the value is set to null).
-   * 
+   *
    * @return A new data object.
    */
 
