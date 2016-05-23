@@ -446,7 +446,7 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @return A bit vector mapping.
    */
 
-  public static BitVector newMapping(final BitVector ... sources) {
+  public static BitVector newMapping(final BitVector... sources) {
     checkGreaterThanZero(sources.length);
 
     if (1 == sources.length) {

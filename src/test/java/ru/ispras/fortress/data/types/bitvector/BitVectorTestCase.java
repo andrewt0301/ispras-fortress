@@ -184,6 +184,28 @@ public class BitVectorTestCase {
      */
   }
 
+  @Test
+  public void repeatTests() {
+    Header("Repeat tests");
+
+    checkBitVector(BitVector.valueOf("101").repeat(3), "101101101");
+    checkBitVector(BitVector.valueOf("10100").repeat(3), "101001010010100");
+    checkBitVector(BitVector.valueOf(0xBE, 8).repeat(2), 0xBEBE);
+    checkBitVector(BitVector.valueOf(0xBEEF, 16).repeat(2), 0xBEEFBEEF);
+    checkBitVector(BitVector.valueOf(0xDEADBEEF, 32).repeat(2), 0xDEADBEEFDEADBEEFL);
+
+    final BitVector bvSource = BitVector.valueOf(0xDEADBEEF, 32);
+    final BitVector bvCopy = bvSource.repeat(2);
+
+    checkBitVector(bvSource, 0xDEADBEEF);
+    checkBitVector(bvCopy, 0xDEADBEEFDEADBEEFL);
+
+    bvCopy.field(16, 47).assign(BitVector.valueOf(0xBAADF00D, 32));
+
+    checkBitVector(bvCopy, 0xDEADBAADF00DBEEFL);
+    checkBitVector(bvSource, 0xDEADBEEF);
+  }
+
   // //////////////////////////////////////////////////////////////////////////////////
   // READING MAPPING TESTS
   // //////////////////////////////////////////////////////////////////////////////////
