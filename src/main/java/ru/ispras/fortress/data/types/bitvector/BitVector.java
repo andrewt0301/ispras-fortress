@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2016 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -20,6 +20,7 @@ import static ru.ispras.fortress.util.InvariantChecks.checkGreaterThanZero;
 import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 
 import ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.IAction;
 import ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.IOperation;
@@ -284,6 +285,25 @@ public abstract class BitVector implements Comparable<BitVector> {
 
   public final BitVector copy() {
     return new BitVectorStore(this);
+  }
+
+  /**
+   * Creates a copy of the current bit vector repeated the specified number of times.
+   * The size of the resulting bit vector is the size of the current multiplied by
+   * the repetition count.
+   * 
+   * @param count Number of times the bit vector will be repeated.
+   * @return A copy of the current bit vector repeated the specified number of times.
+   * 
+   * @throws IllegalArgumentException if the new size is {@code <= 0}.
+   */
+  public final BitVector repeat(final int count) {
+    checkGreaterThanZero(count);
+
+    final BitVector[] repeat = new BitVector[count];
+    Arrays.fill(repeat, this);
+
+    return newMapping(repeat).copy();
   }
 
   /**
