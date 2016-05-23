@@ -166,7 +166,7 @@ public enum StandardOperation implements TypeRule {
   BVCONCAT(Family.BV, TypeRules.BVCONCAT),
 
   /** Group: Bitvector, Operation: Replication (concatenation of several copies of bitvector) */
-  BVREPEAT(Family.BV, TypeRules.UNKNOWN, 1),
+  BVREPEAT(Family.BV, TypeRules.BVREPEAT, 1),
 
   /** Group: Bitvector, Operation: Rotate left */
   BVROL(Family.BV, TypeRules.SECOND_VB_ARG, 1),
