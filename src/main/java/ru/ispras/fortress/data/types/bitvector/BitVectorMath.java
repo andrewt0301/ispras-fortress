@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2016 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -16,9 +16,10 @@ package ru.ispras.fortress.data.types.bitvector;
 
 import static ru.ispras.fortress.data.types.bitvector.BitVectorMath.Operands.BINARY;
 import static ru.ispras.fortress.data.types.bitvector.BitVectorMath.Operands.UNARY;
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
 import java.math.BigInteger;
+
+import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * The {@code BitVectorMath} class contains utility methods and classes to perform operations
@@ -398,15 +399,15 @@ public final class BitVectorMath {
    */
 
   public static BitVector shl(final BitVector v, final BitVector to) {
-    checkNotNull(v);
-    checkNotNull(to);
+    InvariantChecks.checkNotNull(v);
+    InvariantChecks.checkNotNull(to);
 
     return shl(v, to.bigIntegerValue());
   }
 
   public static BitVector shl(final BitVector v, final BigInteger to) {
-    checkNotNull(v);
-    checkNotNull(to);
+    InvariantChecks.checkNotNull(v);
+    InvariantChecks.checkNotNull(to);
 
     final BigInteger size = BigInteger.valueOf(v.getBitSize());
     final BigInteger amount = to.mod(size);
@@ -415,7 +416,7 @@ public final class BitVectorMath {
   }
 
   public static BitVector shl(final BitVector v, final int to) {
-    checkNotNull(v);
+    InvariantChecks.checkNotNull(v);
 
     final int amount = to % v.getBitSize();
     return doShl(v, amount);
@@ -454,15 +455,15 @@ public final class BitVectorMath {
    */
 
   public static BitVector lshr(final BitVector v, final BitVector to) {
-    checkNotNull(v);
-    checkNotNull(to);
+    InvariantChecks.checkNotNull(v);
+    InvariantChecks.checkNotNull(to);
 
     return lshr(v, to.bigIntegerValue());
   }
 
   public static BitVector lshr(final BitVector v, final BigInteger to) {
-    checkNotNull(v);
-    checkNotNull(to);
+    InvariantChecks.checkNotNull(v);
+    InvariantChecks.checkNotNull(to);
 
     final BigInteger size = BigInteger.valueOf(v.getBitSize());
     final BigInteger amount = to.mod(size);
@@ -471,7 +472,7 @@ public final class BitVectorMath {
   }
 
   public static BitVector lshr(final BitVector v, final int to) {
-    checkNotNull(v);
+    InvariantChecks.checkNotNull(v);
 
     final int amount = to % v.getBitSize();
     return doLshr(v, amount);
@@ -510,15 +511,15 @@ public final class BitVectorMath {
    */
 
   public static BitVector ashr(final BitVector v, final BitVector to) {
-    checkNotNull(v);
-    checkNotNull(to);
+    InvariantChecks.checkNotNull(v);
+    InvariantChecks.checkNotNull(to);
 
     return ashr(v, to.bigIntegerValue());
   }
 
   public static BitVector ashr(final BitVector v, final BigInteger to) {
-    checkNotNull(v);
-    checkNotNull(to);
+    InvariantChecks.checkNotNull(v);
+    InvariantChecks.checkNotNull(to);
 
     final BigInteger size = BigInteger.valueOf(v.getBitSize());
     final BigInteger amount = to.mod(size);
@@ -527,7 +528,7 @@ public final class BitVectorMath {
   }
 
   public static BitVector ashr(final BitVector v, final int to) {
-    checkNotNull(v);
+    InvariantChecks.checkNotNull(v);
 
     final int amount = to % v.getBitSize();
     return doAshr(v, amount);
@@ -571,15 +572,15 @@ public final class BitVectorMath {
    */
 
   public static BitVector rotl(final BitVector v, final BitVector to) {
-    checkNotNull(v);
-    checkNotNull(to);
+    InvariantChecks.checkNotNull(v);
+    InvariantChecks.checkNotNull(to);
 
     return rotl(v, to.bigIntegerValue());
   }
 
   public static BitVector rotl(final BitVector v, final BigInteger to) {
-    checkNotNull(v);
-    checkNotNull(to);
+    InvariantChecks.checkNotNull(v);
+    InvariantChecks.checkNotNull(to);
 
     final BigInteger size = BigInteger.valueOf(v.getBitSize());
     final BigInteger amount = to.mod(size);
@@ -588,7 +589,7 @@ public final class BitVectorMath {
   }
 
   public static BitVector rotl(final BitVector v, final int to) {
-    checkNotNull(v);
+    InvariantChecks.checkNotNull(v);
 
     final int distance = Math.abs(to % v.getBitSize());
     if (0 == distance) {
@@ -643,15 +644,15 @@ public final class BitVectorMath {
    */
 
   public static BitVector rotr(final BitVector v, final BitVector to) {
-    checkNotNull(v);
-    checkNotNull(to);
+    InvariantChecks.checkNotNull(v);
+    InvariantChecks.checkNotNull(to);
 
     return rotr(v, to.bigIntegerValue());
   }
 
   public static BitVector rotr(final BitVector v, final BigInteger to) {
-    checkNotNull(v);
-    checkNotNull(to);
+    InvariantChecks.checkNotNull(v);
+    InvariantChecks.checkNotNull(to);
 
     final BigInteger size = BigInteger.valueOf(v.getBitSize());
     final BigInteger amount = to.mod(size);
@@ -660,7 +661,7 @@ public final class BitVectorMath {
   }
 
   public static BitVector rotr(final BitVector v, final int to) {
-    checkNotNull(v);
+    InvariantChecks.checkNotNull(v);
 
     final int amount = to % v.getBitSize();
     return doRotr(v, amount);
@@ -768,12 +769,12 @@ public final class BitVectorMath {
   }
 
   public static BitVector plus(final BitVector v) {
-    checkNotNull(v);
+    InvariantChecks.checkNotNull(v);
     return v;
   }
 
   public static BitVector neg(final BitVector v) {
-    checkNotNull(v);
+    InvariantChecks.checkNotNull(v);
     // Negation algorithm: "-arg = ~arg + 1".
     return add(not(v), BitVector.valueOf(1, v.getBitSize()));
   }
@@ -879,7 +880,7 @@ public final class BitVectorMath {
   }
 
   public static BitVector andr(final BitVector bv) {
-    checkNotNull(bv);
+    InvariantChecks.checkNotNull(bv);
 
     if (bv.equals(not(BitVector.valueOf(0, bv.getBitSize())))) {
       return BitVector.TRUE;
@@ -888,7 +889,7 @@ public final class BitVectorMath {
   }
 
   public static BitVector orr(final BitVector bv) {
-    checkNotNull(bv);
+    InvariantChecks.checkNotNull(bv);
 
     if (bv.equals(BitVector.valueOf(0, bv.getBitSize()))) {
       return BitVector.FALSE;
@@ -897,7 +898,7 @@ public final class BitVectorMath {
   }
 
   public static BitVector xorr(final BitVector bv) {
-      checkNotNull(bv);
+      InvariantChecks.checkNotNull(bv);
 
       int ones = 0;
       for (int i = 0; i < bv.getBitSize(); ++i) {
@@ -923,7 +924,7 @@ public final class BitVectorMath {
   private static BitVector transform(
       final BitVector v,
       final BitVectorAlgorithm.IUnaryOperation op) {
-    checkNotNull(v);
+    InvariantChecks.checkNotNull(v);
 
     final BitVector result = BitVector.newEmpty(v.getBitSize());
     BitVectorAlgorithm.transform(v, result, op);
@@ -932,8 +933,8 @@ public final class BitVectorMath {
   }
 
   private static void checkEqualSize(final BitVector lhs, final BitVector rhs) {
-    checkNotNull(lhs);
-    checkNotNull(rhs);
+    InvariantChecks.checkNotNull(lhs);
+    InvariantChecks.checkNotNull(rhs);
 
     if (lhs.getBitSize() != rhs.getBitSize()) {
       throw new IllegalArgumentException(String.format(
