@@ -15,7 +15,6 @@
 package ru.ispras.fortress.calculator;
 
 import java.math.BigInteger;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
@@ -235,10 +234,9 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
   BVREPEAT(StandardOperation.BVREPEAT, ArityRange.BINARY) {
     @Override
     public Data calculate(final Data... operands) {
-      final BitVector[] repeat = new BitVector[operands[0].getInteger().intValue()];
-      Arrays.fill(repeat, operands[1].getBitVector());
-
-      return Data.newBitVector(BitVector.newMapping(repeat));
+      final int count = operands[0].getInteger().intValue();
+      final BitVector value = operands[1].getBitVector();
+      return Data.newBitVector(value.repeat(count));
     }
 
     @Override
