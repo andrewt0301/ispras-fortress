@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2016 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,9 +13,6 @@
  */
 
 package ru.ispras.fortress.expression;
-
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
-import static ru.ispras.fortress.util.InvariantChecks.checkNotEmpty;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -33,6 +30,7 @@ import ru.ispras.fortress.expression.ExprTreeVisitor.Status;
 import ru.ispras.fortress.solver.SolverResult;
 import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintUtils;
+import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * The ExprUtils class provides utility methods to work with logical expressions.
@@ -57,9 +55,9 @@ public final class ExprUtils {
    */
 
   public static boolean isType(final DataTypeId typeId, final Node... exprs) {
-    checkNotEmpty(exprs);
+    InvariantChecks.checkNotEmpty(exprs);
     for (final Node expr : exprs) {
-      checkNotNull(expr);
+      InvariantChecks.checkNotNull(expr);
       if (!expr.isType(typeId)) {
         return false;
       }
@@ -81,9 +79,9 @@ public final class ExprUtils {
    */
 
   public static boolean isType(final DataType type, final Node... exprs) {
-    checkNotEmpty(exprs);
+    InvariantChecks.checkNotEmpty(exprs);
     for (final Node expr : exprs) {
-      checkNotNull(expr);
+      InvariantChecks.checkNotNull(expr);
       if (!expr.isType(type)) {
         return false;
       }
@@ -106,14 +104,62 @@ public final class ExprUtils {
    */
 
   public static boolean isKind(final Node.Kind kind, final Node... exprs) {
-    checkNotEmpty(exprs);
+    InvariantChecks.checkNotEmpty(exprs);
     for (final Node expr : exprs) {
-      checkNotNull(expr);
+      InvariantChecks.checkNotNull(expr);
       if (expr.getKind() != kind) {
         return false;
       }
     }
     return true;
+  }
+
+  /**
+   * Checks whether the specified expression is represented by a specific operation.
+   * 
+   * @param expr Expression to be checked.
+   * @param opId Operation identifier.
+   * @return {@code true} if the expression is represented by the specified operation
+   *         or {@code false} otherwise.
+   * 
+   * @throws IllegalArgumentException if one of the parameters is {@code null}.
+   */
+  public static boolean isOperation(final Node expr, final Enum<?> opId) {
+    InvariantChecks.checkNotNull(expr);
+    InvariantChecks.checkNotNull(opId);
+
+    if (Node.Kind.OPERATION != expr.getKind()) {
+      return false;
+    }
+
+    final NodeOperation op = (NodeOperation) expr;
+    return op.getOperationId() == opId;
+  }
+
+  /**
+   * Checks whether the specified expression is represented by a constant value.
+   * 
+   * @param expr Expression to be checked.
+   * @return {@code true} if the expression is a value or {@code false} otherwise.
+   * 
+   * @throws IllegalArgumentException if the parameter is {@code null}.
+   */
+  public static boolean isValue(final Node expr) {
+    InvariantChecks.checkNotNull(expr);
+    return Node.Kind.VALUE == expr.getKind();
+  }
+
+  /**
+   * Checks whether the specified expression is represented by a variable.
+   * 
+   * @param expr Expression to be checked.
+   * @return {@code true} if the expression is a variable or {@code false} otherwise.
+   * 
+   * @throws IllegalArgumentException if the parameter is {@code null}.
+   */
+  public static boolean isVariable(final Node expr) {
+    InvariantChecks.checkNotNull(expr);
+    return Node.Kind.VARIABLE == expr.getKind();
   }
 
   /**
@@ -127,7 +173,7 @@ public final class ExprUtils {
    */
 
   public static boolean isCondition(final Node expr) {
-    checkNotNull(expr);
+    InvariantChecks.checkNotNull(expr);
     return expr.getDataType().equals(DataType.BOOLEAN);
   }
 
@@ -178,7 +224,7 @@ public final class ExprUtils {
    */
 
   public static boolean hasBindings(final Node expr) {
-    checkNotNull(expr);
+    InvariantChecks.checkNotNull(expr);
 
     final ExprTreeVisitor visitor = new ExprTreeVisitorDefault() {
       @Override
@@ -205,7 +251,7 @@ public final class ExprUtils {
    */
 
   public static boolean isConstant(final Node expr) {
-    checkNotNull(expr);
+    InvariantChecks.checkNotNull(expr);
 
     final ExprTreeVisitor visitor = new ExprTreeVisitorDefault() {
       // Variables bound to constant values (a stack of scopes).
@@ -264,7 +310,7 @@ public final class ExprUtils {
    */
 
   public static Node getConjunction(final Node... exprs) {
-    checkNotEmpty(exprs);
+    InvariantChecks.checkNotEmpty(exprs);
     checkAllConditions(exprs);
 
     if (exprs.length == 1) {
@@ -286,7 +332,7 @@ public final class ExprUtils {
    */
 
   public static Node getDisjunction(final Node... exprs) {
-    checkNotEmpty(exprs);
+    InvariantChecks.checkNotEmpty(exprs);
     checkAllConditions(exprs);
 
     if (exprs.length == 1) {
@@ -411,7 +457,7 @@ public final class ExprUtils {
    */
 
   public static Collection<NodeVariable> getVariables(final Node expr) {
-    checkNotNull(expr);
+    InvariantChecks.checkNotNull(expr);
     return getVariables(Collections.singletonList(expr));
   }
 
@@ -427,7 +473,7 @@ public final class ExprUtils {
    */
 
   public static Collection<NodeVariable> getVariables(final Iterable<Node> exprs) {
-    checkNotNull(exprs);
+    InvariantChecks.checkNotNull(exprs);
 
     final String ERR_MULTIPLE_VARS =
         "References to different variables that have the same name %s.";
@@ -436,7 +482,7 @@ public final class ExprUtils {
     final ExprTreeWalker walker = new ExprTreeWalker(new ExprTreeVisitorDefault() {
       @Override
       public void onVariable(final NodeVariable variable) {
-        checkNotNull(variable);
+        InvariantChecks.checkNotNull(variable);
         final String name = variable.getName();
 
         if (variables.containsKey(name)) {
