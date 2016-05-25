@@ -124,16 +124,11 @@ public final class ExprUtils {
    * 
    * @throws IllegalArgumentException if one of the parameters is {@code null}.
    */
-  public static boolean isOperation(final Node expr, final Enum<?> opId) {
+  public static <T extends Enum<? extends T>> boolean isOperation(final Node expr, final T opId) {
     InvariantChecks.checkNotNull(expr);
     InvariantChecks.checkNotNull(opId);
-
-    if (Node.Kind.OPERATION != expr.getKind()) {
-      return false;
-    }
-
-    final NodeOperation op = (NodeOperation) expr;
-    return op.getOperationId() == opId;
+    return Node.Kind.OPERATION == expr.getKind() &&
+           ((NodeOperation) expr).getOperationId() == opId;
   }
 
   /**
