@@ -22,8 +22,9 @@ package ru.ispras.fortress.expression;
  */
 public interface ExprTreeVisitor {
   /**
-   * The Status enumeration described possible statuses of the visitor. Status serve as a directive
-   * for the walker to alter its behavior depending on events that may occur in the visitor.
+   * The {@link Status} enumeration describes possible statuses of the visitor.
+   * {@code Status} serves as a directive for the walker to alter its behavior
+   * depending on events that may occur in the visitor.
    * 
    * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
    */
