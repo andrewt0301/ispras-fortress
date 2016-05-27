@@ -27,14 +27,12 @@ import ru.ispras.fortress.util.InvariantChecks;
  * 
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public final class BitVectorMath {
   private BitVectorMath() {}
 
   /**
    * Describes the number of arguments accepted by the bit vector operations. 
    */
-
   public static enum Operands {
     UNARY(1), BINARY(2), TERNARY(3);
 
