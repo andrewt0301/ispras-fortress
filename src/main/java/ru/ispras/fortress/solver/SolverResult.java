@@ -16,24 +16,22 @@ package ru.ispras.fortress.solver;
 
 import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
-import java.util.Collections;
 import java.util.List;
 import ru.ispras.fortress.data.Variable;
+import ru.ispras.fortress.util.Result;
 
 /**
- * The SolverResult class stores a solution to the specified constraint including the status of the
- * operation and the list of errors if any occurred.
+ * The {@link SolverResult} class stores a solution to the specified constraint
+ * including the status of the operation and the list of errors if any occurred.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
-public final class SolverResult {
+public final class SolverResult extends Result<SolverResult.Status, List<Variable>> {
   /**
    * Describes possible statuses of the results produced by a constraint solver.
    * 
-   * @author Andrei Tatarnikov
+   * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
    */
-
   public static enum Status {
     /** Solution is found */
     SAT,
@@ -45,10 +43,6 @@ public final class SolverResult {
     ERROR
   }
 
-  private final Status status;
-  private final List<String> errors;
-  private final List<Variable> variables;
-
   /**
    * Constructs for a solver result object basing on specified attributes.
    * 
@@ -58,48 +52,12 @@ public final class SolverResult {
    * 
    * @throws IllegalArgumentException if any of the parameters equals {@code null}.
    */
-
   public SolverResult(
       final Status status,
       final List<String> errors,
       final List<Variable> variables) {
-    checkNotNull(status);
-    checkNotNull(errors);
+    super(status, variables, errors);
     checkNotNull(variables);
-
-    this.status = status;
-    this.errors = Collections.unmodifiableList(errors);
-    this.variables = Collections.unmodifiableList(variables);
-  }
-
-  /**
-   * Returns the status of the result.
-   * 
-   * @return Solver result status.
-   */
-
-  public Status getStatus() {
-    return status;
-  }
-
-  /**
-   * Checks whether any errors were detected during the process of solving a constraint.
-   * 
-   * @return true if any errors were detected or false otherwise.
-   */
-
-  public boolean hasErrors() {
-    return !errors.isEmpty();
-  }
-
-  /**
-   * Returns the list of errors that occurred during the process of solving a constraint.
-   * 
-   * @return The list of errors.
-   */
-
-  public List<String> getErrors() {
-    return errors;
   }
 
   /**
@@ -107,14 +65,17 @@ public final class SolverResult {
    * 
    * @return The list of output variables.
    */
-
   public List<Variable> getVariables() {
-    return variables;
+    return getResult();
   }
 
   @Override
   public String toString() {
-    return String.format("SolverResult [status=%s, errors=%s, variables=%s]",
-        status, errors, variables);
+    return String.format(
+        "SolverResult [status=%s, errors=%s, variables=%s]",
+        getStatus(),
+        getErrors(),
+        getVariables()
+        );
   }
 }

@@ -34,19 +34,19 @@ public class Result<E extends Enum<E>, T> {
     this.errors = Collections.unmodifiableList(new ArrayList<>(errors));
   }
 
-  public E getStatus() {
+  public final E getStatus() {
     return status;
   }
 
-  public T getResult() {
+  public final T getResult() {
     return result;
   }
 
-  public boolean hasErrors() {
+  public final boolean hasErrors() {
     return !errors.isEmpty();
   }
 
-  public List<String> getErrors() {
+  public final List<String> getErrors() {
     return errors;
   }
 
