@@ -53,7 +53,6 @@ public final class ExprUtils {
    * @throws IllegalArgumentException if the expression array is empty;
    *         if any expression in the array is {@code null}.
    */
-
   public static boolean isType(final DataTypeId typeId, final Node... exprs) {
     InvariantChecks.checkNotEmpty(exprs);
     for (final Node expr : exprs) {
@@ -77,7 +76,6 @@ public final class ExprUtils {
    * @throws IllegalArgumentException if the expression array is empty;
    *         if any expression in the array is {@code null}.
    */
-
   public static boolean isType(final DataType type, final Node... exprs) {
     InvariantChecks.checkNotEmpty(exprs);
     for (final Node expr : exprs) {
@@ -88,7 +86,6 @@ public final class ExprUtils {
     }
     return true;
   }
-
 
   /**
    * Checks whether all of the specified expressions are of the specified
@@ -102,7 +99,6 @@ public final class ExprUtils {
    * @throws IllegalArgumentException if the expression array is empty;
    *         if any expression in the array is {@code null}.
    */
-
   public static boolean isKind(final Node.Kind kind, final Node... exprs) {
     InvariantChecks.checkNotEmpty(exprs);
     for (final Node expr : exprs) {
@@ -166,7 +162,6 @@ public final class ExprUtils {
    * 
    * @throws IllegalArgumentException if the parameter is {@code null}.
    */
-
   public static boolean isCondition(final Node expr) {
     InvariantChecks.checkNotNull(expr);
     return expr.getDataType().equals(DataType.BOOLEAN);
@@ -183,7 +178,6 @@ public final class ExprUtils {
    * 
    * @throws IllegalArgumentException if the parameter is {@code null}.
    */
-
   public static boolean isAtomicCondition(final Node expr) {
     if (!isCondition(expr)) {
       return false;
@@ -217,7 +211,6 @@ public final class ExprUtils {
    * 
    * @throws IllegalArgumentException if the parameter is {@code null}.
    */
-
   public static boolean hasBindings(final Node expr) {
     InvariantChecks.checkNotNull(expr);
 
@@ -244,7 +237,6 @@ public final class ExprUtils {
    * 
    * @throws IllegalArgumentException if the parameter is {@code null}.
    */
-
   public static boolean isConstant(final Node expr) {
     InvariantChecks.checkNotNull(expr);
 
@@ -303,7 +295,6 @@ public final class ExprUtils {
    * @throws IllegalArgumentException if any argument in the array is {@code null};
    *         if no arguments are provided; if an argument is not a logical expression.
    */
-
   public static Node getConjunction(final Node... exprs) {
     InvariantChecks.checkNotEmpty(exprs);
     checkAllConditions(exprs);
@@ -325,7 +316,6 @@ public final class ExprUtils {
    * @throws IllegalArgumentException if any argument in the array is {@code null};
    *         if no arguments are provided; if an argument is not a logical expression.
    */
-
   public static Node getDisjunction(final Node... exprs) {
     InvariantChecks.checkNotEmpty(exprs);
     checkAllConditions(exprs);
@@ -362,7 +352,6 @@ public final class ExprUtils {
    * @throws IllegalArgumentException if any argument in the array is {@code null}; if no arguments are
    *         provided; if an argument is not a logical expression.
    */
-
   public static Node getComplement(final Node... exprs) {
     return new NodeOperation(StandardOperation.NOT, getDisjunction(exprs));
   }
@@ -378,7 +367,6 @@ public final class ExprUtils {
    * @throws IllegalArgumentException if any argument in the array is {@code null};
    *         if no arguments are provided; if an argument is not a logical expression.
    */
-
   public static boolean areComplete(final Node... exprs) {
     final Node target = getComplement(exprs);
     return !isSAT(target);
@@ -395,7 +383,6 @@ public final class ExprUtils {
    * @throws IllegalArgumentException if any argument in the array is {@code null}; if no arguments are
    *         provided; if an argument is not a logical expression.
    */
-
   public static boolean areCompatible(final Node... exprs) {
     final Node target = getConjunction(exprs);
     return isSAT(target);
@@ -414,7 +401,6 @@ public final class ExprUtils {
    *         expression due to limitations of its implementation.
    * @throws IllegalStateException if the solver engine returned results with an unknown status.
    */
-
   public static boolean isSAT(final Node expr) {
     final Constraint constraint = ConstraintUtils.newConstraint(expr);
     final SolverResult result = ConstraintUtils.solve(constraint);
@@ -450,7 +436,6 @@ public final class ExprUtils {
    * @throws IllegalStateException if the method finds nodes that refer to different variables that
    *         have the same name.
    */
-
   public static Collection<NodeVariable> getVariables(final Node expr) {
     InvariantChecks.checkNotNull(expr);
     return getVariables(Collections.singletonList(expr));
@@ -466,7 +451,6 @@ public final class ExprUtils {
    * @throws IllegalStateException if the method finds nodes that refer to different
    *         variables that have the same name.
    */
-
   public static Collection<NodeVariable> getVariables(final Iterable<Node> exprs) {
     InvariantChecks.checkNotNull(exprs);
 
