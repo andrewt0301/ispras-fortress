@@ -61,7 +61,6 @@ public final class DataType {
   private final String name;
   private final List<Object> parameters;
 
-
   /**
    * Returns a type describing a bit vector of the specified size.
    *

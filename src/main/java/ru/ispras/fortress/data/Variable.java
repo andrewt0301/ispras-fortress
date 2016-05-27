@@ -20,11 +20,11 @@ import ru.ispras.fortress.jaxb.JaxbVariableAdapter;
 import ru.ispras.fortress.util.InvariantChecks;
 
 /**
- * The Variable class describes a variable that can be used as input or output data in constraints.
+ * The Variable class describes a variable that can be used as input or output data
+ * in constraints.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 @XmlJavaTypeAdapter(JaxbVariableAdapter.class)
 public final class Variable {
   private final String name;
@@ -38,7 +38,6 @@ public final class Variable {
    * 
    * @throws IllegalArgumentException if any of the parameters equals {@code null}.
    */
-
   public Variable(final String name, final Data data) {
     InvariantChecks.checkNotNull(name);
     InvariantChecks.checkNotNull(data);
@@ -56,7 +55,6 @@ public final class Variable {
    * 
    * @throws IllegalArgumentException if any of the parameters equals {@code null}.
    */
-
   public Variable(final String name, final DataType type) {
     this(name, type != null ? type.valueUninitialized() : null);
   }
@@ -67,7 +65,6 @@ public final class Variable {
    * 
    * @param variable Variable object to be copied.
    */
-
   public Variable(final Variable variable) {
     this(variable != null ? variable.name : null, variable != null ? variable.data : null);
   }
@@ -79,7 +76,6 @@ public final class Variable {
    * 
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
-
   public void setData(final Data data) {
     InvariantChecks.checkNotNull(data);
     this.data = data;
@@ -90,7 +86,6 @@ public final class Variable {
    * 
    * @return A string representing the variable name.
    */
-
   public String getName() {
     return name;
   }
@@ -100,7 +95,6 @@ public final class Variable {
    * 
    * @return An Data object associated with the variable.
    */
-
   public Data getData() {
     return data;
   }
@@ -110,7 +104,6 @@ public final class Variable {
    * 
    * @return Variable type.
    */
-
   public DataType getType() {
     return getData().getType();
   }
@@ -118,9 +111,8 @@ public final class Variable {
   /**
    * Checks whether the variable has a value assigned to it.
    * 
-   * @return <code>true</code> if the variable has a value assigned or <code>false</code> otherwise.
+   * @return {@code true} if the variable has a value assigned or {@code false} otherwise.
    */
-
   public boolean hasValue() {
     return data.hasValue();
   }

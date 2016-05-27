@@ -22,16 +22,14 @@ import ru.ispras.fortress.util.InvariantChecks;
  * The BIWrapper class provides a wrapper around the BigInteger class to conveniently store and
  * convert binary data.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 @Deprecated
 public final class BIWrapper {
   /**
    * The BITS_IN_HEX constant specifies the number of bit a buffer should contain to be represented
    * by one hexadecimal character (a hexadecimal number of length 1).
    */
-
   private static final int BITS_IN_HEX = 4;
 
   private final BigInteger value;
@@ -45,7 +43,6 @@ public final class BIWrapper {
    * @param size The size of the data in bits.
    * @param radix The radix that will be used in data conversions.
    */
-
   public BIWrapper(final BigInteger value, final int size, final int radix) {
     InvariantChecks.checkNotNull(value);
     InvariantChecks.checkGreaterThanZero(size);
@@ -65,7 +62,6 @@ public final class BIWrapper {
    * @param typeRadix The radix that will be used to convert the data object to string.
    * @return object of BitVectorWrapper
    */
-
   public static BIWrapper valueOf(
       final String value,
       final int radix,
@@ -79,7 +75,6 @@ public final class BIWrapper {
    * 
    * @return A string representing the stored value in binary format.
    */
-
   public String toBinString() {
     final String binstr = value.toString(Radix.BIN.value());
     final int count = size - binstr.length();
@@ -92,7 +87,6 @@ public final class BIWrapper {
    * 
    * @return A string representing the stored value in hexadecimal format.
    */
-
   public String toHexString() {
     final String hexstr = value.toString(Radix.HEX.value());
     final int count = size / BITS_IN_HEX - hexstr.length();
@@ -105,7 +99,6 @@ public final class BIWrapper {
    * 
    * @return The string representation of the stored data.
    */
-
   @Override
   public String toString() {
     if (radix == Radix.HEX.value()) {
@@ -125,7 +118,6 @@ public final class BIWrapper {
    * 
    * @return A BigInteger object that holds the data (the internal representation).
    */
-
   public BigInteger getValue() {
     return value;
   }
@@ -135,7 +127,6 @@ public final class BIWrapper {
    * 
    * @return Data size in bits.
    */
-
   public int getSize() {
     return size;
   }
@@ -145,7 +136,6 @@ public final class BIWrapper {
    * 
    * @return The radix value.
    */
-
   public int getRadix() {
     return radix;
   }
@@ -153,7 +143,6 @@ public final class BIWrapper {
   /**
    * {@inheritDoc}
    */
-
   @Override
   public int hashCode() {
     final int prime = 31;
@@ -168,7 +157,6 @@ public final class BIWrapper {
   /**
    * {@inheritDoc}
    */
-
   @Override
   public boolean equals(final Object obj) {
     if (this == obj) {

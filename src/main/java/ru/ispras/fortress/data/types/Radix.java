@@ -17,9 +17,8 @@ package ru.ispras.fortress.data.types;
 /**
  * The Radix enumeration describes radixes to be used to convert a value to a string or vice versa.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public enum Radix {
   /** Radix for binary data. */
   BIN(2),
