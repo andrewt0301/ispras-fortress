@@ -26,7 +26,6 @@ import ru.ispras.fortress.data.types.datamap.DataMap;
  * 
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public final class Data {
   private final DataType type;
   private final Object value;
@@ -40,7 +39,6 @@ public final class Data {
    * 
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
-
   public static Data newInteger(final BigInteger value) {
     checkNotNull(value);
     return new Data(DataType.INTEGER, value);
@@ -52,7 +50,6 @@ public final class Data {
    * @param value A long value.
    * @return New data object.
    */
-
   public static Data newInteger(final long value) {
     return newInteger(BigInteger.valueOf(value));
   }
@@ -63,7 +60,6 @@ public final class Data {
    * @param value An integer value.
    * @return New data object.
    */
-
   public static Data newInteger(final int value) {
     return newInteger((long) value);
   }
@@ -78,7 +74,6 @@ public final class Data {
    * @throws IllegalArgumentException if the {@code text} parameter equals {@code null}.
    * @throws NumberFormatException if failed to parse the string. 
    */
-
   public static Data newInteger(final String text, final int radix) {
     checkNotNull(text);
     return newInteger(new BigInteger(text, radix));
@@ -90,7 +85,6 @@ public final class Data {
    * @param value A double value.
    * @return An new data object.
    */
-
   public static Data newReal(final double value) {
     return new Data(DataType.REAL, value);
   }
@@ -101,7 +95,6 @@ public final class Data {
    * @param value A String value.
    * @return An new data object.
    */
-
   public static Data newString(final String value) {
     checkNotNull(value);
     return new Data(DataType.STRING, value);
@@ -113,7 +106,6 @@ public final class Data {
    * singleton (the Data constructor is public and the DataType.valueOf method uses it to create new
    * instances).
    */
-
   private static final Data TRUE = new Data(DataType.BOOLEAN, true);
 
   /**
@@ -122,7 +114,6 @@ public final class Data {
    * a singleton (the Data constructor is public and the DataType.valueOf method uses it to create
    * new instances).
    */
-
   private static final Data FALSE = new Data(DataType.BOOLEAN, false);
 
   /**
@@ -131,7 +122,6 @@ public final class Data {
    * @param value A boolean value.
    * @return A new data object.
    */
-
   public static Data newBoolean(final boolean value) {
     return value ? TRUE : FALSE;
   }
@@ -143,7 +133,6 @@ public final class Data {
    * @param value A value of an unknown type.
    * @return New data object.
    */
-
   public static Data newUnknown(final Object value) {
     return new Data(DataType.UNKNOWN, value);
   }
@@ -157,7 +146,6 @@ public final class Data {
    * 
    * @throws IllegalArgumentException if the {@code value} parameter equals {@code null}.
    */
-
   public static Data newBitVector(
       final BigInteger value,
       final int size) {
@@ -177,7 +165,6 @@ public final class Data {
    * 
    * @throws IllegalArgumentException if the {@code value} parameter equals {@code null}.
    */
-
   public static Data newBitVector(final BitVector value) {
     checkNotNull(value);
 
@@ -197,7 +184,6 @@ public final class Data {
    * 
    * @throws IllegalArgumentException if the {@code s} parameter equals {@code null}.
    */
-
   public static Data newBitVector(
       final String s,
       final int radix,
@@ -217,7 +203,6 @@ public final class Data {
    * @param size The bit vector size (in bits).
    * @return A new data object.
    */
-
   public static Data newBitVector(final int value, final int size) {
     return newBitVector((long) value, size);
   }
@@ -229,7 +214,6 @@ public final class Data {
    * @param size The bit vector size (in bits).
    * @return A new data object.
    */
-
   public static Data newBitVector(final long value, final int size) {
     final DataType dt = DataType.BIT_VECTOR(size);
     final Object v = BitVector.unmodifiable(BitVector.valueOf(value, size));
@@ -245,7 +229,6 @@ public final class Data {
    * 
    * @throws IllegalArgumentException if the {@code map} parameter equals {@code null}.
    */
-
   public static Data newArray(final DataMap map) {
     checkNotNull(map);
     return new Data(DataType.MAP(
@@ -261,7 +244,6 @@ public final class Data {
    * 
    * @throws IllegalArgumentException if the {@code type} parameter is {@code null}.
    */
-
   public Data(final DataType type, final Object value) {
     checkNotNull(type);
 
@@ -281,7 +263,6 @@ public final class Data {
    * 
    * @return An IDataType object.
    */
-
   public DataType getType() {
     return type;
   }
@@ -291,7 +272,6 @@ public final class Data {
    * 
    * @return true if a value is assigned or false otherwise.
    */
-
   public boolean hasValue() {
     return null != getValue();
   }
@@ -301,7 +281,6 @@ public final class Data {
    * 
    * @return A type-dependent object that stores the data.
    */
-
   public Object getValue() {
     return value;
   }
@@ -312,7 +291,6 @@ public final class Data {
    * @param c A type of value object.
    * @return A type-dependent object that stores the data.
    */
-
   public <T> T getValue(final Class<T> c) {
     checkConvertibleTo(c);
     return c.cast(value);
@@ -323,7 +301,6 @@ public final class Data {
    * 
    * @return User-defined object.
    */
-
   public Object getUserData() {
     return userData;
   }
@@ -333,7 +310,6 @@ public final class Data {
    * 
    * @param obj User-defined object.
    */
-
   public void setUserData(final Object obj) {
     this.userData = obj;
   }
@@ -384,7 +360,6 @@ public final class Data {
    * @return {@code true} if the type matches the type specified by the {@code typeId}
    * argument or {@code false} otherwise.
    */
-
   public boolean isType(final DataTypeId typeId) {
     return this.type.getTypeId() == typeId;
   }
@@ -397,7 +372,6 @@ public final class Data {
    * @return {@code true} if the type matches the type specified by the {@code type}
    * argument or {@code false} otherwise.
    */
-
   public boolean isType(final DataType type) {
     return this.type.equals(type);
   }
@@ -409,7 +383,6 @@ public final class Data {
    * @return Stored value represented by a BigInteger.
    * @throws IllegalStateException if the stored data is not convertible to {@code BigInteger}.
    */
-
   public BigInteger getInteger() {
     checkConvertibleTo(BigInteger.class);
     return (BigInteger) value;
@@ -422,7 +395,6 @@ public final class Data {
    * @return Stored value represented by a {@link BitVector}.
    * @throws IllegalStateException if the stored data is not convertible to {@link BitVector}.
    */
-
   public BitVector getBitVector() {
     checkConvertibleTo(BitVector.class);
     return (BitVector) value;
@@ -435,7 +407,6 @@ public final class Data {
    * @return Stored value represented by a boolean.
    * @throws IllegalStateException if the stored data is not convertible to {@code Boolean}.
    */
-
   public boolean getBoolean() {
     checkConvertibleTo(Boolean.class);
     return (Boolean) value;
@@ -448,7 +419,6 @@ public final class Data {
    * @return Stored value represented by a Double.
    * @throws IllegalStateException if the stored data is not convertible to {@code Double}.
    */
-
   public double getReal() {
     checkConvertibleTo(Double.class);
     return (Double) value;
@@ -461,7 +431,6 @@ public final class Data {
    * @return Stored value represented by a {@code DataMap}.
    * @throws IllegalStateException if the stored data is not convertible to {@link DataMap}.
    */
-
   public DataMap getArray() {
     checkConvertibleTo(DataMap.class);
     return (DataMap) value;
@@ -475,7 +444,6 @@ public final class Data {
    * 
    * @throws IllegalArgumentException if any of the arguments equals {@code null}.
    */
-
   public static boolean equalValues(final Data... args) {
     if (args.length <= 1) {
       return true;
@@ -504,7 +472,6 @@ public final class Data {
    * 
    * @throws IllegalArgumentException if any of the arguments equals {@code null}.
    */
-
   public static boolean equalTypes(final Data... args) {
     if (args.length <= 1) {
       return true;
