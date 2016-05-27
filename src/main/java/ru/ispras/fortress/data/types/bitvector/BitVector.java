@@ -31,24 +31,20 @@ import ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.IOperation;
  * 
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public abstract class BitVector implements Comparable<BitVector> {
   /**
    * A constant bit vector that represents the 'false' boolean value (bit size is 1).
    */
-
   public static final BitVector FALSE = BitVector.unmodifiable(BitVector.valueOf(0, 1));
 
   /**
    * A constant bit vector that represents the 'true' boolean value (bit size is 1).
    */
-
   public static final BitVector TRUE = BitVector.unmodifiable(BitVector.valueOf(1, 1));
 
   /**
    * Number of bits an a byte.
    */
-
   public final static int BITS_IN_BYTE = 8;
 
   /**
@@ -56,7 +52,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * 
    * @return Number of bits.
    */
-
   public abstract int getBitSize();
 
   /**
@@ -64,7 +59,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * 
    * @return Number of bytes (including incomplete bytes).
    */
-
   public abstract int getByteSize();
 
   /**
@@ -74,7 +68,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @param index Index of the target byte.
    * @return Binary value stored in the specified byte.
    */
-
   public abstract byte getByte(int index);
 
   /**
@@ -86,7 +79,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @param index Index of the target byte.
    * @param value Binary value to be stored in the specified byte.
    */
-
   public abstract void setByte(int index, byte value);
 
   /**
@@ -97,7 +89,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * 
    * @throws IndexOutOfBoundsException if the index is out of range.
    */
-
   public final boolean getBit(final int index) {
     checkBounds(index, getBitSize());
     return (getByte(index / BITS_IN_BYTE) & (1 << (index % BITS_IN_BYTE))) != 0;
@@ -111,7 +102,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * 
    * @throws IndexOutOfBoundsException if the index is out of range.
    */
-
   public final void setBit(final int index, final boolean value) {
     checkBounds(index, getBitSize());
 
@@ -129,7 +119,6 @@ public abstract class BitVector implements Comparable<BitVector> {
   /**
    * Sets (sets to one) all bits in the bit vector.
    */
-
   public final void setAll() {
     BitVectorAlgorithm.fill(this, (byte) -1);
   }
@@ -137,7 +126,6 @@ public abstract class BitVector implements Comparable<BitVector> {
   /**
    * Resets (set to zero) all bits in the bit vector.
    */
-
   public final void reset() {
     BitVectorAlgorithm.fill(this, (byte) 0);
   }
@@ -147,7 +135,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * 
    * @return {@code true} if all bits are set or {@code false} otherwise.
    */
-
   public final boolean isAllSet() {
     for (int index = 0; index < getByteSize(); ++index) {
       if (-1 != getByte(index)) {
@@ -162,7 +149,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * 
    * @return {@code true} if all bits are reset or {@code false} otherwise.
    */
-
   public final boolean isAllReset() {
     for (int index = 0; index < getByteSize(); ++index) {
       if (0 != getByte(index)) {
@@ -179,7 +165,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * 
    * @param src Source it vector.
    */
-
   public final void assign(final BitVector src) {
     checkNotNull(src);
     BitVectorAlgorithm.copy(src, this);
@@ -191,7 +176,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * 
    * @param obj A bit vector to be compared with the current bit vector.
    */
-
   @Override
   public final boolean equals(final Object obj) {
     if (this == obj) {
@@ -220,7 +204,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * 
    * @return The hash code value for bit vector.
    */
-
   @Override
   public final int hashCode() {
     class Result {
@@ -251,7 +234,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    *         if the size of the {@code other} bit vector is different from the size of
    *         the current bit vector.
    */
-
   @Override
   public final int compareTo(final BitVector other) {
     checkNotNull(other);
@@ -282,7 +264,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * 
    * @return A copy of the current bit vector.
    */
-
   public final BitVector copy() {
     return new BitVectorStore(this);
   }
@@ -314,7 +295,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * 
    * @return A field of the bit vector.
    */
-
   public final BitVector field(final BitVector startBitPos, final BitVector endBitPos) {
     checkNotNull(startBitPos);
     checkNotNull(endBitPos);
@@ -329,7 +309,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * 
    * @return A field of the bit vector.
    */
-
   public final BitVector field(final int startBitPos, final int endBitPos) {
     checkBounds(startBitPos, getBitSize());
     checkBounds(endBitPos, getBitSize());
@@ -350,7 +329,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * 
    * @throws IllegalArgumentException if the new size is {@code <= 0}.
    */
-
   public BitVector resize(final int newBitSize, final boolean signExt) {
     checkGreaterThanZero(newBitSize);
 
@@ -380,7 +358,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * 
    * @throws IllegalArgumentException if {@code amount} is {@code <= 0}.
    */
-
   public BitVector extend(final int amount, final boolean signExt) {
     checkGreaterThanZero(amount);
     return resize(getBitSize() + amount, signExt);
@@ -393,7 +370,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @param src Source bit vector.
    * @return A copy of the specified bit vector.
    */
-
   public static BitVector copyOf(final BitVector src) {
     checkNotNull(src);
     return src.copy();
@@ -405,7 +381,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @param bitSize Size of the created bit vector in bits.
    * @return A new bit vector.
    */
-
   public static BitVector newEmpty(final int bitSize) {
     checkGreaterThanZero(bitSize);
     return new BitVectorStore(bitSize);
@@ -420,7 +395,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @param bitSize The size of the mapping in bytes.
    * @return A bit vector mapping.
    */
-
   public static BitVector newMapping(
       final BitVector source,
       final int startBitPos,
@@ -445,7 +419,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @param sources Source bit vectors.
    * @return A bit vector mapping.
    */
-
   public static BitVector newMapping(final BitVector... sources) {
     checkGreaterThanZero(sources.length);
 
@@ -463,7 +436,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @param source Source bit vector.
    * @return Unmodifiable bit vector.
    */
-
   public static BitVector unmodifiable(final BitVector source) {
     checkNotNull(source);
 
@@ -481,7 +453,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @param bs Textual representation of binary data.
    * @return New bit vector.
    */
-
   public static BitVector valueOf(final String bs) {
     return valueOf(bs, 2, bs.length());
   }
@@ -495,7 +466,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @param b Boolean value.
    * @return A constant (!) bit vector for the specified boolean value.
    */
-
   public static BitVector valueOf(final boolean b) {
     return b ? TRUE : FALSE;
   }
@@ -505,7 +475,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * 
    * @return Textual representation of the stored data (binary format).
    */
-
   public final String toString() {
     return toBinString();
   }
@@ -524,7 +493,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @throws IllegalArgumentException if the {@code text} parameter is {@code null};
    *         if the {@code bitSize} parameter is zero or negative.
    */
-
   public static BitVector valueOf(final String text, final int radix, final int bitSize) {
     final class BinParser implements IOperation {
       private int bitsRead = 0;
@@ -605,7 +573,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * 
    * @throws IllegalArgumentException if the {@code bitSize} parameter is zero or negative.
    */
-
   public static BitVector valueOf(final long value, final int bitSize) {
     checkGreaterThanZero(bitSize);
 
@@ -643,7 +610,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @throws IllegalArgumentException if the {@code data} parameter is {@code null};
    *         if the {@code bitSize} parameter is zero or negative.
    */
-
   public static BitVector valueOf(final byte[] data, final int bitSize) {
     checkNotNull(data);
     checkGreaterThanZero(bitSize);
@@ -673,7 +639,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * 
    * @throws IllegalArgumentException if the {@code bitSize} parameter is zero or negative.
    */
-
   public static BitVector valueOf(final int value, final int bitSize) {
     return valueOf(((long) value) & 0xFFFFFFFFL, bitSize);
   }
@@ -692,7 +657,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @throws IllegalArgumentException if the {@code value} parameter is {@code null};
    *         if the {@code bitSize} parameter is zero or negative.
    */
-
   public static BitVector valueOf(final BigInteger value, final int bitSize) {
     checkNotNull(value);
     checkGreaterThanZero(bitSize);
@@ -735,7 +699,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * 
    * @return Integer representation of the stored value.
    */
-
   public final int intValue() {
     class Result {public int value = 0;}
     final Result result = new Result();
@@ -764,7 +727,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * 
    * @return Long representation of the stored value.
    */
-
   public final long longValue() {
     class Result {public long value = 0;}
     final Result result = new Result();
@@ -792,7 +754,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * 
    * @return BigInteger representation of the stored value.
    */
-
   public final BigInteger bigIntegerValue() {
     return bigIntegerValue(true);
   }
@@ -803,7 +764,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @param signed boolean value indicating should the bit vector be treated as signed integer.
    * @return BigInteger representation of the stored value.
    */
-
   public final BigInteger bigIntegerValue(final boolean signed) {
     final byte[] byteArray = new byte[this.getByteSize()];
 
@@ -848,7 +808,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * 
    * @return Binary string.
    */
-
   public final String toBinString() {
     final StringBuilder sb = new StringBuilder(getBitSize());
 
@@ -877,7 +836,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * 
    * @return Hexadecimal string.
    */
-
   public final String toHexString() {
     final int HEX_CHARS_IN_BYTE = 2;
     final StringBuilder sb = new StringBuilder(HEX_CHARS_IN_BYTE * getByteSize());
@@ -898,7 +856,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * 
    * @return Array of bytes.
    */
-
   public final byte[] toByteArray() {
     final byte[] byteArray = new byte[this.getByteSize()];
 
@@ -921,7 +878,6 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @param index Index of the target byte.
    * @return Bit mask for the current byte.
    */
-
   public final byte getByteBitMask(final int index) {
     checkBounds(index, getByteSize());
 

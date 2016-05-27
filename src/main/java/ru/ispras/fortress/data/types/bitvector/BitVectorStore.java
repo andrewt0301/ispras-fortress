@@ -44,9 +44,8 @@ import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
  * High byte mask: 00011111 (binary)
  * </pre>
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 final class BitVectorStore extends BitVector {
   private final byte[] dataBytes; // Array that stores binary data.
   private final int bitSize; // Number of used bits.
@@ -56,7 +55,6 @@ final class BitVectorStore extends BitVector {
    * 
    * @param bitSize Data size in bits.
    */
-
   public BitVectorStore(final int bitSize) {
     checkGreaterThanZero(bitSize);
 
@@ -73,7 +71,6 @@ final class BitVectorStore extends BitVector {
    * 
    * @param src An existing bit vector to be copied.
    */
-
   public BitVectorStore(final BitVector src) {
     checkNotNull(src);
 
@@ -86,7 +83,6 @@ final class BitVectorStore extends BitVector {
   /**
    * {@inheritDoc}
    */
-
   @Override
   public int getBitSize() {
     return bitSize;
@@ -95,7 +91,6 @@ final class BitVectorStore extends BitVector {
   /**
    * {@inheritDoc}
    */
-
   @Override
   public int getByteSize() {
     return dataBytes.length;
@@ -104,7 +99,6 @@ final class BitVectorStore extends BitVector {
   /**
    * {@inheritDoc}
    */
-
   @Override
   public byte getByte(final int index) {
     checkBounds(index, getByteSize());
@@ -114,7 +108,6 @@ final class BitVectorStore extends BitVector {
   /**
    * {@inheritDoc}
    */
-
   @Override
   public void setByte(final int index, final byte value) {
     checkBounds(index, getByteSize());

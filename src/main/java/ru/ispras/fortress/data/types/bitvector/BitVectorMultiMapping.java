@@ -65,18 +65,16 @@ import ru.ispras.fortress.util.InvariantChecks;
  *                             Linking Byte
  * </pre>
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 final class BitVectorMultiMapping extends BitVector {
   /**
    * The LinkingByteMapping class is a special mapping that helps concatenate two data object. It is
    * needed to concatenate the incomplete high byte of one data array with the complementary low
    * part of the another. Both part together should make up a complete single byte.
    * 
-   * @author Andrei Tatarnikov
+   * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
    */
-
   private static final class LinkingByteMapping extends BitVector {
     private final BitVector lowPart;
     private final BitVector highPart;
@@ -88,7 +86,6 @@ final class BitVectorMultiMapping extends BitVector {
      * @param highPart A high part of the linking byte (a raw data object, which size is less that
      *        8).
      */
-
     public LinkingByteMapping(final BitVector lowPart, final BitVector highPart) {
       assert 0 < lowPart.getBitSize()  && lowPart.getBitSize() < BITS_IN_BYTE;
       assert 0 < highPart.getBitSize() && highPart.getBitSize() < BITS_IN_BYTE;
@@ -101,7 +98,6 @@ final class BitVectorMultiMapping extends BitVector {
     /**
      * {@inheritDoc}
      */
-
     @Override
     public int getBitSize() {
       return lowPart.getBitSize() + highPart.getBitSize();
@@ -111,7 +107,6 @@ final class BitVectorMultiMapping extends BitVector {
      * {@inheritDoc} NOTE: The number of bytes a LinkingByteMapping object can store always equals
      * to 1.
      */
-
     @Override
     public int getByteSize() {
       return 1;
@@ -121,7 +116,6 @@ final class BitVectorMultiMapping extends BitVector {
      * {@inheritDoc} NOTE: A LinkingByteMapping object always stores 1-byte data and, consequently,
      * accepts only 0 as the value of the index parameter.
      */
-
     @Override
     public byte getByte(final int index) {
       assert (0 == index) : "ONE-BYTE DATA ARRAY!";
@@ -139,7 +133,6 @@ final class BitVectorMultiMapping extends BitVector {
      * {@inheritDoc} NOTE: A LinkingByteMapping object always stores 1-byte data and, consequently,
      * accepts only 0 as the value of the index parameter.
      */
-
     @Override
     public void setByte(final int index, final byte value) {
       assert (0 == index) : "ONE-BYTE DATA ARRAY!";
@@ -159,9 +152,8 @@ final class BitVectorMultiMapping extends BitVector {
    * class encapsulates the real data source (part of the mapping that actually contains the needed
    * byte) and the relative index of the byte in that data source.
    * 
-   * @author Andrei Tatarnikov
+   * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
    */
-
   private static final class ByteAccessor {
     public final BitVector data;
     public final int index;
@@ -172,7 +164,6 @@ final class BitVectorMultiMapping extends BitVector {
      * @param data Data array that hold the specified byte.
      * @param index The relative index of the byte in the data array.
      */
-
     public ByteAccessor(final BitVector data, final int index) {
       this.data = data;
       this.index = index;
@@ -183,7 +174,6 @@ final class BitVectorMultiMapping extends BitVector {
      * 
      * @return A target byte value.
      */
-
     public byte getByte() {
       return data.getByte(index);
     }
@@ -193,7 +183,6 @@ final class BitVectorMultiMapping extends BitVector {
      * 
      * @param value The value to be assign to the target byte.
      */
-
     public void setByte(final byte value) {
       data.setByte(index, value);
     }
@@ -209,7 +198,6 @@ final class BitVectorMultiMapping extends BitVector {
    * @param data The data array to be mapped to the vector of byte accessors.
    * @return The size of processed data in bits (number of bits in the source data array).
    */
-
   private int addByteAcessors(final BitVector data) {
     for (int index = 0; index < data.getByteSize(); ++index) {
       byteAccessors.add(new ByteAccessor(data, index));
@@ -288,7 +276,6 @@ final class BitVectorMultiMapping extends BitVector {
   /**
    * {@inheritDoc}
    */
-
   @Override
   public int getBitSize() {
     return bitSize;
@@ -297,7 +284,6 @@ final class BitVectorMultiMapping extends BitVector {
   /**
    * {@inheritDoc}
    */
-
   @Override
   public int getByteSize() {
     return byteAccessors.size();
@@ -306,7 +292,6 @@ final class BitVectorMultiMapping extends BitVector {
   /**
    * {@inheritDoc}
    */
-
   @Override
   public byte getByte(final int index) {
     checkBounds(index, getByteSize());
@@ -318,7 +303,6 @@ final class BitVectorMultiMapping extends BitVector {
   /**
    * {@inheritDoc}
    */
-
   @Override
   public void setByte(final int index, final byte value) {
     checkBounds(index, getByteSize());

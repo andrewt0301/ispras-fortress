@@ -22,7 +22,6 @@ import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
  * 
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 final class BitVectorUnmodifiable extends BitVector {
   private final BitVector bitVector;
 

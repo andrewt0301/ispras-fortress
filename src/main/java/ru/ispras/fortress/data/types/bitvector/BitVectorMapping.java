@@ -58,9 +58,8 @@ import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
  * parts and perform the needed bit operations to align the data in a proper way.
  * </pre>
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 final class BitVectorMapping extends BitVector {
   private final BitVector source;
   private final int beginBitPos;
@@ -73,7 +72,6 @@ final class BitVectorMapping extends BitVector {
    * @param beginBitPos The starting position of the mapping.
    * @param bitSize The length of the mapping in bits.
    */
-
   public BitVectorMapping(
       final BitVector src,
       final int beginBitPos,
@@ -92,7 +90,6 @@ final class BitVectorMapping extends BitVector {
   /**
    * {@inheritDoc}
    */
-
   @Override
   public int getBitSize() {
     return bitSize;
@@ -101,7 +98,6 @@ final class BitVectorMapping extends BitVector {
   /**
    * {@inheritDoc}
    */
-
   @Override
   public int getByteSize() {
     return bitSize / BITS_IN_BYTE + ((0 == bitSize % BITS_IN_BYTE) ? 0 : 1);
@@ -110,7 +106,6 @@ final class BitVectorMapping extends BitVector {
   /**
    * {@inheritDoc}
    */
-
   @Override
   public byte getByte(final int index) {
     // TODO: Refactoring is needed. The implementation is not perfectly clear
@@ -156,7 +151,6 @@ final class BitVectorMapping extends BitVector {
   /**
    * {@inheritDoc}
    */
-
   @Override
   public void setByte(final int index, final byte value) {
     // TODO: Refactoring is needed. The implementation is not perfectly clear
