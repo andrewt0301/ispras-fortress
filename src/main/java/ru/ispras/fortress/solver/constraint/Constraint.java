@@ -33,7 +33,6 @@ import ru.ispras.fortress.data.Variable;
  * 
  * @author Andrei Tatarnikov, Sergey Smolov
  */
-
 public final class Constraint {
   private final String name;
   private final ConstraintKind kind;
@@ -55,7 +54,6 @@ public final class Constraint {
    * @throws IllegalArgumentException if the internal representation class does not match the class
    *         required by the constraint type.
    */
-
   public Constraint(
       final String name,
       final ConstraintKind kind,
@@ -85,7 +83,6 @@ public final class Constraint {
    * 
    * @return Name identifier for the constraint
    */
-
   public String getName() {
     return name;
   }
@@ -95,7 +92,6 @@ public final class Constraint {
    * 
    * @return Constraint type information.
    */
-
   public ConstraintKind getKind() {
     return kind;
   }
@@ -105,7 +101,6 @@ public final class Constraint {
    * 
    * @return Textual description of the constraint.
    */
-
   public String getDescription() {
     return description;
   }
@@ -116,7 +111,6 @@ public final class Constraint {
    * 
    * @return Internal representation of the constraint.
    */
-
   public Object getInnerRep() {
     return representation;
   }
@@ -131,7 +125,6 @@ public final class Constraint {
    * @throws IllegalArgumentException (1) if a variable with such name is not defined; (2) if the
    *         value type does not match the type of the variable.
    */
-
   public void setVariableValue(final String name, final Data value) {
     checkNotNull(name);
     checkNotNull(value);
@@ -157,7 +150,6 @@ public final class Constraint {
    * 
    * @throws IllegalArgumentException if the name parameter equals null.
    */
-
   public Variable findVariable(final String name) {
     checkNotNull(name);
     return variables.get(name);
@@ -168,7 +160,6 @@ public final class Constraint {
    * 
    * @return variables A collection of constraint variables.
    */
-
   public Collection<Variable> getVariables() {
     return Collections.unmodifiableCollection(variables.values());
   }
@@ -178,7 +169,6 @@ public final class Constraint {
    * 
    * @return A collection of constraint variables.
    */
-
   public Collection<Variable> getUnknownVariables() {
     final List<Variable> result = new ArrayList<Variable>(variables.size());
 
@@ -244,11 +234,11 @@ public final class Constraint {
   }
 
   private static final String UNDEFINED_VARIABLE =
-    "%s is illegal variable name. No such varaible is defined.";
+      "%s is illegal variable name. No such varaible is defined.";
 
   private static final String ILLEGAL_TYPE =
-    "%s is illegal data type, %s is expected.";
+      "%s is illegal data type, %s is expected.";
 
   private static final String ILLEGAL_IR_CLASS =
-    "%s is illegal representation class, %s is expected.";
+      "%s is illegal representation class, %s is expected.";
 }

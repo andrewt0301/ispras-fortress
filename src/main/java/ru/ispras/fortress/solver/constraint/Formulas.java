@@ -30,16 +30,14 @@ import ru.ispras.fortress.expression.NodeVariable;
  * The Formulas class serves as a container for formula expressions (assertions) that specify the
  * invariants for a taken constraint.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public final class Formulas {
   private final List<Node> exprs;
 
   /**
    * Constructs an empty formula container.
    */
-
   public Formulas() {
     this.exprs = new ArrayList<Node>();
   }
@@ -51,7 +49,6 @@ public final class Formulas {
    * 
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
-
   public Formulas(final Formulas formulas) {
     checkNotNull(formulas);
     this.exprs = new ArrayList<Node>(formulas.exprs);
@@ -62,7 +59,6 @@ public final class Formulas {
    * 
    * @param formula A formula to be placed in the container.
    */
-
   public Formulas(final Node formula) {
     this();
     add(formula);
@@ -75,7 +71,6 @@ public final class Formulas {
    * 
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
-
   public void add(final Node formula) {
     checkNotNull(formula);
     exprs.add(formula);
@@ -88,21 +83,19 @@ public final class Formulas {
    * 
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
-
   public void addAll(final Collection<? extends Node> formulas) {
     checkNotNull(formulas);
     exprs.addAll(formulas);
   }
 
   /**
-   * Adds all formula expressions from the specified formula container to the current formula
-   * container.
+   * Adds all formula expressions from the specified formula container to
+   * the current formula container.
    * 
    * @param formulas Formula container to be copied.
    * 
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
-
   public void addAll(final Formulas formulas) {
     checkNotNull(formulas);
     addAll(formulas.exprs);
@@ -113,18 +106,16 @@ public final class Formulas {
    * 
    * @return List of formula expressions
    */
-
   public List<Node> exprs() {
     return Collections.unmodifiableList(exprs);
   }
 
   /**
-   * Unites all stored formula expressions into a single expression using the AND operator and
-   * returns it to the client.
+   * Unites all stored formula expressions into a single expression using
+   * the AND operator and returns it to the client.
    * 
    * @return A single expression for all stored formula expressions.
    */
-
   public Node asSingleExpr() {
     Node root = null;
 
@@ -145,7 +136,6 @@ public final class Formulas {
    *         formula expression of a constraint must be accessible via its variable table (the
    *         signature of the constraint).
    */
-
   public List<Variable> getVariables() {
     final Collection<NodeVariable> nodeVariables = ExprUtils.getVariables(exprs());
     final List<Variable> variables = new ArrayList<Variable>(nodeVariables.size());

@@ -24,9 +24,8 @@ import ru.ispras.fortress.solver.SolverResult;
 /**
  * The ConstraintUtils class provides utility methods to deal with constraints. 
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public final class ConstraintUtils {
   private ConstraintUtils() {}
 
@@ -38,7 +37,6 @@ public final class ConstraintUtils {
    * 
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
-
   public static Constraint newConstraint(final Node expr) {
     checkNotNull(expr);
 
@@ -61,7 +59,6 @@ public final class ConstraintUtils {
    * 
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
-
   public static SolverResult solve(final Constraint constraint) {
     checkNotNull(constraint);
 

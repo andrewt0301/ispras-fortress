@@ -19,15 +19,13 @@ import ru.ispras.fortress.solver.SolverId;
 /**
  * The ConstraintKind enumeration describes constraint types.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public enum ConstraintKind {
   /**
    * Constant based on formula expressions (described by the Formula class and solved by the Z3_TEXT
    * solver).
    */
-
   FORMULA_BASED(Formulas.class, SolverId.Z3_TEXT);
 
   private final Class<?> innerRepClass;
@@ -41,7 +39,6 @@ public enum ConstraintKind {
    * @param defaultSolverId Identifier of a solver to be used by default for constraints of the
    *        given type.
    */
-
   private ConstraintKind(final Class<?> innerRepClass, final SolverId defaultSolverId) {
     this.innerRepClass = innerRepClass;
     this.defaultSolverId = defaultSolverId;
@@ -52,7 +49,6 @@ public enum ConstraintKind {
    * 
    * @return Constraint internal representation class.
    */
-
   public Class<?> getInnerRepClass() {
     return innerRepClass;
   }
@@ -63,7 +59,6 @@ public enum ConstraintKind {
    * 
    * @return Solver identifier.
    */
-
   public SolverId getDefaultSolverId() {
     return defaultSolverId;
   }

@@ -27,9 +27,8 @@ import ru.ispras.fortress.data.Variable;
 /**
  * The ConstraintBuilder class is a builder that creates Constraint objects.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public final class ConstraintBuilder {
   private String name;
   private String description;
@@ -43,7 +42,6 @@ public final class ConstraintBuilder {
    * Default name is a pseudo random UUID (see java.util.UUID.randomUUID()). Default description is
    * an empty string. Default constraint type is formula-based (ConstraintKind.FORMULA_BASED).
    */
-
   public ConstraintBuilder() {
     this(ConstraintKind.FORMULA_BASED);
   }
@@ -58,7 +56,6 @@ public final class ConstraintBuilder {
    * 
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
-
   public ConstraintBuilder(final ConstraintKind kind) {
     checkNotNull(kind);
 
@@ -77,7 +74,6 @@ public final class ConstraintBuilder {
    * 
    * @throws IllegalArgumentException if the parameter is {@code null}.
    */
-
   public ConstraintBuilder(final Constraint constraint) {
     checkNotNull(constraint);
 
@@ -105,7 +101,6 @@ public final class ConstraintBuilder {
    * 
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
-
   public void setName(final String name) {
     checkNotNull(name);
     this.name = name;
@@ -118,7 +113,6 @@ public final class ConstraintBuilder {
    * 
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
-
   public void setDescription(final String description) {
     checkNotNull(description);
     this.description = description;
@@ -131,7 +125,6 @@ public final class ConstraintBuilder {
    * 
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
-
   public void setKind(final ConstraintKind kind) {
     checkNotNull(kind);
     this.kind = kind;
@@ -144,7 +137,6 @@ public final class ConstraintBuilder {
    * 
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
-
   public void setInnerRep(final Object value) {
     checkNotNull(value);
     this.representation = value;
@@ -161,7 +153,6 @@ public final class ConstraintBuilder {
    *         a variable that has different type or value (an illegal attempt
    *         to redefine the variable). See the internal addVariable method.
    */
-
   public void addVariables(final Iterable<Variable> variables) {
     checkNotNull(variables);
 
@@ -179,7 +170,6 @@ public final class ConstraintBuilder {
    *         name has already been use to define a variable that has different type or value
    *         (an illegal attempt to redefine the variable). See the internal addVariable method.
    */
-
   public void addVariableCopies(final Iterable<Variable> variables) {
     checkNotNull(variables);
 
@@ -201,7 +191,6 @@ public final class ConstraintBuilder {
    *         a variable that has different type or value (an illegal attempt to
    *         redefine the variable). See the internal addVariable method.
    */
-
   public Variable addVariable(final String name, final DataType type) {
     checkNotNull(name);
     checkNotNull(type);
@@ -222,7 +211,6 @@ public final class ConstraintBuilder {
    *         a variable that has different type or value (an illegal attempt to redefine the
    *         variable). See the internal addVariable method.
    */
-
   public Variable addVariable(final String name, final Data data) {
     checkNotNull(name);
     checkNotNull(data);
@@ -245,7 +233,6 @@ public final class ConstraintBuilder {
    *         a variable that has different type or value (an illegal attempt to redefine the
    *         variable).
    */
-
   private Variable addVariable(final Variable variable) {
     checkNotNull(variable);
 
@@ -271,11 +258,10 @@ public final class ConstraintBuilder {
    * 
    * @throws IllegalArgumentException see the invariants of the {@link Constraint} class constructor.
    */
-
   public Constraint build() {
     return new Constraint(name, kind, description, variables, representation);
   }
 
   private static final String ILLEGAL_VARIABLE_REDEFINITION =
-    "Illegal attempt to redefine the existing variable %s with a different type or value.";
+      "Illegal attempt to redefine the existing variable %s with a different type or value.";
 }

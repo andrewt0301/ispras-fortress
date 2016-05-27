@@ -21,9 +21,8 @@ import ru.ispras.fortress.util.InvariantChecks;
  * The ConstraintCombiner class provides methods to create new constraints by combining existing
  * ones (by performing negation, logical conjunction and logical disjunction).
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public final class ConstraintCombiner {
   private static final String DISJUNCTION = "Disjunction_of_%s_and_%s";
   private static final String CONJUNCTION = "Conjunction_of_%s_and_%s";
@@ -41,7 +40,6 @@ public final class ConstraintCombiner {
    *         if the parameter is not a formula-based constraint (its type
    *         is not ConstraintKind.FORMULA_BASED).
    */
-
   public static Constraint makeNegation(final Constraint a) {
     formulaBasedCheck(a);
 
@@ -71,7 +69,6 @@ public final class ConstraintCombiner {
    *         if any of the parameters is not a formula-based constraint
    *         (its type is not ConstraintKind.FORMULA_BASED).
    */
-
   public static Constraint makeConjunction(final Constraint a, final Constraint b) {
     formulaBasedCheck(a);
     formulaBasedCheck(b);
@@ -104,7 +101,6 @@ public final class ConstraintCombiner {
    *         if any of the parameters is not a formula-based constraint
    *         (its type is not ConstraintKind.FORMULA_BASED).
    */
-
   public static Constraint makeDisjunction(final Constraint a, final Constraint b) {
     formulaBasedCheck(a);
     formulaBasedCheck(b);
