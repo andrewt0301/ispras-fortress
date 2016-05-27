@@ -18,17 +18,15 @@ package ru.ispras.fortress.expression;
  * Interface to be implemented by all visitor objects applied to an expression tree to collect
  * information or to build another representation of the expression.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public interface ExprTreeVisitor {
   /**
    * The Status enumeration described possible statuses of the visitor. Status serve as a directive
    * for the walker to alter its behavior depending on events that may occur in the visitor.
    * 
-   * @author Andrei Tatarnikov
+   * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
    */
-
   static enum Status {
     /** Continue traversing */
     OK,
@@ -45,19 +43,16 @@ public interface ExprTreeVisitor {
    * 
    * @return Current visitor status.
    */
-
   Status getStatus();
 
   /**
    * Notifies that processing of an expression tree has been started.
    */
-
   void onRootBegin();
 
   /**
    * Notifies that processing of an expression tree has been finished.
    */
-
   void onRootEnd();
 
   /**
@@ -65,7 +60,6 @@ public interface ExprTreeVisitor {
    * 
    * @param node Operation node.
    */
-
   void onOperationBegin(NodeOperation node);
 
   /**
@@ -73,7 +67,6 @@ public interface ExprTreeVisitor {
    * 
    * @param node Operation node.
    */
-
   void onOperationEnd(NodeOperation node);
 
   /**
@@ -83,7 +76,6 @@ public interface ExprTreeVisitor {
    * 
    * @return Array of operand indexes or {@code null} for the standard order.
    */
-
   int[] getOperandOrder();
 
   /**
@@ -93,7 +85,6 @@ public interface ExprTreeVisitor {
    * @param operand Operand node.
    * @param index Operand index.
    */
-
   void onOperandBegin(NodeOperation operation, Node operand, int index);
 
   /**
@@ -103,7 +94,6 @@ public interface ExprTreeVisitor {
    * @param operand Operand node.
    * @param index Operand index.
    */
-
   void onOperandEnd(NodeOperation operation, Node operand, int index);
 
   /**
@@ -111,7 +101,6 @@ public interface ExprTreeVisitor {
    * 
    * @param value Value node.
    */
-
   void onValue(NodeValue value);
 
   /**
@@ -119,7 +108,6 @@ public interface ExprTreeVisitor {
    * 
    * @param variable Variable node.
    */
-
   void onVariable(NodeVariable variable);
 
   /**
@@ -127,7 +115,6 @@ public interface ExprTreeVisitor {
    * 
    * @param node Binding node.
    */
-
   void onBindingBegin(NodeBinding node);
 
   /**
@@ -135,7 +122,6 @@ public interface ExprTreeVisitor {
    * 
    * @param node Bounding node.
    */
-
   void onBindingListEnd(NodeBinding node);
 
   /**
@@ -143,7 +129,6 @@ public interface ExprTreeVisitor {
    * 
    * @param node Binding node.
    */
-
   void onBindingEnd(NodeBinding node);
 
   /**
@@ -156,7 +141,6 @@ public interface ExprTreeVisitor {
    * @param variable Bound variable reference.
    * @param value Bound value expression.
    */
-
   void onBoundVariableBegin(NodeBinding node, NodeVariable variable, Node value);
 
   /**
@@ -166,6 +150,5 @@ public interface ExprTreeVisitor {
    * @param variable Bound variable reference.
    * @param value Bound value expression.
    */
-
   void onBoundVariableEnd(NodeBinding node, NodeVariable variable, Node value);
 }

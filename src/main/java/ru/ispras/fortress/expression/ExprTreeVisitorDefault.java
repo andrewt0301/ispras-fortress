@@ -17,8 +17,8 @@ package ru.ispras.fortress.expression;
 import ru.ispras.fortress.util.InvariantChecks;
 
 /**
- * The ExprTreeVisitorDefault abstract class provides a default implementation for the
- * ExprTreeVisitor interface. This implementation does not perform any actions and does not collect
+ * The {@code ExprTreeVisitorDefault} abstract class provides a default implementation for the
+ * {@code ExprTreeVisitor} interface. This implementation does not perform any actions and does not collect
  * any data. It stores the visitor status, which is by default set to {@code Status.OK} and is
  * accessible via the {@code getStatus} and {@code setStatus} methods. All other methods
  * defined by the {@code ExprTreeVisitor} interface and overridden by the class are empty. The
@@ -28,7 +28,6 @@ import ru.ispras.fortress.util.InvariantChecks;
  * 
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public abstract class ExprTreeVisitorDefault implements ExprTreeVisitor {
 
   private Status status;
@@ -36,7 +35,6 @@ public abstract class ExprTreeVisitorDefault implements ExprTreeVisitor {
   /**
    * Constructs a default expression tree visitor and sets the visitor status to {@code Status.OK}.
    */
-
   public ExprTreeVisitorDefault() {
     this.status = Status.OK;
   }
@@ -56,7 +54,6 @@ public abstract class ExprTreeVisitorDefault implements ExprTreeVisitor {
    * @param status New visitor status.
    * @throws IllegalArgumentException if the parameter is {@code null}.
    */
-
   public final void setStatus(final Status status) {
     InvariantChecks.checkNotNull(status);
     this.status = status;

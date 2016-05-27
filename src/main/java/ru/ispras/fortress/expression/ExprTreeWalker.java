@@ -37,9 +37,8 @@ import ru.ispras.fortress.expression.ExprTreeVisitor.Status;
  * is set (not ABORT and not OR), nested elements of the visited node (child nodes or subtrees) are
  * not traversed and a corresponding terminating method (that has the End suffix) is called.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public final class ExprTreeWalker {
   private final ExprTreeVisitor visitor;
 
@@ -50,7 +49,6 @@ public final class ExprTreeWalker {
    * 
    * @throws IllegalArgumentException if the visitor parameter is null.
    */
-
   public ExprTreeWalker(final ExprTreeVisitor visitor) {
     checkNotNull(visitor);
     this.visitor = visitor;
@@ -60,10 +58,9 @@ public final class ExprTreeWalker {
    * Checks whether the current status of the visitor equals the specified status.
    * 
    * @param status Status to be checked for equality with the current status of the visitor.
-   * @return <code>true</code> if the visitor status equals the specified status, or
-   *         <code>false</code> otherwise.
+   * @return {@code true} if the visitor status equals the specified status, or
+   *         {@code false} otherwise.
    */
-
   private boolean isStatus(final Status status) {
     return visitor.getStatus() == status;
   }
@@ -78,7 +75,6 @@ public final class ExprTreeWalker {
    * @throws IllegalArgumentException if the parameter equals null; if any of
    *         the child nodes of the expression nodes in the sequence has a unknown type.
    */
-
   public void visit(final Iterable<? extends Node> trees) {
     checkNotNull(trees);
     for (final Node tree : trees) {
@@ -98,7 +94,6 @@ public final class ExprTreeWalker {
    * @throws IllegalArgumentException if the parameter equals null;
    *         if any of the expression tree nodes has a unknown type.
    */
-
   public void visit(final Node tree) {
     checkNotNull(tree);
 
@@ -125,7 +120,6 @@ public final class ExprTreeWalker {
    * @throws IllegalArgumentException if the parameter equals null;
    *         if the node or any of its child nodes has a unknown type.
    */
-
   public void visitNode(final Node node) {
     checkNotNull(node);
 
