@@ -22,7 +22,7 @@
    onBegin and onEnd
  - New BitVector method: repeat
  - New ExprUtils methods: isOperation, isValue, isVariable
- - Several bug fixes
+ - Several bug fixes and code improvements
  
  --------------------------------------------------------------------------------
  2016/02/05 Fortress 0.4.18 beta
