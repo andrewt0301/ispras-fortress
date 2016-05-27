@@ -31,13 +31,12 @@ public final class SolverResultBuilder {
    * 
    * @param status The initial status of the result.
    */
-
   public SolverResultBuilder(final SolverResult.Status status) {
     checkNotNull(status);
 
     this.status = status;
-    this.errors = new ArrayList<String>();
-    this.variables = new ArrayList<Variable>();
+    this.errors = new ArrayList<>();
+    this.variables = new ArrayList<>();
   }
 
   /**
@@ -45,7 +44,6 @@ public final class SolverResultBuilder {
    * 
    * @return A new solver result object.
    */
-
   public SolverResult build() {
     return new SolverResult(status, errors, variables);
   }
@@ -55,7 +53,6 @@ public final class SolverResultBuilder {
    * 
    * @param status Result status.
    */
-
   public void setStatus(final SolverResult.Status status) {
     this.status = status;
   }
@@ -65,7 +62,6 @@ public final class SolverResultBuilder {
    * 
    * @param error An error description.
    */
-
   public void addError(final String error) {
     errors.add(error);
   }
@@ -75,7 +71,6 @@ public final class SolverResultBuilder {
    * 
    * @param variable A variable object.
    */
-
   public void addVariable(final Variable variable) {
     variables.add(variable);
   }
@@ -85,7 +80,6 @@ public final class SolverResultBuilder {
    * 
    * @return {@code true} if any errors have been reported or {@code false} otherwise.
    */
-
   public boolean hasErrors() {
     return !errors.isEmpty();
   }
