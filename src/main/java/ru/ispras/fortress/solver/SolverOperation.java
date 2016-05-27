@@ -23,16 +23,14 @@ import ru.ispras.fortress.util.InvariantChecks;
  * how the operation should be translated to solver-specific representation. The SolverOperation
  * class describes both built-in and custom solver operation.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public abstract class SolverOperation {
   /**
    * Describes the type of the solver operation.
    * 
-   * @author Andrei Tatarnikov
+   * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
    */
-
   public static enum Kind {
     TEXT, FUNCTION, TEMPLATE
   }
@@ -64,7 +62,6 @@ public abstract class SolverOperation {
    * @param function Definition of the operation (including its parameters and underlying
    *        expression).
    */
-
   private SolverOperation(final Kind kind, final Enum<?> id) {
     this.kind = kind;
     this.id = id;
@@ -75,7 +72,6 @@ public abstract class SolverOperation {
    * 
    * @return Operation kind.
    */
-
   public final Kind getKind() {
     return kind;
   }
@@ -85,7 +81,6 @@ public abstract class SolverOperation {
    * 
    * @return Textual representation of the operation.
    */
-
   public final Enum<?> getOperationId() {
     return id;
   }
@@ -97,7 +92,6 @@ public abstract class SolverOperation {
    * 
    * @return Underlying function.
    */
-
   public abstract Function getFunction();
 
   /**
@@ -105,7 +99,6 @@ public abstract class SolverOperation {
    * 
    * @return Underlying function template.
    */
-
   public abstract FunctionTemplate getTemplate();
 
   private static class TextOperation extends SolverOperation {

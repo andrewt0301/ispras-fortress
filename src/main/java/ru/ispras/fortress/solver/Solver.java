@@ -25,14 +25,12 @@ import ru.ispras.fortress.solver.function.FunctionTemplate;
  * 
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public interface Solver {
   /**
    * Returns the name of the solver.
    * 
    * @return Solver name.
    */
-
   String getName();
 
   /**
@@ -40,7 +38,6 @@ public interface Solver {
    * 
    * @return solver description.
    */
-
   String getDescription();
 
   /**
@@ -49,7 +46,6 @@ public interface Solver {
    * @param kind Constraint kind.
    * @return true if the constraint kind is supported or false otherwise.
    */
-
   boolean isSupported(ConstraintKind kind);
 
   /**
@@ -57,7 +53,6 @@ public interface Solver {
    * 
    * @return true for generic solvers or false for custom ones.
    */
-
   boolean isGeneric();
 
   /**
@@ -66,7 +61,6 @@ public interface Solver {
    * @param constraint A constraint object.
    * @return Result of solving the constraint.
    */
-
   SolverResult solve(Constraint constraint);
 
   /**
@@ -75,7 +69,6 @@ public interface Solver {
    * 
    * @param function Object describing the semantics and syntax of the function.
    */
-
   boolean addCustomOperation(Function function);
 
   /**
@@ -86,7 +79,6 @@ public interface Solver {
    * @param template Function template that describes the semantics and syntax of a family of
    *        similar functions.
    */
-
   boolean addCustomOperation(FunctionTemplate template);
 
   /**
@@ -95,7 +87,6 @@ public interface Solver {
    * 
    * @return Path
    */
-
   String getSolverPath();
 
   /**
@@ -104,6 +95,5 @@ public interface Solver {
    * 
    * @param value Path
    */
-
   void setSolverPath(String value);
 }

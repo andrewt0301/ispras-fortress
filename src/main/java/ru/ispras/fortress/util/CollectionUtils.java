@@ -28,7 +28,6 @@ import java.util.Set;
  * 
  * @author Andrei Tatarnikov
  */
-
 public final class CollectionUtils {
   
   private CollectionUtils() {}
@@ -42,7 +41,6 @@ public final class CollectionUtils {
    * 
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
-
   public static <E> Set<E> uniteSets(final Set<E> lhs, final Set<E> rhs) {
     checkNotNull(lhs);
     checkNotNull(rhs);
@@ -70,7 +68,6 @@ public final class CollectionUtils {
    * 
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
-
   public static <E> Set<E> intersectSets(final Set<E> lhs, final Set<E> rhs) {
     checkNotNull(lhs);
     checkNotNull(rhs);
@@ -94,7 +91,6 @@ public final class CollectionUtils {
    * 
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
-
   public static <E> boolean areIntersectedSets(final Set<E> lhs, final Set<E> rhs) {
     return !intersectSets(lhs, rhs).isEmpty();
   }
@@ -108,7 +104,6 @@ public final class CollectionUtils {
    * 
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
-
   public static <E> Set<E> complementSets(final Set<E> lhs, final Set<E> rhs) {
     checkNotNull(lhs);
     checkNotNull(rhs);
@@ -133,7 +128,6 @@ public final class CollectionUtils {
    * 
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
-
   public static <T> List<T> appendToList(final List<T> lhs, final List<T> rhs) {
     checkNotNull(lhs);
     checkNotNull(rhs);
@@ -160,7 +154,6 @@ public final class CollectionUtils {
    * 
    * @throws IllegalArgumentException if the {@code lhs} parameter is {@code null}.
    */
-
   public static <T> List<T> appendToList(final List<T> lhs, final T elem) {
     checkNotNull(lhs);
 

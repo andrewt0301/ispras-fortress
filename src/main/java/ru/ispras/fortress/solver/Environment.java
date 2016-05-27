@@ -17,9 +17,8 @@ package ru.ispras.fortress.solver;
 /**
  * The Environment class provides methods to manage global the settings of the subsystem.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public final class Environment {
   private Environment() {}
 
@@ -31,7 +30,6 @@ public final class Environment {
    * 
    * @return Operating system name.
    */
-
   public static String getOSName() {
     return System.getProperty(PRP_OS_NAME);
   }
@@ -41,7 +39,6 @@ public final class Environment {
    * 
    * @return true if the tool is running in a Windows computer.
    */
-
   public static boolean isWindows() {
     final String os = getOSName().toLowerCase();
     return os.contains("win");
@@ -52,7 +49,6 @@ public final class Environment {
    * 
    * @return true if the tool is running in a Unix or Linux computer.
    */
-
   public static boolean isUnix() {
     final String os = getOSName().toLowerCase();
     return os.contains("nix") || os.contains("nux");
@@ -63,7 +59,6 @@ public final class Environment {
    * 
    * @return true if the tool is running in a Macintosh computer (under OS X).
    */
-
   public static boolean isOSX() {
     final String os = getOSName().toLowerCase();
     return os.contains("os x") || os.contains("mac");
@@ -74,17 +69,15 @@ public final class Environment {
    * 
    * @return {@code true} if debug mode is enabled or {@code false} otherwise. 
    */
-
   public static boolean isDebugMode() {
     return isDebugMode;
   }
 
   /**
-   * Enables or disables debug mode.  
+   * Enables or disables debug mode.
    * 
    * @param isDebugMode Status of debug mode to be set ({@code true} or {@code false}).
    */
-
   public static void setDebugMode(final boolean isDebugMode) {
     Environment.isDebugMode = isDebugMode;
   }

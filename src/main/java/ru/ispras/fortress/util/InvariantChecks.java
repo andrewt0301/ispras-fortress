@@ -22,7 +22,6 @@ import java.util.Collection;
  * 
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public final class InvariantChecks {
   private InvariantChecks() {}
 
@@ -35,7 +34,6 @@ public final class InvariantChecks {
    * @throws IllegalArgumentException if the invariant is violated
    * ({@code condition} is {@code false}).
    */
-
   public static void checkTrue(final boolean condition) {
     checkTrue(condition, null);
   }
@@ -50,7 +48,6 @@ public final class InvariantChecks {
    * @throws IllegalArgumentException if the invariant is violated
    * ({@code condition} is {@code false}).
    */
-
   public static void checkTrue(final boolean condition, final String message) {
     if (!condition) {
       throw message != null ? new IllegalArgumentException(message) :
@@ -67,7 +64,6 @@ public final class InvariantChecks {
    * @throws IllegalArgumentException if the invariant is violated
    * ({@code condition} is {@code true}).
    */
-
   public static void checkFalse(final boolean condition) {
     checkTrue(!condition);
   }
@@ -82,7 +78,6 @@ public final class InvariantChecks {
    * @throws IllegalArgumentException if the invariant is violated
    * ({@code condition} is {@code true}).
    */
-
   public static void checkFalse(final boolean condition, final String message) {
     checkTrue(!condition, message);
   }
@@ -95,7 +90,6 @@ public final class InvariantChecks {
    * 
    * @throws IllegalArgumentException if the invariant is violated ({@code o} is {@code null}).
    */
-
   public static <T> void checkNotNull(final T o) {
     checkTrue(null != o);
   }
@@ -109,7 +103,6 @@ public final class InvariantChecks {
    * 
    * @throws IllegalArgumentException if the invariant is violated ({@code o} is {@code null}).
    */
-
   public static <T> void checkNotNull(final T o, final String message) {
     checkTrue(null != o, message);
   }
@@ -123,7 +116,6 @@ public final class InvariantChecks {
    * @throws IllegalArgumentException if the invariant is violated ({@code o} is {@code null});
    *         if the invariant is violated ({@code o.isEmpty}).
    */
-
   public static <T> void checkNotEmpty(final Collection<T> o) {
     checkNotNull(o);
 
@@ -141,7 +133,6 @@ public final class InvariantChecks {
    * @throws IllegalArgumentException if the invariant is violated ({@code o} is {@code null});
    *         if the invariant is violated ({@code o.length} is 0).
    */
-
   public static <T> void checkNotEmpty(final T[] o) {
     checkNotNull(o);
 
@@ -158,7 +149,6 @@ public final class InvariantChecks {
    * 
    * @throws IllegalArgumentException if the invariant is violated ({@code n} <= {@code 0}).
    */
-
   public static void checkGreaterThanZero(final int n) {
     if (n <= 0) {
       throw new IllegalArgumentException(
@@ -174,7 +164,6 @@ public final class InvariantChecks {
    * 
    * @throws IllegalArgumentException if the invariant is violated ({@code n} < {@code 0}).
    */
-
   public static void checkGreaterOrEqZero(final int n) {
     if (n < 0) {
       throw new IllegalArgumentException(
@@ -192,7 +181,6 @@ public final class InvariantChecks {
    * @throws IndexOutOfBoundsException if the invariant is violated
    * ({@code index} is not within range {@code [0..length)}).
    */
-
   public static void checkBounds(final int index, final int length) {
     if (!(0 <= index && index < length)) {
       throw new IndexOutOfBoundsException(String.format(
@@ -210,7 +198,6 @@ public final class InvariantChecks {
    * @throws IndexOutOfBoundsException if the invariant is violated
    * ({@code index} is not within range {@code [0..length]}).
    */
-
   public static void checkBoundsInclusive(final int index, final int length) {
     if (!(0 <= index && index <= length)) {
       throw new IndexOutOfBoundsException(String.format(
@@ -227,7 +214,6 @@ public final class InvariantChecks {
    * 
    * @throws IllegalArgumentException if the invariant is violated ({@code a <= b}).
    */
-
   public static <T extends Number & Comparable<T>> void checkGreaterThan(final T a, final T b) {
     if (a.compareTo(b) <= 0) {
       throw new IllegalArgumentException(
@@ -244,7 +230,6 @@ public final class InvariantChecks {
    * 
    * @throws IllegalArgumentException if the invariant is violated ({@code a < b}).
    */
-
   public static <T extends Number & Comparable<T>> void checkGreaterOrEq(final T a, final T b) {
     if (a.compareTo(b) < 0) {
       throw new IllegalArgumentException(

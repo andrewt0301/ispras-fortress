@@ -22,13 +22,11 @@ import ru.ispras.fortress.solver.engine.smt.Z3Solver;
  * 
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public enum SolverId {
   /**
    * Z3 solver by Microsoft Research. It processes a text file with SMT-LIB code and prints results
    * to the output stream.
    */
-
   Z3_TEXT {
     protected Solver createSolver() {
       return new Z3Solver();

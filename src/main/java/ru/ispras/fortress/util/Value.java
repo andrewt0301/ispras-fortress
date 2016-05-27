@@ -23,7 +23,6 @@ package ru.ispras.fortress.util;
  *
  * @param <T> Value type.
  */
-
 public interface Value<T> {
   T value();
 }
