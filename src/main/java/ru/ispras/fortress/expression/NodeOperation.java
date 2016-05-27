@@ -32,7 +32,6 @@ import ru.ispras.fortress.data.DataTypeId;
  * 
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public final class NodeOperation extends Node {
   private final Enum<?> operation;
   private final List<Node> operands;
@@ -46,7 +45,6 @@ public final class NodeOperation extends Node {
    * 
    * @throws IllegalArgumentException if any parameter (including every operand) is {@code null}.
    */
-
   public <T extends Enum<? extends T>> NodeOperation(
       final T operation,
       final Node... operands) {
@@ -63,7 +61,6 @@ public final class NodeOperation extends Node {
    * 
    * @throws IllegalArgumentException if any parameter (including every operand) is {@code null}.
    */
-
   public <T extends Enum<? extends T>> NodeOperation(
       final T operation,
       final DataType dataType,
@@ -80,7 +77,6 @@ public final class NodeOperation extends Node {
    * 
    * @throws IllegalArgumentException if any parameter (including every operand) is {@code null}.
    */
-
   public <T extends Enum<? extends T>> NodeOperation(
       final T operation,
       final List<? extends Node> operands) {
@@ -98,7 +94,6 @@ public final class NodeOperation extends Node {
    * 
    * @throws IllegalArgumentException if any parameter (including every operand) is {@code null}.
    */
-
   public <T extends Enum<? extends T>> NodeOperation(
       final T operation,
       final DataType dataType,
@@ -122,7 +117,6 @@ public final class NodeOperation extends Node {
    * 
    * @param node Node operation object to be copied.
    */
-
   private NodeOperation(final NodeOperation node) {
     super(node);
 
@@ -139,7 +133,6 @@ public final class NodeOperation extends Node {
   /**
    * {@inheritDoc}
    */
-
   @Override
   public Node deepCopy() {
     return new NodeOperation(this);
@@ -150,7 +143,6 @@ public final class NodeOperation extends Node {
    * 
    * @return Number of operands.
    */
-
   public int getOperandCount() {
     return operands.size();
   }
@@ -161,7 +153,6 @@ public final class NodeOperation extends Node {
    * @param index Index of the operand.
    * @return An operand of the expression.
    */
-
   public Node getOperand(final int index) {
     checkBounds(index, operands.size());
     return operands.get(index);
@@ -172,7 +163,6 @@ public final class NodeOperation extends Node {
    * 
    * @return An unmodifiable list of operands.
    */
-
   public List<Node> getOperands() {
     return operands;
   }
@@ -182,7 +172,6 @@ public final class NodeOperation extends Node {
    * 
    * @return An operation identifier.
    */
-
   public Enum<?> getOperationId() {
     return operation;
   }
@@ -190,7 +179,6 @@ public final class NodeOperation extends Node {
   /**
    * {@inheritDoc}
    */
-
   @Override
   public DataType getDataType() {
     if (null != dataType) {

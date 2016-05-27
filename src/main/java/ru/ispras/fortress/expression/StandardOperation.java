@@ -25,9 +25,8 @@ import ru.ispras.fortress.data.DataType;
  * The StandardOperation.java enumeration contains identifiers that specify particular operations
  * used in expressions.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public enum StandardOperation implements TypeRule {
   /**
    * The items below belong to the "Logic Operations" group.
@@ -297,7 +296,6 @@ public enum StandardOperation implements TypeRule {
   /**
    * Describes the family of operands the operation manipulates with. 
    */
-
   public static enum Family {
     LOGIC, BV, ARRAY;
   }

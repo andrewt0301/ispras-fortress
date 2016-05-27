@@ -25,9 +25,8 @@ import ru.ispras.fortress.data.Variable;
  * attribute of a constraint. The class serves as an adapter to allow Variable objects to be used in
  * an expression tree. The variable is unknown or has a value.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public final class NodeVariable extends Node {
   private final Variable variable;
 
@@ -39,7 +38,6 @@ public final class NodeVariable extends Node {
    * @param type Variable type.
    * @throws IllegalArgumentException if any of the arguments is {@code null}.
    */
-
   public NodeVariable(final String name, final DataType type) {
     this(new Variable(name, type));
   }
@@ -50,7 +48,6 @@ public final class NodeVariable extends Node {
    * @param variable A variable node object.
    * @throws IllegalArgumentException if the argument is {@code null}.
    */
-
   public NodeVariable(final Variable variable) {
     super(Kind.VARIABLE);
 
@@ -65,7 +62,6 @@ public final class NodeVariable extends Node {
    * @param nodeVariable Node variable object to be copied.
    * @throws IllegalArgumentException if the argument is {@code null}.
    */
-
   private NodeVariable(final NodeVariable nodeVariable) {
     super(nodeVariable);
     this.variable = new Variable(nodeVariable.variable);
@@ -74,7 +70,6 @@ public final class NodeVariable extends Node {
   /**
    * {@inheritDoc}
    */
-
   @Override
   public Node deepCopy() {
     return new NodeVariable(this);
@@ -85,7 +80,6 @@ public final class NodeVariable extends Node {
    * 
    * @return Variable associated with the node.
    */
-
   public Variable getVariable() {
     return variable;
   }
@@ -95,7 +89,6 @@ public final class NodeVariable extends Node {
    * 
    * @return The variable name.
    */
-
   public String getName() {
     return variable.getName();
   }
@@ -105,7 +98,6 @@ public final class NodeVariable extends Node {
    * 
    * @return A data object.
    */
-
   public Data getData() {
     return variable.getData();
   }
@@ -117,7 +109,6 @@ public final class NodeVariable extends Node {
    * 
    * @throws IllegalArgumentException if the argument is {@code null}.
    */
-
   public void setData(final Data data) {
     checkNotNull(data);
     variable.setData(data);
@@ -132,7 +123,6 @@ public final class NodeVariable extends Node {
    * 
    * @return Object that stores the variable value if it is assigned or null otherwise
    */
-
   public Object getValue() {
     return variable.getData().getValue();
   }
@@ -140,7 +130,6 @@ public final class NodeVariable extends Node {
   /**
    * {@inheritDoc}
    */
-
   @Override
   public DataType getDataType() {
     return variable.getType();

@@ -34,7 +34,6 @@ import ru.ispras.fortress.jaxb.JaxbNodeValueAdapter;
  * 
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 @XmlSeeAlso(JaxbNodeValue.class)
 @XmlJavaTypeAdapter(JaxbNodeValueAdapter.class)
 public final class NodeValue extends Node {
@@ -87,7 +86,6 @@ public final class NodeValue extends Node {
    * 
    * @throws IllegalArgumentException if the argument is {@code null}.
    */
-
   public NodeValue(final Data data) {
     super(Kind.VALUE);
 
@@ -101,7 +99,6 @@ public final class NodeValue extends Node {
    * 
    * @param nodeValue Node value object to be copied.
    */
-
   private NodeValue(final NodeValue nodeValue) {
     super(nodeValue);
     this.data = nodeValue.data;
@@ -110,7 +107,6 @@ public final class NodeValue extends Node {
   /**
    * {@inheritDoc}
    */
-
   @Override
   public Node deepCopy() {
     return new NodeValue(this);
@@ -121,7 +117,6 @@ public final class NodeValue extends Node {
    * 
    * @return A data object.
    */
-
   public Data getData() {
     return data;
   }
@@ -133,7 +128,6 @@ public final class NodeValue extends Node {
    * 
    * @throws IllegalArgumentException if the argument is {@code null}. 
    */
-
   public void setData(final Data data) {
     checkNotNull(data);
     this.data = data;
@@ -145,7 +139,6 @@ public final class NodeValue extends Node {
    * 
    * @return An object that store the value of the constant.
    */
-
   public Object getValue() {
     return data.getValue();
   }
@@ -153,7 +146,6 @@ public final class NodeValue extends Node {
   /**
    * {@inheritDoc}
    */
-
   @Override
   public DataType getDataType() {
     return data.getType();
@@ -190,7 +182,6 @@ public final class NodeValue extends Node {
   /**
    * Returns stored BigInteger value and throws an exception if the stored value has a different type.
    */
-
   public BigInteger getInteger() {
     return getData().getInteger();
   }
@@ -198,7 +189,6 @@ public final class NodeValue extends Node {
   /**
    * Returns stored BitVector value and throws an exception if the stored value has a different type.
    */
-
   public BitVector getBitVector() {
     return getData().getBitVector();
   }
@@ -206,7 +196,6 @@ public final class NodeValue extends Node {
   /**
    * Returns stored boolean value and throws an exception if the stored value has a different type.
    */
-
   public boolean getBoolean() {
     return getData().getBoolean();
   }
@@ -214,7 +203,6 @@ public final class NodeValue extends Node {
   /**
    * Returns stored Double value and throws an exception if the stored value has a different type.
    */
-
   public double getReal() {
     return getData().getReal();
   }
@@ -222,7 +210,6 @@ public final class NodeValue extends Node {
   /**
    * Returns stored DataMap value and throws an exception if the stored value has a different type.
    */
-
   public DataMap getArray() {
     return getData().getArray();
   }

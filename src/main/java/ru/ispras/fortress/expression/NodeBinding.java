@@ -28,7 +28,6 @@ import ru.ispras.fortress.data.DataType;
  * The NodeBinding class represents set of substitutions to be considered in underlying expression
  * subtree. List of bound variables considered immutable.
  */
-
 public final class NodeBinding extends Node {
   /**
    * The BoundVariable class represents key-value binding pair.
@@ -47,7 +46,6 @@ public final class NodeBinding extends Node {
      * 
      * @return A bound variable object reference.
      */
-
     public NodeVariable getVariable() {
       return variable;
     }
@@ -57,7 +55,6 @@ public final class NodeBinding extends Node {
      * 
      * @return A bound value.
      */
-
     public Node getValue() {
       return value;
     }
@@ -98,7 +95,6 @@ public final class NodeBinding extends Node {
    * @param expression Expression subtree.
    * @param bindings List of bound variables.
    */
-
   public NodeBinding(
       final Node expression,
       final List<BoundVariable> bindings) {
@@ -134,7 +130,6 @@ public final class NodeBinding extends Node {
    * @param expression Expression subtree.
    * @param bindings Bound variables.
    */
-
   public NodeBinding(final Node expression, final BoundVariable... bindings) {
     this(expression, Arrays.asList(bindings));
   }
@@ -145,7 +140,6 @@ public final class NodeBinding extends Node {
    * @param expr Expression subtree.
    * @param bindings List of bound variables.
    */
-
   private NodeBinding(
       final Node expr,
       final List<BoundVariable> bindings,
@@ -161,7 +155,6 @@ public final class NodeBinding extends Node {
    * 
    * @return Unmodifiable list of bound variables.
    */
-
   public List<BoundVariable> getBindings() {
     return Collections.unmodifiableList(bindings);
   }
@@ -171,7 +164,6 @@ public final class NodeBinding extends Node {
    * 
    * @return An expression.
    */
-
   public Node getExpression() {
     return expr;
   }
@@ -179,7 +171,6 @@ public final class NodeBinding extends Node {
   /**
    * {@inheritDoc}
    */
-
   public Node deepCopy() {
     return new NodeBinding(this.expr, this.bindings, 0);
   }
@@ -192,7 +183,6 @@ public final class NodeBinding extends Node {
    * 
    * @return A binding node object.
    */
-
   public NodeBinding bindTo(final Node expression) {
     return new NodeBinding(expression, this.bindings, 0);
   }
@@ -205,7 +195,6 @@ public final class NodeBinding extends Node {
    * 
    * @return A bound variable object.
    */
-
   public static BoundVariable bindVariable(
       final NodeVariable variable,
       final Node value) {
@@ -217,7 +206,6 @@ public final class NodeBinding extends Node {
   /**
    * {@inheritDoc}
    */
-
   @Override
   public DataType getDataType() {
     return expr.getDataType();

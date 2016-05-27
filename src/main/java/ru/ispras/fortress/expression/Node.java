@@ -28,42 +28,36 @@ import ru.ispras.fortress.jaxb.JaxbNodeAdapter;
  * The Node class is a base class for all kinds of classes describing nodes in an expression tree.
  * It includes declarations and implementations of methods common for all node kinds.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 @XmlSeeAlso(JaxbNode.class)
 @XmlJavaTypeAdapter(JaxbNodeAdapter.class)
 public abstract class Node {
   /**
    * The Node.Kind enumeration specifies the kind of an expression tree node.
    * 
-   * @author Andrei Tatarnikov
+   * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
    */
-
   public static enum Kind {
     /**
      * A value node. Stores a constant value.
      */
-
     VALUE,
 
     /**
      * A variable node. Can be either an unknown variable or a named constant.
      */
-
     VARIABLE,
 
     /**
      * An operation node. Describes an expression that includes an operation and one or two
      * operands.
      */
-
     OPERATION,
 
     /**
      * A binding node. Represents group of variable substitutions.
      */
-
     BINDING
   }
 
@@ -76,7 +70,6 @@ public abstract class Node {
    * @param kind Node kind identifier.
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
-
   protected Node(final Kind kind) {
     checkNotNull(kind);
     this.kind = kind;
@@ -90,7 +83,6 @@ public abstract class Node {
    * @param node Node object to be copied.
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
-
   protected Node(final Node node) {
     checkNotNull(node);
     this.kind = node.kind;
@@ -103,7 +95,6 @@ public abstract class Node {
    * 
    * @return Full copy of the current node object.
    */
-
   public abstract Node deepCopy();
 
   /**
@@ -111,7 +102,6 @@ public abstract class Node {
    * 
    * @return A node kind identifier.
    */
-
   public final Kind getKind() {
     return kind;
   }
@@ -121,7 +111,6 @@ public abstract class Node {
    * 
    * @return A data type object.
    */
-
   public abstract DataType getDataType();
 
   /**
@@ -129,7 +118,6 @@ public abstract class Node {
    * 
    * @return Data type identifier.
    */
-
   public final DataTypeId getDataTypeId() {
     return getDataType().getTypeId();
   }
@@ -142,7 +130,6 @@ public abstract class Node {
    * @return {@code true} if the expression type matches the type specified by
    * the {@code typeId} argument or {@code false} otherwise.
    */
-
   public final boolean isType(final DataTypeId typeId) {
     return getDataTypeId() == typeId;
   }
@@ -155,7 +142,6 @@ public abstract class Node {
    * @return {@code true} if the expression type matches the type specified by
    * the {@code type} argument or {@code false} otherwise.
    */
-
   public final boolean isType(final DataType type) {
     return getDataType().equals(type);
   }
@@ -165,7 +151,6 @@ public abstract class Node {
    * 
    * @param obj User data object.
    */
-
   public final void setUserData(final Object obj) {
     this.userData = obj;
   }
@@ -175,7 +160,6 @@ public abstract class Node {
    * 
    * @return User data object.
    */
-
   public final Object getUserData() {
     return userData;
   }
@@ -189,7 +173,6 @@ public abstract class Node {
    * 
    * @throws IllegalArgumentException if any of the parameters equals {@code null}.
    */
-
   public static Node AND(final Node left, final Node right) {
     checkNotNull(left);
     checkNotNull(right);
@@ -205,7 +188,6 @@ public abstract class Node {
    * 
    * @throws IllegalArgumentException if any of the parameters equals {@code null}.
    */
-
   public static Node OR(final Node left, final Node right) {
     checkNotNull(left);
     checkNotNull(right);
@@ -220,7 +202,6 @@ public abstract class Node {
    * 
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
-
   public static Node NOT(final Node expr) {
     checkNotNull(expr);
     return new NodeOperation(StandardOperation.NOT, expr);
