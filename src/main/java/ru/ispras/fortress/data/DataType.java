@@ -29,7 +29,6 @@ import java.util.Map;
  *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public final class DataType {
   /** Table that stores singleton instances of data types. */
   private static final Map<String, DataType> DATA_TYPES = new HashMap<>();
@@ -41,7 +40,6 @@ public final class DataType {
    * with machine-dependent types and can have any size. For this reason, we specify it as zero to
    * distinguish from types that describe real data.
    */
-
   public static final int LOGIC_TYPE_SIZE = 0;
 
   /** Predefined logic integer type. */
@@ -70,7 +68,6 @@ public final class DataType {
    * @param size Bit vector size in bits
    * @return Bit vector type
    */
-
   public static DataType BIT_VECTOR(final int size) {
     checkGreaterThanZero(size);
     return newDataType(DataTypeId.BIT_VECTOR, size);
@@ -103,7 +100,6 @@ public final class DataType {
    * @param parameters The list of type parameters
    * @return A data type object
    */
-
   public static DataType newDataType(
       final DataTypeId typeId,
       final Object... parameters) {
@@ -130,7 +126,6 @@ public final class DataType {
    * @param name A type name.
    * @param parameters The list of type parameters.
    */
-
   private DataType(
       final DataTypeId typeId,
       final String name,
@@ -145,7 +140,6 @@ public final class DataType {
    *
    * @return Data type identifier.
    */
-
   public DataTypeId getTypeId() {
     return typeId;
   }
@@ -155,7 +149,6 @@ public final class DataType {
    *
    * @return Data size in bits.
    */
-
   public int getSize() {
     if (typeId == DataTypeId.BIT_VECTOR) {
       return (Integer) DataTypeId.BIT_VECTOR.getAttribute(DataTypeId.Attribute.SIZE, parameters);
@@ -176,7 +169,6 @@ public final class DataType {
    *
    * @return A radix value.
    */
-
   public int getTypeRadix() {
     return typeId.radix(getSize());
   }
@@ -186,7 +178,6 @@ public final class DataType {
    *
    * @return The class that is used to store data.
    */
-
   public Class<?> getValueClass() {
     return typeId.getValueClass();
   }
@@ -198,7 +189,6 @@ public final class DataType {
    * @param radix The radix to be used for parsing.
    * @return A new data object.
    */
-
   public Data valueOf(final String value, final int radix) {
     checkNotNull(value);
 
@@ -229,7 +219,6 @@ public final class DataType {
    *
    * @return A new data object.
    */
-
   public Data valueUninitialized() {
     return new Data(this, null);
   }
@@ -237,7 +226,6 @@ public final class DataType {
   /**
    * {@inheritDoc}
    */
-
   @Override
   public String toString() {
     return name;
@@ -246,7 +234,6 @@ public final class DataType {
   /**
    * {@inheritDoc}
    */
-
   @Override
   public int hashCode() {
     return name.hashCode();
@@ -255,7 +242,6 @@ public final class DataType {
   /**
    * {@inheritDoc}
    */
-
   @Override
   public boolean equals(final Object obj) {
     if (this == obj) {
