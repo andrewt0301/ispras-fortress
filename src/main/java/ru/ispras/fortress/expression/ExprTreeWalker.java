@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2013-2016 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -16,26 +16,13 @@ package ru.ispras.fortress.expression;
 
 import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
-import ru.ispras.fortress.expression.ExprTreeVisitor.Status;
+import ru.ispras.fortress.util.TreeVisitor;
+import ru.ispras.fortress.util.TreeVisitor.Status;
 
 /**
- * The ExprTreeWalker class provides methods that traverse an expression tree and apply a visitor to
- * its nodes.
- * 
- * <p>
- * NOTE: Actions taken in the traversal process depend on the current status of the visitor (see
- * {@link Status}). There are three possible statuses:
- * <ol>
- * <li>OK - continue traversal
- * <li>SKIP - skip child nodes
- * <li>ABORT - stop traversal
- * </ol>
- * 
- * <p>
- * The status is checked after calling any visitor method. Once ABORT is set, all traversal methods
- * return. If after a call to a method having the Begin suffix (e.g. onExprBegin), the SKIP status
- * is set (not ABORT and not OR), nested elements of the visited node (child nodes or subtrees) are
- * not traversed and a corresponding terminating method (that has the End suffix) is called.
+ * The {@code ExprTreeWalker} class provides methods that traverse an expression tree
+ * and apply a visitor to its nodes. The protocol used for traversal is explained
+ * {@linkplain TreeVisitor here}.
  * 
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
@@ -97,7 +84,7 @@ public final class ExprTreeWalker {
   public void visit(final Node tree) {
     checkNotNull(tree);
 
-    visitor.onRootBegin();
+    visitor.onBegin();
     if (isStatus(Status.ABORT)) {
       return;
     }
@@ -109,7 +96,7 @@ public final class ExprTreeWalker {
       }
     }
 
-    visitor.onRootEnd();
+    visitor.onEnd();
   }
 
   /**

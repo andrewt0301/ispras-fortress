@@ -14,48 +14,15 @@
 
 package ru.ispras.fortress.expression;
 
+import ru.ispras.fortress.util.TreeVisitor;
+
 /**
  * Interface to be implemented by all visitor objects applied to an expression tree to collect
  * information or to build another representation of the expression.
  * 
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-public interface ExprTreeVisitor {
-  /**
-   * The {@link Status} enumeration describes possible statuses of the visitor.
-   * {@code Status} serves as a directive for the walker to alter its behavior
-   * depending on events that may occur in the visitor.
-   * 
-   * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
-   */
-  static enum Status {
-    /** Continue traversing */
-    OK,
-
-    /** Skip child nodes */
-    SKIP,
-
-    /** Stop traversing */
-    ABORT
-  }
-
-  /**
-   * Returns the current status of the visitor. The status guides further actions of the walker.
-   * 
-   * @return Current visitor status.
-   */
-  Status getStatus();
-
-  /**
-   * Notifies that processing of an expression tree has been started.
-   */
-  void onRootBegin();
-
-  /**
-   * Notifies that processing of an expression tree has been finished.
-   */
-  void onRootEnd();
-
+public interface ExprTreeVisitor extends TreeVisitor {
   /**
    * Starts visiting an operation node.
    * 

@@ -244,14 +244,14 @@ final class SmtTextBuilder implements ExprTreeVisitor {
   }
 
   @Override
-  public void onRootBegin() {
+  public void onBegin() {
     final StringBuilder builder = new StringBuilder();
     formulas.add(builder);
     setCurrentBuilder(builder);
   }
 
   @Override
-  public void onRootEnd() {
+  public void onEnd() {
     setCurrentBuilder(null);
   }
 

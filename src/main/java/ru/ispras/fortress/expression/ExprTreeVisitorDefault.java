@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2016 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -29,7 +29,6 @@ import ru.ispras.fortress.util.InvariantChecks;
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 public abstract class ExprTreeVisitorDefault implements ExprTreeVisitor {
-
   private Status status;
 
   /**
@@ -38,10 +37,6 @@ public abstract class ExprTreeVisitorDefault implements ExprTreeVisitor {
   public ExprTreeVisitorDefault() {
     this.status = Status.OK;
   }
-
-  /**
-   * {@inheritDoc}
-   */
 
   @Override
   public final Status getStatus() {
@@ -60,10 +55,10 @@ public abstract class ExprTreeVisitorDefault implements ExprTreeVisitor {
   }
 
   @Override
-  public void onRootBegin() { /* Empty */ ; }
+  public void onBegin() { /* Empty */ ; }
 
   @Override
-  public void onRootEnd() { /* Empty */ ; }
+  public void onEnd() { /* Empty */ ; }
 
   @Override
   public void onOperationBegin(final NodeOperation node) { /* Empty */ ; }

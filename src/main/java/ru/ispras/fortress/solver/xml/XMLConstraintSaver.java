@@ -254,7 +254,7 @@ class XMLBuilderForExprs implements ExprTreeVisitor {
   }
 
   @Override
-  public void onRootBegin() {
+  public void onBegin() {
     assert !elements.isEmpty();
 
     final Element formula = document.createElement(XMLConst.NODE_FORMULA);
@@ -263,7 +263,7 @@ class XMLBuilderForExprs implements ExprTreeVisitor {
   }
 
   @Override
-  public void onRootEnd() {
+  public void onEnd() {
     assert !elements.isEmpty();
 
     elements.removeLast();

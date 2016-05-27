@@ -26,7 +26,7 @@ import java.util.Set;
 
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.DataTypeId;
-import ru.ispras.fortress.expression.ExprTreeVisitor.Status;
+import ru.ispras.fortress.util.TreeVisitor.Status;
 import ru.ispras.fortress.solver.SolverResult;
 import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintUtils;

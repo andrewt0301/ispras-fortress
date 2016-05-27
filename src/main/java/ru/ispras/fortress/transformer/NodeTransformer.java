@@ -170,10 +170,10 @@ public class NodeTransformer implements ExprTreeVisitor {
   }
 
   @Override
-  public void onRootBegin() {}
+  public void onBegin() {}
 
   @Override
-  public void onRootEnd() {
+  public void onEnd() {
     assert exprStack.size() == 1;
     result.add(exprStack.remove(0));
   }
