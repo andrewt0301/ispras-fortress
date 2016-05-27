@@ -28,9 +28,8 @@ import ru.ispras.fortress.randomizer.Randomizer;
  * It is possible to customize the behavior by providing a custom generation engine (a custom
  * implementation of the {@link Random.Engine} interface).
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public final class Random {
   private Random() {}
 
@@ -38,14 +37,12 @@ public final class Random {
    * The Engine interface is a common interface to be implemented by all generation engines. It
    * provides methods for generating data and setting up the randomizer.
    * 
-   * @author Andrei Tatarnikov
+   * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
    */
-
   public interface Engine {
     /**
      * Sets up the generation engine (if it requires some setup before being used).
      */
-
     void setUp();
 
     /**
@@ -53,7 +50,6 @@ public final class Random {
      * 
      * @param seed The seed to be set.
      */
-
     void setSeed(int seed);
 
     /**
@@ -66,7 +62,6 @@ public final class Random {
      * @throws UnsupportedOperationException if random data generation is not supported by the given
      *         data type.
      */
-
     Data random(DataTypeId typeId, int size);
   }
 
@@ -74,9 +69,8 @@ public final class Random {
    * The TypedGenerator interface is a common interface for objects that are responsible for
    * generating data of some specific type.
    * 
-   * @author Andrei Tatarnikov
+   * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
    */
-
   public interface TypedGenerator {
     /**
      * Generates random data. Data type depends on the implementation.
@@ -84,7 +78,6 @@ public final class Random {
      * @param size Data size.
      * @return Random data.
      */
-
     Data generate(int size);
   }
 
@@ -92,14 +85,12 @@ public final class Random {
    * The Initializer interface is to be implemented by objects that are responsible for initializing
    * some specific generation engine.
    * 
-   * @author Andrei Tatarnikov
+   * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
    */
-
   public interface Initializer {
     /**
      * Sets up the generation engine (if it requires some setup before being used).
      */
-
     void setUp();
 
     /**
@@ -107,7 +98,6 @@ public final class Random {
      * 
      * @param seed The seed to be set.
      */
-
     void setSeed(int seed);
   }
 
@@ -116,9 +106,9 @@ public final class Random {
    * of objects that provide facilities to set up the randomizer and to generate data of specific
    * types.
    * 
-   * @author Andrei Tatarnikov
+   * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
    */
-
+  
   public static final class CompositeEngine implements Engine {
     private static final String ERR_UNSUPPORTED =
         "Random data generation is not supported for the %s type.";

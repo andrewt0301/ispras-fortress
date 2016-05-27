@@ -30,7 +30,6 @@ import ru.ispras.fortress.data.types.datamap.DataMap;
  * 
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public enum DataTypeId {
   /**
    * A bit vector type. Represents some data buffer of a specified size.
@@ -208,7 +207,6 @@ public enum DataTypeId {
     /** 
      * {@inheritDoc} Radix for composite types like MAP is undefined.
      */
-
     int radix(final int size) {
       return 0;
     }
@@ -305,7 +303,6 @@ public enum DataTypeId {
    * @param isLogic Specifies whether the type is logical which means that it is purely
    * mathematical and is not associated with data types implemented in real hardware.
    */
-
   private DataTypeId(final Class<?> valueClass, final boolean isLogic) {
     this.valueClass = valueClass;
     this.isLogic = isLogic;
@@ -316,7 +313,6 @@ public enum DataTypeId {
    * 
    * @return Value type.
    */
-
   Class<?> getValueClass() {
     return valueClass;
   }
@@ -341,7 +337,6 @@ public enum DataTypeId {
    * @param size Data size in bits.
    * @return Value of the given type packed into an Object value.
    */
-
   Object valueOf(final String s, final int radix, final int size) {
     final List<Object> list = new ArrayList<Object>();
     list.add(size);
