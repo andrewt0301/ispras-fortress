@@ -18,6 +18,7 @@ import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -37,8 +38,7 @@ import ru.ispras.fortress.expression.NodeVariable;
  */
 
 public class NodeTransformer implements ExprTreeVisitor {
-  // TODO use list of rules for enum as priority queue
-  private final Map<Enum<?>, TransformerRule> ruleset;
+  private final Map<Enum<?>, List<TransformerRule>> ruleset;
 
   private final List<Node[]> operandStack;
   private final List<Node> exprStack;
@@ -97,7 +97,11 @@ public class NodeTransformer implements ExprTreeVisitor {
   public NodeTransformer(final Map<Enum<?>, TransformerRule> rules) {
     checkNotNull(rules);
 
-    ruleset = new IdentityHashMap<>(rules);
+    ruleset = new IdentityHashMap<>(rules.size());
+    for (final Map.Entry<Enum<?>, TransformerRule> entry : rules.entrySet()) {
+      addRule(entry.getKey(), entry.getValue());
+    }
+
     operandStack = new ArrayList<>();
     exprStack = new ArrayList<>();
     result = new ArrayList<>();
@@ -121,8 +125,31 @@ public class NodeTransformer implements ExprTreeVisitor {
     checkNotNull(opId);
     checkNotNull(rule);
 
-    // TODO check for replacements or/and add to end of queue
-    ruleset.put(opId, rule);
+    getRulesWrite(opId).add(rule);
+  }
+
+  public void clearRules(final Enum<?> opId) {
+    final List<TransformerRule> rules = ruleset.get(opId);
+    if (rules != null) {
+      rules.clear();
+    }
+  }
+
+  private List<TransformerRule> getRulesWrite(final Enum<?> opId) {
+    List<TransformerRule> rules = ruleset.get(opId);
+    if (rules == null) {
+      rules = new ArrayList<>();
+      ruleset.put(opId, rules);
+    }
+    return rules;
+  }
+
+  private List<TransformerRule> getRulesRead(final Enum<?> opId) {
+    final List<TransformerRule> rules = ruleset.get(opId);
+    if (rules != null) {
+      return rules;
+    }
+    return Collections.emptyList();
   }
 
   /**
@@ -145,9 +172,10 @@ public class NodeTransformer implements ExprTreeVisitor {
    */
 
   private Node applyRule(final Enum<?> id, final Node node) {
-    final TransformerRule rule = ruleset.get(id);
-    if (rule != null && rule.isApplicable(node)) {
-      return rule.apply(node);
+    for (final TransformerRule rule : getRulesRead(id)) {
+      if (rule.isApplicable(node)) {
+        return rule.apply(node);
+      }
     }
     return node;
   }
@@ -241,17 +269,19 @@ public class NodeTransformer implements ExprTreeVisitor {
     updated.setUserData(node.getUserData());
 
     final TransformerRule scopedRule =
-        new RejectBoundVariablesRule(ruleset.get(Node.Kind.VARIABLE), updated);
+        new RejectBoundVariablesRule(getRulesWrite(Node.Kind.VARIABLE), updated);
 
-    ruleset.put(Node.Kind.VARIABLE, scopedRule);
+    // box scoped rule
+    ruleset.put(Node.Kind.VARIABLE, Collections.singletonList(scopedRule));
     bindings.clear();
   }
 
   @Override
   public void onBindingEnd(final NodeBinding node) {
+    // unbox scoped rule
     final RejectBoundVariablesRule rule =
-        (RejectBoundVariablesRule) ruleset.get(Node.Kind.VARIABLE);
-    ruleset.put(Node.Kind.VARIABLE, rule.getShadowedRule());
+        (RejectBoundVariablesRule) ruleset.get(Node.Kind.VARIABLE).get(0);
+    ruleset.put(Node.Kind.VARIABLE, rule.getShadowedRules());
 
     final Node expr = exprStack.remove(exprStack.size() - 1);
     final NodeBinding bindingNode = rule.getBinding().bindTo(expr);
@@ -286,7 +316,7 @@ public class NodeTransformer implements ExprTreeVisitor {
  */
 
 abstract class ScopedBindingRule implements TransformerRule {
-  protected final TransformerRule shadowed;
+  protected final List<TransformerRule> shadowed;
   protected final Map<String, Node> bindings;
   protected Node applicableCache;
 
@@ -298,7 +328,7 @@ abstract class ScopedBindingRule implements TransformerRule {
    */
 
   public ScopedBindingRule(
-      final TransformerRule previous,
+      final List<TransformerRule> previous,
       final List<NodeBinding.BoundVariable> bindingList) {
     this.shadowed = previous;
     this.bindings = new HashMap<>();
@@ -317,7 +347,7 @@ abstract class ScopedBindingRule implements TransformerRule {
    * Get rule being shadowed by current scope.
    */
 
-  public TransformerRule getShadowedRule() {
+  public List<TransformerRule> getShadowedRules() {
     return shadowed;
   }
 }
@@ -342,7 +372,7 @@ final class RejectBoundVariablesRule extends ScopedBindingRule {
    * @param node NodeBinding instance is to check for.
    */
 
-  public RejectBoundVariablesRule(final TransformerRule previous, final NodeBinding node) {
+  public RejectBoundVariablesRule(final List<TransformerRule> previous, final NodeBinding node) {
     super(previous, node.getBindings());
     this.node = node;
   }
@@ -368,14 +398,12 @@ final class RejectBoundVariablesRule extends ScopedBindingRule {
       return false;
     }
 
-    if (shadowed == null) {
-      return false;
+    for (final TransformerRule rule : getShadowedRules()) {
+      if (rule.isApplicable(node)) {
+        applicableCache = rule.apply(node);
+        return true;
+      }
     }
-
-    final boolean applicable = shadowed.isApplicable(node);
-    if (applicable) {
-      applicableCache = shadowed.apply(node);
-    }
-    return applicable;
+    return false;
   }
 }
