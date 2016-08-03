@@ -32,7 +32,8 @@ buildscript {
 }
 
 plugins {
-  id 'net.researchgate.release' version '2.3.4'
+  id 'net.saliman.properties' version '1.4.4'
+  id 'net.researchgate.release' version '2.3.5'
   id "org.sonarqube" version "1.0"
 }
 
@@ -43,6 +44,7 @@ apply plugin: 'checkstyle'
 apply plugin: 'findbugs'
 apply plugin: 'pmd'
 apply plugin: 'jacoco'
+apply plugin: 'maven-publish'
 
 repositories {
   ivy {
@@ -263,3 +265,32 @@ distributions {
     }
   }
 }
+
+publishing {
+  publications {
+    maven(MavenPublication) {
+      groupId projectGroup
+      artifactId projectName
+      version project.version
+      from components.java
+    }
+  }
+  repositories {
+    maven {
+      if(project.version.endsWith('-SNAPSHOT')) {
+        url 'http://localhost:8082/nexus/content/repositories/snapshots'
+      } else {
+        url 'http://localhost:8082/nexus/content/repositories/releases'
+      }
+      credentials {
+        username hasProperty('repoUser') ? repoUser : ''
+        password hasProperty('repoPassword') ? repoPassword : ''
+      }
+      authentication {
+        basic(BasicAuthentication)
+      }
+    }
+  }
+}
+
+afterReleaseBuild.dependsOn publish
