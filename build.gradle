@@ -278,12 +278,12 @@ publishing {
       version project.version
       from components.java
 
-      artifact (sourcesJar) {
-        classifier = 'src'
+      artifact(sourcesJar) {
+        classifier = "sources"
       }
 
-      artifact (javadocJar) {
-        classifier = 'javadoc'
+      artifact(javadocJar) {
+        classifier = "javadoc"
       }
     }
   }
