@@ -274,6 +274,8 @@ print '*********AUTHORIZATION INFO: '
 print repoUserStr
 print ':'
 print repoPasswordStr
+print ':'
+print ${System.env.ANDREWT_PASSWORD}
 
 publishing {
   publications {
