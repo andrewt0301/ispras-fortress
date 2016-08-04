@@ -266,7 +266,7 @@ distributions {
   }
 }
 
-def repoUrlStr = 'http://localhost:8082/nexus/content/repositories/'
+def repoUrlStr = 'http://forge.ispras.ru:8082/nexus/content/repositories/'
 def repoUserStr = hasProperty('repoUser') ? repoUser : ''
 def repoPasswordStr = hasProperty('repoPassword') ? repoPassword : ''
 
