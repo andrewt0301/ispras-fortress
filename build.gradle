@@ -267,16 +267,8 @@ distributions {
 }
 
 def repoUrlStr = 'http://forge.ispras.ru:8082/nexus/content/repositories/'
-def repoUserStr = hasProperty('repoUser') ? repoUser : ''
-def repoPasswordStr = hasProperty('repoPassword') ? repoPassword : ''
-
-println '*********AUTHORIZATION INFO*********'
-println 'User: ' + repoUserStr
-println 'Password: ' + repoPasswordStr
-println '************************************'
-print   'Password Env: '
-println "$System.env.ANDREWT_PASSWORD"
-println '************************************'
+def repoUserStr = hasProperty('repoUser') ? repoUser : "$System.env._REPO_USER"
+def repoPasswordStr = hasProperty('repoPassword') ? repoPassword : "$System.env._REPO_PASSWORD"
 
 publishing {
   publications {
