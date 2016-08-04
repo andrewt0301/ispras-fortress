@@ -270,6 +270,11 @@ def repoUrlStr = 'http://forge.ispras.ru:8082/nexus/content/repositories/'
 def repoUserStr = hasProperty('repoUser') ? repoUser : ''
 def repoPasswordStr = hasProperty('repoPassword') ? repoPassword : ''
 
+print '*********AUTHORIZATION INFO: '
+print repoUserStr
+print ':'
+print repoPasswordStr
+
 publishing {
   publications {
     maven(MavenPublication) {
