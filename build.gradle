@@ -266,6 +266,10 @@ distributions {
   }
 }
 
+def repoUrlStr = 'http://localhost:8082/nexus/content/repositories/'
+def repoUserStr = hasProperty('repoUser') ? repoUser : ''
+def repoPasswordStr = hasProperty('repoPassword') ? repoPassword : ''
+
 publishing {
   publications {
     maven(MavenPublication) {
@@ -275,16 +279,17 @@ publishing {
       from components.java
     }
   }
+
   repositories {
     maven {
       if(project.version.endsWith('-SNAPSHOT')) {
-        url 'http://localhost:8082/nexus/content/repositories/snapshots'
+        url repoUrlStr + 'snapshots'
       } else {
-        url 'http://localhost:8082/nexus/content/repositories/releases'
+        url repoUrlStr + 'releases'
       }
       credentials {
-        username hasProperty('repoUser') ? repoUser : ''
-        password hasProperty('repoPassword') ? repoPassword : ''
+        username repoUserStr
+        password repoPasswordStr
       }
       authentication {
         basic(BasicAuthentication)
