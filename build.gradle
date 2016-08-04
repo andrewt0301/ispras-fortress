@@ -282,9 +282,7 @@ publishing {
         classifier = "sources"
       }
 
-      artifact(javadocJar) {
-        classifier = "javadoc"
-      }
+      artifact(distTar)
     }
   }
 
