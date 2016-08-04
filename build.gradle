@@ -277,6 +277,14 @@ publishing {
       artifactId projectName
       version project.version
       from components.java
+
+      artifact (sourcesJar) {
+        classifier = 'src'
+      }
+
+      artifact (javadocJar) {
+        classifier = 'javadoc'
+      }
     }
   }
 
