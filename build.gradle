@@ -270,12 +270,13 @@ def repoUrlStr = 'http://forge.ispras.ru:8082/nexus/content/repositories/'
 def repoUserStr = hasProperty('repoUser') ? repoUser : ''
 def repoPasswordStr = hasProperty('repoPassword') ? repoPassword : ''
 
-print '*********AUTHORIZATION INFO: '
-print repoUserStr
-print ':'
-print repoPasswordStr
-print ':'
-print ${System.env.ANDREWT_PASSWORD}
+println '*********AUTHORIZATION INFO*********'
+println 'User: ' + repoUserStr
+println 'Password: ' + repoPasswordStr
+println '************************************'
+print   'Password Env: '
+println "$System.env.ANDREWT_PASSWORD"
+println '************************************'
 
 publishing {
   publications {
