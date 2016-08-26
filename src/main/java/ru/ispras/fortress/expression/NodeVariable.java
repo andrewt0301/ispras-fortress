@@ -58,6 +58,12 @@ public final class NodeVariable extends Node {
     return new NodeVariable(name, DataType.BIT_VECTOR(size));
   }
 
+  /** Creates a map-based variable. */
+  public static NodeVariable newMap(
+      final String name, final DataType keyType, final DataType valueType) {
+    return new NodeVariable(name, DataType.MAP(keyType, valueType));
+  }
+
   private final Variable variable;
 
   /**
