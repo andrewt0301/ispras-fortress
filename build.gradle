@@ -66,6 +66,7 @@ uploadArchives {
 
 release {
   failOnCommitNeeded = false
+  failOnUnversionedFiles = false
 
   versionPatterns = [
     // Increments build number: "0.2.5-alpha-150428" => "0.2.6-alpha-150428"
