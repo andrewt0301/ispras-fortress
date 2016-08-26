@@ -12,6 +12,15 @@
  (like Yices, Z3, CVC4, etc.)
 
 --------------------------------------------------------------------------------
+ 2016/08/26 Fortress 0.4.20 beta
+
+ The new build contains the following changes:
+
+ - New NodeVariable methods: newInteger, newReal, newString, newBoolean,
+   newUnknown, newBitVector and newMap
+ - New ExprUtils method: isOperation that takes multiple operation identifiers
+
+--------------------------------------------------------------------------------
  2016/05/27 Fortress 0.4.19 beta
 
  The new build contains the following changes:
@@ -22,7 +31,7 @@
  - New BitVector method: repeat
  - New ExprUtils methods: isOperation, isValue, isVariable
  - Several bug fixes and code improvements
- 
+
  --------------------------------------------------------------------------------
  2016/02/05 Fortress 0.4.18 beta
 
