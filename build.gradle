@@ -239,6 +239,7 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 
   from(files { projectDir.listFiles() }.filter { File file -> file.isFile() ? file : null }) {
     into(projectName)
+    exclude('gradle-local.properties')
   }
 }
 
