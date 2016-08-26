@@ -248,6 +248,7 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 
 tasks.withType(Tar) {
   compression = Compression.GZIP
+  extension = 'tar.gz'
 }
 
 distributions {
