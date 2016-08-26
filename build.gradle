@@ -246,6 +246,10 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
   from javadoc.destinationDir
 }
 
+tasks.withType(Tar){
+  compression = Compression.GZIP
+}
+
 distributions {
   main {
     baseName = projectName
