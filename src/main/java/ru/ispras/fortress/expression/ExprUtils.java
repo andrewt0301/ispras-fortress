@@ -21,6 +21,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -111,20 +112,47 @@ public final class ExprUtils {
   }
 
   /**
-   * Checks whether the specified expression is represented by a specific operation.
+   * Checks whether the expression is represented by the specified operation.
    * 
    * @param expr Expression to be checked.
    * @param opId Operation identifier.
    * @return {@code true} if the expression is represented by the specified operation
    *         or {@code false} otherwise.
    * 
-   * @throws IllegalArgumentException if one of the parameters is {@code null}.
+   * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
   public static <T extends Enum<? extends T>> boolean isOperation(final Node expr, final T opId) {
     InvariantChecks.checkNotNull(expr);
     InvariantChecks.checkNotNull(opId);
     return Node.Kind.OPERATION == expr.getKind() &&
            ((NodeOperation) expr).getOperationId() == opId;
+  }
+
+  /**
+   * Checks whether the expression is represented by one of the specified operations.
+   * 
+   * @param expr Expression to be checked.
+   * @param opIds List of operation identifiers.
+   * @return {@code true} if the expression is represented by one of the specified operations
+   *         or {@code false} otherwise.
+   * 
+   * @throws IllegalArgumentException if any of the parameters is {@code null}; if the list of
+   *         operation identifiers is empty.
+   */
+  public static <T extends Enum<? extends T>> boolean isOperation(final Node expr, final List<T> opIds) {
+    InvariantChecks.checkNotNull(expr);
+    InvariantChecks.checkNotEmpty(opIds);
+
+    if (Node.Kind.OPERATION == expr.getKind()) {
+      final Enum<?> exprOpId = ((NodeOperation) expr).getOperationId();
+      for (final T opId : opIds) {
+        if (exprOpId == opId) {
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 
   /**
