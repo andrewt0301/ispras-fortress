@@ -28,6 +28,36 @@ import ru.ispras.fortress.data.Variable;
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 public final class NodeVariable extends Node {
+  /** Creates a new integer variable. */
+  public static NodeVariable newInteger(final String name) {
+    return new NodeVariable(name, DataType.INTEGER);
+  }
+
+  /** Creates a new real variable. */
+  public static NodeVariable newReal(final String name) {
+    return new NodeVariable(name, DataType.REAL);
+  }
+
+  /** Creates a new string variable. */
+  public static NodeVariable newString(final String name) {
+    return new NodeVariable(name, DataType.STRING);
+  }
+
+  /** Creates a new boolean variable. */
+  public static NodeVariable newBoolean(final String name) {
+    return new NodeVariable(name, DataType.BOOLEAN);
+  }
+
+  /** Creates a new variable of unknown type. */
+  public static NodeVariable newUnknown(final String name) {
+    return new NodeVariable(name, DataType.UNKNOWN);
+  }
+
+  /** Creates a new bit vector variable. */
+  public static NodeVariable newBitVector(final String name, final int size) {
+    return new NodeVariable(name, DataType.BIT_VECTOR(size));
+  }
+
   private final Variable variable;
 
   /**
