@@ -1,11 +1,11 @@
 /*
  * Copyright 2012-2015 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -16,7 +16,9 @@ package ru.ispras.fortress.expression;
 
 import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
+import java.util.Collection;
 import java.util.EnumSet;
+import java.util.LinkedList;
 import java.util.Set;
 
 import ru.ispras.fortress.data.DataType;
@@ -24,7 +26,7 @@ import ru.ispras.fortress.data.DataType;
 /**
  * The StandardOperation.java enumeration contains identifiers that specify particular operations
  * used in expressions.
- * 
+ *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 public enum StandardOperation implements TypeRule {
@@ -33,216 +35,216 @@ public enum StandardOperation implements TypeRule {
    */
 
   /** Group: Logic, Operation: Equality */
-  EQ(EnumSet.of(Family.LOGIC, Family.BV, Family.ARRAY), TypeRules.BOOLEAN),
+  EQ(EnumSet.of(Family.LOGIC, Family.BV, Family.ARRAY), TypeRules.BOOLEAN, OperandTypes.SAME),
 
   /** Group: Logic, Operation: Not Equal */
-  NOTEQ(EnumSet.of(Family.LOGIC, Family.BV, Family.ARRAY), TypeRules.BOOLEAN),
+  NOTEQ(EnumSet.of(Family.LOGIC, Family.BV, Family.ARRAY), TypeRules.BOOLEAN, OperandTypes.SAME),
 
   /** Group: Logic, Operation: Case equality */
-  EQCASE(EnumSet.of(Family.LOGIC, Family.BV, Family.ARRAY), TypeRules.BOOLEAN),
+  EQCASE(EnumSet.of(Family.LOGIC, Family.BV, Family.ARRAY), TypeRules.BOOLEAN, OperandTypes.SAME),
 
   /** Group: Logic, Operation: Case not equality */
-  NOTEQCASE(EnumSet.of(Family.LOGIC, Family.BV, Family.ARRAY), TypeRules.BOOLEAN),
+  NOTEQCASE(EnumSet.of(Family.LOGIC, Family.BV, Family.ARRAY), TypeRules.BOOLEAN, OperandTypes.SAME),
 
   /** Group: Logic, Operation: AND */
-  AND(Family.LOGIC, TypeRules.BOOLEAN),
+  AND(Family.LOGIC, TypeRules.BOOLEAN, OperandTypes.BOOL),
 
   /** Group: Logic, Operation: OR */
-  OR(Family.LOGIC, TypeRules.BOOLEAN),
+  OR(Family.LOGIC, TypeRules.BOOLEAN, OperandTypes.BOOL),
 
   /** Group: Logic, Operation: NOT */
-  NOT(Family.LOGIC, TypeRules.BOOLEAN),
+  NOT(Family.LOGIC, TypeRules.BOOLEAN, OperandTypes.BOOL),
 
   /** Group: Logic, Operation: XOR */
-  XOR(Family.LOGIC, TypeRules.BOOLEAN),
+  XOR(Family.LOGIC, TypeRules.BOOLEAN, OperandTypes.BOOL),
 
   /** Group: Logic, Operation: Implication */
-  IMPL(Family.LOGIC, TypeRules.BOOLEAN),
+  IMPL(Family.LOGIC, TypeRules.BOOLEAN, OperandTypes.BOOL),
 
   /** Group: Logic, Operation: Conditional expression aka if-then-else */
-  ITE(Family.LOGIC, TypeRules.ITE),
+  ITE(Family.LOGIC, TypeRules.ITE, OperandTypes.ITE),
 
   /**
    * The items below belong to the "Logic Arithmetic" group.
    */
 
   /** Group: Logic, Operation: Unary minus */
-  MINUS(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG),
+  MINUS(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG, OperandTypes.LOGIC),
 
   /** Group: Logic, Operation: Unary plus */
-  PLUS(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG),
+  PLUS(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG, OperandTypes.LOGIC),
 
   /** Group: Logic, Operation: Addition */
-  ADD(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG),
+  ADD(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG, OperandTypes.SAME_LOGIC),
 
   /** Group: Logic, Operation: Subtraction */
-  SUB(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG),
+  SUB(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG, OperandTypes.SAME_LOGIC),
 
   /** Group: Logic, Operation: Division */
-  DIV(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG),
+  DIV(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG, OperandTypes.SAME_LOGIC),
 
   /** Group: Logic, Operation: Multiplication */
-  MUL(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG),
+  MUL(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG, OperandTypes.INT),
 
   /** Group: Logic, Operation: Remainder */
-  REM(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG),
+  REM(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG, OperandTypes.INT),
 
   /** Group: Logic, Operation: Modulo */
-  MOD(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG),
+  MOD(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG, OperandTypes.INT),
 
   /** Group: Logic, Operation: Less */
-  LESS(Family.LOGIC, TypeRules.BOOLEAN),
+  LESS(Family.LOGIC, TypeRules.BOOLEAN, OperandTypes.SAME_LOGIC),
 
   /** Group: Logic, Operation: Less or equal */
-  LESSEQ(Family.LOGIC, TypeRules.BOOLEAN),
+  LESSEQ(Family.LOGIC, TypeRules.BOOLEAN, OperandTypes.SAME_LOGIC),
 
   /** Group: Logic, Operation: Greater */
-  GREATER(Family.LOGIC, TypeRules.BOOLEAN),
+  GREATER(Family.LOGIC, TypeRules.BOOLEAN, OperandTypes.SAME_LOGIC),
 
   /** Group: Logic, Operation: Greater or equal */
-  GREATEREQ(Family.LOGIC, TypeRules.BOOLEAN),
+  GREATEREQ(Family.LOGIC, TypeRules.BOOLEAN, OperandTypes.SAME_LOGIC),
 
   /** Group: Logic, Operation: Power */
-  POWER(Family.LOGIC, TypeRules.FIRST_NUM_ARG),
+  POWER(Family.LOGIC, TypeRules.FIRST_NUM_ARG, OperandTypes.INT),
 
   /**
    * The items below belong to the "Logic Arithmetic (Additional)" group.
    */
 
   /** Group: Logic, Operation: Absolute value */
-  ABS(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG),
+  ABS(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG, OperandTypes.LOGIC),
 
   /** Group: Logic, Operation: Minimum */
-  MIN(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG),
+  MIN(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG, OperandTypes.SAME),
 
   /** Group: Logic, Operation: Maximum */
-  MAX(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG),
+  MAX(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG, OperandTypes.SAME),
 
   /**
    * The items below belong to the "Basic Bitvector Arithmetic" group.
    */
 
   /** Group: Bitvector, Operation: Addition */
-  BVADD(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG),
+  BVADD(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG, OperandTypes.SAME_BV),
 
   /** Group: Bitvector, Operation: Subtraction */
-  BVSUB(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG),
+  BVSUB(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG, OperandTypes.SAME_BV),
 
   /** Group: Bitvector, Operation: Unary minus */
-  BVNEG(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG),
+  BVNEG(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG, OperandTypes.SAME_BV),
 
   /** Group: Bitvector, Operation: Multiplication */
-  BVMUL(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG),
+  BVMUL(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG, OperandTypes.SAME_BV),
 
   /** Group: Bitvector, Operation: Unsigned division */
-  BVUDIV(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG),
+  BVUDIV(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG, OperandTypes.SAME_BV),
 
   /** Group: Bitvector, Operation: Signed division */
-  BVSDIV(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG),
+  BVSDIV(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG, OperandTypes.SAME_BV),
 
   /** Group: Bitvector, Operation: Unsigned remainder */
-  BVUREM(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG),
+  BVUREM(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG, OperandTypes.SAME_BV),
 
   /** Group: Bitvector, Operation: Signed remainder */
-  BVSREM(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG),
+  BVSREM(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG, OperandTypes.SAME_BV),
 
   /** Group: Bitvector, Operation: Signed modulo */
-  BVSMOD(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG),
+  BVSMOD(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG, OperandTypes.SAME_BV),
 
   /** Group: Bitvector, Operation: Logical shift left */
-  BVLSHL(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG),
+  BVLSHL(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG, OperandTypes.SAME_BV),
 
   /** Group: Bitvector, Operation: Arithmetical shift left */
-  BVASHL(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG),
+  BVASHL(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG, OperandTypes.SAME_BV),
 
   /** Group: Bitvector, Operation: Unsigned (BitVectorOperational) shift right */
-  BVLSHR(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG),
+  BVLSHR(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG, OperandTypes.SAME_BV),
 
   /** Group: Bitvector, Operation: Signed (arithmetical) shift right */
-  BVASHR(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG),
+  BVASHR(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG, OperandTypes.SAME_BV),
 
   /** Group: Bitvector, Operation: Concatenation */
-  BVCONCAT(Family.BV, TypeRules.BVCONCAT),
+  BVCONCAT(Family.BV, TypeRules.BVCONCAT, OperandTypes.BV),
 
   /** Group: Bitvector, Operation: Replication (concatenation of several copies of bitvector) */
-  BVREPEAT(Family.BV, TypeRules.BVREPEAT, 1),
+  BVREPEAT(Family.BV, TypeRules.BVREPEAT, 1, OperandTypes.ONE_INT_PARAM_BV),
 
   /** Group: Bitvector, Operation: Rotate left */
-  BVROL(Family.BV, TypeRules.SECOND_VB_ARG, 1),
+  BVROL(Family.BV, TypeRules.SECOND_VB_ARG, 1, OperandTypes.ONE_INT_PARAM_BV),
 
   /** Group: Bitvector, Operation: Rotate right */
-  BVROR(Family.BV, TypeRules.SECOND_VB_ARG, 1),
+  BVROR(Family.BV, TypeRules.SECOND_VB_ARG, 1, OperandTypes.ONE_INT_PARAM_BV),
 
   /** Group: Bitvector, Operation: Extension by zeros */
-  BVZEROEXT(Family.BV, TypeRules.BVEXTEND, 1),
+  BVZEROEXT(Family.BV, TypeRules.BVEXTEND, 1, OperandTypes.ONE_INT_PARAM_BV),
 
   /** Group: Bitvector, Operation: Extension to the signed equivalent */
-  BVSIGNEXT(Family.BV, TypeRules.BVEXTEND, 1),
+  BVSIGNEXT(Family.BV, TypeRules.BVEXTEND, 1, OperandTypes.ONE_INT_PARAM_BV),
 
   /** Group: Bitvector, Operation: Extraction of subvector */
-  BVEXTRACT(Family.BV, TypeRules.BVEXTRACT, 2),
+  BVEXTRACT(Family.BV, TypeRules.BVEXTRACT, 2, OperandTypes.TWO_INT_PARAM_BV),
 
   /**
    * The items below belong to the "Bitwise Operations" group.
    */
 
   /** Group: Bitvector, Operation: Bitwise OR */
-  BVOR(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG),
+  BVOR(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG, OperandTypes.SAME_BV),
 
   /** Group: Bitvector, Operation: Bitwise XOR */
-  BVXOR(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG),
+  BVXOR(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG, OperandTypes.SAME_BV),
 
   /** Group: Bitvector, Operation: Bitwise AND */
-  BVAND(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG),
+  BVAND(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG, OperandTypes.SAME_BV),
 
   /** Group: Bitvector, Operation: Bitwise NOT */
-  BVNOT(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG),
+  BVNOT(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG, OperandTypes.SAME_BV),
 
   /** Group: Bitvector, Operation: Bitwise NAND */
-  BVNAND(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG),
+  BVNAND(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG, OperandTypes.SAME_BV),
 
   /** Group: Bitvector, Operation: Bitwise NOR */
-  BVNOR(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG),
+  BVNOR(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG, OperandTypes.SAME_BV),
 
   /** Group: Bitvector, Operation: Bitwise XNOR */
-  BVXNOR(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG),
+  BVXNOR(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG, OperandTypes.SAME_BV),
 
   /**
    * The items below belong to the "Predicates over Bitvectors" group.
    */
 
   /** Group: Bitvector, Operation: Unsigned less or equal */
-  BVULE(Family.BV, TypeRules.BOOLEAN),
+  BVULE(Family.BV, TypeRules.BOOLEAN, OperandTypes.SAME_BV),
 
   /** Group: Bitvector, Operation: Unsigned less than */
-  BVULT(Family.BV, TypeRules.BOOLEAN),
+  BVULT(Family.BV, TypeRules.BOOLEAN, OperandTypes.SAME_BV),
 
   /** Group: Bitvector, Operation: Unsigned greater or equal */
-  BVUGE(Family.BV, TypeRules.BOOLEAN),
+  BVUGE(Family.BV, TypeRules.BOOLEAN, OperandTypes.SAME_BV),
 
   /** Group: Bitvector, Operation: Unsigned greater than */
-  BVUGT(Family.BV, TypeRules.BOOLEAN),
+  BVUGT(Family.BV, TypeRules.BOOLEAN, OperandTypes.SAME_BV),
 
   /** Group: Bitvector, Operation: Signed less or equal */
-  BVSLE(Family.BV, TypeRules.BOOLEAN),
+  BVSLE(Family.BV, TypeRules.BOOLEAN, OperandTypes.SAME_BV),
 
   /** Group: Bitvector, Operation: Signed less than */
-  BVSLT(Family.BV, TypeRules.BOOLEAN),
+  BVSLT(Family.BV, TypeRules.BOOLEAN, OperandTypes.SAME_BV),
 
   /** Group: Bitvector, Operation: Signed greater or equal */
-  BVSGE(Family.BV, TypeRules.BOOLEAN),
+  BVSGE(Family.BV, TypeRules.BOOLEAN, OperandTypes.SAME_BV),
 
   /** Group: Bitvector, Operation: Signed greater than */
-  BVSGT(Family.BV, TypeRules.BOOLEAN),
+  BVSGT(Family.BV, TypeRules.BOOLEAN, OperandTypes.SAME_BV),
 
   /**
    * The items below belong to the "Bit Vector Reduction Operations" group.
-   * 
+   *
    * Operation semantics:
-   * 
+   *
    * <pre>
    * From IEEE Standard for Verilog Hardware Description Language:
-   * 
+   *
    * The unary reduction operators shall perform a bitwise operation on a single operand
    * to produce a single-bit result. For reduction and, reduction or, and reduction xor operators,
    * the first step of the operation shall apply the operator between the first bit of the operand
@@ -250,75 +252,95 @@ public enum StandardOperation implements TypeRule {
    * of the prior step and the next bit of the operand using the same logic table. For reduction nand,
    * reduction nor, and reduction xnor operators, the result shall be computed by inverting the result
    * of the reduction and, reduction or, and reduction xor operation, respectively.
-   * 
+   *
    * See the manual for details.
    * </pre>
    */
 
   /** Group: Bit Vector Reduction, Operation: Reduction AND (&) */
-  BVANDR(Family.BV, TypeRules.BIT_BOOLEAN),
+  BVANDR(Family.BV, TypeRules.BIT_BOOLEAN, OperandTypes.SAME_BV),
 
   /** Group: Bit Vector Reduction, Operation: Reduction NAND (~&) */
-  BVNANDR(Family.BV, TypeRules.BIT_BOOLEAN),
+  BVNANDR(Family.BV, TypeRules.BIT_BOOLEAN, OperandTypes.SAME_BV),
 
   /** Group: Bit Vector Reduction, Operation: Reduction OR (|) */
-  BVORR(Family.BV, TypeRules.BIT_BOOLEAN),
+  BVORR(Family.BV, TypeRules.BIT_BOOLEAN, OperandTypes.SAME_BV),
 
   /** Group: Bit Vector Reduction, Operation: Reduction NOR (~|) */
-  BVNORR(Family.BV, TypeRules.BIT_BOOLEAN),
+  BVNORR(Family.BV, TypeRules.BIT_BOOLEAN, OperandTypes.SAME_BV),
 
   /** Group: Bit Vector Reduction, Operation: Reduction XOR (^) */
-  BVXORR(Family.BV, TypeRules.BIT_BOOLEAN),
+  BVXORR(Family.BV, TypeRules.BIT_BOOLEAN, OperandTypes.SAME_BV),
 
   /** Group: Bit Vector Reduction, Operation: Reduction XNOR (~^) */
-  BVXNORR(Family.BV, TypeRules.BIT_BOOLEAN),
+  BVXNORR(Family.BV, TypeRules.BIT_BOOLEAN, OperandTypes.SAME_BV),
 
   /**
    * The items below belong to the "Bit Vector Cast Operations" group.
    */
 
   /** Group: Bit Vector Cast, Operation: Cast to boolean */
-  BV2BOOL(Family.BV, TypeRules.BOOLEAN),
+  BV2BOOL(Family.BV, TypeRules.BOOLEAN, OperandTypes.SAME_BV),
 
   /** Group: Bit Vector Cast, Operation: Cast boolean to bit vector of size 1 */
-  BOOL2BV(Family.BV, TypeRules.BIT_BOOLEAN),
+  BOOL2BV(Family.BV, TypeRules.BIT_BOOLEAN, OperandTypes.BOOL),
 
   /**
    * The items below belong to the "Array Operations" group.
    */
 
   /** Group: Array, Operation: Get stored value */
-  SELECT(Family.ARRAY, TypeRules.SELECT),
+  SELECT(Family.ARRAY, TypeRules.SELECT, OperandTypes.SELECT),
 
   /** Group: Array, Operation: Store value */
-  STORE(Family.ARRAY, TypeRules.STORE);
+  STORE(Family.ARRAY, TypeRules.STORE, OperandTypes.STORE);
 
   /**
-   * Describes the family of operands the operation manipulates with. 
+   * Describes the family of operands the operation manipulates with.
    */
-  public static enum Family {
-    LOGIC, BV, ARRAY;
+  public enum Family {
+    LOGIC, BV, ARRAY
   }
 
   private final Set<Family> family;
   private final TypeRule typeRule;
+  private final OperandTypes operandTypes;
   private final int numParams;
 
-  private StandardOperation(final Family family, final TypeRule typeRule) {
-    this(EnumSet.of(family), typeRule);
+  StandardOperation(
+      final Family family,
+      final TypeRule typeRule,
+      final OperandTypes operandTypes) {
+
+    this(EnumSet.of(family), typeRule, operandTypes);
   }
 
-  private StandardOperation(final Set<Family> family, final TypeRule typeRule) {
-    this(family, typeRule, 0);
+  StandardOperation(
+      final Set<Family> family,
+      final TypeRule typeRule,
+      final OperandTypes operandTypes) {
+
+    this(family, typeRule, 0, operandTypes);
   }
 
-  private StandardOperation(final Family family, final TypeRule typeRule, final int numParams) {
-    this(EnumSet.of(family), typeRule, numParams);
+  StandardOperation(
+      final Family family,
+      final TypeRule typeRule,
+      final int numParams,
+      final OperandTypes operandTypes) {
+
+    this(EnumSet.of(family), typeRule, numParams, operandTypes);
   }
 
-  private StandardOperation(final Set<Family> family, final TypeRule typeRule, final int numParams) {
+  StandardOperation(
+      final Set<Family> family,
+      final TypeRule typeRule,
+      final int numParams,
+      final OperandTypes operandTypes) {
+
     this.family = family;
     this.typeRule = typeRule;
+    this.operandTypes = operandTypes;
     this.numParams = numParams;
   }
 
@@ -335,11 +357,97 @@ public enum StandardOperation implements TypeRule {
   }
 
   public static boolean isFamily(final Enum<?> id, final Family family) {
-    if (!(id instanceof StandardOperation)) {
-      return false;
+    return id instanceof StandardOperation && ((StandardOperation) id).family.contains(family);
+  }
+
+  /**
+   * Identifiers of operations defined on same type operands.
+   *
+   * @return Identifiers of operations are defined on operands of same type.
+   */
+  public static Collection<Enum<?>> getSameOperandOperations() {
+    return getOperations(OperandTypes.SAME);
+  }
+
+  /**
+   * Identifiers of operations for operands of same bit vector type.
+   *
+   * @return Identifiers of operations are defined on operands of same
+   *         bit vector types.
+   */
+  public static Collection<Enum<?>> getSameBvOperandOperations() {
+    return getOperations(OperandTypes.SAME_BV);
+  }
+
+  /**
+   * Identifiers of operations for operands of logic types.
+   *
+   * @return Identifiers of operations are defined on operands of logic types.
+   */
+  public static Collection<Enum<?>> getLogicOperandOperations() {
+    return getOperations(OperandTypes.LOGIC);
+  }
+
+  /**
+   * Identifiers of operations for operands of integer type.
+   *
+   * @return Identifiers of operations are defined on operands of integer type.
+   */
+  public static Collection<Enum<?>> getIntOperandOperations() {
+    return getOperations(OperandTypes.INT);
+  }
+
+  /**
+   * Identifiers of operations for operands of boolean type.
+   *
+   * @return Identifiers of operations are defined on operands of boolean type.
+   */
+  public static Collection<Enum<?>> getBoolOperandOperations() {
+    return getOperations(OperandTypes.BOOL);
+  }
+
+  /**
+   * Identifiers of operations for operands of bit vector types.
+   *
+   * @return Identifiers of operations are defined on operands of bit vector types.
+   */
+  public static Collection<Enum<?>> getBvOperandOperations() {
+    return getOperations(OperandTypes.BV);
+  }
+
+  /**
+   * Identifiers of operations for operands of following types -
+   * one integer parameter and one bit vector operand.
+   *
+   * @return Identifiers of operations are defined on operands of following types -
+   *         one integer parameter and one bit vector operand.
+   */
+  public static Collection<Enum<?>> getOneIntParamBvOperandOperations() {
+    return getOperations(OperandTypes.ONE_INT_PARAM_BV);
+  }
+
+  /**
+   * Identifiers of operations for operands of following types -
+   * two integer parameters and one bit vector operand.
+   *
+   * @return Identifiers of operations are defined on operands of following types -
+   *         two integer parameters and one bit vector operand.
+   */
+  public static Collection<Enum<?>> getTwoIntParamBvOperandOperations() {
+    return getOperations(OperandTypes.TWO_INT_PARAM_BV);
+  }
+
+  private static Collection<Enum<?>> getOperations(final Enum<?> operandTypesId) {
+    final Collection<Enum<?>> operations = new LinkedList<>();
+
+    for (int i = 0; i < StandardOperation.values().length; i++) {
+      StandardOperation operation = StandardOperation.values()[i];
+      if (operation.operandTypes == operandTypesId) {
+        operations.add(operation);
+      }
     }
 
-    return ((StandardOperation) id).family.contains(family);
+    return operations;
   }
 
   @Override
