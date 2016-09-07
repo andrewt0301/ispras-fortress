@@ -62,18 +62,15 @@ public class ConstCastTestCase extends GenericSolverTestBase {
       builder.setKind(ConstraintKind.FORMULA_BASED);
       builder.setDescription("ConstCast constraint");
 
-      final NodeVariable x = new NodeVariable(builder.addVariable("x", intType));
+/*      final NodeVariable x = new NodeVariable(builder.addVariable("x", intType));*/
 
       final NodeVariable y = new NodeVariable(builder.addVariable("y", intType));
       final NodeVariable z = new NodeVariable(builder.addVariable("z", intType));
-      /*final NodeVariable v = new NodeVariable(builder.addVariable("v", bitVector3));
-      final NodeVariable w = new NodeVariable(builder.addVariable("w", boolType));
-      final NodeVariable t = new NodeVariable(builder.addVariable("t", bitVector3));*/
 
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(castConstants(new NodeOperation(StandardOperation.EQ, x, bv7)));
+      /*formulas.add(castConstants(new NodeOperation(StandardOperation.EQ, x, bv7)));*/
       formulas.add(
           castConstants(
               new NodeOperation(
@@ -87,7 +84,7 @@ public class ConstCastTestCase extends GenericSolverTestBase {
     public Iterable<Variable> getExpectedVariables() {
 
       final List<Variable> result = new ArrayList<>();
-      result.add(new Variable("x", intType.valueOf("7", 10)));
+      /*result.add(new Variable("x", intType.valueOf("7", 10)));*/
       result.add(new Variable("y", intType.valueOf("0", 10)));
       result.add(new Variable("z", intType.valueOf("0", 10)));
       return result;
