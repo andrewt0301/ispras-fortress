@@ -18,6 +18,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.SequenceInputStream;
 
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
@@ -46,9 +47,11 @@ public final class Cvc4Solver extends SmtTextSolver {
   @Override
   public Reader invokeSolver(final String path) throws IOException {
     final Process process =
-        new ProcessBuilder(getSolverPath(), "-m", path).start();
+        new ProcessBuilder(getSolverPath(), "-mq", path).start();
 
-    return new BufferedReader(new InputStreamReader(process.getInputStream()));
+    return new BufferedReader(
+      new InputStreamReader(
+        new SequenceInputStream(process.getInputStream(), process.getErrorStream())));
   }
 
   public static Function customRem() {
