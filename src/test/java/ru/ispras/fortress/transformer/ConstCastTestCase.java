@@ -36,6 +36,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * Constant casting methods test case.
  * @author <a href="mailto:smolov@ispras.ru">Sergey Smolov</a>
  */
 public class ConstCastTestCase extends GenericSolverTestBase {
