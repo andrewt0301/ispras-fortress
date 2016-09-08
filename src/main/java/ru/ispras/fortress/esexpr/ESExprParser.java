@@ -15,6 +15,7 @@
 package ru.ispras.fortress.esexpr;
 
 import java.io.IOException;
+import java.io.BufferedReader;
 import java.io.Reader;
 import java.io.StreamTokenizer;
 import java.io.StringReader;
@@ -45,7 +46,18 @@ public final class ESExprParser {
   public ESExprParser(final Reader reader) {
     InvariantChecks.checkNotNull(reader);
 
-    this.tokenizer = setUpTokenizer(reader);
+    final BufferedReader buf = new BufferedReader(reader);
+    final StringBuilder txt = new StringBuilder();
+    try {
+      for (String line = buf.readLine(); line != null; line = buf.readLine()) {
+        txt.append(line);
+        txt.append(' ');
+      }
+    } catch (final IOException e) {
+      txt.append(String.format("(error \"%s\")", e.getMessage()));
+    }
+
+    this.tokenizer = setUpTokenizer(new StringReader(txt.toString()));
     this.stack = new ArrayDeque<>();
   }
 
