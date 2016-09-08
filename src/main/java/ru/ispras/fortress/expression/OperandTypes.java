@@ -14,8 +14,8 @@ enum OperandTypes {
   /* Operands are of same bit vector type. */
   SAME_BV,
 
-  /* Operands are of same logic type. */
-  SAME_LOGIC,
+  /* Operands are of same logic numeric type (integer or real). */
+  LOGIC_NUMERIC,
 
   /* Operands are of logic type. */
   LOGIC,

@@ -117,6 +117,8 @@ final class ConstCastRuleSet {
   private static Collection<Enum<?>> BV_TYPES = StandardOperation.getBvOperandOperations();
 
   private static Collection<Enum<?>> LOGIC = StandardOperation.getLogicOperandOperations();
+  private static Collection<Enum<?>> SAME_LOGIC_NUM =
+      StandardOperation.getSameLogicNumOperandOperations();
   private static Collection<Enum<?>> ONE_INT_PARAM_BV =
       StandardOperation.getOneIntParamBvOperandOperations();
   private static Collection<Enum<?>> TWO_INT_PARAM_BV =
@@ -134,7 +136,7 @@ final class ConstCastRuleSet {
       public boolean isApplicable(NodeOperation node) {
 
         this.oldNewMap = getWrongSameOperands(node);
-        return SAME_TYPE.contains(this.operationId);
+        return SAME_TYPE.contains(this.operationId) || SAME_LOGIC_NUM.contains(this.operationId);
       }
     };
 
@@ -286,6 +288,7 @@ final class ConstCastRuleSet {
     /* Register all rules. */
 
     addRules(transformer, SAME_TYPE, sameTypeOperands);
+    addRules(transformer, SAME_LOGIC_NUM, sameTypeOperands);
     addRules(transformer, LOGIC, logicOperands);
     addRules(transformer, INT, intOperands);
     addRules(transformer, SAME_BV, sameBvOperands);

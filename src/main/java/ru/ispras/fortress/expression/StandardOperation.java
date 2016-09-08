@@ -75,13 +75,13 @@ public enum StandardOperation implements TypeRule {
   PLUS(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG, OperandTypes.LOGIC),
 
   /** Group: Logic, Operation: Addition */
-  ADD(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG, OperandTypes.SAME_LOGIC),
+  ADD(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG, OperandTypes.LOGIC_NUMERIC),
 
   /** Group: Logic, Operation: Subtraction */
-  SUB(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG, OperandTypes.SAME_LOGIC),
+  SUB(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG, OperandTypes.LOGIC_NUMERIC),
 
   /** Group: Logic, Operation: Division */
-  DIV(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG, OperandTypes.SAME_LOGIC),
+  DIV(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG, OperandTypes.LOGIC_NUMERIC),
 
   /** Group: Logic, Operation: Multiplication */
   MUL(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG, OperandTypes.INT),
@@ -93,16 +93,16 @@ public enum StandardOperation implements TypeRule {
   MOD(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG, OperandTypes.INT),
 
   /** Group: Logic, Operation: Less */
-  LESS(Family.LOGIC, TypeRules.BOOLEAN, OperandTypes.SAME_LOGIC),
+  LESS(Family.LOGIC, TypeRules.BOOLEAN, OperandTypes.LOGIC_NUMERIC),
 
   /** Group: Logic, Operation: Less or equal */
-  LESSEQ(Family.LOGIC, TypeRules.BOOLEAN, OperandTypes.SAME_LOGIC),
+  LESSEQ(Family.LOGIC, TypeRules.BOOLEAN, OperandTypes.LOGIC_NUMERIC),
 
   /** Group: Logic, Operation: Greater */
-  GREATER(Family.LOGIC, TypeRules.BOOLEAN, OperandTypes.SAME_LOGIC),
+  GREATER(Family.LOGIC, TypeRules.BOOLEAN, OperandTypes.LOGIC_NUMERIC),
 
   /** Group: Logic, Operation: Greater or equal */
-  GREATEREQ(Family.LOGIC, TypeRules.BOOLEAN, OperandTypes.SAME_LOGIC),
+  GREATEREQ(Family.LOGIC, TypeRules.BOOLEAN, OperandTypes.LOGIC_NUMERIC),
 
   /** Group: Logic, Operation: Power */
   POWER(Family.LOGIC, TypeRules.FIRST_NUM_ARG, OperandTypes.INT),
@@ -389,13 +389,13 @@ public enum StandardOperation implements TypeRule {
   }
 
   /**
-   * Identifiers of operations for operands of same logic type.
+   * Identifiers of operations for operands of logic numeric type.
    *
    * @return Identifiers of operations are defined on operands of same
-   *         logic type.
+   *         logic numeric type.
    */
-  public static Collection<Enum<?>> getSameLogicOperandOperations() {
-    return getOperations(OperandTypes.SAME_LOGIC);
+  public static Collection<Enum<?>> getSameLogicNumOperandOperations() {
+    return getOperations(OperandTypes.LOGIC_NUMERIC);
   }
 
   /**
