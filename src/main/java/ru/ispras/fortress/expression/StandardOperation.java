@@ -389,6 +389,16 @@ public enum StandardOperation implements TypeRule {
   }
 
   /**
+   * Identifiers of operations for operands of same logic type.
+   *
+   * @return Identifiers of operations are defined on operands of same
+   *         logic type.
+   */
+  public static Collection<Enum<?>> getSameLogicOperandOperations() {
+    return getOperations(OperandTypes.SAME_LOGIC);
+  }
+
+  /**
    * Identifiers of operations for operands of integer type.
    *
    * @return Identifiers of operations are defined on operands of integer type.
