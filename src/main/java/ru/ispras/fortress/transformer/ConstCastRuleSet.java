@@ -224,6 +224,8 @@ final class ConstCastRuleSet {
       @Override
       public boolean isApplicable(Node node) {
 
+        this.oldNewMap = new LinkedHashMap<>();
+
         if (!(node instanceof NodeOperation)) {
           return false;
         }
