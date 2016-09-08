@@ -59,7 +59,7 @@ final class ConstCastRuleSet {
   static class OperandTypeMap {
 
     private DataType varType;
-    private Map<DataType, Collection<NodeValue>> typeOperandMap;
+    private Map<DataType, Collection<Node>> typeOperandMap;
 
     public DataType getVarType() {
       return this.varType;
@@ -69,11 +69,11 @@ final class ConstCastRuleSet {
       this.varType = type;
     }
 
-    public Map<DataType, Collection<NodeValue>> getMap() {
+    public Map<DataType, Collection<Node>> getMap() {
       return this.typeOperandMap;
     }
 
-    public void setMap(final Map<DataType, Collection<NodeValue>> map) {
+    public void setMap(final Map<DataType, Collection<Node>> map) {
       this.typeOperandMap = map;
     }
   }
@@ -325,11 +325,13 @@ final class ConstCastRuleSet {
 
     if (!allOperandsOfSameType(opTypeMap)) {
 
-      final Map<DataType, Collection<NodeValue>> typeMap = opTypeMap.getMap();
-      for (final Map.Entry<DataType, Collection<NodeValue>> typeNodes : typeMap.entrySet()) {
+      final Map<DataType, Collection<Node>> typeMap = opTypeMap.getMap();
+      for (final Map.Entry<DataType, Collection<Node>> typeNodes : typeMap.entrySet()) {
         if (typeNodes.getKey() != opTypeMap.getVarType()) {
-          for (final NodeValue typeNode : typeNodes.getValue()) {
-            wrongOpMap.put(typeNode, TypeConversion.coerce(typeNode, opTypeMap.getVarType()));
+          for (final Node typeNode : typeNodes.getValue()) {
+            if (typeNode instanceof NodeValue) {
+              wrongOpMap.put(typeNode, TypeConversion.coerce(typeNode, opTypeMap.getVarType()));
+            }
           }
         }
       }
@@ -347,16 +349,18 @@ final class ConstCastRuleSet {
     if (!allOperandsOfSameType(opTypeMap)) {
 
       final DataType varType = opTypeMap.getVarType();
-      final Map<DataType, Collection<NodeValue>> typeMap = opTypeMap.getMap();
+      final Map<DataType, Collection<Node>> typeMap = opTypeMap.getMap();
 
-      for (final Map.Entry<DataType, Collection<NodeValue>> typeNodes : typeMap.entrySet()) {
+      for (final Map.Entry<DataType, Collection<Node>> typeNodes : typeMap.entrySet()) {
 
         final DataType nodeType = typeNodes.getKey();
 
         if (typeNodes.getKey() != varType || nodeType.getTypeId() != typeId) {
           for (final Node typeNode : typeNodes.getValue()) {
 
-            wrongOpMap.put(typeNode, TypeConversion.coerce(typeNode, varType));
+            if (typeNode instanceof NodeValue) {
+              wrongOpMap.put(typeNode, TypeConversion.coerce(typeNode, varType));
+            }
           }
         }
       }
@@ -369,7 +373,7 @@ final class ConstCastRuleSet {
     final OperandTypeMap operandTypeMap = new OperandTypeMap();
 
     DataType varType = null;
-    final Map<DataType, Collection<NodeValue>> typeMap = new LinkedHashMap<>();
+    final Map<DataType, Collection<Node>> typeMap = new LinkedHashMap<>();
 
     for (final Node operand : operation.getOperands()) {
       final DataType dataType = operand.getDataType();
@@ -377,14 +381,12 @@ final class ConstCastRuleSet {
         varType = dataType;
       }
 
-      if (operand instanceof NodeValue) {
-        if (typeMap.containsKey(dataType)) {
-          typeMap.get(dataType).add((NodeValue) operand);
-        } else {
-          final Collection<NodeValue> nodes = new LinkedList<>();
-          nodes.add((NodeValue) operand);
-          typeMap.put(dataType, nodes);
-        }
+      if (typeMap.containsKey(dataType)) {
+        typeMap.get(dataType).add(operand);
+      } else {
+        final Collection<Node> nodes = new LinkedList<>();
+        nodes.add(operand);
+        typeMap.put(dataType, nodes);
       }
     }
     operandTypeMap.setVarType(varType);
