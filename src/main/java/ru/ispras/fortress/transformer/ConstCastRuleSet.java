@@ -86,7 +86,7 @@ final class ConstCastRuleSet {
     public abstract boolean isApplicable(final NodeOperation operation);
 
     @Override
-    public boolean isApplicable(Node node) {
+    public boolean isApplicable(final Node node) {
 
       if (!(node instanceof NodeOperation)) {
         return false;
@@ -98,7 +98,7 @@ final class ConstCastRuleSet {
     }
 
     @Override
-    public Node apply(Node node) {
+    public Node apply(final Node node) {
 
       final List<Node> casted = new LinkedList<>();
       for (final Node operand : ((NodeOperation) node).getOperands()) {
@@ -133,9 +133,9 @@ final class ConstCastRuleSet {
     final TransformerRule sameTypeOperands = new CastConstRule() {
 
       @Override
-      public boolean isApplicable(NodeOperation node) {
+      public boolean isApplicable(final NodeOperation node) {
 
-        this.oldNewMap = getWrongSameOperands(node);
+        this.oldNewMap = castWrongSameOperands(node);
         return SAME_TYPE.contains(this.operationId) || SAME_LOGIC_NUM.contains(this.operationId);
       }
     };
@@ -143,9 +143,9 @@ final class ConstCastRuleSet {
     final TransformerRule intOperands = new CastConstRule() {
 
       @Override
-      public boolean isApplicable(NodeOperation node) {
+      public boolean isApplicable(final NodeOperation node) {
 
-        this.oldNewMap = getWrongOperands(node, DataType.INTEGER);
+        this.oldNewMap = castWrongOperands(node, DataType.INTEGER);
         return INT.contains(this.operationId);
       }
     };
@@ -153,10 +153,10 @@ final class ConstCastRuleSet {
     final TransformerRule logicOperands = new CastConstRule() {
 
       @Override
-      public boolean isApplicable(NodeOperation node) {
+      public boolean isApplicable(final NodeOperation node) {
 
         /* Cast non-logic constants to integer for clearness. */
-        this.oldNewMap = getWrongOperands(node, DataType.INTEGER);
+        this.oldNewMap = castWrongOperands(node, DataType.INTEGER);
         return LOGIC.contains(this.operationId);
       }
     };
@@ -164,9 +164,9 @@ final class ConstCastRuleSet {
     final TransformerRule sameBvOperands = new CastConstRule() {
 
       @Override
-      public boolean isApplicable(NodeOperation node) {
+      public boolean isApplicable(final NodeOperation node) {
 
-        this.oldNewMap = getWrongOperands(node, DataTypeId.BIT_VECTOR);
+        this.oldNewMap = castWrongOperands(node, DataTypeId.BIT_VECTOR);
         return SAME_BV.contains(this.operationId);
       }
     };
@@ -174,73 +174,73 @@ final class ConstCastRuleSet {
     final TransformerRule boolOperands = new CastConstRule() {
 
       @Override
-      public boolean isApplicable(NodeOperation node) {
+      public boolean isApplicable(final NodeOperation node) {
 
-        this.oldNewMap = getWrongOperands(node, DataType.BOOLEAN);
+        this.oldNewMap = castWrongOperands(node, DataType.BOOLEAN);
         return SAME_BOOL.contains(this.operationId);
       }
     };
 
     final TransformerRule oneIntParamBvOperands = new CastConstRule() {
       @Override
-      public boolean isApplicable(NodeOperation node) {
+      public boolean isApplicable(final NodeOperation node) {
 
-        this.oldNewMap = getWrongParamBvOperands(node, 1);
+        this.oldNewMap = castWrongParamBvOperands(node, 1);
         return ONE_INT_PARAM_BV.contains(this.operationId);
       }
     };
 
     final TransformerRule twoIntParamBvOperands = new CastConstRule() {
       @Override
-      public boolean isApplicable(NodeOperation node) {
+      public boolean isApplicable(final NodeOperation node) {
 
-        this.oldNewMap = getWrongParamBvOperands(node, 2);
+        this.oldNewMap = castWrongParamBvOperands(node, 2);
         return TWO_INT_PARAM_BV.contains(this.operationId);
       }
     };
 
     final TransformerRule selectRule = new CastConstRule() {
       @Override
-      public boolean isApplicable(NodeOperation operation) {
+      public boolean isApplicable(final NodeOperation operation) {
 
-        this.oldNewMap = getWrongArrayOperands(operation);
+        this.oldNewMap = castWrongArrayOperands(operation);
         return StandardOperation.SELECT == this.operationId;
       }
     };
 
     final TransformerRule storeRule = new CastConstRule() {
       @Override
-      public boolean isApplicable(NodeOperation operation) {
+      public boolean isApplicable(final NodeOperation operation) {
 
-        this.oldNewMap = getWrongArrayOperands(operation);
+        this.oldNewMap = castWrongArrayOperands(operation);
         return StandardOperation.STORE == this.operationId;
       }
     };
 
-    final TransformerRule iteRule = new TransformerRule() {
-
-      Map<Node, Node> oldNewMap;
+    final TransformerRule iteRule = new CastConstRule() {
 
       @Override
-      public boolean isApplicable(Node node) {
+      public boolean isApplicable(final NodeOperation node) {
 
-        this.oldNewMap = new LinkedHashMap<>();
+        this.oldNewMap = getIfThenElseWrongCond(node);
 
-        if (!(node instanceof NodeOperation)) {
-          return false;
-        }
+        return ((NodeOperation) node).getOperationId() == StandardOperation.ITE;
+      }
+
+      private Map<Node, Node> getIfThenElseWrongCond(final NodeOperation node) {
+        final Map<Node, Node> map = new LinkedHashMap<>();
 
         DataType varType = null;
         DataType constType = null;
         final Map<DataType, List<Node>> typeMap = new LinkedHashMap<>();
 
-        for (int i = 0; i < ((NodeOperation) node).getOperandCount(); i++) {
+        for (int i = 0; i < node.getOperandCount(); i++) {
 
-          final Node operand = ((NodeOperation) node).getOperand(0);
+          final Node operand = node.getOperand(0);
           final DataType opType = operand.getDataType();
 
           if (i == 0 && !opType.equals(DataType.BOOLEAN) && operand instanceof NodeValue) {
-            this.oldNewMap.put(operand, TypeConversion.coerce(operand, DataType.BOOLEAN));
+            map.put(operand, TypeConversion.coerce(operand, DataType.BOOLEAN));
           } else {
 
             if (typeMap.containsKey(opType)) {
@@ -263,27 +263,9 @@ final class ConstCastRuleSet {
 
           final Node oldOperand = typeMap.get(constType).get(0);
 
-          this.oldNewMap.put(oldOperand, TypeConversion.coerce(oldOperand, varType));
+          map.put(oldOperand, TypeConversion.coerce(oldOperand, varType));
         }
-
-        return ((NodeOperation) node).getOperationId() == StandardOperation.ITE
-            && !this.oldNewMap.isEmpty();
-      }
-
-      @Override
-      public Node apply(Node node) {
-
-        if (!(node instanceof NodeOperation)) {
-          throw new IllegalArgumentException(
-              String.format("Can't apply const casting to node: %s.", node));
-        }
-
-        final List<Node> fixedOps = new LinkedList<>();
-        for (final Node operand : ((NodeOperation) node).getOperands()) {
-          fixedOps.add(this.oldNewMap.containsKey(operand) ? this.oldNewMap.get(operand) : operand);
-        }
-
-        return new NodeOperation(((NodeOperation) node).getOperationId(), fixedOps);
+        return map;
       }
     };
 
@@ -305,7 +287,7 @@ final class ConstCastRuleSet {
     return transformer;
   }
 
-  private static Map<Node, Node> getWrongArrayOperands(final NodeOperation operation) {
+  private static Map<Node, Node> castWrongArrayOperands(final NodeOperation operation) {
 
     final Node index = operation.getOperand(1);
     return index instanceof NodeValue && !index.isType(DataType.INTEGER)
@@ -322,7 +304,7 @@ final class ConstCastRuleSet {
     }
   }
 
-  private static Map<Node, Node> getWrongSameOperands(final NodeOperation node) {
+  private static Map<Node, Node> castWrongSameOperands(final NodeOperation node) {
 
     final Map<Node, Node> wrongOpMap = new LinkedHashMap<>();
 
@@ -344,7 +326,7 @@ final class ConstCastRuleSet {
     return wrongOpMap;
   }
 
-  private static Map<Node, Node> getWrongOperands(
+  private static Map<Node, Node> castWrongOperands(
     final NodeOperation node,
     final DataTypeId typeId) {
 
@@ -400,7 +382,7 @@ final class ConstCastRuleSet {
     return operandTypeMap;
   }
 
-  private static Map<Node, Node> getWrongOperands(
+  private static Map<Node, Node> castWrongOperands(
       final NodeOperation node,
       final DataType dataType) {
 
@@ -420,7 +402,7 @@ final class ConstCastRuleSet {
     return operandTypeMap.getMap().size() == 1;
   }
 
-  private static Map<Node, Node> getWrongParamBvOperands(
+  private static Map<Node, Node> castWrongParamBvOperands(
       final NodeOperation node,
       final int paramNum) {
 
