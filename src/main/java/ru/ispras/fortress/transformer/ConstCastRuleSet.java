@@ -357,8 +357,8 @@ final class ConstCastRuleSet {
   }
 
   private static Map<Node, Node> castWrongOperands(
-    final NodeOperation node,
-    final DataType dataType) {
+      final NodeOperation node,
+      final DataType dataType) {
 
     final Map<Node, Node> wrongOpMap = new LinkedHashMap<>();
 
