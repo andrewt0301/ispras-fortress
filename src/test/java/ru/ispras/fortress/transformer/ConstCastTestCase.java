@@ -31,9 +31,8 @@ import ru.ispras.fortress.solver.constraint.ConstraintKind;
 import ru.ispras.fortress.solver.constraint.Formulas;
 import ru.ispras.fortress.solver.constraint.GenericSolverTestBase;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Constant casting methods test case.
@@ -50,9 +49,14 @@ public class ConstCastTestCase extends GenericSolverTestBase {
     private static final DataType intType = DataType.INTEGER;
     private static final DataType boolType = DataType.BOOLEAN;
     private static final DataType bitVector3 = DataType.BIT_VECTOR(3);
+    private static final DataType bitVector6 = DataType.BIT_VECTOR(6);
 
+    private static final NodeValue boolTrue = NodeValue.newBoolean(true);
+    private static final NodeValue int2 = NodeValue.newInteger(2);
+    private static final NodeValue bv1 = NodeValue.newBitVector(BitVector.valueOf("1", 2, 1));
     private static final NodeValue bv3 = NodeValue.newBitVector(BitVector.valueOf("11", 2, 2));
     private static final NodeValue bv7 = NodeValue.newBitVector(BitVector.valueOf("111", 2, 3));
+    private static final NodeValue bv63 = NodeValue.newBitVector(BitVector.valueOf("111111", 2, 6));
 
     @Override
     public Constraint getConstraint() {
@@ -64,9 +68,14 @@ public class ConstCastTestCase extends GenericSolverTestBase {
       builder.setDescription("ConstCast constraint");
 
       final NodeVariable x = new NodeVariable(builder.addVariable("x", intType));
-
       final NodeVariable y = new NodeVariable(builder.addVariable("y", intType));
       final NodeVariable z = new NodeVariable(builder.addVariable("z", intType));
+      final NodeVariable w = new NodeVariable(builder.addVariable("w", bitVector3));
+      final NodeVariable v = new NodeVariable(builder.addVariable("v", boolType));
+      final NodeVariable u = new NodeVariable(builder.addVariable("u", intType));
+      final NodeVariable t = new NodeVariable(builder.addVariable("t", bitVector6));
+      final NodeVariable s = new NodeVariable(builder.addVariable("s", intType));
+      final NodeVariable r = new NodeVariable(builder.addVariable("r", bitVector3));
 
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
@@ -76,7 +85,33 @@ public class ConstCastTestCase extends GenericSolverTestBase {
           castConstants(
               new NodeOperation(
                   StandardOperation.EQ,
-                  new NodeOperation(StandardOperation.POWER, y, bv3), z)));
+                  new NodeOperation(StandardOperation.REM, y, bv3), z)));
+      formulas.add(
+          castConstants(
+              new NodeOperation(
+                  StandardOperation.EQ,
+                  bv7,
+                  new NodeOperation(StandardOperation.BVADD, w, int2))));
+      formulas.add(castConstants(new NodeOperation(StandardOperation.AND, v, int2)));
+      formulas.add(castConstants(new NodeOperation(StandardOperation.LESS, u, bv3)));
+      formulas.add(
+          castConstants(
+              new NodeOperation(
+                  StandardOperation.EQ,
+                  new NodeOperation(StandardOperation.BVEXTRACT, bv3, int2, t),
+                  boolTrue)));
+      formulas.add(
+          castConstants(
+              new NodeOperation(
+                  StandardOperation.EQ,
+                  int2,
+                  new NodeOperation(StandardOperation.ITE, bv3, s, u))));
+      formulas.add(
+          castConstants(
+              new NodeOperation(
+                  StandardOperation.EQ,
+                  bv63,
+                  new NodeOperation(StandardOperation.BVREPEAT, bv1, r))));
 
       return builder.build();
     }
@@ -84,11 +119,16 @@ public class ConstCastTestCase extends GenericSolverTestBase {
     @Override
     public Iterable<Variable> getExpectedVariables() {
 
-      final List<Variable> result = new ArrayList<>();
-      result.add(new Variable("x", intType.valueOf("7", 10)));
-      result.add(new Variable("y", intType.valueOf("0", 10)));
-      result.add(new Variable("z", intType.valueOf("0", 10)));
-      return result;
+      return Arrays.asList(
+          new Variable("x", intType.valueOf("7", 10)),
+          new Variable("y", intType.valueOf("0", 10)),
+          new Variable("z", intType.valueOf("0", 10)),
+          new Variable("w", bitVector3.valueOf("101", 2)),
+          new Variable("v", boolType.valueOf("1", 2)),
+          new Variable("u", intType.valueOf("0", 10)),
+          new Variable("t", bitVector6.valueOf("001100", 2)),
+          new Variable("s", intType.valueOf("2", 10)),
+          new Variable("r", bitVector3.valueOf("111", 2)));
     }
   }
 
