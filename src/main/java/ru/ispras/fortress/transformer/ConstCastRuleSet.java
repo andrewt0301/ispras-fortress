@@ -327,8 +327,8 @@ final class ConstCastRuleSet {
   }
 
   private static Map<Node, Node> castWrongOperands(
-    final NodeOperation node,
-    final DataTypeId typeId) {
+      final NodeOperation node,
+      final DataTypeId typeId) {
 
     final Map<Node, Node> wrongOpMap = new LinkedHashMap<>();
 
@@ -350,6 +350,21 @@ final class ConstCastRuleSet {
             }
           }
         }
+      }
+    }
+
+    return wrongOpMap;
+  }
+
+  private static Map<Node, Node> castWrongOperands(
+    final NodeOperation node,
+    final DataType dataType) {
+
+    final Map<Node, Node> wrongOpMap = new LinkedHashMap<>();
+
+    for (final Node operand : node.getOperands()) {
+      if (operand instanceof NodeValue && operand.getDataType() != dataType) {
+        wrongOpMap.put(operand, TypeConversion.coerce(operand, dataType));
       }
     }
 
@@ -380,21 +395,6 @@ final class ConstCastRuleSet {
     operandTypeMap.setMap(typeMap);
 
     return operandTypeMap;
-  }
-
-  private static Map<Node, Node> castWrongOperands(
-      final NodeOperation node,
-      final DataType dataType) {
-
-    final Map<Node, Node> wrongOpMap = new LinkedHashMap<>();
-
-    for (final Node operand : node.getOperands()) {
-      if (operand instanceof NodeValue && operand.getDataType() != dataType) {
-        wrongOpMap.put(operand, TypeConversion.coerce(operand, dataType));
-      }
-    }
-
-    return wrongOpMap;
   }
 
   private static boolean allOperandsOfSameType(OperandTypeMap operandTypeMap) {
