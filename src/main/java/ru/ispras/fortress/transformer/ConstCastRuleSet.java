@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Container for transformation rules are applicable for constants casting.
  * @author <a href="mailto:smolov@ispras.ru">Sergey Smolov</a>
  */
 final class ConstCastRuleSet {
