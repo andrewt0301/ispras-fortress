@@ -53,6 +53,7 @@ public class ConstCastTestCase extends GenericSolverTestBase {
 
     private static final NodeValue boolTrue = NodeValue.newBoolean(true);
     private static final NodeValue int2 = NodeValue.newInteger(2);
+    private static final NodeValue int7 = NodeValue.newInteger(7);
     private static final NodeValue bv1 = NodeValue.newBitVector(BitVector.valueOf("1", 2, 1));
     private static final NodeValue bv3 = NodeValue.newBitVector(BitVector.valueOf("11", 2, 2));
     private static final NodeValue bv7 = NodeValue.newBitVector(BitVector.valueOf("111", 2, 3));
@@ -76,6 +77,7 @@ public class ConstCastTestCase extends GenericSolverTestBase {
       final NodeVariable t = new NodeVariable(builder.addVariable("t", bitVector6));
       final NodeVariable s = new NodeVariable(builder.addVariable("s", intType));
       final NodeVariable r = new NodeVariable(builder.addVariable("r", bitVector3));
+      final NodeVariable p = new NodeVariable(builder.addVariable("p", bitVector3));
 
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
@@ -112,6 +114,12 @@ public class ConstCastTestCase extends GenericSolverTestBase {
                   StandardOperation.EQ,
                   bv63,
                   new NodeOperation(StandardOperation.BVREPEAT, bv1, r))));
+      formulas.add(
+          castConstants(
+              new NodeOperation(
+                  StandardOperation.EQ,
+                  bv63,
+                  new NodeOperation(StandardOperation.BVCONCAT, p, int7))));
 
       return builder.build();
     }
@@ -128,7 +136,8 @@ public class ConstCastTestCase extends GenericSolverTestBase {
           new Variable("u", intType.valueOf("0", 10)),
           new Variable("t", bitVector6.valueOf("001100", 2)),
           new Variable("s", intType.valueOf("2", 10)),
-          new Variable("r", bitVector3.valueOf("111", 2)));
+          new Variable("r", bitVector3.valueOf("111", 2)),
+          new Variable("p", bitVector3.valueOf("111", 2)));
     }
   }
 

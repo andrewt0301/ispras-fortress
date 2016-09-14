@@ -31,6 +31,23 @@ import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 import static ru.ispras.fortress.util.InvariantChecks.checkTrue;
 
 public final class TypeConversion {
+
+  /**
+   * Constant operands casting types.
+   */
+  public enum ConstCast {
+
+    /**
+     * Signed casting for constant operands is required.
+     */
+    SIGNED,
+
+    /**
+     * Unsigned casting for constant operands is required (a default value).
+     */
+    UNSIGNED,
+  }
+
   private static final List<DataTypeId> integralTypes =
       Arrays.asList(DataTypeId.LOGIC_BOOLEAN, DataTypeId.BIT_VECTOR, DataTypeId.LOGIC_INTEGER);
 
@@ -59,7 +76,30 @@ public final class TypeConversion {
     return transformer.getResult();
   }
 
+  /**
+   * Converts the specified node to the specified data type producing a new node.
+   * @param node Node to be converted.
+   * @param type Data type of the new node to be produced.
+   * @return A new node that has the specified data type but the rest of it's data are taken
+   *         from the specified node.
+   */
   public static Node coerce(final Node node, final DataType type) {
+    return coerce(node, type, ConstCast.UNSIGNED);
+  }
+
+  /**
+   * Converts the specified node to the specified data type with some constant casting if needed.
+   * <p>If the specified node has the same data type as specified, no constant casting
+   * is applied.</p>
+   * @param node Node to be converted.
+   * @param type Data type of the new node to be produced.
+   * @param constCastType Constant operands casting mode.
+   * @return A new node that has the specified data type but the rest of it's data are taken
+   *         from the specified node. Constant sub-...operands are casted in correspondence
+   *         with the specified mode.
+   * @throws IllegalArgumentException when either node or data type argument is {@code null}.
+   */
+  public static Node coerce(final Node node, final DataType type, final Enum<?> constCastType) {
     checkNotNull(node);
     checkNotNull(type);
 
@@ -72,37 +112,38 @@ public final class TypeConversion {
     }
 
     switch (node.getKind()) {
-    case VALUE: return valueOf(integerValue((NodeValue) node, false), type);
+      case VALUE:
+        return valueOf(integerValue((NodeValue) node, constCastType == ConstCast.SIGNED), type);
 
-    case VARIABLE:
-    case OPERATION:
-      if (bv2natRequired(srcType, type) ||
-          bv2natRequired(type, srcType)) {
-        return null;
-      }
+      case VARIABLE:
+      case OPERATION:
+        if (bv2natRequired(srcType, type) ||
+            bv2natRequired(type, srcType)) {
+          return null;
+        }
 
-      if (node.isType(DataTypeId.LOGIC_BOOLEAN)) {
-        if (type.getTypeId().equals(DataTypeId.LOGIC_INTEGER)) {
-          return bool2int(node);
+        if (node.isType(DataTypeId.LOGIC_BOOLEAN)) {
+          if (type.getTypeId().equals(DataTypeId.LOGIC_INTEGER)) {
+            return bool2int(node);
+          } else {
+            return bool2bv(node, type.getSize());
+          }
+        } else if (type.getTypeId().equals(DataTypeId.LOGIC_BOOLEAN)) {
+          if (node.isType(DataTypeId.LOGIC_INTEGER)) {
+            return int2bool(node);
+          } else {
+            return bv2bool(node);
+          }
+        } else if (sizeOf(srcType) < sizeOf(type)) {
+          return new NodeOperation(StandardOperation.BVZEROEXT,
+                                   NodeValue.newInteger(sizeOf(type) - sizeOf(srcType)),
+                                   node);
         } else {
-          return bool2bv(node, type.getSize());
+          return new NodeOperation(StandardOperation.BVEXTRACT,
+                                   NodeValue.newInteger(type.getSize()),
+                                   NodeValue.newInteger(0),
+                                   node);
         }
-      } else if (type.getTypeId().equals(DataTypeId.LOGIC_BOOLEAN)) {
-        if (node.isType(DataTypeId.LOGIC_INTEGER)) {
-          return int2bool(node);
-        } else {
-          return bv2bool(node);
-        }
-      } else if (sizeOf(srcType) < sizeOf(type)) {
-        return new NodeOperation(StandardOperation.BVZEROEXT,
-                                 NodeValue.newInteger(sizeOf(type) - sizeOf(srcType)),
-                                 node);
-      } else {
-        return new NodeOperation(StandardOperation.BVEXTRACT,
-                                 NodeValue.newInteger(type.getSize()),
-                                 NodeValue.newInteger(0),
-                                 node);
-      }
     }
     return null;
   }
