@@ -105,6 +105,11 @@ final class ConstCastRuleSet {
   private static Collection<Enum<?>> TWO_INT_PARAM_BV =
       StandardOperation.getTwoIntParamBvOperandOperations();
 
+  /**
+   * Returns constant casting transformer for the specified casting type.
+   * @param constCastType Constant casting type.
+   * @return Transformer that performs constant operands casting.
+   */
   public static NodeTransformer getRuleSet(final Enum<?> constCastType) {
 
     final NodeTransformer transformer = new NodeTransformer();
