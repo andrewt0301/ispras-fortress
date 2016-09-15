@@ -39,15 +39,15 @@ final class ConstCastRuleSet {
 
   static class OperandTypeMap {
 
-    private DataType varType;
+    private DataType typeToCast;
     private Map<DataType, Collection<Node>> typeOperandMap;
 
-    public DataType getVarType() {
-      return this.varType;
+    public DataType getTypeToCast() {
+      return this.typeToCast;
     }
 
-    public void setVarType(final DataType type) {
-      this.varType = type;
+    public void setTypeToCast(final DataType type) {
+      this.typeToCast = type;
     }
 
     public Map<DataType, Collection<Node>> getMap() {
@@ -350,13 +350,13 @@ final class ConstCastRuleSet {
 
       final Map<DataType, Collection<Node>> typeMap = opTypeMap.getMap();
       for (final Map.Entry<DataType, Collection<Node>> typeNodes : typeMap.entrySet()) {
-        if (typeNodes.getKey() != opTypeMap.getVarType()
-            && opTypeMap.getVarType() != DataType.UNKNOWN) {
+        if (typeNodes.getKey() != opTypeMap.getTypeToCast()
+            && opTypeMap.getTypeToCast() != DataType.UNKNOWN) {
           for (final Node typeNode : typeNodes.getValue()) {
             if (typeNode instanceof NodeValue) {
 
               final Node casted =
-                  TypeConversion.coerce(typeNode, opTypeMap.getVarType(), constCastType);
+                  TypeConversion.coerce(typeNode, opTypeMap.getTypeToCast(), constCastType);
               wrongOpMap.put(typeNode, casted);
             }
           }
@@ -376,7 +376,7 @@ final class ConstCastRuleSet {
     final OperandTypeMap opTypeMap = createOperandTypeMap(node);
     if (!allOperandsOfSameType(opTypeMap)) {
 
-      final DataType varType = opTypeMap.getVarType();
+      final DataType varType = opTypeMap.getTypeToCast();
       final Map<DataType, Collection<Node>> typeMap = opTypeMap.getMap();
 
       for (final Map.Entry<DataType, Collection<Node>> typeNodes : typeMap.entrySet()) {
@@ -416,13 +416,21 @@ final class ConstCastRuleSet {
   private static OperandTypeMap createOperandTypeMap(final NodeOperation operation) {
     final OperandTypeMap operandTypeMap = new OperandTypeMap();
 
-    DataType varType = null;
+    DataType typeToCast = null;
+    boolean typeOfNonValue = false;
     final Map<DataType, Collection<Node>> typeMap = new LinkedHashMap<>();
 
     for (final Node operand : operation.getOperands()) {
       final DataType dataType = operand.getDataType();
-      if (! (operand instanceof NodeValue) && varType == null) {
-        varType = dataType;
+
+      /* Set as 'type-to-be-casted-to' the type of non-constant operand or the biggest in size type of constant operand. */
+      if ((!(operand instanceof NodeValue))
+          || (!typeOfNonValue
+              && (typeToCast == null || typeToCast.getSize() < dataType.getSize()))) {
+        typeToCast = dataType;
+        if (!(operand instanceof NodeValue)) {
+          typeOfNonValue = true;
+        }
       }
 
       if (typeMap.containsKey(dataType)) {
@@ -433,7 +441,7 @@ final class ConstCastRuleSet {
         typeMap.put(dataType, nodes);
       }
     }
-    operandTypeMap.setVarType(varType);
+    operandTypeMap.setTypeToCast(typeToCast);
     operandTypeMap.setMap(typeMap);
 
     return operandTypeMap;
