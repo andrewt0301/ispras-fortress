@@ -19,8 +19,6 @@ package ru.ispras.fortress.transformer;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.data.types.bitvector.BitVector;
-import ru.ispras.fortress.expression.ExprUtils;
-import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
@@ -32,7 +30,6 @@ import ru.ispras.fortress.solver.constraint.Formulas;
 import ru.ispras.fortress.solver.constraint.GenericSolverTestBase;
 
 import java.util.Arrays;
-import java.util.Collection;
 
 /**
  * Constant casting methods test case.
@@ -82,40 +79,40 @@ public class ConstCastTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(castConstants(new NodeOperation(StandardOperation.EQ, x, bv7)));
+      formulas.add(TypeConversion.castConstants(new NodeOperation(StandardOperation.EQ, x, bv7)));
       formulas.add(
-          castConstants(
+          TypeConversion.castConstants(
               new NodeOperation(
                   StandardOperation.EQ,
                   new NodeOperation(StandardOperation.REM, y, bv3), z)));
       formulas.add(
-          castConstants(
+          TypeConversion.castConstants(
               new NodeOperation(
                   StandardOperation.EQ,
                   bv7,
                   new NodeOperation(StandardOperation.BVADD, w, int2))));
-      formulas.add(castConstants(new NodeOperation(StandardOperation.AND, v, int2)));
-      formulas.add(castConstants(new NodeOperation(StandardOperation.LESS, u, bv3)));
+      formulas.add(TypeConversion.castConstants(new NodeOperation(StandardOperation.AND, v, int2)));
+      formulas.add(TypeConversion.castConstants(new NodeOperation(StandardOperation.LESS, u, bv3)));
       formulas.add(
-          castConstants(
+          TypeConversion.castConstants(
               new NodeOperation(
                   StandardOperation.EQ,
                   new NodeOperation(StandardOperation.BVEXTRACT, bv3, int2, t),
                   boolTrue)));
       formulas.add(
-          castConstants(
+          TypeConversion.castConstants(
               new NodeOperation(
                   StandardOperation.EQ,
                   int2,
                   new NodeOperation(StandardOperation.ITE, bv3, s, u))));
       formulas.add(
-          castConstants(
+          TypeConversion.castConstants(
               new NodeOperation(
                   StandardOperation.EQ,
                   bv63,
                   new NodeOperation(StandardOperation.BVREPEAT, bv1, r))));
       formulas.add(
-          castConstants(
+          TypeConversion.castConstants(
               new NodeOperation(
                   StandardOperation.EQ,
                   bv63,
@@ -139,10 +136,5 @@ public class ConstCastTestCase extends GenericSolverTestBase {
           new Variable("r", bitVector3.valueOf("111", 2)),
           new Variable("p", bitVector3.valueOf("111", 2)));
     }
-  }
-
-  private static Node castConstants(final Node node) {
-    final Collection<Node> casted = TypeConversion.castConstants(node, null);
-    return ExprUtils.getConjunction(casted.toArray(new Node[casted.size()]));
   }
 }
