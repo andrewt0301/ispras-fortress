@@ -350,7 +350,8 @@ final class ConstCastRuleSet {
 
       final Map<DataType, Collection<Node>> typeMap = opTypeMap.getMap();
       for (final Map.Entry<DataType, Collection<Node>> typeNodes : typeMap.entrySet()) {
-        if (typeNodes.getKey() != opTypeMap.getVarType()) {
+        if (typeNodes.getKey() != opTypeMap.getVarType()
+            && opTypeMap.getVarType() != DataType.UNKNOWN) {
           for (final Node typeNode : typeNodes.getValue()) {
             if (typeNode instanceof NodeValue) {
 
@@ -385,7 +386,7 @@ final class ConstCastRuleSet {
         if (typeNodes.getKey() != varType || nodeType.getTypeId() != typeId) {
           for (final Node typeNode : typeNodes.getValue()) {
 
-            if (typeNode instanceof NodeValue) {
+            if (typeNode instanceof NodeValue && varType != DataType.UNKNOWN) {
               wrongOpMap.put(typeNode, TypeConversion.coerce(typeNode, varType, constCastType));
             }
           }
