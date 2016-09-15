@@ -17,14 +17,15 @@ package ru.ispras.fortress.transformer;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.DataTypeId;
 import ru.ispras.fortress.data.types.bitvector.BitVector;
+import ru.ispras.fortress.expression.ExprUtils;
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.StandardOperation;
+import ru.ispras.fortress.util.InvariantChecks;
 
 import java.math.BigInteger;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
@@ -59,21 +60,31 @@ public final class TypeConversion {
    * @param node Node to be processed.
    * @param constCastKind Constant casting type descriptor (signed, unsigned, etc.).
    *
-   * @throws IllegalArgumentException when any of the arguments
-   *         (except casting type) is {@code null}.
+   * @throws IllegalArgumentException when node argument is {@code null}.
    *
-   * @return Nodes every constant sub-..node of that are casted to be correct operands of
-   *         corresponding operations.
+   * @return Node every constant sub-..node of that is casted to be a correct operand of
+   *         related operation.
    */
-  public static Collection<Node> castConstants(
-      final Node node,
-      final Enum<?> constCastKind) {
-    checkNotNull(node);
+  public static Node castConstants(final Node node, final Enum<?> constCastKind) {
+    InvariantChecks.checkNotNull(node);
 
     final NodeTransformer transformer = ConstCastRuleSet.getRuleSet(constCastKind);
     transformer.walk(node.deepCopy());
 
-    return transformer.getResult();
+    final List<Node> result = transformer.getResult();
+    return result.size() == 1
+        ? result.iterator().next()
+        : ExprUtils.getConjunction(result.toArray(new Node[result.size()]));
+  }
+
+  /**
+   * Casts constant sub-...operands of the specified node supposing that casting is unsigned.
+   * @param node Node to be processed.
+   * @return A new node, every constant sub-...operand of that is casted to be a correct operand
+   *         of related operation.
+   */
+  public static Node castConstants(final Node node) {
+    return castConstants(node, ConstCast.UNSIGNED);
   }
 
   /**
