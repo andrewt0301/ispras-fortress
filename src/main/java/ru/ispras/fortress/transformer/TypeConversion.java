@@ -69,7 +69,7 @@ public final class TypeConversion {
     InvariantChecks.checkNotNull(node);
 
     final NodeTransformer transformer = ConstCastRuleSet.getRuleSet(constCastKind);
-    transformer.walk(node.deepCopy());
+    transformer.walk(Transformer.reduce(node).deepCopy());
 
     final List<Node> result = transformer.getResult();
     return result.size() == 1
@@ -84,7 +84,7 @@ public final class TypeConversion {
    *         of related operation.
    */
   public static Node castConstants(final Node node) {
-    return castConstants(node, ConstCast.UNSIGNED);
+    return castConstants(Transformer.reduce(node), ConstCast.UNSIGNED);
   }
 
   /**
