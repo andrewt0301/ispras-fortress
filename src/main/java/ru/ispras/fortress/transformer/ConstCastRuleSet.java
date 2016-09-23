@@ -230,7 +230,7 @@ final class ConstCastRuleSet {
 
         for (int i = 0; i < node.getOperandCount(); i++) {
 
-          final Node operand = node.getOperand(0);
+          final Node operand = node.getOperand(i);
           final DataType opType = operand.getDataType();
 
           if (i == 0 && !opType.equals(DataType.BOOLEAN) && operand instanceof NodeValue) {
