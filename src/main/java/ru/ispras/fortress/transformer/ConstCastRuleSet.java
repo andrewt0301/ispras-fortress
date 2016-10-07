@@ -224,8 +224,6 @@ final class ConstCastRuleSet {
       private Map<Node, Node> getIfThenElseWrongCond(final NodeOperation node) {
         final Map<Node, Node> map = new LinkedHashMap<>();
 
-        DataType varType = null;
-        DataType constType = null;
         final Map<DataType, List<Node>> typeMap = new LinkedHashMap<>();
 
         for (int i = 0; i < node.getOperandCount(); i++) {
@@ -244,21 +242,9 @@ final class ConstCastRuleSet {
               typeNodes.add(operand);
               typeMap.put(opType, typeNodes);
             }
-
-            if (!(operand instanceof NodeValue)) {
-              varType = opType;
-            } else {
-              constType = opType;
-            }
           }
         }
 
-        if (varType != null && constType != null && !varType.equals(constType)) {
-
-          final Node oldOperand = typeMap.get(constType).get(0);
-
-          map.put(oldOperand, TypeConversion.coerce(oldOperand, varType, constCastType));
-        }
         return map;
       }
     };
