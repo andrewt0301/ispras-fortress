@@ -224,6 +224,8 @@ final class ConstCastRuleSet {
       private Map<Node, Node> getIfThenElseWrongCond(final NodeOperation node) {
         final Map<Node, Node> map = new LinkedHashMap<>();
 
+        DataType varAltType = null;
+        DataType constAltType = null;
         final Map<DataType, List<Node>> typeMap = new LinkedHashMap<>();
 
         for (int i = 0; i < node.getOperandCount(); i++) {
@@ -233,7 +235,7 @@ final class ConstCastRuleSet {
 
           if (i == 0 && !opType.equals(DataType.BOOLEAN) && operand instanceof NodeValue) {
             map.put(operand, TypeConversion.coerce(operand, DataType.BOOLEAN, constCastType));
-          } else {
+          } else if (i != 0) {
 
             if (typeMap.containsKey(opType)) {
               typeMap.get(opType).add(operand);
@@ -242,9 +244,21 @@ final class ConstCastRuleSet {
               typeNodes.add(operand);
               typeMap.put(opType, typeNodes);
             }
+
+            if (!(operand instanceof NodeValue)) {
+              varAltType = opType;
+            } else {
+              constAltType = opType;
+            }
           }
         }
 
+        if (varAltType != null && constAltType != null && !varAltType.equals(constAltType)) {
+
+          final Node oldOperand = typeMap.get(constAltType).get(0);
+
+          map.put(oldOperand, TypeConversion.coerce(oldOperand, varAltType, constCastType));
+        }
         return map;
       }
     };
