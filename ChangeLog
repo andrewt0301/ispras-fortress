@@ -12,6 +12,14 @@
  (like Yices, Z3, CVC4, etc.)
 
 --------------------------------------------------------------------------------
+ 2016/10/25 Fortress 0.4.21 beta
+
+ The new build contains the following changes:
+
+ - Facilities to cast values in constant expressions
+ - Improvements in ESExprParser
+
+--------------------------------------------------------------------------------
  2016/08/26 Fortress 0.4.20 beta
 
  The new build contains the following changes:
