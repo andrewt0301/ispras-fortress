@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2016 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,9 +14,7 @@
 
 package ru.ispras.fortress.data.types.bitvector;
 
-import static ru.ispras.fortress.util.InvariantChecks.checkBounds;
-import static ru.ispras.fortress.util.InvariantChecks.checkGreaterThanZero;
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
+import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * The BitVectorStore class represents a data array that stores binary data of a bit vector. Data
@@ -56,12 +54,10 @@ final class BitVectorStore extends BitVector {
    * @param bitSize Data size in bits.
    */
   public BitVectorStore(final int bitSize) {
-    checkGreaterThanZero(bitSize);
-
-    final int byteSize = bitSize / BITS_IN_BYTE + (0 == (bitSize % BITS_IN_BYTE) ? 0 : 1);
+    InvariantChecks.checkGreaterThanZero(bitSize);
 
     this.bitSize = bitSize;
-    this.dataBytes = new byte[byteSize];
+    this.dataBytes = new byte[getByteSize(bitSize)];
 
     reset();
   }
@@ -72,12 +68,31 @@ final class BitVectorStore extends BitVector {
    * @param src An existing bit vector to be copied.
    */
   public BitVectorStore(final BitVector src) {
-    checkNotNull(src);
+    InvariantChecks.checkNotNull(src);
 
     this.dataBytes = new byte[src.getByteSize()];
     this.bitSize = src.getBitSize();
 
     assign(src);
+  }
+
+  /**
+   * Constructs a bit vector from an array of bytes.
+   * 
+   * @param data Array of bytes.
+   * @param bitSize Data size in bits.
+   */
+  public BitVectorStore(final byte[] data, final int bitSize) {
+    InvariantChecks.checkNotNull(data);
+    InvariantChecks.checkGreaterThanZero(bitSize);
+    InvariantChecks.checkTrue(data.length == getByteSize(bitSize));
+
+    this.dataBytes = data;
+    this.bitSize = bitSize;
+  }
+
+  private static int getByteSize(final int bitSize) {
+    return bitSize / BITS_IN_BYTE + (0 == (bitSize % BITS_IN_BYTE) ? 0 : 1);
   }
 
   /**
@@ -101,7 +116,7 @@ final class BitVectorStore extends BitVector {
    */
   @Override
   public byte getByte(final int index) {
-    checkBounds(index, getByteSize());
+    InvariantChecks.checkBounds(index, getByteSize());
     return (byte) (dataBytes[index] & getByteBitMask(index));
   }
 
@@ -110,7 +125,7 @@ final class BitVectorStore extends BitVector {
    */
   @Override
   public void setByte(final int index, final byte value) {
-    checkBounds(index, getByteSize());
+    InvariantChecks.checkBounds(index, getByteSize());
 
     final byte mask = getByteBitMask(index);
     final byte old = dataBytes[index];
@@ -119,6 +134,6 @@ final class BitVectorStore extends BitVector {
     dataBytes[index] = (byte) ((old & ~mask) | (value & mask));
 
     // To make sure that bits beyond the bound have not been changed.
-    assert ((byte) (old & ~mask)) == ((byte) (dataBytes[index] & ~mask));
+    InvariantChecks.checkTrue(((byte) (old & ~mask)) == ((byte) (dataBytes[index] & ~mask)));
   }
 }
