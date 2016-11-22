@@ -599,32 +599,18 @@ public abstract class BitVector implements Comparable<BitVector> {
   }
 
   /**
-   * Creates a bit vector from a byte array. If the bit vector size is greater than the byte
-   * array size, the rest of the bit vector (high bytes) is filled with zeros. If the size
-   * of the byte array is greater, the highest bytes of the array are ignored.
+   * Creates a bit vector from a byte array.
    * 
    * @param data An array of bytes.
    * @param bitSize Size of the resulting bit vector in bits.
    * @return New bit vector.
    * 
    * @throws IllegalArgumentException if the {@code data} parameter is {@code null};
-   *         if the {@code bitSize} parameter is zero or negative.
+   *         if the {@code bitSize} parameter is zero or negative;
+   *         if {@code bitSize} does not match to the number ob bytes in the {@code data} array.
    */
   public static BitVector valueOf(final byte[] data, final int bitSize) {
-    checkNotNull(data);
-    checkGreaterThanZero(bitSize);
-
-    final BitVector result = new BitVectorStore(bitSize);
-    final IOperation op = new IOperation() {
-      private int index = 0;
-      @Override
-      public byte run() {
-        return index < data.length ? data[index++] : 0;
-      }
-    };
-
-    BitVectorAlgorithm.generate(result, op);
-    return result;
+    return new BitVectorStore(data, bitSize);
   }
 
   /**
