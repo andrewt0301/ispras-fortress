@@ -14,9 +14,11 @@
 
 package ru.ispras.fortress.transformer;
 
+import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.DataTypeId;
 import ru.ispras.fortress.data.types.bitvector.BitVector;
+import ru.ispras.fortress.data.types.datamap.DataMap;
 import ru.ispras.fortress.expression.ExprUtils;
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeOperation;
@@ -26,7 +28,11 @@ import ru.ispras.fortress.util.InvariantChecks;
 
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 import static ru.ispras.fortress.util.InvariantChecks.checkTrue;
@@ -118,6 +124,43 @@ public final class TypeConversion {
     if (srcType.equals(type)) {
       return node;
     }
+
+    /* The map conversion. */
+    if (srcType.getTypeId().equals(DataTypeId.MAP)) {
+      if (!node.getKind().equals(Node.Kind.VALUE)) {
+        return null;
+      }
+
+      switch (type.getTypeId()) {
+        case BIT_VECTOR:
+          final DataMap array = ((NodeValue) node).getArray();
+          final Set<Map.Entry<Data, Data>> entrySet = array.entrySet();
+          final List<String> values = new LinkedList<>();
+          for (final Map.Entry<Data, Data> keyValue : entrySet) {
+            // todo: iteration order is not specified
+            values.add(keyValue.getValue().getValue().toString());
+          }
+          Collections.reverse(values);
+
+          int mapLength = 0;
+
+
+          final StringBuilder builder = new StringBuilder();
+          for (final String mapValue : values) {
+            mapLength += mapValue.length();
+            builder.append(mapValue);
+          }
+          if (mapLength != type.getSize()) {
+            // todo: bit vector can be larger than map
+            return null;
+          }
+
+          return NodeValue.newBitVector(BitVector.valueOf(builder.toString()));
+        default:
+          return null;
+      }
+    }
+
     if (!isIntegral(node) || !isIntegral(type)) {
       return null;
     }
