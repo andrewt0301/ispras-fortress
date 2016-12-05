@@ -127,6 +127,8 @@ public final class TypeConversion {
     }
 
     /* The map conversion. */
+    /* NOTE: this implementation works properly when the sum of map value sizes
+             is equal to resulting bit vector size. */
     if (srcType.getTypeId().equals(DataTypeId.MAP)) {
       if (!node.getKind().equals(Node.Kind.VALUE)) {
         return null;
@@ -137,7 +139,7 @@ public final class TypeConversion {
       switch (type.getTypeId()) {
         case BIT_VECTOR:
           final DataMap array = ((NodeValue) node).getArray();
-          final String bitString = map2BitString(array, keyType, sizeOf(type), constCastType);
+          final String bitString = map2BitString(array, keyType, sizeOf(type));
 
           return NodeValue.newBitVector(BitVector.valueOf(bitString));
         default:
@@ -189,8 +191,7 @@ public final class TypeConversion {
   private static String map2BitString(
       final DataMap map,
       final DataType keyType,
-      final int size,
-      final Enum<?> castType) {
+      final int size) {
 
     final Comparator<Data> dataComparator = new Comparator<Data>() {
 
@@ -245,8 +246,11 @@ public final class TypeConversion {
       builder.append(mapValue);
     }
     if (mapLength != size) {
-      // todo: bit vector can be larger than map
-      return null;
+      throw new IllegalStateException(
+          String.format(
+              "%s bit size vector cannot be created from %s bit size string.",
+              size,
+              mapLength));
     }
 
     return builder.toString();

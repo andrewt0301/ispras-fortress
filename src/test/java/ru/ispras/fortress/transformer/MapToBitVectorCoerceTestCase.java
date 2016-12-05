@@ -90,20 +90,6 @@ public class MapToBitVectorCoerceTestCase {
         TypeConversion.coerce(newArray(bvToBvMap), DataType.BIT_VECTOR(8)));
   }
 
-  @Test
-  public void boolToIntMapTest() {
-
-    /* Convert boolean-to-int map to bit vector. */
-    final DataMap boolToIntMap = new DataMap(DataType.BOOLEAN, DataType.INTEGER);
-    boolToIntMap.put(Data.newBoolean(false), INT_1);
-    boolToIntMap.put(Data.newBoolean(true), INT_0);
-
-    final NodeValue booleanVector = NodeValue.newBitVector(BitVector.valueOf("01"));
-    Assert.assertEquals(
-        booleanVector,
-        TypeConversion.coerce(newArray(boolToIntMap), DataType.BIT_VECTOR(2)));
-  }
-
   private static NodeValue newArray(final DataMap map) {
     return new NodeValue(Data.newArray(map));
   }
