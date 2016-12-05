@@ -29,10 +29,11 @@ import ru.ispras.fortress.util.InvariantChecks;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 import static ru.ispras.fortress.util.InvariantChecks.checkTrue;
@@ -131,31 +132,14 @@ public final class TypeConversion {
         return null;
       }
 
+      DataType keyType = (DataType)srcType.getAttribute(DataTypeId.Attribute.KEY);
+
       switch (type.getTypeId()) {
         case BIT_VECTOR:
           final DataMap array = ((NodeValue) node).getArray();
-          final Set<Map.Entry<Data, Data>> entrySet = array.entrySet();
-          final List<String> values = new LinkedList<>();
-          for (final Map.Entry<Data, Data> keyValue : entrySet) {
-            // todo: iteration order is not specified
-            values.add(keyValue.getValue().getValue().toString());
-          }
-          Collections.reverse(values);
+          final String bitString = map2BitString(array, keyType, sizeOf(type), constCastType);
 
-          int mapLength = 0;
-
-
-          final StringBuilder builder = new StringBuilder();
-          for (final String mapValue : values) {
-            mapLength += mapValue.length();
-            builder.append(mapValue);
-          }
-          if (mapLength != type.getSize()) {
-            // todo: bit vector can be larger than map
-            return null;
-          }
-
-          return NodeValue.newBitVector(BitVector.valueOf(builder.toString()));
+          return NodeValue.newBitVector(BitVector.valueOf(bitString));
         default:
           return null;
       }
@@ -200,6 +184,71 @@ public final class TypeConversion {
         }
     }
     return null;
+  }
+
+  private static String map2BitString(
+      final DataMap map,
+      final DataType keyType,
+      final int size,
+      final Enum<?> castType) {
+
+    final Comparator<Data> dataComparator = new Comparator<Data>() {
+
+      @Override
+      public int compare(final Data obj, final Data arg) {
+
+        final DataTypeId keyTypeId = keyType.getTypeId();
+
+        switch (keyTypeId) {
+          case BIT_VECTOR:
+            final BitVector objVector = obj.getBitVector();
+            final BitVector argVector = arg.getBitVector();
+            return objVector.compareTo(argVector);
+          case LOGIC_BOOLEAN:
+            final boolean objBool = obj.getBoolean();
+            final boolean argBool = arg.getBoolean();
+            if (objBool ^ argBool) {
+              if (objBool) {
+                return 1;
+              } else {
+                return -1;
+              }
+            } else {
+              return 0;
+            }
+          case LOGIC_INTEGER:
+            final BigInteger objInt = obj.getInteger();
+            final BigInteger argInt = arg.getInteger();
+            return objInt.compareTo(argInt);
+          default:
+            return 0;
+        }
+      }
+    };
+
+    final Set<Data> keys = new TreeSet<>(dataComparator);
+    keys.addAll(map.keySet());
+    final List<String> values = new LinkedList<>();
+    for (final Data key : keys) {
+      final Data value = map.get(key);
+      values.add(value.getValue().toString());
+    }
+    /* Convert to little-endian. */
+    Collections.reverse(values);
+
+    int mapLength = 0;
+
+    final StringBuilder builder = new StringBuilder();
+    for (final String mapValue : values) {
+      mapLength += mapValue.length();
+      builder.append(mapValue);
+    }
+    if (mapLength != size) {
+      // todo: bit vector can be larger than map
+      return null;
+    }
+
+    return builder.toString();
   }
 
   public static NodeValue valueOf(final BigInteger value, final DataType type) {
