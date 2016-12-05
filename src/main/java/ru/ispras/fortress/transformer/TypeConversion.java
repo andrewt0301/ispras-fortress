@@ -221,7 +221,8 @@ public final class TypeConversion {
             final BigInteger argInt = arg.getInteger();
             return objInt.compareTo(argInt);
           default:
-            return 0;
+            throw new UnsupportedOperationException(
+                "Unable to convert map with key type id: " + keyTypeId);
         }
       }
     };
