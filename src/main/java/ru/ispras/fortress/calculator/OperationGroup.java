@@ -86,9 +86,16 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
       return false;
     }
 
-    if (operationId == StandardOperation.EQ ||
-        operationId == StandardOperation.NOTEQ) {
-      return true;
+    if (operationId instanceof StandardOperation) {
+      switch ((StandardOperation) operationId) {
+      case EQ:
+      case NOTEQ:
+        return true;
+
+      case SELECT:
+      case STORE:
+        return false;
+      }
     }
 
     final DataTypeId typeId = operands[0].getType().getTypeId();
