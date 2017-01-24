@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2017 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -21,7 +21,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -132,14 +131,14 @@ public final class ExprUtils {
    * Checks whether the expression is represented by one of the specified operations.
    * 
    * @param expr Expression to be checked.
-   * @param opIds List of operation identifiers.
+   * @param opIds Collection of operation identifiers.
    * @return {@code true} if the expression is represented by one of the specified operations
    *         or {@code false} otherwise.
    * 
    * @throws IllegalArgumentException if any of the parameters is {@code null}; if the list of
    *         operation identifiers is empty.
    */
-  public static <T extends Enum<? extends T>> boolean isOperation(final Node expr, final List<T> opIds) {
+  public static <T extends Enum<? extends T>> boolean isOperation(final Node expr, final Collection<T> opIds) {
     InvariantChecks.checkNotNull(expr);
     InvariantChecks.checkNotEmpty(opIds);
 
