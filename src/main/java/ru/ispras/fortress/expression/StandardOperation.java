@@ -463,6 +463,7 @@ public enum StandardOperation implements TypeRule {
 
   /**
    * Returns the collection of parametric operation identifiers.
+   *
    * @return The collection of parametric operation identifiers.
    */
   public static Collection<Enum<?>> getParamOperations() {
