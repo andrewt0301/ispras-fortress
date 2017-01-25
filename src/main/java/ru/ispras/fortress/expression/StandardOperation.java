@@ -361,75 +361,73 @@ public enum StandardOperation implements TypeRule {
   }
 
   /**
-   * Identifiers of operations defined on same type operands.
+   * Returns the collection of operations are defined on same type operands.
    *
-   * @return Identifiers of operations are defined on operands of same type.
+   * @return The collection of operations are defined on same type operands.
    */
   public static Collection<Enum<?>> getSameOperandOperations() {
     return getOperations(OperandTypes.SAME);
   }
 
   /**
-   * Identifiers of operations for operands of same bit vector type.
+   * Returns the collection of operations are defined on same bit vector type operands.
    *
-   * @return Identifiers of operations are defined on operands of same
-   *         bit vector types.
+   * @return The collection of operations are defined on same bit vector type operands.
    */
   public static Collection<Enum<?>> getSameBvOperandOperations() {
     return getOperations(OperandTypes.SAME_BV);
   }
 
   /**
-   * Identifiers of operations for operands of logic types.
+   * Returns the collection of operations are defined on operands of logic types.
    *
-   * @return Identifiers of operations are defined on operands of logic types.
+   * @return The collection of operations are defined on operands of logic types.
    */
   public static Collection<Enum<?>> getLogicOperandOperations() {
     return getOperations(OperandTypes.LOGIC);
   }
 
   /**
-   * Identifiers of operations for operands of logic numeric type.
+   * Returns the collection of operations are defined on operands of logic numeric type.
    *
-   * @return Identifiers of operations are defined on operands of same
-   *         logic numeric type.
+   * @return The collection of operations are defined on operands of logic numeric type.
    */
   public static Collection<Enum<?>> getSameLogicNumOperandOperations() {
     return getOperations(OperandTypes.LOGIC_NUMERIC);
   }
 
   /**
-   * Identifiers of operations for operands of integer type.
+   * Returns the collection of operations are defined on operands of integer type.
    *
-   * @return Identifiers of operations are defined on operands of integer type.
+   * @return The collection of operations are defined on operands of integer type.
    */
   public static Collection<Enum<?>> getIntOperandOperations() {
     return getOperations(OperandTypes.INT);
   }
 
   /**
-   * Identifiers of operations for operands of boolean type.
+   * Returns the collection of operations are defined on operands of boolean type.
    *
-   * @return Identifiers of operations are defined on operands of boolean type.
+   * @return The collection of operations are defined on operands of boolean type.
    */
   public static Collection<Enum<?>> getBoolOperandOperations() {
     return getOperations(OperandTypes.BOOL);
   }
 
   /**
-   * Identifiers of operations for operands of bit vector types.
+   * Returns the collection of operations are defined on operands of different bit vector types.
    *
-   * @return Identifiers of operations are defined on operands of bit vector types.
+   * @return The collection of operations are defined on operands of different bit vector types.
    */
-  public static Collection<Enum<?>> getBvOperandOperations() {
+  public static Collection<Enum<?>> getDifferentBvOperandOperations() {
     return getOperations(OperandTypes.BV);
   }
 
   /**
-   * Identifiers of operations for operands of following types -
+   * Returns the collection of operations are defined on operands of following types -
    * one integer parameter and one bit vector operand.
    *
-   * @return Identifiers of operations are defined on operands of following types -
+   * @return The collection of operations are defined on operands of following types -
    *         one integer parameter and one bit vector operand.
    */
   public static Collection<Enum<?>> getOneIntParamBvOperandOperations() {
@@ -437,14 +435,30 @@ public enum StandardOperation implements TypeRule {
   }
 
   /**
-   * Identifiers of operations for operands of following types -
+   * Returns the collection of operations are defined on operands of following types -
    * two integer parameters and one bit vector operand.
    *
-   * @return Identifiers of operations are defined on operands of following types -
+   * @return The collection of operations are defined on operands of following types -
    *         two integer parameters and one bit vector operand.
    */
   public static Collection<Enum<?>> getTwoIntParamBvOperandOperations() {
     return getOperations(OperandTypes.TWO_INT_PARAM_BV);
+  }
+
+  /**
+   * Returns the collection of operations are defined on operands of bit vector type.
+   *
+   * @return The collection of operations are defined on operands of bit vector type.
+   */
+  public static Collection<Enum<?>> getBvOperandOperations() {
+    final Collection<Enum<?>> operations = new LinkedList<>();
+
+    operations.addAll(getSameBvOperandOperations());
+    operations.addAll(getDifferentBvOperandOperations());
+    operations.addAll(getOneIntParamBvOperandOperations());
+    operations.addAll(getTwoIntParamBvOperandOperations());
+
+    return operations;
   }
 
   /**

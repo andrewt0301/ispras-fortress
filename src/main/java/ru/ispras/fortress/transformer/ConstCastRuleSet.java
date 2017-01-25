@@ -95,7 +95,7 @@ final class ConstCastRuleSet {
   private static Collection<Enum<?>> SAME_BOOL = StandardOperation.getBoolOperandOperations();
 
   // todo: implement constant casting for this case
-  private static Collection<Enum<?>> BV_TYPES = StandardOperation.getBvOperandOperations();
+  private static Collection<Enum<?>> BV_TYPES = StandardOperation.getDifferentBvOperandOperations();
 
   private static Collection<Enum<?>> LOGIC = StandardOperation.getLogicOperandOperations();
   private static Collection<Enum<?>> SAME_LOGIC_NUM =
