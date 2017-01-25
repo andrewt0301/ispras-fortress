@@ -447,11 +447,30 @@ public enum StandardOperation implements TypeRule {
     return getOperations(OperandTypes.TWO_INT_PARAM_BV);
   }
 
+  /**
+   * Returns the collection of parametric operation identifiers.
+   * @return The collection of parametric operation identifiers.
+   */
+  public static Collection<Enum<?>> getParamOperations() {
+    final Collection<Enum<?>> operations = new LinkedList<>();
+
+    for (int i = 0; i < StandardOperation.values().length; i++) {
+
+      final StandardOperation operation = StandardOperation.values()[i];
+      if (StandardOperation.getParameterCount(operation) > 0) {
+        operations.add(operation);
+      }
+    }
+
+    return operations;
+  }
+
   private static Collection<Enum<?>> getOperations(final Enum<?> operandTypesId) {
     final Collection<Enum<?>> operations = new LinkedList<>();
 
     for (int i = 0; i < StandardOperation.values().length; i++) {
-      StandardOperation operation = StandardOperation.values()[i];
+
+      final StandardOperation operation = StandardOperation.values()[i];
       if (operation.operandTypes == operandTypesId) {
         operations.add(operation);
       }
