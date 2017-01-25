@@ -472,7 +472,7 @@ public enum StandardOperation implements TypeRule {
     for (int i = 0; i < StandardOperation.values().length; i++) {
 
       final StandardOperation operation = StandardOperation.values()[i];
-      if (StandardOperation.getParameterCount(operation) > 0) {
+      if (StandardOperation.isParametric(operation)) {
         operations.add(operation);
       }
     }
