@@ -17,6 +17,7 @@
  The new build contains the following changes:
 
  - New Randomizer method: permute
+ - Several bug fixes and code improvements
 
 --------------------------------------------------------------------------------
  2016/10/25 Fortress 0.4.21 beta
