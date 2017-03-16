@@ -354,6 +354,30 @@ public final class Randomizer {
   }
 
   //------------------------------------------------------------------------------------------------
+  // Permute Methods
+  //------------------------------------------------------------------------------------------------
+
+  /**
+   * Permute items of the given array.
+   * 
+   * @param array the array whose items to be permuted.
+   * @throws IllegalArgumentException if {@code array == null}.
+   */
+  public <T> void permute(final T[] array) {
+    InvariantChecks.checkNotNull(array);
+
+    for (int i = 0; i < array.length; i++) {
+      final int j = nextIntRange(0, array.length - 1);
+      final int k = nextIntRange(0, array.length - 1);
+
+      final T temp = array[j];
+
+      array[j] = array[k];
+      array[k] = temp;
+    }
+  }
+
+  //------------------------------------------------------------------------------------------------
   // Fill Methods
   //------------------------------------------------------------------------------------------------
 
