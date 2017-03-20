@@ -34,6 +34,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -49,6 +50,7 @@ import ru.ispras.fortress.data.DataTypeId;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.ExprTreeVisitor;
 import ru.ispras.fortress.expression.ExprTreeWalker;
+import ru.ispras.fortress.expression.ExprUtils;
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeBinding;
 import ru.ispras.fortress.expression.NodeOperation;
@@ -56,6 +58,8 @@ import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.solver.SolverOperation;
+import ru.ispras.fortress.solver.constraint.Constraint;
+import ru.ispras.fortress.solver.constraint.ConstraintUtils;
 import ru.ispras.fortress.solver.function.Function;
 import ru.ispras.fortress.solver.function.FunctionTemplate;
 
@@ -66,7 +70,7 @@ import ru.ispras.fortress.solver.function.FunctionTemplate;
  * @author Andrei Tatarnikov
  */
 
-final class SmtTextBuilder implements ExprTreeVisitor {
+public final class SmtTextBuilder implements ExprTreeVisitor {
   private final Map<Enum<?>, SolverOperation> operations;
   private final Iterable<Variable> variables;
 
@@ -103,6 +107,20 @@ final class SmtTextBuilder implements ExprTreeVisitor {
 
   private void setCurrentBuilder(final StringBuilder builder) {
     currentBuilder = builder;
+  }
+
+  public static void saveToFile(
+    final String fileName,
+    final Collection<? extends Node> formulas,
+    final Map<Enum<?>, SolverOperation> operations) throws IOException {
+    final Constraint c = ConstraintUtils.newConstraint(formulas);
+    final SmtTextBuilder smtBuilder =
+      new SmtTextBuilder(c.getVariables(), operations);
+
+    final ExprTreeWalker walker = new ExprTreeWalker(smtBuilder);
+    walker.visit(formulas);
+
+    smtBuilder.saveToFile(fileName, new StringBuilder());
   }
 
   /**
