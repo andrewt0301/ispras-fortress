@@ -21,6 +21,9 @@ import ru.ispras.fortress.solver.Solver;
 import ru.ispras.fortress.solver.SolverId;
 import ru.ispras.fortress.solver.SolverResult;
 
+import java.util.Collection;
+import java.util.Collections;
+
 /**
  * The ConstraintUtils class provides utility methods to deal with constraints. 
  * 
@@ -37,13 +40,21 @@ public final class ConstraintUtils {
    * 
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
-  public static Constraint newConstraint(final Node expr) {
-    checkNotNull(expr);
+  public static Constraint newConstraint(final Node e) {
+    checkNotNull(e);
+    return newConstraint(Collections.singleton(e));
+  }
+
+  public static Constraint newConstraint(final Collection<? extends Node> formulae) {
+    checkNotNull(formulae);
 
     final ConstraintBuilder builder =
         new ConstraintBuilder(ConstraintKind.FORMULA_BASED);
 
-    final Formulas formulas = new Formulas(expr);
+    final Formulas formulas = new Formulas();
+    for (final Node f : formulae) {
+      formulas.add(f);
+    }
     builder.setInnerRep(formulas);
 
     builder.addVariables(formulas.getVariables());
