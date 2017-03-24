@@ -12,6 +12,12 @@
  (like Yices, Z3, CVC4, etc.)
 
 --------------------------------------------------------------------------------
+ 2017/03/24 Fortress 0.4.23 beta
+
+ - SmtTextBuilder was made public
+ - ConstraintUtils.newConstraint for collections was implemented
+
+--------------------------------------------------------------------------------
  2017/03/16 Fortress 0.4.22 beta
 
  The new build contains the following changes:
