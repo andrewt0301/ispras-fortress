@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2015-2017 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,18 +14,22 @@
 
 package ru.ispras.fortress.util;
 
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
-
 public final class Pair<T, U> {
   public final T first;
   public final U second;
 
   public Pair(final T first, final U second) {
-    checkNotNull(first);
-    checkNotNull(second);
-
     this.first = first;
     this.second = second;
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((first == null) ? 0 : first.hashCode());
+    result = prime * result + ((second == null) ? 0 : second.hashCode());
+    return result;
   }
 
   @Override
@@ -39,12 +43,14 @@ public final class Pair<T, U> {
     }
 
     final Pair<?, ?> other = (Pair<?, ?>) obj;
-    return first.equals(other.first) && second.equals(other.second);
+    return equals(this.first, other.first) &&
+           equals(this.second, other.second);
   }
 
-  @Override
-  public int hashCode() {
-    return 31 * first.hashCode() + second.hashCode();
+  private static boolean equals(final Object thisObject, final Object otherObject) {
+    return thisObject == null ?
+           thisObject == otherObject :
+           thisObject.equals(otherObject);
   }
 
   @Override
