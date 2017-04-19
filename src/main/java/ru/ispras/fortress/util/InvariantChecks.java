@@ -147,7 +147,7 @@ public final class InvariantChecks {
    * 
    * @param n Integer value to be checked.
    * 
-   * @throws IllegalArgumentException if the invariant is violated ({@code n} <= {@code 0}).
+   * @throws IllegalArgumentException if the invariant is violated ({@code n <= 0}).
    */
   public static void checkGreaterThanZero(final int n) {
     if (n <= 0) {
@@ -162,7 +162,7 @@ public final class InvariantChecks {
    * 
    * @param n Integer value to be checked.
    * 
-   * @throws IllegalArgumentException if the invariant is violated ({@code n} < {@code 0}).
+   * @throws IllegalArgumentException if the invariant is violated ({@code n < 0}).
    */
   public static void checkGreaterOrEqZero(final int n) {
     if (n < 0) {
