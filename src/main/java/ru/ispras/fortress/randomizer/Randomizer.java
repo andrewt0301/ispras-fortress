@@ -34,6 +34,9 @@ public final class Randomizer {
   /** Randomizer instance (singleton). */
   private static Randomizer randomizer = new Randomizer();
 
+  /** {@link BigInteger} for {@link Long#MAX_VALUE} */
+  private static final BigInteger MAX_LONG = BigInteger.valueOf(Long.MAX_VALUE);
+
   /**
    * Returns the randomizer instance.
    * 
@@ -310,14 +313,17 @@ public final class Randomizer {
     InvariantChecks.checkGreaterOrEq(max, min);
 
     final BigInteger diff = max.subtract(min);
+    final BigInteger offset;
 
-    if (diff.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) > 0) {
-      throw new IllegalArgumentException(String.format("(max-min)=%s is to too large", diff));
-    }
+    if (diff.compareTo(MAX_LONG) <= 0) {
+      offset = BigInteger.valueOf(nextLongRange(0, diff.longValue()));
+    } else {
+      final BigInteger first = nextBigIntegerRange(BigInteger.ZERO, MAX_LONG);
+      final BigInteger second = nextBigIntegerRange(BigInteger.ZERO, diff.subtract(MAX_LONG));
+      offset = first.add(second);
+     }
 
-    final long offset = nextLongRange(0, diff.longValue());
-
-    return min.add(BigInteger.valueOf(offset));
+    return min.add(offset);
   }
 
   //------------------------------------------------------------------------------------------------
