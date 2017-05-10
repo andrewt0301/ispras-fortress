@@ -21,17 +21,15 @@ import static ru.ispras.fortress.util.InvariantChecks.checkGreaterThanZero;
  * is possible for an operator to be unary and binary at the same time or to have an unlimited
  * number of operands. The Range class allows specifying a range for the allowed number of operands.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public final class ArityRange {
   /**
    * The Bound enumeration contains constants for specifying most common bounds for the range of
    * allowed operand numbers.
    * 
-   * @author Andrei Tatarnikov
+   * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
    */
-
   public static enum Bound {
     /** Bound for unary operators. */
     UNARY(1),
@@ -56,7 +54,6 @@ public final class ArityRange {
      * 
      * @return Numeric value for the bound.
      */
-
     public int value() {
       return value;
     }
@@ -89,7 +86,6 @@ public final class ArityRange {
    * @param min Lower bound.
    * @param max Upper bound.
    */
-
   public ArityRange(final Bound min, final Bound max) {
     this(min.value(), max.value());
   }
@@ -102,7 +98,6 @@ public final class ArityRange {
    * 
    * @throws IllegalArgumentException if the range is specified incorrectly.
    */
-
   public ArityRange(final int min, final int max) {
     checkGreaterThanZero(min);
 
@@ -120,7 +115,6 @@ public final class ArityRange {
    * @param value Number of operands.
    * @return {@code true} if value is in the range or {@code false} otherwise.
    */
-
   public boolean isWithinRange(final int value) {
     return (min <= value) && ((value <= max) || (Bound.UNBOUNDED.value() == max));
   }
