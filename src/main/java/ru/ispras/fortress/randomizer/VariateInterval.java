@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2015-2017 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -27,6 +27,7 @@ import ru.ispras.fortress.util.InvariantChecks;
  * @param <T> the type of the random variate values. 
  * 
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 public final class VariateInterval<T> implements Variate<T> {
 
@@ -115,34 +116,90 @@ public final class VariateInterval<T> implements Variate<T> {
    * @param max the upper bound of the interval.
    * 
    * @throws IllegalArgumentException (1) if {@code min == null} or {@code max == null};
-   *         (2) if min and max have different types;
+   *         (2) if min and max have incompatible types;
    *         (3) if {@code min > max};
    *         (4) if the value type is unsupported.
    */
   public VariateInterval(final T min, final T max) {
+    this(min, max, getCastClass(min, max));
+  }
+
+  private VariateInterval(final T min, final T max, final Class<?> typeClass) {
     InvariantChecks.checkNotNull(min);
     InvariantChecks.checkNotNull(max);
+    InvariantChecks.checkNotNull(typeClass);
 
-    if (!min.getClass().equals(max.getClass())) {
-      throw new IllegalArgumentException(String.format(
-          "Different types for min and max: %s and %s.", 
-          min.getClass().getName(), max.getClass().getName()));
-    }
-
-    final Class<?> typeClass = min.getClass();
     final Type type = Type.fromClass(typeClass);
     if (null == type) {
       throw new IllegalArgumentException(String.format(
           "Type %s is not supported.", typeClass.getName()));
     }
 
-    if (!type.isLessOrEq(min, max)) {
+    this.type = type;
+    this.min = cast(min, typeClass);
+    this.max = cast(max, typeClass);
+
+    if (!type.isLessOrEq(this.min, this.max)) {
       throw new IllegalArgumentException(String.format("%s must be <= %s", min, max));
     }
+  }
 
-    this.type = type;
-    this.min = min;
-    this.max = max;
+  private static <T> Class<?> getCastClass(final T first, final T second) {
+    InvariantChecks.checkNotNull(first);
+    InvariantChecks.checkNotNull(second);
+
+    if (first.getClass().equals(second.getClass())) {
+      return first.getClass();
+    }
+
+    checkNumber(first);
+    checkNumber(second);
+
+    if (first instanceof BigInteger || second instanceof BigInteger) {
+      return BigInteger.class;
+    }
+
+    if (first instanceof Long || second instanceof Long) {
+      return Long.class;
+    }
+
+    if (first instanceof Integer || second instanceof Integer) {
+      return Integer.class;
+    }
+
+    throw new IllegalArgumentException(String.format(
+        "Unsupported or incompatible types: %s(%s) and %s(%s).",
+        first, first.getClass().getName(), second, second.getClass().getName())
+        );
+  }
+
+  private static void checkNumber(final Object value) {
+    if (!(value instanceof Number)) {
+      throw new IllegalArgumentException(
+          String.format("%s(%s) is not a number.", value, value.getClass().getName()));
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  private static <T> T cast(final T value, Class<?> typeClass) {
+    if (typeClass.equals(value.getClass())) {
+      return value;
+    }
+
+    final Number number = (Number) value;
+    final Number result;
+
+    if (typeClass.equals(BigInteger.class)) {
+      result = BigInteger.valueOf(number.longValue());
+    } else if (typeClass.equals(Long.class)) {
+      result = number.longValue();
+    } else if (typeClass.equals(Integer.class)) {
+      result = number.intValue();
+    } else {
+      throw new IllegalArgumentException("Unsupported type: " + typeClass.getSimpleName());
+    }
+
+    return (T) result;
   }
 
   @SuppressWarnings("unchecked")
