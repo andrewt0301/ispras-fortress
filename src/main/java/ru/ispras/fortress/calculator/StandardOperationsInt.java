@@ -1,11 +1,11 @@
 /*
  * Copyright 2013-2015 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -28,27 +28,27 @@ import ru.ispras.fortress.expression.StandardOperation;
  * The StandardOperationsInt enumeration holds a collection of operation objects that are
  * responsible for performing standard operations (StandardOperation) on data objects that hold
  * integers (DataTypeId.LOGIC_INTEGER).
- * 
+ *
  * <p>
  * Implementation details and conventions common for all operation groups implemented as
  * enumerations:
- * 
+ *
  * <ol>
  * <li>The enumeration implements the Operation interface parameterized with the StandardOperation
  * type.
- * 
+ *
  * <li>Each operation is represented by an element of the enumeration that provides implementation
  * for the "calculate" methods with one and two parameters. If one of the overloaded "calculate"
  * method is not applicable for the operation the UnsupportedOperationException runtime exception is
  * thrown.
- * 
+ *
  * <li>Each enumeration elements holds operation identifier and the range of the allowed operand
  * number.
- * 
+ *
  * <li>The enumeration provides the "dataTypeId" static method that returns the identifier of the
  * data type for which the enumeration provides operations.
  * </ol>
- * 
+ *
  * @author Andrei Tatarnikov
  */
 
@@ -256,7 +256,7 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
       start = Math.min(start, end);
       end = tmp;
 
-      final BitVector bv = 
+      final BitVector bv =
           BitVector.newMapping(operands[2].getBitVector(), start, end - start + 1);
       return Data.newBitVector(bv);
     }
@@ -284,6 +284,13 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
       final BigInteger value = operands[0].getInteger();
       final int amount = operands[1].getInteger().intValue();
       return Data.newInteger(value.shiftRight(amount));
+    }
+  },
+
+  BV2INT(StandardOperation.BV2INT, ArityRange.UNARY) {
+    @Override
+    public Data calculate(final Data... operands) {
+      return Data.newInteger(operands[0].getBitVector().intValue());
     }
   },
 

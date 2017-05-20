@@ -1,11 +1,11 @@
 /*
  * Copyright 2015 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -34,7 +34,7 @@ final class StandardOperations {
     public StdOperation(final StandardOperation id, final ArityRange arity) {
       super(id, arity);
     }
- 
+
     abstract public Data calculate(Data... operands);
   }
 
@@ -90,7 +90,7 @@ final class StandardOperations {
       case UNARY: return ArityRange.UNARY;
       case BINARY: return ArityRange.BINARY;
       case TERNARY: return ArityRange.TERNARY;
-      default: throw new IllegalArgumentException(); 
+      default: throw new IllegalArgumentException();
       }
     }
 
@@ -178,7 +178,19 @@ final class StandardOperations {
             return true;
           }
         },
-        
+
+        new StdOperation(StandardOperation.BV2INT, ArityRange.UNARY) {
+          @Override
+          public Data calculate(Data... operands) {
+            return Data.newInteger(operands[0].getBitVector().intValue());
+          }
+
+          @Override
+          public boolean validTypes(final Data... operands) {
+            return operands[0].isType(DataTypeId.BIT_VECTOR);
+          }
+        },
+
         new StdOperation(StandardOperation.BV2BOOL, ArityRange.UNARY) {
           @Override
           public Data calculate(final Data... operands) {

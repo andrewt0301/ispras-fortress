@@ -1,11 +1,11 @@
 /*
  * Copyright 2014-2015 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -19,7 +19,7 @@ import ru.ispras.fortress.expression.printer.OperationDescription.Type;
 
 /**
  * This class implements a Verilog-style expression printer.
- * 
+ *
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
 
@@ -50,6 +50,7 @@ final class VerilogExprPrinter extends MapBasedPrinter {
     addMapping(StandardOperation.BVLSHL, "<<", Type.INFIX);
     addMapping(StandardOperation.BVASHR, ">>>", Type.INFIX);
     addMapping(StandardOperation.BVASHL, "<<<", Type.INFIX);
+    addMapping(StandardOperation.BV2INT, "to_int", Type.INFIX);
     addMapping(StandardOperation.LESS, "<", Type.INFIX);
     addMapping(StandardOperation.BVULT, "<", Type.INFIX); // BVULT = LESS
     addMapping(StandardOperation.BVSLT, "<", Type.INFIX); // BVSLT = LESS

@@ -184,6 +184,9 @@ public enum StandardOperation implements TypeRule {
   /** Group: Bitvector, Operation: Extraction of subvector */
   BVEXTRACT(Family.BV, TypeRules.BVEXTRACT, 2, OperandTypes.TWO_INT_PARAM_BV),
 
+  /** Group: Bitvector, Operation: Conversion to integer */
+  BV2INT(Family.BV, TypeRules.INTEGER, OperandTypes.BV),
+
   /**
    * The items below belong to the "Bitwise Operations" group.
    */

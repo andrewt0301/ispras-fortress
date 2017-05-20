@@ -1,11 +1,11 @@
 /*
  * Copyright 2014-2016 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -23,15 +23,15 @@ import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * The {@code BitVectorMath} class contains utility methods and classes to perform operations
- * with bit vectors. 
- * 
+ * with bit vectors.
+ *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 public final class BitVectorMath {
   private BitVectorMath() {}
 
   /**
-   * Describes the number of arguments accepted by the bit vector operations. 
+   * Describes the number of arguments accepted by the bit vector operations.
    */
   public static enum Operands {
     UNARY(1), BINARY(2), TERNARY(3);
@@ -383,16 +383,16 @@ public final class BitVectorMath {
 
   /**
    * Performs logical left shift of the specified bit vector by the specified shift amount.
-   * The actual shift amount is calculated as {@code to} modulo {@code v.getBitSize()}. If the 
+   * The actual shift amount is calculated as {@code to} modulo {@code v.getBitSize()}. If the
    * actual shift amount equals {@code 0}, no shift is performed and the initial bit vector is
    * returned. Otherwise, a new copy of data is created and returned. If the shift amount is
-   * negative, the actual shift amount is calculated as {@code v.getBitSize()} minus 
+   * negative, the actual shift amount is calculated as {@code v.getBitSize()} minus
    * ({@code to} modulo {@code v.getBitSize()}).
-   * 
+   *
    * @param v Bit vector to be shifted.
    * @param to Shift amount.
    * @return Logical left shift result.
-   * 
+   *
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
 
@@ -439,16 +439,16 @@ public final class BitVectorMath {
 
   /**
    * Performs logical right shift of the specified bit vector by the specified shift amount.
-   * The actual shift amount is calculated as {@code to} modulo {@code v.getBitSize()}. If the 
+   * The actual shift amount is calculated as {@code to} modulo {@code v.getBitSize()}. If the
    * actual shift amount equals {@code 0}, no shift is performed and the initial bit vector is
    * returned. Otherwise, a new copy of data is created and returned. If the shift amount is
-   * negative, the actual shift amount is calculated as {@code v.getBitSize()} minus 
+   * negative, the actual shift amount is calculated as {@code v.getBitSize()} minus
    * ({@code to} modulo {@code v.getBitSize()}).
-   * 
+   *
    * @param v Bit vector to be shifted.
    * @param to Shift amount.
    * @return Logical right shift result.
-   * 
+   *
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
 
@@ -495,16 +495,16 @@ public final class BitVectorMath {
 
   /**
    * Performs arithmetical right shift of the specified bit vector by the specified shift amount.
-   * The actual shift amount is calculated as {@code to} modulo {@code v.getBitSize()}. If the 
+   * The actual shift amount is calculated as {@code to} modulo {@code v.getBitSize()}. If the
    * actual shift amount equals {@code 0}, no shift is performed and the initial bit vector is
    * returned. Otherwise, a new copy of data is created and returned. If the shift amount is
-   * negative, the actual shift amount is calculated as {@code v.getBitSize()} minus 
+   * negative, the actual shift amount is calculated as {@code v.getBitSize()} minus
    * ({@code to} modulo {@code v.getBitSize()}).
-   * 
+   *
    * @param v Bit vector to be shifted.
    * @param to Shift amount.
    * @return Arithmetical right shift result.
-   * 
+   *
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
 
@@ -556,16 +556,16 @@ public final class BitVectorMath {
 
   /**
    * Performs rotation to the left of the specified bit vector by the specified shift amount.
-   * The actual shift amount is calculated as {@code to} modulo {@code v.getBitSize()}. If the 
+   * The actual shift amount is calculated as {@code to} modulo {@code v.getBitSize()}. If the
    * actual shift amount equals {@code 0}, no shift is performed and the initial bit vector is
    * returned. Otherwise, a new copy of data is created and returned. If the shift amount is
-   * negative, the actual shift amount is calculated as {@code v.getBitSize()} minus 
+   * negative, the actual shift amount is calculated as {@code v.getBitSize()} minus
    * ({@code to} modulo {@code v.getBitSize()}).
-   * 
+   *
    * @param v Bit vector to be shifted.
    * @param to Shift amount.
    * @return Left rotation result.
-   * 
+   *
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
 
@@ -606,7 +606,7 @@ public final class BitVectorMath {
 
     return result;
   }
-  
+
   private static BitVector doRotl(final BitVector v, final int amount) {
     if (0 == amount) {
       return v;
@@ -628,16 +628,16 @@ public final class BitVectorMath {
 
   /**
    * Performs rotation to the right of the specified bit vector by the specified shift amount.
-   * The actual shift amount is calculated as {@code to} modulo {@code v.getBitSize()}. If the 
+   * The actual shift amount is calculated as {@code to} modulo {@code v.getBitSize()}. If the
    * actual shift amount equals {@code 0}, no shift is performed and the initial bit vector is
    * returned. Otherwise, a new copy of data is created and returned. If the shift amount is
-   * negative, the actual shift amount is calculated as {@code v.getBitSize()} minus 
+   * negative, the actual shift amount is calculated as {@code v.getBitSize()} minus
    * ({@code to} modulo {@code v.getBitSize()}).
-   * 
+   *
    * @param v Bit vector to be shifted.
    * @param to Shift amount.
    * @return Right rotation result.
-   * 
+   *
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
 
@@ -827,7 +827,7 @@ public final class BitVectorMath {
 
     if (isLeftNeg != isRightNeg) {
       // If lhs is negative, it is less. Otherwise, it is greater.
-      return BitVector.valueOf(isLeftNeg); 
+      return BitVector.valueOf(isLeftNeg);
     }
 
     return BitVector.valueOf(lhs.compareTo(rhs) < 0);
@@ -843,7 +843,7 @@ public final class BitVectorMath {
 
     if (isLeftNeg != isRightNeg) {
       // If lhs is positive, it is greater. Otherwise, it is less.
-      return BitVector.valueOf(!isLeftNeg); 
+      return BitVector.valueOf(!isLeftNeg);
     }
 
     return BitVector.valueOf(lhs.compareTo(rhs) >= 0);
@@ -859,7 +859,7 @@ public final class BitVectorMath {
 
     if (isLeftNeg != isRightNeg) {
       // If lhs is positive, it is greater. Otherwise, it is less.
-      return BitVector.valueOf(!isLeftNeg); 
+      return BitVector.valueOf(!isLeftNeg);
     }
 
     return BitVector.valueOf(lhs.compareTo(rhs) > 0);

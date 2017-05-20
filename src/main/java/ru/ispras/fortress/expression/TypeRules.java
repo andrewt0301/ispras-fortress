@@ -39,6 +39,13 @@ enum TypeRules implements TypeRule {
     }
   },
 
+  INTEGER {
+    @Override
+    public DataType getResultType(final DataType[] operandTypes, final int[] params) {
+      return DataType.INTEGER;
+    }
+  },
+
   FIRST_KNOWN_BV_ARG {
     @Override
     public DataType getResultType(final DataType[] operandTypes, final int[] params) {
