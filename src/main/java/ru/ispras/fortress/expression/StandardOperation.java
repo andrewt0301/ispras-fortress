@@ -184,9 +184,6 @@ public enum StandardOperation implements TypeRule {
   /** Group: Bitvector, Operation: Extraction of subvector */
   BVEXTRACT(Family.BV, TypeRules.BVEXTRACT, 2, OperandTypes.TWO_INT_PARAM_BV),
 
-  /** Group: Bitvector, Operation: Conversion to integer */
-  BV2INT(Family.BV, TypeRules.INTEGER, OperandTypes.BV),
-
   /**
    * The items below belong to the "Bitwise Operations" group.
    */
@@ -287,6 +284,12 @@ public enum StandardOperation implements TypeRule {
 
   /** Group: Bit Vector Cast, Operation: Cast boolean to bit vector of size 1 */
   BOOL2BV(Family.BV, TypeRules.BIT_BOOLEAN, OperandTypes.BOOL),
+
+  /** Group: Bit Vector Cast, Operation: Cast bit vector to integer */
+  BV2INT(Family.BV, TypeRules.INTEGER, OperandTypes.BV),
+
+  /** Group: Bit Vector Cast, Operation: Conversion to integer */
+  INT2BV(Family.BV, TypeRules.INT2BV, 1, OperandTypes.INT),
 
   /**
    * The items below belong to the "Array Operations" group.

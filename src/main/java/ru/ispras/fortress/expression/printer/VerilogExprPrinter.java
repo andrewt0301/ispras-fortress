@@ -50,7 +50,8 @@ final class VerilogExprPrinter extends MapBasedPrinter {
     addMapping(StandardOperation.BVLSHL, "<<", Type.INFIX);
     addMapping(StandardOperation.BVASHR, ">>>", Type.INFIX);
     addMapping(StandardOperation.BVASHL, "<<<", Type.INFIX);
-    addMapping(StandardOperation.BV2INT, "to_int", Type.INFIX);
+    addMapping(StandardOperation.BV2INT, new String[] {"to_int(", ")"});
+    addMapping(StandardOperation.INT2BV, "to_bv(", ", ", ")");
     addMapping(StandardOperation.LESS, "<", Type.INFIX);
     addMapping(StandardOperation.BVULT, "<", Type.INFIX); // BVULT = LESS
     addMapping(StandardOperation.BVSLT, "<", Type.INFIX); // BVSLT = LESS

@@ -294,6 +294,15 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
     }
   },
 
+  INT2BV(StandardOperation.INT2BV, ArityRange.BINARY) {
+    @Override
+    public Data calculate(final Data... operands) {
+      final int length = operands[0].getInteger().intValue();
+      final BigInteger value = operands[1].getInteger();
+      return Data.newBitVector(value, length);
+    }
+  },
+
   ABS(StandardOperation.ABS, ArityRange.UNARY) {
     @Override
     public Data calculate(final Data... operands) {

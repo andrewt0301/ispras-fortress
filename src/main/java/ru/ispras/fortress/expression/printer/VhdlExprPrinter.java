@@ -44,7 +44,8 @@ final class VhdlExprPrinter extends MapBasedPrinter {
     addMapping(StandardOperation.BVLSHL, "SLL", Type.INFIX);
     addMapping(StandardOperation.BVASHR, "SRA", Type.INFIX);
     addMapping(StandardOperation.BVASHL, "SLA", Type.INFIX);
-    addMapping(StandardOperation.BV2INT, "CONV_INTEGER", Type.INFIX);
+    addMapping(StandardOperation.BV2INT, new String[] {"CONV_INTEGER(", ")"});
+    addMapping(StandardOperation.INT2BV, "TO_UNSIGNED(", ", ", ")");
     addMapping(StandardOperation.BVROR, "ROR", Type.INFIX);
     addMapping(StandardOperation.BVROL, "ROL", Type.INFIX);
     addMapping(StandardOperation.LESS, "<", Type.INFIX);
