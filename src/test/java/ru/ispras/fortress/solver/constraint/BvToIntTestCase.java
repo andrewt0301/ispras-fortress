@@ -33,13 +33,14 @@ public class BvToIntTestCase extends GenericSolverTestBase {
    * The constraint as described in the SMT language:
    *
    * <pre>
-   *     (declare-fun x () (_ BitVec 32))
-   *     (declare-fun y () Int)
+   *     (declare-const x (_ BitVec 32))
+   *     (declare-const y Int)
    *     (assert (= y 129))
-   *     (assert (= (bv2nat x) y))
+   *     (assert (= (bv2int x) y))
    *     (check-sat)
    *     (get-model)
    *     (get-value (x y))
+   *     (exit)
    * </pre>
    *
    * Expected output: sat ((x #x00000081) (y 129))
@@ -75,7 +76,7 @@ public class BvToIntTestCase extends GenericSolverTestBase {
     @Override
     public Iterable<Variable> getExpectedVariables() {
       final List<Variable> result = new ArrayList<>();
-      result.add(new Variable("x", BIT_VECTOR_TYPE.valueOf("0", 16)));
+      result.add(new Variable("x", BIT_VECTOR_TYPE.valueOf("81", 16)));
       result.add(new Variable("y", INT_TYPE.valueOf("129", 10)));
       return result;
     }

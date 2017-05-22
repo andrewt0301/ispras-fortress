@@ -39,6 +39,8 @@ public class IntToBvTestCase extends GenericSolverTestBase {
    *     (assert (= ((_ int2bv 2) x) #b11))
    *     (check-sat)
    *     (get-model)
+   *     (get-value (x ))
+   *     (exit)
    * </pre>
    *
    * Expected output: sat (x 3)
