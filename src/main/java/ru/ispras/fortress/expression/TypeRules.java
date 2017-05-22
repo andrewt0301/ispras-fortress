@@ -55,7 +55,7 @@ enum TypeRules implements TypeRule {
     }
   },
 
-  SECOND_VB_ARG {
+  SECOND_BV_ARG {
     @Override
     public DataType getResultType(final DataType[] operandTypes, final int[] params) {
       if (operandTypes.length > 1 && operandTypes[1].getTypeId() == DataTypeId.BIT_VECTOR) {

@@ -170,10 +170,10 @@ public enum StandardOperation implements TypeRule {
   BVREPEAT(Family.BV, TypeRules.BVREPEAT, 1, OperandTypes.ONE_INT_PARAM_BV),
 
   /** Group: Bitvector, Operation: Rotate left */
-  BVROL(Family.BV, TypeRules.SECOND_VB_ARG, 1, OperandTypes.ONE_INT_PARAM_BV),
+  BVROL(Family.BV, TypeRules.SECOND_BV_ARG, 1, OperandTypes.ONE_INT_PARAM_BV),
 
   /** Group: Bitvector, Operation: Rotate right */
-  BVROR(Family.BV, TypeRules.SECOND_VB_ARG, 1, OperandTypes.ONE_INT_PARAM_BV),
+  BVROR(Family.BV, TypeRules.SECOND_BV_ARG, 1, OperandTypes.ONE_INT_PARAM_BV),
 
   /** Group: Bitvector, Operation: Extension by zeros */
   BVZEROEXT(Family.BV, TypeRules.BVEXTEND, 1, OperandTypes.ONE_INT_PARAM_BV),
