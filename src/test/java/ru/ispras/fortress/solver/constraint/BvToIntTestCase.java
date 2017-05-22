@@ -36,10 +36,10 @@ public class BvToIntTestCase extends GenericSolverTestBase {
    *     (declare-fun x () (_ BitVec 32))
    *     (declare-fun y () Int)
    *     (assert (= y 129))
-   *     (assert (= (bv2int x) y))
+   *     (assert (= (bv2nat x) y))
    *     (check-sat)
    *     (get-model)
-   *     (get-value (x y z))
+   *     (get-value (x y))
    * </pre>
    *
    * Expected output: sat ((x #x00000081) (y 129))
@@ -48,10 +48,11 @@ public class BvToIntTestCase extends GenericSolverTestBase {
   public static class BvToIntOperation implements SampleConstraint {
 
     private static final DataType INT_TYPE = DataType.INTEGER;
-    protected static final int BIT_VECTOR_SIZE = 32;
-    protected static final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_SIZE);
+    private static final int BIT_VECTOR_SIZE = 32;
+    private static final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_SIZE);
 
-    @Override public Constraint getConstraint() {
+    @Override
+    public Constraint getConstraint() {
       final ConstraintBuilder builder = new ConstraintBuilder();
 
       builder.setName("BvToInt");
@@ -71,8 +72,9 @@ public class BvToIntTestCase extends GenericSolverTestBase {
       return builder.build();
     }
 
-    @Override public Iterable<Variable> getExpectedVariables() {
-      final List<Variable> result = new ArrayList<Variable>();
+    @Override
+    public Iterable<Variable> getExpectedVariables() {
+      final List<Variable> result = new ArrayList<>();
       result.add(new Variable("x", BIT_VECTOR_TYPE.valueOf("0", 16)));
       result.add(new Variable("y", INT_TYPE.valueOf("129", 10)));
       return result;

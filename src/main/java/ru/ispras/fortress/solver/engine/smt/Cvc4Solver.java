@@ -42,8 +42,7 @@ public final class Cvc4Solver extends SmtTextSolver {
 
   public Cvc4Solver() {
     super(NAME, DESCRIPTION, ENV_VAR_NAME);
-    addCustomOperation(customRem());
-    addCustomOperation(customPlus());
+    initCvc4Operations();
   }
 
   @Override
@@ -89,5 +88,11 @@ public final class Cvc4Solver extends SmtTextSolver {
                                                  new NodeVariable(var),
                                                  NodeValue.newInteger(0));
     return new Function(StandardOperation.PLUS, var.getType(), plus, var);
+  }
+
+  private void initCvc4Operations() {
+    addCustomOperation(customRem());
+    addCustomOperation(customPlus());
+    addStandardOperation(StandardOperation.BV2INT, "bv2nat");
   }
 }

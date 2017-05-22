@@ -15,5 +15,70 @@
 package ru.ispras.fortress.solver.constraint;
 
 
-public class IntToBvTestCase {
+import ru.ispras.fortress.data.DataType;
+import ru.ispras.fortress.data.Variable;
+import ru.ispras.fortress.data.types.bitvector.BitVector;
+import ru.ispras.fortress.expression.NodeOperation;
+import ru.ispras.fortress.expression.NodeValue;
+import ru.ispras.fortress.expression.NodeVariable;
+import ru.ispras.fortress.expression.StandardOperation;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class IntToBvTestCase extends GenericSolverTestBase {
+  public IntToBvTestCase() {
+    super(new IntToBvOperation());
+  }
+
+  /**
+   * The constraint as described in the SMT language:
+   *
+   * <pre>
+   *     (declare-const x Int)
+   *     (assert (= ((_ int2bv 2) x) #b11))
+   *     (check-sat)
+   *     (get-model)
+   * </pre>
+   *
+   * Expected output: sat (x 3)
+   */
+
+  public static class IntToBvOperation implements SampleConstraint {
+
+    private static final DataType INT_TYPE = DataType.INTEGER;
+    private static final int BIT_VECTOR_SIZE = 2;
+    private static final int RADIX = 2;
+
+    @Override
+    public Constraint getConstraint() {
+      final ConstraintBuilder builder = new ConstraintBuilder();
+
+      builder.setName("IntToBv");
+      builder.setKind(ConstraintKind.FORMULA_BASED);
+      builder.setDescription("IntToBv constraint");
+
+      final NodeVariable x = new NodeVariable(builder.addVariable("x", INT_TYPE));
+
+      final Formulas formulas = new Formulas();
+      builder.setInnerRep(formulas);
+
+      formulas.add(
+          new NodeOperation(
+              StandardOperation.EQ,
+              new NodeOperation(
+                  StandardOperation.INT2BV,
+                  NodeValue.newInteger(BIT_VECTOR_SIZE), x),
+                  NodeValue.newBitVector(BitVector.valueOf("11", RADIX, BIT_VECTOR_SIZE))));
+
+      return builder.build();
+    }
+
+    @Override
+    public Iterable<Variable> getExpectedVariables() {
+      final List<Variable> result = new ArrayList<>();
+      result.add(new Variable("x", INT_TYPE.valueOf("3", 10)));
+      return result;
+    }
+  }
 }

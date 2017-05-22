@@ -482,7 +482,6 @@ public abstract class SmtTextSolver extends SolverBase {
     addStandardOperation(StandardOperation.BVASHL, "bvshl");
     addStandardOperation(StandardOperation.BVLSHR, "bvlshr");
     addStandardOperation(StandardOperation.BVASHR, "bvashr");
-    addStandardOperation(StandardOperation.BV2INT, "bv2nat");
     addStandardOperation(StandardOperation.INT2BV, "int2bv");
     addStandardOperation(StandardOperation.BVCONCAT, "concat");
     addStandardOperation(StandardOperation.BVREPEAT, "repeat");

@@ -14,12 +14,12 @@
 
 package ru.ispras.fortress.solver.engine.smt;
 
+import ru.ispras.fortress.expression.StandardOperation;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-
-import ru.ispras.fortress.expression.StandardOperation;
 
 /**
  * The Z3TextSolver class implements logic of a constraint solver that uses the Z3 tool by Microsoft
@@ -57,6 +57,7 @@ public final class Z3Solver extends SmtTextSolver {
   }
 
   private void initZ3Operations() {
+    addStandardOperation(StandardOperation.BV2INT, "bv2int");
     addStandardOperation(StandardOperation.REM, "rem");
   }
 }
