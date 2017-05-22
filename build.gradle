@@ -93,7 +93,7 @@ String cvc4
 String cvc4path
 
 windows {
-  z3 = 'z3:z3:4.3.0-x64:@zip'
+  z3 = 'z3:z3:4.5.0-x64-win:@zip'
   z3path = 'tools/z3/bin/z3.exe'
 
   cvc4 = 'cvc4:cvc4:1.4-win32-opt:@exe'
@@ -101,7 +101,7 @@ windows {
 }
 
 unix {
-  z3 = 'z3:z3:x64-4.1:@tar.gz'
+  z3 = 'z3:z3:4.5.0-x64-ubuntu-14.04:@zip'
   z3path = 'tools/z3/bin/z3'
 
   cvc4 = 'cvc4:cvc4:2015-05-12-x86_64-linux-opt:@bin'
@@ -109,7 +109,7 @@ unix {
 }
 
 macOs {
-  z3 = 'z3:z3:4.3.2.7c12ab47165a-x64-osx-10.8.2:@zip'
+  z3 = 'z3:z3:4.5.0-x64-osx-10.11.6:@zip'
   z3path = 'tools/z3/bin/z3'
 }
 
@@ -130,7 +130,7 @@ task getZ3(type: Copy) {
     from zipTree( configurations.testRuntime.fileCollection { dep -> dep.name == 'z3' }.singleFile )
   }
   unix  {
-    from tarTree( configurations.testRuntime.fileCollection { dep -> dep.name == 'z3' }.singleFile )
+    from zipTree( configurations.testRuntime.fileCollection { dep -> dep.name == 'z3' }.singleFile )
   }
   macOs {
     from zipTree( configurations.testRuntime.fileCollection { dep -> dep.name == 'z3' }.singleFile )
