@@ -11,6 +11,13 @@
  supports constraint solving using built-in solvers as well as external ones
  (like Yices, Z3, CVC4, etc.)
 --------------------------------------------------------------------------------
+ 2017/05/22 Fortress 0.4.25 beta
+
+ - Transformer: transform MAP to BIT_VECTOR
+ - Solver: bv2int( bv2nat for CVC4) and int2bv operations
+ - Solver: solver-specific headers for generated *.smt2 files
+
+--------------------------------------------------------------------------------
  2017/05/11 Fortress 0.4.24 beta
 
  - Improvements in Randomizer and VariateInterval
@@ -135,7 +142,7 @@
 
  - Methods getBigIntegerMask, getField and setField were added in BitUtils
  - Method nextBigIntegerField was added in Randomizer
- - Methods maskInt and maskLong of BitUtils were renamed to 
+ - Methods maskInt and maskLong of BitUtils were renamed to
    getIntegerMask and getLongMask respectively
 
 --------------------------------------------------------------------------------
@@ -197,7 +204,7 @@
  The new build contains the following changes:
 
  - Type calculation rules for the BVZEROEXT, BVSIGNEXT, SELECT and STORE
-   operators were implemented 
+   operators were implemented
  - The BitVector class was improved
 
 --------------------------------------------------------------------------------
@@ -259,10 +266,10 @@
  - Utility method ExprUtils.getVariables for getting the list of variables
    contained in an expression
  - Utility class CollectionUtils that facilitates manipulating collections
- - Class ConstraintUtils that provides methods to simplify creating and 
+ - Class ConstraintUtils that provides methods to simplify creating and
    solving constraints
- - Improvement in solver implementation that allows interpreting boolean 
-   operands of bit vector operators as bit vectors of length 1 
+ - Improvement in solver implementation that allows interpreting boolean
+   operands of bit vector operators as bit vectors of length 1
  - Debug and silent modes for SMT solvers (in the silent mode *.smt files
    are not saved in file system after a constant has been solved)
  - Support for the BVEXTRACT operator in expression type calculation logic
@@ -296,7 +303,7 @@
  2014/07/08 Fortress 0.3.1 beta
 
  The following features have been implemented:
- 
+
  - Support for parametric operations with two or more parameters
  - Support for array operations
  - Support for the BVEXTRACT operation
@@ -309,7 +316,7 @@
  - The library was redesigned and renamed to Fortress
  - The library was decomposed into a set of reusable packages
    (including data, expression, calculator, transform, solver)
- - New classes for describing data were implemented 
+ - New classes for describing data were implemented
    (including a new bit vector implementation)
  - A lot of refactoring has been done
  - A number of bugs was fixed
