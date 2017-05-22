@@ -84,6 +84,12 @@ public abstract class SmtTextSolver extends SolverBase {
     initStandardOperations();
   }
 
+  /**
+   * Returns the array of solver-specific header lines.
+   * @return The array of solver-specific header lines.
+   */
+  protected abstract String[] getHeader();
+
   protected abstract Reader invokeSolver(String path) throws IOException;
 
   private void solverFileExistsCheck(final String solverPath) {
@@ -114,7 +120,7 @@ public abstract class SmtTextSolver extends SolverBase {
     final SolverResultBuilder resultBuilder = new SolverResultBuilder(SolverResult.Status.ERROR);
 
     final SmtTextBuilder smtTextBuilder =
-        new SmtTextBuilder(constraint.getVariables(), getOperations());
+        new SmtTextBuilder(getHeader(), constraint.getVariables(), getOperations());
 
     final ExprTreeWalker walker = new ExprTreeWalker(smtTextBuilder);
 
@@ -476,7 +482,7 @@ public abstract class SmtTextSolver extends SolverBase {
     addStandardOperation(StandardOperation.BVASHL, "bvshl");
     addStandardOperation(StandardOperation.BVLSHR, "bvlshr");
     addStandardOperation(StandardOperation.BVASHR, "bvashr");
-    addStandardOperation(StandardOperation.BV2INT, "bv2int");
+    addStandardOperation(StandardOperation.BV2INT, "bv2nat");
     addStandardOperation(StandardOperation.INT2BV, "int2bv");
     addStandardOperation(StandardOperation.BVCONCAT, "concat");
     addStandardOperation(StandardOperation.BVREPEAT, "repeat");

@@ -1,11 +1,11 @@
 /*
  * Copyright 2011-2015 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -34,7 +34,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -50,7 +49,6 @@ import ru.ispras.fortress.data.DataTypeId;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.ExprTreeVisitor;
 import ru.ispras.fortress.expression.ExprTreeWalker;
-import ru.ispras.fortress.expression.ExprUtils;
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeBinding;
 import ru.ispras.fortress.expression.NodeOperation;
@@ -58,19 +56,18 @@ import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.solver.SolverOperation;
-import ru.ispras.fortress.solver.constraint.Constraint;
-import ru.ispras.fortress.solver.constraint.ConstraintUtils;
 import ru.ispras.fortress.solver.function.Function;
 import ru.ispras.fortress.solver.function.FunctionTemplate;
 
 /**
  * The SMTTextBuilder class implements logic that generates SMT-LIB code from a syntax structure.
  * Generated code is saved to a text file.
- * 
+ *
  * @author Andrei Tatarnikov
  */
 
 public final class SmtTextBuilder implements ExprTreeVisitor {
+  private final String[] header;
   private final Map<Enum<?>, SolverOperation> operations;
   private final Iterable<Variable> variables;
 
@@ -84,13 +81,15 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
 
   /**
    * Creates an instance of a SMT text builder.
-   * 
+   *
    * @param operations Operation dictionary.
    */
 
   SmtTextBuilder(
+      final String[] header,
       final Iterable<Variable> variables,
       final Map<Enum<?>, SolverOperation> operations) {
+    this.header = header;
     this.operations = operations;
     this.variables = variables;
   }
@@ -109,23 +108,9 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
     currentBuilder = builder;
   }
 
-  public static void saveToFile(
-    final String fileName,
-    final Collection<? extends Node> formulas,
-    final Map<Enum<?>, SolverOperation> operations) throws IOException {
-    final Constraint c = ConstraintUtils.newConstraint(formulas);
-    final SmtTextBuilder smtBuilder =
-      new SmtTextBuilder(c.getVariables(), operations);
-
-    final ExprTreeWalker walker = new ExprTreeWalker(smtBuilder);
-    walker.visit(formulas);
-
-    smtBuilder.saveToFile(fileName, new StringBuilder());
-  }
-
   /**
    * Saves the generated SMT-LIB representation to a text file.
-   * 
+   *
    * @param fileName The name of the target file.
    * @throws IOException if failed to create the output file.
    */
@@ -166,6 +151,10 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
     TextWriter out = null;
     try {
       out = new TextWriter(fileName, textBuilder);
+
+      for (final String headerLine : header) {
+        out.println(headerLine);
+      }
 
       int i = 0;
       for (final DataType type : arraysInUse) {
