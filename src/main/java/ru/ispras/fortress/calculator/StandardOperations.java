@@ -160,12 +160,15 @@ final class StandardOperations {
         new BitVectorCmp(StandardOperation.BVSGE, BitVectorMath.Operations.SGE),
         new BitVectorCmp(StandardOperation.BVSGT, BitVectorMath.Operations.SGT),
 
-        new StdOperation(StandardOperation.BVCONCAT, ArityRange.BINARY) {
+        new StdOperation(StandardOperation.BVCONCAT, ArityRange.BINARY_UNBOUNDED) {
           @Override
           public Data calculate(final Data... operands) {
-            final BitVector bv =
-                BitVector.newMapping(bvarg(operands, 1), bvarg(operands, 0));
-            return Data.newBitVector(bv);
+            final int size = operands.length;
+            final BitVector[] input = new BitVector[size];
+            for (int i = 0; i < size; ++i) {
+              input[i] = bvarg(operands, size - 1 - i);
+            }
+            return Data.newBitVector(BitVector.newMapping(input));
           }
 
           @Override
