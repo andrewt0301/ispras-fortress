@@ -23,8 +23,6 @@ import ru.ispras.fortress.expression.Node;
  * The representation of {@link Node} suitable for JAXB marshalling and unmarshalling. This class
  * must be used only for JAXB operations.
  *
- * @author <a href="mailto:i.melnichenko@deltasolutions.ru">Igor Melnichenko</a>
- *
  * @see Node
  */
 @XmlTransient

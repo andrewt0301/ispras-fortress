@@ -24,8 +24,6 @@ import ru.ispras.fortress.data.DataTypeId;
  * The adapter class for JAXB marshalling/unmarshalling of {@link Data} objects. Performs conversion
  * between {@link Data} and {@link JaxbData} instances.
  *
- * @author <a href="mailto:i.melnichenko@deltasolutions.ru">Igor Melnichenko</a>
- *
  * @see Data
  * @see JaxbData
  */

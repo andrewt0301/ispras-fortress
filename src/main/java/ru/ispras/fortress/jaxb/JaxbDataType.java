@@ -20,8 +20,6 @@ import ru.ispras.fortress.data.DataType;
  * The representation of {@link DataType} suitable for JAXB marshalling and unmarshalling. This
  * class must be used only for JAXB operations.
  * 
- * @author <a href="mailto:i.melnichenko@deltasolutions.ru">Igor Melnichenko</a>
- * 
  * @see DataType
  */
 public enum JaxbDataType {

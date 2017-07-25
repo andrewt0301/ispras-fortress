@@ -26,8 +26,6 @@ import ru.ispras.fortress.expression.NodeValue;
  * The adapter class for JAXB marshalling/unmarshalling of {@link Node} objects. Performs conversion
  * between {@link Node} and {@link JaxbNode} instances.
  *
- * @author <a href="mailto:i.melnichenko@deltasolutions.ru">Igor Melnichenko</a>
- *
  * @see Node
  * @see JaxbNode
  */

@@ -24,8 +24,6 @@ import ru.ispras.fortress.data.Data;
  * The representation of {@link Data} suitable for JAXB marshalling and unmarshalling. This class
  * must be used only for JAXB operations.
  *
- * @author <a href="mailto:i.melnichenko@deltasolutions.ru">Igor Melnichenko</a>
- *
  * @see Data
  */
 @XmlType(name = "data")

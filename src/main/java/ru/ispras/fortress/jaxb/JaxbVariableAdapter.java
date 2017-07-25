@@ -25,8 +25,6 @@ import ru.ispras.fortress.data.Variable;
  * The adapter class for JAXB marshalling/unmarshalling of {@link Variable} objects. Performs
  * conversion between {@link Variable} and {@link JaxbVariable} instances.
  *
- * @author <a href="mailto:i.melnichenko@deltasolutions.ru">Igor Melnichenko</a>
- *
  * @see Variable
  * @see JaxbVariable
  */
