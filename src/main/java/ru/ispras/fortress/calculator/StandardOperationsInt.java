@@ -25,7 +25,7 @@ import ru.ispras.fortress.data.types.bitvector.BitVector;
 import ru.ispras.fortress.expression.StandardOperation;
 
 /**
- * The StandardOperationsInt enumeration holds a collection of operation objects that are
+ * The {@link StandardOperationsInt} enumeration holds a collection of operation objects that are
  * responsible for performing standard operations (StandardOperation) on data objects that hold
  * integers (DataTypeId.LOGIC_INTEGER).
  *
@@ -49,9 +49,8 @@ import ru.ispras.fortress.expression.StandardOperation;
  * data type for which the enumeration provides operations.
  * </ol>
  *
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 enum StandardOperationsInt implements Operation<StandardOperation> {
 
   PLUS(StandardOperation.PLUS, ArityRange.UNARY) {

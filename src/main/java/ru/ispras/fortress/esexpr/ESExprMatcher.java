@@ -24,7 +24,6 @@ import ru.ispras.fortress.util.InvariantChecks;
  * several wildcards: {@code %a} matches any atom including {@code NIL},
  * {@code %s} matches any S-expression.
  */
-
 public final class ESExprMatcher {
   private static final String ATOM = "%a";
   private static final String SEXPR = "%s";
@@ -37,7 +36,6 @@ public final class ESExprMatcher {
    * @param pattern Lisp-syntax S-expression denoting pattern to match
    * @throws IllegalArgumentException if {@code pattern} is {@code null}
    */
-
   public ESExprMatcher(String pattern) {
     InvariantChecks.checkNotNull(pattern);
 
@@ -59,7 +57,6 @@ public final class ESExprMatcher {
    * @return {@code true} if given expression matches
    * @throws IllegalArgumentException if {@code e} is {@code null}
    */
-
   public boolean matches(ESExpr e) {
     InvariantChecks.checkNotNull(e);
     return matches(e, pattern);
@@ -72,7 +69,6 @@ public final class ESExprMatcher {
    * @param pattern S-expression denoting pattern
    * @return {@code true} if given expression matches
    */
-
   private static boolean matches(ESExpr e, ESExpr pattern) {
     if (pattern.getLiteral().equals(SEXPR)) {
       return true;

@@ -32,7 +32,6 @@ import ru.ispras.fortress.util.InvariantChecks;
  * Supports only ASCII characters, treats ';' as start of one-line comment,
  * does not support multiline symbols and treats them as sequence of expressions.
  */
-
 public final class ESExprParser {
   final StreamTokenizer tokenizer;
   final Deque<List<ESExpr>> stack;
@@ -42,7 +41,6 @@ public final class ESExprParser {
    *
    * @param reader {@code Reader} instance to read input from
    */
-
   public ESExprParser(final Reader reader) {
     InvariantChecks.checkNotNull(reader);
 
@@ -66,7 +64,6 @@ public final class ESExprParser {
    *
    * @return complete S-expression
    */
-
   public ESExpr next() throws IOException {
     final int token = nextToken();
     switch (token) {
@@ -95,7 +92,6 @@ public final class ESExprParser {
    * @return {@code true} if elements been read are given in dot notation
    * @throws IllegalArgumentException if parsing error occurred
    */
-
   private boolean readItems() throws IOException {
     boolean dotted = false;
     int token = nextToken();
@@ -127,7 +123,6 @@ public final class ESExprParser {
    *
    * @return token been read
    */
-
   private int nextToken() throws IOException {
     final int token = tokenizer.nextToken();
     if (token == StreamTokenizer.TT_WORD && tokenizer.sval.equals(".")) {
@@ -140,7 +135,6 @@ public final class ESExprParser {
    * Returns {@code true} if at least two elements of current tuple has
    * been read. I.e. if list-syntax and dot-syntax can be distinguished.
    */
-
   private boolean delimiterFound() {
     return !stack.isEmpty() && stack.peek().size() > 1;
   }
@@ -152,7 +146,6 @@ public final class ESExprParser {
    * @return parser for given string
    * @throws IllegalArgumentException if {@code s} is {@code null}
    */
-
   public static ESExprParser stringParser(final String s) {
     InvariantChecks.checkNotNull(s);
     return new ESExprParser(new StringReader(s));
@@ -164,7 +157,6 @@ public final class ESExprParser {
    * @param reader {@code Reader} instance to read input from
    * @return tokenizer for given input reader
    */
-
   private static StreamTokenizer setUpTokenizer(final Reader reader) {
     final StreamTokenizer tokenizer = new StreamTokenizer(reader);
     tokenizer.resetSyntax();

@@ -22,7 +22,6 @@ import ru.ispras.fortress.expression.printer.OperationDescription.Type;
  *
  * @author <a href="mailto:smolov@ispras.ru">Sergey Smolov</a>
  */
-
 final class VhdlExprPrinter extends MapBasedPrinter {
   public VhdlExprPrinter() {
     // Supported operations.

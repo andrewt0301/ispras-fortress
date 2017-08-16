@@ -45,7 +45,6 @@ import ru.ispras.fortress.expression.StandardOperation;
  * 
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 enum StandardOperationsBool implements Operation<StandardOperation> {
 
   NOT(StandardOperation.NOT, ArityRange.UNARY) {

@@ -25,18 +25,17 @@ import ru.ispras.fortress.data.DataTypeId;
 import ru.ispras.fortress.expression.StandardOperation;
 
 /**
- * The OperationGroup class is an implementation of a calculator engine that encapsulates a
+ * The {@link OperationGroup} class is an implementation of a calculator engine that encapsulates a
  * collection of objects that implement specific operations. Operation objects are grouped by the
  * data type they perform operations on. That is, there may be several implementations of the same
  * operation for different data types.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  * 
  * @param <OperationId> Class of the enumeration that specifies operations included in the operation
  *        group. An operation group object can hold only operations that are members of the same
  *        group and are described as elements of the same enumeration.
  */
-
 public final class OperationGroup<OperationId extends Enum<OperationId>>
     implements CalculatorEngine {
   // Key - data type identifier,
@@ -46,7 +45,6 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
   /**
    * Constructor for an operation group object.
    */
-
   public OperationGroup() {
     this.operations =
         new EnumMap<DataTypeId, Map<OperationId, Operation<OperationId>>>(DataTypeId.class);
@@ -61,7 +59,6 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
    * 
    * @throws IllegalArgumentException if any of the parameters equals {@code null}.
    */
-
   public final void registerOperations(
       final DataTypeId typeId,
       final Map<OperationId, Operation<OperationId>> operationsForType) {
@@ -76,7 +73,6 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
    * 
    * @throws IllegalArgumentException if any of the parameters equals {@code null}.
    */
-
   @Override
   public final boolean isSupported(final Enum<?> operationId, final Data... operands) {
     checkNotNull(operationId);
@@ -122,7 +118,6 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
    * @throws UnsupportedOperationException if the specified operation is not supported for the
    *         provided operands.
    */
-
   @Override
   public final Data calculate(final Enum<?> operationId, final Data... operands) {
     checkNotNull(operationId);
@@ -157,7 +152,7 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
   }
 
   private final String MSG_UNSUPPORTED_FRMT =
-    "Failed to calculate: the %s is not supported for the %s type, " +
+      "Failed to calculate: the %s is not supported for the %s type, " +
      "operand types are mismatched or it does not accept %d operands.";
 
   public static <T extends Enum<T>> Map<T, Operation<T>> operationMap(
