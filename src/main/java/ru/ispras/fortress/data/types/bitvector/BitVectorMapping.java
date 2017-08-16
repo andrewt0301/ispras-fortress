@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2017 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -214,14 +214,11 @@ final class BitVectorMapping extends BitVector {
     }
 
     // Moves the high part of the parameter byte to the low border (beginning) of the byte and
-    // unites
-    // it with the high part of the target byte that we want to preserve. Also, in case when the
-    // high
-    // part of the target byte is limited with the high border of the mask, we reset all excluded
-    // bits
-    // with a high byte mask.
+    // unites it with the high part of the target byte that we want to preserve. Also, in case
+    // when the high part of the target byte is limited with the high border of the mask, we reset
+    // all excluded bits with a high byte mask.
 
-    final byte prevHighValue = (byte) (source.getByte(byteIndex + 1) & lowByteMask);
+    final byte prevHighValue = (byte) (source.getByte(byteIndex + 1) & ~highByteMask);
     final byte allignedHighValue = (byte) ((value & 0xFF) >>> (BITS_IN_BYTE - excludedLowBits));
 
     final byte highByte =
