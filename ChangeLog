@@ -3,7 +3,7 @@
 ================================================================================
 
  Fortress (FORmula TRanslation, Evaluation and Symbolic Simplification), former
- JCSA (Java Constraint Solver API), is an open-source and extendable Java
+ JCSA (Java Constraint Solver API), is an open-source and extendible Java
  library providing facilities for manipulation with formulae (terms and
  constraints). The library allows creating formulae (in the form of syntax
  trees), translating them into external formats (programming languages, XML,
@@ -11,6 +11,12 @@
  supports constraint solving using built-in solvers as well as external ones
  (like Yices, Z3, CVC4, etc.)
 --------------------------------------------------------------------------------
+ 
+ 2017/08/16 Fortress 0.4.26 beta
+ 
+  - Fix in BitVectorMapping
+  - Improvement in type calculation rules (support unbounded BVCONCAT)
+ 
  2017/05/22 Fortress 0.4.25 beta
 
  - Transformer: transform MAP to BIT_VECTOR
