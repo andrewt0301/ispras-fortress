@@ -20,6 +20,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * The Z3TextSolver class implements logic of a constraint solver that uses the Z3 tool by Microsoft
@@ -44,8 +46,8 @@ public final class Z3Solver extends SmtTextSolver {
   }
 
   @Override
-  protected String[] getHeader() {
-    return new String[0];
+  protected List<String> getHeader() {
+    return Collections.emptyList();
   }
 
   @Override

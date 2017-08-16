@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -85,10 +86,10 @@ public abstract class SmtTextSolver extends SolverBase {
   }
 
   /**
-   * Returns the array of solver-specific header lines.
-   * @return The array of solver-specific header lines.
+   * Returns the list of solver-specific header lines.
+   * @return The list of solver-specific header lines.
    */
-  protected abstract String[] getHeader();
+  protected abstract List<String> getHeader();
 
   protected abstract Reader invokeSolver(String path) throws IOException;
 
