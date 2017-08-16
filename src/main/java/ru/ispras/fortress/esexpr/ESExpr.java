@@ -29,7 +29,6 @@ import java.util.List;
  * at the last position are called lists. NIL is a predefined atom which
  * is considered as an empty tuple or list.
  */
-
 public final class ESExpr {
   public static final ESExpr NIL =
       new ESExpr("NIL", Collections.<ESExpr>emptyList());
@@ -50,7 +49,6 @@ public final class ESExpr {
    *
    * @return {@code true} if this expression is atom
    */
-
   public boolean isAtom() {
     return items.isEmpty();
   }
@@ -60,7 +58,6 @@ public final class ESExpr {
    *
    * @return {@code true} if this expression is {@code NIL} atom
    */
-
   public boolean isNil() {
     return this == NIL;
   }
@@ -72,7 +69,6 @@ public final class ESExpr {
    *
    * @return {@code true} if this expression is list
    */
-
   public boolean isList() {
     return this.isNil() || !this.isAtom() && items.get(items.size() - 1).isNil();
   }
@@ -82,7 +78,6 @@ public final class ESExpr {
    *
    * @return {@code true} if this expression is tuple
    */
-
   public boolean isTuple() {
     return this.isNil() || !this.isAtom();
   }
@@ -96,7 +91,6 @@ public final class ESExpr {
    *
    * @return string literal for this expression
    */
-
   public String getLiteral() {
     return literal;
   }
@@ -106,7 +100,6 @@ public final class ESExpr {
    *
    * @return list of contained expressions, empty list for atoms
    */
-
   public List<ESExpr> getItems() {
     return Collections.unmodifiableList(items);
   }
@@ -117,7 +110,6 @@ public final class ESExpr {
    * @return list of contained expressions excluding last {@code NIL}
    * @throws UnsupportedOperationException if this expression is not list
    */
-
   public List<ESExpr> getListItems() {
     if (!this.isList()) {
       throw new UnsupportedOperationException("getListItems is defined only for S-lists");
@@ -175,7 +167,6 @@ public final class ESExpr {
    *
    * @param builder StringBuilder to write into.
    */
-
   private void toString(final StringBuilder builder) {
     if (this.isAtom()) {
       builder.append(this.getLiteral());
@@ -197,7 +188,6 @@ public final class ESExpr {
    *
    * @param builder StringBuilder to write into.
    */
-
   private void printList(final StringBuilder builder) {
     final String delim = " ";
     for (int i = 0; i < items.size() - 1; ++i) {
@@ -214,7 +204,6 @@ public final class ESExpr {
    *
    * @param builder StringBuilder to write into.
    */
-
   private void printTuple(final StringBuilder builder) {
     final String delim = " . ";
     for (final ESExpr e : items) {
@@ -230,7 +219,6 @@ public final class ESExpr {
    *
    * @return shallowest equivalent of this expression.
    */
-
   public ESExpr normalizeTuples() {
     if (this.isAtom()) {
       return this;
@@ -261,7 +249,6 @@ public final class ESExpr {
    *
    * @return deepest equivalent of this expression.
    */
-
   public ESExpr normalizePairs() {
     if (this.isAtom()) {
       return this;
@@ -288,7 +275,6 @@ public final class ESExpr {
    * @return atom for given string literal
    * @throws IllegalArgumentException if {@code literal} is {@code null}
    */
-
   public static ESExpr createAtom(final String literal) {
     checkNotNull(literal);
     if (literal.equalsIgnoreCase(NIL.getLiteral())) {
@@ -305,7 +291,6 @@ public final class ESExpr {
    * @return list containing all expressions from {@code items} list
    * @throws IllegalArgumentException if {@code items} list is {@code null}
    */
-
   public static ESExpr createList(final List<ESExpr> items) {
     checkNotNull(items);
     if (items.isEmpty()) {
@@ -324,7 +309,6 @@ public final class ESExpr {
    * @return tuple containing all expressions from {@code items} list
    * @throws IllegalArgumentException if {@code items} list is {@code null}
    */
-
   public static ESExpr createTuple(final List<ESExpr> items) {
     checkNotNull(items);
     if (items.isEmpty()) {
@@ -345,7 +329,6 @@ public final class ESExpr {
    * @return tuple containing {@code lhs} and {@code rhs} expressions
    * @throws IllegalArgumentException if any of given expressions is {@code null}
    */
-
   public static ESExpr cons(final ESExpr lhs, final ESExpr rhs) {
     checkNotNull(lhs);
     checkNotNull(rhs);

@@ -22,7 +22,6 @@ import ru.ispras.fortress.util.InvariantChecks;
  * 
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
-
 public enum ExprPrinter implements ExprTreePrinter {
   /** The VHDL-style expression tree printer. */
 

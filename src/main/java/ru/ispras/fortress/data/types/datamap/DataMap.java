@@ -31,7 +31,6 @@ import java.util.regex.Pattern;
  * The DataMap class represents mappings using Fortress data types with
  * runtime type checking.
  */
-
 public final class DataMap implements Map<Data, Data> {
   private final DataType keyType;
   private final DataType valueType;
@@ -44,7 +43,6 @@ public final class DataMap implements Map<Data, Data> {
    * @param keyType {@link ru.ispras.fortress.data.DataType DataType} instance for keys
    * @param valueType {@link ru.ispras.fortress.data.DataType DataType} instance for values
    */
-
   public DataMap(final DataType keyType, final DataType valueType) {
     this(keyType, valueType, null, new LinkedHashMap<Data, Data>());
 
@@ -188,7 +186,6 @@ public final class DataMap implements Map<Data, Data> {
    *
    * @return type of keys in this map
    */
-
   public DataType getKeyType() {
     return keyType;
   }
@@ -198,7 +195,6 @@ public final class DataMap implements Map<Data, Data> {
    *
    * @return type of values in this map
    */
-
   public DataType getValueType() {
     return valueType;
   }
@@ -226,7 +222,6 @@ public final class DataMap implements Map<Data, Data> {
    *
    * @throws IllegalArgumentException if {@code s} is not valid string representation
    */
-
   public static DataMap valueOf(
       final String s, 
       final DataType keyType,
@@ -268,7 +263,6 @@ public final class DataMap implements Map<Data, Data> {
    * @param type expected data type of value being read
    * @return {@link ru.ispras.fortress.data.Data Data} instance for given string representation
    */
-
   private static Data readData(final String s, final DataType type) {
     final int radix;
 
@@ -288,7 +282,6 @@ public final class DataMap implements Map<Data, Data> {
    *
    * @return copy of this map
    */
-
   public DataMap copy() {
     return new DataMap(keyType, valueType, constant, new LinkedHashMap<>(map));
   }
@@ -298,7 +291,6 @@ public final class DataMap implements Map<Data, Data> {
    *
    * @return unmodifiable copy of this map
    */
-
   public DataMap unmodifiableCopy() {
     return new DataMap(keyType,
                        valueType,
@@ -310,7 +302,6 @@ public final class DataMap implements Map<Data, Data> {
    * Check if object is {@link ru.ispras.fortress.data.Data Data} instance with
    * type conforming to key type of this map.
    */
-
   private boolean isKey(final Object o) {
     return getData(o).getType().equals(keyType);
   }
@@ -319,7 +310,6 @@ public final class DataMap implements Map<Data, Data> {
    * Check if object is {@link ru.ispras.fortress.data.Data Data} instance with
    * type conforming to value type of this map.
    */
-
   private boolean isValue(final Object o) {
     return getData(o).getType().equals(valueType);
   }
@@ -327,7 +317,6 @@ public final class DataMap implements Map<Data, Data> {
   /**
    * Cast from {@code Object} to {@code Data} instance.
    */
-
   private static Data getData(final Object o) {
     checkNotNull(o);
     return (Data) o;

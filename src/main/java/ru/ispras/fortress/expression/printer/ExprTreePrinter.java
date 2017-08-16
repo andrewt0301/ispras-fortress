@@ -21,7 +21,6 @@ import ru.ispras.fortress.expression.Node;
  * 
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
-
 public interface ExprTreePrinter {
   /**
    * Returns the string representation of the given expression tree.
@@ -29,6 +28,5 @@ public interface ExprTreePrinter {
    * @param node the expression tree to be printed.
    * @return the string representation of the expression tree.
    */
-
   String toString(final Node node);
 }

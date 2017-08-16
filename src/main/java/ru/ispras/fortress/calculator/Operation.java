@@ -19,18 +19,16 @@ import ru.ispras.fortress.data.Data;
 /**
  * The Operation interface is a contract for objects implementing operations on data objects.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  * 
  * @param <OperationId> Type of the enumeration that describes a group of operations.
  */
-
 public interface Operation<OperationId extends Enum<OperationId>> {
   /**
    * Returns the identifier of the operation.
    * 
    * @return Operation identifier.
    */
-
   OperationId getOperationId();
 
   /**
@@ -38,7 +36,6 @@ public interface Operation<OperationId extends Enum<OperationId>> {
    * 
    * @return Range of operation arity.
    */
-
   ArityRange getOperationArity();
 
   /**
@@ -51,15 +48,12 @@ public interface Operation<OperationId extends Enum<OperationId>> {
    * @throws UnsupportedOperationException if the operation requires a number of arguments which is
    *         different from the one passed to the method.
    */
-
   Data calculate(Data... operands);
-
 
   /**
    * Performs type check on the specified operands.
    * 
    * @return true if operand types are valid for the operation.
    */
-
   boolean validTypes(Data... operands);
 }
