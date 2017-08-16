@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.SequenceInputStream;
+import java.util.Collections;
+import java.util.List;
 
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
@@ -38,7 +40,7 @@ public final class Cvc4Solver extends SmtTextSolver {
 
   private static final String ENV_VAR_NAME = "CVC4_PATH";
 
-  private static final String[] HEADER = {"(set-logic QF_ABVLIRA)"};
+  private static final String HEADER = "(set-logic QF_ABVLIRA)";
 
   public Cvc4Solver() {
     super(NAME, DESCRIPTION, ENV_VAR_NAME);
@@ -46,8 +48,8 @@ public final class Cvc4Solver extends SmtTextSolver {
   }
 
   @Override
-  protected String[] getHeader() {
-    return HEADER;
+  protected List<String> getHeader() {
+    return Collections.singletonList(HEADER);
   }
 
   @Override
