@@ -34,6 +34,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -56,6 +57,8 @@ import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.solver.SolverOperation;
+import ru.ispras.fortress.solver.constraint.Constraint;
+import ru.ispras.fortress.solver.constraint.ConstraintUtils;
 import ru.ispras.fortress.solver.function.Function;
 import ru.ispras.fortress.solver.function.FunctionTemplate;
 
@@ -67,7 +70,7 @@ import ru.ispras.fortress.solver.function.FunctionTemplate;
  */
 
 public final class SmtTextBuilder implements ExprTreeVisitor {
-  private final String[] header;
+  private final List<String> header;
   private final Map<Enum<?>, SolverOperation> operations;
   private final Iterable<Variable> variables;
 
@@ -86,10 +89,10 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
    */
 
   SmtTextBuilder(
-      final String[] header,
+      final List<String> header,
       final Iterable<Variable> variables,
       final Map<Enum<?>, SolverOperation> operations) {
-    this.header = header;
+    this.header = new LinkedList<>(header);
     this.operations = operations;
     this.variables = variables;
   }
@@ -106,6 +109,21 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
 
   private void setCurrentBuilder(final StringBuilder builder) {
     currentBuilder = builder;
+  }
+
+  public static void saveToFile(
+      final String fileName,
+      final List<String> header,
+      final Collection<? extends Node> formulas,
+      final Map<Enum<?>, SolverOperation> operations) throws IOException {
+
+    final Constraint c = ConstraintUtils.newConstraint(formulas);
+    final SmtTextBuilder smtBuilder = new SmtTextBuilder(header, c.getVariables(), operations);
+
+    final ExprTreeWalker walker = new ExprTreeWalker(smtBuilder);
+    walker.visit(formulas);
+
+    smtBuilder.saveToFile(fileName, new StringBuilder());
   }
 
   /**
