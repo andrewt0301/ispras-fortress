@@ -30,13 +30,11 @@ import ru.ispras.fortress.util.InvariantChecks;
  * 
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
-
 public abstract class MapBasedPrinter implements ExprTreePrinter {
   /**
    * This class implements an expression tree visitor that prints an expression by using a map of
    * operation identifiers to operation descriptions.
    */
-
   protected class ExprTreeVisitor extends ExprTreeVisitorDefault {
     /** Keeps the intermediate expression text. */
     private StringBuffer buffer;
@@ -48,7 +46,6 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
      * Sets up the initial state of the walker before starting visiting
      * an expression tree.
      */
-
     private final void init() {
       buffer = new StringBuffer();
     }
@@ -58,7 +55,6 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
      * 
      * @param text Text to be appended.
      */
-
     protected final void appendText(final String text) {
       InvariantChecks.checkNotNull(buffer, "Visitor is not initialized");
       buffer.append(text);
@@ -69,7 +65,6 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
      * 
      * @return the string representation of the expression tree.
      */
-
     public final String toString() {
       return buffer.toString();
     }
@@ -165,7 +160,6 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
    * 
    * @param visitor Custom visitor implementation.
    */
-
   protected void setVisitor(final ExprTreeVisitor visitor) {
     InvariantChecks.checkNotNull(visitor);
     this.visitor = visitor;
@@ -179,7 +173,6 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
    * @param infix the operation infixes.
    * @param suffix the operation suffix.
    */
-
   protected final void addMapping(
       final StandardOperation op,
       final String prefix,
@@ -197,7 +190,6 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
    * @param suffix the operation suffix.
    * @param order the order of operands.
    */
-
   protected final void addMapping(
       final StandardOperation op,
       final String prefix,
@@ -215,7 +207,6 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
    * @param infix the operation infix.
    * @param suffix the operation suffix.
    */
-
   protected final void addMapping(
       final StandardOperation op,
       final String prefix,
@@ -233,7 +224,6 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
    * @param addSpaces the flag indicating whether spaces before and after the operation sign are
    *        required.
    */
-
   protected final void addMapping(
       final StandardOperation op,
       final String sign,
@@ -249,7 +239,6 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
    * @param sign the operation sign.
    * @param type the operation type.
    */
-
   protected final void addMapping(
       final StandardOperation op,
       final String sign,
@@ -266,7 +255,6 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
    *        required.
    * @param order the order of operands.
    */
-
   protected final void addMapping(
       final StandardOperation op,
       final String[] sign,
@@ -283,7 +271,6 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
    * @param addSpaces the flag indicating whether spaces before and after the operation sign are
    *        required.
    */
-
   protected final void addMapping(
       final StandardOperation op,
       final String[] sign,
@@ -298,7 +285,6 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
    * @param sign the operation signs.
    * @param order the order of operands.
    */
-
   protected final void addMapping(final StandardOperation op, final String[] sign,
       final int[] order) {
     map.put(op, new OperationDescription(sign, order));
@@ -310,7 +296,6 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
    * @param op the operation identifier.
    * @param sign the operation signs.
    */
-
   protected final void addMapping(final StandardOperation op, final String[] sign) {
     map.put(op, new OperationDescription(sign));
   }

@@ -19,7 +19,6 @@ package ru.ispras.fortress.expression.printer;
  * 
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
-
 public final class OperationDescription {
   /**
    * This enumeration contains the operation types.
@@ -54,7 +53,6 @@ public final class OperationDescription {
    * @param suffix the operation suffix.
    * @param order the order of operands.
    */
-
   public OperationDescription(
       final String prefix,
       final String[] infix,
@@ -73,7 +71,6 @@ public final class OperationDescription {
    * @param infix the operation infixes.
    * @param suffix the operation suffix.
    */
-
   public OperationDescription(
       final String prefix,
       final String[] infix,
@@ -88,7 +85,6 @@ public final class OperationDescription {
    * @param infix the operation infix.
    * @param suffix the operation suffix.
    */
-
   public OperationDescription(
       final String prefix,
       final String infix,
@@ -104,7 +100,6 @@ public final class OperationDescription {
    * @param addSpaces the flag indicating whether spaces before and after the operation sign are
    *        required.
    */
-
   public OperationDescription(
       final String sign,
       final Type type,
@@ -147,7 +142,6 @@ public final class OperationDescription {
    *        required.
    * @param order the order of operands.
    */
-
   public OperationDescription(
       final String[] sign,
       final boolean addSpaces,
@@ -164,7 +158,7 @@ public final class OperationDescription {
 
     this.order = order;
   }
-  
+
   /**
    * Constructs an operation description.
    * 
@@ -172,7 +166,6 @@ public final class OperationDescription {
    * @param addSpaces the flag indicating whether spaces before and after the operation sign are
    *        required.
    */
-
   public OperationDescription(
       final String[] sign,
       final boolean addSpaces) {
@@ -185,7 +178,6 @@ public final class OperationDescription {
    * @param sign the operation signs.
    * @param order the order of operands.
    */
-
   public OperationDescription(
       final String[] sign,
       final int[] order) {
@@ -197,7 +189,6 @@ public final class OperationDescription {
    * 
    * @param sign the operation signs.
    */
-
   public OperationDescription(final String[] sign) {
     this(sign, null);
   }
@@ -207,7 +198,6 @@ public final class OperationDescription {
    * 
    * @return the operation prefix.
    */
-
   public String getPrefix() {
     return prefix;
   }
@@ -217,7 +207,6 @@ public final class OperationDescription {
    * 
    * @return the operation infix.
    */
-
   public String getInfix() {
     return infix[0];
   }
@@ -228,7 +217,6 @@ public final class OperationDescription {
    * 
    * @return the <code>i</code>-th operation infix.
    */
-
   public String getInfix(final int i) {
     return infix.length == 1 ? infix[0] : infix[i];
   }
@@ -238,7 +226,6 @@ public final class OperationDescription {
    * 
    * @return the operation suffix.
    */
-
   public String getSuffix() {
     return suffix;
   }
@@ -248,7 +235,6 @@ public final class OperationDescription {
    * 
    * @return the array specifying the order of operands or <code>null</code> for the standard order.
    */
-
   public int[] getOrder() {
     return order;
   }

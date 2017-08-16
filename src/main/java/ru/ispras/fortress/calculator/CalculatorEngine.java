@@ -21,9 +21,8 @@ import ru.ispras.fortress.data.Data;
  * Calculator engines perform calculations using operations united into a group. Operation groups
  * are represented by corresponding enumerations that list supported operations.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public interface CalculatorEngine {
   /**
    * Checks whether the specified operation is supported for the provided operands. Operation
@@ -35,7 +34,6 @@ public interface CalculatorEngine {
    *         if it is not supported or its invariants are violated (e.g. operand types do not
    *         match).
    */
-
   boolean isSupported(Enum<?> operatorId, Data... operands);
 
   /**
@@ -48,6 +46,5 @@ public interface CalculatorEngine {
    * @throws UnsupportedOperationException if the operation is not supported or its invariants are
    *         violated (e.g. operand types do not match).
    */
-
   Data calculate(Enum<?> operatorId, Data... operands);
 }

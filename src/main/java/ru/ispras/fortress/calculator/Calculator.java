@@ -14,27 +14,25 @@
 
 package ru.ispras.fortress.calculator;
 
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataTypeId;
 import ru.ispras.fortress.expression.StandardOperation;
+import ru.ispras.fortress.util.InvariantChecks;
 
 /**
- * The Calculator class is responsible for performing calculations on data objects using an
- * extendable set of operations. It encapsulates a table of calculator engines each implementing
+ * The {@link Calculator} class is responsible for performing calculations on data objects using an
+ * extendible set of operations. It encapsulates a table of calculator engines each implementing
  * operations that belong to some logic group. Each group is represented by a enumeration
  * identifying operations it contains. The class of the enumeration is used to identify engines
  * implementing operations from the given group. It is possible to extend functionality by
  * registering custom engines implementing new group of operations. Also, you can replace existing
  * engines with custom engines if needed.
  * 
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public final class Calculator {
   private Calculator() {}
 
@@ -42,7 +40,6 @@ public final class Calculator {
    * A singleton for the calculator engine that implements standard operations described by the
    * StandardOperation enumeration.
    */
-
   public static final CalculatorEngine STANDARD;
 
   // Key: class of the operation group enumeration, value: engine implementing
@@ -92,8 +89,8 @@ public final class Calculator {
   public static boolean registerEngine(
         final Class<? extends Enum<?>> operationIdClass,
         final CalculatorEngine engine) {
-    checkNotNull(operationIdClass);
-    checkNotNull(engine);
+    InvariantChecks.checkNotNull(operationIdClass);
+    InvariantChecks.checkNotNull(engine);
 
     return null == ENGINES.put(operationIdClass, engine);
   }
@@ -110,9 +107,8 @@ public final class Calculator {
    * 
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
-
   public static CalculatorEngine getEngine(final Class<?> operationIdClass) {
-    checkNotNull(operationIdClass);
+    InvariantChecks.checkNotNull(operationIdClass);
     return ENGINES.get(operationIdClass);
   }
 
@@ -127,10 +123,9 @@ public final class Calculator {
    * 
    * @throws IllegalArgumentException if any of the parameters equals {@code null}.
    */
-
   public static boolean isSupported(final Enum<?> operationId, final Data... operands) {
-    checkNotNull(operationId);
-    checkNotNull(operands);
+    InvariantChecks.checkNotNull(operationId);
+    InvariantChecks.checkNotNull(operands);
 
     final CalculatorEngine engine = getEngine(operationId.getClass());
     if (null == engine) {
@@ -152,14 +147,13 @@ public final class Calculator {
    * @throws UnsupportedOperationException if the operation is not supported or its invariants are
    *         violated (e.g. operand types do not match).
    */
-
   public static Data calculate(
       final CalculatorEngine engine,
       final Enum<?> operationId,
       final Data... operands) {
-    checkNotNull(engine);
-    checkNotNull(operationId);
-    checkNotNull(operands);
+    InvariantChecks.checkNotNull(engine);
+    InvariantChecks.checkNotNull(operationId);
+    InvariantChecks.checkNotNull(operands);
 
     return engine.calculate(operationId, operands);
   }
@@ -175,20 +169,19 @@ public final class Calculator {
    * @throws UnsupportedOperationException if the operation is not supported or its invariants are
    *         violated (e.g. operand types do not match).
    */
-
   public static Data calculate(final Enum<?> operationId, final Data... operands) {
-    checkNotNull(operationId);
-    checkNotNull(operands);
+    InvariantChecks.checkNotNull(operationId);
+    InvariantChecks.checkNotNull(operands);
 
     final CalculatorEngine engine = getEngine(operationId.getClass());
     if (null == engine) {
-      throw new UnsupportedOperationException(String.format(
-        MSG_UNSUPPORTED_GROUP_FRMT, operationId.getClass().getSimpleName()));
+      throw new UnsupportedOperationException(
+          String.format(MSG_UNSUPPORTED_GROUP_FRMT, operationId.getClass().getSimpleName()));
     }
 
     return engine.calculate(operationId, operands);
   }
 
   private static final String MSG_UNSUPPORTED_GROUP_FRMT =
-    "The specified operation family is not supported: %s.";
+      "The specified operation family is not supported: %s.";
 }

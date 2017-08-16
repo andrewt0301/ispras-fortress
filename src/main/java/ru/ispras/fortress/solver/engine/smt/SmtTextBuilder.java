@@ -66,9 +66,8 @@ import ru.ispras.fortress.solver.function.FunctionTemplate;
  * The SMTTextBuilder class implements logic that generates SMT-LIB code from a syntax structure.
  * Generated code is saved to a text file.
  *
- * @author Andrei Tatarnikov
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public final class SmtTextBuilder implements ExprTreeVisitor {
   private final List<String> header;
   private final Map<Enum<?>, SolverOperation> operations;
@@ -87,7 +86,6 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
    *
    * @param operations Operation dictionary.
    */
-
   SmtTextBuilder(
       final List<String> header,
       final Iterable<Variable> variables,
@@ -132,7 +130,6 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
    * @param fileName The name of the target file.
    * @throws IOException if failed to create the output file.
    */
-
   public void saveToFile(
       final String fileName,
       final StringBuilder textBuilder) throws IOException {
