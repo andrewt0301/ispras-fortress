@@ -97,16 +97,34 @@ public final class BitVectorFieldTestCase {
     final int size = 64;
     final BitVector bitVector = BitVector.newEmpty(size);
 
-    for (int fieldPos = 0; fieldPos < size; fieldPos++) {
-      for (int fieldSize = 1; fieldSize < size - fieldPos + 1; fieldSize++) {
-        System.out.println(fieldPos + " " + fieldSize);
-        final BitVector field = BitVector.newMapping(bitVector, fieldPos, fieldSize);
+    for (int fieldStartPos = 0; fieldStartPos < size; fieldStartPos++) {
+      final int remainingSize = size - fieldStartPos + 1;
+      for (int fieldSize = 1; fieldSize < remainingSize; fieldSize++) {
+        final BitVector field = BitVector.newMapping(bitVector, fieldStartPos, fieldSize);
+        final int fieldEndPos = fieldStartPos + fieldSize;
+
+        final BitVector preField = fieldStartPos > 0 ?
+            BitVector.newMapping(bitVector, 0, fieldStartPos) : null;
+
+        final BitVector postField = fieldEndPos < size ?
+            BitVector.newMapping(bitVector, fieldEndPos, size - fieldEndPos) : null;
+
+        final BitVector preFieldCopy = null != preField ? preField.copy() : null;
+        final BitVector postFieldCopy = null != postField ? postField.copy() : null;
 
         final BitVector value = BitVector.newEmpty(fieldSize);
         Randomizer.get().fill(value);
 
         field.assign(value);
         TestUtils.checkBitVector(field, value);
+
+        if (null != preField) {
+          TestUtils.checkBitVector(preField, preFieldCopy);
+        }
+
+        if (null != postField) {
+          TestUtils.checkBitVector(postField, postFieldCopy);
+        }
       }
     }
   }
