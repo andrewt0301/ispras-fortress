@@ -16,6 +16,8 @@ package ru.ispras.fortress.data.types.bitvector;
 
 import org.junit.Test;
 
+import ru.ispras.fortress.randomizer.Randomizer;
+
 public final class BitVectorFieldTestCase {
   @Test
   public void test() {
@@ -69,5 +71,42 @@ public final class BitVectorFieldTestCase {
 
     TestUtils.checkBitVector(field1, value1);
     TestUtils.checkBitVector(field2, value2);
+  }
+
+  @Test
+  public void test1() {
+    final BitVector bitVector = BitVector.newEmpty(64);
+
+    final int fieldPos = 12;
+    final int fieldSize = 12;
+
+    final BitVector field = BitVector.newMapping(bitVector, fieldPos, fieldSize);
+
+    final BitVector value1 = BitVector.valueOf("010001001000");
+    final BitVector value2 = BitVector.valueOf("010010011100");
+
+    field.assign(value1);
+    TestUtils.checkBitVector(field, value1);
+
+    field.assign(value2);
+    TestUtils.checkBitVector(field, value2);
+  }
+
+  @Test
+  public void test2() {
+    final int size = 64;
+    final BitVector bitVector = BitVector.newEmpty(size);
+
+    for (int fieldPos = 0; fieldPos < size; fieldPos++) {
+      for (int fieldSize = 1; fieldSize <= (fieldPos + 1); fieldSize++) {
+        final BitVector field = BitVector.newMapping(bitVector, fieldPos, fieldSize);
+
+        final BitVector value = BitVector.newEmpty(fieldSize);
+        Randomizer.get().fill(value);
+
+        field.assign(value);
+        TestUtils.checkBitVector(field, value);
+      }
+    }
   }
 }
