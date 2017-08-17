@@ -14,15 +14,12 @@
 
 package ru.ispras.fortress.data.types.bitvector;
 
-import static ru.ispras.fortress.util.InvariantChecks.checkBounds;
-import static ru.ispras.fortress.util.InvariantChecks.checkBoundsInclusive;
-import static ru.ispras.fortress.util.InvariantChecks.checkGreaterThanZero;
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
+import ru.ispras.fortress.util.InvariantChecks;
 
 /**
- * The BitVectorMapping class provides the possibility to map a bit vector to another bit vector.
- * Mapping can start at an arbitrary position and can have an arbitrary length (bounded by the size
- * of the source bit vector).
+ * The {@link BitVectorMapping} class provides the possibility to map a bit vector to another bit
+ * vector. Mapping can start at an arbitrary position and can have an arbitrary length (bounded by
+ * the size of the source bit vector).
  * 
  * <pre>
  * The scheme below demonstrates how the class works:
@@ -76,11 +73,11 @@ final class BitVectorMapping extends BitVector {
       final BitVector src,
       final int beginBitPos,
       final int bitSize) {
-    checkNotNull(src);
-    checkGreaterThanZero(bitSize);
+    InvariantChecks.checkNotNull(src);
+    InvariantChecks.checkGreaterThanZero(bitSize);
 
-    checkBounds(beginBitPos, src.getBitSize());
-    checkBoundsInclusive(beginBitPos + bitSize, src.getBitSize());
+    InvariantChecks.checkBounds(beginBitPos, src.getBitSize());
+    InvariantChecks.checkBoundsInclusive(beginBitPos + bitSize, src.getBitSize());
 
     this.source = src;
     this.beginBitPos = beginBitPos;
@@ -111,10 +108,10 @@ final class BitVectorMapping extends BitVector {
     // TODO: Refactoring is needed. The implementation is not perfectly clear
     // and may contain subtle bugs.
 
-    checkBounds(index, getByteSize());
+    InvariantChecks.checkBounds(index, getByteSize());
 
     final int byteIndex = getByteIndex(index);
-    checkBounds(byteIndex, source.getByteSize());
+    InvariantChecks.checkBounds(byteIndex, source.getByteSize());
 
     final int excludedLowBits = getExcludedLowBitCount();
 
@@ -156,10 +153,10 @@ final class BitVectorMapping extends BitVector {
     // TODO: Refactoring is needed. The implementation is not perfectly clear
     // and may contain subtle bugs.
 
-    checkBounds(index, getByteSize());
+    InvariantChecks.checkBounds(index, getByteSize());
 
     final int byteIndex = getByteIndex(index);
-    checkBounds(byteIndex, source.getByteSize());
+    InvariantChecks.checkBounds(byteIndex, source.getByteSize());
 
     final int excludedLowBits = getExcludedLowBitCount();
     final int excludedHighBits = getExcludedHighBitCount();
