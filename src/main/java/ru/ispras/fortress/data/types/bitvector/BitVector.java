@@ -410,7 +410,7 @@ public abstract class BitVector implements Comparable<BitVector> {
     checkGreaterThanZero(bitSize);
 
     if (0 == startBitPos % BITS_IN_BYTE) {
-      return new BitVectorMappingDirect(source, startBitPos, bitSize);
+      return new BitVectorMappingAligned(source, startBitPos, bitSize);
     }
 
     return new BitVectorMapping(source, startBitPos, bitSize);
@@ -879,7 +879,7 @@ public abstract class BitVector implements Comparable<BitVector> {
     if (0 == highByteMask) {
       final int incompleteBitsInHighByte = getBitSize() % BITS_IN_BYTE;
       highByteMask = (0 == incompleteBitsInHighByte) ?
-        (byte) 0xFF : (byte) (0xFF >>> (BITS_IN_BYTE - incompleteBitsInHighByte));
+          (byte) 0xFF : (byte) (0xFF >>> (BITS_IN_BYTE - incompleteBitsInHighByte));
     }
 
     return highByteMask;

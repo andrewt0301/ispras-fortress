@@ -17,13 +17,13 @@ package ru.ispras.fortress.data.types.bitvector;
 import ru.ispras.fortress.util.InvariantChecks;
 
 /**
- * The {@link BitVectorMappingDirect} class provides the possibility to map a bit vector to another
+ * The {@link BitVectorMappingAligned} class provides the possibility to map a bit vector to another
  * bit vector. This class is for the special case when the start position of the mapping
  * is byte-aligned.
  *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-final class BitVectorMappingDirect extends BitVector {
+final class BitVectorMappingAligned extends BitVector {
   private final BitVector source;
   private final int bitSize;
   private final int byteSize;
@@ -36,7 +36,7 @@ final class BitVectorMappingDirect extends BitVector {
    * @param beginBitPos The starting position of the mapping.
    * @param bitSize The length of the mapping in bits.
    */
-  public BitVectorMappingDirect(
+  public BitVectorMappingAligned(
       final BitVector src,
       final int beginBitPos,
       final int bitSize) {
