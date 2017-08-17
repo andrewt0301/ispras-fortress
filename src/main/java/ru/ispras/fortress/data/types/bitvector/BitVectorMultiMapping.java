@@ -251,7 +251,7 @@ final class BitVectorMultiMapping extends BitVector {
       if (0 != headBitSize) {
         final boolean headTakesAllData = (0 == offset) && (0 == tailBitSize);
         final BitVector currentBlock = headTakesAllData ?
-          data : new BitVectorMapping(data, offset, headBitSize);
+            data : BitVector.newMapping(data, offset, headBitSize);
 
         processedBitSize += addByteAcessors(currentBlock);
       }
@@ -259,7 +259,7 @@ final class BitVectorMultiMapping extends BitVector {
       if (0 != tailBitSize) {
         final boolean tailTakesAllData = (0 == offset) && (0 == headBitSize);
         unusedPrevPart = tailTakesAllData ?
-          data : new BitVectorMapping(data, offset + headBitSize, tailBitSize);
+            data : BitVector.newMapping(data, offset + headBitSize, tailBitSize);
       }
     }
 
