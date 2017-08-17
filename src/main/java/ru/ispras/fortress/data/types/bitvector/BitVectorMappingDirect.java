@@ -18,8 +18,8 @@ import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * The {@link BitVectorMappingDirect} class provides the possibility to map a bit vector to another
- * bit vector. This class is for special cases when the start and positions of the mapping
- * are at the byte border.
+ * bit vector. This class is for the special case when the start position of the mapping
+ * is byte-aligned.
  *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
@@ -45,13 +45,11 @@ final class BitVectorMappingDirect extends BitVector {
 
     InvariantChecks.checkBounds(beginBitPos, src.getBitSize());
     InvariantChecks.checkBoundsInclusive(beginBitPos + bitSize, src.getBitSize());
-
     InvariantChecks.checkTrue(0 == beginBitPos % BITS_IN_BYTE);
-    InvariantChecks.checkTrue(0 == bitSize % BITS_IN_BYTE);
 
     this.source = src;
     this.bitSize = bitSize;
-    this.byteSize = bitSize / BITS_IN_BYTE;
+    this.byteSize = bitSize / BITS_IN_BYTE + (0 == bitSize % BITS_IN_BYTE ? 0 : 1);
     this.byteOffset =  beginBitPos / BITS_IN_BYTE;
   }
 
@@ -77,7 +75,8 @@ final class BitVectorMappingDirect extends BitVector {
   @Override
   public byte getByte(final int index) {
     InvariantChecks.checkBounds(index, getByteSize());
-    return source.getByte(byteOffset + index);
+    final int byteIndex = byteOffset + index;
+    return (byte) (source.getByte(byteIndex) & getByteBitMask(index));
   }
 
   /**
@@ -86,6 +85,15 @@ final class BitVectorMappingDirect extends BitVector {
   @Override
   public void setByte(final int index, final byte value) {
     InvariantChecks.checkBounds(index, getByteSize());
-    source.setByte(byteOffset + index, value);
+
+    final int byteIndex = byteOffset + index;
+    final byte mask = getByteBitMask(index);
+
+    if (mask == ((byte) 0xFF)) {
+      source.setByte(byteIndex, value);
+    } else {
+      final byte mergedValue =  (byte)((value & mask) | (source.getByte(byteIndex) & ~mask));
+      source.setByte(byteIndex, mergedValue);
+    }
   }
 }
