@@ -61,6 +61,7 @@ final class BitVectorMapping extends BitVector {
   private final BitVector source;
   private final int beginBitPos;
   private final int bitSize;
+  private final int byteSize;
 
   /**
    * Creates a mapping for the specified bit vector.
@@ -82,6 +83,7 @@ final class BitVectorMapping extends BitVector {
     this.source = src;
     this.beginBitPos = beginBitPos;
     this.bitSize = bitSize;
+    this.byteSize = bitSize / BITS_IN_BYTE + ((0 == bitSize % BITS_IN_BYTE) ? 0 : 1);
   }
 
   /**
@@ -97,7 +99,7 @@ final class BitVectorMapping extends BitVector {
    */
   @Override
   public int getByteSize() {
-    return bitSize / BITS_IN_BYTE + ((0 == bitSize % BITS_IN_BYTE) ? 0 : 1);
+    return byteSize;
   }
 
   /**
