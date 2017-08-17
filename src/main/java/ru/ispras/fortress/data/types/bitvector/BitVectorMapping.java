@@ -111,8 +111,6 @@ final class BitVectorMapping extends BitVector {
     InvariantChecks.checkBounds(index, getByteSize());
 
     final int byteIndex = getByteIndex(index);
-    InvariantChecks.checkBounds(byteIndex, source.getByteSize());
-
     final int excludedLowBits = getExcludedLowBitCount();
 
     // If there are no lower bits excluded from a byte this means that data
@@ -156,8 +154,6 @@ final class BitVectorMapping extends BitVector {
     InvariantChecks.checkBounds(index, getByteSize());
 
     final int byteIndex = getByteIndex(index);
-    InvariantChecks.checkBounds(byteIndex, source.getByteSize());
-
     final int excludedLowBits = getExcludedLowBitCount();
     final int excludedHighBits = getExcludedHighBitCount();
 
