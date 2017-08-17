@@ -11,7 +11,11 @@
  supports constraint solving using built-in solvers as well as external ones
  (like Yices, Z3, CVC4, etc.)
 --------------------------------------------------------------------------------
- 
+
+ 2017/08/17 Fortress 0.4.27 beta
+
+  - Bug fixes and improvements in BitVector (mappings reviewed)
+
  2017/08/17 Fortress 0.4.26 beta
  
   - Fix in BitVectorMapping
