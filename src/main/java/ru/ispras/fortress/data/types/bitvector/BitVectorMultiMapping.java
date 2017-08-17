@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2017 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,16 +14,14 @@
 
 package ru.ispras.fortress.data.types.bitvector;
 
-import static ru.ispras.fortress.util.InvariantChecks.checkBounds;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import ru.ispras.fortress.util.InvariantChecks;
 
 /**
- * The RawDataMultiMapping class implements logic that allows concatenating several data objects
- * together (allows accessing a group of data objects as a single data object).
+ * The {@link BitVectorMultiMapping} class implements logic that allows concatenating several data
+ * objects together (allows accessing a group of data objects as a single data object).
  * 
  * <pre>
  * The scheme blow demonstrates mapping of two 27-bit data arrays:
@@ -220,7 +218,7 @@ final class BitVectorMultiMapping extends BitVector {
         assert bitsToCompleteByte > 0;
 
         final BitVector currentCutPart = (data.getBitSize() <= bitsToCompleteByte) ?
-          data : new BitVectorMapping(data, 0, bitsToCompleteByte);
+            data : BitVector.newMapping(data, 0, bitsToCompleteByte);
 
         final BitVector linkingBlock = new LinkingByteMapping(unusedPrevPart, currentCutPart);
         if (linkingBlock.getBitSize() < BITS_IN_BYTE) {
@@ -294,7 +292,7 @@ final class BitVectorMultiMapping extends BitVector {
    */
   @Override
   public byte getByte(final int index) {
-    checkBounds(index, getByteSize());
+    InvariantChecks.checkBounds(index, getByteSize());
 
     final ByteAccessor accessors = byteAccessors.get(index);
     return accessors.getByte();
@@ -305,7 +303,7 @@ final class BitVectorMultiMapping extends BitVector {
    */
   @Override
   public void setByte(final int index, final byte value) {
-    checkBounds(index, getByteSize());
+    InvariantChecks.checkBounds(index, getByteSize());
 
     final ByteAccessor accessors = byteAccessors.get(index);
     accessors.setByte(value);
