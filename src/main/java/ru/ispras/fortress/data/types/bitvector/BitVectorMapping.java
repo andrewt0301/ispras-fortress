@@ -157,7 +157,6 @@ final class BitVectorMapping extends BitVector {
     // and unites the result with the old part of the target byte that should be preserved.
     // Also, we reset all redundant bits that go beyond the border of the high incomplete byte.
     final byte lowByte = (byte) (((value << excludedLowBitCount) & lowByteMask) | prevLowByte);
-
     source.setByte(byteIndex, lowByte);
 
     // If there is not bytes left in the data array
@@ -166,8 +165,11 @@ final class BitVectorMapping extends BitVector {
       return;
     }
 
+    // Forms the mask to preserve previous values of bits that are not affected by the modification.
     final int excludedHighBitCount = BITS_IN_BYTE - excludedLowBitCount;
     final byte highByteMask = (byte) (byteBitMask >>> excludedHighBitCount);
+
+    // Gets the high byte value to be preserved.
     final byte prevHighByte = (byte) (source.getByte(byteIndex + 1) & ~highByteMask);
 
     // Moves the high part of the parameter byte to the low border (beginning) of the byte and
@@ -175,7 +177,6 @@ final class BitVectorMapping extends BitVector {
     // when the high part of the target byte is limited with the high border of the mask, we reset
     // all excluded bits with a high byte mask.
     final byte highByte = (byte) (((value >>> excludedHighBitCount) & highByteMask) | prevHighByte);
-
     source.setByte(byteIndex + 1, highByte);
   }
 }
