@@ -14,13 +14,11 @@
 
 package ru.ispras.fortress.data.types.bitvector;
 
-import static ru.ispras.fortress.util.InvariantChecks.checkGreaterThanZero;
-
 import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * The {@link BitVectorMappingDirect} class provides the possibility to map a bit vector to another
- * bit vector. This class is for special cases when the start and positions of the mapping 
+ * bit vector. This class is for special cases when the start and positions of the mapping
  * are at the byte border.
  *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
