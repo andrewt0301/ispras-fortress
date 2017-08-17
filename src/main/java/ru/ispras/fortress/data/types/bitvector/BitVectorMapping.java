@@ -117,14 +117,6 @@ final class BitVectorMapping extends BitVector {
     final int byteIndex = byteOffset + index;
     final int excludedLowBits = getExcludedLowBitCount();
 
-    // If there are no lower bits excluded from a byte this means that data
-    // is aligned by bytes and no data transformation is needed. If there is an incomplete
-    // high byte, we just apply a bit mask for the specified byte.
-
-    if (0 == excludedLowBits) {
-      return (byte) (source.getByte(byteIndex) & getByteBitMask(index));
-    }
-
     // Takes needed bits (the higher part) of the low byte (specified by byteIndex) and
     // shifts them to the beginning of the byte (towards the least significant part).
 
@@ -139,7 +131,7 @@ final class BitVectorMapping extends BitVector {
     // and shifts them to the end of the byte (towards the most significant part).
 
     final byte highByte =
-      (byte) (source.getByte(byteIndex + 1) << (BITS_IN_BYTE - excludedLowBits));
+        (byte) (source.getByte(byteIndex + 1) << (BITS_IN_BYTE - excludedLowBits));
 
     // Unites the low and high parts and cuts bits to be excluded with help of a mask
     // (in case if we are addressing an incomplete high byte).
@@ -167,23 +159,6 @@ final class BitVectorMapping extends BitVector {
     final byte highByteMask = (0 == excludedHighBits) ? 0 : (byte) (0xFF >>> excludedHighBits);
 
     final boolean isHighByteMaskApplied = byteIndex == endByteIndex && 0 != excludedHighBits;
-
-    // If no lower bites are excluded this means that data is aligned by bytes
-    // (start position is multiple of 8) and no byte split is needed.
-
-    if (0 == excludedLowBits) {
-      // If this is the highest byte of the mapping, it might be incomplete. In this case,
-      // we need to preserve the excluded part of the target byte from overwriting.
-
-      final byte prevValue =
-          (byte) (isHighByteMaskApplied ? (source.getByte(byteIndex) & ~highByteMask) : 0);
-
-      // Excludes the redundant bits from the value and unites it with the initial value
-      // part to be preserved.
-
-      source.setByte(byteIndex, (byte) (prevValue | (value & getByteBitMask(index))));
-      return;
-    }
 
     // Forms the mask to preserve previous values of bits that are not affected by
     // the modification (in incomplete low and high bytes).

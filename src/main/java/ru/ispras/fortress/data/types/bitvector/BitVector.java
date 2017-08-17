@@ -410,7 +410,7 @@ public abstract class BitVector implements Comparable<BitVector> {
     checkGreaterThanZero(bitSize);
 
     if (0 == startBitPos % BITS_IN_BYTE) {
-      new BitVectorMappingDirect(source, startBitPos, bitSize);
+      return new BitVectorMappingDirect(source, startBitPos, bitSize);
     }
 
     return new BitVectorMapping(source, startBitPos, bitSize);
