@@ -98,7 +98,8 @@ public final class BitVectorFieldTestCase {
     final BitVector bitVector = BitVector.newEmpty(size);
 
     for (int fieldPos = 0; fieldPos < size; fieldPos++) {
-      for (int fieldSize = 1; fieldSize <= (fieldPos + 1); fieldSize++) {
+      for (int fieldSize = 1; fieldSize < size - fieldPos + 1; fieldSize++) {
+        System.out.println(fieldPos + " " + fieldSize);
         final BitVector field = BitVector.newMapping(bitVector, fieldPos, fieldSize);
 
         final BitVector value = BitVector.newEmpty(fieldSize);
