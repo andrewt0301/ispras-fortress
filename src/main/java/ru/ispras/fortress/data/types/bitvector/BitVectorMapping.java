@@ -59,7 +59,6 @@ import ru.ispras.fortress.util.InvariantChecks;
  */
 final class BitVectorMapping extends BitVector {
   private final BitVector source;
-  private final int beginBitPos;
   private final int bitSize;
   private final int byteSize;
   private final int byteOffset;
@@ -84,7 +83,6 @@ final class BitVectorMapping extends BitVector {
     InvariantChecks.checkBoundsInclusive(beginBitPos + bitSize, src.getBitSize());
 
     this.source = src;
-    this.beginBitPos = beginBitPos;
     this.bitSize = bitSize;
     this.byteSize = bitSize / BITS_IN_BYTE + ((0 == bitSize % BITS_IN_BYTE) ? 0 : 1);
     this.byteOffset =  beginBitPos / BITS_IN_BYTE;
@@ -114,7 +112,9 @@ final class BitVectorMapping extends BitVector {
   @Override
   public byte getByte(final int index) {
     InvariantChecks.checkBounds(index, getByteSize());
+
     final int byteIndex = byteOffset + index;
+    final byte byteBitMask = getByteBitMask(index);
 
     // Takes needed bits (the higher part) of the low byte (specified by byteIndex) and
     // shifts them to the beginning of the byte (towards the least significant part).
@@ -123,7 +123,7 @@ final class BitVectorMapping extends BitVector {
 
     // If there is no bytes left in the data array, we don't go further.
     if (byteIndex == endByteIndex) {
-      return (byte) (lowByte & getByteBitMask(index));
+      return (byte) (lowByte & byteBitMask);
     }
 
     // Takes the needed bits (the lower part) of the high byte (following after the low byte)
@@ -133,7 +133,7 @@ final class BitVectorMapping extends BitVector {
 
     // Unites the low and high parts and cuts bits to be excluded with help of a mask
     // (in case if we are addressing an incomplete high byte).
-    return (byte) ((highByte | lowByte) & getByteBitMask(index));
+    return (byte) ((highByte | lowByte) & byteBitMask);
   }
 
   /**
@@ -141,60 +141,41 @@ final class BitVectorMapping extends BitVector {
    */
   @Override
   public void setByte(final int index, final byte value) {
-    // TODO: Refactoring is needed. The implementation is not perfectly clear
-    // and may contain subtle bugs.
-
     InvariantChecks.checkBounds(index, getByteSize());
 
     final int byteIndex = byteOffset + index;
-    final int excludedHighBits = getExcludedHighBitCount();
-
-    final byte lowByteMask = (byte) (0xFF << excludedLowBitCount);
-    final byte highByteMask = (0 == excludedHighBits) ? 0 : (byte) (0xFF >>> excludedHighBits);
-
-    final boolean isHighByteMaskApplied = byteIndex == endByteIndex && 0 != excludedHighBits;
+    final byte byteBitMask = getByteBitMask(index);
 
     // Forms the mask to preserve previous values of bits that are not affected by
     // the modification (in incomplete low and high bytes).
+    final byte lowByteMask = (byte) (byteBitMask << excludedLowBitCount);
 
-    final byte prevValueMask = (byte) (isHighByteMaskApplied ?
-        (~lowByteMask | ~highByteMask) & 0xFF : ~lowByteMask & 0xFF);
+    // Gets the low byte value to be preserved.
+    final byte prevLowByte = (byte) (source.getByte(byteIndex) & ~lowByteMask);
 
     // Moves the low part of the specified byte to the high border of the byte
     // and unites the result with the old part of the target byte that should be preserved.
     // Also, we reset all redundant bits that go beyond the border of the high incomplete byte.
-
-    final byte prevValue = (byte) (source.getByte(byteIndex) & prevValueMask);
-    final byte alignedValue = (byte) ((value << excludedLowBitCount) & 0xFF);
-
-    final byte lowByte =
-        (byte) ((alignedValue & (isHighByteMaskApplied ? highByteMask : 0xFF)) | prevValue);
+    final byte lowByte = (byte) (((value << excludedLowBitCount) & lowByteMask) | prevLowByte);
 
     source.setByte(byteIndex, lowByte);
 
     // If there is not bytes left in the data array
     // (the highest is the current), we don't go further.
-
     if (byteIndex == endByteIndex) {
       return;
     }
+
+    final int excludedHighBitCount = BITS_IN_BYTE - excludedLowBitCount;
+    final byte highByteMask = (byte) (byteBitMask >>> excludedHighBitCount);
+    final byte prevHighByte = (byte) (source.getByte(byteIndex + 1) & ~highByteMask);
 
     // Moves the high part of the parameter byte to the low border (beginning) of the byte and
     // unites it with the high part of the target byte that we want to preserve. Also, in case
     // when the high part of the target byte is limited with the high border of the mask, we reset
     // all excluded bits with a high byte mask.
-
-    final byte prevHighValue = (byte) (source.getByte(byteIndex + 1) & ~highByteMask);
-    final byte allignedHighValue = (byte) ((value & 0xFF) >>> (BITS_IN_BYTE - excludedLowBitCount));
-
-    final byte highByte =
-      (byte) ((allignedHighValue & ((byteIndex + 1 == endByteIndex) & (0 != excludedHighBits) ?
-      highByteMask : 0xFF)) | prevHighValue);
+    final byte highByte = (byte) (((value >>> excludedHighBitCount) & highByteMask) | prevHighByte);
 
     source.setByte(byteIndex + 1, highByte);
-  }
-
-  private int getExcludedHighBitCount() {
-    return (BITS_IN_BYTE - (beginBitPos + bitSize) % BITS_IN_BYTE) % BITS_IN_BYTE;
   }
 }
