@@ -12,7 +12,7 @@
  (like Yices, Z3, CVC4, etc.)
 --------------------------------------------------------------------------------
  
- 2017/08/16 Fortress 0.4.26 beta
+ 2017/08/17 Fortress 0.4.26 beta
  
   - Fix in BitVectorMapping
   - Improvement in type calculation rules (support unbounded BVCONCAT)
