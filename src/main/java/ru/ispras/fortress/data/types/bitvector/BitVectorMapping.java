@@ -63,6 +63,8 @@ final class BitVectorMapping extends BitVector {
   private final int bitSize;
   private final int byteSize;
   private final int byteOffset;
+  private final int endByteIndex;
+  private final int excludedLowBitCount;
 
   /**
    * Creates a mapping for the specified bit vector.
@@ -86,6 +88,8 @@ final class BitVectorMapping extends BitVector {
     this.bitSize = bitSize;
     this.byteSize = bitSize / BITS_IN_BYTE + ((0 == bitSize % BITS_IN_BYTE) ? 0 : 1);
     this.byteOffset =  beginBitPos / BITS_IN_BYTE;
+    this.endByteIndex = (beginBitPos + bitSize - 1) / BITS_IN_BYTE;
+    this.excludedLowBitCount = beginBitPos % BITS_IN_BYTE;
   }
 
   /**
@@ -109,33 +113,26 @@ final class BitVectorMapping extends BitVector {
    */
   @Override
   public byte getByte(final int index) {
-    // TODO: Refactoring is needed. The implementation is not perfectly clear
-    // and may contain subtle bugs.
-
     InvariantChecks.checkBounds(index, getByteSize());
-
     final int byteIndex = byteOffset + index;
-    final int excludedLowBits = getExcludedLowBitCount();
 
     // Takes needed bits (the higher part) of the low byte (specified by byteIndex) and
     // shifts them to the beginning of the byte (towards the least significant part).
-
-    final byte lowByte = (byte) ((source.getByte(byteIndex) & 0xFF) >>> excludedLowBits);
+    final byte lowByte =
+        (byte) ((source.getByte(byteIndex) & 0xFF) >>> excludedLowBitCount);
 
     // If there is no bytes left in the data array, we don't go further.
-    if (byteIndex == getEndByteIndex()) {
+    if (byteIndex == endByteIndex) {
       return (byte) (lowByte & getByteBitMask(index));
     }
 
     // Takes the needed bits (the lower part) of the high byte (following after the low byte)
     // and shifts them to the end of the byte (towards the most significant part).
-
     final byte highByte =
-        (byte) (source.getByte(byteIndex + 1) << (BITS_IN_BYTE - excludedLowBits));
+        (byte) (source.getByte(byteIndex + 1) << (BITS_IN_BYTE - excludedLowBitCount));
 
     // Unites the low and high parts and cuts bits to be excluded with help of a mask
     // (in case if we are addressing an incomplete high byte).
-
     return (byte) ((highByte | lowByte) & getByteBitMask(index));
   }
 
@@ -150,12 +147,9 @@ final class BitVectorMapping extends BitVector {
     InvariantChecks.checkBounds(index, getByteSize());
 
     final int byteIndex = byteOffset + index;
-    final int excludedLowBits = getExcludedLowBitCount();
     final int excludedHighBits = getExcludedHighBitCount();
 
-    final int endByteIndex = getEndByteIndex();
-
-    final byte lowByteMask = (0 == excludedLowBits) ? 0 : (byte) (0xFF << excludedLowBits);
+    final byte lowByteMask = (0 == excludedLowBitCount) ? 0 : (byte) (0xFF << excludedLowBitCount);
     final byte highByteMask = (0 == excludedHighBits) ? 0 : (byte) (0xFF >>> excludedHighBits);
 
     final boolean isHighByteMaskApplied = byteIndex == endByteIndex && 0 != excludedHighBits;
@@ -171,7 +165,7 @@ final class BitVectorMapping extends BitVector {
     // Also, we reset all redundant bits that go beyond the border of the high incomplete byte.
 
     final byte prevValue = (byte) (source.getByte(byteIndex) & prevValueMask);
-    final byte alignedValue = (byte) ((value << excludedLowBits) & 0xFF);
+    final byte alignedValue = (byte) ((value << excludedLowBitCount) & 0xFF);
 
     final byte lowByte =
         (byte) ((alignedValue & (isHighByteMaskApplied ? highByteMask : 0xFF)) | prevValue);
@@ -191,21 +185,13 @@ final class BitVectorMapping extends BitVector {
     // all excluded bits with a high byte mask.
 
     final byte prevHighValue = (byte) (source.getByte(byteIndex + 1) & ~highByteMask);
-    final byte allignedHighValue = (byte) ((value & 0xFF) >>> (BITS_IN_BYTE - excludedLowBits));
+    final byte allignedHighValue = (byte) ((value & 0xFF) >>> (BITS_IN_BYTE - excludedLowBitCount));
 
     final byte highByte =
       (byte) ((allignedHighValue & ((byteIndex + 1 == endByteIndex) & (0 != excludedHighBits) ?
       highByteMask : 0xFF)) | prevHighValue);
 
     source.setByte(byteIndex + 1, highByte);
-  }
-
-  private int getEndByteIndex() {
-    return (beginBitPos + bitSize - 1) / BITS_IN_BYTE; // Highest bit position / bits in byte
-  }
-
-  private int getExcludedLowBitCount() {
-    return beginBitPos % BITS_IN_BYTE;
   }
 
   private int getExcludedHighBitCount() {
