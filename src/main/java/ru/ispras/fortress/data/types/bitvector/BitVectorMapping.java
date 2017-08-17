@@ -62,6 +62,7 @@ final class BitVectorMapping extends BitVector {
   private final int beginBitPos;
   private final int bitSize;
   private final int byteSize;
+  private final int byteOffset;
 
   /**
    * Creates a mapping for the specified bit vector.
@@ -84,6 +85,7 @@ final class BitVectorMapping extends BitVector {
     this.beginBitPos = beginBitPos;
     this.bitSize = bitSize;
     this.byteSize = bitSize / BITS_IN_BYTE + ((0 == bitSize % BITS_IN_BYTE) ? 0 : 1);
+    this.byteOffset =  beginBitPos / BITS_IN_BYTE;
   }
 
   /**
@@ -112,7 +114,7 @@ final class BitVectorMapping extends BitVector {
 
     InvariantChecks.checkBounds(index, getByteSize());
 
-    final int byteIndex = getByteIndex(index);
+    final int byteIndex = byteOffset + index;
     final int excludedLowBits = getExcludedLowBitCount();
 
     // If there are no lower bits excluded from a byte this means that data
@@ -155,7 +157,7 @@ final class BitVectorMapping extends BitVector {
 
     InvariantChecks.checkBounds(index, getByteSize());
 
-    final int byteIndex = getByteIndex(index);
+    final int byteIndex = byteOffset + index;
     final int excludedLowBits = getExcludedLowBitCount();
     final int excludedHighBits = getExcludedHighBitCount();
 
@@ -174,7 +176,7 @@ final class BitVectorMapping extends BitVector {
       // we need to preserve the excluded part of the target byte from overwriting.
 
       final byte prevValue =
-        (byte) (isHighByteMaskApplied ? (source.getByte(byteIndex) & ~highByteMask) : 0);
+          (byte) (isHighByteMaskApplied ? (source.getByte(byteIndex) & ~highByteMask) : 0);
 
       // Excludes the redundant bits from the value and unites it with the initial value
       // part to be preserved.
@@ -186,8 +188,8 @@ final class BitVectorMapping extends BitVector {
     // Forms the mask to preserve previous values of bits that are not affected by
     // the modification (in incomplete low and high bytes).
 
-    final byte prevValueMask =
-      (byte) (isHighByteMaskApplied ? (~lowByteMask | ~highByteMask) & 0xFF : ~lowByteMask & 0xFF);
+    final byte prevValueMask = (byte) (isHighByteMaskApplied ?
+        (~lowByteMask | ~highByteMask) & 0xFF : ~lowByteMask & 0xFF);
 
     // Moves the low part of the specified byte to the high border of the byte
     // and unites the result with the old part of the target byte that should be preserved.
@@ -197,7 +199,7 @@ final class BitVectorMapping extends BitVector {
     final byte alignedValue = (byte) ((value << excludedLowBits) & 0xFF);
 
     final byte lowByte =
-      (byte) ((alignedValue & (isHighByteMaskApplied ? highByteMask : 0xFF)) | prevValue);
+        (byte) ((alignedValue & (isHighByteMaskApplied ? highByteMask : 0xFF)) | prevValue);
 
     source.setByte(byteIndex, lowByte);
 
@@ -221,10 +223,6 @@ final class BitVectorMapping extends BitVector {
       highByteMask : 0xFF)) | prevHighValue);
 
     source.setByte(byteIndex + 1, highByte);
-  }
-
-  private int getByteIndex(final int index) {
-    return beginBitPos / BITS_IN_BYTE + index;
   }
 
   private int getEndByteIndex() {
