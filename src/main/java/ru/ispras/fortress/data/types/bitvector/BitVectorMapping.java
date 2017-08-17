@@ -149,7 +149,7 @@ final class BitVectorMapping extends BitVector {
     final int byteIndex = byteOffset + index;
     final int excludedHighBits = getExcludedHighBitCount();
 
-    final byte lowByteMask = (0 == excludedLowBitCount) ? 0 : (byte) (0xFF << excludedLowBitCount);
+    final byte lowByteMask = (byte) (0xFF << excludedLowBitCount);
     final byte highByteMask = (0 == excludedHighBits) ? 0 : (byte) (0xFF >>> excludedHighBits);
 
     final boolean isHighByteMaskApplied = byteIndex == endByteIndex && 0 != excludedHighBits;
