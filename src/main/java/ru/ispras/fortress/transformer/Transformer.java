@@ -29,7 +29,7 @@ import ru.ispras.fortress.transformer.ruleset.Predicate;
 import ru.ispras.fortress.util.InvariantChecks;
 
 /**
- * The Transformer class contains static methods for common expression transformations.
+ * The {@link Transformer} class contains static methods for common expression transformations.
  */
 public final class Transformer {
   private Transformer() {}
@@ -42,7 +42,7 @@ public final class Transformer {
    * or left unchanged. In the last case, the method returns a reference to the current operation
    * (this).
    *
-   * @param engine Calculator engine (if <code>null</code>, the default engine to be used).
+   * @param engine Calculator engine (if {@code null}, the default engine to be used).
    * @param options Option flags to tune the reduction strategy.
    * @param expression Expression to be reduced.
    * @return Reduced expression (value or another operation expression with minimal subexpressions)
