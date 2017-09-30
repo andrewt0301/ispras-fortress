@@ -15,19 +15,16 @@
 package ru.ispras.fortress.transformer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import ru.ispras.fortress.expression.Node;
-
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
+import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * Aggregate of rules to be used in {@link NodeTransformer} when multiple
  * rules per operation required. Rules are checked in sequential order.
  */
-
 public class CompositeRule implements TransformerRule {
   private final List<TransformerRule> rules;
 
@@ -35,7 +32,7 @@ public class CompositeRule implements TransformerRule {
   private TransformerRule ruleCache = null;
 
   public CompositeRule(final List<? extends TransformerRule> rules) {
-    checkNotNull(rules);
+	  InvariantChecks.checkNotNull(rules);
     if (rules.isEmpty()) {
       this.rules = Collections.emptyList();
     } else {
@@ -44,7 +41,7 @@ public class CompositeRule implements TransformerRule {
   }
 
   public boolean isApplicable(final Node node) {
-    checkNotNull(node);
+    InvariantChecks.checkNotNull(node);
     final TransformerRule rule = findRule(node);
     if (rule != null) {
       nodeCache = node;
@@ -55,7 +52,7 @@ public class CompositeRule implements TransformerRule {
   }
 
   public Node apply(final Node node) {
-    checkNotNull(node);
+    InvariantChecks.checkNotNull(node);
     final TransformerRule rule = (nodeCache == node) ? ruleCache : findRule(node);
     if (rule != null) {
       return rule.apply(node);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2013-2017 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,8 +14,6 @@
 
 package ru.ispras.fortress.transformer;
 
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
-
 import ru.ispras.fortress.calculator.Calculator;
 import ru.ispras.fortress.calculator.CalculatorEngine;
 import ru.ispras.fortress.data.Data;
@@ -23,13 +21,13 @@ import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
+import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * The OperationReducer class implements constant expression evaluation. OperationReducer relies on
  * {@link ru.ispras.fortress.calculator.CalculatorEngine CalculatorEngine} to support different sets
  * of operations.
  */
-
 final class OperationReducer {
   private final static String UNKNOWN_ELEMENT = "Unknown syntax element kind: %s";
 
@@ -49,13 +47,12 @@ final class OperationReducer {
    * @param operation Expression to be reduced.
    * @param options Reduction policy configuration.
    */
-
   public OperationReducer(
       final CalculatorEngine engine,
       final NodeOperation operation,
       final ReduceOptions options) {
-    checkNotNull(operation);
-    checkNotNull(options);
+    InvariantChecks.checkNotNull(operation);
+    InvariantChecks.checkNotNull(options);
 
     this.engine = engine;
     this.operation = operation;
@@ -70,7 +67,6 @@ final class OperationReducer {
    * 
    * @return Reduced expression.
    */
-
   public Node reduce() {
     if (hasValueOperandsOnly) {
       final NodeValue result = calculate(engine, operation.getOperationId(), operands);
@@ -91,7 +87,6 @@ final class OperationReducer {
    * Collect required information about operands in stored operation. Checks if operation can be
    * evaluated, should operands be updated etc.
    */
-
   private void analyzeOperands() {
     hasValueOperandsOnly = true;
     updatedOperands = false;
@@ -139,7 +134,6 @@ final class OperationReducer {
    * 
    * @return true if operation is supported.
    */
-
   private boolean isSupported(
       final CalculatorEngine engine,
       final Enum<?> operation,
@@ -160,7 +154,6 @@ final class OperationReducer {
    * 
    * @return Data instance for operation result.
    */
-
   private Data calculateData(
       final CalculatorEngine engine,
       final Enum<?> operation,
@@ -181,7 +174,6 @@ final class OperationReducer {
    * 
    * @return NodeValue instance for operation result.
    */
-
   private NodeValue calculate(
       final CalculatorEngine engine,
       final Enum<?> operation,
@@ -214,7 +206,6 @@ final class OperationReducer {
    * @param operation Operation node to extract operands from.
    * @return Array of operand nodes.
    */
-
   private static Node[] copyOperands(final NodeOperation operation) {
     final Node[] operands = new Node[operation.getOperandCount()];
 
