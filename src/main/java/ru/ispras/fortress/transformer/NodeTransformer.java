@@ -33,10 +33,9 @@ import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 
 /**
- * NodeTransformer is an expression tree visitor with bottom-up substitution policy. Substitutions
- * take place accordingly to set of rules passed to transformer before traversal.
+ * {@link NodeTransformer} is an expression tree visitor with bottom-up substitution policy.
+ * Substitutions take place accordingly to set of rules passed to transformer before traversal.
  */
-
 public class NodeTransformer implements ExprTreeVisitor {
   private final Map<Enum<?>, List<TransformerRule>> ruleset;
 
@@ -51,7 +50,6 @@ public class NodeTransformer implements ExprTreeVisitor {
    * 
    * @param root Root of a tree to be traversed.
    */
-
   public void walk(final Node root) {
     final ExprTreeWalker walker = new ExprTreeWalker(this);
     walker.visit(root);
@@ -63,7 +61,6 @@ public class NodeTransformer implements ExprTreeVisitor {
    * 
    * @param trees Collection of root nodes of trees to be traversed.
    */
-
   public void walk(final Collection<? extends Node> trees) {
     final ExprTreeWalker walker = new ExprTreeWalker(this);
     walker.visit(trees);
@@ -72,7 +69,6 @@ public class NodeTransformer implements ExprTreeVisitor {
   /**
    * Reset transformer to initial state keeping all rules.
    */
-
   public void reset() {
     this.operandStack.clear();
     this.exprStack.clear();
@@ -83,7 +79,6 @@ public class NodeTransformer implements ExprTreeVisitor {
   /**
    * Create new transformer instance containing no substitution rules.
    */
-
   public NodeTransformer() {
     this(new IdentityHashMap<Enum<?>, TransformerRule>());
   }
@@ -93,7 +88,6 @@ public class NodeTransformer implements ExprTreeVisitor {
    * 
    * @param rules Map of rules. See {@link #addRule addRule()} for details.
    */
-
   public NodeTransformer(final Map<Enum<?>, TransformerRule> rules) {
     checkNotNull(rules);
 
@@ -120,7 +114,6 @@ public class NodeTransformer implements ExprTreeVisitor {
    * 
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
-
   public void addRule(final Enum<?> opId, final TransformerRule rule) {
     checkNotNull(opId);
     checkNotNull(rule);
@@ -157,7 +150,6 @@ public class NodeTransformer implements ExprTreeVisitor {
    *
    * @return List of results in order of base forest iteration.
    */
-
   public List<Node> getResult() {
     return result;
   }
@@ -170,7 +162,6 @@ public class NodeTransformer implements ExprTreeVisitor {
    * 
    * @return Transformed expression or node itself if no applicable rule can be found.
    */
-
   private Node applyRule(final Enum<?> id, final Node node) {
     for (final TransformerRule rule : getRulesRead(id)) {
       if (rule.isApplicable(node)) {
@@ -183,7 +174,6 @@ public class NodeTransformer implements ExprTreeVisitor {
   /**
    * Helper methods to find and apply relevant rule to node given.
    */
-
   private Node updateNode(final Node node) {
     return applyRule(node.getKind(), node);
   }
@@ -314,7 +304,6 @@ public class NodeTransformer implements ExprTreeVisitor {
  * Subclasses are expected to implement TransformRule.isApplicable() method that should set
  * applicableCache member to correct substitution result in case rule is applicable.
  */
-
 abstract class ScopedBindingRule implements TransformerRule {
   protected final List<TransformerRule> shadowed;
   protected final Map<String, Node> bindings;
@@ -326,7 +315,6 @@ abstract class ScopedBindingRule implements TransformerRule {
    * @param previous Rule representing outer scope.
    * @param bindingList List of bound variables in current scope.
    */
-
   public ScopedBindingRule(
       final List<TransformerRule> previous,
       final List<NodeBinding.BoundVariable> bindingList) {
@@ -346,7 +334,6 @@ abstract class ScopedBindingRule implements TransformerRule {
   /**
    * Get rule being shadowed by current scope.
    */
-
   public List<TransformerRule> getShadowedRules() {
     return shadowed;
   }
@@ -361,7 +348,6 @@ abstract class ScopedBindingRule implements TransformerRule {
  * Therefore first ignoring any variable bound in current scope or delegating check to outer scope
  * otherwise brings requierd result.
  */
-
 final class RejectBoundVariablesRule extends ScopedBindingRule {
   private final NodeBinding node;
 
@@ -371,7 +357,6 @@ final class RejectBoundVariablesRule extends ScopedBindingRule {
    * @param previous Rule representing outer scope.
    * @param node NodeBinding instance is to check for.
    */
-
   public RejectBoundVariablesRule(final List<TransformerRule> previous, final NodeBinding node) {
     super(previous, node.getBindings());
     this.node = node;
@@ -380,7 +365,6 @@ final class RejectBoundVariablesRule extends ScopedBindingRule {
   /**
    * Get binding being ignored by this rule.
    */
-
   public NodeBinding getBinding() {
     return node;
   }

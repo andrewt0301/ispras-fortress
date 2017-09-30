@@ -336,6 +336,4 @@ public final class TypeConversion {
   private static NodeValue newBitVector(final BigInteger value, final int size) {
     return NodeValue.newBitVector(BitVector.valueOf(value, size));
   }
-
-
 }

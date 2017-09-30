@@ -20,7 +20,6 @@ import ru.ispras.fortress.expression.Node;
  * The TransformerRule is an interface to be implemented by all rules being used in
  * {@link NodeTransformer}.
  */
-
 public interface TransformerRule {
   /**
    * Test for the rule can be applied to given node.
@@ -28,7 +27,6 @@ public interface TransformerRule {
    * @param node Expression node to check applicability for.
    * @return true if the rule is applicable to given node.
    */
-
   boolean isApplicable(Node node);
 
   /**
@@ -36,6 +34,5 @@ public interface TransformerRule {
    * 
    * @return Node substitution expression.
    */
-
   Node apply(Node node);
 }

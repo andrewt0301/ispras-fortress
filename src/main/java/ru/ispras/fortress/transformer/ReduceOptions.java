@@ -16,15 +16,13 @@ package ru.ispras.fortress.transformer;
 
 /**
  * Describes flags that affect the behavior of the expression reduction logic.
- * 
- * @author Andrei Tatarnikov
+ *
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public enum ReduceOptions {
   /**
    * New instances of operations objects should be created for operations that were reduced.
    * Instances of other operation objects should be reduced.
    */
-
   NEW_INSTANCE
 }

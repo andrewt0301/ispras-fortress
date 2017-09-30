@@ -14,8 +14,6 @@
 
 package ru.ispras.fortress.transformer;
 
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,11 +26,11 @@ import ru.ispras.fortress.expression.NodeBinding;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.transformer.ruleset.Predicate;
+import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * The Transformer class contains static methods for common expression transformations.
  */
-
 public final class Transformer {
   private Transformer() {}
 
@@ -50,15 +48,14 @@ public final class Transformer {
    * @return Reduced expression (value or another operation expression with minimal subexpressions)
    *         or the initial expression if it is impossible to reduce it.
    *
-   * @throws IllegalArgumentException if any of the parameters is <code>null</code>.
+   * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
-
   public static Node reduce(
       final CalculatorEngine engine,
       final ReduceOptions options,
       final Node expression) {
-    checkNotNull(options);
-    checkNotNull(expression);
+    InvariantChecks.checkNotNull(options);
+    InvariantChecks.checkNotNull(expression);
 
     // Only operation expressions can be reduced.
     if (expression.getKind() == Node.Kind.VARIABLE ||
@@ -87,7 +84,6 @@ public final class Transformer {
    *
    * @see Transformer#reduce(CalculatorEngine, ReduceOptions, Node)
    */
-
   public static Node reduce(final ReduceOptions options, final Node expression) {
     return reduce(null, options, expression);
   }
@@ -98,7 +94,6 @@ public final class Transformer {
    *
    * @see Transformer#reduce(CalculatorEngine, ReduceOptions, Node)
    */
-
   public static Node reduce(final Node e) {
     return reduce(null, ReduceOptions.NEW_INSTANCE, e);
   }
@@ -130,14 +125,12 @@ public final class Transformer {
    * @param term Term to replace variables.
    * @return An expression where all variables with given name are replaced with term specified.
    *
-   * @throws IllegalArgumentException if any of the parameters is <code>null</code>.
+   * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
-
-  public static Node substitute(
-      final Node expression, final String name, final Node term) {
-    checkNotNull(expression);
-    checkNotNull(name);
-    checkNotNull(term);
+  public static Node substitute(final Node expression, final String name, final Node term) {
+    InvariantChecks.checkNotNull(expression);
+    InvariantChecks.checkNotNull(name);
+    InvariantChecks.checkNotNull(term);
 
     final TransformerRule rule = new TransformerRule() {
       @Override
@@ -162,11 +155,10 @@ public final class Transformer {
    * @param binding Binding node to be substituted.
    * @return An underlying expression with all bindings specified being substituted.
    *
-   * @throws IllegalArgumentException if any of the parameters is <code>null</code>.
+   * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
-
   public static Node substituteBinding(final NodeBinding binding) {
-    checkNotNull(binding);
+    InvariantChecks.checkNotNull(binding);
 
     final Map<String, Node> exprs = new HashMap<>();
     for (final NodeBinding.BoundVariable bound : binding.getBindings()) {
@@ -201,9 +193,8 @@ public final class Transformer {
    *
    * @throws IllegalArgumentException if any of the parameters is <code>null</code>.
    */
-
   public static Node substituteAllBindings(final Node expression) {
-    checkNotNull(expression);
+    InvariantChecks.checkNotNull(expression);
 
     final TransformerRule rule = new TransformerRule() {
       @Override
@@ -229,11 +220,10 @@ public final class Transformer {
    * @param expression Expression to be transformed.
    * @return Expression with non-standard operations being replaced.
    *
-   * @throws IllegalArgumentException if any of the parameters is <code>null</code>.
+   * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
-
   public static Node standardize(final Node expression) {
-    checkNotNull(expression);
+    InvariantChecks.checkNotNull(expression);
 
     /* Reduce expression before standardizing. */
     final Node reducedExpression = Transformer.reduce(ReduceOptions.NEW_INSTANCE, expression);
@@ -252,16 +242,14 @@ public final class Transformer {
    *
    * @return Transformed expression.
    *
-   * @throws IllegalArgumentException if any of the parameters is <code>null</code>.
+   * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
 
   public static Node transform(
       final Node tree,
       final Enum<?> indicator,
       final TransformerRule rule) {
-
-    checkNotNull(tree);
-
+    InvariantChecks.checkNotNull(tree);
     return transformAll(Collections.singleton(tree), indicator, rule).get(0);
   }
 
@@ -274,16 +262,15 @@ public final class Transformer {
    *
    * @return List of transformed expressions in order of base collection iteration.
    *
-   * @throws IllegalArgumentException if any of the parameters is <code>null</code>.
+   * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
-
   public static List<Node> transformAll(
       final Collection<Node> forest,
       final Enum<?> indicator,
       final TransformerRule rule) {
-    checkNotNull(forest);
-    checkNotNull(indicator);
-    checkNotNull(rule);
+    InvariantChecks.checkNotNull(forest);
+    InvariantChecks.checkNotNull(indicator);
+    InvariantChecks.checkNotNull(rule);
 
     final NodeTransformer transformer = new NodeTransformer();
     transformer.addRule(indicator, rule);
