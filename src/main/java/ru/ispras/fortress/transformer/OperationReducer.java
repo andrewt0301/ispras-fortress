@@ -14,6 +14,9 @@
 
 package ru.ispras.fortress.transformer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ru.ispras.fortress.calculator.Calculator;
 import ru.ispras.fortress.calculator.CalculatorEngine;
 import ru.ispras.fortress.data.Data;
@@ -24,7 +27,7 @@ import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.util.InvariantChecks;
 
 /**
- * The OperationReducer class implements constant expression evaluation. OperationReducer relies on
+ * The {@link OperationReducer} class implements constant expression evaluation. OperationReducer relies on
  * {@link ru.ispras.fortress.calculator.CalculatorEngine CalculatorEngine} to support different sets
  * of operations.
  */
@@ -34,7 +37,7 @@ final class OperationReducer {
   private final CalculatorEngine engine;
 
   private final NodeOperation operation;
-  private final Node[] operands;
+  private final List<Node> operands;
   private final ReduceOptions options;
 
   private boolean hasValueOperandsOnly;
@@ -56,7 +59,7 @@ final class OperationReducer {
 
     this.engine = engine;
     this.operation = operation;
-    this.operands = copyOperands(operation);
+    this.operands = new ArrayList<>(operation.getOperands());
     this.options = options;
 
     analyzeOperands();
@@ -107,7 +110,7 @@ final class OperationReducer {
           final Node reduced = Transformer.reduce(engine, options, o);
 
           if (reduced != o) {
-            operands[index] = reduced;
+            operands.set(index, reduced);
             updatedOperands = true;
           }
 
@@ -177,11 +180,11 @@ final class OperationReducer {
   private NodeValue calculate(
       final CalculatorEngine engine,
       final Enum<?> operation,
-      final Node[] operands) {
-    final Data[] dataOperands = new Data[operands.length];
+      final List<Node> operands) {
+    final Data[] dataOperands = new Data[operands.size()];
 
-    for (int index = 0; index < operands.length; ++index) {
-      dataOperands[index] = getValueData(operands[index]);
+    for (int index = 0; index < operands.size(); ++index) {
+      dataOperands[index] = getValueData(operands.get(index));
     }
 
     if (!isSupported(engine, operation, dataOperands)) {
@@ -198,21 +201,5 @@ final class OperationReducer {
       case VARIABLE: return ((NodeVariable) node).getData();
       }
       throw new IllegalArgumentException();
-  }
-
-  /**
-   * Helper method to extract operands from operation node.
-   * 
-   * @param operation Operation node to extract operands from.
-   * @return Array of operand nodes.
-   */
-  private static Node[] copyOperands(final NodeOperation operation) {
-    final Node[] operands = new Node[operation.getOperandCount()];
-
-    for (int index = 0; index < operands.length; ++index) {
-      operands[index] = operation.getOperand(index);
-    }
-
-    return operands;
   }
 }
