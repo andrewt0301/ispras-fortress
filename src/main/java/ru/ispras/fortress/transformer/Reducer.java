@@ -14,6 +14,7 @@
 
 package ru.ispras.fortress.transformer;
 
+import ru.ispras.fortress.calculator.Calculator;
 import ru.ispras.fortress.calculator.CalculatorEngine;
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.expression.ExprUtils;
@@ -24,75 +25,148 @@ import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.util.InvariantChecks;
 
-final class Reducer {
+import java.util.IdentityHashMap;
+import java.util.Map;
+
+public final class Reducer {
+  private static final BindingRule     BINDING_RULE = new BindingRule();
+  private static final VariableRule   VARIABLE_RULE = new VariableRule();
+  private static final OperationRule OPERATION_RULE = new OperationRule();
+
+  private static final Map<Enum<?>, TransformerRule> REDUCER_RULES =
+      new IdentityHashMap<Enum<?>, TransformerRule>();
+
+  static {
+    REDUCER_RULES.put(Node.Kind.BINDING,     BINDING_RULE);
+    REDUCER_RULES.put(Node.Kind.VARIABLE,   VARIABLE_RULE);
+    REDUCER_RULES.put(Node.Kind.OPERATION, OPERATION_RULE);
+  }
+
+  private static class BindingRule implements TransformerRule {
+    @Override
+    public boolean isApplicable(final Node node) {
+      if (node.getKind() == Node.Kind.BINDING) {
+        return false;
+      }
+
+      final NodeBinding binding = (NodeBinding) node;
+      return ExprUtils.isValue(binding.getExpression());
+    }
+
+    @Override
+    public Node apply(final Node node) {
+      final NodeBinding binding = (NodeBinding) node;
+      return binding.getExpression();
+    }
+  }
+
+  private static class VariableRule implements TransformerRule {
+    private ValueProvider valueProvider;
+
+    public void setValueProvider(final ValueProvider valueProvider) {
+      this.valueProvider = valueProvider;
+    }
+
+    @Override
+    public boolean isApplicable(final Node node) {
+      if (!ExprUtils.isVariable(node)) {
+        return false;
+      }
+
+      final NodeVariable variable = (NodeVariable) node;
+      if (null != valueProvider &&
+          null != valueProvider.getVariableValue(variable.getName())) {
+        return true;
+      }
+
+      return variable.getVariable().hasValue();
+    }
+
+    @Override
+    public Node apply(final Node node) {
+      final NodeVariable variable = (NodeVariable) node;
+      Data data = null;
+
+      if (null != valueProvider) {
+        data = valueProvider.getVariableValue(variable.getName());
+      }
+
+      if (null == data) {
+        data = variable.getData();
+      }
+
+      return new NodeValue(data);
+    }
+  }
+
+  private static class OperationRule implements TransformerRule {
+    private CalculatorEngine calculatorEngine;
+
+    public void setCalculatorEngine(final CalculatorEngine calculatorEngine) {
+      this.calculatorEngine = calculatorEngine;
+    }
+
+    @Override
+    public boolean isApplicable(final Node node) {
+      if (node.getKind() == Node.Kind.OPERATION) {
+        return false;
+      }
+
+      final NodeOperation operation = (NodeOperation) node;
+      if (operation.getOperandCount() == 0) {
+        return false;
+      }
+
+      for (final Node operand : operation.getOperands()) {
+        if (!ExprUtils.isValue(operand)) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    @Override
+    public Node apply(final Node node) {
+      final NodeOperation operation = (NodeOperation) node;
+      final Data[] values = new Data[operation.getOperandCount()];
+
+      for (int index = 0; index < operation.getOperandCount(); ++index) {
+        values[index] = ((NodeValue) operation.getOperand(index)).getData();
+      }
+
+      final Data result = null != calculatorEngine ?
+          calculatorEngine.calculate(operation.getOperationId(), values) :
+          Calculator.calculate(operation.getOperationId(), values);
+
+      return new NodeValue(result);
+    }
+  }
+
   public static Node reduce(
-      final CalculatorEngine engine,
+      final CalculatorEngine calculatorEngine,
       final ValueProvider valueProvider,
       final ReduceOptions options,
       final Node expression) {
     InvariantChecks.checkNotNull(options);
     InvariantChecks.checkNotNull(expression);
 
-    if (ExprUtils.isVariable(expression)) {
-      return reduceVariable(valueProvider, (NodeVariable) expression);
-    }
+    OPERATION_RULE.setCalculatorEngine(calculatorEngine);
+    VARIABLE_RULE.setValueProvider(valueProvider);
 
-    if (expression.getKind() == Node.Kind.BINDING) {
-      return reduceBinding(engine, valueProvider, options, (NodeBinding) expression);
+    try {
+      final NodeTransformer nodeTransformer = new NodeTransformer(REDUCER_RULES);
+      nodeTransformer.walk(expression);
+      return nodeTransformer.getResult().iterator().next();
+    } finally {
+      OPERATION_RULE.setCalculatorEngine(null);
+      VARIABLE_RULE.setValueProvider(null);
     }
-
-    if (expression.getKind() == Node.Kind.OPERATION) {
-      return reduceOperation(engine, valueProvider, options, (NodeOperation) expression);
-    }
-
-    return expression;
   }
 
-  private static Node reduceVariable(
+  public static Node reduce(
       final ValueProvider valueProvider,
-      final NodeVariable variable) {
-    InvariantChecks.checkNotNull(variable);
-
-    if (null != valueProvider) {
-      final Data data = valueProvider.getVariableValue(variable.getName());
-      if (null != data) {
-        return new NodeValue(data);
-      }
-    }
-
-    if (variable.getVariable().hasValue()) {
-      return new NodeValue(variable.getData());
-    }
-
-    return variable;
-  }
-
-  private static Node reduceBinding(
-      final CalculatorEngine engine,
-      final ValueProvider valueProvider,
-      final ReduceOptions options,
-      final NodeBinding binding) {
-    InvariantChecks.checkNotNull(binding);
-
-    final Node reduced = reduce(engine, valueProvider, options, binding.getExpression());
-    if (reduced == null || reduced == binding.getExpression()) {
-      return binding;
-    }
-
-    if (ExprUtils.isValue(reduced)) {
-      return reduced;
-    }
-
-    return binding.bindTo(reduced);
-  }
-
-  private static Node reduceOperation(
-      final CalculatorEngine engine,
-      final ValueProvider valueProvider,
-      final ReduceOptions options,
-      final NodeOperation operation) {
-    InvariantChecks.checkNotNull(operation);
-    // TODO Auto-generated method stub
-    return null;
+      final Node expression) {
+    return reduce(null, valueProvider, ReduceOptions.NEW_INSTANCE, expression);
   }
 }
