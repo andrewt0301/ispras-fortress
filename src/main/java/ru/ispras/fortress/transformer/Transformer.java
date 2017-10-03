@@ -54,6 +54,8 @@ public final class Transformer {
       final CalculatorEngine engine,
       final ReduceOptions options,
       final Node expression) {
+    return Reducer.reduce(engine, null, options, expression);
+    /*
     InvariantChecks.checkNotNull(options);
     InvariantChecks.checkNotNull(expression);
 
@@ -76,6 +78,7 @@ public final class Transformer {
     }
 
     return result;
+    */
   }
 
   /**
