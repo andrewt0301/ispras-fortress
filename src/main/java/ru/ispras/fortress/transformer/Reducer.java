@@ -23,7 +23,6 @@ import ru.ispras.fortress.expression.NodeBinding;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
-import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.util.InvariantChecks;
 
 import java.util.IdentityHashMap;
@@ -40,10 +39,7 @@ public final class Reducer {
   static {
     REDUCER_RULES.put(Node.Kind.BINDING,     BINDING_RULE);
     REDUCER_RULES.put(Node.Kind.VARIABLE,   VARIABLE_RULE);
-
-    for (final StandardOperation operatorId : StandardOperation.values()) {
-      REDUCER_RULES.put(operatorId, OPERATION_RULE);
-    }
+    REDUCER_RULES.put(Node.Kind.OPERATION, OPERATION_RULE);
   }
 
   private static class BindingRule implements TransformerRule {
