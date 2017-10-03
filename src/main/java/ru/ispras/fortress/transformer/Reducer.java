@@ -79,7 +79,7 @@ public final class Reducer {
 
       final NodeVariable variable = (NodeVariable) node;
       if (null != valueProvider &&
-          null != valueProvider.getVariableValue(variable.getName())) {
+          null != valueProvider.getVariableValue(variable.getVariable())) {
         return true;
       }
 
@@ -92,7 +92,7 @@ public final class Reducer {
       Data data = null;
 
       if (null != valueProvider) {
-        data = valueProvider.getVariableValue(variable.getName());
+        data = valueProvider.getVariableValue(variable.getVariable());
       }
 
       if (null == data) {

@@ -15,6 +15,7 @@
 package ru.ispras.fortress.transformer;
 
 import ru.ispras.fortress.data.Data;
+import ru.ispras.fortress.data.Variable;
 
 /**
  * {@link ValueProvider} class provides variable values to be used for expression reduction.
@@ -30,5 +31,5 @@ public interface ValueProvider {
    *
    * @throws IllegalArgumentException if the argument is {@code null}.
    */
-  Data getVariableValue(String variableName);
+  Data getVariableValue(final Variable variable);
 }
