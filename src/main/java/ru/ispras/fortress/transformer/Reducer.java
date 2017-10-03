@@ -45,7 +45,7 @@ public final class Reducer {
   private static class BindingRule implements TransformerRule {
     @Override
     public boolean isApplicable(final Node node) {
-      if (node.getKind() == Node.Kind.BINDING) {
+      if (node.getKind() != Node.Kind.BINDING) {
         return false;
       }
 
@@ -108,7 +108,7 @@ public final class Reducer {
 
     @Override
     public boolean isApplicable(final Node node) {
-      if (node.getKind() == Node.Kind.OPERATION) {
+      if (node.getKind() != Node.Kind.OPERATION) {
         return false;
       }
 
