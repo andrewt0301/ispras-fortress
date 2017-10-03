@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import ru.ispras.fortress.calculator.CalculatorEngine;
+import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeBinding;
 import ru.ispras.fortress.expression.NodeOperation;
@@ -147,6 +148,29 @@ public final class Transformer {
       }
     };
     return transform(expression, Node.Kind.VARIABLE, rule);
+  }
+
+  public static Node substitute(final Node e, final VariableProvider vp) {
+    InvariantChecks.checkNotNull(e);
+    InvariantChecks.checkNotNull(vp);
+
+    final TransformerRule rule = new TransformerRule() {
+      @Override
+      public boolean isApplicable(final Node node) {
+        return node.getKind() == Node.Kind.VARIABLE;
+      }
+
+      @Override
+      public Node apply(final Node node) {
+        final Variable prev = ((NodeVariable) node).getVariable();
+        final Variable next = vp.getVariable(prev);
+        if (next != null) {
+          return new NodeVariable(next);
+        }
+        return node;
+      }
+    };
+    return transform(e, Node.Kind.VARIABLE, rule);
   }
 
   /**
