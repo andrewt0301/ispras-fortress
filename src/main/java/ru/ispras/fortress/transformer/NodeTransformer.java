@@ -210,12 +210,20 @@ public class NodeTransformer implements ExprTreeVisitor {
       return;
     }
 
+    // TODO consequtive rule application
     final int pos = operandStack.size() - 1;
     final Enum<?> opId = expr.getOperationId();
 
-    // TODO consequtive rule application
-    final NodeOperation updated = new NodeOperation(opId, operandStack.remove(pos));
-    updated.setUserData(expr.getUserData());
+    final Node[] operands = operandStack.remove(pos);
+    NodeOperation updated = expr;
+
+    for (int index = 0; index < expr.getOperandCount(); ++index) {
+      if (operands[index] != expr.getOperand(index)) {
+        updated = new NodeOperation(opId, operands);
+        updated.setUserData(expr.getUserData());
+        break;
+      }
+    }
 
     final Node node = applyRule(opId, updated);
     exprStack.add(node);
