@@ -23,6 +23,7 @@ import ru.ispras.fortress.expression.NodeBinding;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
+import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.util.InvariantChecks;
 
 import java.util.IdentityHashMap;
@@ -39,7 +40,10 @@ public final class Reducer {
   static {
     REDUCER_RULES.put(Node.Kind.BINDING,     BINDING_RULE);
     REDUCER_RULES.put(Node.Kind.VARIABLE,   VARIABLE_RULE);
-    REDUCER_RULES.put(Node.Kind.OPERATION, OPERATION_RULE);
+
+    for (final StandardOperation operatorId : StandardOperation.values()) {
+      REDUCER_RULES.put(operatorId, OPERATION_RULE);
+    }
   }
 
   private static class BindingRule implements TransformerRule {
@@ -113,17 +117,20 @@ public final class Reducer {
       }
 
       final NodeOperation operation = (NodeOperation) node;
-      if (operation.getOperandCount() == 0) {
-        return false;
-      }
+      final Data[] values = new Data[operation.getOperandCount()];
 
-      for (final Node operand : operation.getOperands()) {
+      for (int index = 0; index < operation.getOperandCount(); ++index) {
+        final Node operand = operation.getOperand(index);
         if (!ExprUtils.isValue(operand)) {
           return false;
         }
+        values[index] = ((NodeValue) operand).getData();
       }
 
-      return true;
+      final Enum<?> operatorId = operation.getOperationId();
+      return null != calculatorEngine ?
+          calculatorEngine.isSupported(operatorId, values) :
+          Calculator.isSupported(operatorId, values);
     }
 
     @Override
@@ -168,5 +175,10 @@ public final class Reducer {
       final ValueProvider valueProvider,
       final Node expression) {
     return reduce(null, valueProvider, ReduceOptions.NEW_INSTANCE, expression);
+  }
+
+  public static Node reduce(
+      final Node expression) {
+    return reduce(null, null, ReduceOptions.NEW_INSTANCE, expression);
   }
 }
