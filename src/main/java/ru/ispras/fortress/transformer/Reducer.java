@@ -177,8 +177,47 @@ public final class Reducer {
     return reduce(null, valueProvider, ReduceOptions.NEW_INSTANCE, expression);
   }
 
+  /**
+   * Attempts to reduce the specified expression including to a value.
+   * Uses default {@code engine} with {@link ReduceOptions#NEW_INSTANCE} policy.
+   *
+   * @see Transformer#reduce(CalculatorEngine, ReduceOptions, Node)
+   */
   public static Node reduce(
       final Node expression) {
     return reduce(null, null, ReduceOptions.NEW_INSTANCE, expression);
+  }
+
+  /**
+   * Attempts to reduce the specified expression including to a value.
+   * Uses default {@code engine}.
+   *
+   * @see Transformer#reduce(CalculatorEngine, ReduceOptions, Node)
+   */
+  public static Node reduce(final ReduceOptions options, final Node expression) {
+    return reduce(null, options, expression);
+  }
+
+  /**
+   * Attempts to reduce the specified expression including to a value. Reduction is performed with
+   * the help of the calculator object that performs specific operations with specific data types.
+   *
+   * The operation may be totally reduced (or, so to speak, reduced to a value), partially reduced
+   * or left unchanged. In the last case, the method returns a reference to the current operation
+   * (this).
+   *
+   * @param engine Calculator engine (if {@code null}, the default engine to be used).
+   * @param options Option flags to tune the reduction strategy.
+   * @param expression Expression to be reduced.
+   * @return Reduced expression (value or another operation expression with minimal subexpressions)
+   *         or the initial expression if it is impossible to reduce it.
+   *
+   * @throws IllegalArgumentException if any of the parameters is {@code null}.
+   */
+  public static Node reduce(
+      final CalculatorEngine engine,
+      final ReduceOptions options,
+      final Node expression) {
+    return reduce(engine, null, options, expression);
   }
 }
