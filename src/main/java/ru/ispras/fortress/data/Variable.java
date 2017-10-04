@@ -60,10 +60,12 @@ public final class Variable {
   }
 
   /**
-   * Constructs a full copy of the given variable object. The fields are copied by reference because
-   * their types are immutable.
+   * Constructs a full copy of the given variable object. The fields are copied by reference
+   * because their types are immutable.
    *
    * @param variable Variable object to be copied.
+   *
+   * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
   public Variable(final Variable variable) {
     this(variable != null ? variable.name : null, variable != null ? variable.data : null);
