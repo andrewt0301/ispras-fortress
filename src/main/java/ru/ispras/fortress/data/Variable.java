@@ -147,6 +147,6 @@ public final class Variable {
 
   @Override
   public String toString() {
-    return String.format("Variable[name=%s, data=%s]", name, data);
+    return String.format("Variable[name=%s, data=%s]", getName(), getData());
   }
 }
