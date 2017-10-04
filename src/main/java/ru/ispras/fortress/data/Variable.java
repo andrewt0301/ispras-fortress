@@ -93,7 +93,7 @@ public final class Variable {
   /**
    * Returns a data object associated with the specified variable.
    *
-   * @return An Data object associated with the variable.
+   * @return A {@link Data} object associated with the variable.
    */
   public Data getData() {
     return data;
