@@ -1,11 +1,11 @@
 /*
- * Copyright 2012-2016 ISP RAS (http://www.ispras.ru)
- * 
+ * Copyright 2012-2017 ISP RAS (http://www.ispras.ru)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -14,16 +14,15 @@
 
 package ru.ispras.fortress.data;
 
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
-
 import java.math.BigInteger;
 import ru.ispras.fortress.data.types.bitvector.BitVector;
 import ru.ispras.fortress.data.types.datamap.DataMap;
+import ru.ispras.fortress.util.InvariantChecks;
 
 /**
- * The Data class is a storage of data being processed. This data will be used as an input or an
- * output parameter of a constraint solver.
- * 
+ * The {@link Data} class is a storage of data being processed. This data will be used as
+ * an input or an output parameter of a constraint solver.
+ *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 public final class Data {
@@ -32,21 +31,21 @@ public final class Data {
   private Object userData;
 
   /**
-   * Creates a data object of the INTEGER type from a BigInteger value.
-   * 
+   * Creates a data object of the INTEGER type from a {@link BigInteger} value.
+   *
    * @param value A BitInteger value.
    * @return New data object.
-   * 
+   *
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
   public static Data newInteger(final BigInteger value) {
-    checkNotNull(value);
+    InvariantChecks.checkNotNull(value);
     return new Data(DataType.INTEGER, value);
   }
 
   /**
    * Creates a data object of the INTEGER type from a long value.
-   * 
+   *
    * @param value A long value.
    * @return New data object.
    */
@@ -66,22 +65,22 @@ public final class Data {
 
   /**
    * Creates a data object of the INTEGER type from a string.
-   * 
+   *
    * @param text String to be parsed.
-   * @param radix Radix to be used for parsing. 
+   * @param radix Radix to be used for parsing.
    * @return New data object.
-   * 
+   *
    * @throws IllegalArgumentException if the {@code text} parameter equals {@code null}.
    * @throws NumberFormatException if failed to parse the string. 
    */
   public static Data newInteger(final String text, final int radix) {
-    checkNotNull(text);
+    InvariantChecks.checkNotNull(text);
     return newInteger(new BigInteger(text, radix));
   }
 
   /**
    * Creates a data object of the REAL type from an double value.
-   * 
+   *
    * @param value A double value.
    * @return An new data object.
    */
@@ -91,12 +90,12 @@ public final class Data {
 
   /**
    * Creates a data object of the STRING type from a String value.
-   * 
+   *
    * @param value A String value.
    * @return An new data object.
    */
   public static Data newString(final String value) {
-    checkNotNull(value);
+    InvariantChecks.checkNotNull(value);
     return new Data(DataType.STRING, value);
   }
 
@@ -118,7 +117,7 @@ public final class Data {
 
   /**
    * Creates a data object of the BOOLEAN type from a boolean value.
-   * 
+   *
    * @param value A boolean value.
    * @return A new data object.
    */
@@ -129,7 +128,7 @@ public final class Data {
   /**
    * Creates a data object from an object value of an unknown type (UNKNOWN will be used as target
    * type). Method for wrapping uninterpreted data that should not be passed to the solver.
-   * 
+   *
    * @param value A value of an unknown type.
    * @return New data object.
    */
@@ -139,17 +138,17 @@ public final class Data {
 
   /**
    * Creates a data object of the BIT_VECTOR type from a BigInteger object.
-   * 
+   *
    * @param value A BigInteger object that stores binary data for a bit vector.
    * @param size The bit vector size (in bits).
    * @return A new data object.
-   * 
+   *
    * @throws IllegalArgumentException if the {@code value} parameter equals {@code null}.
    */
   public static Data newBitVector(
       final BigInteger value,
       final int size) {
-    checkNotNull(value);
+    InvariantChecks.checkNotNull(value);
 
     final DataType dt = DataType.BIT_VECTOR(size);
     final Object v = BitVector.unmodifiable(BitVector.valueOf(value, size));
@@ -159,14 +158,14 @@ public final class Data {
 
   /**
    * Creates a data object of the BIT_VECTOR type from a BitVector object.
-   * 
+   *
    * @param value A BitVector object.
    * @return A new data object.
-   * 
+   *
    * @throws IllegalArgumentException if the {@code value} parameter equals {@code null}.
    */
   public static Data newBitVector(final BitVector value) {
-    checkNotNull(value);
+    InvariantChecks.checkNotNull(value);
 
     final DataType dt = DataType.BIT_VECTOR(value.getBitSize());
     final Object v = BitVector.unmodifiable(value);
@@ -176,19 +175,19 @@ public final class Data {
 
   /**
    * Creates a data object of the BIT_VECTOR type from a string.
-   * 
+   *
    * @param s Textual representation of the bit vector.
    * @param radix Radix to be used for parsing.
    * @param size Size of the resulting bit vector in bits.
    * @return A new data object.
-   * 
+   *
    * @throws IllegalArgumentException if the {@code s} parameter equals {@code null}.
    */
   public static Data newBitVector(
       final String s,
       final int radix,
       final int size) {
-    checkNotNull(s);
+    InvariantChecks.checkNotNull(s);
 
     final DataType dt = DataType.BIT_VECTOR(size);
     final Object v = BitVector.unmodifiable(BitVector.valueOf(s, radix, size));
@@ -198,7 +197,7 @@ public final class Data {
 
   /**
    * Creates a data object of the BIT_VECTOR type from an integer value.
-   * 
+   *
    * @param value Integer value to be converted.
    * @param size The bit vector size (in bits).
    * @return A new data object.
@@ -209,7 +208,7 @@ public final class Data {
 
   /**
    * Creates a data object of the BIT_VECTOR type from a long integer value.
-   * 
+   *
    * @param value Long integer value to be converted.
    * @param size The bit vector size (in bits).
    * @return A new data object.
@@ -223,14 +222,14 @@ public final class Data {
 
   /**
    * Creates a data object of the MAP type from the specified {@link DataMap} object.
-   * 
+   *
    * @param map A {@link DataMap} object.
    * @return A new data object.
-   * 
+   *
    * @throws IllegalArgumentException if the {@code map} parameter equals {@code null}.
    */
   public static Data newArray(final DataMap map) {
-    checkNotNull(map);
+    InvariantChecks.checkNotNull(map);
     return new Data(DataType.MAP(
         map.getKeyType(), map.getValueType()), map.copy());
   }
@@ -238,19 +237,20 @@ public final class Data {
   /**
    * Constructs a data object of the specified type and initializes its value with the specified
    * value object.
-   * 
+   *
    * @param type The type of the data.
    * @param value An object of related type that stores the data.
-   * 
+   *
    * @throws IllegalArgumentException if the {@code type} parameter is {@code null}.
    */
   public Data(final DataType type, final Object value) {
-    checkNotNull(type);
+    InvariantChecks.checkNotNull(type);
 
     if (null != value && !type.getValueClass().isAssignableFrom(value.getClass())) {
       throw new IllegalArgumentException(String.format(
-        "%s is illegal value type, %s is expected.",
-        value.getClass().getSimpleName(), type.getValueClass().getSimpleName()));
+          "%s is illegal value type, %s is expected.",
+          value.getClass().getSimpleName(), type.getValueClass().getSimpleName())
+          );
     }
 
     this.type = type;
@@ -260,8 +260,8 @@ public final class Data {
 
   /**
    * Returns information about the type of the stored value.
-   * 
-   * @return An IDataType object.
+   *
+   * @return A {@link DataType} object.
    */
   public DataType getType() {
     return type;
@@ -269,7 +269,7 @@ public final class Data {
 
   /**
    * Checks whether a value assigned to the the data object.
-   * 
+   *
    * @return true if a value is assigned or false otherwise.
    */
   public boolean hasValue() {
@@ -287,7 +287,7 @@ public final class Data {
 
   /**
    * Returns an object of given type that holds the data.
-   * 
+   *
    * @param c A type of value object.
    * @return A type-dependent object that stores the data.
    */
@@ -307,7 +307,7 @@ public final class Data {
 
   /**
    * Assigns value to the user-defined property.
-   * 
+   *
    * @param obj User-defined object.
    */
   public void setUserData(final Object obj) {
@@ -349,13 +349,13 @@ public final class Data {
   @Override
   public String toString() {
     return String.format("Data[type=%s, value=%s]",
-      type.toString(), null == value ? "uninitialized" : value.toString());
+        type.toString(), null == value ? "uninitialized" : value.toString());
   }
 
   /**
    * Checks whether the stored value has the specified type
    * (comparison is based on {@link DataTypeId}).
-   * 
+   *
    * @param typeId {@link DataTypeId} object the data type is to be compared to.
    * @return {@code true} if the type matches the type specified by the {@code typeId}
    * argument or {@code false} otherwise.
@@ -367,7 +367,7 @@ public final class Data {
   /**
    * Checks whether the stored value has the specified type
    * (comparison is based on {@link DataType}).
-   * 
+   *
    * @param type {@link DataType} object the data type is to be compared to.
    * @return {@code true} if the type matches the type specified by the {@code type}
    * argument or {@code false} otherwise.
@@ -379,7 +379,7 @@ public final class Data {
   /**
    * Returns a BigInteger value stored in the data object. Applicable to data objects
    * of type {@link DataTypeId#LOGIC_INTEGER}.
-   * 
+   *
    * @return Stored value represented by a BigInteger.
    * @throws IllegalStateException if the stored data is not convertible to {@code BigInteger}.
    */
@@ -403,7 +403,7 @@ public final class Data {
   /**
    * Returns a boolean value stored in the data object. Applicable to data objects
    * of type {@link DataTypeId#LOGIC_BOOLEAN}.
-   * 
+   *
    * @return Stored value represented by a boolean.
    * @throws IllegalStateException if the stored data is not convertible to {@code Boolean}.
    */
@@ -427,7 +427,7 @@ public final class Data {
   /**
    * Returns a DataMap value stored in the data object. Applicable to data objects
    * of type {@link DataTypeId#MAP}.
-   * 
+   *
    * @return Stored value represented by a {@code DataMap}.
    * @throws IllegalStateException if the stored data is not convertible to {@link DataMap}.
    */
@@ -438,10 +438,10 @@ public final class Data {
 
   /**
    * Checks whether all {@link Data} objects in the specified array have equal values.
-   * 
+   *
    * @param args Array of Data objects to be checked.
    * @return {@code true} if all objects have equal values or {@code false} otherwise.
-   * 
+   *
    * @throws IllegalArgumentException if any of the arguments equals {@code null}.
    */
   public static boolean equalValues(final Data... args) {
@@ -450,11 +450,11 @@ public final class Data {
     }
 
     final Data first = args[0];
-    checkNotNull(first);
+    InvariantChecks.checkNotNull(first);
 
     for (int index = 1; index < args.length; ++index) {
       final Data current = args[index];
-      checkNotNull(current);
+      InvariantChecks.checkNotNull(current);
 
       if (!first.equals(current)) {
         return false;
@@ -466,10 +466,10 @@ public final class Data {
 
   /**
    * Checks whether all {@link Data} objects in the specified array have equal types.
-   * 
+   *
    * @param args Array of Data objects to be checked.
    * @return {@code true} if all objects have equal types or {@code false} otherwise.
-   * 
+   *
    * @throws IllegalArgumentException if any of the arguments equals {@code null}.
    */
   public static boolean equalTypes(final Data... args) {
@@ -478,12 +478,12 @@ public final class Data {
     }
 
     final Data first = args[0];
-    checkNotNull(first);
+    InvariantChecks.checkNotNull(first);
 
     final DataType type = first.getType();
     for (int index = 1; index < args.length; ++index) {
       final Data current = args[index];
-      checkNotNull(current);
+      InvariantChecks.checkNotNull(current);
 
       if (!current.isType(type)) {
         return false;
@@ -497,7 +497,8 @@ public final class Data {
     if (!c.isAssignableFrom(value.getClass())) {
       throw new IllegalStateException(String.format(
           "%s data is not convertible to %s.",
-          value.getClass().getSimpleName(), c.getSimpleName()));
+          value.getClass().getSimpleName(), c.getSimpleName())
+          );
     }
   }
 }
