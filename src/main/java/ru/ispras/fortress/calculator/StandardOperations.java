@@ -163,10 +163,9 @@ final class StandardOperations {
         new StdOperation(StandardOperation.BVCONCAT, ArityRange.BINARY_UNBOUNDED) {
           @Override
           public Data calculate(final Data... operands) {
-            final int size = operands.length;
-            final BitVector[] input = new BitVector[size];
-            for (int i = 0; i < size; ++i) {
-              input[i] = bvarg(operands, size - 1 - i);
+            final BitVector[] input = new BitVector[operands.length];
+            for (int i = 0; i < operands.length; ++i) {
+              input[i] = bvarg(operands, i);
             }
             return Data.newBitVector(BitVector.newMapping(input));
           }
