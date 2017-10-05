@@ -1,11 +1,11 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
- * 
+ * Copyright 2017 ISP RAS (http://www.ispras.ru)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -31,7 +31,7 @@ public class ConcatenationTestCase extends GenericSolverTestBase {
 
   /**
    * The constraint as described in the SMT language:
-   * 
+   *
    * <pre>
    *     (declare-const x (_ BitVec 16))
    *     (declare-const y (_ BitVec 16))
@@ -43,14 +43,13 @@ public class ConcatenationTestCase extends GenericSolverTestBase {
    *     (get-value (x y z))
    *     (exit)
    * </pre>
-   * 
+   *
    * Expected output:
-   * 
+   *
    * <pre>
    *     sat ((x #x0000) (y #xffff) (z #x0000ffff))
    * </pre>
    */
-
   public static class Concatenation implements SampleConstraint {
     private static final int BIT_VECTOR_ARG_SIZE = 16;
     private static final DataType BIT_VECTOR_ARG_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_ARG_SIZE);
@@ -75,13 +74,13 @@ public class ConcatenationTestCase extends GenericSolverTestBase {
       builder.setInnerRep(formulas);
 
       formulas.add(new NodeOperation(
-        StandardOperation.EQ, x, new NodeValue(BIT_VECTOR_ARG_TYPE.valueOf("0000", HEX_RADIX))));
+          StandardOperation.EQ, x, new NodeValue(BIT_VECTOR_ARG_TYPE.valueOf("0000", HEX_RADIX))));
 
       formulas.add(new NodeOperation(
-        StandardOperation.EQ, y, new NodeValue(BIT_VECTOR_ARG_TYPE.valueOf("ffff", HEX_RADIX))));
+          StandardOperation.EQ, y, new NodeValue(BIT_VECTOR_ARG_TYPE.valueOf("ffff", HEX_RADIX))));
 
       formulas.add(new NodeOperation(
-        StandardOperation.EQ, z, new NodeOperation(StandardOperation.BVCONCAT, x, y)));
+          StandardOperation.EQ, z, new NodeOperation(StandardOperation.BVCONCAT, y, x)));
 
       return builder.build();
     }

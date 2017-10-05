@@ -33,10 +33,12 @@ import static ru.ispras.fortress.solver.engine.smt.SmtStrings.textForType;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -80,6 +82,7 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
   private int functionCallDepth = 0;
 
   private final List<DataType> arraysInUse = new ArrayList<DataType>();
+  private final Deque<int[]> operandOrder = new ArrayDeque<>();
 
   /**
    * Creates an instance of a SMT text builder.
@@ -280,7 +283,6 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
   @Override
   public void onOperationBegin(final NodeOperation expr) {
     final Enum<?> op = expr.getOperationId();
-
     if (!operations.containsKey(op)) {
       throw new IllegalArgumentException("Unsupported operation: " + op);
     }
@@ -332,6 +334,18 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
     }
 
     appendToCurrent(operationText);
+    operandOrder.push(getOperandOrder(op, expr.getOperandCount()));
+  }
+
+  private int[] getOperandOrder(final Enum<?> op, final int count) {
+    final boolean isReverse = op == StandardOperation.BVCONCAT;
+    final int[] order = new int[count];
+
+    for (int index = 0; index < order.length; index++) {
+      order[index] =  isReverse ? order.length - index - 1: index;
+    }
+
+    return order;
   }
 
   @Override
@@ -339,11 +353,12 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
     if (expr.getOperandCount() > 0) {
       appendToCurrent(BRACKET_CLOSE);
     }
+    operandOrder.pop();
   }
 
   @Override
   public int[] getOperandOrder() {
-    return null;
+    return operandOrder.peek();
   }
 
   @Override
