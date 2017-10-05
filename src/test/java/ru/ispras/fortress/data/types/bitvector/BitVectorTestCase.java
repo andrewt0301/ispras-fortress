@@ -1,11 +1,11 @@
 /*
- * Copyright 2012-2014 ISP RAS (http://www.ispras.ru)
- * 
+ * Copyright 2012-2017 ISP RAS (http://www.ispras.ru)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -576,7 +576,7 @@ public class BitVectorTestCase {
     }
 
     final BitVector bv0 = BitVector.valueOf(BigInteger.valueOf(0), 32);
-    Assert.assertEquals("00000000", bv0.toHexString());
+    Assert.assertEquals("0", bv0.toHexString());
     Assert.assertEquals(BigInteger.valueOf(0), bv0.bigIntegerValue());
 
     final BitVector bv1 = BitVector.valueOf(BigInteger.valueOf(-1), 32);
@@ -602,9 +602,9 @@ public class BitVectorTestCase {
     Assert.assertEquals(BigInteger.valueOf(0x7EEF), bv111.bigIntegerValue());
 
     final BitVector bv2 = BitVector.valueOf(BigInteger.valueOf(1), 32);
-    Assert.assertEquals("00000001", bv2.toHexString());
+    Assert.assertEquals("1", bv2.toHexString());
     Assert.assertEquals(BigInteger.valueOf(1), bv2.bigIntegerValue());
-    
+
     final BitVector bv3 = BitVector.valueOf(BigInteger.valueOf(Integer.MAX_VALUE), 32);
     Assert.assertEquals("7FFFFFFF", bv3.toHexString());
     Assert.assertEquals(BigInteger.valueOf(Integer.MAX_VALUE), bv3.bigIntegerValue());
@@ -612,16 +612,16 @@ public class BitVectorTestCase {
     final BitVector bv4 = BitVector.valueOf(BigInteger.valueOf(Integer.MIN_VALUE), 32);
     Assert.assertEquals("80000000", bv4.toHexString());
     Assert.assertEquals(BigInteger.valueOf(Integer.MIN_VALUE), bv4.bigIntegerValue());
-    
+
     final BitVector bv5 = BitVector.valueOf(BigInteger.valueOf(Long.MAX_VALUE), Long.SIZE);
     Assert.assertEquals("7FFFFFFFFFFFFFFF", bv5.toHexString());
     Assert.assertEquals(BigInteger.valueOf(Long.MAX_VALUE), bv5.bigIntegerValue());
-    
+
     final BitVector bv6 = BitVector.valueOf(BigInteger.valueOf(Long.MIN_VALUE), Long.SIZE);
     Assert.assertEquals("8000000000000000", bv6.toHexString());
     Assert.assertEquals(BigInteger.valueOf(Long.MIN_VALUE), bv6.bigIntegerValue());
   }
-  
+
   private void checkBigIntegerConversion(int value, int bitSize) {
     final BitVector bv = BitVector.valueOf(value, bitSize);
     final BigInteger bi = BigInteger.valueOf(value);
@@ -669,7 +669,7 @@ public class BitVectorTestCase {
     Assert.assertEquals("1111111111111111", BitVector.valueOf("FFFF", 16, 16).toBinString());
     Assert.assertEquals("1111111111111111", BitVector.valueOf("FFFF", 16, 16).toString());
 
-    Assert.assertEquals("0000FFFF", BitVector.valueOf("FFFF", 16, 32).toHexString());
+    Assert.assertEquals("FFFF", BitVector.valueOf("FFFF", 16, 32).toHexString());
     Assert.assertEquals("00000000000000001111111111111111", BitVector.valueOf("FFFF", 16, 32).toBinString());
 
     Assert.assertEquals("DEADBEEF", BitVector.valueOf(0xDEADBEEF, 32).toHexString());
