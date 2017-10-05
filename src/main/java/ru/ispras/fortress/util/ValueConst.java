@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2017 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -15,14 +15,21 @@
 package ru.ispras.fortress.util;
 
 /**
- * The {@link Value} interface describes objects that store a value of
- * the specified type. Such an interface is useful when the value
- * changes or it is calculated on request.
+ * The {@link ValueConst} class holds a constant value of the specified type.
  *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  *
  * @param <T> Value type.
  */
-public interface Value<T> {
-  T value();
+public final class ValueConst<T> implements Value<T> {
+  private final T value;
+
+  public ValueConst(final T value) {
+    this.value = value;
+  }
+
+  @Override
+  public T value() {
+    return value;
+  }
 }
