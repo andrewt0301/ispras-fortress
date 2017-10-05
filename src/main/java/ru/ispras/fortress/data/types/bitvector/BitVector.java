@@ -1,11 +1,11 @@
 /*
- * Copyright 2012-2016 ISP RAS (http://www.ispras.ru)
- * 
+ * Copyright 2012-2017 ISP RAS (http://www.ispras.ru)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -14,21 +14,17 @@
 
 package ru.ispras.fortress.data.types.bitvector;
 
-import static ru.ispras.fortress.util.InvariantChecks.checkBounds;
-import static ru.ispras.fortress.util.InvariantChecks.checkBoundsInclusive;
-import static ru.ispras.fortress.util.InvariantChecks.checkGreaterThanZero;
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
-
 import java.math.BigInteger;
 import java.util.Arrays;
 
 import ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.IAction;
 import ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.IOperation;
+import ru.ispras.fortress.util.InvariantChecks;
 
 /**
- * The BitVector class provides an interface for working with bit vectors ("raw" binary data) of
- * arbitrary size. It provides basic methods for accessing and modifying stored bytes.
- * 
+ * The {@link BitVector} class provides an interface for working with bit vectors ("raw" binary
+ * data) of arbitrary size. It provides basic methods for accessing and modifying stored bytes.
+ *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 public abstract class BitVector implements Comparable<BitVector> {
@@ -49,14 +45,14 @@ public abstract class BitVector implements Comparable<BitVector> {
 
   /**
    * Returns the size of stored data in bits.
-   * 
+   *
    * @return Number of bits.
    */
   public abstract int getBitSize();
 
   /**
    * Returns the size of stored data in bytes (full number including incomplete bytes).
-   * 
+   *
    * @return Number of bytes (including incomplete bytes).
    */
   public abstract int getByteSize();
@@ -64,7 +60,7 @@ public abstract class BitVector implements Comparable<BitVector> {
   /**
    * Returns the binary value stored in the specified byte. For incomplete bytes, the return value
    * contains only the bits inside the bounds limited by the bit size.
-   * 
+   *
    * @param index Index of the target byte.
    * @return Binary value stored in the specified byte.
    */
@@ -75,7 +71,7 @@ public abstract class BitVector implements Comparable<BitVector> {
    * beyond the bounds limited by the bit size are ignored. In other words, bits in the target byte
    * that lie beyond the bound retain their values. This requirement is crucial to guarantee correct
    * work of mappings.
-   * 
+   *
    * @param index Index of the target byte.
    * @param value Binary value to be stored in the specified byte.
    */
@@ -83,27 +79,27 @@ public abstract class BitVector implements Comparable<BitVector> {
 
   /**
    * Returns a boolean flag that corresponds to the value of the specified bit.
-   * 
+   *
    * @param index Bit index.
    * @return {@code true} if the bit is set to {@code 1} or {@code false} otherwise.
-   * 
+   *
    * @throws IndexOutOfBoundsException if the index is out of range.
    */
   public final boolean getBit(final int index) {
-    checkBounds(index, getBitSize());
+    InvariantChecks.checkBounds(index, getBitSize());
     return (getByte(index / BITS_IN_BYTE) & (1 << (index % BITS_IN_BYTE))) != 0;
   }
 
   /**
    * Sets or resets the specified bit.
-   * 
+   *
    * @param index Bit index.
    * @param value {@code true} to set the bit to {@code 1} or {@code false} to set it to {@code 0}.
-   * 
+   *
    * @throws IndexOutOfBoundsException if the index is out of range.
    */
   public final void setBit(final int index, final boolean value) {
-    checkBounds(index, getBitSize());
+    InvariantChecks.checkBounds(index, getBitSize());
 
     final int byteIndex = index / BITS_IN_BYTE;
     final byte byteValue = getByte(byteIndex);
@@ -132,7 +128,7 @@ public abstract class BitVector implements Comparable<BitVector> {
 
   /**
    * Checks whether all bits in the bit vector are set (equal to 1).
-   * 
+   *
    * @return {@code true} if all bits are set or {@code false} otherwise.
    */
   public final boolean isAllSet() {
@@ -146,7 +142,7 @@ public abstract class BitVector implements Comparable<BitVector> {
 
   /**
    * Checks whether all bits in the bit vector are reset (equal to 0).
-   * 
+   *
    * @return {@code true} if all bits are reset or {@code false} otherwise.
    */
   public final boolean isAllReset() {
@@ -162,18 +158,18 @@ public abstract class BitVector implements Comparable<BitVector> {
    * Copies data from the specified bit vector to the current bit vector. If the bit vector is
    * shorter than the current one, the rest high bytes are filled with zeros. If the source bit
    * vector is longer, the result is truncated (the higher part is skipped).
-   * 
+   *
    * @param src Source it vector.
    */
   public final void assign(final BitVector src) {
-    checkNotNull(src);
+    InvariantChecks.checkNotNull(src);
     BitVectorAlgorithm.copy(src, this);
   }
 
   /***
    * Checks the equality of bit vectors. Bit vectors are considered equal if their sizes match and
    * they hold equal data (comparison is performed byte by byte from the high end to the low end).
-   * 
+   *
    * @param obj A bit vector to be compared with the current bit vector.
    */
   @Override
@@ -201,7 +197,7 @@ public abstract class BitVector implements Comparable<BitVector> {
   /**
    * Returns the hash code value for this bit vector. The hash code is calculated based on the
    * stored data bytes.
-   * 
+   *
    * @return The hash code value for bit vector.
    */
   @Override
@@ -225,18 +221,18 @@ public abstract class BitVector implements Comparable<BitVector> {
   /**
    * Compares the current bit vector with the specified bit vector. Data is compared starting with
    * the highest byte in the array.
-   * 
+   *
    * @param other A raw data object.
    * @return 0 if data in both object equals, -1 if the data in the current object is less and 1 of
    *         it is greater.
-   * 
+   *
    * @throws IllegalArgumentException if the {@code other} parameter is {@code null};
    *         if the size of the {@code other} bit vector is different from the size of
    *         the current bit vector.
    */
   @Override
   public final int compareTo(final BitVector other) {
-    checkNotNull(other);
+    InvariantChecks.checkNotNull(other);
 
     if (this == other) {
       return 0;
@@ -261,7 +257,7 @@ public abstract class BitVector implements Comparable<BitVector> {
   /**
    * Creates a copy of current bit vector. Creates a new bit vector of the same size and fills it
    * with data from the current bit vector.
-   * 
+   *
    * @return A copy of the current bit vector.
    */
   public final BitVector copy() {
@@ -272,14 +268,14 @@ public abstract class BitVector implements Comparable<BitVector> {
    * Creates a copy of the current bit vector repeated the specified number of times.
    * The size of the resulting bit vector is the size of the current multiplied by
    * the repetition count.
-   * 
+   *
    * @param count Number of times the bit vector will be repeated.
    * @return A copy of the current bit vector repeated the specified number of times.
-   * 
+   *
    * @throws IllegalArgumentException if the new size is {@code <= 0}.
    */
   public final BitVector repeat(final int count) {
-    checkGreaterThanZero(count);
+    InvariantChecks.checkGreaterThanZero(count);
 
     final BitVector[] repeat = new BitVector[count];
     Arrays.fill(repeat, this);
@@ -289,29 +285,29 @@ public abstract class BitVector implements Comparable<BitVector> {
 
   /**
    * Returns a field of the bit vector limited by the specified bounds.
-   * 
+   *
    * @param startBitPos Bit vector that holds start position in bits.
    * @param endBitPos Bit vector that holds end position in bits.
-   * 
+   *
    * @return A field of the bit vector.
    */
   public final BitVector field(final BitVector startBitPos, final BitVector endBitPos) {
-    checkNotNull(startBitPos);
-    checkNotNull(endBitPos);
+    InvariantChecks.checkNotNull(startBitPos);
+    InvariantChecks.checkNotNull(endBitPos);
     return field(startBitPos.intValue(), endBitPos.intValue());
   }
 
   /**
    * Returns a field of the bit vector limited by the specified bounds.
-   * 
+   *
    * @param startBitPos Start position in bits.
    * @param endBitPos End position in bits.
-   * 
+   *
    * @return A field of the bit vector.
    */
   public final BitVector field(final int startBitPos, final int endBitPos) {
-    checkBounds(startBitPos, getBitSize());
-    checkBounds(endBitPos, getBitSize());
+    InvariantChecks.checkBounds(startBitPos, getBitSize());
+    InvariantChecks.checkBounds(endBitPos, getBitSize());
 
     final int start = Math.min(startBitPos, endBitPos);
     final int end = Math.max(startBitPos, endBitPos);
@@ -322,15 +318,15 @@ public abstract class BitVector implements Comparable<BitVector> {
 
   /**
    * Returns a resized copy of the current bit vector.
-   * 
+   *
    * @param newBitSize New size in bits.
    * @param signExt Flag that specifies whether sign extension is required.
    * @return Resized copy of the bit vector.
-   * 
+   *
    * @throws IllegalArgumentException if the new size is {@code <= 0}.
    */
   public BitVector resize(final int newBitSize, final boolean signExt) {
-    checkGreaterThanZero(newBitSize);
+    InvariantChecks.checkGreaterThanZero(newBitSize);
 
     if (newBitSize == getBitSize()) {
       return copy();
@@ -351,45 +347,45 @@ public abstract class BitVector implements Comparable<BitVector> {
 
   /**
    * Returns a copy of the bit vector extended by the specified amount.
-   * 
+   *
    * @param amount Amount in bits.
    * @param signExt Flag that specifies whether sign extension is required.
    * @return Extended copy of the bit vector.
-   * 
+   *
    * @throws IllegalArgumentException if {@code amount} is {@code <= 0}.
    */
   public BitVector extend(final int amount, final boolean signExt) {
-    checkGreaterThanZero(amount);
+    InvariantChecks.checkGreaterThanZero(amount);
     return resize(getBitSize() + amount, signExt);
   }
 
   /**
    * Creates a copy of the specified bit vector. Creates a new bit vector of the same size and fills
    * it with data from the current bit vector.
-   * 
+   *
    * @param src Source bit vector.
    * @return A copy of the specified bit vector.
    */
   public static BitVector copyOf(final BitVector src) {
-    checkNotNull(src);
+    InvariantChecks.checkNotNull(src);
     return src.copy();
   }
 
   /**
    * Creates an uninitialized bit vector of the specified size.
-   * 
+   *
    * @param bitSize Size of the created bit vector in bits.
    * @return A new bit vector.
    */
   public static BitVector newEmpty(final int bitSize) {
-    checkGreaterThanZero(bitSize);
+    InvariantChecks.checkGreaterThanZero(bitSize);
     return new BitVectorStore(bitSize);
   }
 
   /**
-   * Creates a bit vector mapping for the current bit vector. The mapping provides access to a part
-   * of the bit vector as if it was a separate bit vector.
-   * 
+   * Creates a bit vector mapping for the current bit vector. The mapping provides access to
+   * a part of the bit vector as if it was a separate bit vector.
+   *
    * @param source Source bit vector.
    * @param startBitPos The starting position of the mapping.
    * @param bitSize The size of the mapping in bytes.
@@ -399,15 +395,15 @@ public abstract class BitVector implements Comparable<BitVector> {
       final BitVector source,
       final int startBitPos,
       final int bitSize) {
-    checkNotNull(source);
+    InvariantChecks.checkNotNull(source);
 
     if (0 == startBitPos && source.getBitSize() == bitSize) {
       return source;
     }
 
-    checkBounds(startBitPos, source.getBitSize());
-    checkBoundsInclusive(startBitPos + bitSize, source.getBitSize());
-    checkGreaterThanZero(bitSize);
+    InvariantChecks.checkBounds(startBitPos, source.getBitSize());
+    InvariantChecks.checkBoundsInclusive(startBitPos + bitSize, source.getBitSize());
+    InvariantChecks.checkGreaterThanZero(bitSize);
 
     if (0 == startBitPos % BITS_IN_BYTE) {
       return new BitVectorMappingAligned(source, startBitPos, bitSize);
@@ -417,14 +413,14 @@ public abstract class BitVector implements Comparable<BitVector> {
   }
 
   /**
-   * Creates a mapping for several bit vectors. The mapping unites the bit vector and allows working
-   * with them as if they were a single bit vector.
-   * 
+   * Creates a mapping for several bit vectors. The mapping unites the bit vector and allows
+   * working with them as if they were a single bit vector.
+   *
    * @param sources Source bit vectors.
    * @return A bit vector mapping.
    */
   public static BitVector newMapping(final BitVector... sources) {
-    checkGreaterThanZero(sources.length);
+    InvariantChecks.checkGreaterThanZero(sources.length);
 
     if (1 == sources.length) {
       return sources[0];
@@ -436,12 +432,12 @@ public abstract class BitVector implements Comparable<BitVector> {
   /**
    * Returns an unmodifiable view of the specified bit vector. An attempt to modify the bit vector
    * will result in the UnsupportedOperationException exception.
-   * 
+   *
    * @param source Source bit vector.
    * @return Unmodifiable bit vector.
    */
   public static BitVector unmodifiable(final BitVector source) {
-    checkNotNull(source);
+    InvariantChecks.checkNotNull(source);
 
     if (source instanceof BitVectorUnmodifiable) {
       return source;
@@ -453,7 +449,7 @@ public abstract class BitVector implements Comparable<BitVector> {
   /**
    * Creates a bit vector based on textual representation of binary data. The data size (number of
    * bits) matches the string length.
-   * 
+   *
    * @param bs Textual representation of binary data.
    * @return New bit vector.
    */
@@ -466,7 +462,7 @@ public abstract class BitVector implements Comparable<BitVector> {
    * bit vector is an unmodifiable singleton object. The method is implemented this way to avoid
    * unnecessary memory allocations because bit vectors representing boolean values are not normally
    * modified.
-   * 
+   *
    * @param b Boolean value.
    * @return A constant (!) bit vector for the specified boolean value.
    */
@@ -476,7 +472,7 @@ public abstract class BitVector implements Comparable<BitVector> {
 
   /**
    * Converts the stored data to a string (binary format).
-   * 
+   *
    * @return Textual representation of the stored data (binary format).
    */
   public final String toString() {
@@ -488,12 +484,12 @@ public abstract class BitVector implements Comparable<BitVector> {
    * by a method parameter. If the length of the string exceeds the specified size, data is
    * truncated (characters signifying higher bits are ignored). If the string length is less than
    * the data size, the higher bits of the data are filled with zeros.
-   * 
+   *
    * @param text Textual representation of binary data.
    * @param radix Radix to be used during conversion.
    * @param bitSize Size of the resulting bit vector in bits.
    * @return New bit vector.
-   * 
+   *
    * @throws IllegalArgumentException if the {@code text} parameter is {@code null};
    *         if the {@code bitSize} parameter is zero or negative.
    */
@@ -554,8 +550,8 @@ public abstract class BitVector implements Comparable<BitVector> {
       }
     }
 
-    checkNotNull(text);
-    checkGreaterThanZero(bitSize);
+    InvariantChecks.checkNotNull(text);
+    InvariantChecks.checkGreaterThanZero(bitSize);
 
     if (2 == radix || 16 == radix) {
       final BitVector result = new BitVectorStore(bitSize);
@@ -570,15 +566,15 @@ public abstract class BitVector implements Comparable<BitVector> {
    * If the bit vector size is less that the long value size (64 bits), the value is truncated (high
    * bits of the value are ignored). If the bit vector size exceeds the long value size, high bits
    * of the bit vector are filled with zeros.
-   * 
+   *
    * @param value Long value to be converted to a bit vector.
    * @param bitSize Size of the resulting data array (in bits).
    * @return New bit vector.
-   * 
+   *
    * @throws IllegalArgumentException if the {@code bitSize} parameter is zero or negative.
    */
   public static BitVector valueOf(final long value, final int bitSize) {
-    checkGreaterThanZero(bitSize);
+    InvariantChecks.checkGreaterThanZero(bitSize);
 
     final IOperation op = new IOperation() {
       private long v = value;
@@ -604,11 +600,11 @@ public abstract class BitVector implements Comparable<BitVector> {
 
   /**
    * Creates a bit vector from a byte array.
-   * 
+   *
    * @param data An array of bytes.
    * @param bitSize Size of the resulting bit vector in bits.
    * @return New bit vector.
-   * 
+   *
    * @throws IllegalArgumentException if the {@code data} parameter is {@code null};
    *         if the {@code bitSize} parameter is zero or negative;
    *         if {@code bitSize} does not match to the number ob bytes in the {@code data} array.
@@ -622,11 +618,11 @@ public abstract class BitVector implements Comparable<BitVector> {
    * parameter. If the bit vector is less that the integer value size (32 bits), the value is
    * truncated (high bits of the value are ignored). If the bit vector size exceeds the integer
    * value size, high bits of the raw data store are filled with zeros.
-   * 
+   *
    * @param value Integer value to be converted to a bit array.
    * @param bitSize Size of the resulting data array (in bits).
    * @return New bit vector.
-   * 
+   *
    * @throws IllegalArgumentException if the {@code bitSize} parameter is zero or negative.
    */
   public static BitVector valueOf(final int value, final int bitSize) {
@@ -639,17 +635,17 @@ public abstract class BitVector implements Comparable<BitVector> {
    * returned by the {@code toByteArray} method), the data is truncated (high bits are ignored).
    * If the bit vector size exceeds the data size, the data is sign extended (high bits are
    * filled with zeros for a non-negative value or with ones for a negative value).
-   * 
+   *
    * @param value BigInteger value to be converted to a bit vector.
    * @param bitSize Size of the resulting bit vector (in bits).
    * @return New bit vector.
-   * 
+   *
    * @throws IllegalArgumentException if the {@code value} parameter is {@code null};
    *         if the {@code bitSize} parameter is zero or negative.
    */
   public static BitVector valueOf(final BigInteger value, final int bitSize) {
-    checkNotNull(value);
-    checkGreaterThanZero(bitSize);
+    InvariantChecks.checkNotNull(value);
+    InvariantChecks.checkGreaterThanZero(bitSize);
 
     final byte[] data = value.toByteArray();
     final byte prefix = (byte) (value.signum() < 0 ? 0xFF : 0x00);
@@ -662,7 +658,6 @@ public abstract class BitVector implements Comparable<BitVector> {
      * data received from BigInteger is big-endian, which is opposite from the byte order
      * in bit vectors.
      */
-
     final int copyStartIndex = data.length - 1;
 
     final IOperation op = new IOperation() {
@@ -685,8 +680,8 @@ public abstract class BitVector implements Comparable<BitVector> {
    * Converts the stored data to an integer value. If the bit vector size exceeds integer size (32
    * bits), the data is truncated to 32 bits (high bits are cut off). If the bit vector size is
    * smaller than integer size (32 bits), the high bits of the integer are set to 0 (no sign
-   * extension happens).  
-   * 
+   * extension happens).
+   *
    * @return Integer representation of the stored value.
    */
   public final int intValue() {
@@ -714,7 +709,7 @@ public abstract class BitVector implements Comparable<BitVector> {
   /**
    * Converts the stored data to an long value. If the stored data size exceeds long size (64 bits),
    * the data is truncated to 64 bits (high bits are cut off).
-   * 
+   *
    * @return Long representation of the stored value.
    */
   public final long longValue() {
@@ -741,7 +736,7 @@ public abstract class BitVector implements Comparable<BitVector> {
 
   /**
    * Converts the stored data to a BigInteger value.
-   * 
+   *
    * @return BigInteger representation of the stored value.
    */
   public final BigInteger bigIntegerValue() {
@@ -750,7 +745,7 @@ public abstract class BitVector implements Comparable<BitVector> {
 
   /**
    * Converts the stored data to a BigInteger value.
-   * 
+   *
    * @param signed boolean value indicating should the bit vector be treated as signed integer.
    * @return BigInteger representation of the stored value.
    */
@@ -769,7 +764,6 @@ public abstract class BitVector implements Comparable<BitVector> {
      * NOTE: bytes are copied to the byte array in the reverse order because the
      * constructor of BigInteger requires big-endian byte order (high bytes come first).
      */
-
     BitVectorAlgorithm.forEachReverse(this, op);
 
     /*
@@ -780,7 +774,6 @@ public abstract class BitVector implements Comparable<BitVector> {
      * set to 1 will be converted to a negative BigInteger. To make this rule work for bit vectors
      * which size is not multiple of 8, this sign extension is implemented.
      */
-
     final int incompleteBits = getBitSize() % BITS_IN_BYTE;
     final int signBit = byteArray[0] & (1 << (incompleteBits - 1));
     if (signed && 0 != incompleteBits && 0 != signBit) {
@@ -795,7 +788,7 @@ public abstract class BitVector implements Comparable<BitVector> {
 
   /**
    * Converts the stored binary data to textual representation.
-   * 
+   *
    * @return Binary string.
    */
   public final String toBinString() {
@@ -823,7 +816,7 @@ public abstract class BitVector implements Comparable<BitVector> {
 
   /**
    * Converts the stored binary data to a hexadecimal string.
-   * 
+   *
    * @return Hexadecimal string.
    */
   public final String toHexString() {
@@ -833,17 +826,21 @@ public abstract class BitVector implements Comparable<BitVector> {
     final IAction op = new IAction() {
       @Override
       public void run(final byte v) {
-        sb.append(String.format("%0" + HEX_CHARS_IN_BYTE + "X", v));
+        if (0 != sb.length()) {
+          sb.append(String.format("%0" + HEX_CHARS_IN_BYTE + "X", v));
+        } else if (0 != v){
+          sb.append(String.format("%X", v));
+        }
       }
     };
 
     BitVectorAlgorithm.forEachReverse(this, op);
-    return sb.toString();
+    return 0 != sb.length() ? sb.toString() : "0";
   }
 
   /**
    * Returns a copy of stored data packed into an array of bytes.
-   * 
+   *
    * @return Array of bytes.
    */
   public final byte[] toByteArray() {
@@ -864,12 +861,12 @@ public abstract class BitVector implements Comparable<BitVector> {
   /**
    * Returns the mask for the specified byte in the byte array. The mask helps determine what bits
    * in the specified byte contain meaningful information and which bits should be ignored.
-   * 
+   *
    * @param index Index of the target byte.
    * @return Bit mask for the current byte.
    */
   public final byte getByteBitMask(final int index) {
-    checkBounds(index, getByteSize());
+    InvariantChecks.checkBounds(index, getByteSize());
 
     final boolean isHighByte = index == getByteSize() - 1;
     if (!isHighByte) {
