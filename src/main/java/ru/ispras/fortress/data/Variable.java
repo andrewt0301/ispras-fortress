@@ -18,6 +18,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import ru.ispras.fortress.jaxb.JaxbVariableAdapter;
 import ru.ispras.fortress.util.InvariantChecks;
+import ru.ispras.fortress.util.Value;
+import ru.ispras.fortress.util.ValueConst;
 
 /**
  * The {@link Variable} class describes a variable that can be used as input or
@@ -28,7 +30,24 @@ import ru.ispras.fortress.util.InvariantChecks;
 @XmlJavaTypeAdapter(JaxbVariableAdapter.class)
 public final class Variable {
   private final String name;
-  private Data data;
+  private Value<Data> data;
+
+  /**
+   * Constructs a variable from its name and associated dynamic data.
+   * Used for creating context-dependent variables.
+   *
+   * @param name Variable name.
+   * @param data Dynamic value.
+   *
+   * @throws IllegalArgumentException if any of the parameters equals {@code null}.
+   */
+  public Variable(final String name, final Value<Data> data) {
+    InvariantChecks.checkNotNull(name);
+    InvariantChecks.checkNotNull(data);
+
+    this.name = name;
+    this.data = data;
+  }
 
   /**
    * Constructs a variable from its name and associated data.
@@ -39,11 +58,8 @@ public final class Variable {
    * @throws IllegalArgumentException if any of the parameters equals {@code null}.
    */
   public Variable(final String name, final Data data) {
-    InvariantChecks.checkNotNull(name);
+    this(name, new ValueConst<>(data));
     InvariantChecks.checkNotNull(data);
-
-    this.name = name;
-    this.data = data;
   }
 
   /**
@@ -80,7 +96,7 @@ public final class Variable {
    */
   public void setData(final Data data) {
     InvariantChecks.checkNotNull(data);
-    this.data = data;
+    this.data = new ValueConst<Data>(data);
   }
 
   /**
@@ -98,7 +114,7 @@ public final class Variable {
    * @return A {@link Data} object associated with the variable.
    */
   public Data getData() {
-    return data;
+    return data.value();
   }
 
   /**
