@@ -21,6 +21,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -513,4 +514,133 @@ public final class ExprUtils {
       }
     }
   }
+
+  public static Node EQ(final Node lhs, final Node rhs) {
+    return new NodeOperation(StandardOperation.EQ, lhs, rhs);
+  }
+
+  public static Node NOTEQ(final Node lhs, final Node rhs) {
+    return new NodeOperation(StandardOperation.NOTEQ, lhs, rhs);
+  }
+
+  public static Node EQCASE(final Node lhs, final Node rhs) {
+    return new NodeOperation(StandardOperation.EQCASE, lhs, rhs);
+  }
+
+  public static Node NOTEQCASE(final Node lhs, final Node rhs) {
+    return new NodeOperation(StandardOperation.NOTEQCASE, lhs, rhs);
+  }
+
+  public static Node AND(final Node... operands) {
+    return new NodeOperation(StandardOperation.AND, operands);
+  }
+
+  public static Node AND(final List<Node> operands) {
+    return new NodeOperation(StandardOperation.AND, operands);
+  }
+
+  public static Node OR(final Node... operands) {
+    return new NodeOperation(StandardOperation.OR, operands);
+  }
+
+  public static Node OR(final List<Node> operands) {
+    return new NodeOperation(StandardOperation.OR, operands);
+  }
+
+  public static Node NOT(final Node operand) {
+    return new NodeOperation(StandardOperation.NOT, operand);
+  }
+
+  public static Node MINUS(final Node operand) {
+    return new NodeOperation(StandardOperation.MINUS, operand);
+  }
+
+  public static Node PLUS(final Node operand) {
+    return new NodeOperation(StandardOperation.PLUS, operand);
+  }
+
+  public static NodeOperation STORE(final Node array, final Node key, final Node value) {
+    return new NodeOperation(StandardOperation.STORE, array, key, value);
+  }
+
+  public static NodeOperation SELECT(final Node array, final Node key) {
+    return new NodeOperation(StandardOperation.SELECT, array, key);
+  }
+
+  /* TODO:
+
+  EQ +
+  NOTEQ +
+  EQCASE +
+  NOTEQCASE +
+  AND +
+  OR +
+  NOT +
+  XOR +
+  IMPL
+  ITE
+  MINUS +
+  PLUS +
+  ADD
+  SUB
+  DIV
+  MUL
+  REM
+  MOD
+  LESS
+  LESSEQ
+  GREATER
+  GREATEREQ
+  POWER
+  ABS
+  MIN
+  MAX
+  BVADD
+  BVSUB
+  BVNEG
+  BVMUL
+  BVUDIV
+  BVSDIV
+  BVUREM
+  BVSREM
+  BVSMOD
+  BVLSHL
+  BVASHL
+  BVLSHR
+  BVASHR
+  BVCONCAT
+  BVREPEAT
+  BVROL
+  BVROR
+  BVZEROEXT
+  BVSIGNEXT
+  BVEXTRACT
+  BVOR
+  BVXOR
+  BVAND
+  BVNOT
+  BVNAND
+  BVNOR
+  BVXNOR
+  BVULE
+  BVULT
+  BVUGE
+  BVUGT
+  BVSLE
+  BVSLT
+  BVSGE
+  BVSGT
+  BVANDR
+  BVNANDR
+  BVORR
+  BVNORR
+  BVXORR
+  BVXNORR
+  BV2BOOL
+  BOOL2BV
+  BV2INT
+  INT2BV
+  SELECT +
+  STORE +
+  */
 }
