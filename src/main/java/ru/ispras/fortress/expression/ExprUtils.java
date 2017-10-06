@@ -1,11 +1,11 @@
 /*
  * Copyright 2014-2017 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -35,7 +35,7 @@ import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * The ExprUtils class provides utility methods to work with logical expressions.
- * 
+ *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 
@@ -45,12 +45,12 @@ public final class ExprUtils {
   /**
    * Checks whether all of the specified expressions have the specified type
    * (types are compared on the {@link DataTypeId} level).
-   * 
+   *
    * @param typeId Expected data type identifier.
    * @param exprs Expressions to be checked.
    * @return {@code true} if all expression types match the type specified by
    * the {@code typeId} argument or {@code false} otherwise.
-   * 
+   *
    * @throws IllegalArgumentException if the expression array is empty;
    *         if any expression in the array is {@code null}.
    */
@@ -68,12 +68,12 @@ public final class ExprUtils {
   /**
    * Checks whether all of the specified expressions have the specified type
    * (types are compared on the {@link DataType} level).
-   * 
+   *
    * @param type Expected data type.
    * @param exprs Expressions to be checked.
    * @return {@code true} if all expression types match the type specified by
    * the {@code type} argument or {@code false} otherwise.
-   * 
+   *
    * @throws IllegalArgumentException if the expression array is empty;
    *         if any expression in the array is {@code null}.
    */
@@ -91,12 +91,12 @@ public final class ExprUtils {
   /**
    * Checks whether all of the specified expressions are of the specified
    * kind (see {@link Node.Kind}).
-   * 
+   *
    * @param kind Expected expression kind.
    * @param exprs Expressions to be checked.
    * @return {@code true} if all expressions are of the specified kind or
    *         {@code false} otherwise.
-   * 
+   *
    * @throws IllegalArgumentException if the expression array is empty;
    *         if any expression in the array is {@code null}.
    */
@@ -113,12 +113,12 @@ public final class ExprUtils {
 
   /**
    * Checks whether the expression is represented by the specified operation.
-   * 
+   *
    * @param expr Expression to be checked.
    * @param opId Operation identifier.
    * @return {@code true} if the expression is represented by the specified operation
    *         or {@code false} otherwise.
-   * 
+   *
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
   public static <T extends Enum<? extends T>> boolean isOperation(final Node expr, final T opId) {
@@ -130,12 +130,12 @@ public final class ExprUtils {
 
   /**
    * Checks whether the expression is represented by one of the specified operations.
-   * 
+   *
    * @param expr Expression to be checked.
    * @param opIds Collection of operation identifiers.
    * @return {@code true} if the expression is represented by one of the specified operations
    *         or {@code false} otherwise.
-   * 
+   *
    * @throws IllegalArgumentException if any of the parameters is {@code null}; if the list of
    *         operation identifiers is empty.
    */
@@ -157,10 +157,10 @@ public final class ExprUtils {
 
   /**
    * Checks whether the specified expression is represented by a constant value.
-   * 
+   *
    * @param expr Expression to be checked.
    * @return {@code true} if the expression is a value or {@code false} otherwise.
-   * 
+   *
    * @throws IllegalArgumentException if the parameter is {@code null}.
    */
   public static boolean isValue(final Node expr) {
@@ -170,10 +170,10 @@ public final class ExprUtils {
 
   /**
    * Checks whether the specified expression is represented by a variable.
-   * 
+   *
    * @param expr Expression to be checked.
    * @return {@code true} if the expression is a variable or {@code false} otherwise.
-   * 
+   *
    * @throws IllegalArgumentException if the parameter is {@code null}.
    */
   public static boolean isVariable(final Node expr) {
@@ -183,11 +183,11 @@ public final class ExprUtils {
 
   /**
    * Checks whether the specified expression is a logical expression (can be evaluated to boolean).
-   * 
+   *
    * @param expr Expression to be checked.
    * @return {@code true} if the expression is logical (can be evaluated to boolean) or
    *         {@code false} otherwise.
-   * 
+   *
    * @throws IllegalArgumentException if the parameter is {@code null}.
    */
   public static boolean isCondition(final Node expr) {
@@ -199,11 +199,11 @@ public final class ExprUtils {
    * Checks whether the specified expression is an atomic logical expression (can be evaluated to
    * boolean and does not include logical operations to combine expressions such as: AND, OR, NOT,
    * XOR and IMPL).
-   * 
+   *
    * @param expr Expression to be checked.
    * @return {@code true} if the expression is an atomic logical expression or {@code false}
    *         otherwise.
-   * 
+   *
    * @throws IllegalArgumentException if the parameter is {@code null}.
    */
   public static boolean isAtomicCondition(final Node expr) {
@@ -232,11 +232,11 @@ public final class ExprUtils {
 
   /**
    * Checks whether the specified expression tree contains bindings (nodes of type BINDING).
-   * 
+   *
    * @param expr Expression to be checked.
    * @return {@code true} if the expression tree contains bindings (nodes of type BINDING) or
    *         {@code false} otherwise.
-   * 
+   *
    * @throws IllegalArgumentException if the parameter is {@code null}.
    */
   public static boolean hasBindings(final Node expr) {
@@ -259,10 +259,10 @@ public final class ExprUtils {
    * Checks whether the given expression is a constant expression (can be evaluated to a constant
    * value). An expression is considered constant as long as it does not contain unassigned
    * variables (bindings are taken into consideration).
-   * 
+   *
    * @param expr Expression to be checked.
    * @return {@code true} if the expression is a constant expression or {@code false} otherwise.
-   * 
+   *
    * @throws IllegalArgumentException if the parameter is {@code null}.
    */
   public static boolean isConstant(final Node expr) {
@@ -337,10 +337,10 @@ public final class ExprUtils {
   /**
    * Performs logical disjunction {@code (exprs[0] || ... || exprs[n-1])} of the specified
    * expressions and returns the resulting expression.
-   * 
+   *
    * @param exprs Expressions to be combined.
    * @return A logical disjunction of the specified expressions.
-   * 
+   *
    * @throws IllegalArgumentException if any argument in the array is {@code null};
    *         if no arguments are provided; if an argument is not a logical expression.
    */
@@ -358,10 +358,10 @@ public final class ExprUtils {
   /**
    * Performs logical negation {@code (!getConjunction(exprs[0], ..., exprs[n-1]))} of the specified
    * expressions combined with conjunction and returns the resulting expression.
-   * 
+   *
    * @param exprs Expressions to be combined.
    * @return A logical negation of the specified expressions.
-   * 
+   *
    * @throws IllegalArgumentException if any argument in the array is {@code null}; if no arguments
    *         are provided; if an argument is not a logical expression.
    */
@@ -373,10 +373,10 @@ public final class ExprUtils {
   /**
    * Performs logical complement (negation) {@code !(getDisjunction(exprs[0], ..., exprs[n-1])} of
    * the specified expressions combined with disjunction and returns the resulting expression.
-   * 
+   *
    * @param exprs Expressions to be combined.
    * @return A logical complement of the specified expressions.
-   * 
+   *
    * @throws IllegalArgumentException if any argument in the array is {@code null}; if no arguments are
    *         provided; if an argument is not a logical expression.
    */
@@ -388,10 +388,10 @@ public final class ExprUtils {
    * Checks whether the specified logical conditions are complete
    * {@code !(getComplement(exprs[0], ..., exprs[n-1]) is SAT)}. N.B. The method uses the default
    * constraint solver to perform the check.
-   * 
+   *
    * @param exprs Conditions (logical expressions) to be checked.
    * @return {@code true} if the conditions are complete or {@code false} otherwise.
-   * 
+   *
    * @throws IllegalArgumentException if any argument in the array is {@code null};
    *         if no arguments are provided; if an argument is not a logical expression.
    */
@@ -404,10 +404,10 @@ public final class ExprUtils {
    * Checks whether the specified logical conditions are compatible
    * {@code (getConjunction(exprs[0], ..., exprs[n-1]) is SAT)}. N.B. The method uses the default
    * constraint solver to perform the check.
-   * 
+   *
    * @param exprs Conditions (logical expressions) to be checked.
    * @return {@code true} if the conditions are compatible or {@code false} otherwise.
-   * 
+   *
    * @throws IllegalArgumentException if any argument in the array is {@code null}; if no arguments are
    *         provided; if an argument is not a logical expression.
    */
@@ -419,10 +419,10 @@ public final class ExprUtils {
   /**
    * Checks whether the specified expression is satisfiable. N.B. The method uses the default
    * constraint solver to perform the check.
-   * 
+   *
    * @param expr Expression to be checked.
    * @return {@code true} if the expression is satisfiable or {@code false} otherwise.
-   * 
+   *
    * @throws IllegalArgumentException (1) if the parameter is {@code null}; (2) if the expression
    *         description contains errors that prevent the solver engine from solving it in
    *         a correct way; (3) if the solver is unable to solve a constraint based on the given
@@ -456,10 +456,10 @@ public final class ExprUtils {
 
   /**
    * Returns all variables used in the specified expression.
-   * 
+   *
    * @param expr Expression to be processed.
    * @return A collection of all variables used in the specified expression.
-   * 
+   *
    * @throws IllegalArgumentException if the parameter is {@code null}.
    * @throws IllegalStateException if the method finds nodes that refer to different variables that
    *         have the same name.
@@ -471,10 +471,10 @@ public final class ExprUtils {
 
   /**
    * Returns all variables used in the specified expressions.
-   * 
+   *
    * @param exprs Collection of expressions to be processed.
    * @return A collection of all variables used in the specified expressions.
-   * 
+   *
    * @throws IllegalArgumentException if the parameter is {@code null}.
    * @throws IllegalStateException if the method finds nodes that refer to different
    *         variables that have the same name.
