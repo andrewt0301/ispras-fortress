@@ -80,7 +80,7 @@ public class ConcatenationTestCase extends GenericSolverTestBase {
           StandardOperation.EQ, y, new NodeValue(BIT_VECTOR_ARG_TYPE.valueOf("ffff", HEX_RADIX))));
 
       formulas.add(new NodeOperation(
-          StandardOperation.EQ, z, new NodeOperation(StandardOperation.BVCONCAT, y, x)));
+          StandardOperation.EQ, z, new NodeOperation(StandardOperation.BVCONCAT, x, y)));
 
       return builder.build();
     }
