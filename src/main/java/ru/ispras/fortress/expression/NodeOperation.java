@@ -47,7 +47,7 @@ public final class NodeOperation extends Node {
   public <T extends Enum<? extends T>> NodeOperation(
       final T operation,
       final Node... operands) {
-    this(operation, null, operands != null ? Arrays.asList(operands) : null);
+    this(operation, null, operands);
   }
 
   /**
