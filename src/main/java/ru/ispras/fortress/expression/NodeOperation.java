@@ -1,11 +1,11 @@
 /*
- * Copyright 2011-2015 ISP RAS (http://www.ispras.ru)
- * 
+ * Copyright 2011-2017 ISP RAS (http://www.ispras.ru)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -13,9 +13,6 @@
  */
 
 package ru.ispras.fortress.expression;
-
-import static ru.ispras.fortress.util.InvariantChecks.checkBounds;
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -26,10 +23,12 @@ import java.util.List;
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.DataTypeId;
+import ru.ispras.fortress.util.InvariantChecks;
 
 /**
- * The NodeOperation class represents an expression node described by an operation and operands.
- * 
+ * The {@link NodeOperation} class represents an expression node described by an operation
+ * and operands.
+ *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 public final class NodeOperation extends Node {
@@ -39,10 +38,10 @@ public final class NodeOperation extends Node {
 
   /**
    * Creates an operation node that has a variable number of operands (from 0 to infinity).
-   * 
+   *
    * @param operation Operation identifier.
    * @param operands Array of expression operands.
-   * 
+   *
    * @throws IllegalArgumentException if any parameter (including every operand) is {@code null}.
    */
   public <T extends Enum<? extends T>> NodeOperation(
@@ -53,12 +52,12 @@ public final class NodeOperation extends Node {
 
   /**
    * Creates an operation node that has a variable number of operands (from 0 to infinity).
-   * 
+   *
    * @param operation Operation identifier.
    * @param operands Array of expression operands.
    * @param dataType Data type associated with the expression or {@code null} to rely
    *        on automated type calculation.
-   * 
+   *
    * @throws IllegalArgumentException if any parameter (including every operand) is {@code null}.
    */
   public <T extends Enum<? extends T>> NodeOperation(
@@ -71,10 +70,10 @@ public final class NodeOperation extends Node {
   /**
    * Creates an operation node that has a variable number of operands (from 0 to infinity)
    * packed into a collection.
-   * 
+   *
    * @param operation Operation identifier.
    * @param operands List of expression operands.
-   * 
+   *
    * @throws IllegalArgumentException if any parameter (including every operand) is {@code null}.
    */
   public <T extends Enum<? extends T>> NodeOperation(
@@ -86,12 +85,12 @@ public final class NodeOperation extends Node {
   /**
    * Creates an operation node that has a variable number of operands (from 0 to infinity)
    * packed into a collection.
-   * 
+   *
    * @param operation Operation identifier.
    * @param dataType Data type associated with the expression or {@code null} to rely
    *        on automated type calculation.
    * @param operands List of expression operands.
-   * 
+   *
    * @throws IllegalArgumentException if any parameter (including every operand) is {@code null}.
    */
   public <T extends Enum<? extends T>> NodeOperation(
@@ -100,9 +99,9 @@ public final class NodeOperation extends Node {
       final List<? extends Node> operands) {
     super(Kind.OPERATION);
 
-    checkNotNull(operation);
+    InvariantChecks.checkNotNull(operation);
     for (final Node operand : operands) {
-      checkNotNull(operand);
+      InvariantChecks.checkNotNull(operand);
     }
 
     this.operation = operation;
@@ -114,7 +113,7 @@ public final class NodeOperation extends Node {
    * Constructor for making deep copies. The operation field is immutable and, therefore, it copied
    * by reference. The operands array is cloned because it contains nodes that must be cloned to
    * create a fully independent copy of an expression.
-   * 
+   *
    * @param node Node operation object to be copied.
    */
   private NodeOperation(final NodeOperation node) {
@@ -140,7 +139,7 @@ public final class NodeOperation extends Node {
 
   /**
    * Returns the number of operands.
-   * 
+   *
    * @return Number of operands.
    */
   public int getOperandCount() {
@@ -149,18 +148,18 @@ public final class NodeOperation extends Node {
 
   /**
    * Returns an operand by its index.
-   * 
+   *
    * @param index Index of the operand.
    * @return An operand of the expression.
    */
   public Node getOperand(final int index) {
-    checkBounds(index, operands.size());
+    InvariantChecks.checkBounds(index, operands.size());
     return operands.get(index);
   }
 
   /**
    * Returns an unmodifiable list of operands.
-   * 
+   *
    * @return An unmodifiable list of operands.
    */
   public List<Node> getOperands() {
@@ -169,7 +168,7 @@ public final class NodeOperation extends Node {
 
   /**
    * Returns an operation identifier.
-   * 
+   *
    * @return An operation identifier.
    */
   public Enum<?> getOperationId() {
