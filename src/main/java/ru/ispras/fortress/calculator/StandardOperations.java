@@ -161,6 +161,7 @@ final class StandardOperations {
         new BitVectorCmp(StandardOperation.BVSGT, BitVectorMath.Operations.SGT),
 
         new StdOperation(StandardOperation.BVCONCAT, ArityRange.BINARY_UNBOUNDED) {
+          // NOTE: expected operand order is from HIGH to LOW.
           @Override
           public Data calculate(final Data... operands) {
             final BitVector[] input = new BitVector[operands.length];

@@ -163,7 +163,7 @@ public enum StandardOperation implements TypeRule {
   /** Group: Bitvector, Operation: Signed (arithmetical) shift right */
   BVASHR(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG, OperandTypes.SAME_BV),
 
-  /** Group: Bitvector, Operation: Concatenation */
+  /** Group: Bitvector, Operation: Concatenation (expected operand order is from HIGH to LOW) */
   BVCONCAT(Family.BV, TypeRules.BVCONCAT, OperandTypes.BV),
 
   /** Group: Bitvector, Operation: Replication (concatenation of several copies of bitvector) */
