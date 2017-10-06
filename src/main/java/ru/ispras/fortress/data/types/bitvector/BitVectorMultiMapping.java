@@ -20,8 +20,8 @@ import java.util.List;
 import ru.ispras.fortress.util.InvariantChecks;
 
 /**
- * The {@link BitVectorMultiMapping} class implements logic that allows concatenating several data
- * objects together (allows accessing a group of data objects as a single data object).
+ * The {@link BitVectorMultiMapping} class implements logic that allows concatenating several bit
+ * vectors together (allows accessing a group of bit vectors as a single bit vector).
  *
  * <pre>
  * The scheme below demonstrates mapping of two 27-bit data arrays:
@@ -39,8 +39,8 @@ import ru.ispras.fortress.util.InvariantChecks;
  * |%%%%!    |        |        |        | |%%%%!   |        |        |        |
  * |____!____|________|________|________| |____!___|________|________|________|
  *
- * <---------------------------------->  <----------------------------------->
- *                Raw Data 2                         Raw Data 1
+ * <------------------------------------> <----------------------------------->
+ *                Bit Vector 1                         Bit Vector 0
  *
  * Mapped view:
  *
@@ -56,10 +56,10 @@ import ru.ispras.fortress.util.InvariantChecks;
  * |___!_____|________|________|_____!___|________|________|________|
  *
  *  <-------------------------------><------------------------------>
- *          Raw Data 2                       Raw Data 1
+ *            Bit Vector 1                     Bit Vector 0
  *     <----><-----------------><----><--><------------------------->
  *      Tail        Head          Cut Tail          Head
- *                             <--------->  
+ *                             <--------->
  *                             Linking Byte
  * </pre>
  *
@@ -203,18 +203,41 @@ final class BitVectorMultiMapping extends BitVector {
     return data.getBitSize();
   }
 
-  public BitVectorMultiMapping(final BitVector[] dataArray) {
-    InvariantChecks.checkNotNull(dataArray);
+  /**
+   * Creates a mapping that concatenates bit vectors provided in the specified array.
+   *
+   * <p>NOTE: The order of bit vectors in the array must be from high to low.
+   * That is the array looks like this:
+   * <pre>
+   * {HIGH, ..., LOW}
+   *  [0]       [N-1]</pre>
+   * while the concatenation result looks like this:
+   * <pre>
+   * |HIGH|...|LOW|
+   * M            0</pre>
+   * {@code N} is the number of bit vectors to be concatenated;
+   * {@code M} is the total bit size of the concatenation result.<p>
+   *
+   * @param bitVectors Array of bit vectors to be concatenated.
+   *
+   * @throws IllegalArgumentException if the argument is {@code null}, if it is an empty array
+   *         or if the array contains {@code null} objects.
+   */
+  public BitVectorMultiMapping(final BitVector[] bitVectors) {
+    InvariantChecks.checkNotEmpty(bitVectors);
     byteAccessors = new ArrayList<ByteAccessor>();
 
     BitVector unusedPrevPart = null;
     int processedBitSize = 0;
 
-    for (final BitVector data : dataArray) {
+    for (int index = bitVectors.length - 1; index >= 0; index--) {
+      final BitVector data = bitVectors[index];
+      InvariantChecks.checkNotNull(data);
+
       int offset = 0;
       if (null != unusedPrevPart) {
         final int bitsToCompleteByte = BITS_IN_BYTE - unusedPrevPart.getBitSize();
-        assert bitsToCompleteByte > 0;
+        InvariantChecks.checkTrue(bitsToCompleteByte > 0);
 
         final BitVector currentCutPart = (data.getBitSize() <= bitsToCompleteByte) ?
             data : BitVector.newMapping(data, 0, bitsToCompleteByte);

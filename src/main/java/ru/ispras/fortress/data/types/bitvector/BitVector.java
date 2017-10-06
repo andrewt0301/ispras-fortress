@@ -413,14 +413,29 @@ public abstract class BitVector implements Comparable<BitVector> {
   }
 
   /**
-   * Creates a mapping for several bit vectors. The mapping unites the bit vector and allows
-   * working with them as if they were a single bit vector.
+   * Creates a mapping that concatenates several bit vector to allow working
+   * with them as if they were a single bit vector.
+   *
+   * <p>NOTE: The order of the bit vectors passed to the method must be from high to low.
+   * In other words, when the order of arguments is like this:
+   * <pre>
+   * HIGH, ..., LOW
+   * [0]       [N-1]</pre>
+   * the concatenation result is like this:
+   * <pre>
+   * |HIGH|...|LOW|
+   * M            0</pre>
+   * {@code N} is the number of bit vectors to be concatenated;
+   * {@code M} is the total bit size of the concatenation result.<p>
    *
    * @param sources Source bit vectors.
    * @return A bit vector mapping.
+   *
+   * @throws IllegalArgumentException if the number of arguments is {@code 0} or
+   *         if any of them is {@code null}.
    */
   public static BitVector newMapping(final BitVector... sources) {
-    InvariantChecks.checkGreaterThanZero(sources.length);
+    InvariantChecks.checkNotEmpty(sources);
 
     if (1 == sources.length) {
       return sources[0];
