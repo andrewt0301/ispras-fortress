@@ -1,11 +1,11 @@
 /*
  * Copyright 2012-2017 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -22,15 +22,15 @@ import ru.ispras.fortress.util.InvariantChecks;
 /**
  * The {@link BitVectorMultiMapping} class implements logic that allows concatenating several data
  * objects together (allows accessing a group of data objects as a single data object).
- * 
+ *
  * <pre>
- * The scheme blow demonstrates mapping of two 27-bit data arrays:
- * 
+ * The scheme below demonstrates mapping of two 27-bit data arrays:
+ *
  * Initial data:
- * 
+ *
  * Byte:
  * 4        3        2        1        0  4       3        2         1        0
- * 
+ *
  * Bit:
  * 32 28!   24       16        8       0  32 28!  24       16        8        0
  * _____________________________________  ____________________________________
@@ -38,15 +38,15 @@ import ru.ispras.fortress.util.InvariantChecks;
  * |%%%%!    |        |        |        | |%%%%!   |        |        |        |
  * |%%%%!    |        |        |        | |%%%%!   |        |        |        |
  * |____!____|________|________|________| |____!___|________|________|________|
- * 
+ *
  * <---------------------------------->  <----------------------------------->
  *                Raw Data 2                         Raw Data 1
- *                
+ *
  * Mapped view:
- * 
+ *
  * Byte:
  * 7         6        5        4         3        2        1        0
- * 
+ *
  * Bit:
  * 56  54!   48       40       32   28!  24       16       8        0
  * _________________________________________________________________
@@ -54,23 +54,23 @@ import ru.ispras.fortress.util.InvariantChecks;
  * |%%%!     |        |        |     !   |        |        |        |
  * |%%%!     |        |        |     !   |        |        |        |
  * |___!_____|________|________|_____!___|________|________|________|
- * 
+ *
  *  <-------------------------------><------------------------------>
  *          Raw Data 2                       Raw Data 1
  *     <----><-----------------><----><--><------------------------->
- *      Tail        Head          Cut Tail          Head 
+ *      Tail        Head          Cut Tail          Head
  *                             <--------->  
  *                             Linking Byte
  * </pre>
- * 
+ *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 final class BitVectorMultiMapping extends BitVector {
   /**
-   * The LinkingByteMapping class is a special mapping that helps concatenate two data object. It is
-   * needed to concatenate the incomplete high byte of one data array with the complementary low
-   * part of the another. Both part together should make up a complete single byte.
-   * 
+   * The {@link LinkingByteMapping} class is a special mapping that helps concatenate two bit
+   * vectors. It is needed to concatenate the incomplete high byte of one bit vector with the
+   * complementary low part of another. Both part together should make up a complete single byte.
+   *
    * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
    */
   private static final class LinkingByteMapping extends BitVector {
@@ -78,16 +78,15 @@ final class BitVectorMultiMapping extends BitVector {
     private final BitVector highPart;
 
     /**
-     * Creates a LinkingByteMapping object from two parts.
-     * 
-     * @param lowPart A low part of the linking byte (a raw data object, which size is less that 8).
-     * @param highPart A high part of the linking byte (a raw data object, which size is less that
-     *        8).
+     * Creates a {@link LinkingByteMapping} object from two parts.
+     *
+     * @param lowPart A low part of the linking byte (a bit vector, which size is less than 8).
+     * @param highPart A high part of the linking byte (a bit vector, which size is less than 8).
      */
     public LinkingByteMapping(final BitVector lowPart, final BitVector highPart) {
-      assert 0 < lowPart.getBitSize()  && lowPart.getBitSize() < BITS_IN_BYTE;
-      assert 0 < highPart.getBitSize() && highPart.getBitSize() < BITS_IN_BYTE;
-      assert (lowPart.getBitSize() + highPart.getBitSize()) <= BITS_IN_BYTE;
+      InvariantChecks.checkTrue(0 < lowPart.getBitSize() && lowPart.getBitSize() < BITS_IN_BYTE);
+      InvariantChecks.checkTrue(0 < highPart.getBitSize() && highPart.getBitSize() < BITS_IN_BYTE);
+      InvariantChecks.checkTrue(lowPart.getBitSize() + highPart.getBitSize() <= BITS_IN_BYTE);
 
       this.lowPart = lowPart;
       this.highPart = highPart;
@@ -102,8 +101,8 @@ final class BitVectorMultiMapping extends BitVector {
     }
 
     /**
-     * {@inheritDoc} NOTE: The number of bytes a LinkingByteMapping object can store always equals
-     * to 1.
+     * {@inheritDoc} NOTE: The number of bytes a {@link LinkingByteMapping} object can store
+     * always equals {@code 1}.
      */
     @Override
     public int getByteSize() {
@@ -116,7 +115,7 @@ final class BitVectorMultiMapping extends BitVector {
      */
     @Override
     public byte getByte(final int index) {
-      assert (0 == index) : "ONE-BYTE DATA ARRAY!";
+      InvariantChecks.checkTrue(0 == index, "ONE-BYTE DATA ARRAY!");
 
       final byte lowValue = lowPart.getByte(0);
       final byte highValue = highPart.getByte(0);
@@ -128,12 +127,12 @@ final class BitVectorMultiMapping extends BitVector {
     }
 
     /**
-     * {@inheritDoc} NOTE: A LinkingByteMapping object always stores 1-byte data and, consequently,
-     * accepts only 0 as the value of the index parameter.
+     * {@inheritDoc} NOTE: A {@link LinkingByteMapping} object always stores 1-byte data and,
+     * consequently, accepts only {@code 0} as the value of the index parameter.
      */
     @Override
     public void setByte(final int index, final byte value) {
-      assert (0 == index) : "ONE-BYTE DATA ARRAY!";
+      InvariantChecks.checkTrue(0 == index, "ONE-BYTE DATA ARRAY!");
 
       final byte lowValue = (byte) ((value & ~(0xFF << lowPart.getBitSize())));
 
@@ -146,10 +145,10 @@ final class BitVectorMultiMapping extends BitVector {
   }
 
   /**
-   * The ByteAccessor class is aimed to provide access to an arbitrary byte of the mapping. The
-   * class encapsulates the real data source (part of the mapping that actually contains the needed
-   * byte) and the relative index of the byte in that data source.
-   * 
+   * The {@link ByteAccessor} class is aimed to provide access to an arbitrary byte of the mapping.
+   * The class encapsulates the real data source (part of the mapping that actually contains
+   * the needed byte) and the relative index of the byte in that data source.
+   *
    * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
    */
   private static final class ByteAccessor {
@@ -157,8 +156,8 @@ final class BitVectorMultiMapping extends BitVector {
     public final int index;
 
     /**
-     * Creates an instance of the ByteAccessor class.
-     * 
+     * Creates an instance of the {@link ByteAccessor} class.
+     *
      * @param data Data array that hold the specified byte.
      * @param index The relative index of the byte in the data array.
      */
@@ -169,7 +168,7 @@ final class BitVectorMultiMapping extends BitVector {
 
     /**
      * Returns the value of the byte the accessor refers to.
-     * 
+     *
      * @return A target byte value.
      */
     public byte getByte() {
@@ -178,7 +177,7 @@ final class BitVectorMultiMapping extends BitVector {
 
     /**
      * Sets the value of the byte the accessor refers to.
-     * 
+     *
      * @param value The value to be assign to the target byte.
      */
     public void setByte(final byte value) {
@@ -190,9 +189,9 @@ final class BitVectorMultiMapping extends BitVector {
   private final int bitSize;
 
   /**
-   * Adds byte accessors for the specified data array to the vector of byte accessors that build up
-   * the mapping. Returns the size of processed data in bits.
-   * 
+   * Adds byte accessors for the specified data array to the vector of byte accessors that build
+   * up the mapping. Returns the size of processed data in bits.
+   *
    * @param data The data array to be mapped to the vector of byte accessors.
    * @return The size of processed data in bits (number of bits in the source data array).
    */
@@ -244,7 +243,6 @@ final class BitVectorMultiMapping extends BitVector {
        * ALLWAYS LESS than the number of bits in a byte. This is the unused part of the current data
        * object to be used to build a linking byte with the lowest part of the next data object.
        */
-
       final int headBitSize = (dataSize / BITS_IN_BYTE) * BITS_IN_BYTE;
       final int tailBitSize = dataSize % BITS_IN_BYTE;
 
