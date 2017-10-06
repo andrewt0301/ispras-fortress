@@ -559,6 +559,38 @@ public final class ExprUtils {
     return new NodeOperation(StandardOperation.PLUS, operand);
   }
 
+  public static Node BVULE(final Node lhs, final Node rhs) {
+    return new NodeOperation(StandardOperation.BVULE, lhs, rhs);
+  }
+
+  public static Node BVULT(final Node lhs, final Node rhs) {
+    return new NodeOperation(StandardOperation.BVULT, lhs, rhs);
+  }
+
+  public static Node BVUGE(final Node lhs, final Node rhs) {
+    return new NodeOperation(StandardOperation.BVUGE, lhs, rhs);
+  }
+
+  public static Node BVUGT(final Node lhs, final Node rhs) {
+    return new NodeOperation(StandardOperation.BVUGT, lhs, rhs);
+  }
+
+  public static Node BVSLE(final Node lhs, final Node rhs) {
+    return new NodeOperation(StandardOperation.BVSLE, lhs, rhs);
+  }
+
+  public static Node BVSLT(final Node lhs, final Node rhs) {
+    return new NodeOperation(StandardOperation.BVSLT, lhs, rhs);
+  }
+
+  public static Node BVSGE(final Node lhs, final Node rhs) {
+    return new NodeOperation(StandardOperation.BVSGE, lhs, rhs);
+  }
+
+  public static Node BVSGT(final Node lhs, final Node rhs) {
+    return new NodeOperation(StandardOperation.BVSGT, lhs, rhs);
+  }
+
   public static NodeOperation STORE(final Node array, final Node key, final Node value) {
     return new NodeOperation(StandardOperation.STORE, array, key, value);
   }
@@ -622,14 +654,14 @@ public final class ExprUtils {
   BVNAND
   BVNOR
   BVXNOR
-  BVULE
-  BVULT
-  BVUGE
-  BVUGT
-  BVSLE
-  BVSLT
-  BVSGE
-  BVSGT
+  BVULE +
+  BVULT +
+  BVUGE +
+  BVUGT +
+  BVSLE +
+  BVSLT +
+  BVSGE +
+  BVSGT +
   BVANDR
   BVNANDR
   BVORR
