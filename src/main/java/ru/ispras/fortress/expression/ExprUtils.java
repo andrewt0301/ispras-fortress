@@ -559,6 +559,22 @@ public final class ExprUtils {
     return new NodeOperation(StandardOperation.PLUS, operand);
   }
 
+  public static Node LESS(final Node lhs, final Node rhs) {
+    return new NodeOperation(StandardOperation.LESS, lhs, rhs);
+  }
+
+  public static Node LESSEQ(final Node lhs, final Node rhs) {
+    return new NodeOperation(StandardOperation.LESSEQ, lhs, rhs);
+  }
+
+  public static Node GREATER(final Node lhs, final Node rhs) {
+    return new NodeOperation(StandardOperation.GREATER, lhs, rhs);
+  }
+
+  public static Node GREATEREQ(final Node lhs, final Node rhs) {
+    return new NodeOperation(StandardOperation.GREATEREQ, lhs, rhs);
+  }
+
   public static Node BVULE(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.BVULE, lhs, rhs);
   }
