@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2011-2017 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -42,6 +42,7 @@ import ru.ispras.fortress.solver.xml.XMLConstraintSaver;
 import ru.ispras.fortress.solver.xml.XMLNotLoadedException;
 import ru.ispras.fortress.solver.xml.XMLNotSavedException;
 import ru.ispras.fortress.transformer.ReduceOptions;
+import ru.ispras.fortress.transformer.Reducer;
 import ru.ispras.fortress.transformer.Transformer;
 
 import java.util.ArrayList;
@@ -216,7 +217,7 @@ public abstract class GenericSolverTestBase {
     Node reduced = input;
     do {
       node = reduced;
-      reduced = Transformer.reduce(calculator, ReduceOptions.NEW_INSTANCE, node);
+      reduced = Reducer.reduce(calculator, ReduceOptions.NEW_INSTANCE, node);
     } while (reduced != node);
 
     return reduced;
