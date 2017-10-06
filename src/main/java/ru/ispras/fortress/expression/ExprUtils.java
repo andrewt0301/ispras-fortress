@@ -515,95 +515,95 @@ public final class ExprUtils {
     }
   }
 
-  public static Node EQ(final Node lhs, final Node rhs) {
+  public static NodeOperation EQ(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.EQ, lhs, rhs);
   }
 
-  public static Node NOTEQ(final Node lhs, final Node rhs) {
+  public static NodeOperation NOTEQ(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.NOTEQ, lhs, rhs);
   }
 
-  public static Node EQCASE(final Node lhs, final Node rhs) {
+  public static NodeOperation EQCASE(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.EQCASE, lhs, rhs);
   }
 
-  public static Node NOTEQCASE(final Node lhs, final Node rhs) {
+  public static NodeOperation NOTEQCASE(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.NOTEQCASE, lhs, rhs);
   }
 
-  public static Node AND(final Node... operands) {
+  public static NodeOperation AND(final Node... operands) {
     return new NodeOperation(StandardOperation.AND, operands);
   }
 
-  public static Node AND(final List<Node> operands) {
+  public static NodeOperation AND(final List<Node> operands) {
     return new NodeOperation(StandardOperation.AND, operands);
   }
 
-  public static Node OR(final Node... operands) {
+  public static NodeOperation OR(final Node... operands) {
     return new NodeOperation(StandardOperation.OR, operands);
   }
 
-  public static Node OR(final List<Node> operands) {
+  public static NodeOperation OR(final List<Node> operands) {
     return new NodeOperation(StandardOperation.OR, operands);
   }
 
-  public static Node NOT(final Node operand) {
+  public static NodeOperation NOT(final Node operand) {
     return new NodeOperation(StandardOperation.NOT, operand);
   }
 
-  public static Node MINUS(final Node operand) {
+  public static NodeOperation MINUS(final Node operand) {
     return new NodeOperation(StandardOperation.MINUS, operand);
   }
 
-  public static Node PLUS(final Node operand) {
+  public static NodeOperation PLUS(final Node operand) {
     return new NodeOperation(StandardOperation.PLUS, operand);
   }
 
-  public static Node LESS(final Node lhs, final Node rhs) {
+  public static NodeOperation LESS(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.LESS, lhs, rhs);
   }
 
-  public static Node LESSEQ(final Node lhs, final Node rhs) {
+  public static NodeOperation LESSEQ(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.LESSEQ, lhs, rhs);
   }
 
-  public static Node GREATER(final Node lhs, final Node rhs) {
+  public static NodeOperation GREATER(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.GREATER, lhs, rhs);
   }
 
-  public static Node GREATEREQ(final Node lhs, final Node rhs) {
+  public static NodeOperation GREATEREQ(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.GREATEREQ, lhs, rhs);
   }
 
-  public static Node BVULE(final Node lhs, final Node rhs) {
+  public static NodeOperation BVULE(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.BVULE, lhs, rhs);
   }
 
-  public static Node BVULT(final Node lhs, final Node rhs) {
+  public static NodeOperation BVULT(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.BVULT, lhs, rhs);
   }
 
-  public static Node BVUGE(final Node lhs, final Node rhs) {
+  public static NodeOperation BVUGE(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.BVUGE, lhs, rhs);
   }
 
-  public static Node BVUGT(final Node lhs, final Node rhs) {
+  public static NodeOperation BVUGT(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.BVUGT, lhs, rhs);
   }
 
-  public static Node BVSLE(final Node lhs, final Node rhs) {
+  public static NodeOperation BVSLE(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.BVSLE, lhs, rhs);
   }
 
-  public static Node BVSLT(final Node lhs, final Node rhs) {
+  public static NodeOperation BVSLT(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.BVSLT, lhs, rhs);
   }
 
-  public static Node BVSGE(final Node lhs, final Node rhs) {
+  public static NodeOperation BVSGE(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.BVSGE, lhs, rhs);
   }
 
-  public static Node BVSGT(final Node lhs, final Node rhs) {
+  public static NodeOperation BVSGT(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.BVSGT, lhs, rhs);
   }
 
