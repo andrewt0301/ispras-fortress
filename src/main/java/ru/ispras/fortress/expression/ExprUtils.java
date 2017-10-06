@@ -535,7 +535,7 @@ public final class ExprUtils {
     return new NodeOperation(StandardOperation.AND, operands);
   }
 
-  public static NodeOperation AND(final List<Node> operands) {
+  public static NodeOperation AND(final List<? extends Node> operands) {
     return new NodeOperation(StandardOperation.AND, operands);
   }
 
@@ -543,7 +543,7 @@ public final class ExprUtils {
     return new NodeOperation(StandardOperation.OR, operands);
   }
 
-  public static NodeOperation OR(final List<Node> operands) {
+  public static NodeOperation OR(final List<? extends Node> operands) {
     return new NodeOperation(StandardOperation.OR, operands);
   }
 
