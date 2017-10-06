@@ -20,11 +20,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ru.ispras.fortress.calculator.CalculatorEngine;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeBinding;
-import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.transformer.ruleset.Predicate;
 import ru.ispras.fortress.util.InvariantChecks;
@@ -34,89 +32,6 @@ import ru.ispras.fortress.util.InvariantChecks;
  */
 public final class Transformer {
   private Transformer() {}
-
-  /**
-   * Attempts to reduce the specified expression including to a value. Reduction is performed with
-   * the help of the calculator object that performs specific operations with specific data types.
-   *
-   * The operation may be totally reduced (or, so to speak, reduced to a value), partially reduced
-   * or left unchanged. In the last case, the method returns a reference to the current operation
-   * (this).
-   *
-   * @param engine Calculator engine (if {@code null}, the default engine to be used).
-   * @param options Option flags to tune the reduction strategy.
-   * @param expression Expression to be reduced.
-   * @return Reduced expression (value or another operation expression with minimal subexpressions)
-   *         or the initial expression if it is impossible to reduce it.
-   *
-   * @throws IllegalArgumentException if any of the parameters is {@code null}.
-   */
-  public static Node reduce(
-      final CalculatorEngine engine,
-      final ReduceOptions options,
-      final Node expression) {
-    return Reducer.reduce(engine, null, options, expression);
-    /*
-    InvariantChecks.checkNotNull(options);
-    InvariantChecks.checkNotNull(expression);
-
-    // Only operation expressions can be reduced.
-    if (expression.getKind() == Node.Kind.VARIABLE ||
-        expression.getKind() == Node.Kind.VALUE) {
-      return expression;
-    }
-
-    if (expression.getKind() == Node.Kind.BINDING) {
-      return reduceBinding(engine, options, (NodeBinding) expression);
-    }
-
-    final OperationReducer reducer =
-        new OperationReducer(engine, (NodeOperation) expression, options);
-
-    final Node result = reducer.reduce();
-    if (null == result) {
-      return expression;
-    }
-
-    return result;
-    */
-  }
-
-  /**
-   * Attempts to reduce the specified expression including to a value.
-   * Uses default {@code engine}.
-   *
-   * @see Transformer#reduce(CalculatorEngine, ReduceOptions, Node)
-   */
-  public static Node reduce(final ReduceOptions options, final Node expression) {
-    return reduce(null, options, expression);
-  }
-
-  /**
-   * Attempts to reduce the specified expression including to a value.
-   * Uses default {@code engine} with {@link ReduceOptions#NEW_INSTANCE} policy.
-   *
-   * @see Transformer#reduce(CalculatorEngine, ReduceOptions, Node)
-   */
-  public static Node reduce(final Node e) {
-    return reduce(null, ReduceOptions.NEW_INSTANCE, e);
-  }
-
-  private static Node reduceBinding(
-      final CalculatorEngine engine,
-      final ReduceOptions options,
-      final NodeBinding binding) {
-    final Node reduced = reduce(engine, options, binding.getExpression());
-    if (reduced == null || reduced == binding.getExpression()) {
-      return binding;
-    }
-
-    if (reduced.getKind() == Node.Kind.VALUE) {
-      return reduced;
-    }
-
-    return binding.bindTo(reduced);
-  }
 
   /**
    * Substitute given term for variables with specified name in expression. Substitution considers
@@ -253,7 +168,7 @@ public final class Transformer {
     InvariantChecks.checkNotNull(expression);
 
     /* Reduce expression before standardizing. */
-    final Node reducedExpression = Transformer.reduce(ReduceOptions.NEW_INSTANCE, expression);
+    final Node reducedExpression = Reducer.reduce(ReduceOptions.NEW_INSTANCE, expression);
 
     final NodeTransformer tl = new NodeTransformer(Predicate.getStandardRuleset());
     tl.walk(reducedExpression);
@@ -271,7 +186,6 @@ public final class Transformer {
    *
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
-
   public static Node transform(
       final Node tree,
       final Enum<?> indicator,
