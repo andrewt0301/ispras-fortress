@@ -63,7 +63,7 @@ public final class CalculatorBitVectorTestCase {
   public void testConcat() {
     testEquals(
         Data.newBitVector(0xDEADBEEF, 32),
-        StandardOperation.BVCONCAT, Data.newBitVector(0xBEEF, 16), Data.newBitVector(0xDEAD, 16)
+        StandardOperation.BVCONCAT, Data.newBitVector(0xDEAD, 16), Data.newBitVector(0xBEEF, 16)
         );
   }
 }
