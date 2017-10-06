@@ -64,7 +64,7 @@ public final class NodeOperation extends Node {
       final T operation,
       final DataType dataType,
       final Node... operands) {
-    this(operation, dataType, operands != null ? Arrays.asList(operands) : null);
+    this(operation, dataType, operands != null ? Arrays.asList(operands) : null, 0);
   }
 
   /**
@@ -97,6 +97,14 @@ public final class NodeOperation extends Node {
       final T operation,
       final DataType dataType,
       final List<? extends Node> operands) {
+    this(operation, dataType, operands != null ? new ArrayList<>(operands) : null, 0);
+  }
+
+  private <T extends Enum<? extends T>> NodeOperation(
+      final T operation,
+      final DataType dataType,
+      final List<Node> operands,
+      final int unused) {
     super(Kind.OPERATION);
 
     InvariantChecks.checkNotNull(operation);
