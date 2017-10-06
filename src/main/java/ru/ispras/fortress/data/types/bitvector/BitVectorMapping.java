@@ -1,11 +1,11 @@
 /*
  * Copyright 2012-2017 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -20,14 +20,14 @@ import ru.ispras.fortress.util.InvariantChecks;
  * The {@link BitVectorMapping} class provides the possibility to map a bit vector to another bit
  * vector. Mapping can start at an arbitrary position and can have an arbitrary length (bounded by
  * the size of the source bit vector).
- * 
+ *
  * <pre>
  * The scheme below demonstrates how the class works:
- * 
+ *
  * Source data array (a 29-bit vector) and a 10-bit mapping that starts from the 3th bit:
- * 
+ *
  * Real data:
- * 
+ *
  * Bits:
  * 31 29! 24       16 13 12   8 7   3   0
  * ______________________________________
@@ -35,9 +35,9 @@ import ru.ispras.fortress.util.InvariantChecks;
  * |%%%!    |        |HHH|XXXXX|XXXXX|LLL|
  * |%%%!    |        |HHH|XXXXX|XXXXX|LLL|
  * |___!____|________|___|_____|_____|___|
- * 
+ *
  * Mapped view:
- * 
+ *
  * Bits: 
  * 15   10  8 7       0
  * ___________________
@@ -45,16 +45,16 @@ import ru.ispras.fortress.util.InvariantChecks;
  * |%%%%%%|XX|XXXXXXXX|
  * |%%%%%%|XX|XXXXXXXX|
  * |______|__|________|
- * 
+ *
  * (%) - excluded area
  * (X) - mapped area
- * (H) - high byte mask area. The mask excludes the marked bits (mask bits are set to zero). 
+ * (H) - high byte mask area. The mask excludes the marked bits (mask bits are set to zero).
  * (L) - low byte mask area. The mask excludes the marked bits (mask bits are set to zero).
- * 
+ *
  * When we work with data via a mapping, the methods of the BitVectorMapping class split bytes into
  * parts and perform the needed bit operations to align the data in a proper way.
  * </pre>
- * 
+ *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 final class BitVectorMapping extends BitVector {
@@ -67,7 +67,7 @@ final class BitVectorMapping extends BitVector {
 
   /**
    * Creates a mapping for the specified bit vector.
-   * 
+   *
    * @param src The source bit vector.
    * @param beginBitPos The starting position of the mapping.
    * @param bitSize The length of the mapping in bits.
