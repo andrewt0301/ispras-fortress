@@ -1,11 +1,11 @@
 /*
- * Copyright 2013-2014 ISP RAS (http://www.ispras.ru)
- * 
+ * Copyright 2013-2017 ISP RAS (http://www.ispras.ru)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -24,7 +24,7 @@ import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.transformer.ReduceOptions;
-import ru.ispras.fortress.transformer.Transformer;
+import ru.ispras.fortress.transformer.Reducer;
 
 public class StandardCalculatorTestCase extends GenericSolverTestBase {
   public StandardCalculatorTestCase() {
@@ -33,7 +33,7 @@ public class StandardCalculatorTestCase extends GenericSolverTestBase {
 
   /**
    * The constraint as described in the SMT language:
-   * 
+   *
    * <pre>
    *     (declare-const a Int)
    *     (declare-const b Int)
@@ -41,20 +41,20 @@ public class StandardCalculatorTestCase extends GenericSolverTestBase {
    *     (declare-const d Int)
    *     (declare-const e Int)
    *     (declare-const f Int)
-   * 
+   *
    *     (assert (= a (+ 2 3)))
    *     (assert (= b (- 10 6)))
    *     (assert (= c (* 2 5)))
    *     (assert (= d (div 12 5)))
    *     (assert (= e (rem 10 3)))
    *     (assert (= f (mod 10 3)))
-   * 
+   *
    *     (check-sat)
    *     (get-value (a b c d e f))
    * </pre>
-   * 
+   *
    * Expected output:
-   * 
+   *
    * sat ((a 5) (b 4) (c 10) (d 2) (e 1) (f 1))
    */
 
@@ -79,27 +79,27 @@ public class StandardCalculatorTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(new NodeOperation(StandardOperation.EQ, a, Transformer.reduce(
+      formulas.add(new NodeOperation(StandardOperation.EQ, a, Reducer.reduce(
           ReduceOptions.NEW_INSTANCE, new NodeOperation(StandardOperation.ADD, new NodeValue(
               intType.valueOf("2", 10)), new NodeValue(intType.valueOf("3", 10))))));
 
-      formulas.add(new NodeOperation(StandardOperation.EQ, b, Transformer.reduce(
+      formulas.add(new NodeOperation(StandardOperation.EQ, b, Reducer.reduce(
           ReduceOptions.NEW_INSTANCE, new NodeOperation(StandardOperation.SUB, new NodeValue(
               intType.valueOf("10", 10)), new NodeValue(intType.valueOf("6", 10))))));
 
-      formulas.add(new NodeOperation(StandardOperation.EQ, c, Transformer.reduce(
+      formulas.add(new NodeOperation(StandardOperation.EQ, c, Reducer.reduce(
           ReduceOptions.NEW_INSTANCE, new NodeOperation(StandardOperation.MUL, new NodeValue(
               intType.valueOf("2", 10)), new NodeValue(intType.valueOf("5", 10))))));
 
-      formulas.add(new NodeOperation(StandardOperation.EQ, d, Transformer.reduce(
+      formulas.add(new NodeOperation(StandardOperation.EQ, d, Reducer.reduce(
           ReduceOptions.NEW_INSTANCE, new NodeOperation(StandardOperation.DIV, new NodeValue(
               intType.valueOf("12", 10)), new NodeValue(intType.valueOf("5", 10))))));
 
-      formulas.add(new NodeOperation(StandardOperation.EQ, e, Transformer.reduce(
+      formulas.add(new NodeOperation(StandardOperation.EQ, e, Reducer.reduce(
           ReduceOptions.NEW_INSTANCE, new NodeOperation(StandardOperation.REM, new NodeValue(
               intType.valueOf("10", 10)), new NodeValue(intType.valueOf("3", 10))))));
 
-      formulas.add(new NodeOperation(StandardOperation.EQ, f, Transformer.reduce(
+      formulas.add(new NodeOperation(StandardOperation.EQ, f, Reducer.reduce(
           ReduceOptions.NEW_INSTANCE, new NodeOperation(StandardOperation.MOD, new NodeValue(
               intType.valueOf("10", 10)), new NodeValue(intType.valueOf("3", 10))))));
 

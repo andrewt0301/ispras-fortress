@@ -24,7 +24,7 @@ import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.transformer.ReduceOptions;
-import ru.ispras.fortress.transformer.Transformer;
+import ru.ispras.fortress.transformer.Reducer;
 
 public final class RepeatOperationTestCase extends GenericSolverTestBase {
   public RepeatOperationTestCase() {
@@ -75,7 +75,7 @@ public final class RepeatOperationTestCase extends GenericSolverTestBase {
           .valueOf("5", HEX_RADIX))));
 
       formulas.add(new NodeOperation(StandardOperation.EQ, y, new NodeOperation(
-          StandardOperation.BVREPEAT, Transformer.reduce(
+          StandardOperation.BVREPEAT, Reducer.reduce(
               ReduceOptions.NEW_INSTANCE,
               new NodeOperation(StandardOperation.ADD, new NodeValue(INT_TYPE.valueOf("2",
                   DEC_RADIX)), new NodeValue(INT_TYPE.valueOf("2", DEC_RADIX)))), x)));
