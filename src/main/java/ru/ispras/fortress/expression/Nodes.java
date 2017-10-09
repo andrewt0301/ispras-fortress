@@ -195,6 +195,22 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.BVSMOD, first, second);
   }
 
+  public static NodeOperation BVLSHL(final Node source, final Node amount) {
+    return new NodeOperation(StandardOperation.BVLSHL, source, amount);
+  }
+
+  public static NodeOperation BVASHL(final Node source, final Node amount) {
+    return new NodeOperation(StandardOperation.BVASHL, source, amount);
+  }
+
+  public static NodeOperation BVLSHR(final Node source, final Node amount) {
+    return new NodeOperation(StandardOperation.BVLSHR, source, amount);
+  }
+
+  public static NodeOperation BVASHR(final Node source, final Node amount) {
+    return new NodeOperation(StandardOperation.BVASHR, source, amount);
+  }
+
   public static NodeOperation BVULE(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.BVULE, lhs, rhs);
   }
@@ -272,10 +288,10 @@ public final class Nodes {
   BVUREM +
   BVSREM +
   BVSMOD +
-  BVLSHL
-  BVASHL
-  BVLSHR
-  BVASHR
+  BVLSHL +
+  BVASHL +
+  BVLSHR +
+  BVASHR +
   BVCONCAT
   BVREPEAT
   BVROL
