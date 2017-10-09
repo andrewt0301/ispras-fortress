@@ -99,6 +99,14 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.MUL, operands);
   }
 
+  public static NodeOperation REM(final Node first, final Node second) {
+    return new NodeOperation(StandardOperation.REM, first, second);
+  }
+
+  public static NodeOperation MOD(final Node first, final Node second) {
+    return new NodeOperation(StandardOperation.MOD, first, second);
+  }
+
   public static NodeOperation LESS(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.LESS, lhs, rhs);
   }
@@ -113,6 +121,14 @@ public final class Nodes {
 
   public static NodeOperation GREATEREQ(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.GREATEREQ, lhs, rhs);
+  }
+
+  public static NodeOperation POWER(final Node base, final Node exponent) {
+    return new NodeOperation(StandardOperation.POWER, base, exponent);
+  }
+
+  public static NodeOperation ABS(final Node operand) {
+    return new NodeOperation(StandardOperation.ABS, operand);
   }
 
   public static NodeOperation BVULE(final Node lhs, final Node rhs) {
@@ -173,14 +189,14 @@ public final class Nodes {
   SUB +
   DIV +
   MUL +
-  REM
-  MOD
+  REM +
+  MOD +
   LESS +
   LESSEQ +
   GREATER +
   GREATEREQ +
-  POWER
-  ABS
+  POWER +
+  ABS +
   MIN
   MAX
   BVADD
