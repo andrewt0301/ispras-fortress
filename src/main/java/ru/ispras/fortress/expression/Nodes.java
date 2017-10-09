@@ -71,6 +71,22 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.PLUS, operand);
   }
 
+  public static NodeOperation ADD(final Node... operands) {
+    return new NodeOperation(StandardOperation.ADD, operands);
+  }
+
+  public static NodeOperation ADD(final List<? extends Node> operands) {
+    return new NodeOperation(StandardOperation.ADD, operands);
+  }
+
+  public static NodeOperation SUB(final Node... operands) {
+    return new NodeOperation(StandardOperation.SUB, operands);
+  }
+
+  public static NodeOperation SUB(final List<? extends Node> operands) {
+    return new NodeOperation(StandardOperation.SUB, operands);
+  }
+
   public static NodeOperation LESS(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.LESS, lhs, rhs);
   }
@@ -141,16 +157,16 @@ public final class Nodes {
   ITE
   MINUS +
   PLUS +
-  ADD
-  SUB
+  ADD +
+  SUB +
   DIV
   MUL
   REM
   MOD
-  LESS
-  LESSEQ
-  GREATER
-  GREATEREQ
+  LESS +
+  LESSEQ +
+  GREATER +
+  GREATEREQ +
   POWER
   ABS
   MIN
