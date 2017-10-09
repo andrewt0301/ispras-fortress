@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2013-2017 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -15,12 +15,13 @@
 package ru.ispras.fortress.solver.constraint;
 
 import ru.ispras.fortress.expression.Node;
+import ru.ispras.fortress.expression.Nodes;
 import ru.ispras.fortress.util.InvariantChecks;
 
 /**
- * The ConstraintCombiner class provides methods to create new constraints by combining existing
- * ones (by performing negation, logical conjunction and logical disjunction).
- * 
+ * The {@link ConstraintCombiner} class provides methods to create new constraints by combining
+ * existing ones (by performing negation, logical conjunction and logical disjunction).
+ *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 public final class ConstraintCombiner {
@@ -32,10 +33,10 @@ public final class ConstraintCombiner {
 
   /**
    * Creates a new constraint by performing logical negation on the specified constraint.
-   * 
+   *
    * @param a A constraint object.
    * @return A new constraint object.
-   * 
+   *
    * @throws IllegalArgumentException if the parameter equals {@code null};
    *         if the parameter is not a formula-based constraint (its type
    *         is not ConstraintKind.FORMULA_BASED).
@@ -52,7 +53,7 @@ public final class ConstraintCombiner {
     builder.setInnerRep(formulas);
 
     final Node sourceExpr = ((Formulas) a.getInnerRep()).asSingleExpr();
-    formulas.add(Node.NOT(sourceExpr));
+    formulas.add(Nodes.NOT(sourceExpr));
 
     builder.addVariableCopies(a.getVariables());
     return builder.build();
@@ -60,11 +61,11 @@ public final class ConstraintCombiner {
 
   /**
    * Creates a new constraint by performing logical conjunction on the specified constraints.
-   * 
+   *
    * @param a A constraint object.
    * @param b A constraint object.
    * @return A new constraint object.
-   * 
+   *
    * @throws IllegalArgumentException if any of the parameters equals {@code null};
    *         if any of the parameters is not a formula-based constraint
    *         (its type is not ConstraintKind.FORMULA_BASED).
@@ -92,11 +93,11 @@ public final class ConstraintCombiner {
 
   /**
    * Creates a new constraint by performing logical disjunction on the specified constraints.
-   * 
+   *
    * @param a A constraint object.
    * @param b A constraint object.
    * @return A new constraint object.
-   * 
+   *
    * @throws IllegalArgumentException if any of the parameters equals {@code null};
    *         if any of the parameters is not a formula-based constraint
    *         (its type is not ConstraintKind.FORMULA_BASED).
@@ -115,7 +116,7 @@ public final class ConstraintCombiner {
 
     final Node sourceExprA = ((Formulas) a.getInnerRep()).asSingleExpr();
     final Node sourceExprB = ((Formulas) b.getInnerRep()).asSingleExpr();
-    formulas.add(Node.OR(sourceExprA, sourceExprB));
+    formulas.add(Nodes.OR(sourceExprA, sourceExprB));
 
     builder.addVariableCopies(a.getVariables());
     builder.addVariableCopies(b.getVariables());
