@@ -131,6 +131,50 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.ABS, operand);
   }
 
+  public static NodeOperation MIN(final Node... operands) {
+    return new NodeOperation(StandardOperation.MIN, operands);
+  }
+
+  public static NodeOperation MIN(final List<? extends Node> operands) {
+    return new NodeOperation(StandardOperation.MIN, operands);
+  }
+
+  public static NodeOperation MAX(final Node... operands) {
+    return new NodeOperation(StandardOperation.MAX, operands);
+  }
+
+  public static NodeOperation MAX(final List<? extends Node> operands) {
+    return new NodeOperation(StandardOperation.MAX, operands);
+  }
+
+  public static NodeOperation BVADD(final Node... operands) {
+    return new NodeOperation(StandardOperation.BVADD, operands);
+  }
+
+  public static NodeOperation BVADD(final List<? extends Node> operands) {
+    return new NodeOperation(StandardOperation.BVADD, operands);
+  }
+
+  public static NodeOperation BVSUB(final Node... operands) {
+    return new NodeOperation(StandardOperation.BVSUB, operands);
+  }
+
+  public static NodeOperation BVSUB(final List<? extends Node> operands) {
+    return new NodeOperation(StandardOperation.BVSUB, operands);
+  }
+
+  public static NodeOperation BVNEG(final Node operand) {
+    return new NodeOperation(StandardOperation.BVNEG, operand);
+  }
+
+  public static NodeOperation BVMUL(final Node... operands) {
+    return new NodeOperation(StandardOperation.BVMUL, operands);
+  }
+
+  public static NodeOperation BVMUL(final List<? extends Node> operands) {
+    return new NodeOperation(StandardOperation.BVMUL, operands);
+  }
+
   public static NodeOperation BVULE(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.BVULE, lhs, rhs);
   }
@@ -197,12 +241,12 @@ public final class Nodes {
   GREATEREQ +
   POWER +
   ABS +
-  MIN
-  MAX
-  BVADD
-  BVSUB
-  BVNEG
-  BVMUL
+  MIN +
+  MAX +
+  BVADD +
+  BVSUB +
+  BVNEG +
+  BVMUL +
   BVUDIV
   BVSDIV
   BVUREM
