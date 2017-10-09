@@ -87,6 +87,18 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.SUB, operands);
   }
 
+  public static NodeOperation DIV(final Node first, final Node second) {
+    return new NodeOperation(StandardOperation.DIV, first, second);
+  }
+
+  public static NodeOperation MUL(final Node... operands) {
+    return new NodeOperation(StandardOperation.MUL, operands);
+  }
+
+  public static NodeOperation MUL(final List<? extends Node> operands) {
+    return new NodeOperation(StandardOperation.MUL, operands);
+  }
+
   public static NodeOperation LESS(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.LESS, lhs, rhs);
   }
@@ -159,8 +171,8 @@ public final class Nodes {
   PLUS +
   ADD +
   SUB +
-  DIV
-  MUL
+  DIV +
+  MUL +
   REM
   MOD
   LESS +
