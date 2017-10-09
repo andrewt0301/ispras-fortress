@@ -24,6 +24,9 @@ import java.util.List;
 public final class Nodes {
   private Nodes() {}
 
+  public static final Node TRUE = NodeValue.newBoolean(true);
+  public static final Node FALSE = NodeValue.newBoolean(false);
+
   public static NodeOperation EQ(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.EQ, lhs, rhs);
   }
