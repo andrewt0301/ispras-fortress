@@ -175,6 +175,26 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.BVMUL, operands);
   }
 
+  public static NodeOperation BVUDIV(final Node first, final Node second) {
+    return new NodeOperation(StandardOperation.BVUDIV, first, second);
+  }
+
+  public static NodeOperation BVSDIV(final Node first, final Node second) {
+    return new NodeOperation(StandardOperation.BVSDIV, first, second);
+  }
+
+  public static NodeOperation BVUREM(final Node first, final Node second) {
+    return new NodeOperation(StandardOperation.BVUREM, first, second);
+  }
+
+  public static NodeOperation BVSREM(final Node first, final Node second) {
+    return new NodeOperation(StandardOperation.BVSREM, first, second);
+  }
+
+  public static NodeOperation BVSMOD(final Node first, final Node second) {
+    return new NodeOperation(StandardOperation.BVSMOD, first, second);
+  }
+
   public static NodeOperation BVULE(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.BVULE, lhs, rhs);
   }
@@ -247,11 +267,11 @@ public final class Nodes {
   BVSUB +
   BVNEG +
   BVMUL +
-  BVUDIV
-  BVSDIV
-  BVUREM
-  BVSREM
-  BVSMOD
+  BVUDIV +
+  BVSDIV +
+  BVUREM +
+  BVSREM +
+  BVSMOD +
   BVLSHL
   BVASHL
   BVLSHR
