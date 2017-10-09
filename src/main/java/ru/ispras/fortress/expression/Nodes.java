@@ -211,6 +211,14 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.BVASHR, source, amount);
   }
 
+  public static NodeOperation BVCONCAT(final Node... operands) {
+    return new NodeOperation(StandardOperation.BVCONCAT, operands);
+  }
+
+  public static NodeOperation BVCONCAT(final List<? extends Node> operands) {
+    return new NodeOperation(StandardOperation.BVCONCAT, operands);
+  }
+
   public static NodeOperation BVULE(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.BVULE, lhs, rhs);
   }
@@ -292,7 +300,7 @@ public final class Nodes {
   BVASHL +
   BVLSHR +
   BVASHR +
-  BVCONCAT
+  BVCONCAT +
   BVREPEAT
   BVROL
   BVROR
