@@ -235,6 +235,22 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.BVCONCAT, operands);
   }
 
+  public static NodeOperation BVROL(final NodeValue amount, final Node source) {
+    return new NodeOperation(StandardOperation.BVROL, amount, source);
+  }
+
+  public static NodeOperation BVROL(final int amount, final Node source) {
+    return BVROL(NodeValue.newInteger(amount), source);
+  }
+
+  public static NodeOperation BVROR(final NodeValue amount, final Node source) {
+    return new NodeOperation(StandardOperation.BVROR, amount, source);
+  }
+
+  public static NodeOperation BVROR(final int amount, final Node source) {
+    return BVROR(NodeValue.newInteger(amount), source);
+  }
+
   public static NodeOperation BVEXTRACT(
       final Node source,
       final NodeValue low,
@@ -409,8 +425,8 @@ public final class Nodes {
   BVASHR +
   BVCONCAT +
   BVREPEAT
-  BVROL
-  BVROR
+  BVROL +
+  BVROR +
   BVZEROEXT
   BVSIGNEXT
   BVEXTRACT +
