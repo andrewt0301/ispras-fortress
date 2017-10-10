@@ -251,11 +251,14 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.BVSGT, lhs, rhs);
   }
 
-  public static NodeOperation BVEXTRACT(final Node source, final Node low, final Node high) {
+  public static NodeOperation BVEXTRACT(
+      final Node source,
+      final NodeValue low,
+      final NodeValue high) {
     return new NodeOperation(StandardOperation.BVEXTRACT, high, low, source);
   }
 
-  public static NodeOperation BVEXTRACT(final Node source, final Node bit) {
+  public static NodeOperation BVEXTRACT(final Node source, final NodeValue bit) {
     return BVEXTRACT(source, bit, bit);
   }
 
@@ -267,11 +270,11 @@ public final class Nodes {
     return BVEXTRACT(source, NodeValue.newInteger(bit));
   }
 
-  public static NodeOperation BVEXTRACT(final Node source, final Node low, final int high) {
+  public static NodeOperation BVEXTRACT(final Node source, final NodeValue low, final int high) {
     return BVEXTRACT(source, low, NodeValue.newInteger(high));
   }
 
-  public static NodeOperation BVEXTRACT(final Node source, final int low, final Node high) {
+  public static NodeOperation BVEXTRACT(final Node source, final int low, final NodeValue high) {
     return BVEXTRACT(source, NodeValue.newInteger(low), high);
   }
 
