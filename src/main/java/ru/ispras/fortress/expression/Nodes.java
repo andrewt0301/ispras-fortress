@@ -63,6 +63,14 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.NOT, operand);
   }
 
+  public static NodeOperation XOR(final Node... operands) {
+    return new NodeOperation(StandardOperation.XOR, operands);
+  }
+
+  public static NodeOperation XOR(final List<? extends Node> operands) {
+    return new NodeOperation(StandardOperation.XOR, operands);
+  }
+
   public static NodeOperation MINUS(final Node operand) {
     return new NodeOperation(StandardOperation.MINUS, operand);
   }
@@ -278,6 +286,34 @@ public final class Nodes {
     return BVEXTRACT(source, NodeValue.newInteger(low), high);
   }
 
+  public static NodeOperation BVOR(final Node... operands) {
+    return new NodeOperation(StandardOperation.BVOR, operands);
+  }
+
+  public static NodeOperation BVOR(final List<? extends Node> operands) {
+    return new NodeOperation(StandardOperation.BVOR, operands);
+  }
+
+  public static NodeOperation BVXOR(final Node... operands) {
+    return new NodeOperation(StandardOperation.BVXOR, operands);
+  }
+
+  public static NodeOperation BVXOR(final List<? extends Node> operands) {
+    return new NodeOperation(StandardOperation.BVXOR, operands);
+  }
+
+  public static NodeOperation BVAND(final Node... operands) {
+    return new NodeOperation(StandardOperation.BVAND, operands);
+  }
+
+  public static NodeOperation BVAND(final List<? extends Node> operands) {
+    return new NodeOperation(StandardOperation.BVAND, operands);
+  }
+
+  public static NodeOperation BVNOT(final Node operand) {
+    return new NodeOperation(StandardOperation.BVNOT, operand);
+  }
+
   public static NodeOperation STORE(final Node array, final Node key, final Node value) {
     return new NodeOperation(StandardOperation.STORE, array, key, value);
   }
@@ -334,10 +370,10 @@ public final class Nodes {
   BVZEROEXT
   BVSIGNEXT
   BVEXTRACT +
-  BVOR
-  BVXOR
-  BVAND
-  BVNOT
+  BVOR +
+  BVXOR +
+  BVAND +
+  BVNOT +
   BVNAND
   BVNOR
   BVXNOR
