@@ -251,6 +251,22 @@ public final class Nodes {
     return BVROR(NodeValue.newInteger(amount), source);
   }
 
+  public static NodeOperation BVZEROEXT(final NodeValue deltaSize, final Node source) {
+    return new NodeOperation(StandardOperation.BVZEROEXT, deltaSize, source);
+  }
+
+  public static NodeOperation BVZEROEXT(final int deltaSize, final Node source) {
+    return BVZEROEXT(NodeValue.newInteger(deltaSize), source);
+  }
+
+  public static NodeOperation BVSIGNEXT(final NodeValue deltaSize, final Node source) {
+    return new NodeOperation(StandardOperation.BVSIGNEXT, deltaSize, source);
+  }
+
+  public static NodeOperation BVSIGNEXT(final int deltaSize, final Node source) {
+    return BVSIGNEXT(NodeValue.newInteger(deltaSize), source);
+  }
+
   public static NodeOperation BVEXTRACT(
       final Node source,
       final NodeValue low,
@@ -427,8 +443,8 @@ public final class Nodes {
   BVREPEAT
   BVROL +
   BVROR +
-  BVZEROEXT
-  BVSIGNEXT
+  BVZEROEXT +
+  BVSIGNEXT +
   BVEXTRACT +
   BVOR +
   BVXOR +
