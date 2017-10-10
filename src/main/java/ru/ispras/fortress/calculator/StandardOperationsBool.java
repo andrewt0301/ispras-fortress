@@ -1,11 +1,11 @@
 /*
  * Copyright 2014-2015 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -25,13 +25,13 @@ import ru.ispras.fortress.data.types.bitvector.BitVector;
 import ru.ispras.fortress.expression.StandardOperation;
 
 /**
- * The StandardOperationsBool enumeration holds a collection of operation objects that are
+ * The {@link StandardOperationsBool} enumeration holds a collection of operation objects that are
  * responsible for performing standard operations (StandardOperation) on data objects that hold
- * booleans (DataTypeId.LOGIC_BOOLEAN).
- * 
+ * booleans {@link DataTypeId#LOGIC_BOOLEAN}.
+ *
  * <p>Implementation details and conventions common for all operation groups implemented
  * as enumerations:
- * 
+ *
  * <ol><li>The enumeration implements the Operation interface parameterized with
  * the StandardOperation type.
  * <li>Each operation is represented by an element of the enumeration that provides implementation
@@ -42,7 +42,7 @@ import ru.ispras.fortress.expression.StandardOperation;
  * number.
  * <li>The enumeration provides the "dataTypeId" static method that returns the identifier of the
  * data type for which the enumeration provides operations.</ol>
- * 
+ *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 enum StandardOperationsBool implements Operation<StandardOperation> {
@@ -98,7 +98,7 @@ enum StandardOperationsBool implements Operation<StandardOperation> {
       return Data.newBoolean(!value1 || value2);
     }
   },
-  
+
   ITE(StandardOperation.ITE, ArityRange.TERNARY) {
     @Override
     public Data calculate(final Data... operands) {
@@ -114,7 +114,7 @@ enum StandardOperationsBool implements Operation<StandardOperation> {
              operands[1].getType().equals(operands[2].getType());
     }
   },
-  
+
   BOOL2BV(StandardOperation.BOOL2BV, ArityRange.UNARY) {
     @Override
     public Data calculate(final Data... operands) {
@@ -128,7 +128,7 @@ enum StandardOperationsBool implements Operation<StandardOperation> {
   private static final Map<StandardOperation, Operation<StandardOperation>> OPERATIONS;
   static {
     final Map<StandardOperation, Operation<StandardOperation>> map =
-       new EnumMap<>(StandardOperation.class);
+        new EnumMap<>(StandardOperation.class);
 
     for (final Operation<StandardOperation> value : values()) {
       map.put(value.getOperationId(), value);
