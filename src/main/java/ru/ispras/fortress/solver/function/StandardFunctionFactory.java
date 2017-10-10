@@ -1,11 +1,11 @@
 /*
- * Copyright 2013-2014 ISP RAS (http://www.ispras.ru)
- * 
+ * Copyright 2013-2017 ISP RAS (http://www.ispras.ru)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -13,8 +13,6 @@
  */
 
 package ru.ispras.fortress.solver.function;
-
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
@@ -24,17 +22,18 @@ import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
+import ru.ispras.fortress.expression.Nodes;
 import ru.ispras.fortress.expression.StandardOperation;
+import ru.ispras.fortress.util.InvariantChecks;
 
 /**
- * The StandardFunctionFactory class provides factory methods for creating functions that are
- * responsible for performing special custom operations (first of all, some specific operations from
- * HDL).
- * 
- * @author Sergey Smolov (ssedai@ispras.ru)
+ * The {@link StandardFunctionFactory} class provides factory methods for creating functions
+ * that are responsible for performing special custom operations (first of all, some specific
+ * operations from HDL).
+ *
+ * @author <a href="mailto:ssedai@ispras.ru">Sergey Smolov</a>
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public final class StandardFunctionFactory {
   private StandardFunctionFactory() {}
 
@@ -43,8 +42,9 @@ public final class StandardFunctionFactory {
   private static final String RIGHT_NAME = "y";
 
   public static Function makeAbs(final Enum<?> id, final DataType operandType) {
-    checkNotNull(id);
-    checkNotNull(operandType);
+    InvariantChecks.checkNotNull(id);
+    InvariantChecks.checkNotNull(operandType);
+
     checkLogicNumeric(OPERAND_NAME, operandType);
 
     final DataType returnType = operandType;
@@ -66,12 +66,11 @@ public final class StandardFunctionFactory {
         assert false;
     }
 
-    final NodeOperation body = new NodeOperation(
-      StandardOperation.ITE,
-      new NodeOperation(StandardOperation.GREATEREQ, operandNode, new NodeValue(zeroData)),
-      operandNode,
-      new NodeOperation(StandardOperation.MINUS, operandNode)
-    );
+    final NodeOperation body = Nodes.ITE(
+        Nodes.GREATEREQ(operandNode, new NodeValue(zeroData)),
+        operandNode,
+        Nodes.MINUS(operandNode)
+        );
 
     return new Function(id, returnType, body, operand);
   }
@@ -80,9 +79,9 @@ public final class StandardFunctionFactory {
       final Enum<?> id,
       final DataType leftType,
       final DataType rightType) {
-    checkNotNull(id);
-    checkNotNull(leftType);
-    checkNotNull(rightType);
+    InvariantChecks.checkNotNull(id);
+    InvariantChecks.checkNotNull(leftType);
+    InvariantChecks.checkNotNull(rightType);
 
     checkEqualTypes(leftType, rightType);
     checkLogicNumeric(LEFT_NAME, leftType);
@@ -96,12 +95,11 @@ public final class StandardFunctionFactory {
     final Node leftNode = new NodeVariable(left);
     final Node rightNode = new NodeVariable(right);
 
-    final NodeOperation body = new NodeOperation(
-      StandardOperation.ITE,
-      new NodeOperation(StandardOperation.GREATEREQ, leftNode, rightNode),
-      rightNode,
-      leftNode
-    );
+    final NodeOperation body = Nodes.ITE(
+        Nodes.GREATEREQ(leftNode, rightNode),
+        rightNode,
+        leftNode
+        );
 
     return new Function(id, returnType, body, left, right);
   }
@@ -110,9 +108,9 @@ public final class StandardFunctionFactory {
       final Enum<?> id,
       final DataType leftType,
       final DataType rightType) {
-    checkNotNull(id);
-    checkNotNull(leftType);
-    checkNotNull(rightType);
+    InvariantChecks.checkNotNull(id);
+    InvariantChecks.checkNotNull(leftType);
+    InvariantChecks.checkNotNull(rightType);
 
     checkEqualTypes(leftType, rightType);
     checkLogicNumeric(LEFT_NAME, leftType);
@@ -126,71 +124,66 @@ public final class StandardFunctionFactory {
     final Node leftNode = new NodeVariable(left);
     final Node rightNode = new NodeVariable(right);
 
-    final NodeOperation body = new NodeOperation(
-      StandardOperation.ITE,
-      new NodeOperation(StandardOperation.GREATEREQ, leftNode, rightNode),
-      leftNode,
-      rightNode
-    );
+    final NodeOperation body = Nodes.ITE(
+        Nodes.GREATEREQ(leftNode, rightNode),
+        leftNode,
+        rightNode
+        );
 
     return new Function(id, returnType, body, left, right);
   }
 
   public static Function makeBVANDR(final Enum<?> id, final DataType operandType) {
-    checkNotNull(id);
-    checkNotNull(operandType);
+    InvariantChecks.checkNotNull(id);
+    InvariantChecks.checkNotNull(operandType);
+
     checkBitVector(OPERAND_NAME, operandType);
 
     final Variable operand = new Variable(OPERAND_NAME, operandType);
-
-    final NodeOperation body =
-      new NodeOperation(StandardOperation.ITE, makeBVEqualsAllOnes(operand), BIT_TRUE, BIT_FALSE);
+    final NodeOperation body = Nodes.ITE(makeBVEqualsAllOnes(operand), BIT_TRUE, BIT_FALSE);
 
     return new Function(id, BIT_BOOL, body, operand);
   }
 
   public static Function makeBVNANDR(final Enum<?> id, final DataType operandType) {
-    checkNotNull(id);
-    checkNotNull(operandType);
+    InvariantChecks.checkNotNull(id);
+    InvariantChecks.checkNotNull(operandType);
+
     checkBitVector(OPERAND_NAME, operandType);
 
     final Variable operand = new Variable(OPERAND_NAME, operandType);
-
-    final NodeOperation body =
-      new NodeOperation(StandardOperation.ITE, makeBVEqualsAllOnes(operand), BIT_FALSE, BIT_TRUE);
+    final NodeOperation body = Nodes.ITE(makeBVEqualsAllOnes(operand), BIT_FALSE, BIT_TRUE);
 
     return new Function(id, BIT_BOOL, body, operand);
   }
 
   public static Function makeBVORR(final Enum<?> id, final DataType operandType) {
-    checkNotNull(id);
-    checkNotNull(operandType);
+    InvariantChecks.checkNotNull(id);
+    InvariantChecks.checkNotNull(operandType);
+
     checkBitVector(OPERAND_NAME, operandType);
 
     final Variable operand = new Variable(OPERAND_NAME, operandType);
-
-    final NodeOperation body =
-      new NodeOperation(StandardOperation.ITE, makeBVEqualsAllZeros(operand), BIT_FALSE, BIT_TRUE);
+    final NodeOperation body = Nodes.ITE(makeBVEqualsAllZeros(operand), BIT_FALSE, BIT_TRUE);
 
     return new Function(id, BIT_BOOL, body, operand);
   }
 
   public static Function makeBVNORR(final Enum<?> id, final DataType operandType) {
-    checkNotNull(id);
-    checkNotNull(operandType);
+    InvariantChecks.checkNotNull(id);
+    InvariantChecks.checkNotNull(operandType);
+
     checkBitVector(OPERAND_NAME, operandType);
 
     final Variable operand = new Variable(OPERAND_NAME, operandType);
-
-    final NodeOperation body =
-      new NodeOperation(StandardOperation.ITE, makeBVEqualsAllZeros(operand), BIT_TRUE, BIT_FALSE);
+    final NodeOperation body = Nodes.ITE(makeBVEqualsAllZeros(operand), BIT_TRUE, BIT_FALSE);
 
     return new Function(id, BIT_BOOL, body, operand);
   }
 
   public static Function makeBVXORR(final Enum<?> id, final DataType operandType) {
-    checkNotNull(id);
-    checkNotNull(operandType);
+    InvariantChecks.checkNotNull(id);
+    InvariantChecks.checkNotNull(operandType);
     checkBitVector(OPERAND_NAME, operandType);
 
     final Variable operand = new Variable(OPERAND_NAME, operandType);
@@ -202,16 +195,14 @@ public final class StandardFunctionFactory {
   }
 
   public static Function makeBVXNORR(final Enum<?> id, final DataType operandType) {
-    checkNotNull(id);
-    checkNotNull(operandType);
+    InvariantChecks.checkNotNull(id);
+    InvariantChecks.checkNotNull(operandType);
     checkBitVector(OPERAND_NAME, operandType);
 
     final Variable operand = new Variable(OPERAND_NAME, operandType);
 
     final int size = operand.getType().getSize();
-
-    final Node body = new NodeOperation(
-      StandardOperation.BVNOT, makeBVRecursizeXOR(new NodeVariable(operand), size, size));
+    final Node body = Nodes.BVNOT(makeBVRecursizeXOR(new NodeVariable(operand), size, size));
 
     return new Function(id, BIT_BOOL, body, operand);
   }
@@ -283,15 +274,11 @@ public final class StandardFunctionFactory {
     final NodeValue TWO_ZEROS = new NodeValue(DataType.BIT_VECTOR(size).valueOf("00", 2));
     final NodeValue TWO_ONES = new NodeValue(DataType.BIT_VECTOR(size).valueOf("11", 2));
 
-    return new NodeOperation(
-      StandardOperation.ITE,
-      new NodeOperation(StandardOperation.OR,
-        new NodeOperation(StandardOperation.EQ, source, TWO_ZEROS),
-        new NodeOperation(StandardOperation.EQ, source, TWO_ONES)
-      ),
-      BIT_FALSE,
-      BIT_TRUE
-    );
+    return Nodes.ITE(
+        Nodes.OR(Nodes.EQ(source, TWO_ZEROS), Nodes.EQ(source, TWO_ONES)),
+        BIT_FALSE,
+        BIT_TRUE
+        );
   }
 
   private static Node makeBVEqualsAllZeros(final Variable operand) {
@@ -300,7 +287,7 @@ public final class StandardFunctionFactory {
     final NodeVariable operandNode = new NodeVariable(operand);
     final NodeValue zeroNode = new NodeValue(Data.newBitVector(0, operandType.getSize()));
 
-    return new NodeOperation(StandardOperation.EQ, operandNode, zeroNode);
+    return Nodes.EQ(operandNode, zeroNode);
   }
 
   private static Node makeBVEqualsAllOnes(final Variable operand) {
@@ -309,11 +296,7 @@ public final class StandardFunctionFactory {
     final NodeVariable operandNode = new NodeVariable(operand);
     final NodeValue zeroNode = new NodeValue(Data.newBitVector(0, operandType.getSize()));
 
-    return new NodeOperation(
-      StandardOperation.EQ,
-      operandNode,
-      new NodeOperation(StandardOperation.BVNOT, zeroNode)
-    );
+    return Nodes.EQ(operandNode, Nodes.BVNOT(zeroNode));
   }
 
   private static final int BIT_BOOL_SIZE = 1;
@@ -322,8 +305,8 @@ public final class StandardFunctionFactory {
   private static final NodeValue BIT_FALSE = new NodeValue(Data.newBitVector(0, BIT_BOOL_SIZE));
 
   private static final String ERR_UNEQUAL_ARG_TYPES =
-    "Arguments have unequal types: %s and %s.";
+      "Arguments have unequal types: %s and %s.";
 
   private static final String ERR_UNSUPPORTED_ARG_TYPE =
-    "Argument %s (%s) has an unsupported type. Expected types: %s.";
+      "Argument %s (%s) has an unsupported type. Expected types: %s.";
 }
