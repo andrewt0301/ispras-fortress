@@ -40,6 +40,7 @@ import ru.ispras.fortress.expression.ExprTreeWalker;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
+import ru.ispras.fortress.expression.Nodes;
 import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.solver.Environment;
 import ru.ispras.fortress.solver.SolverBase;
@@ -53,13 +54,12 @@ import ru.ispras.fortress.solver.function.StandardFunction;
 import ru.ispras.fortress.util.Pair;
 
 /**
- * The SmtTextSolver class implements logic of a constraint solver that uses the Z3 tool by Microsoft
- * Research. The constraint is translated to STM-LIB code that is then saved to a file and processed
- * to the tool.
+ * The {@link SmtTextSolver} class implements logic of a constraint solver that uses external
+ * SMT solvers. The constraint is translated to STM-LIB code that is then saved to a file and
+ * processed by the external solver.
  *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public abstract class SmtTextSolver extends SolverBase {
   private static final String TEMP_FILE = "ispras_z3_temp";
   private static final String TEMP_FILE_SUFFIX = ".smt2";
@@ -532,21 +532,19 @@ public abstract class SmtTextSolver extends SolverBase {
 
     final Variable xBit = new Variable("x", bit);
     final NodeOperation bv2bool =
-        new NodeOperation(StandardOperation.EQ,
-                          new NodeVariable(xBit),
-                          NodeValue.newBitVector(BitVector.TRUE));
+        Nodes.EQ(new NodeVariable(xBit), NodeValue.newBitVector(BitVector.TRUE));
 
     functions.add(new Function(StandardOperation.BV2BOOL, DataType.BOOLEAN, bv2bool, xBit));
 
     final Variable xBool = new Variable("x", DataType.BOOLEAN);
     final NodeOperation bool2bv =
-        new NodeOperation(StandardOperation.ITE,
-                          new NodeVariable(xBool),
-                          NodeValue.newBitVector(BitVector.TRUE),
-                          NodeValue.newBitVector(BitVector.FALSE));
+        Nodes.ITE(
+            new NodeVariable(xBool),
+            NodeValue.newBitVector(BitVector.TRUE),
+            NodeValue.newBitVector(BitVector.FALSE)
+            );
 
     functions.add(new Function(StandardOperation.BOOL2BV, bit, bool2bv, xBool));
-
     return functions;
   }
 }
