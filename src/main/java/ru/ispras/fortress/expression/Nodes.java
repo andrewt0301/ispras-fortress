@@ -235,38 +235,6 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.BVCONCAT, operands);
   }
 
-  public static NodeOperation BVULE(final Node lhs, final Node rhs) {
-    return new NodeOperation(StandardOperation.BVULE, lhs, rhs);
-  }
-
-  public static NodeOperation BVULT(final Node lhs, final Node rhs) {
-    return new NodeOperation(StandardOperation.BVULT, lhs, rhs);
-  }
-
-  public static NodeOperation BVUGE(final Node lhs, final Node rhs) {
-    return new NodeOperation(StandardOperation.BVUGE, lhs, rhs);
-  }
-
-  public static NodeOperation BVUGT(final Node lhs, final Node rhs) {
-    return new NodeOperation(StandardOperation.BVUGT, lhs, rhs);
-  }
-
-  public static NodeOperation BVSLE(final Node lhs, final Node rhs) {
-    return new NodeOperation(StandardOperation.BVSLE, lhs, rhs);
-  }
-
-  public static NodeOperation BVSLT(final Node lhs, final Node rhs) {
-    return new NodeOperation(StandardOperation.BVSLT, lhs, rhs);
-  }
-
-  public static NodeOperation BVSGE(final Node lhs, final Node rhs) {
-    return new NodeOperation(StandardOperation.BVSGE, lhs, rhs);
-  }
-
-  public static NodeOperation BVSGT(final Node lhs, final Node rhs) {
-    return new NodeOperation(StandardOperation.BVSGT, lhs, rhs);
-  }
-
   public static NodeOperation BVEXTRACT(
       final Node source,
       final NodeValue low,
@@ -322,12 +290,80 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.BVNOT, operand);
   }
 
+  public static NodeOperation BVNAND(final Node first, final Node second) {
+    return new NodeOperation(StandardOperation.BVNAND, first, second);
+  }
+
+  public static NodeOperation BVNOR(final Node first, final Node second) {
+    return new NodeOperation(StandardOperation.BVNOR, first, second);
+  }
+
+  public static NodeOperation BVXNOR(final Node first, final Node second) {
+    return new NodeOperation(StandardOperation.BVXNOR, first, second);
+  }
+
+  public static NodeOperation BVULE(final Node lhs, final Node rhs) {
+    return new NodeOperation(StandardOperation.BVULE, lhs, rhs);
+  }
+
+  public static NodeOperation BVULT(final Node lhs, final Node rhs) {
+    return new NodeOperation(StandardOperation.BVULT, lhs, rhs);
+  }
+
+  public static NodeOperation BVUGE(final Node lhs, final Node rhs) {
+    return new NodeOperation(StandardOperation.BVUGE, lhs, rhs);
+  }
+
+  public static NodeOperation BVUGT(final Node lhs, final Node rhs) {
+    return new NodeOperation(StandardOperation.BVUGT, lhs, rhs);
+  }
+
+  public static NodeOperation BVSLE(final Node lhs, final Node rhs) {
+    return new NodeOperation(StandardOperation.BVSLE, lhs, rhs);
+  }
+
+  public static NodeOperation BVSLT(final Node lhs, final Node rhs) {
+    return new NodeOperation(StandardOperation.BVSLT, lhs, rhs);
+  }
+
+  public static NodeOperation BVSGE(final Node lhs, final Node rhs) {
+    return new NodeOperation(StandardOperation.BVSGE, lhs, rhs);
+  }
+
+  public static NodeOperation BVSGT(final Node lhs, final Node rhs) {
+    return new NodeOperation(StandardOperation.BVSGT, lhs, rhs);
+  }
+
   public static NodeOperation STORE(final Node array, final Node key, final Node value) {
     return new NodeOperation(StandardOperation.STORE, array, key, value);
   }
 
   public static NodeOperation SELECT(final Node array, final Node key) {
     return new NodeOperation(StandardOperation.SELECT, array, key);
+  }
+
+  public static NodeOperation BVANDR(final Node first, final Node second) {
+    return new NodeOperation(StandardOperation.BVANDR, first, second);
+  }
+
+  public static NodeOperation BVNANDR(final Node first, final Node second) {
+    return new NodeOperation(StandardOperation.BVNANDR, first, second);
+  }
+
+  public static NodeOperation BVORR(final Node first, final Node second) {
+    return new NodeOperation(StandardOperation.BVORR, first, second);
+  }
+
+  public static NodeOperation BVNORR(final Node first, final Node second) {
+    return new NodeOperation(StandardOperation.BVNORR, first, second);
+  }
+
+  public static NodeOperation BVXORR(final Node first, final Node second) {
+    return new NodeOperation(StandardOperation.BVXORR, first, second);
+  }
+
+  public static NodeOperation BVXNORR(final Node first, final Node second) {
+    return new NodeOperation(StandardOperation.BVXNORR, first, second);
   }
 
   /* TODO:
@@ -382,9 +418,9 @@ public final class Nodes {
   BVXOR +
   BVAND +
   BVNOT +
-  BVNAND
-  BVNOR
-  BVXNOR
+  BVNAND +
+  BVNOR +
+  BVXNOR +
   BVULE +
   BVULT +
   BVUGE +
@@ -393,12 +429,12 @@ public final class Nodes {
   BVSLT +
   BVSGE +
   BVSGT +
-  BVANDR
-  BVNANDR
-  BVORR
-  BVNORR
-  BVXORR
-  BVXNORR
+  BVANDR +
+  BVNANDR +
+  BVORR +
+  BVNORR +
+  BVXORR +
+  BVXNORR +
   BV2BOOL
   BOOL2BV
   BV2INT
