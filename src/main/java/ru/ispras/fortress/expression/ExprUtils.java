@@ -329,7 +329,7 @@ public final class ExprUtils {
       return exprs[0];
     }
 
-    return new NodeOperation(StandardOperation.AND, exprs);
+    return Nodes.AND(exprs);
   }
 
   /**
@@ -350,7 +350,7 @@ public final class ExprUtils {
       return exprs[0];
     }
 
-    return new NodeOperation(StandardOperation.OR, exprs);
+    return Nodes.OR(exprs);
   }
 
   /**
@@ -363,9 +363,8 @@ public final class ExprUtils {
    * @throws IllegalArgumentException if any argument in the array is {@code null}; if no arguments
    *         are provided; if an argument is not a logical expression.
    */
-
   public static Node getNegation(final Node... exprs) {
-    return new NodeOperation(StandardOperation.NOT, getConjunction(exprs));
+    return Nodes.NOT(getConjunction(exprs));
   }
 
   /**
@@ -379,7 +378,7 @@ public final class ExprUtils {
    *         provided; if an argument is not a logical expression.
    */
   public static Node getComplement(final Node... exprs) {
-    return new NodeOperation(StandardOperation.NOT, getDisjunction(exprs));
+    return Nodes.NOT(getDisjunction(exprs));
   }
 
   /**
