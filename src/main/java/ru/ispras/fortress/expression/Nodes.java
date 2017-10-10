@@ -251,6 +251,30 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.BVSGT, lhs, rhs);
   }
 
+  public static NodeOperation BVEXTRACT(final Node source, final Node low, final Node high) {
+    return new NodeOperation(StandardOperation.BVEXTRACT, high, low, source);
+  }
+
+  public static NodeOperation BVEXTRACT(final Node source, final Node bit) {
+    return BVEXTRACT(source, bit, bit);
+  }
+
+  public static NodeOperation BVEXTRACT(final Node source, final int low, final int high) {
+    return BVEXTRACT(source, NodeValue.newInteger(low), NodeValue.newInteger(high));
+  }
+
+  public static NodeOperation BVEXTRACT(final Node source, final int bit) {
+    return BVEXTRACT(source, NodeValue.newInteger(bit));
+  }
+
+  public static NodeOperation BVEXTRACT(final Node source, final Node low, final int high) {
+    return BVEXTRACT(source, low, NodeValue.newInteger(high));
+  }
+
+  public static NodeOperation BVEXTRACT(final Node source, final int low, final Node high) {
+    return BVEXTRACT(source, NodeValue.newInteger(low), high);
+  }
+
   public static NodeOperation STORE(final Node array, final Node key, final Node value) {
     return new NodeOperation(StandardOperation.STORE, array, key, value);
   }
@@ -306,7 +330,7 @@ public final class Nodes {
   BVROR
   BVZEROEXT
   BVSIGNEXT
-  BVEXTRACT
+  BVEXTRACT +
   BVOR
   BVXOR
   BVAND
