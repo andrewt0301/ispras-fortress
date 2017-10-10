@@ -268,30 +268,30 @@ public final class Nodes {
   }
 
   public static NodeOperation BVEXTRACT(
-      final Node source,
+      final NodeValue high,
       final NodeValue low,
-      final NodeValue high) {
+      final Node source) {
     return new NodeOperation(StandardOperation.BVEXTRACT, high, low, source);
   }
 
-  public static NodeOperation BVEXTRACT(final Node source, final NodeValue bit) {
-    return BVEXTRACT(source, bit, bit);
+  public static NodeOperation BVEXTRACT(final NodeValue bit, final Node source) {
+    return BVEXTRACT(bit, bit, source);
   }
 
-  public static NodeOperation BVEXTRACT(final Node source, final int low, final int high) {
-    return BVEXTRACT(source, NodeValue.newInteger(low), NodeValue.newInteger(high));
+  public static NodeOperation BVEXTRACT(final int high, final int low, final Node source) {
+    return BVEXTRACT(NodeValue.newInteger(high), NodeValue.newInteger(low), source);
   }
 
-  public static NodeOperation BVEXTRACT(final Node source, final int bit) {
-    return BVEXTRACT(source, NodeValue.newInteger(bit));
+  public static NodeOperation BVEXTRACT(final int bit, final Node source) {
+    return BVEXTRACT(NodeValue.newInteger(bit), source);
   }
 
-  public static NodeOperation BVEXTRACT(final Node source, final NodeValue low, final int high) {
-    return BVEXTRACT(source, low, NodeValue.newInteger(high));
+  public static NodeOperation BVEXTRACT(final int high, final NodeValue low, final Node source) {
+    return BVEXTRACT(NodeValue.newInteger(high), low, source);
   }
 
-  public static NodeOperation BVEXTRACT(final Node source, final int low, final NodeValue high) {
-    return BVEXTRACT(source, NodeValue.newInteger(low), high);
+  public static NodeOperation BVEXTRACT(final NodeValue high, final int low, final Node source) {
+    return BVEXTRACT(high, NodeValue.newInteger(low), source);
   }
 
   public static NodeOperation BVOR(final Node... operands) {

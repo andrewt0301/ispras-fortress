@@ -88,7 +88,7 @@ public final class ExprUtils {
 
   /**
    * Checks whether all of the specified expressions are of the specified
-   * kind (see {@link Node.Kind}).
+   * kind (see {@link Node#Kind}).
    *
    * @param kind Expected expression kind.
    * @param exprs Expressions to be checked.
@@ -134,8 +134,8 @@ public final class ExprUtils {
    * @return {@code true} if the expression is represented by one of the specified operations
    *         or {@code false} otherwise.
    *
-   * @throws IllegalArgumentException if any of the parameters is {@code null}; if the list of
-   *         operation identifiers is empty.
+   * @throws IllegalArgumentException if any of the parameters is {@code null};
+   *         if the list of operation identifiers is empty.
    */
   public static <T extends Enum<? extends T>> boolean isOperation(final Node expr, final Collection<T> opIds) {
     InvariantChecks.checkNotNull(expr);
