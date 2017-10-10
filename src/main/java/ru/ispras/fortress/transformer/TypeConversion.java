@@ -23,6 +23,7 @@ import ru.ispras.fortress.expression.ExprUtils;
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
+import ru.ispras.fortress.expression.Nodes;
 import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.util.InvariantChecks;
 
@@ -175,14 +176,9 @@ public final class TypeConversion {
             return bv2bool(node);
           }
         } else if (sizeOf(srcType) < sizeOf(type)) {
-          return new NodeOperation(StandardOperation.BVZEROEXT,
-                                   NodeValue.newInteger(sizeOf(type) - sizeOf(srcType)),
-                                   node);
+          return Nodes.BVZEROEXT(sizeOf(type) - sizeOf(srcType), node);
         } else {
-          return new NodeOperation(StandardOperation.BVEXTRACT,
-                                   NodeValue.newInteger(type.getSize()),
-                                   NodeValue.newInteger(0),
-                                   node);
+          return Nodes.BVEXTRACT(type.getSize(), 0, node);
         }
     }
     return null;
@@ -308,29 +304,21 @@ public final class TypeConversion {
   }
 
   private static NodeOperation bv2bool(final Node node) {
-    return new NodeOperation(StandardOperation.NOTEQ,
-                             node,
-                             newBitVector(BigInteger.ZERO, node.getDataType().getSize()));
+    return Nodes.NOTEQ(node, newBitVector(BigInteger.ZERO, node.getDataType().getSize()));
   }
 
   private static NodeOperation bool2bv(final Node node, final int size) {
-    return new NodeOperation(StandardOperation.ITE,
-                             node,
-                             newBitVector(BigInteger.ONE, size),
-                             newBitVector(BigInteger.ZERO, size));
+    return Nodes.ITE(node, newBitVector(BigInteger.ONE, size),
+                           newBitVector(BigInteger.ZERO, size));
   }
 
   private static NodeOperation int2bool(final Node node) {
-    return new NodeOperation(StandardOperation.NOTEQ,
-                             node,
-                             NodeValue.newInteger(BigInteger.ZERO));
+    return Nodes.NOTEQ(node, NodeValue.newInteger(BigInteger.ZERO));
   }
 
   private static NodeOperation bool2int(final Node node) {
-    return new NodeOperation(StandardOperation.ITE,
-                             node,
-                             NodeValue.newInteger(BigInteger.ONE),
-                             NodeValue.newInteger(BigInteger.ZERO));
+    return Nodes.ITE(node, NodeValue.newInteger(BigInteger.ONE),
+                           NodeValue.newInteger(BigInteger.ZERO));
   }
 
   private static NodeValue newBitVector(final BigInteger value, final int size) {
