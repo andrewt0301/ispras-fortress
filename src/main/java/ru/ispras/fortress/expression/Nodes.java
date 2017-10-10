@@ -366,14 +366,6 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.BVSGT, lhs, rhs);
   }
 
-  public static NodeOperation STORE(final Node array, final Node key, final Node value) {
-    return new NodeOperation(StandardOperation.STORE, array, key, value);
-  }
-
-  public static NodeOperation SELECT(final Node array, final Node key) {
-    return new NodeOperation(StandardOperation.SELECT, array, key);
-  }
-
   public static NodeOperation BVANDR(final Node first, final Node second) {
     return new NodeOperation(StandardOperation.BVANDR, first, second);
   }
@@ -398,80 +390,31 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.BVXNORR, first, second);
   }
 
-  /* TODO:
+  public static NodeOperation BV2BOOL(final Node operand) {
+    return new NodeOperation(StandardOperation.BV2BOOL, operand);
+  }
 
-  EQ +
-  NOTEQ +
-  EQCASE +
-  NOTEQCASE +
-  AND +
-  OR +
-  NOT +
-  XOR +
-  IMPL +
-  ITE +
-  MINUS +
-  PLUS +
-  ADD +
-  SUB +
-  DIV +
-  MUL +
-  REM +
-  MOD +
-  LESS +
-  LESSEQ +
-  GREATER +
-  GREATEREQ +
-  POWER +
-  ABS +
-  MIN +
-  MAX +
-  BVADD +
-  BVSUB +
-  BVNEG +
-  BVMUL +
-  BVUDIV +
-  BVSDIV +
-  BVUREM +
-  BVSREM +
-  BVSMOD +
-  BVLSHL +
-  BVASHL +
-  BVLSHR +
-  BVASHR +
-  BVCONCAT +
-  BVREPEAT
-  BVROL +
-  BVROR +
-  BVZEROEXT +
-  BVSIGNEXT +
-  BVEXTRACT +
-  BVOR +
-  BVXOR +
-  BVAND +
-  BVNOT +
-  BVNAND +
-  BVNOR +
-  BVXNOR +
-  BVULE +
-  BVULT +
-  BVUGE +
-  BVUGT +
-  BVSLE +
-  BVSLT +
-  BVSGE +
-  BVSGT +
-  BVANDR +
-  BVNANDR +
-  BVORR +
-  BVNORR +
-  BVXORR +
-  BVXNORR +
-  BV2BOOL
-  BOOL2BV
-  BV2INT
-  INT2BV
-  SELECT +
-  STORE +
-  */
+  public static NodeOperation BOOL2BV(final Node operand) {
+    return new NodeOperation(StandardOperation.BOOL2BV, operand);
+  }
+
+  public static NodeOperation BV2INT(final Node operand) {
+    return new NodeOperation(StandardOperation.BV2INT, operand);
+  }
+
+  public static NodeOperation INT2BV(final NodeValue size, final Node source) {
+    return new NodeOperation(StandardOperation.INT2BV, size, source);
+  }
+
+  public static NodeOperation INT2BV(final int size, final Node source) {
+    return INT2BV(NodeValue.newInteger(size), source);
+  }
+
+  public static NodeOperation STORE(final Node array, final Node key, final Node value) {
+    return new NodeOperation(StandardOperation.STORE, array, key, value);
+  }
+
+  public static NodeOperation SELECT(final Node array, final Node key) {
+    return new NodeOperation(StandardOperation.SELECT, array, key);
+  }
 }
