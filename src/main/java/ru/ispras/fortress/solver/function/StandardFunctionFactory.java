@@ -255,17 +255,15 @@ public final class StandardFunctionFactory {
     final int newPartSize = partSize / 2 + partSize % 2;
     final Node shiftLeftPart = new NodeValue(Data.newBitVector(newPartSize, size));
 
-    final Node maskForRightPart = new NodeOperation(
-      StandardOperation.BVLSHR,
-      new NodeOperation(StandardOperation.BVNOT, new NodeValue(Data.newBitVector(0, size))),
-      new NodeValue(Data.newBitVector(size - newPartSize, size))
-    );
+    final Node maskForRightPart = Nodes.BVLSHR(
+        Nodes.BVNOT(new NodeValue(Data.newBitVector(0, size))),
+        new NodeValue(Data.newBitVector(size - newPartSize, size))
+        );
 
-    final Node newSource = new NodeOperation(
-      StandardOperation.BVXOR,
-      new NodeOperation(StandardOperation.BVLSHR, source, shiftLeftPart),
-      new NodeOperation(StandardOperation.BVAND, source, maskForRightPart)
-    );
+    final Node newSource = Nodes.BVXOR(
+        Nodes.BVLSHR(source, shiftLeftPart),
+        Nodes.BVAND(source, maskForRightPart)
+        );
 
     return makeBVRecursizeXOR(newSource, size, newPartSize);
   }
