@@ -75,6 +75,10 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.IMPL, first, second);
   }
 
+  public static NodeOperation ITE(final Node condition, final Node first, final Node second) {
+    return new NodeOperation(StandardOperation.ITE, condition, first, second);
+  }
+
   public static NodeOperation MINUS(final Node operand) {
     return new NodeOperation(StandardOperation.MINUS, operand);
   }
@@ -337,7 +341,7 @@ public final class Nodes {
   NOT +
   XOR +
   IMPL +
-  ITE
+  ITE +
   MINUS +
   PLUS +
   ADD +
