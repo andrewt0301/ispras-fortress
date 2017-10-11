@@ -296,6 +296,10 @@ public final class Nodes {
     return BVEXTRACT(high, NodeValue.newInteger(low), source);
   }
 
+  public static NodeOperation BVEXTRACT(final Node source) {
+    return BVEXTRACT(source.getDataType().getSize() - 1, 0, source);
+  }
+
   public static NodeOperation BVEXTRACT(
       final NodeValue high,
       final NodeValue low,
@@ -328,6 +332,10 @@ public final class Nodes {
       final int low,
       final Variable source) {
     return BVEXTRACT(high, NodeValue.newInteger(low), new NodeVariable(source));
+  }
+
+  public static NodeOperation BVEXTRACT(final Variable source) {
+    return BVEXTRACT(new NodeVariable(source));
   }
 
   public static NodeOperation BVOR(final Node... operands) {
