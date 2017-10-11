@@ -14,6 +14,9 @@
 
 package ru.ispras.fortress.expression;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import ru.ispras.fortress.data.Variable;
@@ -229,12 +232,26 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.BVASHR, source, amount);
   }
 
+  // Operands: [HIGH, ... , LOW]
   public static NodeOperation BVCONCAT(final Node... operands) {
     return new NodeOperation(StandardOperation.BVCONCAT, operands);
   }
 
+  // Operands: [HIGH, ... , LOW]
   public static NodeOperation BVCONCAT(final List<? extends Node> operands) {
     return new NodeOperation(StandardOperation.BVCONCAT, operands);
+  }
+
+  // Operands: [LOW, ... , HIGH]
+  public static NodeOperation reverseBVCONCAT(final Node... operands) {
+    return reverseBVCONCAT(Arrays.asList(operands));
+  }
+
+  // Operands: [LOW, ... , HIGH]
+  public static NodeOperation reverseBVCONCAT(final List<? extends Node> operands) {
+    final List<Node> reversedOperands = new ArrayList<>(operands);
+    Collections.reverse(reversedOperands);
+    return BVCONCAT(reversedOperands);
   }
 
   public static NodeOperation BVROL(final NodeValue amount, final Node source) {

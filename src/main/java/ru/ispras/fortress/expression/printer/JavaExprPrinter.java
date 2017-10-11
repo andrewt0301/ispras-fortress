@@ -104,7 +104,7 @@ public final class JavaExprPrinter extends MapBasedPrinter {
         appendText(bigIntegerToString(value.getInteger()));
       } else if (value.isType(DataTypeId.LOGIC_STRING)) { 
         appendText("\"" + value.toString() + "\"");
-      }else {
+      } else {
         appendText(value.toString());
       }
 
