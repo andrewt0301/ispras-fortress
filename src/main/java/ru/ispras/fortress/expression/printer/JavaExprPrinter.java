@@ -23,6 +23,8 @@ import ru.ispras.fortress.data.types.bitvector.BitVector;
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
+import ru.ispras.fortress.expression.Nodes;
+import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.util.InvariantChecks;
 
 /**
@@ -30,7 +32,7 @@ import ru.ispras.fortress.util.InvariantChecks;
  *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-final class JavaExprPrinter extends MapBasedPrinter {
+public final class JavaExprPrinter extends MapBasedPrinter {
   private static final Map<DataTypeId, String> FACTORY_METHODS = new EnumMap<>(DataTypeId.class);
   static {
     FACTORY_METHODS.put(DataTypeId.BIT_VECTOR,    "newBitVector");
@@ -45,13 +47,21 @@ final class JavaExprPrinter extends MapBasedPrinter {
     setVisitor(new Visisor());
   }
 
-  private final class Visisor extends ExprTreeVisitor {
+  protected class Visisor extends ExprTreeVisitor {
     @Override
     public void onOperationBegin(final NodeOperation expr) {
-      appendText(String.format("new %s(", NodeOperation.class.getSimpleName()));
-      appendText(expr.getOperationId().getClass().getSimpleName());
-      appendText(".");
-      appendText(expr.getOperationId().name());
+      final Enum<?> op = expr.getOperationId();
+      if (op instanceof StandardOperation) {
+        appendText(Nodes.class.getSimpleName());
+        appendText(".");
+        appendText(expr.getOperationId().name());
+        appendText("(");
+      } else {
+        appendText(String.format("new %s(", NodeOperation.class.getSimpleName()));
+        appendText(expr.getOperationId().getClass().getSimpleName());
+        appendText(".");
+        appendText(expr.getOperationId().name());
+      }
     }
 
     @Override
@@ -66,7 +76,10 @@ final class JavaExprPrinter extends MapBasedPrinter {
 
     @Override
     public void onOperandBegin(NodeOperation expr, Node operand, int index) {
-      appendText(", ");
+      final Enum<?> op = expr.getOperationId();
+      if (0 != index || !(op instanceof StandardOperation)) {
+        appendText(", ");
+      }
     }
 
     @Override
