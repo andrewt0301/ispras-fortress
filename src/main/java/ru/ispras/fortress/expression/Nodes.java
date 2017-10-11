@@ -16,6 +16,8 @@ package ru.ispras.fortress.expression;
 
 import java.util.List;
 
+import ru.ispras.fortress.data.Variable;
+
 /**
  * The {@link Node} class provides utility methods to work with node objects.
  *
@@ -292,6 +294,40 @@ public final class Nodes {
 
   public static NodeOperation BVEXTRACT(final NodeValue high, final int low, final Node source) {
     return BVEXTRACT(high, NodeValue.newInteger(low), source);
+  }
+
+  public static NodeOperation BVEXTRACT(
+      final NodeValue high,
+      final NodeValue low,
+      final Variable source) {
+    return BVEXTRACT(high, low, new NodeVariable(source));
+  }
+
+  public static NodeOperation BVEXTRACT(final NodeValue bit, final Variable source) {
+    return BVEXTRACT(bit, bit, new NodeVariable(source));
+  }
+
+  public static NodeOperation BVEXTRACT(final int high, final int low, final Variable source) {
+    return BVEXTRACT(
+        NodeValue.newInteger(high), NodeValue.newInteger(low), new NodeVariable(source));
+  }
+
+  public static NodeOperation BVEXTRACT(final int bit, final Variable source) {
+    return BVEXTRACT(NodeValue.newInteger(bit), source);
+  }
+
+  public static NodeOperation BVEXTRACT(
+      final int high,
+      final NodeValue low,
+      final Variable source) {
+    return BVEXTRACT(NodeValue.newInteger(high), low, new NodeVariable(source));
+  }
+
+  public static NodeOperation BVEXTRACT(
+      final NodeValue high,
+      final int low,
+      final Variable source) {
+    return BVEXTRACT(high, NodeValue.newInteger(low), new NodeVariable(source));
   }
 
   public static NodeOperation BVOR(final Node... operands) {
