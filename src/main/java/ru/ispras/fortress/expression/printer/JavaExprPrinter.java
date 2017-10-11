@@ -118,19 +118,20 @@ public final class JavaExprPrinter extends MapBasedPrinter {
     final int bitSize = value.getBitSize();
     final String hexValue = value.toHexString();
 
-    final String text;
+    final StringBuilder sb = new StringBuilder();
+
+    sb.append(BitVector.class.getSimpleName());
+    sb.append(".valueOf(");
+
     if (value.getBitSize() <= Integer.SIZE) {
-      text = String.format("%s.valueOf(0x%s, %d)",
-          BitVector.class.getSimpleName(), hexValue, bitSize);
+      sb.append(String.format("0x%s, %d)", hexValue, bitSize));
     } else if (bitSize <= Long.SIZE) {
-      text = String.format("%s.valueOf(0x%sL, %d)",
-          BitVector.class.getSimpleName(), hexValue, bitSize);
+      sb.append(String.format("0x%sL, %d)", hexValue, bitSize));
     } else {
-      text = String.format("%s.valueOf(\"%s\", 16, %d)",
-          BitVector.class.getSimpleName(), hexValue, bitSize);
+      sb.append(String.format("\"%s\", 16, %d)", hexValue, bitSize));
     }
 
-    return text;
+    return sb.toString();
   }
 
   public static String bigIntegerToString(final BigInteger value) {
