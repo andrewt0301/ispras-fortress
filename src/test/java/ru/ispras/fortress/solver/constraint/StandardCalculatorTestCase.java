@@ -19,10 +19,9 @@ import java.util.List;
 
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
-import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
-import ru.ispras.fortress.expression.StandardOperation;
+import ru.ispras.fortress.expression.Nodes;
 import ru.ispras.fortress.transformer.ReduceOptions;
 import ru.ispras.fortress.transformer.Reducer;
 
@@ -79,28 +78,28 @@ public class StandardCalculatorTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(new NodeOperation(StandardOperation.EQ, a, Reducer.reduce(
-          ReduceOptions.NEW_INSTANCE, new NodeOperation(StandardOperation.ADD, new NodeValue(
+      formulas.add(Nodes.EQ(a, Reducer.reduce(
+          ReduceOptions.NEW_INSTANCE, Nodes.ADD(new NodeValue(
               intType.valueOf("2", 10)), new NodeValue(intType.valueOf("3", 10))))));
 
-      formulas.add(new NodeOperation(StandardOperation.EQ, b, Reducer.reduce(
-          ReduceOptions.NEW_INSTANCE, new NodeOperation(StandardOperation.SUB, new NodeValue(
+      formulas.add(Nodes.EQ(b, Reducer.reduce(
+          ReduceOptions.NEW_INSTANCE, Nodes.SUB(new NodeValue(
               intType.valueOf("10", 10)), new NodeValue(intType.valueOf("6", 10))))));
 
-      formulas.add(new NodeOperation(StandardOperation.EQ, c, Reducer.reduce(
-          ReduceOptions.NEW_INSTANCE, new NodeOperation(StandardOperation.MUL, new NodeValue(
+      formulas.add(Nodes.EQ(c, Reducer.reduce(
+          ReduceOptions.NEW_INSTANCE, Nodes.MUL(new NodeValue(
               intType.valueOf("2", 10)), new NodeValue(intType.valueOf("5", 10))))));
 
-      formulas.add(new NodeOperation(StandardOperation.EQ, d, Reducer.reduce(
-          ReduceOptions.NEW_INSTANCE, new NodeOperation(StandardOperation.DIV, new NodeValue(
+      formulas.add(Nodes.EQ(d, Reducer.reduce(
+          ReduceOptions.NEW_INSTANCE, Nodes.DIV(new NodeValue(
               intType.valueOf("12", 10)), new NodeValue(intType.valueOf("5", 10))))));
 
-      formulas.add(new NodeOperation(StandardOperation.EQ, e, Reducer.reduce(
-          ReduceOptions.NEW_INSTANCE, new NodeOperation(StandardOperation.REM, new NodeValue(
+      formulas.add(Nodes.EQ(e, Reducer.reduce(
+          ReduceOptions.NEW_INSTANCE, Nodes.REM(new NodeValue(
               intType.valueOf("10", 10)), new NodeValue(intType.valueOf("3", 10))))));
 
-      formulas.add(new NodeOperation(StandardOperation.EQ, f, Reducer.reduce(
-          ReduceOptions.NEW_INSTANCE, new NodeOperation(StandardOperation.MOD, new NodeValue(
+      formulas.add(Nodes.EQ(f, Reducer.reduce(
+          ReduceOptions.NEW_INSTANCE, Nodes.MOD(new NodeValue(
               intType.valueOf("10", 10)), new NodeValue(intType.valueOf("3", 10))))));
 
       return builder.build();
