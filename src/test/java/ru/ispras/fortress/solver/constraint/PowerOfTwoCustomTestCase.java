@@ -1,11 +1,11 @@
 /*
  * Copyright 2012-2014 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -36,7 +36,7 @@ import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
-import ru.ispras.fortress.expression.StandardOperation;
+import ru.ispras.fortress.expression.Nodes;
 import ru.ispras.fortress.solver.Solver;
 import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintBuilder;
@@ -52,12 +52,12 @@ public final class PowerOfTwoCustomTestCase extends GenericSolverTestBase {
   /**
    * The sample is similar to the PowerOfTwo sample, but the is_pow_of_two function is provided as a
    * custom text-based operation that extends the solver.
-   * 
+   *
    * The constraint as described in the SMT-LIB language:
-   * 
+   *
    * <pre>
    *     (declare-const x (_ BitVec 32))
-   * 
+   *
    *     (define-fun is_pow_of_two((a (_ BitVec 32))) Bool (= (bvand a (bvsub a (_ bv1 32))) (_ bv0 32)))
    *     (assert (is_pow_of_two x))
    * 
@@ -68,9 +68,9 @@ public final class PowerOfTwoCustomTestCase extends GenericSolverTestBase {
    *     (get-value (x))
    *     (exit)
    * </pre>
-   * 
+   *
    * Expected output:
-   * 
+   *
    * <pre>
    *     sat ((x #x00000080))
    * </pre>
@@ -89,14 +89,15 @@ public final class PowerOfTwoCustomTestCase extends GenericSolverTestBase {
   protected void registerCustomOperations(Solver solver) {
     final Variable param = new Variable("a", BIT_VECTOR_TYPE);
 
-    final Node body =
-        new NodeOperation(StandardOperation.EQ, new NodeOperation(StandardOperation.BVAND,
-            new NodeVariable(param), new NodeOperation(StandardOperation.BVSUB, new NodeVariable(
-                param), new NodeValue(BIT_VECTOR_TYPE.valueOf("1", 10)))), new NodeValue(
-            BIT_VECTOR_TYPE.valueOf("0", 10)));
+    final Node body = Nodes.EQ(
+        Nodes.BVAND(
+            new NodeVariable(param),
+            Nodes.BVSUB(new NodeVariable(param), new NodeValue(BIT_VECTOR_TYPE.valueOf("1", 10)))),
+        new NodeValue( BIT_VECTOR_TYPE.valueOf("0", 10))
+        );
 
-    solver.addCustomOperation(new Function(ECustomOperation.ISPOWOFTWO,
-        DataType.BOOLEAN, body, param));
+    solver.addCustomOperation(
+        new Function(ECustomOperation.ISPOWOFTWO, DataType.BOOLEAN, body, param));
   }
 
   @Override
@@ -112,10 +113,9 @@ public final class PowerOfTwoCustomTestCase extends GenericSolverTestBase {
         new CalculatorOperation<ECustomOperation>(
             ECustomOperation.ISPOWOFTWO, ArityRange.UNARY) {
           @Override
-          public Data calculate(Data... operands) {
+          public Data calculate(final Data... operands) {
             final BitVector x = operands[0].getBitVector();
-            final BitVector test =
-                BitVectorMath.and(x, BitVectorMath.sub(x, ONE));
+            final BitVector test = BitVectorMath.and(x, BitVectorMath.sub(x, ONE));
             return Data.newBoolean(test.equals(ZERO));
           }
     };
@@ -144,12 +144,8 @@ public final class PowerOfTwoCustomTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(new NodeOperation(StandardOperation.BVUGT, x, new NodeValue(BIT_VECTOR_TYPE
-          .valueOf("100", 10))));
-
-      formulas.add(new NodeOperation(StandardOperation.BVULT, x, new NodeValue(BIT_VECTOR_TYPE
-          .valueOf("200", 10))));
-
+      formulas.add(Nodes.BVUGT(x, new NodeValue(BIT_VECTOR_TYPE.valueOf("100", 10))));
+      formulas.add(Nodes.BVULT(x, new NodeValue(BIT_VECTOR_TYPE.valueOf("200", 10))));
       formulas.add(new NodeOperation(ECustomOperation.ISPOWOFTWO, x));
 
       return builder.build();
