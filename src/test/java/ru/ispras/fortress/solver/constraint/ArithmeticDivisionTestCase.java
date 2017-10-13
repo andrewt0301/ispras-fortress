@@ -1,11 +1,11 @@
 /*
  * Copyright 2014 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -19,10 +19,9 @@ import java.util.List;
 
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
-import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
-import ru.ispras.fortress.expression.StandardOperation;
+import ru.ispras.fortress.expression.Nodes;
 
 public class ArithmeticDivisionTestCase extends GenericSolverTestBase {
   public ArithmeticDivisionTestCase() {
@@ -31,30 +30,29 @@ public class ArithmeticDivisionTestCase extends GenericSolverTestBase {
 
   /**
    * The constraint as described in the SMT language:
-   * 
+   *
    * <pre>
-   *     (declare-const a Int)
-   *     (declare-const r1 Int)
-   *     (declare-const r2 Int)
-   *     (declare-const r3 Int)
-   *     (declare-const r4 Int)
-   *     (declare-const r5 Int)
-   *     (declare-const r6 Int)
-   *     (assert (= a 10))
-   *     (assert (= r1 (div a 4)))
-   *     (assert (= r2 (mod a 4)))
-   *     (assert (= r3 (rem a 4)))
-   *     (assert (= r4 (div a (- 4))))
-   *     (assert (= r5 (mod a (- 4))))
-   *     (assert (= r6 (rem a (- 4))))
-   *     (check-sat)
-   *     (get-value (a r1 r2 r3 r4 r5 r6))
-   *     (exit)
+   * (declare-const a Int)
+   * (declare-const r1 Int)
+   * (declare-const r2 Int)
+   * (declare-const r3 Int)
+   * (declare-const r4 Int)
+   * (declare-const r5 Int)
+   * (declare-const r6 Int)
+   * (assert (= a 10))
+   * (assert (= r1 (div a 4)))
+   * (assert (= r2 (mod a 4)))
+   * (assert (= r3 (rem a 4)))
+   * (assert (= r4 (div a (- 4))))
+   * (assert (= r5 (mod a (- 4))))
+   * (assert (= r6 (rem a (- 4))))
+   * (check-sat)
+   * (get-value (a r1 r2 r3 r4 r5 r6))
+   * (exit)
    * </pre>
-   * 
+   *
    * Expected output: sat ((a 10) (r1 2) (r2 2) (r3 2) (r4 (- 2)) (r5 2) (r6 (- 2)))
    */
-
   public static class ArithmeticDivision implements SampleConstraint {
     private static final DataType intType = DataType.INTEGER;
 
@@ -77,26 +75,14 @@ public class ArithmeticDivisionTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(new NodeOperation(StandardOperation.EQ, a, new NodeValue(intType.valueOf("10",
-          10))));
+      formulas.add(Nodes.EQ(a, new NodeValue(intType.valueOf("10", 10))));
 
-      formulas.add(new NodeOperation(StandardOperation.EQ, r1, new NodeOperation(
-          StandardOperation.DIV, a, new NodeValue(intType.valueOf("4", 10)))));
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, r2, new NodeOperation(
-          StandardOperation.MOD, a, new NodeValue(intType.valueOf("4", 10)))));
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, r3, new NodeOperation(
-          StandardOperation.REM, a, new NodeValue(intType.valueOf("4", 10)))));
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, r4, new NodeOperation(
-          StandardOperation.DIV, a, new NodeValue(intType.valueOf("-4", 10)))));
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, r5, new NodeOperation(
-          StandardOperation.MOD, a, new NodeValue(intType.valueOf("-4", 10)))));
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, r6, new NodeOperation(
-          StandardOperation.REM, a, new NodeValue(intType.valueOf("-4", 10)))));
+      formulas.add(Nodes.EQ(r1, Nodes.DIV(a, new NodeValue(intType.valueOf("4", 10)))));
+      formulas.add(Nodes.EQ(r2, Nodes.MOD(a, new NodeValue(intType.valueOf("4", 10)))));
+      formulas.add(Nodes.EQ(r3, Nodes.REM(a, new NodeValue(intType.valueOf("4", 10)))));
+      formulas.add(Nodes.EQ(r4, Nodes.DIV(a, new NodeValue(intType.valueOf("-4", 10)))));
+      formulas.add(Nodes.EQ(r5, Nodes.MOD(a, new NodeValue(intType.valueOf("-4", 10)))));
+      formulas.add(Nodes.EQ(r6, Nodes.REM(a, new NodeValue(intType.valueOf("-4", 10)))));
 
       return builder.build();
     }
