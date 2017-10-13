@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2017 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -56,17 +56,17 @@ public final class PowerOfTwoCustomTestCase extends GenericSolverTestBase {
    * The constraint as described in the SMT-LIB language:
    *
    * <pre>
-   *     (declare-const x (_ BitVec 32))
+   * (declare-const x (_ BitVec 32))
    *
-   *     (define-fun is_pow_of_two((a (_ BitVec 32))) Bool (= (bvand a (bvsub a (_ bv1 32))) (_ bv0 32)))
-   *     (assert (is_pow_of_two x))
+   * (define-fun is_pow_of_two((a (_ BitVec 32))) Bool (= (bvand a (bvsub a (_ bv1 32))) (_ bv0 32)))
+   * (assert (is_pow_of_two x))
    * 
-   *     (assert (bvugt x (_ bv100 32)))
-   *     (assert (bvult x (_ bv200 32)))
+   * (assert (bvugt x (_ bv100 32)))
+   * (assert (bvult x (_ bv200 32)))
    * 
-   *     (check-sat)
-   *     (get-value (x))
-   *     (exit)
+   * (check-sat)
+   * (get-value (x))
+   * (exit)
    * </pre>
    *
    * Expected output:
@@ -75,7 +75,6 @@ public final class PowerOfTwoCustomTestCase extends GenericSolverTestBase {
    *     sat ((x #x00000080))
    * </pre>
    */
-
   private static final int BIT_VECTOR_SIZE = 32;
   private static final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_SIZE);
   private static final CalculatorEngine CALCULATOR =

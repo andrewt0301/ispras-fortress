@@ -1,11 +1,11 @@
 /*
- * Copyright 2012-2014 ISP RAS (http://www.ispras.ru)
- * 
+ * Copyright 2012-2017 ISP RAS (http://www.ispras.ru)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -20,9 +20,8 @@ import java.util.List;
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
-import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeVariable;
-import ru.ispras.fortress.expression.StandardOperation;
+import ru.ispras.fortress.expression.Nodes;
 import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintBuilder;
 import ru.ispras.fortress.solver.constraint.ConstraintKind;
@@ -35,29 +34,28 @@ public class InputParametersTestCase extends GenericSolverTestBase {
 
   /**
    * The constraint as described in the SMT-LIB language:
-   * 
+   *
    * <pre>
-   *     (declare-const a (_ BitVec 16))
-   *     (declare-const b (_ BitVec 16))
-   *     (declare-const c (_ BitVec 16))
-   * 
-   *     (assert (= a #x0003)) ; assumed input value
-   *     (assert (= c #x0005)) ; assumed input value
-   * 
-   *     (assert (= (bvadd a b) c))
-   * 
-   *     (check-sat)
-   *     (get-value (a b c))
-   *     (exit)
+   * (declare-const a (_ BitVec 16))
+   * (declare-const b (_ BitVec 16))
+   * (declare-const c (_ BitVec 16))
+   *
+   * (assert (= a #x0003)) ; assumed input value
+   * (assert (= c #x0005)) ; assumed input value
+   *
+   * (assert (= (bvadd a b) c))
+   *
+   * (check-sat)
+   * (get-value (a b c))
+   * (exit)
    * </pre>
-   * 
+   *
    * Expected output:
-   * 
+   *
    * <pre>
-   *     sat ((a #x0003)(b #x0002)(c #x0005))
+   * sat ((a #x0003)(b #x0002)(c #x0005))
    * </pre>
    */
-
   public static class InputParameters implements SampleConstraint {
     private static final int BIT_VECTOR_SIZE = 16;
     private static final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_SIZE);
@@ -76,8 +74,7 @@ public class InputParametersTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(new NodeOperation(
-        StandardOperation.EQ, new NodeOperation(StandardOperation.BVADD, a, b), c));
+      formulas.add(Nodes.EQ(Nodes.BVADD(a, b), c));
 
       final Constraint constraint = builder.build();
 
