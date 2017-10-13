@@ -101,7 +101,7 @@ public final class JavaExprPrinter extends MapBasedPrinter {
       if (value.isType(DataTypeId.BIT_VECTOR)) {
         appendText(bitVectorToString(value.getBitVector()));
       } else if (value.isType(DataTypeId.LOGIC_INTEGER)) {
-        appendText(bigIntegerToString(value.getInteger()));
+        appendText(integerToString(value.getInteger()));
       } else if (value.isType(DataTypeId.LOGIC_STRING)) { 
         appendText("\"" + value.toString() + "\"");
       } else {
@@ -123,15 +123,29 @@ public final class JavaExprPrinter extends MapBasedPrinter {
     sb.append(BitVector.class.getSimpleName());
     sb.append(".valueOf(");
 
-    if (value.getBitSize() <= Integer.SIZE) {
-      sb.append(String.format("0x%s, %d)", hexValue, bitSize));
+    if (bitSize <= Integer.SIZE) {
+      sb.append(String.format("0x%s", hexValue));
     } else if (bitSize <= Long.SIZE) {
-      sb.append(String.format("0x%sL, %d)", hexValue, bitSize));
+      sb.append(String.format("0x%sL", hexValue));
     } else {
-      sb.append(String.format("\"%s\", 16, %d)", hexValue, bitSize));
+      sb.append(String.format("\"%s\", 16", hexValue));
     }
 
+    sb.append(String.format(", %d)", bitSize));
     return sb.toString();
+  }
+
+  public static String integerToString(final BigInteger value) {
+    InvariantChecks.checkNotNull(value);
+
+    final int bitSize = value.bitLength() + 1;
+    if (bitSize <= Integer.SIZE) {
+      return value.toString();
+    } else if (bitSize <= Long.SIZE) {
+      return value.toString() + "L";
+    } else {
+      return bigIntegerToString(value);
+    }
   }
 
   public static String bigIntegerToString(final BigInteger value) {
