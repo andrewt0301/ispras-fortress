@@ -1,11 +1,11 @@
 /*
- * Copyright 2016 ISP RAS (http://www.ispras.ru), UniTESK Lab (http://www.unitesk.com)
+ * Copyright 2016 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,10 +18,9 @@ package ru.ispras.fortress.solver.constraint;
 
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
-import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
-import ru.ispras.fortress.expression.StandardOperation;
+import ru.ispras.fortress.expression.Nodes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,21 +41,19 @@ public class UnusedVariableTestCase extends GenericSolverTestBase {
    * The constraint as described in the SMT language:
    *
    * <pre>
-   *     (declare-const x Int)
-   *     (declare-const y Int)
-   *     (assert (= x 7))
-   *     (check-sat)
-   *     (get-value (x y))
-   *     (exit)
+   * (declare-const x Int)
+   * (declare-const y Int)
+   * (assert (= x 7))
+   * (check-sat)
+   * (get-value (x y))
+   * (exit)
    * </pre>
    *
    * Expected output: sat ((x 7) (y 0))
    */
-
   private static final DataType intType = DataType.INTEGER;
 
   public static class UnusedVariable implements SampleConstraint {
-
     @Override
     public Constraint getConstraint() {
 
@@ -73,7 +70,7 @@ public class UnusedVariableTestCase extends GenericSolverTestBase {
 
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
-      formulas.add(new NodeOperation(StandardOperation.EQ, x, NodeValue.newInteger(7)));
+      formulas.add(Nodes.EQ(x, NodeValue.newInteger(7)));
 
       return builder.build();
     }

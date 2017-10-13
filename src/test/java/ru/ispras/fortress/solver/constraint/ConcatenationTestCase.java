@@ -19,10 +19,9 @@ import java.util.List;
 
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
-import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
-import ru.ispras.fortress.expression.StandardOperation;
+import ru.ispras.fortress.expression.Nodes;
 
 public class ConcatenationTestCase extends GenericSolverTestBase {
   public ConcatenationTestCase() {
@@ -33,21 +32,21 @@ public class ConcatenationTestCase extends GenericSolverTestBase {
    * The constraint as described in the SMT language:
    *
    * <pre>
-   *     (declare-const x (_ BitVec 16))
-   *     (declare-const y (_ BitVec 16))
-   *     (declare-const z (_ BitVec 32))
-   *     (assert (= x #x0000))
-   *     (assert (= y #xffff))
-   *     (assert (= z (concat x y)))
-   *     (check-sat)
-   *     (get-value (x y z))
-   *     (exit)
+   * (declare-const x (_ BitVec 16))
+   * (declare-const y (_ BitVec 16))
+   * (declare-const z (_ BitVec 32))
+   * (assert (= x #x0000))
+   * (assert (= y #xffff))
+   * (assert (= z (concat x y)))
+   * (check-sat)
+   * (get-value (x y z))
+   * (exit)
    * </pre>
    *
    * Expected output:
    *
    * <pre>
-   *     sat ((x #x0000) (y #xffff) (z #x0000ffff))
+   * sat ((x #x0000) (y #xffff) (z #x0000ffff))
    * </pre>
    */
   public static class Concatenation implements SampleConstraint {
@@ -73,14 +72,9 @@ public class ConcatenationTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(new NodeOperation(
-          StandardOperation.EQ, x, new NodeValue(BIT_VECTOR_ARG_TYPE.valueOf("0000", HEX_RADIX))));
-
-      formulas.add(new NodeOperation(
-          StandardOperation.EQ, y, new NodeValue(BIT_VECTOR_ARG_TYPE.valueOf("ffff", HEX_RADIX))));
-
-      formulas.add(new NodeOperation(
-          StandardOperation.EQ, z, new NodeOperation(StandardOperation.BVCONCAT, x, y)));
+      formulas.add(Nodes.EQ(x, new NodeValue(BIT_VECTOR_ARG_TYPE.valueOf("0000", HEX_RADIX))));
+      formulas.add(Nodes.EQ(y, new NodeValue(BIT_VECTOR_ARG_TYPE.valueOf("ffff", HEX_RADIX))));
+      formulas.add(Nodes.EQ(z, Nodes.BVCONCAT(x, y)));
 
       return builder.build();
     }
