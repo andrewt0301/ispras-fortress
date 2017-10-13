@@ -1,11 +1,11 @@
 /*
  * Copyright 2014 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -23,6 +23,7 @@ import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
+import ru.ispras.fortress.expression.Nodes;
 import ru.ispras.fortress.expression.StandardOperation;
 
 public class AbsCustomOperationTestCase extends GenericSolverTestBase {
@@ -32,7 +33,7 @@ public class AbsCustomOperationTestCase extends GenericSolverTestBase {
 
   /**
    * The constraint as described in the SMT language:
-   * 
+   *
    * <pre>
    *     (declare-const a Real)
    *     (declare-const b Real)
@@ -55,7 +56,7 @@ public class AbsCustomOperationTestCase extends GenericSolverTestBase {
    *     (get-model)
    *     (exit)
    * </pre>
-   * 
+   *
    * Expected output: sat ((a (- 5.0)) (b 5.0) (c (- 5)) (d 5))
    */
 
@@ -76,32 +77,28 @@ public class AbsCustomOperationTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(new NodeOperation(StandardOperation.LESS, a, NodeValue.newReal(0)));
+      formulas.add(Nodes.LESS(a, NodeValue.newReal(0)));
+      formulas.add(Nodes.GREATER(b, NodeValue.newReal(0)));
+      formulas.add(Nodes.LESS(c, NodeValue.newInteger(0)));
+      formulas.add(Nodes.GREATER(d, NodeValue.newInteger(0)));
 
-      formulas.add(new NodeOperation(StandardOperation.GREATER, b, NodeValue.newReal(0)));
+      formulas.add(Nodes.EQ(
+          Nodes.ABS(Nodes.MINUS(NodeValue.newReal(5.0))), NodeValue.newReal(5.0)));
 
-      formulas.add(new NodeOperation(StandardOperation.LESS, c, NodeValue.newInteger(0)));
+      formulas.add(Nodes.EQ(
+          Nodes.ABS(NodeValue.newReal(5.0)), NodeValue.newReal(5.0)));
 
-      formulas.add(new NodeOperation(StandardOperation.GREATER, d, NodeValue.newInteger(0)));
+      formulas.add(Nodes.EQ(
+          Nodes.ABS(Nodes.MINUS(a)), NodeValue.newReal(5.0)));
 
-      formulas.add(new NodeOperation(StandardOperation.EQ, new NodeOperation(StandardOperation.ABS,
-          new NodeOperation(StandardOperation.MINUS, NodeValue.newReal(5.0))), NodeValue
-          .newReal(5.0)));
+      formulas.add(Nodes.EQ(
+          Nodes.ABS(b), NodeValue.newReal(5.0)));
 
-      formulas.add(new NodeOperation(StandardOperation.EQ, new NodeOperation(StandardOperation.ABS,
-          NodeValue.newReal(5.0)), NodeValue.newReal(5.0)));
+      formulas.add(Nodes.EQ(
+          Nodes.ABS(Nodes.MINUS(c)), NodeValue.newInteger(5)));
 
-      formulas.add(new NodeOperation(StandardOperation.EQ, new NodeOperation(StandardOperation.ABS,
-          new NodeOperation(StandardOperation.MINUS, a)), NodeValue.newReal(5.0)));
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, new NodeOperation(StandardOperation.ABS,
-          b), NodeValue.newReal(5.0)));
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, new NodeOperation(StandardOperation.ABS,
-          new NodeOperation(StandardOperation.MINUS, c)), NodeValue.newInteger(5)));
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, new NodeOperation(StandardOperation.ABS,
-          d), NodeValue.newInteger(5)));
+      formulas.add(Nodes.EQ(
+          Nodes.ABS(d), NodeValue.newInteger(5)));
 
       return builder.build();
     }
