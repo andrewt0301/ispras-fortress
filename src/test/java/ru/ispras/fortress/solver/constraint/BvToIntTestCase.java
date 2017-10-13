@@ -16,10 +16,9 @@ package ru.ispras.fortress.solver.constraint;
 
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
-import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
-import ru.ispras.fortress.expression.StandardOperation;
+import ru.ispras.fortress.expression.Nodes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,21 +32,19 @@ public class BvToIntTestCase extends GenericSolverTestBase {
    * The constraint as described in the SMT language:
    *
    * <pre>
-   *     (declare-const x (_ BitVec 32))
-   *     (declare-const y Int)
-   *     (assert (= y 129))
-   *     (assert (= (bv2int x) y))
-   *     (check-sat)
-   *     (get-model)
-   *     (get-value (x y))
-   *     (exit)
+   * (declare-const x (_ BitVec 32))
+   * (declare-const y Int)
+   * (assert (= y 129))
+   * (assert (= (bv2int x) y))
+   * (check-sat)
+   * (get-model)
+   * (get-value (x y))
+   * (exit)
    * </pre>
    *
    * Expected output: sat ((x #x00000081) (y 129))
    */
-
   public static class BvToIntOperation implements SampleConstraint {
-
     private static final DataType INT_TYPE = DataType.INTEGER;
     private static final int BIT_VECTOR_SIZE = 32;
     private static final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_SIZE);
@@ -66,9 +63,8 @@ public class BvToIntTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(new NodeOperation(StandardOperation.EQ, y, NodeValue.newInteger(129)));
-      formulas.add(new NodeOperation(
-          StandardOperation.EQ, y, new NodeOperation(StandardOperation.BV2INT, x)));
+      formulas.add(Nodes.EQ(y, NodeValue.newInteger(129)));
+      formulas.add(Nodes.EQ(y, Nodes.BV2INT(x)));
 
       return builder.build();
     }
@@ -76,8 +72,10 @@ public class BvToIntTestCase extends GenericSolverTestBase {
     @Override
     public Iterable<Variable> getExpectedVariables() {
       final List<Variable> result = new ArrayList<>();
+
       result.add(new Variable("x", BIT_VECTOR_TYPE.valueOf("81", 16)));
       result.add(new Variable("y", INT_TYPE.valueOf("129", 10)));
+
       return result;
     }
   }

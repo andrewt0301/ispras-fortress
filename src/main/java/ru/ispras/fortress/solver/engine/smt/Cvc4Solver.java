@@ -28,6 +28,7 @@ import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
+import ru.ispras.fortress.expression.Nodes;
 import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.solver.function.Function;
 
@@ -58,8 +59,8 @@ public final class Cvc4Solver extends SmtTextSolver {
         new ProcessBuilder(getSolverPath(), "-mq", "--rewrite-divk", path).start();
 
     return new BufferedReader(
-      new InputStreamReader(
-        new SequenceInputStream(process.getInputStream(), process.getErrorStream())));
+        new InputStreamReader(
+            new SequenceInputStream(process.getInputStream(), process.getErrorStream())));
   }
 
   public static Function customRem() {
@@ -71,24 +72,19 @@ public final class Cvc4Solver extends SmtTextSolver {
     final Node lhs = new NodeVariable(lvar);
     final Node rhs = new NodeVariable(rvar);
 
-    final NodeOperation mod =
-        new NodeOperation(StandardOperation.MOD,
-                          new NodeOperation(StandardOperation.ABS, lhs),
-                          new NodeOperation(StandardOperation.ABS, rhs));
+    final NodeOperation mod = Nodes.MOD(Nodes.ABS(lhs), Nodes.ABS(rhs));
     final NodeOperation rem =
-        new NodeOperation(StandardOperation.ITE,
-                          new NodeOperation(StandardOperation.LESS, rhs, NodeValue.newInteger(0)),
-                          new NodeOperation(StandardOperation.MINUS, mod),
-                          mod);
+        Nodes.ITE(
+            Nodes.LESS(rhs, NodeValue.newInteger(0)),
+            Nodes.MINUS(mod),
+            mod);
 
     return new Function(StandardOperation.REM, type, rem, lvar, rvar);
   }
 
   public static Function customPlus() {
     final Variable var = new Variable("x", DataType.INTEGER);
-    final NodeOperation plus = new NodeOperation(StandardOperation.ADD,
-                                                 new NodeVariable(var),
-                                                 NodeValue.newInteger(0));
+    final NodeOperation plus = Nodes.ADD(new NodeVariable(var), NodeValue.newInteger(0));
     return new Function(StandardOperation.PLUS, var.getType(), plus, var);
   }
 
