@@ -17,10 +17,9 @@ package ru.ispras.fortress.solver.constraint;
 import java.util.Collections;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
-import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
-import ru.ispras.fortress.expression.StandardOperation;
+import ru.ispras.fortress.expression.Nodes;
 
 public class IntegerAddTestCase extends GenericSolverTestBase {
   public IntegerAddTestCase() {
@@ -38,9 +37,8 @@ public class IntegerAddTestCase extends GenericSolverTestBase {
 
       final NodeVariable a = new NodeVariable(builder.addVariable("a", DataType.INTEGER));
       final NodeValue value = new NodeValue(DataType.INTEGER.valueOf("-1487988057", 10));
-      final NodeOperation sum = new NodeOperation(StandardOperation.ADD, value, value);
 
-      builder.setInnerRep(new Formulas(new NodeOperation(StandardOperation.EQ, a, sum)));
+      builder.setInnerRep(new Formulas(Nodes.EQ(a, Nodes.ADD(value, value))));
       return builder.build();
     }
 
