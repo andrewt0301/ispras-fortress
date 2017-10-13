@@ -1,11 +1,11 @@
 /*
  * Copyright 2012-2014 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -23,7 +23,7 @@ import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
-import ru.ispras.fortress.expression.StandardOperation;
+import ru.ispras.fortress.expression.Nodes;
 import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintBuilder;
 import ru.ispras.fortress.solver.constraint.ConstraintKind;
@@ -36,54 +36,51 @@ public class IntegerOverflowBitVectorTestCase extends GenericSolverTestBase {
 
   /**
    * The constraint as described in the SMT language:
-   * 
+   *
    * <pre>
-   *     (define-sort        Int_t () (_ BitVec 64))
+   * (define-sort        Int_t () (_ BitVec 64))
+   *
+   * (define-fun      INT_ZERO () Int_t (_ bv0 64))
+   * (define-fun INT_BASE_SIZE () Int_t (_ bv32 64))
+   * (define-fun INT_SIGN_MASK () Int_t (bvshl (bvnot INT_ZERO) INT_BASE_SIZE))
+   *
+   * (define-fun IsValidPos ((x!1 Int_t)) Bool (ite (= (bvand x!1 INT_SIGN_MASK) INT_ZERO) true false))
+   * (define-fun IsValidNeg ((x!1 Int_t)) Bool (ite (= (bvand x!1 INT_SIGN_MASK) INT_SIGN_MASK) true false))
+   * (define-fun IsValidSignedInt ((x!1 Int_t)) Bool (ite (or (IsValidPos x!1) (IsValidNeg x!1)) true false))
+   *
+   * (declare-const rs Int_t)
+   * (declare-const rt Int_t)
+   *
+   * ; rt and rs must contain valid sign-extended 32-bit values (bits 63..31 equal)
+   * (assert (IsValidSignedInt rs))
+   * (assert (IsValidSignedInt rt))
+   *
+   * ; the condition for an overflow: the summation result is not a valid sign-extended 32-bit value
+   * (assert (not (IsValidSignedInt (bvadd rs rt))))
+   *
+   * ; just in case: rs and rt are not equal (to make the results more interesting)
+   * (assert (not (= rs rt)))
    * 
-   *     (define-fun      INT_ZERO () Int_t (_ bv0 64))
-   *     (define-fun INT_BASE_SIZE () Int_t (_ bv32 64))
-   *     (define-fun INT_SIGN_MASK () Int_t (bvshl (bvnot INT_ZERO) INT_BASE_SIZE))
-   * 
-   *     (define-fun IsValidPos ((x!1 Int_t)) Bool (ite (= (bvand x!1 INT_SIGN_MASK) INT_ZERO) true false))
-   *     (define-fun IsValidNeg ((x!1 Int_t)) Bool (ite (= (bvand x!1 INT_SIGN_MASK) INT_SIGN_MASK) true false))
-   *     (define-fun IsValidSignedInt ((x!1 Int_t)) Bool (ite (or (IsValidPos x!1) (IsValidNeg x!1)) true false))
-   * 
-   *     (declare-const rs Int_t)
-   *     (declare-const rt Int_t)
-   * 
-   *     ; rt and rs must contain valid sign-extended 32-bit values (bits 63..31 equal)
-   *     (assert (IsValidSignedInt rs))
-   *     (assert (IsValidSignedInt rt))
-   * 
-   *     ; the condition for an overflow: the summation result is not a valid sign-extended 32-bit value
-   *     (assert (not (IsValidSignedInt (bvadd rs rt))))
-   * 
-   *     ; just in case: rs and rt are not equal (to make the results more interesting)
-   *     (assert (not (= rs rt)))
-   * 
-   *     (check-sat)
-   * 
-   *     (echo "Values that lead to an overflow:")
-   *     (get-value (rs rt))
+   * (check-sat)
+   *
+   * (echo "Values that lead to an overflow:")
+   * (get-value (rs rt))
    * </pre>
-   * 
+   *
    * Expected output (Values that lead to an overflow):
-   * 
+   *
    * <pre>
-   *     sat ((rs #x000000009b91b193)
-   *          (rt #x000000009b91b1b3))
+   * sat ((rs #x000000009b91b193)
+   *     (rt #x000000009b91b1b3))
    * </pre>
    */
-
   public static class IntegerOverflow implements SampleConstraint {
     private final int BIT_VECTOR_LENGTH = 64;
     private final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_LENGTH);
 
     private final NodeValue INT_ZERO = new NodeValue(BIT_VECTOR_TYPE.valueOf("0", 10));
     private final NodeValue INT_BASE_SIZE = new NodeValue(BIT_VECTOR_TYPE.valueOf("32", 10));
-
-    private final NodeOperation INT_SIGN_MASK = new NodeOperation(
-      StandardOperation.BVLSHL, new NodeOperation(StandardOperation.BVNOT, INT_ZERO), INT_BASE_SIZE);
+    private final NodeOperation INT_SIGN_MASK = Nodes.BVLSHL(Nodes.BVNOT(INT_ZERO), INT_BASE_SIZE);
 
     @Override
     public Constraint getConstraint() {
@@ -103,27 +100,22 @@ public class IntegerOverflowBitVectorTestCase extends GenericSolverTestBase {
       formulas.add(IsValidSignedInt(rs));
       formulas.add(IsValidSignedInt(rt));
 
-      formulas.add(new NodeOperation(
-        StandardOperation.NOT, IsValidSignedInt(new NodeOperation(StandardOperation.BVADD, rs, rt))));
-
-      formulas.add(new NodeOperation(
-        StandardOperation.NOT, new NodeOperation(StandardOperation.EQ, rs, rt)));
+      formulas.add(Nodes.NOT(IsValidSignedInt(Nodes.BVADD(rs, rt))));
+      formulas.add(Nodes.NOT(Nodes.EQ(rs, rt)));
 
       return builder.build();
     }
 
     private NodeOperation IsValidPos(Node arg) {
-      return new NodeOperation(
-        StandardOperation.EQ, new NodeOperation(StandardOperation.BVAND, arg, INT_SIGN_MASK), INT_ZERO);
+      return Nodes.EQ(Nodes.BVAND(arg, INT_SIGN_MASK), INT_ZERO);
     }
 
     private NodeOperation IsValidNeg(Node arg) {
-      return new NodeOperation(
-        StandardOperation.EQ, new NodeOperation(StandardOperation.BVAND, arg, INT_SIGN_MASK), INT_SIGN_MASK);
+      return Nodes.EQ(Nodes.BVAND(arg, INT_SIGN_MASK), INT_SIGN_MASK);
     }
 
     private NodeOperation IsValidSignedInt(Node arg) {
-      return new NodeOperation(StandardOperation.OR, IsValidPos(arg), IsValidNeg(arg));
+      return Nodes.OR(IsValidPos(arg), IsValidNeg(arg));
     }
 
     @Override
