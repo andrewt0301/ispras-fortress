@@ -427,28 +427,28 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.BVSGT, lhs, rhs);
   }
 
-  public static NodeOperation BVANDR(final Node first, final Node second) {
-    return new NodeOperation(StandardOperation.BVANDR, first, second);
+  public static NodeOperation BVANDR(final Node operand) {
+    return new NodeOperation(StandardOperation.BVANDR, operand);
   }
 
-  public static NodeOperation BVNANDR(final Node first, final Node second) {
-    return new NodeOperation(StandardOperation.BVNANDR, first, second);
+  public static NodeOperation BVNANDR(final Node operand) {
+    return new NodeOperation(StandardOperation.BVNANDR, operand);
   }
 
-  public static NodeOperation BVORR(final Node first, final Node second) {
-    return new NodeOperation(StandardOperation.BVORR, first, second);
+  public static NodeOperation BVORR(final Node operand) {
+    return new NodeOperation(StandardOperation.BVORR, operand);
   }
 
-  public static NodeOperation BVNORR(final Node first, final Node second) {
-    return new NodeOperation(StandardOperation.BVNORR, first, second);
+  public static NodeOperation BVNORR(final Node operand) {
+    return new NodeOperation(StandardOperation.BVNORR, operand);
   }
 
-  public static NodeOperation BVXORR(final Node first, final Node second) {
-    return new NodeOperation(StandardOperation.BVXORR, first, second);
+  public static NodeOperation BVXORR(final Node operand) {
+    return new NodeOperation(StandardOperation.BVXORR, operand);
   }
 
-  public static NodeOperation BVXNORR(final Node first, final Node second) {
-    return new NodeOperation(StandardOperation.BVXNORR, first, second);
+  public static NodeOperation BVXNORR(final Node operand) {
+    return new NodeOperation(StandardOperation.BVXNORR, operand);
   }
 
   public static NodeOperation BV2BOOL(final Node operand) {

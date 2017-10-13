@@ -1,11 +1,11 @@
 /*
  * Copyright 2014 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -20,10 +20,9 @@ import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.Node;
-import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
-import ru.ispras.fortress.expression.StandardOperation;
+import ru.ispras.fortress.expression.Nodes;
 
 public class ReductionCustomOperationsTestCase extends GenericSolverTestBase {
   public ReductionCustomOperationsTestCase() {
@@ -113,88 +112,41 @@ public class ReductionCustomOperationsTestCase extends GenericSolverTestBase {
       builder.setInnerRep(formulas);
 
       // BVANDR Asserts
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, varBVANDR_NO_BITS, new NodeOperation(
-          StandardOperation.BVANDR, NO_BITS)));
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, varBVANDR_ALL_BITS, new NodeOperation(
-          StandardOperation.BVANDR, ALL_BITS)));
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, varBVANDR_EVEN_BITS, new NodeOperation(
-          StandardOperation.BVANDR, EVEN_BITS)));
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, varBVANDR_ODD_BITS, new NodeOperation(
-          StandardOperation.BVANDR, ODD_BITS)));
+      formulas.add(Nodes.EQ(varBVANDR_NO_BITS,   Nodes.BVANDR(NO_BITS)));
+      formulas.add(Nodes.EQ(varBVANDR_ALL_BITS,  Nodes.BVANDR(ALL_BITS)));
+      formulas.add(Nodes.EQ(varBVANDR_EVEN_BITS, Nodes.BVANDR(EVEN_BITS)));
+      formulas.add(Nodes.EQ(varBVANDR_ODD_BITS,  Nodes.BVANDR(ODD_BITS)));
 
       // BVNANDR Asserts
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, varBVNANDR_NO_BITS, new NodeOperation(
-          StandardOperation.BVNANDR, NO_BITS)));
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, varBVNANDR_ALL_BITS, new NodeOperation(
-          StandardOperation.BVNANDR, ALL_BITS)));
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, varBVNANDR_EVEN_BITS, new NodeOperation(
-          StandardOperation.BVNANDR, EVEN_BITS)));
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, varBVNANDR_ODD_BITS, new NodeOperation(
-          StandardOperation.BVNANDR, ODD_BITS)));
+      formulas.add(Nodes.EQ(varBVNANDR_NO_BITS,   Nodes.BVNANDR(NO_BITS)));
+      formulas.add(Nodes.EQ(varBVNANDR_ALL_BITS,  Nodes.BVNANDR(ALL_BITS)));
+      formulas.add(Nodes.EQ(varBVNANDR_EVEN_BITS, Nodes.BVNANDR(EVEN_BITS)));
+      formulas.add(Nodes.EQ(varBVNANDR_ODD_BITS,  Nodes.BVNANDR(ODD_BITS)));
 
       // BVORR Asserts
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, varBVORR_NO_BITS, new NodeOperation(
-          StandardOperation.BVORR, NO_BITS)));
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, varBVORR_ALL_BITS, new NodeOperation(
-          StandardOperation.BVORR, ALL_BITS)));
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, varBVORR_EVEN_BITS, new NodeOperation(
-          StandardOperation.BVORR, EVEN_BITS)));
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, varBVORR_ODD_BITS, new NodeOperation(
-          StandardOperation.BVORR, ODD_BITS)));
+      formulas.add(Nodes.EQ(varBVORR_NO_BITS,   Nodes.BVORR(NO_BITS)));
+      formulas.add(Nodes.EQ(varBVORR_ALL_BITS,  Nodes.BVORR(ALL_BITS)));
+      formulas.add(Nodes.EQ(varBVORR_EVEN_BITS, Nodes.BVORR(EVEN_BITS)));
+      formulas.add(Nodes.EQ(varBVORR_ODD_BITS,  Nodes.BVORR(ODD_BITS)));
 
       // BVNORR Asserts
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, varBVNORR_NO_BITS, new NodeOperation(
-          StandardOperation.BVNORR, NO_BITS)));
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, varBVNORR_ALL_BITS, new NodeOperation(
-          StandardOperation.BVNORR, ALL_BITS)));
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, varBVNORR_EVEN_BITS, new NodeOperation(
-          StandardOperation.BVNORR, EVEN_BITS)));
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, varBVNORR_ODD_BITS, new NodeOperation(
-          StandardOperation.BVNORR, ODD_BITS)));
+      formulas.add(Nodes.EQ(varBVNORR_NO_BITS,   Nodes.BVNORR(NO_BITS)));
+      formulas.add(Nodes.EQ(varBVNORR_ALL_BITS,  Nodes.BVNORR(ALL_BITS)));
+      formulas.add(Nodes.EQ(varBVNORR_EVEN_BITS, Nodes.BVNORR(EVEN_BITS)));
+      formulas.add(Nodes.EQ(varBVNORR_ODD_BITS,  Nodes.BVNORR(ODD_BITS)));
 
       // BVXORR Asserts
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, varBVXORR_NO_BITS, new NodeOperation(
-          StandardOperation.BVXORR, NO_BITS)));
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, varBVXORR_ALL_BITS, new NodeOperation(
-          StandardOperation.BVXORR, ALL_BITS)));
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, varBVXORR_EVEN_BITS, new NodeOperation(
-          StandardOperation.BVXORR, EVEN_BITS)));
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, varBVXORR_ODD_BITS, new NodeOperation(
-          StandardOperation.BVXORR, ODD_BITS)));
+      formulas.add(Nodes.EQ(varBVXORR_NO_BITS,   Nodes.BVXORR(NO_BITS)));
+      formulas.add(Nodes.EQ(varBVXORR_ALL_BITS,  Nodes.BVXORR(ALL_BITS)));
+      formulas.add(Nodes.EQ(varBVXORR_EVEN_BITS, Nodes.BVXORR(EVEN_BITS)));
+      formulas.add(Nodes.EQ(varBVXORR_ODD_BITS,  Nodes.BVXORR(ODD_BITS)));
 
       // BVXNORR Asserts
 
-      formulas.add(new NodeOperation(StandardOperation.EQ, varBVXNORR_NO_BITS, new NodeOperation(
-          StandardOperation.BVXNORR, NO_BITS)));
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, varBVXNORR_ALL_BITS, new NodeOperation(
-          StandardOperation.BVXNORR, ALL_BITS)));
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, varBVXNORR_EVEN_BITS, new NodeOperation(
-          StandardOperation.BVXNORR, EVEN_BITS)));
-
-      formulas.add(new NodeOperation(StandardOperation.EQ, varBVXNORR_ODD_BITS, new NodeOperation(
-          StandardOperation.BVXNORR, ODD_BITS)));
+      formulas.add(Nodes.EQ(varBVXNORR_NO_BITS,   Nodes.BVXNORR(NO_BITS)));
+      formulas.add(Nodes.EQ(varBVXNORR_ALL_BITS,  Nodes.BVXNORR(ALL_BITS)));
+      formulas.add(Nodes.EQ(varBVXNORR_EVEN_BITS, Nodes.BVXNORR(EVEN_BITS)));
+      formulas.add(Nodes.EQ(varBVXNORR_ODD_BITS,  Nodes.BVXNORR(ODD_BITS)));
 
       return builder.build();
     }
