@@ -254,6 +254,14 @@ public final class Nodes {
     return BVCONCAT(reversedOperands);
   }
 
+  public static NodeOperation BVREPEAT(final NodeValue count, final Node source) {
+    return new NodeOperation(StandardOperation.BVREPEAT, count, source);
+  }
+
+  public static NodeOperation BVREPEAT(final int count, final Node source) {
+    return new NodeOperation(StandardOperation.BVREPEAT, NodeValue.newInteger(count), source);
+  }
+
   public static NodeOperation BVROL(final NodeValue amount, final Node source) {
     return new NodeOperation(StandardOperation.BVROL, amount, source);
   }

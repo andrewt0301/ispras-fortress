@@ -19,10 +19,9 @@ package ru.ispras.fortress.transformer;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.data.types.bitvector.BitVector;
-import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
-import ru.ispras.fortress.expression.StandardOperation;
+import ru.ispras.fortress.expression.Nodes;
 import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintBuilder;
 import ru.ispras.fortress.solver.constraint.ConstraintKind;
@@ -58,7 +57,6 @@ public class ConstCastTestCase extends GenericSolverTestBase {
 
     @Override
     public Constraint getConstraint() {
-
       final ConstraintBuilder builder = new ConstraintBuilder();
 
       builder.setName("ConstCast");
@@ -79,44 +77,15 @@ public class ConstCastTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(TypeConversion.castConstants(new NodeOperation(StandardOperation.EQ, x, bv7)));
-      formulas.add(
-          TypeConversion.castConstants(
-              new NodeOperation(
-                  StandardOperation.EQ,
-                  new NodeOperation(StandardOperation.REM, y, bv3), z)));
-      formulas.add(
-          TypeConversion.castConstants(
-              new NodeOperation(
-                  StandardOperation.EQ,
-                  bv7,
-                  new NodeOperation(StandardOperation.BVADD, w, int2))));
-      formulas.add(TypeConversion.castConstants(new NodeOperation(StandardOperation.AND, v, int2)));
-      formulas.add(TypeConversion.castConstants(new NodeOperation(StandardOperation.LESS, u, bv3)));
-      formulas.add(
-          TypeConversion.castConstants(
-              new NodeOperation(
-                  StandardOperation.EQ,
-                  new NodeOperation(StandardOperation.BVEXTRACT, bv3, int2, t),
-                  boolTrue)));
-      formulas.add(
-          TypeConversion.castConstants(
-              new NodeOperation(
-                  StandardOperation.EQ,
-                  int2,
-                  new NodeOperation(StandardOperation.ITE, bv3, s, u))));
-      formulas.add(
-          TypeConversion.castConstants(
-              new NodeOperation(
-                  StandardOperation.EQ,
-                  bv63,
-                  new NodeOperation(StandardOperation.BVREPEAT, bv1, r))));
-      formulas.add(
-          TypeConversion.castConstants(
-              new NodeOperation(
-                  StandardOperation.EQ,
-                  bv63,
-                  new NodeOperation(StandardOperation.BVCONCAT, p, int7))));
+      formulas.add(TypeConversion.castConstants(Nodes.EQ( x, bv7)));
+      formulas.add(TypeConversion.castConstants(Nodes.EQ(Nodes.REM(y, bv3), z)));
+      formulas.add(TypeConversion.castConstants(Nodes.EQ(bv7, Nodes.BVADD(w, int2))));
+      formulas.add(TypeConversion.castConstants(Nodes.AND(v, int2)));
+      formulas.add(TypeConversion.castConstants(Nodes.LESS(u, bv3)));
+      formulas.add(TypeConversion.castConstants(Nodes.EQ(Nodes.BVEXTRACT(bv3, int2, t), boolTrue)));
+      formulas.add(TypeConversion.castConstants(Nodes.EQ( int2, Nodes.ITE(bv3, s, u))));
+      formulas.add(TypeConversion.castConstants(Nodes.EQ(bv63, Nodes.BVREPEAT(bv1, r))));
+      formulas.add(TypeConversion.castConstants(Nodes.EQ(bv63, Nodes.BVCONCAT(p, int7))));
 
       return builder.build();
     }
