@@ -18,10 +18,9 @@ package ru.ispras.fortress.solver.constraint;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.data.types.bitvector.BitVector;
-import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
-import ru.ispras.fortress.expression.StandardOperation;
+import ru.ispras.fortress.expression.Nodes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,19 +34,17 @@ public class IntToBvTestCase extends GenericSolverTestBase {
    * The constraint as described in the SMT language:
    *
    * <pre>
-   *     (declare-const x Int)
-   *     (assert (= ((_ int2bv 2) x) #b11))
-   *     (check-sat)
-   *     (get-model)
-   *     (get-value (x ))
-   *     (exit)
+   * (declare-const x Int)
+   * (assert (= ((_ int2bv 2) x) #b11))
+   * (check-sat)
+   * (get-model)
+   * (get-value (x ))
+   * (exit)
    * </pre>
    *
    * Expected output: sat (x 3)
    */
-
   public static class IntToBvOperation implements SampleConstraint {
-
     private static final DataType INT_TYPE = DataType.INTEGER;
     private static final int BIT_VECTOR_SIZE = 2;
     private static final int RADIX = 2;
@@ -66,10 +63,8 @@ public class IntToBvTestCase extends GenericSolverTestBase {
       builder.setInnerRep(formulas);
 
       formulas.add(
-          new NodeOperation(
-              StandardOperation.EQ,
-              new NodeOperation(
-                  StandardOperation.INT2BV,
+          Nodes.EQ(
+              Nodes.INT2BV(
                   NodeValue.newInteger(BIT_VECTOR_SIZE), x),
                   NodeValue.newBitVector(BitVector.valueOf("11", RADIX, BIT_VECTOR_SIZE))));
 
