@@ -1,12 +1,12 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
- * 
+ * Copyright 2014-2017 ISP RAS (http://www.ispras.ru)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software distributed under the License
+ *
+ * Unless rNodes.EQuired by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
@@ -32,20 +32,19 @@ import ru.ispras.fortress.expression.*;
  * (declare-fun w () ARRAY_INT_INT)
  * (declare-fun u () ARRAY_COMPOSITE)
  * (declare-fun v () ARRAY_COMPOSITE)
- * 
- * (assert (= x (store x -1 -1)))
- * (assert (= y (store x 0 0)))
- * (assert (= z (store y 1 2)))
- * (assert (= w (store z 3 4)))
- * 
- * (assert (= u (store u x y)))
- * (assert (= v (store u z w)))
- * 
+ *
+ * (assert (= x (Nodes.STORE x -1 -1)))
+ * (assert (= y (Nodes.STORE x 0 0)))
+ * (assert (= z (Nodes.STORE y 1 2)))
+ * (assert (= w (Nodes.STORE z 3 4)))
+ *
+ * (assert (= u (Nodes.STORE u x y)))
+ * (assert (= v (Nodes.STORE u z w)))
+ *
  * (check-sat)
  * (get-model)
  * </pre>
  */
-
 public class ArrayOfArraysTestCase extends GenericSolverTestBase {
   public ArrayOfArraysTestCase() {
     super(new ArrayOfArraysConstraint());
@@ -53,16 +52,7 @@ public class ArrayOfArraysTestCase extends GenericSolverTestBase {
 
   private final static class ArrayOfArraysConstraint implements SampleConstraint {
     private static final DataType ARRAY_INT_INT = DataType.MAP(DataType.INTEGER, DataType.INTEGER);
-
     private static final DataType ARRAY_COMPOSITE = DataType.MAP(ARRAY_INT_INT, ARRAY_INT_INT);
-
-    private Node STORE(Node array, Node key, Node value) {
-      return new NodeOperation(StandardOperation.STORE, array, key, value);
-    }
-
-    private Node EQ(Node lhs, Node rhs) {
-      return new NodeOperation(StandardOperation.EQ, lhs, rhs);
-    }
 
     public Constraint getConstraint() {
       final ConstraintBuilder builder = new ConstraintBuilder();
@@ -79,19 +69,20 @@ public class ArrayOfArraysTestCase extends GenericSolverTestBase {
       final NodeVariable v = new NodeVariable(builder.addVariable("v", ARRAY_COMPOSITE));
 
       final NodeValue[] values = new NodeValue[6];
-      for (int i = 0; i < values.length; ++i)
+      for (int i = 0; i < values.length; ++i) {
         values[i] = new NodeValue(DataType.INTEGER.valueOf(Integer.toString(i - 1, 10), 10));
+      }
 
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(EQ(x, STORE(x, values[0], values[0])));
-      formulas.add(EQ(y, STORE(x, values[1], values[1])));
-      formulas.add(EQ(z, STORE(y, values[2], values[3])));
-      formulas.add(EQ(w, STORE(z, values[4], values[5])));
+      formulas.add(Nodes.EQ(x, Nodes.STORE(x, values[0], values[0])));
+      formulas.add(Nodes.EQ(y, Nodes.STORE(x, values[1], values[1])));
+      formulas.add(Nodes.EQ(z, Nodes.STORE(y, values[2], values[3])));
+      formulas.add(Nodes.EQ(w, Nodes.STORE(z, values[4], values[5])));
 
-      formulas.add(EQ(u, STORE(u, x, y)));
-      formulas.add(EQ(v, STORE(u, z, w)));
+      formulas.add(Nodes.EQ(u, Nodes.STORE(u, x, y)));
+      formulas.add(Nodes.EQ(v, Nodes.STORE(u, z, w)));
 
       return builder.build();
     }

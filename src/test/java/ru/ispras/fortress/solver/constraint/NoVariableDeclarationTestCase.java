@@ -1,11 +1,11 @@
 /*
  * Copyright 2014 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -16,10 +16,9 @@ package ru.ispras.fortress.solver.constraint;
 
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
-import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
-import ru.ispras.fortress.expression.StandardOperation;
+import ru.ispras.fortress.expression.Nodes;
 import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintBuilder;
 import ru.ispras.fortress.solver.constraint.ConstraintKind;
@@ -35,20 +34,19 @@ public class NoVariableDeclarationTestCase extends GenericSolverTestBase {
 
   /**
    * The constraint as described in the SMT language:
-   * 
+   *
    * <pre>
-   *     (declare-const a Int)
-   *     (declare-const b Int)
-   *     (assert (> a (+ b 2)))
-   *     (check-sat)
-   *     (get-value (a b))
-   *     (exit)
+   * (declare-const a Int)
+   * (declare-const b Int)
+   * (assert (> a (+ b 2)))
+   * (check-sat)
+   * (get-value (a b))
+   * (exit)
    * </pre>
-   * 
+   *
    * Expected output: sat ((a 1) (b (- 2)))
    */
   public static class NoVariableDeclaration implements SampleConstraint {
-
     private static final DataType intType = DataType.INTEGER;
 
     @Override
@@ -65,9 +63,7 @@ public class NoVariableDeclarationTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(new NodeOperation(StandardOperation.GREATER, a, new NodeOperation(
-          StandardOperation.ADD, b, new NodeValue(intType.valueOf("2", 10)))));
-
+      formulas.add(Nodes.GREATER(a, Nodes.ADD(b, new NodeValue(intType.valueOf("2", 10)))));
       // main feature of the test - getting variables declaration from syntax tree
       builder.addVariables(formulas.getVariables());
 
