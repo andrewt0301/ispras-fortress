@@ -56,7 +56,6 @@ import static ru.ispras.fortress.solver.SolverResult.Status;
 public abstract class GenericSolverTestBase {
   public static interface SampleConstraint {
     public Constraint getConstraint();
-
     public Iterable<Variable> getExpectedVariables();
   }
 
@@ -155,7 +154,7 @@ public abstract class GenericSolverTestBase {
     String name = "unknown";
     Status globalStatus = Status.UNKNOWN;
 
-    for (SolverId id : SolverId.values()) {
+    for (final SolverId id : SolverId.values()) {
       final Solver solver = id.getSolver();
       registerCustomOperations(solver);
 
@@ -186,30 +185,42 @@ public abstract class GenericSolverTestBase {
     return known;
   }
 
-  private static void checkResult(CalculatorEngine calculator, Constraint constraint, SolverResult result) {
+  private static void checkResult(
+      final CalculatorEngine calculator,
+      final Constraint constraint,
+      final SolverResult result) {
     final Formulas formulas = (Formulas) constraint.getInnerRep();
-    final Collection<NodeVariable> variables =
-        ExprUtils.getVariables(formulas.exprs());
+    final Collection<NodeVariable> variables = ExprUtils.getVariables(formulas.exprs());
 
     final Map<String, NodeVariable> variableMap = new HashMap<>(variables.size());
-    for (NodeVariable node : variables) {
+    for (final NodeVariable node : variables) {
       variableMap.put(node.getName(), node);
     }
-    final List<NodeBinding.BoundVariable> bindings =
-        new ArrayList<>(result.getVariables().size());
-    for (Variable var : result.getVariables()) {
-      final NodeVariable node = variableMap.get(var.getName());
+
+    final List<NodeBinding.BoundVariable> bindings = new ArrayList<>(result.getVariables().size());
+    for (final Variable var : result.getVariables()) {
+      NodeVariable node = variableMap.get(var.getName());
+      if (null == node) {
+        node = new NodeVariable(constraint.findVariable(var.getName()));
+      }
+
       final NodeValue value = new NodeValue(var.getData());
       bindings.add(NodeBinding.bindVariable(node, value));
     }
-    final NodeOperation expr =
-        new NodeOperation(StandardOperation.AND, formulas.exprs());
+
+    final NodeOperation expr = new NodeOperation(StandardOperation.AND, formulas.exprs());
     final NodeBinding nodeBind = new NodeBinding(expr, bindings);
     final Node value = Transformer.substituteBinding(nodeBind);
     final Node reduced = reduceAll(calculator, value);
 
-    Assert.assertTrue(String.format("Calculator failed to substitute result:\n%s\n-> %s\n-> %s\n-> %s", expr, nodeBind, value, reduced),
-                      nodeIsTrue(reduced));
+    Assert.assertTrue(
+        String.format(
+            "Calculator failed to substitute result:\n%s\n-> %s\n-> %s\n-> %s",
+            expr,
+            nodeBind,
+            value,
+            reduced),
+        nodeIsTrue(reduced));
   }
 
   private static Node reduceAll(final CalculatorEngine calculator, final Node input) {
@@ -223,8 +234,8 @@ public abstract class GenericSolverTestBase {
     return reduced;
   }
 
-  private static boolean nodeIsTrue(Node node) {
-    return node.getKind() == Node.Kind.VALUE &&
+  private static boolean nodeIsTrue(final Node node) {
+    return ExprUtils.isValue(node) &&
            ExprUtils.isCondition(node) &&
            (Boolean) ((NodeValue) node).getValue();
   }
