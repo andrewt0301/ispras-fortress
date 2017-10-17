@@ -65,11 +65,12 @@ public class UnusedVariableTestCase extends GenericSolverTestBase {
 
       final NodeVariable x = new NodeVariable(builder.addVariable("x", intType));
 
-      /* Here 'y' is a redundant variable. */
-      final NodeVariable y = new NodeVariable(builder.addVariable("y", intType));
+      /* Here 'y' is a redundant unused variable. */
+      builder.addVariable("y", intType);
 
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
+
       formulas.add(Nodes.EQ(x, NodeValue.newInteger(7)));
 
       return builder.build();
