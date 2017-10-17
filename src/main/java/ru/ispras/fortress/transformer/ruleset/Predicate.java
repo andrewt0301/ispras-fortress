@@ -1,11 +1,11 @@
 /*
  * Copyright 2014 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -41,7 +41,6 @@ abstract class DependentRule implements TransformerRule {
    *
    * @param rules Ruleset shared by all interdependent rules.
    */
-
   protected DependentRule(final Map<Enum<?>, TransformerRule> rules) {
     InvariantChecks.checkNotNull(rules);
     this.rules = rules;
@@ -56,7 +55,6 @@ abstract class DependentRule implements TransformerRule {
    * @return Node instance which is expression resulted from recursively
    * applying relevant rules in shared set to single operation.
    */
-
   protected final Node reduce(final Enum<?> opId, final Node ... operands) {
     final Node node = new NodeOperation(opId, operands);
     final TransformerRule rule = rules.get(opId);
@@ -77,7 +75,6 @@ abstract class DependentRule implements TransformerRule {
 /**
  * OperationRule is a base class for rules applicable to single operation type.
  */
-
 abstract class OperationRule extends DependentRule {
   private final Enum<?> opId;
 
@@ -87,7 +84,6 @@ abstract class OperationRule extends DependentRule {
    * @param opId Operation identifier for this rule.
    * @param rules Ruleset to register the rule in.
    */
-
   public OperationRule(final Enum<?> opId, final Map<Enum<?>, TransformerRule> rules) {
     super(rules);
     InvariantChecks.checkNotNull(opId);
@@ -120,7 +116,6 @@ abstract class OperationRule extends DependentRule {
    * 
    * @return true if derived class accepts given operation node.
    */
-
   public boolean isApplicable(final NodeOperation op) {
     return true;
   }
@@ -137,7 +132,6 @@ abstract class OperationRule extends DependentRule {
    * 
    * @param node Operation node to extract operands from.
    */
-
   public static Node[] extractOperands(final Node node) {
     final NodeOperation in = (NodeOperation) node;
     final Node[] operands = new Node[in.getOperandCount()];
@@ -156,7 +150,6 @@ abstract class OperationRule extends DependentRule {
    * 
    * @return true if node is NodeValue instance with boolean type.
    */
-
   public static boolean isBoolean(final Node node) {
     return node.getKind() == Node.Kind.VALUE
       && node.getDataType() == DataType.BOOLEAN;
@@ -176,26 +169,24 @@ abstract class OperationRule extends DependentRule {
 
   /**
    * Check if node represents specific operation.
-   * 
+   *
    * @param node Node instance to be checked.
    * @param opId Operation identifier.
-   * 
+   *
    * @return true if node is NodeOperations instance with given operation id.
    */
-
   public static boolean isOperation(final Node node, final Enum<?> opId) {
     return node.getKind() == Node.Kind.OPERATION && ((NodeOperation) node).getOperationId() == opId;
   }
 
   /**
    * Find first boolean value among operands.
-   * 
+   *
    * @param op Operation which operands are to be looked.
    * @param start Start looking at operands starting with this index.
-   * 
+   *
    * @return Operand index of boolean value, -1 if none found.
    */
-
   public static int booleanOperandIndex(final NodeOperation op, int start) {
     for (int i = start; i < op.getOperandCount(); ++i) {
       if (isBoolean(op.getOperand(i))) {
@@ -355,7 +346,6 @@ final class UnrollClause extends OperationRule {
  * The Predicate class provides static methods to create predefined transformation rulesets to use
  * with {@link ru.ispras.fortress.transformer.NodeTransformer NodeTransformer}.
  */
-
 public final class Predicate {
   private Predicate() {}
 
@@ -387,9 +377,7 @@ public final class Predicate {
    * (ite false e0 e1) -> e1
    * }
    * </pre>
-   *
    */
-
   public static Map<Enum<?>, TransformerRule> getStandardRuleset() {
     final Map<Enum<?>, TransformerRule> ruleset = new IdentityHashMap<>();
 

@@ -21,6 +21,7 @@ import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
+import ru.ispras.fortress.expression.Nodes;
 import ru.ispras.fortress.expression.StandardOperation;
 
 import java.util.ArrayList;
@@ -298,8 +299,7 @@ class EqualityConstraint {
   }
 
   private static NodeOperation NOTEQ(final Node lhs, final Node rhs) {
-    return new NodeOperation(StandardOperation.NOT,
-                             new NodeOperation(StandardOperation.EQ, lhs, rhs));
+    return Nodes.NOT(Nodes.EQ(lhs, rhs));
   }
 
   private static boolean isOperation(final Node node, final Enum<?> opId) {

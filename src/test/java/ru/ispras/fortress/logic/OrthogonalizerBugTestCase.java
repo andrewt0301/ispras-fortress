@@ -28,10 +28,9 @@ import org.junit.Test;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.expression.ExprUtils;
 import ru.ispras.fortress.expression.Node;
-import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
-import ru.ispras.fortress.expression.StandardOperation;
+import ru.ispras.fortress.expression.Nodes;
 import ru.ispras.fortress.solver.constraint.GenericSolverTestBase;
 import ru.ispras.fortress.util.InvariantChecks;
 
@@ -154,7 +153,7 @@ public final class OrthogonalizerBugTestCase {
   }
 
   private static Node equation(final NodeVariable variable, final int value) {
-    return new NodeOperation(StandardOperation.EQ, variable, NodeValue.newInteger(value));
+    return Nodes.EQ(variable, NodeValue.newInteger(value));
   }
 
   private Set<Clause> getConflicts(final Map<Integer, Node> literalMap) {
