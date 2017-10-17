@@ -23,10 +23,8 @@ import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.data.types.bitvector.BitVector;
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeBinding;
-import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
-import ru.ispras.fortress.expression.StandardOperation;
 
 public final class ExprUtilsTestCase {
   private static final NodeVariable x = new NodeVariable(new Variable("x", DataType.INTEGER));
@@ -36,10 +34,10 @@ public final class ExprUtilsTestCase {
   private static final NodeVariable j = new NodeVariable(new Variable("j", DataType.INTEGER));
 
   private static final Node xEq0 = Nodes.EQ(x, NodeValue.newInteger(0));
-  private static final Node yEq5 = Nodes.EQ( y, NodeValue.newInteger(5));
-  private static final Node zEq10 = Nodes.EQ( z, NodeValue.newInteger(10));
-  private static final Node iEq15 = Nodes.EQ( i, NodeValue.newInteger(15));
-  private static final Node jEq20 = Nodes.EQ( j, NodeValue.newInteger(20));
+  private static final Node yEq5 = Nodes.EQ(y, NodeValue.newInteger(5));
+  private static final Node zEq10 = Nodes.EQ(z, NodeValue.newInteger(10));
+  private static final Node iEq15 = Nodes.EQ(i, NodeValue.newInteger(15));
+  private static final Node jEq20 = Nodes.EQ(j, NodeValue.newInteger(20));
 
   @Test
   public void testIsCondition() {
@@ -53,9 +51,9 @@ public final class ExprUtilsTestCase {
     assertTrue(ExprUtils.isCondition(Nodes.EQ(NodeValue.newInteger(1), NodeValue.newInteger(2))));
     assertFalse(ExprUtils.isCondition(Nodes.ADD(NodeValue.newInteger(1), NodeValue.newInteger(2))));
 
-    assertTrue(ExprUtils.isCondition(Nodes.OR(new NodeOperation(
-        StandardOperation.GREATEREQ, x, NodeValue.newInteger(0)), new NodeOperation(
-        StandardOperation.LESS, x, NodeValue.newInteger(10)))));
+    assertTrue(ExprUtils.isCondition(Nodes.OR(
+        Nodes.GREATEREQ(x, NodeValue.newInteger(0)),
+        Nodes.LESS(x, NodeValue.newInteger(10)))));
   }
 
   @Test
@@ -63,13 +61,13 @@ public final class ExprUtilsTestCase {
     assertTrue(ExprUtils.isAtomicCondition(NodeValue.newBoolean(true)));
     assertTrue(ExprUtils.isAtomicCondition(NodeValue.newBoolean(false)));
 
-    assertTrue(ExprUtils.isAtomicCondition(Nodes.EQ( NodeValue
-        .newInteger(1), NodeValue.newInteger(2))));
+    assertTrue(ExprUtils.isAtomicCondition(
+        Nodes.EQ(NodeValue.newInteger(1), NodeValue.newInteger(2))));
 
-    assertFalse(ExprUtils.isAtomicCondition(Nodes.ADD(NodeValue
-        .newInteger(1), NodeValue.newInteger(2))));
+    assertFalse(ExprUtils.isAtomicCondition(
+        Nodes.ADD(NodeValue.newInteger(1), NodeValue.newInteger(2))));
 
-    assertFalse(ExprUtils.isAtomicCondition(new NodeOperation(StandardOperation.OR,
+    assertFalse(ExprUtils.isAtomicCondition(Nodes.OR(
         Nodes.GREATEREQ(x, NodeValue.newInteger(0)),
         Nodes.LESS(x, NodeValue.newInteger(10)))));
   }
@@ -138,39 +136,44 @@ public final class ExprUtilsTestCase {
 
   @Test
   public void testHasBindings() {
-    final Node noBindings =
-        Nodes.AND(xEq0, yEq5, zEq10, new NodeOperation(StandardOperation.OR, iEq15, jEq20));
-
+    final Node noBindings = Nodes.AND(xEq0, yEq5, zEq10, Nodes.OR(iEq15, jEq20));
     assertFalse(ExprUtils.hasBindings(noBindings));
 
     final NodeVariable a = new NodeVariable(new Variable("a", DataType.INTEGER));
     final NodeVariable b = new NodeVariable(new Variable("b", DataType.INTEGER));
 
-    final Node bindings =
-        Nodes.AND(xEq0, yEq5, zEq10, new NodeBinding(
-            Nodes.OR(iEq15, jEq20), NodeBinding.bindVariable(a,
-                NodeValue.newInteger(3)), NodeBinding.bindVariable(b, NodeValue.newInteger(4)),
-            NodeBinding.bindVariable(i,
-                Nodes.MUL(a, NodeValue.newInteger(5))),
-            NodeBinding.bindVariable(j,
-                Nodes.MUL(b, NodeValue.newInteger(5)))));
+    final Node bindings = Nodes.AND(
+        xEq0,
+        yEq5,
+        zEq10,
+        new NodeBinding(
+            Nodes.OR(iEq15, jEq20),
+            NodeBinding.bindVariable(a, NodeValue.newInteger(3)),
+            NodeBinding.bindVariable(b, NodeValue.newInteger(4)),
+            NodeBinding.bindVariable(i, Nodes.MUL(a, NodeValue.newInteger(5))),
+            NodeBinding.bindVariable(j, Nodes.MUL(b, NodeValue.newInteger(5)))
+            )
+        );
 
     assertTrue(ExprUtils.hasBindings(bindings));
   }
 
   @Test
   public void testIsConstant() {
-    final Node expr1 =
-        Nodes.ADD(NodeValue.newInteger(1), Nodes.MUL(NodeValue.newInteger(2), NodeValue.newInteger(3)),
-            Nodes.SUB(NodeValue.newInteger(20), Nodes.MUL(NodeValue.newInteger(2), NodeValue.newInteger(5))));
+    final Node expr1 = Nodes.ADD(
+        NodeValue.newInteger(1),
+        Nodes.MUL(NodeValue.newInteger(2), NodeValue.newInteger(3)),
+        Nodes.SUB(NodeValue.newInteger(20),
+                  Nodes.MUL(NodeValue.newInteger(2), NodeValue.newInteger(5))));
 
     // Constant (no variables, no bindings).
     assertTrue(ExprUtils.isConstant(expr1));
 
     final NodeVariable x = new NodeVariable(new Variable("x", DataType.INTEGER));
-    final Node expr2 =
-        Nodes.ADD(NodeValue.newInteger(1), Nodes.MUL(NodeValue.newInteger(2), NodeValue.newInteger(3)),
-            Nodes.SUB(NodeValue.newInteger(20), Nodes.MUL(NodeValue.newInteger(2), x)));
+    final Node expr2 = Nodes.ADD(
+        NodeValue.newInteger(1),
+        Nodes.MUL(NodeValue.newInteger(2), NodeValue.newInteger(3)),
+        Nodes.SUB(NodeValue.newInteger(20), Nodes.MUL(NodeValue.newInteger(2), x)));
 
     // Non-constant: has a variable
     assertFalse(ExprUtils.isConstant(expr2));
@@ -181,17 +184,19 @@ public final class ExprUtilsTestCase {
     assertTrue(ExprUtils.isConstant(expr2));
 
     final NodeVariable y = new NodeVariable(new Variable("y", DataType.INTEGER));
-    final Node expr3 =
-        Nodes.ADD(NodeValue.newInteger(1), Nodes.MUL(NodeValue.newInteger(2), NodeValue.newInteger(3)),
-
-        new NodeBinding(Nodes.SUB(NodeValue.newInteger(20), Nodes.MUL(NodeValue.newInteger(2), y)),  NodeBinding.bindVariable(y, NodeValue.newInteger(10))));
+    final Node expr3 = Nodes.ADD(
+        NodeValue.newInteger(1),
+        Nodes.MUL(NodeValue.newInteger(2), NodeValue.newInteger(3)),
+        new NodeBinding(
+            Nodes.SUB(NodeValue.newInteger(20), Nodes.MUL(NodeValue.newInteger(2), y)),
+            NodeBinding.bindVariable(y, NodeValue.newInteger(10))));
 
     // Constant: has a variable, but it is bound to a constant value
     assertTrue(ExprUtils.isConstant(expr3));
 
-    final Node expr4 =
-        Nodes.ADD(NodeValue.newInteger(1), Nodes.MUL(NodeValue.newInteger(2), y),
-
+    final Node expr4 = Nodes.ADD(
+        NodeValue.newInteger(1),
+        Nodes.MUL(NodeValue.newInteger(2), y),
         new NodeBinding(Nodes.SUB(NodeValue.newInteger(20), 
             Nodes.MUL(NodeValue.newInteger(2), y)),
             NodeBinding.bindVariable(y, NodeValue.newInteger(10))));
@@ -207,8 +212,9 @@ public final class ExprUtilsTestCase {
     assertFalse(ExprUtils.isSAT(NodeValue.newBoolean(false)));
 
     assertTrue(ExprUtils.isSAT(
-        Nodes.EQ(NodeValue.newInteger(5),
-                 Nodes.ADD(NodeValue.newInteger(2), NodeValue.newInteger(3)))));
+        Nodes.EQ(
+            NodeValue.newInteger(5),
+            Nodes.ADD(NodeValue.newInteger(2), NodeValue.newInteger(3)))));
 
     assertFalse(ExprUtils.isSAT(
         Nodes.EQ(
