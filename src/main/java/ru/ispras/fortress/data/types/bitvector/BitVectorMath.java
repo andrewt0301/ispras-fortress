@@ -18,7 +18,6 @@ import static ru.ispras.fortress.data.types.bitvector.BitVectorMath.Operands.BIN
 import static ru.ispras.fortress.data.types.bitvector.BitVectorMath.Operands.UNARY;
 
 import java.math.BigInteger;
-
 import ru.ispras.fortress.util.InvariantChecks;
 
 /**
@@ -51,7 +50,6 @@ public final class BitVectorMath {
    * Provides singleton objects that allow performing operations with bit vectors in
    * a unified way (i.e. polymorphically).
    */
-
   public static enum Operations {
 
     AND(BINARY) {
@@ -395,7 +393,6 @@ public final class BitVectorMath {
    *
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
-
   public static BitVector shl(final BitVector v, final BitVector to) {
     InvariantChecks.checkNotNull(v);
     InvariantChecks.checkNotNull(to);
@@ -451,7 +448,6 @@ public final class BitVectorMath {
    *
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
-
   public static BitVector lshr(final BitVector v, final BitVector to) {
     InvariantChecks.checkNotNull(v);
     InvariantChecks.checkNotNull(to);
@@ -507,7 +503,6 @@ public final class BitVectorMath {
    *
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
-
   public static BitVector ashr(final BitVector v, final BitVector to) {
     InvariantChecks.checkNotNull(v);
     InvariantChecks.checkNotNull(to);
@@ -568,7 +563,6 @@ public final class BitVectorMath {
    *
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
-
   public static BitVector rotl(final BitVector v, final BitVector to) {
     InvariantChecks.checkNotNull(v);
     InvariantChecks.checkNotNull(to);
@@ -640,7 +634,6 @@ public final class BitVectorMath {
    *
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
-
   public static BitVector rotr(final BitVector v, final BitVector to) {
     InvariantChecks.checkNotNull(v);
     InvariantChecks.checkNotNull(to);
