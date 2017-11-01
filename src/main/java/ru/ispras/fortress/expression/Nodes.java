@@ -40,12 +40,20 @@ public final class Nodes {
     return EQ(new NodeVariable(lhs), rhs);
   }
 
+  public static NodeOperation EQ(final Node lhs, final Variable rhs) {
+    return EQ(lhs, new NodeVariable(rhs));
+  }
+
   public static NodeOperation NOTEQ(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.NOTEQ, lhs, rhs);
   }
 
   public static NodeOperation NOTEQ(final Variable lhs, final Node rhs) {
     return NOTEQ(new NodeVariable(lhs), rhs);
+  }
+
+  public static NodeOperation NOTEQ(final Node lhs, final Variable rhs) {
+    return NOTEQ(lhs, new NodeVariable(rhs));
   }
 
   public static NodeOperation EQCASE(final Node lhs, final Node rhs) {
