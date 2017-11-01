@@ -32,7 +32,7 @@ import ru.ispras.fortress.util.InvariantChecks;
  *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-public final class JavaExprPrinter extends MapBasedPrinter {
+public class JavaExprPrinter extends MapBasedPrinter {
   private static final Map<DataTypeId, String> FACTORY_METHODS = new EnumMap<>(DataTypeId.class);
   static {
     FACTORY_METHODS.put(DataTypeId.BIT_VECTOR,    "newBitVector");
