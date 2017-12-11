@@ -14,6 +14,9 @@
 
 package ru.ispras.fortress.expression.printer;
 
+import ru.ispras.fortress.expression.Node;
+import ru.ispras.fortress.expression.NodeBinding;
+import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
@@ -96,7 +99,7 @@ public class SmtExprPrinter extends MapBasedPrinter {
   }
 
   protected final void addMapping(final StandardOperation op, final String sign) {
-    addMapping(op, "(" + sign + " ", " ", ")");
+    addMapping(op, sign + " ", " ", "");
   }
 
   protected class Visitor extends ExprTreeVisitor {
@@ -107,6 +110,66 @@ public class SmtExprPrinter extends MapBasedPrinter {
       } else {
         super.onVariable(variable);
       }
+    }
+
+    @Override
+    public void onOperationBegin(final NodeOperation expr) {
+      appendText("(");
+      if (StandardOperation.isParametric(expr.getOperationId())) {
+        appendText("_ ");
+      }
+
+      super.onOperationBegin(expr);
+    }
+
+    @Override
+    public void onOperationEnd(final NodeOperation expr) {
+      appendText(")");
+    }
+
+    @Override
+    public void onOperandEnd(
+        final NodeOperation expr,
+        final Node node,
+        final int index) {
+      final Enum<?> op = expr.getOperationId();
+      if (StandardOperation.isParametric(op) &&
+          StandardOperation.getParameterCount(op) - 1 == index) {
+        appendText(")");
+      }
+    }
+
+    @Override
+    public void onBindingBegin(final NodeBinding node) {
+      appendText("(let (");
+    }
+
+    @Override
+    public void onBindingListEnd(final NodeBinding node) {
+      appendText(")");
+    }
+
+    @Override
+    public void onBindingEnd(final NodeBinding node) {
+      appendText(")");
+    }
+
+    @Override
+    public void onBoundVariableBegin(
+        final NodeBinding node,
+        final NodeVariable variable,
+        final Node value) {
+      appendText("(");
+      appendText(variable.getName());
+      appendText(" ");
+    }
+
+    @Override
+    public void onBoundVariableEnd(
+        final NodeBinding node,
+        final NodeVariable variable,
+        final Node value) {
+      appendText(")");
     }
   }
 }
