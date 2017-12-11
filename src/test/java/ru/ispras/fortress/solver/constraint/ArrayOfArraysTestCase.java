@@ -6,7 +6,7 @@
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless rNodes.EQuired by applicable law or agreed to in writing, software distributed under the License
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
@@ -33,13 +33,13 @@ import ru.ispras.fortress.expression.*;
  * (declare-fun u () ARRAY_COMPOSITE)
  * (declare-fun v () ARRAY_COMPOSITE)
  *
- * (assert (= x (Nodes.STORE x -1 -1)))
- * (assert (= y (Nodes.STORE x 0 0)))
- * (assert (= z (Nodes.STORE y 1 2)))
- * (assert (= w (Nodes.STORE z 3 4)))
+ * (assert (= x (store x -1 -1)))
+ * (assert (= y (store x 0 0)))
+ * (assert (= z (store y 1 2)))
+ * (assert (= w (store z 3 4)))
  *
- * (assert (= u (Nodes.STORE u x y)))
- * (assert (= v (Nodes.STORE u z w)))
+ * (assert (= u (store u x y)))
+ * (assert (= v (store u z w)))
  *
  * (check-sat)
  * (get-model)
@@ -83,6 +83,8 @@ public class ArrayOfArraysTestCase extends GenericSolverTestBase {
 
       formulas.add(Nodes.EQ(u, Nodes.STORE(u, x, y)));
       formulas.add(Nodes.EQ(v, Nodes.STORE(u, z, w)));
+
+
 
       return builder.build();
     }
