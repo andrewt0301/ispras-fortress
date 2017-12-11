@@ -138,7 +138,6 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
   /**
    * Constructs a map-based expression printer.
    */
-
   protected MapBasedPrinter() {
     this.map = new EnumMap<>(StandardOperation.class);
     this.visitor = new ExprTreeVisitor();
