@@ -23,14 +23,17 @@ import ru.ispras.fortress.util.InvariantChecks;
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
 public enum ExprPrinter implements ExprTreePrinter {
+  /** The expression tree printer that produces Java code. */
+  JAVA(new JavaExprPrinter()),
+
+  /** The expression tree printer that produces SMT-LIB code. */
+  SMT(new SmtExprPrinter()),
+
   /** The VHDL-style expression tree printer. */
   VHDL(new VhdlExprPrinter()),
 
   /** The Verilog-style expression tree printer. */
-  VERILOG(new VerilogExprPrinter()),
-
-  /** The expression tree printer that produces Java code. */
-  JAVA(new JavaExprPrinter());
+  VERILOG(new VerilogExprPrinter());
 
   /** The implementation of the expression tree printer. */
   private ExprTreePrinter printer;

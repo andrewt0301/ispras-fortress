@@ -44,10 +44,10 @@ public class JavaExprPrinter extends MapBasedPrinter {
   }
 
   public JavaExprPrinter() {
-    setVisitor(new Visisor());
+    setVisitor(new Visitor());
   }
 
-  protected class Visisor extends ExprTreeVisitor {
+  protected class Visitor extends ExprTreeVisitor {
     @Override
     public void onOperationBegin(final NodeOperation expr) {
       final Enum<?> op = expr.getOperationId();
