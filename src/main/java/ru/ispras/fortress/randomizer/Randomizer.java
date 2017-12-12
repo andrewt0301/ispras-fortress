@@ -1,11 +1,11 @@
 /*
  * Copyright 2007-2015 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -27,7 +27,7 @@ import ru.ispras.fortress.util.InvariantChecks;
  * This class is a wrapper around a random number generator. It is responsible for generating random
  * objects (numbers, strings, etc.) and filling storages (arrays, collections, etc.) with random
  * data.
- * 
+ *
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
 public final class Randomizer {
@@ -39,7 +39,7 @@ public final class Randomizer {
 
   /**
    * Returns the randomizer instance.
-   * 
+   *
    * @return the randomizer instance.
    */
   public static Randomizer get() {
@@ -58,7 +58,7 @@ public final class Randomizer {
 
   /**
    * Returns the current random number generator.
-   * 
+   *
    * @return the random number generator.
    */
   public RandomGenerator getGenerator() {
@@ -67,7 +67,7 @@ public final class Randomizer {
 
   /**
    * Sets the current random number generator.
-   * 
+   *
    * @param generator the random number generator to be set.
    */
   public void setGenerator(final RandomGenerator generator) {
@@ -76,7 +76,7 @@ public final class Randomizer {
 
   /**
    * Sets the new seed of the random number generator.
-   * 
+   *
    * @param seed the seed to be set.
    */
   public void setSeed(final int seed) {
@@ -89,7 +89,7 @@ public final class Randomizer {
 
   /**
    * Generates the next random integer value.
-   * 
+   *
    * @return the next random integer number.
    */
   public int next() {
@@ -98,7 +98,7 @@ public final class Randomizer {
 
   /**
    * Generates the next random boolean.
-   * 
+   *
    * @return A random boolean.
    */
   public boolean nextBoolean() {
@@ -107,7 +107,7 @@ public final class Randomizer {
 
   /**
    * Generates the next random byte.
-   * 
+   *
    * @return A random byte.
    */
   public byte nextByte() {
@@ -116,7 +116,7 @@ public final class Randomizer {
 
   /**
    * Generates the next random char.
-   * 
+   *
    * @return A random char.
    */
   public char nextChar() {
@@ -125,7 +125,7 @@ public final class Randomizer {
 
   /**
    * Generates the next random int.
-   * 
+   *
    * @return A random int.
    */
   public int nextInt() {
@@ -134,7 +134,7 @@ public final class Randomizer {
 
   /**
    * Generates the next random long.
-   * 
+   *
    * @return A random long.
    */
   public long nextLong() {
@@ -163,7 +163,7 @@ public final class Randomizer {
 
   /**
    * Returns a random number from the given range (inclusive).
-   * 
+   *
    * @param min the low bound of the range.
    * @param max the high bound of the range.
    * @return a random number.
@@ -192,7 +192,7 @@ public final class Randomizer {
 
   /**
    * Returns a random number of the given bit size (width).
-   * 
+   *
    * @param width the bit size.
    * @return a random number.
    */
@@ -202,7 +202,7 @@ public final class Randomizer {
 
   /**
    * Returns a number with the randomized range of bits (field).
-   * 
+   *
    * @param lo the low bound of the field.
    * @param hi the high bound of the field.
    * @return a random number.
@@ -234,7 +234,7 @@ public final class Randomizer {
 
   /**
    * Returns a random number from the given range.
-   * 
+   *
    * @param min the low bound of the range.
    * @param max the high bound of the range.
    * @return a random number.
@@ -263,7 +263,7 @@ public final class Randomizer {
 
   /**
    * Returns a random number of the given bit size (width).
-   * 
+   *
    * @param width the bit size.
    * @return a random number.
    */
@@ -273,7 +273,7 @@ public final class Randomizer {
 
   /**
    * Returns a number with the randomized range of bits (field).
-   * 
+   *
    * @param lo the low bound of the field.
    * @param hi the high bound of the field.
    * @return a random number.
@@ -288,7 +288,7 @@ public final class Randomizer {
 
   /**
    * Returns a random number of the given bit size (width).
-   * 
+   *
    * @param width the bit size.
    * @return a random number.
    */
@@ -302,7 +302,7 @@ public final class Randomizer {
 
   /**
    * Returns a random number from the given range.
-   * 
+   *
    * @param min the low bound of the range.
    * @param max the high bound of the range.
    * @return a random number.
@@ -332,8 +332,9 @@ public final class Randomizer {
 
   /**
    * Chooses a random item of the given array.
-   * 
+   *
    * @param array the array whose items are chosen.
+   * @param <T> array item type.
    * @return a random item of the array.
    * @throws IllegalArgumentException if {@code array == null};
    *         if {@code array} is empty.
@@ -346,8 +347,9 @@ public final class Randomizer {
 
   /**
    * Chooses a random item of the given collection.
-   * 
+   *
    * @param collection the collection whose items are chosen.
+   * @param <T> collection item type.
    * @return a random item of the collection.
    * @throws IllegalArgumentException if {@code collection == null};
    *         if {@code collection} is empty.
@@ -365,8 +367,10 @@ public final class Randomizer {
 
   /**
    * Permute items of the given array.
-   * 
+   *
    * @param array the array whose items to be permuted.
+   * @param <T> array item type.
+   *
    * @throws IllegalArgumentException if {@code array == null}.
    */
   public <T> void permute(final T[] array) {
@@ -389,7 +393,7 @@ public final class Randomizer {
 
   /**
    * Fills the byte array with random data.
-   * 
+   *
    * @param data the array to be randomized.
    */
   public void fill(final byte[] data) {
@@ -400,7 +404,7 @@ public final class Randomizer {
 
   /**
    * Fills the char array with random data.
-   * 
+   *
    * @param data the array to be randomized.
    */
   public void fill(final char[] data) {
@@ -411,7 +415,7 @@ public final class Randomizer {
 
   /**
    * Fills the int array with random data.
-   * 
+   *
    * @param data the array to be randomized.
    */
   public void fill(final int[] data) {
@@ -422,7 +426,7 @@ public final class Randomizer {
 
   /**
    * Fills the long array with random data.
-   * 
+   *
    * @param data the array to be randomized.
    */
   public void fill(final long[] data) {
@@ -433,7 +437,7 @@ public final class Randomizer {
 
   /**
    * Fills the raw data storage with random data.
-   * 
+   *
    * @param data the raw data storage to be randomized.
    */
   public void fill(final BitVector data) {
