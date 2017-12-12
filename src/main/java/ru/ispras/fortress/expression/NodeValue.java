@@ -1,11 +1,11 @@
 /*
  * Copyright 2011-2016 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -31,7 +31,7 @@ import ru.ispras.fortress.jaxb.JaxbNodeValueAdapter;
 /**
  * The {@code NodeValue} class represents a node that stores a constant value.
  * The class serves as an adapter to allow Data to be used in an expression.
- * 
+ *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 @XmlSeeAlso(JaxbNodeValue.class)
@@ -134,8 +134,8 @@ public final class NodeValue extends Node {
   }
 
   /**
-   * Returns an object that stores a data value. The exact type of the object returned by the method
-   * depends on the data type.
+   * Returns an object that stores a data value. The exact type of the object returned
+   * by the method depends on the data type.
    * 
    * @return An object that store the value of the constant.
    */
@@ -180,14 +180,22 @@ public final class NodeValue extends Node {
   }
 
   /**
-   * Returns stored BigInteger value and throws an exception if the stored value has a different type.
+   * Returns stored {@link BigInteger} value and throws an exception if the stored value
+   * has a different type.
+   *
+   * @return Stored value represented by a {@link BigInteger}.
+   * @throws IllegalStateException if the stored data is not convertible to {@code BigInteger}.
    */
   public BigInteger getInteger() {
     return getData().getInteger();
   }
 
   /**
-   * Returns stored BitVector value and throws an exception if the stored value has a different type.
+   * Returns stored {@link BitVector} value and throws an exception if the stored value
+   * has a different type.
+   *
+   * @return Stored value represented by a {@link BitVector}.
+   * @throws IllegalStateException if the stored data is not convertible to {@link BitVector}.
    */
   public BitVector getBitVector() {
     return getData().getBitVector();
@@ -195,6 +203,9 @@ public final class NodeValue extends Node {
 
   /**
    * Returns stored boolean value and throws an exception if the stored value has a different type.
+   *
+   * @return Stored value represented by a boolean.
+   * @throws IllegalStateException if the stored data is not convertible to {@code Boolean}.
    */
   public boolean getBoolean() {
     return getData().getBoolean();
@@ -202,6 +213,9 @@ public final class NodeValue extends Node {
 
   /**
    * Returns stored Double value and throws an exception if the stored value has a different type.
+   *
+   * @return Stored value represented by a Double.
+   * @throws IllegalStateException if the stored data is not convertible to {@code Double}.
    */
   public double getReal() {
     return getData().getReal();
@@ -209,6 +223,9 @@ public final class NodeValue extends Node {
 
   /**
    * Returns stored DataMap value and throws an exception if the stored value has a different type.
+   *
+   * @return Stored value represented by a {@code DataMap}.
+   * @throws IllegalStateException if the stored data is not convertible to {@link DataMap}.
    */
   public DataMap getArray() {
     return getData().getArray();
