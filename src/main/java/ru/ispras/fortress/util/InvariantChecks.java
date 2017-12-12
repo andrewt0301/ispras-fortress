@@ -215,6 +215,7 @@ public final class InvariantChecks {
    *
    * @param a Numeric value to be checked.
    * @param b Numeric value to be checked.
+   * @param <T> Value type.
    *
    * @throws IllegalArgumentException if the invariant is violated ({@code a <= b}).
    */
@@ -231,6 +232,7 @@ public final class InvariantChecks {
    *
    * @param a Numeric value to be checked.
    * @param b Numeric value to be checked.
+   * @param <T> Value type.
    *
    * @throws IllegalArgumentException if the invariant is violated ({@code a < b}).
    */
