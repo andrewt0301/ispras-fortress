@@ -1,11 +1,11 @@
 /*
  * Copyright 2014 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -23,10 +23,9 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * The CollectionUtils class provides static utility methods for
- * working with collections.
- * 
- * @author Andrei Tatarnikov
+ * The {@link CollectionUtils} class provides static utility methods for working with collections.
+ *
+ * <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 public final class CollectionUtils {
   
@@ -34,11 +33,12 @@ public final class CollectionUtils {
 
   /**
    * Returns a union of two sets.
-   * 
+   *
    * @param lhs First set (left hand).
    * @param rhs Second set (right hand).
+   * @param <E> Set element type.
    * @return Union of two sets.
-   * 
+   *
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
   public static <E> Set<E> uniteSets(final Set<E> lhs, final Set<E> rhs) {
@@ -61,11 +61,12 @@ public final class CollectionUtils {
 
   /**
    * Returns an intersection of two sets.
-   * 
+   *
    * @param lhs First set (left hand).
    * @param rhs Second set (right hand).
+   * @param <E> Set element type.
    * @return Intersection of two sets.
-   * 
+   *
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
   public static <E> Set<E> intersectSets(final Set<E> lhs, final Set<E> rhs) {
@@ -87,6 +88,7 @@ public final class CollectionUtils {
    * 
    * @param lhs First set (left hand).
    * @param rhs Second set (right hand).
+   * @param <E> Set element type.
    * @return {@code true} if the sets are intersected, {@code false} otherwise.
    * 
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
@@ -97,11 +99,12 @@ public final class CollectionUtils {
 
   /**
    * Returns a relative complement of two sets.
-   * 
+   *
    * @param lhs First set (left hand).
    * @param rhs Second set (right hand).
+   * @param <E> Set element type.
    * @return Relative complement of two sets.
-   * 
+   *
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
   public static <E> Set<E> complementSets(final Set<E> lhs, final Set<E> rhs) {
@@ -121,11 +124,12 @@ public final class CollectionUtils {
   /**
    * Appends all elements from the specified list to another list and
    * returns the updated list with the appended elements.
-   * 
+   *
    * @param lhs List to which the elements will be appended.
-   * @param rhs List which contains elements to be appended. 
+   * @param rhs List which contains elements to be appended.
+   * @param <T> List element type.
    * @return Updated list that contains the appended elements.
-   * 
+   *
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
   public static <T> List<T> appendToList(final List<T> lhs, final List<T> rhs) {
@@ -147,11 +151,12 @@ public final class CollectionUtils {
   /**
    * Appends the specified element to the specified list and returns
    * the updated list with the appended element.
-   * 
+   *
    * @param lhs List to which the element will be appended.
-   * @param elem Element to be added. 
+   * @param elem Element to be added.
+   * @param <T> List element type.
    * @return Updated list that contains the appended element.
-   * 
+   *
    * @throws IllegalArgumentException if the {@code lhs} parameter is {@code null}.
    */
   public static <T> List<T> appendToList(final List<T> lhs, final T elem) {
