@@ -278,7 +278,7 @@ public final class Data {
 
   /**
    * Returns an object that holds the data.
-   * 
+   *
    * @return A type-dependent object that stores the data.
    */
   public Object getValue() {
@@ -288,7 +288,9 @@ public final class Data {
   /**
    * Returns an object of given type that holds the data.
    *
-   * @param c A type of value object.
+   * @param c Class object that describes the type of the value object.
+   * @param <T> Type of the value object.
+   *
    * @return A type-dependent object that stores the data.
    */
   public <T> T getValue(final Class<T> c) {
@@ -298,7 +300,7 @@ public final class Data {
 
   /**
    * Returns the value of the used-defined property.
-   * 
+   *
    * @return User-defined object.
    */
   public Object getUserData() {
