@@ -26,7 +26,7 @@ public interface ValueProvider {
   /**
    * Returns value of the specified variable.
    *
-   * @param variableName Variable name.
+   * @param variable Variable to be substituted with a value.
    * @return Variable value or {@code null} if no value is provided for this variable.
    *
    * @throws IllegalArgumentException if the argument is {@code null}.
