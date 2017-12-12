@@ -41,6 +41,7 @@ public final class NodeOperation extends Node {
    *
    * @param operation Operation identifier.
    * @param operands Array of expression operands.
+   * @param <T> Operation identifier type.
    *
    * @throws IllegalArgumentException if any parameter (including every operand) is {@code null}.
    */
@@ -57,6 +58,7 @@ public final class NodeOperation extends Node {
    * @param operands Array of expression operands.
    * @param dataType Data type associated with the expression or {@code null} to rely
    *        on automated type calculation.
+   * @param <T> Operation identifier type.
    *
    * @throws IllegalArgumentException if any parameter (including every operand) is {@code null}.
    */
@@ -73,6 +75,7 @@ public final class NodeOperation extends Node {
    *
    * @param operation Operation identifier.
    * @param operands List of expression operands.
+   * @param <T> Operation identifier type.
    *
    * @throws IllegalArgumentException if any parameter (including every operand) is {@code null}.
    */
@@ -90,6 +93,7 @@ public final class NodeOperation extends Node {
    * @param dataType Data type associated with the expression or {@code null} to rely
    *        on automated type calculation.
    * @param operands List of expression operands.
+   * @param <T> Operation identifier type.
    *
    * @throws IllegalArgumentException if any parameter (including every operand) is {@code null}.
    */
