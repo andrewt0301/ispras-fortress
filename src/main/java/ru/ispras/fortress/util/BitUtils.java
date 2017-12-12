@@ -1,11 +1,11 @@
 /*
  * Copyright 2007-2014 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -26,7 +26,7 @@ public final class BitUtils {
 
   /**
    * Returns a bit mask of the given width.
-   * 
+   *
    * @param width Mask width.
    * @return Integer bit mask.
    */
@@ -37,7 +37,7 @@ public final class BitUtils {
 
   /**
    * Returns a bit mask for the given range.
-   * 
+   *
    * @param lo Lower bound.
    * @param hi Higher bound.
    * @return Integer bit mask.
@@ -52,7 +52,7 @@ public final class BitUtils {
 
   /**
    * Returns the field of the given value.
-   * 
+   *
    * @param value Value.
    * @param lo Lower bound.
    * @param hi Higher bound.
@@ -68,10 +68,11 @@ public final class BitUtils {
 
   /**
    * Sets the field to the given value.
-   * 
+   *
    * @param value Value.
    * @param lo Lower bound.
    * @param hi Higher bound.
+   * @param field Field.
    * @return Value with the updated field.
    */
   public static int setField(final int value, final int lo, final int hi, final int field) {
@@ -84,7 +85,7 @@ public final class BitUtils {
 
   /**
    * Returns the bit mask of the given width.
-   * 
+   *
    * @param width Mask width.
    * @return {@link Long} bit mask.
    */
@@ -95,7 +96,7 @@ public final class BitUtils {
 
   /**
    * Returns the bit mask for the given range.
-   * 
+   *
    * @param lo Lower bound.
    * @param hi Higher bound.
    * @return {@link Long} bit mask.
@@ -110,7 +111,7 @@ public final class BitUtils {
 
   /**
    * Returns the field of the given value.
-   * 
+   *
    * @param value Value.
    * @param lo Lower bound.
    * @param hi Higher bound.
@@ -126,10 +127,11 @@ public final class BitUtils {
 
   /**
    * Sets the field to the given value.
-   * 
+   *
    * @param value Value.
    * @param lo Lower bound.
    * @param hi Higher bound.
+   * @param field Field.
    * @return Value with the updated field.
    */
   public static long setField(final long value, final int lo, final int hi, final long field) {
@@ -142,7 +144,7 @@ public final class BitUtils {
 
   /**
    * Returns the bit mask for the given width.
-   * 
+   *
    * @param width Mask width.
    * @return {@link BigInteger} bit mask.
    */
@@ -153,7 +155,7 @@ public final class BitUtils {
 
   /**
    * Returns the bit mask for the given range.
-   * 
+   *
    * @param lo Lower bound.
    * @param hi Higher bound.
    * @return {@link BigInteger} bit mask.
@@ -185,10 +187,11 @@ public final class BitUtils {
 
   /**
    * Sets the field to the given value.
-   * 
+   *
    * @param value Value.
    * @param lo Lower bound.
    * @param hi Higher bound.
+   * @param field Field.
    * @return Value with the updated field.
    */
   public static BigInteger setField(
