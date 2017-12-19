@@ -75,7 +75,7 @@ public enum StandardFunction implements FunctionTemplate {
    * </pre>
    */
 
-  /** Group: Bit Vector Reduction, Operation: Reduction AND (&) */
+  /** Group: Bit Vector Reduction, Operation: Reduction AND ({@literal &}) */
   BVANDR(StandardOperation.BVANDR, 1) {
     @Override
     protected Function newFunction(final DataType[] argTypes) {
@@ -83,7 +83,7 @@ public enum StandardFunction implements FunctionTemplate {
     }
   },
 
-  /** Group: Bit Vector Reduction, Operation: Reduction NAND (~&) */
+  /** Group: Bit Vector Reduction, Operation: Reduction NAND ({@literal ~&}) */
   BVNANDR(StandardOperation.BVNANDR, 1) {
     @Override
     protected Function newFunction(final DataType[] argTypes) {
