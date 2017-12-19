@@ -257,10 +257,10 @@ public enum StandardOperation implements TypeRule {
    * </pre>
    */
 
-  /** Group: Bit Vector Reduction, Operation: Reduction AND (&) */
+  /** Group: Bit Vector Reduction, Operation: Reduction AND ({@literal &}) */
   BVANDR(Family.BV, TypeRules.BIT_BOOLEAN, OperandTypes.SAME_BV),
 
-  /** Group: Bit Vector Reduction, Operation: Reduction NAND (~&) */
+  /** Group: Bit Vector Reduction, Operation: Reduction NAND ({@literal ~&}) */
   BVNANDR(Family.BV, TypeRules.BIT_BOOLEAN, OperandTypes.SAME_BV),
 
   /** Group: Bit Vector Reduction, Operation: Reduction OR (|) */
