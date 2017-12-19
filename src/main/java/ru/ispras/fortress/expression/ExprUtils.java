@@ -88,7 +88,7 @@ public final class ExprUtils {
 
   /**
    * Checks whether all of the specified expressions are of the specified
-   * kind (see {@link Node#Kind}).
+   * kind (see {@link Node.Kind}).
    *
    * @param kind Expected expression kind.
    * @param exprs Expressions to be checked.
@@ -114,6 +114,7 @@ public final class ExprUtils {
    *
    * @param expr Expression to be checked.
    * @param opId Operation identifier.
+   * @param <T> Operation identifier type.
    * @return {@code true} if the expression is represented by the specified operation
    *         or {@code false} otherwise.
    *
@@ -131,6 +132,7 @@ public final class ExprUtils {
    *
    * @param expr Expression to be checked.
    * @param opIds Collection of operation identifiers.
+   * @param <T> Operation identifier type.
    * @return {@code true} if the expression is represented by one of the specified operations
    *         or {@code false} otherwise.
    *
