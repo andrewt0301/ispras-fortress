@@ -126,7 +126,7 @@ enum XMLNodeType {
     INNER_REP.parents = constraintSet;
     FORMULA.parents = EnumSet.of(INNER_REP);
     OPERATION.parents = nestingSet;
-    VARIABLE_REF.parents = EnumSet.of(OPERATION);
+    VARIABLE_REF.parents = EnumSet.of(OPERATION, FORMULA);
     VALUE.parents = nestingSet;
     SIGNATURE.parents = constraintSet;
     VARIABLE.parents = EnumSet.of(SIGNATURE);
