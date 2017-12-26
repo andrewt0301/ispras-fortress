@@ -183,7 +183,8 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
         if (!variable.hasValue()) {
           out.printf(DECLARE_CONST, variable.getName(), textForType(variable.getData().getType()));
 
-          variablesListBuilder.append(SPACE);
+          variablesListBuilder.append(System.lineSeparator());
+          variablesListBuilder.append("    ");
           variablesListBuilder.append(variable.getName());
         }
       }
