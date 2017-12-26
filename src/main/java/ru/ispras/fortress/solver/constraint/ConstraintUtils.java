@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2017 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,12 +14,14 @@
 
 package ru.ispras.fortress.solver.constraint;
 
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
-
+import ru.ispras.fortress.expression.ExprUtils;
 import ru.ispras.fortress.expression.Node;
+import ru.ispras.fortress.expression.NodeOperation;
+import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.solver.Solver;
 import ru.ispras.fortress.solver.SolverId;
 import ru.ispras.fortress.solver.SolverResult;
+import ru.ispras.fortress.util.InvariantChecks;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -41,24 +43,38 @@ public final class ConstraintUtils {
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
   public static Constraint newConstraint(final Node e) {
-    checkNotNull(e);
+    InvariantChecks.checkNotNull(e);
     return newConstraint(Collections.singleton(e));
   }
 
   public static Constraint newConstraint(final Collection<? extends Node> formulae) {
-    checkNotNull(formulae);
+    InvariantChecks.checkNotNull(formulae);
 
     final ConstraintBuilder builder =
         new ConstraintBuilder(ConstraintKind.FORMULA_BASED);
 
     final Formulas formulas = new Formulas();
-    for (final Node f : formulae) {
-      formulas.add(f);
-    }
-    builder.setInnerRep(formulas);
+    addToFormulas(formulas, formulae);
 
+    builder.setInnerRep(formulas);
     builder.addVariables(formulas.getVariables());
+
     return builder.build();
+  }
+
+  private static void addToFormulas(
+      final Formulas formulas,
+      final Collection<? extends Node> nodes) {
+    InvariantChecks.checkNotNull(formulas);
+    InvariantChecks.checkNotNull(nodes);
+
+    for (final Node node : nodes) {
+      if (ExprUtils.isOperation(node, StandardOperation.AND)) {
+        addToFormulas (formulas, ((NodeOperation) node).getOperands());
+      } else {
+        formulas.add(node);
+      }
+    }
   }
 
   /**
@@ -71,7 +87,7 @@ public final class ConstraintUtils {
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
   public static SolverResult solve(final Constraint constraint) {
-    checkNotNull(constraint);
+    InvariantChecks.checkNotNull(constraint);
 
     final SolverId solverId = constraint.getKind().getDefaultSolverId();
     final Solver solver = solverId.getSolver();
