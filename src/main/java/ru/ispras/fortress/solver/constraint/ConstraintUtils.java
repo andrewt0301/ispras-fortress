@@ -14,10 +14,7 @@
 
 package ru.ispras.fortress.solver.constraint;
 
-import ru.ispras.fortress.expression.ExprUtils;
 import ru.ispras.fortress.expression.Node;
-import ru.ispras.fortress.expression.NodeOperation;
-import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.solver.Solver;
 import ru.ispras.fortress.solver.SolverId;
 import ru.ispras.fortress.solver.SolverResult;
@@ -54,27 +51,12 @@ public final class ConstraintUtils {
         new ConstraintBuilder(ConstraintKind.FORMULA_BASED);
 
     final Formulas formulas = new Formulas();
-    addToFormulas(formulas, formulae);
+    formulas.addAll(formulae);
 
     builder.setInnerRep(formulas);
     builder.addVariables(formulas.getVariables());
 
     return builder.build();
-  }
-
-  private static void addToFormulas(
-      final Formulas formulas,
-      final Collection<? extends Node> nodes) {
-    InvariantChecks.checkNotNull(formulas);
-    InvariantChecks.checkNotNull(nodes);
-
-    for (final Node node : nodes) {
-      if (ExprUtils.isOperation(node, StandardOperation.AND)) {
-        addToFormulas (formulas, ((NodeOperation) node).getOperands());
-      } else {
-        formulas.add(node);
-      }
-    }
   }
 
   /**
