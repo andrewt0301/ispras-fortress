@@ -22,10 +22,8 @@ import java.util.List;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.ExprUtils;
 import ru.ispras.fortress.expression.Node;
-import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.Nodes;
-import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.util.InvariantChecks;
 
 /**
@@ -75,12 +73,7 @@ public final class Formulas {
    */
   public void add(final Node formula) {
     InvariantChecks.checkNotNull(formula);
-
-    if (ExprUtils.isOperation(formula, StandardOperation.AND)) {
-      addAll(((NodeOperation) formula).getOperands());
-    } else {
-      exprs.add(formula);
-    }
+    exprs.add(formula);
   }
 
   /**
