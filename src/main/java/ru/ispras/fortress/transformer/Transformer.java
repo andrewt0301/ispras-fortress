@@ -133,7 +133,7 @@ public final class Transformer {
    * @param expression Expression to be substituted.
    * @return An expression resulting from substitution of all bindings found in initial expression.
    *
-   * @throws IllegalArgumentException if any of the parameters is <code>null</code>.
+   * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
   public static Node substituteAllBindings(final Node expression) {
     InvariantChecks.checkNotNull(expression);
@@ -141,7 +141,7 @@ public final class Transformer {
     final TransformerRule rule = new TransformerRule() {
       @Override
       public boolean isApplicable(final Node node) {
-        return node.getKind() == Node.Kind.BINDING;
+        return ExprUtils.isBinding(node);
       }
 
       @Override
