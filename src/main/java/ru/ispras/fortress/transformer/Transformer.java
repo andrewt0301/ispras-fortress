@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import ru.ispras.fortress.data.Variable;
+import ru.ispras.fortress.expression.ExprUtils;
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeBinding;
 import ru.ispras.fortress.expression.NodeVariable;
@@ -54,7 +55,7 @@ public final class Transformer {
     final TransformerRule rule = new TransformerRule() {
       @Override
       public boolean isApplicable(final Node node) {
-        return node.getKind() == Node.Kind.VARIABLE && ((NodeVariable) node).getName().equals(name);
+        return ExprUtils.isVariable(node) && ((NodeVariable) node).getName().equals(name);
       }
 
       @Override
@@ -72,7 +73,7 @@ public final class Transformer {
     final TransformerRule rule = new TransformerRule() {
       @Override
       public boolean isApplicable(final Node node) {
-        return node.getKind() == Node.Kind.VARIABLE;
+        return ExprUtils.isVariable(node);
       }
 
       @Override
@@ -111,8 +112,7 @@ public final class Transformer {
 
       @Override
       public boolean isApplicable(final Node node) {
-        return node.getKind() == Node.Kind.VARIABLE
-            && exprs.containsKey(((NodeVariable) node).getName());
+        return ExprUtils.isVariable(node) && exprs.containsKey(((NodeVariable) node).getName());
       }
 
       @Override
