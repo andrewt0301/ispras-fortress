@@ -182,6 +182,19 @@ public final class ExprUtils {
   }
 
   /**
+   * Checks whether the specified expression is represented by a binding.
+   *
+   * @param expr Expression to be checked.
+   * @return {@code true} if the expression is a binding or {@code false} otherwise.
+   *
+   * @throws IllegalArgumentException if the parameter is {@code null}.
+   */
+  public static boolean isBinding(final Node expr) {
+    InvariantChecks.checkNotNull(expr);
+    return Node.Kind.BINDING == expr.getKind();
+  }
+
+  /**
    * Checks whether the specified expression is a logical expression (can be evaluated to boolean).
    *
    * @param expr Expression to be checked.
@@ -192,7 +205,7 @@ public final class ExprUtils {
    */
   public static boolean isCondition(final Node expr) {
     InvariantChecks.checkNotNull(expr);
-    return expr.getDataType().equals(DataType.BOOLEAN);
+    return expr.isType(DataType.BOOLEAN);
   }
 
   /**
@@ -211,9 +224,13 @@ public final class ExprUtils {
       return false;
     }
 
-    final Set<StandardOperation> logicOperations =
-        EnumSet.of(StandardOperation.AND, StandardOperation.OR, StandardOperation.NOT,
-            StandardOperation.XOR, StandardOperation.IMPL);
+    final Set<StandardOperation> logicOperations = EnumSet.of(
+        StandardOperation.AND,
+        StandardOperation.OR,
+        StandardOperation.NOT,
+        StandardOperation.XOR,
+        StandardOperation.IMPL
+    );
 
     final ExprTreeVisitor visitor = new ExprTreeVisitorDefault() {
       @Override
