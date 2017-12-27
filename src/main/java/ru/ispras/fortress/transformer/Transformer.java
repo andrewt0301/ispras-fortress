@@ -14,8 +14,8 @@
 
 package ru.ispras.fortress.transformer;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,6 +63,7 @@ public final class Transformer {
         return term;
       }
     };
+
     return transform(expression, Node.Kind.VARIABLE, rule);
   }
 
@@ -86,6 +87,7 @@ public final class Transformer {
         return node;
       }
     };
+
     return transform(e, Node.Kind.VARIABLE, rule);
   }
 
@@ -109,7 +111,6 @@ public final class Transformer {
     }
 
     final TransformerRule rule = new TransformerRule() {
-
       @Override
       public boolean isApplicable(final Node node) {
         return ExprUtils.isVariable(node) && exprs.containsKey(((NodeVariable) node).getName());
@@ -120,6 +121,7 @@ public final class Transformer {
         return exprs.get(((NodeVariable) node).getName());
       }
     };
+
     return transform(binding.getExpression(), Node.Kind.VARIABLE, rule);
   }
 
@@ -149,6 +151,7 @@ public final class Transformer {
         return substituteBinding((NodeBinding) node);
       }
     };
+
     return transform(expression, Node.Kind.BINDING, rule);
   }
 
@@ -167,16 +170,15 @@ public final class Transformer {
   public static Node standardize(final Node expression) {
     InvariantChecks.checkNotNull(expression);
 
-    /* Reduce expression before standardizing. */
+    // Reduce expression before standardizing.
     final Node reducedExpression = Reducer.reduce(ReduceOptions.NEW_INSTANCE, expression);
 
-    final NodeTransformer tl = new NodeTransformer(Predicate.getStandardRuleset());
-    tl.walk(reducedExpression);
-    return tl.getResult().iterator().next();
+    final NodeTransformer transformer = new NodeTransformer(Predicate.getStandardRuleset());
+    return transform(reducedExpression, transformer);
   }
 
   /**
-   * Transform expression using given rule.
+   * Transforms an expression using the given rule.
    *
    * @param tree Expression to be transformed.
    * @param indicator Node kind or operation id of nodes rule is to be applied to.
@@ -190,12 +192,33 @@ public final class Transformer {
       final Node tree,
       final Enum<?> indicator,
       final TransformerRule rule) {
-    InvariantChecks.checkNotNull(tree);
-    return transformAll(Collections.singleton(tree), indicator, rule).get(0);
+    return transform(tree, newNodeTransformer(indicator, rule));
   }
 
   /**
-   * Transform collection of expressions using given rule.
+   * Transforms an expression using the given transformer.
+   *
+   * @param tree Expression to be transformed.
+   * @param transformer Transformer for be used.
+   *
+   * @return Transformed expression.
+   *
+   * @throws IllegalArgumentException if any of the parameters is {@code null}.
+   */
+  public static Node transform(final Node tree, final NodeTransformer transformer) {
+    InvariantChecks.checkNotNull(tree);
+    InvariantChecks.checkNotNull(transformer);
+
+    transformer.walk(tree);
+
+    final Node result = transformer.getResult().iterator().next();
+    transformer.reset();
+
+    return result;
+  }
+
+  /**
+   * Transforms a collection of expressions using the given rule.
    *
    * @param forest Collection of expressions to be transformed.
    * @param indicator Node kind or operation id of nodes rule is to be applied to.
@@ -206,17 +229,55 @@ public final class Transformer {
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
   public static List<Node> transformAll(
-      final Collection<Node> forest,
+      final Collection<? extends Node> forest,
       final Enum<?> indicator,
       final TransformerRule rule) {
+    return transformAll(forest, newNodeTransformer(indicator, rule));
+  }
+
+  /**
+   * Transforms a collection of expressions using the given rule.
+   *
+   * @param forest Collection of expressions to be transformed.
+   * @param transformer Transformer for be used.
+   *
+   * @return List of transformed expressions in order of base collection iteration.
+   *
+   * @throws IllegalArgumentException if any of the parameters is {@code null}.
+   */
+  public static List<Node> transformAll(
+      final Collection<? extends Node> forest,
+      final NodeTransformer transformer) {
     InvariantChecks.checkNotNull(forest);
+    InvariantChecks.checkNotNull(transformer);
+
+    transformer.walk(forest);
+
+    final List<Node> result = new ArrayList<>(transformer.getResult());
+    transformer.reset();
+
+    return result;
+  }
+
+  /**
+   * Constructs a node transformer for the given transformation rule.
+   *
+   * @param indicator Node kind or operation id of nodes rule is to be applied to.
+   * @param rule Transformation rule.
+   *
+   * @return Node transformer for the given transformation rule.
+   *
+   * @throws IllegalArgumentException if any of the parameters is {@code null}.
+   */
+  private static NodeTransformer newNodeTransformer(
+      final Enum<?> indicator,
+      final TransformerRule rule) {
     InvariantChecks.checkNotNull(indicator);
     InvariantChecks.checkNotNull(rule);
 
     final NodeTransformer transformer = new NodeTransformer();
     transformer.addRule(indicator, rule);
-    transformer.walk(forest);
 
-    return transformer.getResult();
+    return transformer;
   }
 }
