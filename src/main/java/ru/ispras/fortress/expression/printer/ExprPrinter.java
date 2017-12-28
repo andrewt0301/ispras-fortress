@@ -39,7 +39,7 @@ public enum ExprPrinter implements ExprTreePrinter {
   VERILOG(new VerilogExprPrinter());
 
   /** The implementation of the expression tree printer. */
-  private ExprTreePrinter printer;
+  private final ExprTreePrinter printer;
 
   private ExprPrinter(final ExprTreePrinter printer) {
     InvariantChecks.checkNotNull(printer);
