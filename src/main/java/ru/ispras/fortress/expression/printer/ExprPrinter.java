@@ -23,6 +23,9 @@ import ru.ispras.fortress.util.InvariantChecks;
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
 public enum ExprPrinter implements ExprTreePrinter {
+  /** The expression tree printer that produces well-formatted human readable expression text. */
+  TEXT(new TextExprPrinter()),
+
   /** The expression tree printer that produces Java code. */
   JAVA(new JavaExprPrinter()),
 

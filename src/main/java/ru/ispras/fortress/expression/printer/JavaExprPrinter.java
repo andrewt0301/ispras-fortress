@@ -75,7 +75,7 @@ public class JavaExprPrinter extends MapBasedPrinter {
     }
 
     @Override
-    public void onOperandBegin(NodeOperation expr, Node operand, int index) {
+    public void onOperandBegin(final NodeOperation expr, final Node operand, final int index) {
       final Enum<?> op = expr.getOperationId();
       if (0 != index || !(op instanceof StandardOperation)) {
         appendText(", ");
@@ -83,7 +83,7 @@ public class JavaExprPrinter extends MapBasedPrinter {
     }
 
     @Override
-    public void onOperandEnd(NodeOperation operation, Node operand, int index) {
+    public void onOperandEnd(final NodeOperation operation, final Node operand, final int index) {
       // Nothing
     }
 

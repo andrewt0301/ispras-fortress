@@ -23,7 +23,6 @@ public final class OperationDescription {
   /**
    * This enumeration contains the operation types.
    */
-
   public enum Type {
     /** The prefix operation. */
     PREFIX,
