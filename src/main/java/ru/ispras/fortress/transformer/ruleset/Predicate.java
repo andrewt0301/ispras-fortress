@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import ru.ispras.fortress.data.DataType;
+import ru.ispras.fortress.expression.ExprUtils;
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
@@ -108,7 +109,7 @@ abstract class OperationRule extends DependentRule {
 
   @Override
   public boolean isApplicable(final Node node) {
-    return isOperation(node, opId) && isApplicable((NodeOperation) node);
+    return ExprUtils.isOperation(node, opId) && isApplicable((NodeOperation) node);
   }
 
   /**
@@ -168,18 +169,6 @@ abstract class OperationRule extends DependentRule {
   }
 
   /**
-   * Check if node represents specific operation.
-   *
-   * @param node Node instance to be checked.
-   * @param opId Operation identifier.
-   *
-   * @return true if node is NodeOperations instance with given operation id.
-   */
-  public static boolean isOperation(final Node node, final Enum<?> opId) {
-    return node.getKind() == Node.Kind.OPERATION && ((NodeOperation) node).getOperationId() == opId;
-  }
-
-  /**
    * Find first boolean value among operands.
    *
    * @param op Operation which operands are to be looked.
@@ -201,7 +190,7 @@ abstract class OperationRule extends DependentRule {
   }
 
   static NodeOperation getDistinct(final Node node) {
-    if (isOperation(node, StandardOperation.NOTEQ)) {
+    if (ExprUtils.isOperation(node, StandardOperation.NOTEQ)) {
       return (NodeOperation) node;
     }
     final List<Node> operands = getNotEqOperands(node);
@@ -212,9 +201,9 @@ abstract class OperationRule extends DependentRule {
   }
 
   private static List<Node> getNotEqOperands(final Node node) {
-    if (isOperation(node, StandardOperation.NOT)) {
+    if (ExprUtils.isOperation(node, StandardOperation.NOT)) {
       final Node child = ((NodeOperation) node).getOperand(0);
-      if (isOperation(child, StandardOperation.EQ)) {
+      if (ExprUtils.isOperation(child, StandardOperation.EQ)) {
         return ((NodeOperation) child).getOperands();
       }
     }
@@ -244,7 +233,7 @@ final class UnrollClause extends OperationRule {
     for (int i = 0; i < in.getOperandCount(); ++i) {
       final Node operand = in.getOperand(i);
       if (isBoolean(operand) ||
-          isOperation(operand, this.getOperationId()) ||
+          ExprUtils.isOperation(operand, this.getOperationId()) ||
           appliesTo(operand)) {
         return true;
       }
@@ -254,7 +243,7 @@ final class UnrollClause extends OperationRule {
 
   private boolean appliesTo(final Node node) {
     if (getOperationId().equals(StandardOperation.AND)) {
-      return isOperation(node, StandardOperation.EQ) || isDistinct(node);
+      return ExprUtils.isOperation(node, StandardOperation.EQ) || isDistinct(node);
     }
     return false;
   }
@@ -292,7 +281,7 @@ final class UnrollClause extends OperationRule {
 
   private void flattenFilter(final NodeOperation op, final List<Node> operands) {
     for (final Node operand : op.getOperands()) {
-      if (isOperation(operand, this.getOperationId())) {
+      if (ExprUtils.isOperation(operand, this.getOperationId())) {
         this.flattenFilter((NodeOperation) operand, operands);
       } else if (!isBoolean(operand)) {
         operands.add(operand);
@@ -330,7 +319,7 @@ final class UnrollClause extends OperationRule {
     final Iterator<? extends Node> it = operands.iterator();
     while (it.hasNext()) {
       final Node operand = it.next();
-      if (isOperation(operand, StandardOperation.EQ)) {
+      if (ExprUtils.isOperation(operand, StandardOperation.EQ)) {
         constraint.addEquality(operand);
         it.remove();
       } else if (isDistinct(operand)) {
@@ -487,7 +476,7 @@ public final class Predicate {
       @Override
       public boolean isApplicable(final NodeOperation op) {
         final Node child = op.getOperand(0);
-        return isBoolean(child) || isOperation(child, StandardOperation.NOT);
+        return isBoolean(child) || ExprUtils.isOperation(child, StandardOperation.NOT);
       }
 
       @Override
