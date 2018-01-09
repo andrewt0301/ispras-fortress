@@ -51,7 +51,7 @@ public final class Reducer {
   private static class BindingRule implements TransformerRule {
     @Override
     public boolean isApplicable(final Node node) {
-      if (node.getKind() != Node.Kind.BINDING) {
+      if (ExprUtils.isBinding(node)) {
         return false;
       }
 
@@ -170,14 +170,14 @@ public final class Reducer {
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
   public static Node reduce(
-      final CalculatorEngine calculatorEngine,
+      final CalculatorEngine engine,
       final ValueProvider valueProvider,
       final ReduceOptions options,
       final Node expression) {
     InvariantChecks.checkNotNull(options);
     InvariantChecks.checkNotNull(expression);
 
-    OPERATION_RULE.setCalculatorEngine(calculatorEngine);
+    OPERATION_RULE.setCalculatorEngine(engine);
     VARIABLE_RULE.setValueProvider(valueProvider);
 
     try {
