@@ -1,11 +1,11 @@
 /*
  * Copyright 2013-2014 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -18,32 +18,32 @@ import ru.ispras.fortress.data.Data;
 
 /**
  * The Operation interface is a contract for objects implementing operations on data objects.
- * 
+ *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
- * 
+ *
  * @param <OperationId> Type of the enumeration that describes a group of operations.
  */
 public interface Operation<OperationId extends Enum<OperationId>> {
   /**
    * Returns the identifier of the operation.
-   * 
+   *
    * @return Operation identifier.
    */
   OperationId getOperationId();
 
   /**
    * Returns the range that describes the allowed arity of the operation.
-   * 
+   *
    * @return Range of operation arity.
    */
   ArityRange getOperationArity();
 
   /**
    * Performs an operation on the specified operands.
-   * 
-   * @param operands A variable of operands.
+   *
+   * @param operands A variable array of operands.
    * @return Data object containing the calculated value.
-   * 
+   *
    * @throws IllegalArgumentException if {@code null} is passed to the method.
    * @throws UnsupportedOperationException if the operation requires a number of arguments which is
    *         different from the one passed to the method.
@@ -52,8 +52,9 @@ public interface Operation<OperationId extends Enum<OperationId>> {
 
   /**
    * Performs type check on the specified operands.
-   * 
-   * @return true if operand types are valid for the operation.
+   *
+   * @param operands A variable array of operands.
+   * @return {@code true} if operand types are valid for the operation or {@code false} otherwise.
    */
   boolean validTypes(Data... operands);
 }
