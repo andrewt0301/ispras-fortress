@@ -201,6 +201,11 @@ public final class Reducer {
    * Uses default {@code engine} with {@link ReduceOptions#NEW_INSTANCE} policy.
    *
    * @see Reducer#reduce(CalculatorEngine, ReduceOptions, Node)
+   *
+   * @param expression Expression to be reduced.
+   * @return Reduced expression.
+   *
+   * @throws IllegalArgumentException if the parameter is {@code null}.
    */
   public static Node reduce(
       final Node expression) {
@@ -212,6 +217,12 @@ public final class Reducer {
    * Uses default {@code engine}.
    *
    * @see Reducer#reduce(CalculatorEngine, ReduceOptions, Node)
+   *
+   * @param options Option flags to tune the reduction strategy.
+   * @param expression Expression to be reduced.
+   * @return Reduced expression.
+   *
+   * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
   public static Node reduce(final ReduceOptions options, final Node expression) {
     return reduce(null, options, expression);
