@@ -110,8 +110,8 @@ enum StandardOperationsBool implements Operation<StandardOperation> {
 
     @Override
     public boolean validTypes(final Data... operands) {
-      return operands[0].getType().equals(DataType.BOOLEAN) &&
-             operands[1].getType().equals(operands[2].getType());
+      return operands[0].isType(DataType.BOOLEAN) &&
+             operands[1].isType(operands[2].getType());
     }
   },
 
