@@ -37,12 +37,22 @@ import ru.ispras.fortress.jaxb.JaxbNodeValueAdapter;
 @XmlSeeAlso(JaxbNodeValue.class)
 @XmlJavaTypeAdapter(JaxbNodeValueAdapter.class)
 public final class NodeValue extends Node {
-  /** Creates a new value node based on an integer value. */
+  /**
+   * Creates a new value node based on an integer value.
+   *
+   * @param value Integer value.
+   * @return New value node.
+   */
   public static NodeValue newInteger(final int value) {
     return new NodeValue(Data.newInteger(value));
   }
 
-  /** Creates a new value node based on a {@link BigInteger} value. */
+  /**
+   * Creates a new value node based on a {@link BigInteger} value.
+   *
+   * @param value {@link BigInteger} value.
+   * @return New value node.
+   */
   public static NodeValue newInteger(final BigInteger value) {
     return new NodeValue(Data.newInteger(value));
   }
@@ -72,7 +82,12 @@ public final class NodeValue extends Node {
     return new NodeValue(Data.newUnknown(value));
   }
 
-  /** Creates a new value node based on a bit vector. */
+  /**
+   * Creates a new value node based on a bit vector.
+   *
+   * @param value {@link BitVector} value.
+   * @return New value node.
+   */
   public static NodeValue newBitVector(final BitVector value) {
     return new NodeValue(Data.newBitVector(value));
   }
@@ -81,9 +96,9 @@ public final class NodeValue extends Node {
 
   /**
    * Creates a value syntax element based on a data object.
-   * 
+   *
    * @param data A data object.
-   * 
+   *
    * @throws IllegalArgumentException if the argument is {@code null}.
    */
   public NodeValue(final Data data) {
@@ -96,7 +111,7 @@ public final class NodeValue extends Node {
   /**
    * Constructor for making deep copies. The data field is copied by reference because the Data
    * class guarantees immutability.
-   * 
+   *
    * @param nodeValue Node value object to be copied.
    */
   private NodeValue(final NodeValue nodeValue) {
@@ -114,7 +129,7 @@ public final class NodeValue extends Node {
 
   /**
    * Returns the data object that encapsulates the value.
-   * 
+   *
    * @return A data object.
    */
   public Data getData() {
@@ -123,9 +138,9 @@ public final class NodeValue extends Node {
 
   /**
    * Changes the data value associated with the node. 
-   * 
+   *
    * @param data New data value to be associated with the node.
-   * 
+   *
    * @throws IllegalArgumentException if the argument is {@code null}. 
    */
   public void setData(final Data data) {
@@ -136,7 +151,7 @@ public final class NodeValue extends Node {
   /**
    * Returns an object that stores a data value. The exact type of the object returned
    * by the method depends on the data type.
-   * 
+   *
    * @return An object that store the value of the constant.
    */
   public Object getValue() {
