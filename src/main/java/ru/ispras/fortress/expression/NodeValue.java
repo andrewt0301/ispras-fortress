@@ -51,12 +51,23 @@ public final class NodeValue extends Node {
    *
    * @param value {@link BigInteger} value.
    * @return New value node.
+   *
+   * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
   public static NodeValue newInteger(final BigInteger value) {
     return new NodeValue(Data.newInteger(value));
   }
 
-  /** Creates a new value node based on a textual representation of an integer value. */
+  /**
+   * Creates a new value node based on a textual representation of an integer value.
+   *
+   * @param text String to be parsed.
+   * @param radix Radix to be used to parsing.
+   * @return New value node.
+   *
+   * @throws IllegalArgumentException if the {@code text} parameter equals {@code null}.
+   * @throws NumberFormatException if failed to parse the string.
+   */
   public static NodeValue newInteger(final String text, final int radix) {
     return new NodeValue(Data.newInteger(text, radix));
   }
@@ -76,6 +87,8 @@ public final class NodeValue extends Node {
    *
    * @param value String value.
    * @return New value node.
+   *
+   * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
   public static NodeValue newString(final String value) {
     return new NodeValue(Data.newString(value));
@@ -91,7 +104,12 @@ public final class NodeValue extends Node {
     return new NodeValue(Data.newBoolean(value));
   }
 
-  /** Creates a new value node based on a value of an unknown type. */
+  /**
+   * Creates a new value node based on a value of an unknown type.
+   *
+   * @param value Value of an unknown type.
+   * @return New value node.
+   */
   public static NodeValue newUnknown(final Object value) {
     return new NodeValue(Data.newUnknown(value));
   }

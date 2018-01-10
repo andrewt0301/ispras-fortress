@@ -93,6 +93,8 @@ public final class Data {
    *
    * @param value A String value.
    * @return An new data object.
+   *
+   * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
   public static Data newString(final String value) {
     InvariantChecks.checkNotNull(value);
