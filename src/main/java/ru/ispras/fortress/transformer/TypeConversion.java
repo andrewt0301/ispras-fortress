@@ -257,7 +257,7 @@ public final class TypeConversion {
     checkTrue(isIntegral(type));
 
     switch (type.getTypeId()) {
-    case BIT_VECTOR: return NodeValue.newBitVector(BitVector.valueOf(value, type.getSize()));
+    case BIT_VECTOR: return NodeValue.newBitVector(value, type.getSize());
     case LOGIC_BOOLEAN: return NodeValue.newBoolean(!value.equals(BigInteger.ZERO));
     case LOGIC_INTEGER: return NodeValue.newInteger(value);
     }
@@ -303,12 +303,12 @@ public final class TypeConversion {
   }
 
   private static NodeOperation bv2bool(final Node node) {
-    return Nodes.NOTEQ(node, newBitVector(BigInteger.ZERO, node.getDataType().getSize()));
+    return Nodes.NOTEQ(node, NodeValue.newBitVector(BigInteger.ZERO, node.getDataType().getSize()));
   }
 
   private static NodeOperation bool2bv(final Node node, final int size) {
-    return Nodes.ITE(node, newBitVector(BigInteger.ONE, size),
-                           newBitVector(BigInteger.ZERO, size));
+    return Nodes.ITE(node, NodeValue.newBitVector(BigInteger.ONE, size),
+                           NodeValue.newBitVector(BigInteger.ZERO, size));
   }
 
   private static NodeOperation int2bool(final Node node) {
@@ -318,9 +318,5 @@ public final class TypeConversion {
   private static NodeOperation bool2int(final Node node) {
     return Nodes.ITE(node, NodeValue.newInteger(BigInteger.ONE),
                            NodeValue.newInteger(BigInteger.ZERO));
-  }
-
-  private static NodeValue newBitVector(final BigInteger value, final int size) {
-    return NodeValue.newBitVector(BitVector.valueOf(value, size));
   }
 }
