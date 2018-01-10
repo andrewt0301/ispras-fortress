@@ -366,6 +366,8 @@ public final class Predicate {
    * (ite false e0 e1) -> e1
    * }
    * </pre>
+   *
+   * @return Map of transformer rulers.
    */
   public static Map<Enum<?>, TransformerRule> getStandardRuleset() {
     final Map<Enum<?>, TransformerRule> ruleset = new IdentityHashMap<>();
