@@ -158,8 +158,8 @@ public final class NodeVariable extends Node {
   }
 
   /**
-   * Constructor for making deep copies. The variable field is cloned because the Variable class
-   * is mutable.
+   * Constructor for making deep copies. The variable field is cloned because
+   * the {@link Variable} class is mutable.
    *
    * @param nodeVariable Node variable object to be copied.
    *
