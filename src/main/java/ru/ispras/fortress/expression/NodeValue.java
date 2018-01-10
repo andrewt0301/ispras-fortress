@@ -119,9 +119,24 @@ public final class NodeValue extends Node {
    *
    * @param value {@link BitVector} value.
    * @return New value node.
+   *
+   * @throws IllegalArgumentException if the {@code value} parameter equals {@code null}.
    */
   public static NodeValue newBitVector(final BitVector value) {
     return new NodeValue(Data.newBitVector(value));
+  }
+
+  /**
+   * Creates a new value node based on a bit vector constructed from the specified integer value.
+   *
+   * @param value A BigInteger object that stores binary data for a bit vector.
+   * @param size The bit vector size (in bits).
+   * @return New value node.
+   *
+   * @throws IllegalArgumentException if the {@code value} parameter equals {@code null}.
+   */
+  public static NodeValue newBitVector(final BigInteger value, final int size) {
+    return new NodeValue(Data.newBitVector(value, size));
   }
 
   private Data data;
