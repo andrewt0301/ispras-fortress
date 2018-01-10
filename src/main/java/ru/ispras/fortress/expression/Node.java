@@ -34,7 +34,7 @@ import ru.ispras.fortress.util.InvariantChecks;
 @XmlJavaTypeAdapter(JaxbNodeAdapter.class)
 public abstract class Node {
   /**
-   * The {@link Node#Kind} enumeration specifies the kind of an expression tree node.
+   * The {@link Node.Kind} enumeration specifies the kind of an expression tree node.
    *
    * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
    */
