@@ -1,11 +1,11 @@
 /*
  * Copyright 2014 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -14,8 +14,6 @@
 
 package ru.ispras.fortress.expression;
 
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
@@ -23,14 +21,15 @@ import java.util.Comparator;
 import java.util.Collections;
 
 import ru.ispras.fortress.data.DataType;
+import ru.ispras.fortress.util.InvariantChecks;
 
 /**
- * The NodeBinding class represents set of substitutions to be considered in underlying expression
- * subtree. List of bound variables considered immutable.
+ * The {@link NodeBinding} class represents set of substitutions to be considered in underlying
+ * expression subtree. List of bound variables considered immutable.
  */
 public final class NodeBinding extends Node {
   /**
-   * The BoundVariable class represents key-value binding pair.
+   * The {@link BoundVariable} class represents key-value binding pair.
    */
   public final static class BoundVariable {
     private final NodeVariable variable;
@@ -100,21 +99,21 @@ public final class NodeBinding extends Node {
       final List<BoundVariable> bindings) {
     super(Kind.BINDING);
 
-    checkNotNull(expression);
-    checkNotNull(bindings);
+    InvariantChecks.checkNotNull(expression);
+    InvariantChecks.checkNotNull(bindings);
 
     this.expr = expression;
 
     if (bindings.isEmpty()) {
       this.bindings = Collections.emptyList();
     } else {
-      this.bindings = new ArrayList<BoundVariable>(bindings);
+      this.bindings = new ArrayList<>(bindings);
     }
 
     final Comparator<BoundVariable> cmp = new Comparator<BoundVariable>() {
       public int compare(final BoundVariable lhs, final BoundVariable rhs) {
-        checkNotNull(lhs);
-        checkNotNull(rhs);
+        InvariantChecks.checkNotNull(lhs);
+        InvariantChecks.checkNotNull(rhs);
         return lhs.getVariable().getName().compareTo(rhs.getVariable().getName());
       }
     };
@@ -123,10 +122,9 @@ public final class NodeBinding extends Node {
   }
 
   /**
-   * Constructs a node based on an expression and a variable number of bindings. See constructor
-   * <code>
-   * NodeBinding(Node expression, List<BoundVariable> bindings)</code>.
-   * 
+   * Constructs a node based on an expression and a variable number of bindings.
+   * See constructor {@code NodeBinding(Node expression, List<BoundVariable> bindings)}.
+   *
    * @param expression Expression subtree.
    * @param bindings Bound variables.
    */
@@ -136,7 +134,7 @@ public final class NodeBinding extends Node {
 
   /**
    * Constructor to avoid redundant allocations. Do not incur sorting.
-   * 
+   *
    * @param expr Expression subtree.
    * @param bindings List of bound variables.
    */
@@ -152,7 +150,7 @@ public final class NodeBinding extends Node {
 
   /**
    * Returns list of bound variables associated with the node.
-   * 
+   *
    * @return Unmodifiable list of bound variables.
    */
   public List<BoundVariable> getBindings() {
@@ -161,7 +159,7 @@ public final class NodeBinding extends Node {
 
   /**
    * Returns underlying expression subtree.
-   * 
+   *
    * @return An expression.
    */
   public Node getExpression() {
@@ -178,9 +176,9 @@ public final class NodeBinding extends Node {
   /**
    * Create binding node with same bindings for given expression. Avoids additional costs of using
    * constructor directly.
-   * 
+   *
    * @param expression An expression subtree.
-   * 
+   *
    * @return A binding node object.
    */
   public NodeBinding bindTo(final Node expression) {
@@ -189,17 +187,17 @@ public final class NodeBinding extends Node {
 
   /**
    * Create bound variable using NodeVariable object and expression.
-   * 
+   *
    * @param variable An object representing bound variable.
    * @param value A bound value.
-   * 
+   *
    * @return A bound variable object.
    */
   public static BoundVariable bindVariable(
       final NodeVariable variable,
       final Node value) {
-    checkNotNull(variable);
-    checkNotNull(value);
+    InvariantChecks.checkNotNull(variable);
+    InvariantChecks.checkNotNull(value);
     return new BoundVariable(variable, value);
   }
 
