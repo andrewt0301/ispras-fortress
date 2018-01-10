@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2016 ISP RAS (http://www.ispras.ru)
+ * Copyright 2011-2017 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,8 +14,6 @@
 
 package ru.ispras.fortress.expression;
 
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
-
 import java.math.BigInteger;
 
 import javax.xml.bind.annotation.XmlSeeAlso;
@@ -27,6 +25,7 @@ import ru.ispras.fortress.data.types.bitvector.BitVector;
 import ru.ispras.fortress.data.types.datamap.DataMap;
 import ru.ispras.fortress.jaxb.JaxbNodeValue;
 import ru.ispras.fortress.jaxb.JaxbNodeValueAdapter;
+import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * The {@code NodeValue} class represents a node that stores a constant value.
@@ -62,17 +61,32 @@ public final class NodeValue extends Node {
     return new NodeValue(Data.newInteger(text, radix));
   }
 
-  /** Creates a new value node based on a double value. */
+  /**
+   * Creates a new value node based on a double value.
+   *
+   * @param value Double value.
+   * @return New value node.
+   */
   public static NodeValue newReal(final double value) {
     return new NodeValue(Data.newReal(value));
   }
 
-  /** Creates a new value node based on a String value. */
+  /**
+   * Creates a new value node based on a String value.
+   *
+   * @param value String value.
+   * @return New value node.
+   */
   public static NodeValue newString(final String value) {
     return new NodeValue(Data.newString(value));
   }
 
-  /** Creates a new value node based on a boolean value. */
+  /**
+   * Creates a new value node based on a boolean value.
+   *
+   * @param value Boolean value.
+   * @return New value node.
+   */
   public static NodeValue newBoolean(final boolean value) {
     return new NodeValue(Data.newBoolean(value));
   }
@@ -104,7 +118,7 @@ public final class NodeValue extends Node {
   public NodeValue(final Data data) {
     super(Kind.VALUE);
 
-    checkNotNull(data);
+    InvariantChecks.checkNotNull(data);
     this.data = data;
   }
 
@@ -144,7 +158,7 @@ public final class NodeValue extends Node {
    * @throws IllegalArgumentException if the argument is {@code null}. 
    */
   public void setData(final Data data) {
-    checkNotNull(data);
+    InvariantChecks.checkNotNull(data);
     this.data = data;
   }
 
