@@ -14,10 +14,11 @@
 
 package ru.ispras.fortress.data;
 
-import java.math.BigInteger;
 import ru.ispras.fortress.data.types.bitvector.BitVector;
 import ru.ispras.fortress.data.types.datamap.DataMap;
 import ru.ispras.fortress.util.InvariantChecks;
+
+import java.math.BigInteger;
 
 /**
  * The {@link Data} class is a storage of data being processed. This data will be used as

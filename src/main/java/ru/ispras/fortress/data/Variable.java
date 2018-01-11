@@ -14,12 +14,12 @@
 
 package ru.ispras.fortress.data;
 
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import ru.ispras.fortress.jaxb.JaxbVariableAdapter;
 import ru.ispras.fortress.util.InvariantChecks;
 import ru.ispras.fortress.util.Value;
 import ru.ispras.fortress.util.ValueConst;
+
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * The {@link Variable} class describes a variable that can be used as input or

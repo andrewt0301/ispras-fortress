@@ -14,20 +14,19 @@
 
 package ru.ispras.fortress.data;
 
-import java.math.BigInteger;
-import java.util.List;
-import java.util.ArrayList;
-
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
-
 import ru.ispras.fortress.data.types.Radix;
 import ru.ispras.fortress.data.types.bitvector.BitVector;
 import ru.ispras.fortress.data.types.datamap.DataMap;
 
+import java.math.BigInteger;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
 /**
- * The DataTypeId enumeration is used to specify type of data a solver operates with.
- * 
+ * The {@link DataTypeId} enumeration is used to specify type of data a solver operates with.
+ *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 public enum DataTypeId {

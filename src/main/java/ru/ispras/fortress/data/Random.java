@@ -34,8 +34,8 @@ public final class Random {
   private Random() {}
 
   /**
-   * The Engine interface is a common interface to be implemented by all generation engines. It
-   * provides methods for generating data and setting up the randomizer.
+   * The {@link Engine} interface is a common interface to be implemented by all generation engines.
+   * It provides methods for generating data and setting up the randomizer.
    *
    * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
    */
@@ -102,9 +102,9 @@ public final class Random {
   }
 
   /**
-   * The CompositeEngine class is a reusable implementation of the Engine interface. It uses a set
-   * of objects that provide facilities to set up the randomizer and to generate data of specific
-   * types.
+   * The {@link CompositeEngine} class is a reusable implementation of the Engine interface.
+   * It uses a set of objects that provide facilities to set up the randomizer and to generate data
+   * of specific types.
    *
    * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
    */

@@ -14,8 +14,7 @@
 
 package ru.ispras.fortress.data;
 
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
-import static ru.ispras.fortress.util.InvariantChecks.checkGreaterThanZero;
+import ru.ispras.fortress.util.InvariantChecks;
 
 import java.util.List;
 import java.util.Arrays;
@@ -23,9 +22,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The DataType class stores information about data types used by the solver engine. It maintains a
- * single instance for each data type (uniqueness is based on the data type identifier and the data
- * size).
+ * The {@link DataType} class stores information about data types used by the solver engine.
+ * It maintains a single instance for each data type (uniqueness is based on the data type
+ * identifier and the data size).
  *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
@@ -68,15 +67,15 @@ public final class DataType {
    * @return Bit vector type
    */
   public static DataType BIT_VECTOR(final int size) {
-    checkGreaterThanZero(size);
+    InvariantChecks.checkGreaterThanZero(size);
     return newDataType(DataTypeId.BIT_VECTOR, size);
   }
 
   public static DataType MAP(
       final DataType keyType,
       final DataType valueType) {
-    checkNotNull(keyType);
-    checkNotNull(valueType);
+    InvariantChecks.checkNotNull(keyType);
+    InvariantChecks.checkNotNull(valueType);
 
     return newDataType(DataTypeId.MAP, keyType, valueType);
   }
@@ -102,7 +101,7 @@ public final class DataType {
   public static DataType newDataType(
       final DataTypeId typeId,
       final Object... parameters) {
-    checkNotNull(typeId);
+    InvariantChecks.checkNotNull(typeId);
 
     final List<Object> list = Arrays.asList(parameters);
     typeId.validate(list);
@@ -189,7 +188,7 @@ public final class DataType {
    * @return A new data object.
    */
   public Data valueOf(final String value, final int radix) {
-    checkNotNull(value);
+    InvariantChecks.checkNotNull(value);
 
     // Cleans extra spaces
     final String cleanValue = value.replaceAll("\\s?", "");
@@ -197,7 +196,7 @@ public final class DataType {
   }
 
   public static DataType typeOf(final String value) {
-    checkNotNull(value);
+    InvariantChecks.checkNotNull(value);
 
     if (DATA_TYPES.containsKey(value)) {
       return DATA_TYPES.get(value);
