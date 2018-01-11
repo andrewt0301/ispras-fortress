@@ -17,6 +17,7 @@ package ru.ispras.fortress.transformer.ruleset;
 import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
 import static ru.ispras.fortress.util.InvariantChecks.checkTrue;
 
+import ru.ispras.fortress.expression.ExprUtils;
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
@@ -57,7 +58,7 @@ class EqualityConstraint {
 
   public void addEquality(final Node node) {
     checkNotNull(node);
-    checkTrue(isOperation(node, StandardOperation.EQ));
+    checkTrue(ExprUtils.isOperation(node, StandardOperation.EQ));
 
     if (this.hasKnownConflict()) {
       return;
@@ -126,7 +127,7 @@ class EqualityConstraint {
 
   public void addInequality(Node node) {
     checkNotNull(node);
-    checkTrue(isOperation(node, StandardOperation.NOTEQ));
+    checkTrue(ExprUtils.isOperation(node, StandardOperation.NOTEQ));
 
     if (this.hasKnownConflict()) {
       return;
@@ -264,7 +265,7 @@ class EqualityConstraint {
     final List<NodeOperation> filtered = cache.filtered;
     for (int i = 0; i < filtered.size(); ++i) {
       final NodeOperation op = filtered.get(i);
-      if (isOperation(op, StandardOperation.NOTEQ)) {
+      if (ExprUtils.isOperation(op, StandardOperation.NOTEQ)) {
         // inequalities are split pairwise
         filtered.set(i, NOTEQ(op.getOperand(0), op.getOperand(1)));
       }
@@ -300,12 +301,6 @@ class EqualityConstraint {
 
   private static NodeOperation NOTEQ(final Node lhs, final Node rhs) {
     return Nodes.NOT(Nodes.EQ(lhs, rhs));
-  }
-
-  private static boolean isOperation(final Node node, final Enum<?> opId) {
-    checkNotNull(node);
-    return node.getKind() == Node.Kind.OPERATION &&
-           ((NodeOperation) node).getOperationId() == opId;
   }
 }
 
