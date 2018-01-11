@@ -1,11 +1,11 @@
 /*
- * Copyright 2013-2015 ISP RAS (http://www.ispras.ru)
- * 
+ * Copyright 2013-2017 ISP RAS (http://www.ispras.ru)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -14,19 +14,18 @@
 
 package ru.ispras.fortress.solver.constraint;
 
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
+import ru.ispras.fortress.data.Data;
+import ru.ispras.fortress.data.DataType;
+import ru.ispras.fortress.data.Variable;
+import ru.ispras.fortress.util.InvariantChecks;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import ru.ispras.fortress.data.Data;
-import ru.ispras.fortress.data.DataType;
-import ru.ispras.fortress.data.Variable;
-
 /**
  * The ConstraintBuilder class is a builder that creates Constraint objects.
- * 
+ *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 public final class ConstraintBuilder {
@@ -38,7 +37,7 @@ public final class ConstraintBuilder {
 
   /**
    * Constructs a ConstraintBuilder object with default values.
-   * 
+   *
    * Default name is a pseudo random UUID (see java.util.UUID.randomUUID()). Default description is
    * an empty string. Default constraint type is formula-based (ConstraintKind.FORMULA_BASED).
    */
@@ -57,7 +56,7 @@ public final class ConstraintBuilder {
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
   public ConstraintBuilder(final ConstraintKind kind) {
-    checkNotNull(kind);
+    InvariantChecks.checkNotNull(kind);
 
     this.name = UUID.randomUUID().toString();
     this.description = "";
@@ -75,7 +74,7 @@ public final class ConstraintBuilder {
    * @throws IllegalArgumentException if the parameter is {@code null}.
    */
   public ConstraintBuilder(final Constraint constraint) {
-    checkNotNull(constraint);
+    InvariantChecks.checkNotNull(constraint);
 
     this.name = constraint.getName();
     this.kind = constraint.getKind();
@@ -102,7 +101,7 @@ public final class ConstraintBuilder {
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
   public void setName(final String name) {
-    checkNotNull(name);
+    InvariantChecks.checkNotNull(name);
     this.name = name;
   }
 
@@ -114,7 +113,7 @@ public final class ConstraintBuilder {
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
   public void setDescription(final String description) {
-    checkNotNull(description);
+    InvariantChecks.checkNotNull(description);
     this.description = description;
   }
 
@@ -126,7 +125,7 @@ public final class ConstraintBuilder {
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
   public void setKind(final ConstraintKind kind) {
-    checkNotNull(kind);
+    InvariantChecks.checkNotNull(kind);
     this.kind = kind;
   }
 
@@ -138,7 +137,7 @@ public final class ConstraintBuilder {
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
   public void setInnerRep(final Object value) {
-    checkNotNull(value);
+    InvariantChecks.checkNotNull(value);
     this.representation = value;
   }
 
@@ -154,7 +153,7 @@ public final class ConstraintBuilder {
    *         to redefine the variable). See the internal addVariable method.
    */
   public void addVariables(final Iterable<Variable> variables) {
-    checkNotNull(variables);
+    InvariantChecks.checkNotNull(variables);
 
     for (final Variable variable : variables) {
       addVariable(variable);
@@ -171,7 +170,7 @@ public final class ConstraintBuilder {
    *         (an illegal attempt to redefine the variable). See the internal addVariable method.
    */
   public void addVariableCopies(final Iterable<Variable> variables) {
-    checkNotNull(variables);
+    InvariantChecks.checkNotNull(variables);
 
     for (final Variable variable : variables) {
       addVariable(variable.getName(), variable.getData());
@@ -192,8 +191,8 @@ public final class ConstraintBuilder {
    *         redefine the variable). See the internal addVariable method.
    */
   public Variable addVariable(final String name, final DataType type) {
-    checkNotNull(name);
-    checkNotNull(type);
+    InvariantChecks.checkNotNull(name);
+    InvariantChecks.checkNotNull(type);
 
     return addVariable(new Variable(name, type));
   }
@@ -212,8 +211,8 @@ public final class ConstraintBuilder {
    *         variable). See the internal addVariable method.
    */
   public Variable addVariable(final String name, final Data data) {
-    checkNotNull(name);
-    checkNotNull(data);
+    InvariantChecks.checkNotNull(name);
+    InvariantChecks.checkNotNull(data);
 
     return addVariable(new Variable(name, data));
   }
@@ -234,7 +233,7 @@ public final class ConstraintBuilder {
    *         variable).
    */
   private Variable addVariable(final Variable variable) {
-    checkNotNull(variable);
+    InvariantChecks.checkNotNull(variable);
 
     if (!variables.containsKey(variable.getName())) {
       variables.put(variable.getName(), variable);

@@ -14,16 +14,15 @@
 
 package ru.ispras.fortress.solver.constraint;
 
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
+import ru.ispras.fortress.data.Data;
+import ru.ispras.fortress.data.Variable;
+import ru.ispras.fortress.util.InvariantChecks;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import ru.ispras.fortress.data.Data;
-import ru.ispras.fortress.data.Variable;
 
 /**
  * The Constraint class stores a description of a constraint and provides facilities to perform
@@ -60,11 +59,11 @@ public final class Constraint {
       final String description,
       final Map<String, Variable> variables,
       final Object representation) {
-    checkNotNull(name);
-    checkNotNull(kind);
-    checkNotNull(description);
-    checkNotNull(variables);
-    checkNotNull(representation);
+    InvariantChecks.checkNotNull(name);
+    InvariantChecks.checkNotNull(kind);
+    InvariantChecks.checkNotNull(description);
+    InvariantChecks.checkNotNull(variables);
+    InvariantChecks.checkNotNull(representation);
 
     if (representation.getClass() != kind.getInnerRepClass()) {
       throw new IllegalArgumentException(String.format(ILLEGAL_IR_CLASS,
@@ -126,8 +125,8 @@ public final class Constraint {
    *         value type does not match the type of the variable.
    */
   public void setVariableValue(final String name, final Data value) {
-    checkNotNull(name);
-    checkNotNull(value);
+    InvariantChecks.checkNotNull(name);
+    InvariantChecks.checkNotNull(value);
 
     if (!variables.containsKey(name)) {
       throw new IllegalArgumentException(String.format(UNDEFINED_VARIABLE, name));
@@ -151,7 +150,7 @@ public final class Constraint {
    * @throws IllegalArgumentException if the name parameter equals null.
    */
   public Variable findVariable(final String name) {
-    checkNotNull(name);
+    InvariantChecks.checkNotNull(name);
     return variables.get(name);
   }
 
