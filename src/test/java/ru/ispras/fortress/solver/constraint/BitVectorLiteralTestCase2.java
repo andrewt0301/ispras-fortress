@@ -14,15 +14,16 @@
 
 package ru.ispras.fortress.solver.constraint;
 
-import java.util.Arrays;
-import org.junit.Assert;
-
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.data.types.datamap.DataMap;
 import ru.ispras.fortress.solver.xml.XMLConstraintLoader;
 import ru.ispras.fortress.solver.xml.XMLNotLoadedException;
+
+import org.junit.Assert;
+
+import java.util.Arrays;
 
 // TODO: The test is disabled. Need to investigate.
 // It is not clear why it is needed and why it fails.

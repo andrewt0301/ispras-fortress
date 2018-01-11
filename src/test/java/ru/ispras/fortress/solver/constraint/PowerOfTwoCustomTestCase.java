@@ -14,11 +14,6 @@
 
 package ru.ispras.fortress.solver.constraint;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import ru.ispras.fortress.calculator.ArityRange;
 import ru.ispras.fortress.calculator.Calculator;
 import ru.ispras.fortress.calculator.CalculatorEngine;
@@ -38,11 +33,12 @@ import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.Nodes;
 import ru.ispras.fortress.solver.Solver;
-import ru.ispras.fortress.solver.constraint.Constraint;
-import ru.ispras.fortress.solver.constraint.ConstraintBuilder;
-import ru.ispras.fortress.solver.constraint.ConstraintKind;
-import ru.ispras.fortress.solver.constraint.Formulas;
 import ru.ispras.fortress.solver.function.Function;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public final class PowerOfTwoCustomTestCase extends GenericSolverTestBase {
   public PowerOfTwoCustomTestCase() {

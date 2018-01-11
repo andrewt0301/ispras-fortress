@@ -14,9 +14,6 @@
 
 package ru.ispras.fortress.solver.constraint;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.NodeValue;
@@ -24,6 +21,9 @@ import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.Nodes;
 import ru.ispras.fortress.transformer.ReduceOptions;
 import ru.ispras.fortress.transformer.Reducer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class StandardCalculatorTestCase extends GenericSolverTestBase {
   public StandardCalculatorTestCase() {

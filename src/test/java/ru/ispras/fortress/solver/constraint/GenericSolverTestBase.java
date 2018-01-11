@@ -14,13 +14,6 @@
 
 package ru.ispras.fortress.solver.constraint;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import ru.ispras.fortress.calculator.Calculator;
 import ru.ispras.fortress.calculator.CalculatorEngine;
 import ru.ispras.fortress.data.Variable;
@@ -36,7 +29,6 @@ import ru.ispras.fortress.solver.Solver;
 import ru.ispras.fortress.solver.SolverId;
 import ru.ispras.fortress.solver.SolverResult;
 import ru.ispras.fortress.solver.SolverResultChecker;
-import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.xml.XMLConstraintLoader;
 import ru.ispras.fortress.solver.xml.XMLConstraintSaver;
 import ru.ispras.fortress.solver.xml.XMLNotLoadedException;
@@ -45,6 +37,12 @@ import ru.ispras.fortress.transformer.ReduceOptions;
 import ru.ispras.fortress.transformer.Reducer;
 import ru.ispras.fortress.transformer.Transformer;
 
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;

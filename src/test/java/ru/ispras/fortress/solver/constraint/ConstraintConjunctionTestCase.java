@@ -14,11 +14,11 @@
 
 package ru.ispras.fortress.solver.constraint;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.Nodes;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConstraintConjunctionTestCase extends GenericSolverTestBase {
   public ConstraintConjunctionTestCase() {

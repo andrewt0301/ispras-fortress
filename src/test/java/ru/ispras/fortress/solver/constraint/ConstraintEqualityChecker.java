@@ -14,16 +14,16 @@
 
 package ru.ispras.fortress.solver.constraint;
 
-import java.util.Iterator;
-
-import org.junit.Assert;
-
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeBinding;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
+
+import org.junit.Assert;
+
+import java.util.Iterator;
 
 public final class ConstraintEqualityChecker {
   private ConstraintEqualityChecker() {}

@@ -14,15 +14,15 @@
 
 package ru.ispras.fortress.solver.constraint;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.Nodes;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AbsCustomOperationTestCase extends GenericSolverTestBase {
   public AbsCustomOperationTestCase() {

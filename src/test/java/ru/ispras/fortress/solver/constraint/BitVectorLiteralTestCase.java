@@ -14,13 +14,13 @@
 
 package ru.ispras.fortress.solver.constraint;
 
-import java.util.Arrays;
-
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.Nodes;
+
+import java.util.Arrays;
 
 /**
  * The constraint as described in the SMT-LIB language:

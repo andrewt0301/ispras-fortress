@@ -19,10 +19,6 @@ import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.Nodes;
-import ru.ispras.fortress.solver.constraint.Constraint;
-import ru.ispras.fortress.solver.constraint.ConstraintBuilder;
-import ru.ispras.fortress.solver.constraint.ConstraintKind;
-import ru.ispras.fortress.solver.constraint.Formulas;
 
 import java.util.ArrayList;
 import java.util.List;

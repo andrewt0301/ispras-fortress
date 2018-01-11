@@ -14,10 +14,10 @@
 
 package ru.ispras.fortress.solver.constraint;
 
-import java.util.Collections;
-
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.NodeValue;
+
+import java.util.Collections;
 
 public class NoVariableTestCase extends GenericSolverTestBase {
   public NoVariableTestCase() {

@@ -14,7 +14,6 @@
 
 package ru.ispras.fortress.solver.constraint;
 
-
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.data.types.bitvector.BitVector;

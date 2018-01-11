@@ -14,10 +14,10 @@
 
 package ru.ispras.fortress.solver.constraint;
 
+import ru.ispras.fortress.data.Variable;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import ru.ispras.fortress.data.Variable;
 
 public class ConstraintDisjunctionTestCase extends GenericSolverTestBase {
   public ConstraintDisjunctionTestCase() {

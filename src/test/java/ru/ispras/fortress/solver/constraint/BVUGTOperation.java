@@ -14,15 +14,15 @@
 
 package ru.ispras.fortress.solver.constraint;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.Nodes;
 import ru.ispras.fortress.solver.constraint.GenericSolverTestBase.SampleConstraint;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The constraint as described in the SMT-LIB language:

@@ -14,12 +14,13 @@
 
 package ru.ispras.fortress.solver.constraint;
 
-import java.util.Collections;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.Nodes;
+
+import java.util.Collections;
 
 public class IntegerAddTestCase extends GenericSolverTestBase {
   public IntegerAddTestCase() {
