@@ -17,8 +17,8 @@ package ru.ispras.fortress.data.types.bitvector;
 import static ru.ispras.fortress.data.types.bitvector.BitVectorMath.Operands.BINARY;
 import static ru.ispras.fortress.data.types.bitvector.BitVectorMath.Operands.UNARY;
 
-import java.math.BigInteger;
 import ru.ispras.fortress.util.InvariantChecks;
+import java.math.BigInteger;
 
 /**
  * The {@code BitVectorMath} class contains utility methods and classes to perform operations

@@ -14,10 +14,10 @@
 
 package ru.ispras.fortress.data.types.bitvector;
 
+import ru.ispras.fortress.util.InvariantChecks;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * The {@link BitVectorMultiMapping} class implements logic that allows concatenating several bit

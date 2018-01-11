@@ -14,12 +14,12 @@
 
 package ru.ispras.fortress.data.types.bitvector;
 
-import java.math.BigInteger;
-import java.util.Arrays;
-
 import ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.IAction;
 import ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm.IOperation;
 import ru.ispras.fortress.util.InvariantChecks;
+
+import java.math.BigInteger;
+import java.util.Arrays;
 
 /**
  * The {@link BitVector} class provides an interface for working with bit vectors ("raw" binary

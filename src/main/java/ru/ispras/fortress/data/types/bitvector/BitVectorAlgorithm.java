@@ -1,11 +1,11 @@
 /*
  * Copyright 2012-2015 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -14,7 +14,7 @@
 
 package ru.ispras.fortress.data.types.bitvector;
 
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
+import ru.ispras.fortress.util.InvariantChecks;
 
 public final class BitVectorAlgorithm {
   private BitVectorAlgorithm() {}
@@ -98,7 +98,7 @@ public final class BitVectorAlgorithm {
   }
 
   public static void fill(final BitVector dest, final byte value) {
-    checkNotNull(dest);
+    InvariantChecks.checkNotNull(dest);
 
     for (int index = 0; index < dest.getByteSize(); ++index) {
       dest.setByte(index, value);
@@ -106,7 +106,7 @@ public final class BitVectorAlgorithm {
   }
 
   public static void generate(final BitVector dest, final IOperation op) {
-    checkNotNull(dest);
+    InvariantChecks.checkNotNull(dest);
 
     for (int index = 0; index < dest.getByteSize(); ++index) {
       dest.setByte(index, op.run());
@@ -114,8 +114,8 @@ public final class BitVectorAlgorithm {
   }
 
   public static void copy(final BitVector src, final BitVector dest) {
-    checkNotNull(src);
-    checkNotNull(dest);
+    InvariantChecks.checkNotNull(src);
+    InvariantChecks.checkNotNull(dest);
 
     if (src == dest) {
       return;
@@ -132,8 +132,8 @@ public final class BitVectorAlgorithm {
       final BitVector dest,
       final int destPos,
       final int bitSize) {
-    checkNotNull(src);
-    checkNotNull(dest);
+    InvariantChecks.checkNotNull(src);
+    InvariantChecks.checkNotNull(dest);
 
     if (src == dest && srcPos == destPos) {
       return;
@@ -146,8 +146,8 @@ public final class BitVectorAlgorithm {
   }
 
   public static void forEach(final BitVector src, final IAction op) {
-    checkNotNull(src);
-    checkNotNull(op);
+    InvariantChecks.checkNotNull(src);
+    InvariantChecks.checkNotNull(op);
 
     for (int index = 0; index < src.getByteSize(); ++index) {
       op.run(src.getByte(index));
@@ -155,8 +155,8 @@ public final class BitVectorAlgorithm {
   }
 
   public static void forEachReverse(final BitVector src, final IAction op) {
-    checkNotNull(src);
-    checkNotNull(op);
+    InvariantChecks.checkNotNull(src);
+    InvariantChecks.checkNotNull(op);
 
     for (int index = src.getByteSize() - 1; index >= 0; --index) {
       op.run(src.getByte(index));
@@ -164,8 +164,8 @@ public final class BitVectorAlgorithm {
   }
 
   public static int mismatch(final BitVector src1, final BitVector src2) {
-    checkNotNull(src1);
-    checkNotNull(src2);
+    InvariantChecks.checkNotNull(src1);
+    InvariantChecks.checkNotNull(src2);
 
     checkEqualSize(src1.getBitSize(), src2.getBitSize());
 
@@ -186,9 +186,9 @@ public final class BitVectorAlgorithm {
       final BitVector src1,
       final BitVector src2,
       final IBinaryPredicate op) {
-    checkNotNull(src1);
-    checkNotNull(src2);
-    checkNotNull(op);
+    InvariantChecks.checkNotNull(src1);
+    InvariantChecks.checkNotNull(src2);
+    InvariantChecks.checkNotNull(op);
 
     checkEqualSize(src1.getBitSize(), src2.getBitSize());
 
@@ -206,8 +206,8 @@ public final class BitVectorAlgorithm {
   }
 
   public static int mismatchReverse(final BitVector src1, final BitVector src2) {
-    checkNotNull(src1);
-    checkNotNull(src2);
+    InvariantChecks.checkNotNull(src1);
+    InvariantChecks.checkNotNull(src2);
 
     checkEqualSize(src1.getBitSize(), src2.getBitSize());
 
@@ -228,9 +228,9 @@ public final class BitVectorAlgorithm {
       final BitVector src1, 
       final BitVector src2,
       final IBinaryPredicate op) {
-    checkNotNull(src1);
-    checkNotNull(src2);
-    checkNotNull(op);
+    InvariantChecks.checkNotNull(src1);
+    InvariantChecks.checkNotNull(src2);
+    InvariantChecks.checkNotNull(op);
 
     checkEqualSize(src1.getBitSize(), src2.getBitSize());
 
@@ -251,9 +251,9 @@ public final class BitVectorAlgorithm {
       final BitVector src,
       final BitVector dest,
       final IUnaryOperation op) {
-    checkNotNull(src);
-    checkNotNull(dest);
-    checkNotNull(op);
+    InvariantChecks.checkNotNull(src);
+    InvariantChecks.checkNotNull(dest);
+    InvariantChecks.checkNotNull(op);
 
     checkEqualSize(src.getBitSize(), dest.getBitSize());
 
@@ -267,10 +267,10 @@ public final class BitVectorAlgorithm {
       final BitVector src2,
       final BitVector dest,
       final IBinaryOperation op) {
-    checkNotNull(src1);
-    checkNotNull(src2);
-    checkNotNull(dest);
-    checkNotNull(op);
+    InvariantChecks.checkNotNull(src1);
+    InvariantChecks.checkNotNull(src2);
+    InvariantChecks.checkNotNull(dest);
+    InvariantChecks.checkNotNull(op);
 
     checkEqualSize(src1.getBitSize(), dest.getBitSize());
     checkEqualSize(src2.getBitSize(), dest.getBitSize());
