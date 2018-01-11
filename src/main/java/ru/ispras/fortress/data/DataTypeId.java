@@ -19,10 +19,10 @@ import ru.ispras.fortress.data.types.bitvector.BitVector;
 import ru.ispras.fortress.data.types.datamap.DataMap;
 
 import java.math.BigInteger;
-import java.util.List;
 import java.util.ArrayList;
-import java.util.regex.Pattern;
+import java.util.List;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * The {@link DataTypeId} enumeration is used to specify type of data a solver operates with.
