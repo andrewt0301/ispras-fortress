@@ -290,6 +290,7 @@ public final class Randomizer {
    * Returns a random number of the given bit size (width).
    *
    * @param width the bit size.
+   * @param signed flag indicating that the result must be a signed value.
    * @return a random number.
    */
   public BigInteger nextBigIntegerField(final int width, final boolean signed) {
