@@ -61,7 +61,8 @@ public final class ESExprParser {
   /**
    * Returns next complete S-expression read from input.
    *
-   * @return complete S-expression
+   * @return complete S-expression.
+   * @throws IOException if an I/O error occurs.
    */
   public ESExpr next() throws IOException {
     final int token = nextToken();
@@ -121,7 +122,7 @@ public final class ESExprParser {
    * standalone '.' (dot) atoms as separate tokens.
    *
    * @return token been read.
-   * @throws  IOException if an I/O error occurs.
+   * @throws IOException if an I/O error occurs.
    */
   private int nextToken() throws IOException {
     final int token = tokenizer.nextToken();
