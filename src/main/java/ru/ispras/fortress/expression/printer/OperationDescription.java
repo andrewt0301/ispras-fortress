@@ -79,7 +79,7 @@ public final class OperationDescription {
 
   /**
    * Constructs an operation description.
-   * 
+   *
    * @param prefix the operation prefix.
    * @param infix the operation infix.
    * @param suffix the operation suffix.
@@ -93,7 +93,7 @@ public final class OperationDescription {
 
   /**
    * Constructs an operation description.
-   * 
+   *
    * @param sign the operation sign.
    * @param type the operation type.
    * @param addSpaces the flag indicating whether spaces before and after the operation sign are
@@ -135,7 +135,7 @@ public final class OperationDescription {
 
   /**
    * Constructs an operation description.
-   * 
+   *
    * @param sign the operation signs.
    * @param addSpaces the flag indicating whether spaces before and after the operation sign are
    *        required.
@@ -160,7 +160,7 @@ public final class OperationDescription {
 
   /**
    * Constructs an operation description.
-   * 
+   *
    * @param sign the operation signs.
    * @param addSpaces the flag indicating whether spaces before and after the operation sign are
    *        required.
@@ -173,7 +173,7 @@ public final class OperationDescription {
 
   /**
    * Constructs an operation description.
-   * 
+   *
    * @param sign the operation signs.
    * @param order the order of operands.
    */
@@ -185,7 +185,7 @@ public final class OperationDescription {
 
   /**
    * Constructs an operation description.
-   * 
+   *
    * @param sign the operation signs.
    */
   public OperationDescription(final String[] sign) {
@@ -194,7 +194,7 @@ public final class OperationDescription {
 
   /**
    * Returns the operation prefix (string written before the first operand).
-   * 
+   *
    * @return the operation prefix.
    */
   public String getPrefix() {
@@ -203,7 +203,7 @@ public final class OperationDescription {
 
   /**
    * Returns the operation infix (string written between two operands).
-   * 
+   *
    * @return the operation infix.
    */
   public String getInfix() {
@@ -211,10 +211,11 @@ public final class OperationDescription {
   }
 
   /**
-   * Returns the <code>i</code>-th operation infix (string written between <code>i</code>-th and
-   * <code>(i+1)</code>-th operands).
-   * 
-   * @return the <code>i</code>-th operation infix.
+   * Returns the {@code i}-th operation infix (string written between {@code i}-th and
+   * {@code i+1}-th operands).
+   *
+   * @param i Infix index.
+   * @return the {@code i}-th operation infix.
    */
   public String getInfix(final int i) {
     return infix.length == 1 ? infix[0] : infix[i];
@@ -222,7 +223,7 @@ public final class OperationDescription {
 
   /**
    * Returns the operation suffix (string written after the last operand).
-   * 
+   *
    * @return the operation suffix.
    */
   public String getSuffix() {
