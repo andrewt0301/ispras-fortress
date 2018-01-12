@@ -128,6 +128,7 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
    * Saves the generated SMT-LIB representation to a text file.
    *
    * @param fileName The name of the target file.
+   * @param textBuilder Build to put text to be printed in the console.
    * @throws IOException if failed to create the output file.
    */
   public void saveToFile(

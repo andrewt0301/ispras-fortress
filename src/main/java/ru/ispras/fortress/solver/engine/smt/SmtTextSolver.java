@@ -14,19 +14,6 @@
 
 package ru.ispras.fortress.solver.engine.smt;
 
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.Reader;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
-
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.DataTypeId;
@@ -51,7 +38,19 @@ import ru.ispras.fortress.solver.constraint.ConstraintKind;
 import ru.ispras.fortress.solver.constraint.Formulas;
 import ru.ispras.fortress.solver.function.Function;
 import ru.ispras.fortress.solver.function.StandardFunction;
+import ru.ispras.fortress.util.InvariantChecks;
 import ru.ispras.fortress.util.Pair;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * The {@link SmtTextSolver} class implements logic of a constraint solver that uses external
@@ -112,7 +111,7 @@ public abstract class SmtTextSolver extends SolverBase {
 
   @Override
   public SolverResult solve(final Constraint constraint) {
-    checkNotNull(constraint);
+    InvariantChecks.checkNotNull(constraint);
 
     supportedKindCheck(constraint.getKind());
     solverFileExistsCheck(getSolverPath());
