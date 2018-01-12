@@ -110,6 +110,20 @@ public final class ExprUtils {
   }
 
   /**
+   * Checks whether the expression is represented by an operation.
+   *
+   * @param expr Expression to be checked.
+   * @return {@code true} if the expression is represented by an operation or
+   *         {@code false} otherwise.
+   *
+   * @throws IllegalArgumentException if the argument is {@code null}.
+   */
+  public static boolean isOperation(final Node expr) {
+    InvariantChecks.checkNotNull(expr);
+    return Node.Kind.OPERATION == expr.getKind();
+  }
+
+  /**
    * Checks whether the expression is represented by the specified operation.
    *
    * @param expr Expression to be checked.
@@ -121,10 +135,8 @@ public final class ExprUtils {
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
   public static <T extends Enum<? extends T>> boolean isOperation(final Node expr, final T opId) {
-    InvariantChecks.checkNotNull(expr);
     InvariantChecks.checkNotNull(opId);
-    return Node.Kind.OPERATION == expr.getKind() &&
-           ((NodeOperation) expr).getOperationId() == opId;
+    return isOperation(expr) && ((NodeOperation) expr).getOperationId() == opId;
   }
 
   /**
@@ -140,10 +152,9 @@ public final class ExprUtils {
    *         if the list of operation identifiers is empty.
    */
   public static <T extends Enum<? extends T>> boolean isOperation(final Node expr, final Collection<T> opIds) {
-    InvariantChecks.checkNotNull(expr);
     InvariantChecks.checkNotEmpty(opIds);
 
-    if (Node.Kind.OPERATION == expr.getKind()) {
+    if (isOperation(expr)) {
       final Enum<?> exprOpId = ((NodeOperation) expr).getOperationId();
       for (final T opId : opIds) {
         if (exprOpId == opId) {
@@ -333,10 +344,10 @@ public final class ExprUtils {
   /**
    * Performs logical conjunction {@code (exprs[0] && ... && exprs[n-1])} of the specified
    * expressions and returns the resulting expression.
-   * 
+   *
    * @param exprs Expressions to be combined.
    * @return A logical conjunction of the specified expressions.
-   * 
+   *
    * @throws IllegalArgumentException if any argument in the array is {@code null};
    *         if no arguments are provided; if an argument is not a logical expression.
    */
