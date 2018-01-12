@@ -14,18 +14,17 @@
 
 package ru.ispras.fortress.esexpr;
 
+import ru.ispras.fortress.util.InvariantChecks;
+
 import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.Reader;
 import java.io.StreamTokenizer;
 import java.io.StringReader;
-
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
-
-import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * ESExprParser translates Lisp-like syntax into {@link ESExpr}.
@@ -33,8 +32,8 @@ import ru.ispras.fortress.util.InvariantChecks;
  * does not support multiline symbols and treats them as sequence of expressions.
  */
 public final class ESExprParser {
-  final StreamTokenizer tokenizer;
-  final Deque<List<ESExpr>> stack;
+  private final StreamTokenizer tokenizer;
+  private final Deque<List<ESExpr>> stack;
 
   /**
    * Create new parser for given reader.
@@ -121,7 +120,8 @@ public final class ESExprParser {
    * Read next token from input stream. Workaround StreamTokenizer to treat
    * standalone '.' (dot) atoms as separate tokens.
    *
-   * @return token been read
+   * @return token been read.
+   * @throws  IOException if an I/O error occurs.
    */
   private int nextToken() throws IOException {
     final int token = tokenizer.nextToken();

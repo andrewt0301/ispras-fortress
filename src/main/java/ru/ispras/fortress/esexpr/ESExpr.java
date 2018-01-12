@@ -14,7 +14,7 @@
 
 package ru.ispras.fortress.esexpr;
 
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull; 
+import ru.ispras.fortress.util.InvariantChecks;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * ESExpr class represents Lisp-like S-expressions using tuple notation.
+ * The {@link ESExpr} class represents Lisp-like S-expressions using tuple notation.
  * ESExpr can be atom, i.e. string literal, or expression of form (a . b . c ...)
  * which is equivalent for traditional dotted-pair sequence (a . (b . (c . ...))).
  * This kind of expressions is called tuples. Tuples with special atom NIL
@@ -36,8 +36,8 @@ public final class ESExpr {
   private static final String LIST_LITERAL = "<list>";
   private static final String TUPLE_LITERAL = "<tuple>";
 
-  final String literal;
-  final List<ESExpr> items;
+  private final String literal;
+  private final List<ESExpr> items;
 
   private ESExpr(final String literal, final List<ESExpr> items) {
     this.literal = literal;
@@ -276,7 +276,7 @@ public final class ESExpr {
    * @throws IllegalArgumentException if {@code literal} is {@code null}
    */
   public static ESExpr createAtom(final String literal) {
-    checkNotNull(literal);
+    InvariantChecks.checkNotNull(literal);
     if (literal.equalsIgnoreCase(NIL.getLiteral())) {
       return NIL;
     }
@@ -292,7 +292,7 @@ public final class ESExpr {
    * @throws IllegalArgumentException if {@code items} list is {@code null}
    */
   public static ESExpr createList(final List<ESExpr> items) {
-    checkNotNull(items);
+    InvariantChecks.checkNotNull(items);
     if (items.isEmpty()) {
       return NIL;
     }
@@ -310,7 +310,7 @@ public final class ESExpr {
    * @throws IllegalArgumentException if {@code items} list is {@code null}
    */
   public static ESExpr createTuple(final List<ESExpr> items) {
-    checkNotNull(items);
+    InvariantChecks.checkNotNull(items);
     if (items.isEmpty()) {
       return NIL;
     }
@@ -330,8 +330,8 @@ public final class ESExpr {
    * @throws IllegalArgumentException if any of given expressions is {@code null}
    */
   public static ESExpr cons(final ESExpr lhs, final ESExpr rhs) {
-    checkNotNull(lhs);
-    checkNotNull(rhs);
+    InvariantChecks.checkNotNull(lhs);
+    InvariantChecks.checkNotNull(rhs);
 
     return new ESExpr(TUPLE_LITERAL, Arrays.asList(lhs, rhs));
   }

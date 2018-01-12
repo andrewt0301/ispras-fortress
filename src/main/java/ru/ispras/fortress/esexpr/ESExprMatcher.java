@@ -28,7 +28,7 @@ public final class ESExprMatcher {
   private static final String ATOM = "%a";
   private static final String SEXPR = "%s";
 
-  final ESExpr pattern;
+  private final ESExpr pattern;
 
   /**
    * Create new matcher for given pattern.
