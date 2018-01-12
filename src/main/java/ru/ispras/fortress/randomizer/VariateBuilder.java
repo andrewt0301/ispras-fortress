@@ -14,11 +14,11 @@
 
 package ru.ispras.fortress.randomizer;
 
+import ru.ispras.fortress.util.InvariantChecks;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * This class implements a probability distribution builder for a {@code T}-type random variate.
@@ -87,10 +87,11 @@ public final class VariateBuilder<T> {
 
   /**
    * Adds an interval with the given bias.
-   * 
+   *
    * @param min the lower bound of the interval.
    * @param max the upper bound of the interval.
-   * 
+   * @param bias the bias of the interval.
+   *
    * @throws IllegalArgumentException if {@code min} or {@code max} is {@code null}; 
    *         if {@code bias <= 0}.
    */

@@ -14,11 +14,11 @@
 
 package ru.ispras.fortress.randomizer;
 
+import ru.ispras.fortress.util.InvariantChecks;
+
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
-
-import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * This class represents an interval {@code T}-type random variate, where {@code T} is an integer

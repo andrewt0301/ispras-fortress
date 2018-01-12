@@ -14,11 +14,11 @@
 
 package ru.ispras.fortress.randomizer;
 
+import ru.ispras.fortress.util.InvariantChecks;
+
 import java.util.AbstractList;
 import java.util.Arrays;
 import java.util.List;
-
-import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * This class represents a biased {@code T}-type random variate (a discrete probability

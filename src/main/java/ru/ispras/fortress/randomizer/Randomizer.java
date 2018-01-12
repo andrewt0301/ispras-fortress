@@ -14,14 +14,14 @@
 
 package ru.ispras.fortress.randomizer;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collection;
-
 import ru.ispras.fortress.data.types.bitvector.BitVector;
 import ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm;
 import ru.ispras.fortress.util.BitUtils;
 import ru.ispras.fortress.util.InvariantChecks;
+
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * This class is a wrapper around a random number generator. It is responsible for generating random
