@@ -114,7 +114,7 @@ public final class Reducer {
 
     @Override
     public boolean isApplicable(final Node node) {
-      if (node.getKind() != Node.Kind.OPERATION) {
+      if (!ExprUtils.isOperation(node)) {
         return false;
       }
 
