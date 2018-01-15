@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2013-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,15 +14,15 @@
 
 package ru.ispras.fortress.calculator;
 
-import java.math.BigInteger;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.Map;
-
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataTypeId;
 import ru.ispras.fortress.data.types.bitvector.BitVector;
 import ru.ispras.fortress.expression.StandardOperation;
+
+import java.math.BigInteger;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.Map;
 
 /**
  * The {@link StandardOperationsInt} enumeration holds a collection of operation objects that are
@@ -240,8 +240,8 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
 
     @Override
     public boolean validTypes(final Data... operands) {
-      return operands[0].isType(DataTypeId.LOGIC_INTEGER) &&
-             operands[1].isType(DataTypeId.BIT_VECTOR);
+      return operands[0].isType(DataTypeId.LOGIC_INTEGER)
+          && operands[1].isType(DataTypeId.BIT_VECTOR);
     }
   },
 
@@ -262,9 +262,9 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
 
     @Override
     public boolean validTypes(final Data... operands) {
-      return operands[0].isType(DataTypeId.LOGIC_INTEGER) &&
-             operands[1].isType(DataTypeId.LOGIC_INTEGER) &&
-             operands[2].isType(DataTypeId.BIT_VECTOR);
+      return operands[0].isType(DataTypeId.LOGIC_INTEGER)
+          && operands[1].isType(DataTypeId.LOGIC_INTEGER)
+          && operands[2].isType(DataTypeId.BIT_VECTOR);
     }
   },
 
@@ -338,9 +338,7 @@ enum StandardOperationsInt implements Operation<StandardOperation> {
   private final StandardOperation operationId;
   private final ArityRange operationArity;
 
-  private StandardOperationsInt(
-      final StandardOperation operationId,
-      final ArityRange operationArity) {
+  StandardOperationsInt(final StandardOperation operationId, final ArityRange operationArity) {
     this.operationId = operationId;
     this.operationArity = operationArity;
   }

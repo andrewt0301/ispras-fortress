@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2013-2018 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,15 +14,14 @@
 
 package ru.ispras.fortress.calculator;
 
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
+import ru.ispras.fortress.data.Data;
+import ru.ispras.fortress.data.DataTypeId;
+import ru.ispras.fortress.expression.StandardOperation;
+import ru.ispras.fortress.util.InvariantChecks;
 
 import java.util.Collection;
 import java.util.EnumMap;
 import java.util.Map;
-
-import ru.ispras.fortress.data.Data;
-import ru.ispras.fortress.data.DataTypeId;
-import ru.ispras.fortress.expression.StandardOperation;
 
 /**
  * The {@link OperationGroup} class is an implementation of a calculator engine that encapsulates a
@@ -38,6 +37,11 @@ import ru.ispras.fortress.expression.StandardOperation;
  */
 public final class OperationGroup<OperationId extends Enum<OperationId>>
     implements CalculatorEngine {
+
+  private static final String MSG_UNSUPPORTED_FRMT =
+      "Failed to calculate: the %s is not supported for the %s type, "
+          + "operand types are mismatched or it does not accept %d operands.";
+
   // Key - data type identifier,
   // Value - [map: key - operation identifier, value - operation object]
   private final Map<DataTypeId, Map<OperationId, Operation<OperationId>>> operations;
@@ -62,8 +66,8 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
   public final void registerOperations(
       final DataTypeId typeId,
       final Map<OperationId, Operation<OperationId>> operationsForType) {
-    checkNotNull(typeId);
-    checkNotNull(operationsForType);
+    InvariantChecks.checkNotNull(typeId);
+    InvariantChecks.checkNotNull(operationsForType);
 
     operations.put(typeId, operationsForType);
   }
@@ -75,8 +79,8 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
    */
   @Override
   public final boolean isSupported(final Enum<?> operationId, final Data... operands) {
-    checkNotNull(operationId);
-    checkNotNull(operands);
+    InvariantChecks.checkNotNull(operationId);
+    InvariantChecks.checkNotNull(operands);
 
     if (0 == operands.length) {
       return false;
@@ -84,13 +88,13 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
 
     if (operationId instanceof StandardOperation) {
       switch ((StandardOperation) operationId) {
-      case EQ:
-      case NOTEQ:
-        return true;
+        case EQ:
+        case NOTEQ:
+          return true;
 
-      case SELECT:
-      case STORE:
-        return false;
+        case SELECT:
+        case STORE:
+          return false;
       }
     }
 
@@ -120,8 +124,8 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
    */
   @Override
   public final Data calculate(final Enum<?> operationId, final Data... operands) {
-    checkNotNull(operationId);
-    checkNotNull(operands);
+    InvariantChecks.checkNotNull(operationId);
+    InvariantChecks.checkNotNull(operands);
 
     if (!isSupported(operationId, operands)) {
       throw new UnsupportedOperationException(String.format(
@@ -151,14 +155,10 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
     throw new IllegalArgumentException();
   }
 
-  private final String MSG_UNSUPPORTED_FRMT =
-      "Failed to calculate: the %s is not supported for the %s type, " +
-     "operand types are mismatched or it does not accept %d operands.";
-
   public static <T extends Enum<T>> Map<T, Operation<T>> operationMap(
-      final Class<T> c,
+      final Class<T> clazz,
       final Collection<? extends Operation<T>> operations) {
-    final Map<T, Operation<T>> map = new EnumMap<>(c);
+    final Map<T, Operation<T>> map = new EnumMap<>(clazz);
     for (final Operation<T> op : operations) {
       map.put(op.getOperationId(), op);
     }

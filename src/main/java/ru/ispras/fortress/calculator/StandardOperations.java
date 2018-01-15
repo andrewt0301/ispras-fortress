@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2015-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -30,29 +30,29 @@ import java.util.Map;
 final class StandardOperations {
   private StandardOperations() {}
 
-  private static abstract class StdOperation extends CalculatorOperation<StandardOperation> {
+  private abstract static class StdOperation extends CalculatorOperation<StandardOperation> {
     public StdOperation(final StandardOperation id, final ArityRange arity) {
       super(id, arity);
     }
 
-    abstract public Data calculate(Data... operands);
+    public abstract Data calculate(Data... operands);
   }
 
   public static Map<StandardOperation, Operation<StandardOperation>> arrayOps() {
     final List<StdOperation> operations = Arrays.asList(
-      new StdOperation(StandardOperation.SELECT, ArityRange.BINARY) {
-        @Override
-        public Data calculate(final Data... operands) {
-          final DataMap map = operands[0].getArray();
-          return map.get(operands[1]);
-        }
+        new StdOperation(StandardOperation.SELECT, ArityRange.BINARY) {
+          @Override
+          public Data calculate(final Data... operands) {
+            final DataMap map = operands[0].getArray();
+            return map.get(operands[1]);
+          }
 
-        @Override
-        public boolean validTypes(final Data... operands) {
-          final DataType arrayType = operands[0].getType();
-          return operands[0].isType(DataTypeId.MAP) &&
-                 operands[1].isType((DataType) arrayType.getAttribute(DataTypeId.Attribute.KEY));
-        }
+          @Override
+          public boolean validTypes(final Data... operands) {
+            final DataType arrayType = operands[0].getType();
+            return operands[0].isType(DataTypeId.MAP)
+                  && operands[1].isType((DataType) arrayType.getAttribute(DataTypeId.Attribute.KEY));
+          }
       },
 
       new StdOperation(StandardOperation.STORE, ArityRange.TERNARY) {
@@ -66,9 +66,9 @@ final class StandardOperations {
         @Override
         public boolean validTypes(final Data... operands) {
           final DataType arrayType = operands[0].getType();
-          return operands[0].isType(DataTypeId.MAP) &&
-                 operands[1].isType((DataType) arrayType.getAttribute(DataTypeId.Attribute.KEY)) &&
-                 operands[2].isType((DataType) arrayType.getAttribute(DataTypeId.Attribute.VALUE));
+          return operands[0].isType(DataTypeId.MAP)
+              && operands[1].isType((DataType) arrayType.getAttribute(DataTypeId.Attribute.KEY))
+              && operands[2].isType((DataType) arrayType.getAttribute(DataTypeId.Attribute.VALUE));
         }
       });
 
@@ -87,23 +87,23 @@ final class StandardOperations {
 
     private static ArityRange translate(final BitVectorMath.Operands arity) {
       switch (arity) {
-      case UNARY: return ArityRange.UNARY;
-      case BINARY: return ArityRange.BINARY;
-      case TERNARY: return ArityRange.TERNARY;
-      default: throw new IllegalArgumentException();
+        case UNARY: return ArityRange.UNARY;
+        case BINARY: return ArityRange.BINARY;
+        case TERNARY: return ArityRange.TERNARY;
+        default: throw new IllegalArgumentException();
       }
     }
 
     @Override
     public Data calculate(final Data... operands) {
       switch (operation.getOperands()) {
-      case UNARY:
-        return Data.newBitVector(operation.execute(bvarg(operands, 0)));
-      case BINARY:
-        return Data.newBitVector(operation.execute(bvarg(operands, 0), bvarg(operands, 1)));
-      default:
-        throw new UnsupportedOperationException(
-            "Invalid operation arity: " + operation.getOperands());
+        case UNARY:
+          return Data.newBitVector(operation.execute(bvarg(operands, 0)));
+        case BINARY:
+          return Data.newBitVector(operation.execute(bvarg(operands, 0), bvarg(operands, 1)));
+        default:
+          throw new UnsupportedOperationException(
+              "Invalid operation arity: " + operation.getOperands());
       }
     }
   }
@@ -209,8 +209,8 @@ final class StandardOperations {
     return OperationGroup.operationMap(StandardOperation.class, operations);
   }
 
-  private static BitVector bvarg(final Data[] operands, final int i) {
-    return operands[i].getBitVector();
+  private static BitVector bvarg(final Data[] operands, final int num) {
+    return operands[num].getBitVector();
   }
 
   public static Map<StandardOperation, Operation<StandardOperation>> realOps() {
@@ -284,39 +284,39 @@ final class StandardOperations {
             return operands[0];
           }
         }));
-      operations.addAll(ordered(Double.class));
+    operations.addAll(ordered(Double.class));
 
-      return OperationGroup.operationMap(StandardOperation.class, operations);
+    return OperationGroup.operationMap(StandardOperation.class, operations);
   }
 
   public static <T extends Comparable<T>>
-  List<Operation<StandardOperation>> ordered(final Class<T> c) {
+      List<Operation<StandardOperation>> ordered(final Class<T> clazz) {
     return Arrays.<Operation<StandardOperation>>asList(
         new StdOperation(StandardOperation.GREATER, ArityRange.BINARY) {
           @Override
           public Data calculate(final Data... operands) {
-            return Data.newBoolean(compare(c, operands[0], operands[1]) > 0);
+            return Data.newBoolean(compare(clazz, operands[0], operands[1]) > 0);
           }
         },
 
         new StdOperation(StandardOperation.GREATEREQ, ArityRange.BINARY) {
           @Override
           public Data calculate(final Data... operands) {
-            return Data.newBoolean(compare(c, operands[0], operands[1]) >= 0);
+            return Data.newBoolean(compare(clazz, operands[0], operands[1]) >= 0);
           }
         },
 
         new StdOperation(StandardOperation.LESS, ArityRange.BINARY) {
           @Override
           public Data calculate(final Data... operands) {
-            return Data.newBoolean(compare(c, operands[0], operands[1]) < 0);
+            return Data.newBoolean(compare(clazz, operands[0], operands[1]) < 0);
           }
         },
 
         new StdOperation(StandardOperation.LESSEQ, ArityRange.BINARY) {
           @Override
           public Data calculate(final Data... operands) {
-            return Data.newBoolean(compare(c, operands[0], operands[1]) <= 0);
+            return Data.newBoolean(compare(clazz, operands[0], operands[1]) <= 0);
           }
         },
 
@@ -325,7 +325,7 @@ final class StandardOperations {
           public Data calculate(final Data... operands) {
             Data value = operands[0];
             for (int i = 1; i < operands.length; ++i) {
-              if (compare(c, operands[i], value) > 0) {
+              if (compare(clazz, operands[i], value) > 0) {
                 value = operands[i];
               }
             }
@@ -338,7 +338,7 @@ final class StandardOperations {
           public Data calculate(final Data... operands) {
             Data value = operands[0];
             for (int i = 1; i < operands.length; ++i) {
-              if (compare(c, operands[i], value) < 0) {
+              if (compare(clazz, operands[i], value) < 0) {
                 value = operands[i];
               }
             }
@@ -348,7 +348,7 @@ final class StandardOperations {
   }
 
   private static <T extends Comparable<T>>
-  int compare(final Class<T> c, final Data lhs, final Data rhs) {
-    return lhs.getValue(c).compareTo(rhs.getValue(c));
+      int compare(final Class<T> clazz, final Data lhs, final Data rhs) {
+    return lhs.getValue(clazz).compareTo(rhs.getValue(clazz));
   }
 }

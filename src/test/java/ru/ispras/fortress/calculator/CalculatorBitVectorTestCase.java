@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ISP RAS (http://www.ispras.ru)
+ * Copyright 2017-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -40,12 +40,12 @@ public final class CalculatorBitVectorTestCase {
     testEquals(
         Data.newBitVector(0, 1),
         StandardOperation.BVAND, Data.newBitVector(1, 1), Data.newBitVector(0, 1)
-        );
+    );
 
     testEquals(
         Data.newBitVector(1, 1),
         StandardOperation.BVOR, Data.newBitVector(1, 1), Data.newBitVector(0, 1)
-        );
+    );
 /*
     testEquals(
         Data.newBitVector(0, 1),
@@ -64,6 +64,6 @@ public final class CalculatorBitVectorTestCase {
     testEquals(
         Data.newBitVector(0xDEADBEEF, 32),
         StandardOperation.BVCONCAT, Data.newBitVector(0xDEAD, 16), Data.newBitVector(0xBEEF, 16)
-        );
+    );
   }
 }

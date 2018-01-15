@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2015-2018 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -17,7 +17,7 @@ package ru.ispras.fortress.calculator;
 import ru.ispras.fortress.data.Data;
 
 public abstract class CalculatorOperation<OperationId extends Enum<OperationId>> 
-  implements Operation<OperationId> {
+    implements Operation<OperationId> {
 
   private final OperationId id;
   private final ArityRange arity;
@@ -39,5 +39,5 @@ public abstract class CalculatorOperation<OperationId extends Enum<OperationId>>
     return Data.equalTypes(operands);
   }
 
-  abstract public Data calculate(Data... operands);
+  public abstract Data calculate(Data... operands);
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,15 +14,15 @@
 
 package ru.ispras.fortress.calculator;
 
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.Map;
-
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.DataTypeId;
 import ru.ispras.fortress.data.types.bitvector.BitVector;
 import ru.ispras.fortress.expression.StandardOperation;
+
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.Map;
 
 /**
  * The {@link StandardOperationsBool} enumeration holds a collection of operation objects that are
@@ -110,8 +110,8 @@ enum StandardOperationsBool implements Operation<StandardOperation> {
 
     @Override
     public boolean validTypes(final Data... operands) {
-      return operands[0].isType(DataType.BOOLEAN) &&
-             operands[1].isType(operands[2].getType());
+      return operands[0].isType(DataType.BOOLEAN)
+          && operands[1].isType(operands[2].getType());
     }
   },
 
