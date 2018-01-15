@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2018 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -15,7 +15,6 @@
 package ru.ispras.fortress.data.types.bitvector;
 
 import org.junit.Test;
-import static ru.ispras.fortress.data.types.bitvector.TestUtils.*;
 
 public class BitVectorMultiMappingTestCase {
   @Test
@@ -25,14 +24,14 @@ public class BitVectorMultiMappingTestCase {
     final BitVector rd3 = BitVector.valueOf("11000000");
 
     final BitVector rd = BitVector.newMapping(rd1, rd2, rd3);
-    checkBitVector(rd, "11110000" + "00110011" + "11000000");
+    TestUtils.checkBitVector(rd, "11110000" + "00110011" + "11000000");
 
     rd.assign(BitVector.valueOf("11000011" + "11011011" + "10100001"));
-    checkBitVector(rd, "11000011" + "11011011" + "10100001");
+    TestUtils.checkBitVector(rd, "11000011" + "11011011" + "10100001");
 
-    checkBitVector(rd1, "11000011");
-    checkBitVector(rd2, "11011011");
-    checkBitVector(rd3, "10100001");
+    TestUtils.checkBitVector(rd1, "11000011");
+    TestUtils.checkBitVector(rd2, "11011011");
+    TestUtils.checkBitVector(rd3, "10100001");
   }
 
   @Test
@@ -41,13 +40,13 @@ public class BitVectorMultiMappingTestCase {
     final BitVector rd2 = BitVector.valueOf("1001");
 
     final BitVector rd = BitVector.newMapping(rd1, rd2);
-    checkBitVector(rd, "0110" + "1001");
+    TestUtils.checkBitVector(rd, "0110" + "1001");
 
     rd.assign(BitVector.valueOf("1111" + "0000"));
 
-    checkBitVector(rd, "1111" + "0000");
-    checkBitVector(rd1, "1111");
-    checkBitVector(rd2, "0000");
+    TestUtils.checkBitVector(rd, "1111" + "0000");
+    TestUtils.checkBitVector(rd1, "1111");
+    TestUtils.checkBitVector(rd2, "0000");
   }
 
   @Test
@@ -56,16 +55,16 @@ public class BitVectorMultiMappingTestCase {
     final BitVector rd2 = BitVector.valueOf("1001");
 
     final BitVector rd = BitVector.newMapping(rd1, rd2);
-    checkBitVector(rd, "011" + "1001");
+    TestUtils.checkBitVector(rd, "011" + "1001");
 
     final BitVector rdX = BitVector.valueOf("1111" + "000");
-    checkBitVector(rdX, "1111" + "000");
+    TestUtils.checkBitVector(rdX, "1111" + "000");
 
     rd.assign(rdX);
 
-    checkBitVector(rd, "1111" + "000");
-    checkBitVector(rd1, "111");
-    checkBitVector(rd2, "1000");
+    TestUtils.checkBitVector(rd, "1111" + "000");
+    TestUtils.checkBitVector(rd1, "111");
+    TestUtils.checkBitVector(rd2, "1000");
   }
 
   @Test
@@ -75,7 +74,7 @@ public class BitVectorMultiMappingTestCase {
     final BitVector rd = BitVector.newMapping(rd1, rd2);
 
     System.out.println(rd.toBinString());
-    checkBitVector(rd, "0010000110" + "00001001");
+    TestUtils.checkBitVector(rd, "0010000110" + "00001001");
 
     /*
      * rd.assign( RawData.valueOf("01010101" + "1100110011") );
@@ -86,7 +85,7 @@ public class BitVectorMultiMappingTestCase {
     final BitVector rdX = BitVector.valueOf("11110011" + "1111110011");
     rd.assign(rdX);
 
-    checkBitVector(rd, "11110011" + "1111110011");
+    TestUtils.checkBitVector(rd, "11110011" + "1111110011");
   }
 
   @Test
@@ -98,7 +97,7 @@ public class BitVectorMultiMappingTestCase {
     final BitVector rd = BitVector.newMapping(rd1, rd2, rd3, rd4);
 
     System.out.println(rd.toBinString());
-    checkBitVector(rd, "1100000000" + "00" + "111" + "1100011100");
+    TestUtils.checkBitVector(rd, "1100000000" + "00" + "111" + "1100011100");
   }
 
   @Test
@@ -111,16 +110,16 @@ public class BitVectorMultiMappingTestCase {
     final BitVector rd = BitVector.newMapping(rd1, rd2, rd3, rd4, rd5);
 
     System.out.println(rd.toBinString());
-    checkBitVector(rd, "10011");
+    TestUtils.checkBitVector(rd, "10011");
 
     rd.assign(BitVector.valueOf("00110"));
-    checkBitVector(rd, "00110");
+    TestUtils.checkBitVector(rd, "00110");
 
-    checkBitVector(rd1, "0");
-    checkBitVector(rd2, "0");
-    checkBitVector(rd3, "1");
-    checkBitVector(rd4, "1");
-    checkBitVector(rd5, "0");
+    TestUtils.checkBitVector(rd1, "0");
+    TestUtils.checkBitVector(rd2, "0");
+    TestUtils.checkBitVector(rd3, "1");
+    TestUtils.checkBitVector(rd4, "1");
+    TestUtils.checkBitVector(rd5, "0");
   }
 
   @Test
@@ -133,6 +132,6 @@ public class BitVectorMultiMappingTestCase {
     final BitVector rd = BitVector.newMapping(rd1, rd2, rd3, rd4, rd5);
 
     System.out.println(rd.toBinString());
-    checkBitVector(rd, "111100001" + "0000111100" + "00110110101" + "11110000" + "111");
+    TestUtils.checkBitVector(rd, "111100001" + "0000111100" + "00110110101" + "11110000" + "111");
   }
 }

@@ -18,6 +18,7 @@ import static ru.ispras.fortress.data.types.bitvector.BitVectorMath.Operands.BIN
 import static ru.ispras.fortress.data.types.bitvector.BitVectorMath.Operands.UNARY;
 
 import ru.ispras.fortress.util.InvariantChecks;
+
 import java.math.BigInteger;
 
 /**
@@ -75,8 +76,8 @@ public final class BitVectorMath {
 
     NOT(UNARY) {
       @Override
-      public BitVector execute(final BitVector v) {
-        return not(v);
+      public BitVector execute(final BitVector bitVector) {
+        return not(bitVector);
       }
     },
 
@@ -204,15 +205,15 @@ public final class BitVectorMath {
 
     PLUS(UNARY) {
       @Override
-      public BitVector execute(final BitVector v) {
-        return plus(v);
+      public BitVector execute(final BitVector bitVector) {
+        return plus(bitVector);
       }
     },
 
     NEG(UNARY) {
       @Override
-      public BitVector execute(final BitVector v) {
-        return neg(v);
+      public BitVector execute(final BitVector bitVector) {
+        return neg(bitVector);
       }
     },
 
@@ -288,43 +289,43 @@ public final class BitVectorMath {
 
     ANDR(UNARY) {
       @Override
-      public BitVector execute(final BitVector v) {
-        return andr(v);
+      public BitVector execute(final BitVector bitVector) {
+        return andr(bitVector);
       }
     },
 
     NANDR(UNARY) {
       @Override
-      public BitVector execute(final BitVector v) {
-        return not(andr(v));
+      public BitVector execute(final BitVector bitVector) {
+        return not(andr(bitVector));
       }
     },
 
     ORR(UNARY) {
       @Override
-      public BitVector execute(final BitVector v) {
-        return orr(v);
+      public BitVector execute(final BitVector bitVector) {
+        return orr(bitVector);
       }
     },
 
     NORR(UNARY) {
       @Override
-      public BitVector execute(final BitVector v) {
-        return not(orr(v));
+      public BitVector execute(final BitVector bitVector) {
+        return not(orr(bitVector));
       }
     },
 
     XORR(UNARY) {
       @Override
-      public BitVector execute(final BitVector v) {
-        return xorr(v);
+      public BitVector execute(final BitVector bitVector) {
+        return xorr(bitVector);
       }
     },
 
     XNORR(UNARY) {
       @Override
-      public BitVector execute(final BitVector v) {
-        return not(xorr(v));
+      public BitVector execute(final BitVector bitVector) {
+        return not(xorr(bitVector));
       }
     };
 
@@ -339,7 +340,7 @@ public final class BitVectorMath {
     }
 
     // IMPORTANT: must be overridden if supported by a specific operation.
-    public BitVector execute(final BitVector v) {
+    public BitVector execute(final BitVector bitVector) {
       throw new UnsupportedOperationException(String.format(
         "Unary %s operation is not supported", name()));
     }
@@ -363,8 +364,8 @@ public final class BitVectorMath {
     return transform(lhs, rhs, BitVectorAlgorithm.BinaryOperation.XOR);
   }
 
-  public static BitVector not(final BitVector v) {
-    return transform(v, BitVectorAlgorithm.UnaryOperation.NOT);
+  public static BitVector not(final BitVector bitVector) {
+    return transform(bitVector, BitVectorAlgorithm.UnaryOperation.NOT);
   }
 
   public static BitVector nand(final BitVector lhs, final BitVector rhs) {
@@ -387,48 +388,48 @@ public final class BitVectorMath {
    * negative, the actual shift amount is calculated as {@code v.getBitSize()} minus
    * ({@code to} modulo {@code v.getBitSize()}).
    *
-   * @param v Bit vector to be shifted.
+   * @param bitVector Bit vector to be shifted.
    * @param to Shift amount.
    * @return Logical left shift result.
    *
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
-  public static BitVector shl(final BitVector v, final BitVector to) {
-    InvariantChecks.checkNotNull(v);
+  public static BitVector shl(final BitVector bitVector, final BitVector to) {
+    InvariantChecks.checkNotNull(bitVector);
     InvariantChecks.checkNotNull(to);
 
-    return shl(v, to.bigIntegerValue());
+    return shl(bitVector, to.bigIntegerValue());
   }
 
-  public static BitVector shl(final BitVector v, final BigInteger to) {
-    InvariantChecks.checkNotNull(v);
+  public static BitVector shl(final BitVector bitVector, final BigInteger to) {
+    InvariantChecks.checkNotNull(bitVector);
     InvariantChecks.checkNotNull(to);
 
-    final BigInteger size = BigInteger.valueOf(v.getBitSize());
+    final BigInteger size = BigInteger.valueOf(bitVector.getBitSize());
     final BigInteger amount = to.mod(size);
 
-    return doShl(v, amount.intValue());
+    return doShl(bitVector, amount.intValue());
   }
 
-  public static BitVector shl(final BitVector v, final int to) {
-    InvariantChecks.checkNotNull(v);
+  public static BitVector shl(final BitVector bitVector, final int to) {
+    InvariantChecks.checkNotNull(bitVector);
 
-    final int amount = to % v.getBitSize();
-    return doShl(v, amount);
+    final int amount = to % bitVector.getBitSize();
+    return doShl(bitVector, amount);
   }
 
-  private static BitVector doShl(final BitVector v, final int amount) {
+  private static BitVector doShl(final BitVector bitVector, final int amount) {
     if (0 == amount) {
-      return v;
+      return bitVector;
     }
 
     final int distance = Math.abs(amount);
-    final BitVector result = BitVector.newEmpty(v.getBitSize());
+    final BitVector result = BitVector.newEmpty(bitVector.getBitSize());
 
     if (amount > 0) {
-      BitVectorAlgorithm.copy(v, 0, result, distance, result.getBitSize() - distance);
+      BitVectorAlgorithm.copy(bitVector, 0, result, distance, result.getBitSize() - distance);
     } else {
-      BitVectorAlgorithm.copy(v, 0, result, result.getBitSize() - distance, distance);
+      BitVectorAlgorithm.copy(bitVector, 0, result, result.getBitSize() - distance, distance);
     }
 
     return result;
@@ -442,48 +443,48 @@ public final class BitVectorMath {
    * negative, the actual shift amount is calculated as {@code v.getBitSize()} minus
    * ({@code to} modulo {@code v.getBitSize()}).
    *
-   * @param v Bit vector to be shifted.
+   * @param bitVector Bit vector to be shifted.
    * @param to Shift amount.
    * @return Logical right shift result.
    *
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
-  public static BitVector lshr(final BitVector v, final BitVector to) {
-    InvariantChecks.checkNotNull(v);
+  public static BitVector lshr(final BitVector bitVector, final BitVector to) {
+    InvariantChecks.checkNotNull(bitVector);
     InvariantChecks.checkNotNull(to);
 
-    return lshr(v, to.bigIntegerValue());
+    return lshr(bitVector, to.bigIntegerValue());
   }
 
-  public static BitVector lshr(final BitVector v, final BigInteger to) {
-    InvariantChecks.checkNotNull(v);
+  public static BitVector lshr(final BitVector bitVector, final BigInteger to) {
+    InvariantChecks.checkNotNull(bitVector);
     InvariantChecks.checkNotNull(to);
 
-    final BigInteger size = BigInteger.valueOf(v.getBitSize());
+    final BigInteger size = BigInteger.valueOf(bitVector.getBitSize());
     final BigInteger amount = to.mod(size);
 
-    return doLshr(v, amount.intValue());
+    return doLshr(bitVector, amount.intValue());
   }
 
-  public static BitVector lshr(final BitVector v, final int to) {
-    InvariantChecks.checkNotNull(v);
+  public static BitVector lshr(final BitVector bitVector, final int to) {
+    InvariantChecks.checkNotNull(bitVector);
 
-    final int amount = to % v.getBitSize();
-    return doLshr(v, amount);
+    final int amount = to % bitVector.getBitSize();
+    return doLshr(bitVector, amount);
   }
 
-  private static BitVector doLshr(final BitVector v, final int amount) {
+  private static BitVector doLshr(final BitVector bitVector, final int amount) {
     if (0 == amount) {
-      return v;
+      return bitVector;
     }
 
     final int distance = Math.abs(amount);
-    final BitVector result = BitVector.newEmpty(v.getBitSize());
+    final BitVector result = BitVector.newEmpty(bitVector.getBitSize());
 
     if (amount > 0) {
-      BitVectorAlgorithm.copy(v, distance, result, 0, result.getBitSize() - distance);
+      BitVectorAlgorithm.copy(bitVector, distance, result, 0, result.getBitSize() - distance);
     } else {
-      BitVectorAlgorithm.copy(v, result.getBitSize() - distance, result, 0, distance);
+      BitVectorAlgorithm.copy(bitVector, result.getBitSize() - distance, result, 0, distance);
     }
 
     return result;
@@ -497,53 +498,53 @@ public final class BitVectorMath {
    * negative, the actual shift amount is calculated as {@code v.getBitSize()} minus
    * ({@code to} modulo {@code v.getBitSize()}).
    *
-   * @param v Bit vector to be shifted.
+   * @param bitVector Bit vector to be shifted.
    * @param to Shift amount.
    * @return Arithmetical right shift result.
    *
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
-  public static BitVector ashr(final BitVector v, final BitVector to) {
-    InvariantChecks.checkNotNull(v);
+  public static BitVector ashr(final BitVector bitVector, final BitVector to) {
+    InvariantChecks.checkNotNull(bitVector);
     InvariantChecks.checkNotNull(to);
 
-    return ashr(v, to.bigIntegerValue());
+    return ashr(bitVector, to.bigIntegerValue());
   }
 
-  public static BitVector ashr(final BitVector v, final BigInteger to) {
-    InvariantChecks.checkNotNull(v);
+  public static BitVector ashr(final BitVector bitVector, final BigInteger to) {
+    InvariantChecks.checkNotNull(bitVector);
     InvariantChecks.checkNotNull(to);
 
-    final BigInteger size = BigInteger.valueOf(v.getBitSize());
+    final BigInteger size = BigInteger.valueOf(bitVector.getBitSize());
     final BigInteger amount = to.mod(size);
 
-    return doAshr(v, amount.intValue());
+    return doAshr(bitVector, amount.intValue());
   }
 
-  public static BitVector ashr(final BitVector v, final int to) {
-    InvariantChecks.checkNotNull(v);
+  public static BitVector ashr(final BitVector bitVector, final int to) {
+    InvariantChecks.checkNotNull(bitVector);
 
-    final int amount = to % v.getBitSize();
-    return doAshr(v, amount);
+    final int amount = to % bitVector.getBitSize();
+    return doAshr(bitVector, amount);
   }
 
-  private static BitVector doAshr(final BitVector v, final int amount) {
+  private static BitVector doAshr(final BitVector bitVector, final int amount) {
     if (0 == amount) {
-      return v;
+      return bitVector;
     }
 
     final int distance = Math.abs(amount);
-    final BitVector result = BitVector.newEmpty(v.getBitSize());
+    final BitVector result = BitVector.newEmpty(bitVector.getBitSize());
 
     // If the sign (most significant) bit is set, fill the result with 1s.
-    if (v.getBit(v.getBitSize() - 1)) {
+    if (bitVector.getBit(bitVector.getBitSize() - 1)) {
       BitVectorAlgorithm.fill(result, (byte) 0xFF);
     }
 
     if (amount > 0) {
-      BitVectorAlgorithm.copy(v, distance, result, 0, result.getBitSize() - distance);
+      BitVectorAlgorithm.copy(bitVector, distance, result, 0, result.getBitSize() - distance);
     } else {
-      BitVectorAlgorithm.copy(v, result.getBitSize() - distance, result, 0, distance);
+      BitVectorAlgorithm.copy(bitVector, result.getBitSize() - distance, result, 0, distance);
     }
 
     return result;
@@ -557,64 +558,64 @@ public final class BitVectorMath {
    * negative, the actual shift amount is calculated as {@code v.getBitSize()} minus
    * ({@code to} modulo {@code v.getBitSize()}).
    *
-   * @param v Bit vector to be shifted.
+   * @param bitVector Bit vector to be shifted.
    * @param to Shift amount.
    * @return Left rotation result.
    *
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
-  public static BitVector rotl(final BitVector v, final BitVector to) {
-    InvariantChecks.checkNotNull(v);
+  public static BitVector rotl(final BitVector bitVector, final BitVector to) {
+    InvariantChecks.checkNotNull(bitVector);
     InvariantChecks.checkNotNull(to);
 
-    return rotl(v, to.bigIntegerValue());
+    return rotl(bitVector, to.bigIntegerValue());
   }
 
-  public static BitVector rotl(final BitVector v, final BigInteger to) {
-    InvariantChecks.checkNotNull(v);
+  public static BitVector rotl(final BitVector bitVector, final BigInteger to) {
+    InvariantChecks.checkNotNull(bitVector);
     InvariantChecks.checkNotNull(to);
 
-    final BigInteger size = BigInteger.valueOf(v.getBitSize());
+    final BigInteger size = BigInteger.valueOf(bitVector.getBitSize());
     final BigInteger amount = to.mod(size);
 
-    return doRotl(v, amount.intValue());
+    return doRotl(bitVector, amount.intValue());
   }
 
-  public static BitVector rotl(final BitVector v, final int to) {
-    InvariantChecks.checkNotNull(v);
+  public static BitVector rotl(final BitVector bitVector, final int to) {
+    InvariantChecks.checkNotNull(bitVector);
 
-    final int distance = Math.abs(to % v.getBitSize());
+    final int distance = Math.abs(to % bitVector.getBitSize());
     if (0 == distance) {
-      return v;
+      return bitVector;
     }
 
-    final BitVector result = BitVector.newEmpty(v.getBitSize());
+    final BitVector result = BitVector.newEmpty(bitVector.getBitSize());
 
     if (to > 0) {
-      BitVectorAlgorithm.copy(v, 0, result, distance, result.getBitSize() - distance);
-      BitVectorAlgorithm.copy(v, v.getBitSize() - distance, result, 0, distance);
+      BitVectorAlgorithm.copy(bitVector, 0, result, distance, result.getBitSize() - distance);
+      BitVectorAlgorithm.copy(bitVector, bitVector.getBitSize() - distance, result, 0, distance);
     } else {
-      BitVectorAlgorithm.copy(v, 0, result, result.getBitSize() - distance, distance);
-      BitVectorAlgorithm.copy(v, distance, result, 0, result.getBitSize() - distance);
+      BitVectorAlgorithm.copy(bitVector, 0, result, result.getBitSize() - distance, distance);
+      BitVectorAlgorithm.copy(bitVector, distance, result, 0, result.getBitSize() - distance);
     }
 
     return result;
   }
 
-  private static BitVector doRotl(final BitVector v, final int amount) {
+  private static BitVector doRotl(final BitVector bitVector, final int amount) {
     if (0 == amount) {
-      return v;
+      return bitVector;
     }
 
     final int distance = Math.abs(amount);
-    final BitVector result = BitVector.newEmpty(v.getBitSize());
+    final BitVector result = BitVector.newEmpty(bitVector.getBitSize());
 
     if (amount > 0) {
-      BitVectorAlgorithm.copy(v, 0, result, distance, result.getBitSize() - distance);
-      BitVectorAlgorithm.copy(v, v.getBitSize() - distance, result, 0, distance);
+      BitVectorAlgorithm.copy(bitVector, 0, result, distance, result.getBitSize() - distance);
+      BitVectorAlgorithm.copy(bitVector, bitVector.getBitSize() - distance, result, 0, distance);
     } else {
-      BitVectorAlgorithm.copy(v, 0, result, result.getBitSize() - distance, distance);
-      BitVectorAlgorithm.copy(v, distance, result, 0, result.getBitSize() - distance);
+      BitVectorAlgorithm.copy(bitVector, 0, result, result.getBitSize() - distance, distance);
+      BitVectorAlgorithm.copy(bitVector, distance, result, 0, result.getBitSize() - distance);
     }
 
     return result;
@@ -628,50 +629,50 @@ public final class BitVectorMath {
    * negative, the actual shift amount is calculated as {@code v.getBitSize()} minus
    * ({@code to} modulo {@code v.getBitSize()}).
    *
-   * @param v Bit vector to be shifted.
+   * @param bitVector Bit vector to be shifted.
    * @param to Shift amount.
    * @return Right rotation result.
    *
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
-  public static BitVector rotr(final BitVector v, final BitVector to) {
-    InvariantChecks.checkNotNull(v);
+  public static BitVector rotr(final BitVector bitVector, final BitVector to) {
+    InvariantChecks.checkNotNull(bitVector);
     InvariantChecks.checkNotNull(to);
 
-    return rotr(v, to.bigIntegerValue());
+    return rotr(bitVector, to.bigIntegerValue());
   }
 
-  public static BitVector rotr(final BitVector v, final BigInteger to) {
-    InvariantChecks.checkNotNull(v);
+  public static BitVector rotr(final BitVector bitVector, final BigInteger to) {
+    InvariantChecks.checkNotNull(bitVector);
     InvariantChecks.checkNotNull(to);
 
-    final BigInteger size = BigInteger.valueOf(v.getBitSize());
+    final BigInteger size = BigInteger.valueOf(bitVector.getBitSize());
     final BigInteger amount = to.mod(size);
 
-    return doRotr(v, amount.intValue());
+    return doRotr(bitVector, amount.intValue());
   }
 
-  public static BitVector rotr(final BitVector v, final int to) {
-    InvariantChecks.checkNotNull(v);
+  public static BitVector rotr(final BitVector bitVector, final int to) {
+    InvariantChecks.checkNotNull(bitVector);
 
-    final int amount = to % v.getBitSize();
-    return doRotr(v, amount);
+    final int amount = to % bitVector.getBitSize();
+    return doRotr(bitVector, amount);
   }
 
-  private static BitVector doRotr(final BitVector v, final int amount) {
+  private static BitVector doRotr(final BitVector bitVector, final int amount) {
     if (0 == amount) {
-      return v;
+      return bitVector;
     }
 
     final int distance = Math.abs(amount);
-    final BitVector result = BitVector.newEmpty(v.getBitSize());
+    final BitVector result = BitVector.newEmpty(bitVector.getBitSize());
 
     if (amount > 0) {
-      BitVectorAlgorithm.copy(v, distance, result, 0, result.getBitSize() - distance);
-      BitVectorAlgorithm.copy(v, 0, result, result.getBitSize() - distance, distance);
+      BitVectorAlgorithm.copy(bitVector, distance, result, 0, result.getBitSize() - distance);
+      BitVectorAlgorithm.copy(bitVector, 0, result, result.getBitSize() - distance, distance);
     } else {
-      BitVectorAlgorithm.copy(v, result.getBitSize() - distance, result, 0, distance);
-      BitVectorAlgorithm.copy(v, 0, result, distance, result.getBitSize() - distance);
+      BitVectorAlgorithm.copy(bitVector, result.getBitSize() - distance, result, 0, distance);
+      BitVectorAlgorithm.copy(bitVector, 0, result, distance, result.getBitSize() - distance);
     }
 
     return result;
@@ -759,15 +760,15 @@ public final class BitVectorMath {
     return result;
   }
 
-  public static BitVector plus(final BitVector v) {
-    InvariantChecks.checkNotNull(v);
-    return v;
+  public static BitVector plus(final BitVector bitVector) {
+    InvariantChecks.checkNotNull(bitVector);
+    return bitVector;
   }
 
-  public static BitVector neg(final BitVector v) {
-    InvariantChecks.checkNotNull(v);
+  public static BitVector neg(final BitVector bitVector) {
+    InvariantChecks.checkNotNull(bitVector);
     // Negation algorithm: "-arg = ~arg + 1".
-    return add(not(v), BitVector.valueOf(1, v.getBitSize()));
+    return add(not(bitVector), BitVector.valueOf(1, bitVector.getBitSize()));
   }
 
   public static BitVector ule(final BitVector lhs, final BitVector rhs) {
@@ -889,15 +890,15 @@ public final class BitVectorMath {
   }
 
   public static BitVector xorr(final BitVector bv) {
-      InvariantChecks.checkNotNull(bv);
+    InvariantChecks.checkNotNull(bv);
 
-      int ones = 0;
-      for (int i = 0; i < bv.getBitSize(); ++i) {
-        if (bv.getBit(i)) {
-          ++ones;
-        }
+    int ones = 0;
+    for (int i = 0; i < bv.getBitSize(); ++i) {
+      if (bv.getBit(i)) {
+        ++ones;
       }
-      return (ones % 2 == 0) ? BitVector.FALSE : BitVector.TRUE;
+    }
+    return (ones % 2 == 0) ? BitVector.FALSE : BitVector.TRUE;
   }
 
   private static BitVector transform(
@@ -913,12 +914,12 @@ public final class BitVectorMath {
   }
 
   private static BitVector transform(
-      final BitVector v,
+      final BitVector bitVector,
       final BitVectorAlgorithm.IUnaryOperation op) {
-    InvariantChecks.checkNotNull(v);
+    InvariantChecks.checkNotNull(bitVector);
 
-    final BitVector result = BitVector.newEmpty(v.getBitSize());
-    BitVectorAlgorithm.transform(v, result, op);
+    final BitVector result = BitVector.newEmpty(bitVector.getBitSize());
+    BitVectorAlgorithm.transform(bitVector, result, op);
 
     return result;
   }

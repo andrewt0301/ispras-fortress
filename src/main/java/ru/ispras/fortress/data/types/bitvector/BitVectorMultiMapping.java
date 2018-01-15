@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2017 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -121,7 +121,7 @@ final class BitVectorMultiMapping extends BitVector {
       final byte highValue = highPart.getByte(0);
 
       final byte result =
-        (byte) (((highValue << lowPart.getBitSize()) | lowValue) & getByteBitMask(0));
+          (byte) (((highValue << lowPart.getBitSize()) | lowValue) & getByteBitMask(0));
 
       return result;
     }
@@ -137,7 +137,7 @@ final class BitVectorMultiMapping extends BitVector {
       final byte lowValue = (byte) ((value & ~(0xFF << lowPart.getBitSize())));
 
       final byte highValue =
-        (byte) ((value >> lowPart.getBitSize()) & ~(0xFF << highPart.getBitSize()));
+          (byte) ((value >> lowPart.getBitSize()) & ~(0xFF << highPart.getBitSize()));
 
       lowPart.setByte(0, lowValue);
       highPart.setByte(0, highValue);
@@ -239,8 +239,8 @@ final class BitVectorMultiMapping extends BitVector {
         final int bitsToCompleteByte = BITS_IN_BYTE - unusedPrevPart.getBitSize();
         InvariantChecks.checkTrue(bitsToCompleteByte > 0);
 
-        final BitVector currentCutPart = (data.getBitSize() <= bitsToCompleteByte) ?
-            data : BitVector.newMapping(data, 0, bitsToCompleteByte);
+        final BitVector currentCutPart = (data.getBitSize() <= bitsToCompleteByte)
+            ? data : BitVector.newMapping(data, 0, bitsToCompleteByte);
 
         final BitVector linkingBlock = new LinkingByteMapping(unusedPrevPart, currentCutPart);
         if (linkingBlock.getBitSize() < BITS_IN_BYTE) {
@@ -271,16 +271,16 @@ final class BitVectorMultiMapping extends BitVector {
 
       if (0 != headBitSize) {
         final boolean headTakesAllData = (0 == offset) && (0 == tailBitSize);
-        final BitVector currentBlock = headTakesAllData ?
-            data : BitVector.newMapping(data, offset, headBitSize);
+        final BitVector currentBlock = headTakesAllData
+            ? data : BitVector.newMapping(data, offset, headBitSize);
 
         processedBitSize += addByteAcessors(currentBlock);
       }
 
       if (0 != tailBitSize) {
         final boolean tailTakesAllData = (0 == offset) && (0 == headBitSize);
-        unusedPrevPart = tailTakesAllData ?
-            data : BitVector.newMapping(data, offset + headBitSize, tailBitSize);
+        unusedPrevPart = tailTakesAllData
+            ? data : BitVector.newMapping(data, offset + headBitSize, tailBitSize);
       }
     }
 

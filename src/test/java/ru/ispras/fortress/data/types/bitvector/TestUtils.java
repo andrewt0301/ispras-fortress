@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2018 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -22,8 +22,8 @@ public final class TestUtils {
   private static final boolean OUTPUT_DEBUG_STRINGS = true;
 
   private static final String SEPARATOR = "/"
-    + "******************************************************************" + "%n* %-64s*%n"
-    + "*******************************************************************" + "/";
+      + "******************************************************************" + "%n* %-64s*%n"
+      + "*******************************************************************" + "/";
 
   public static void Trace(String text) {
     if (OUTPUT_DEBUG_STRINGS) {
@@ -44,8 +44,8 @@ public final class TestUtils {
     Trace(String.format("Data:     %32s%nExpected: %32s", dataString, expected));
 
     Assert.assertTrue(
-      String.format("Values do not match. %s (data) != %s (expected)", dataString, expected),
-      expected.equals(dataString));
+        String.format("Values do not match. %s (data) != %s (expected)", dataString, expected),
+        expected.equals(dataString));
   }
 
   public static void checkBitVector(BitVector current, int expected) {
@@ -59,8 +59,9 @@ public final class TestUtils {
   public static String toBinString(int value, int bitSize) {
     final String binstr = Integer.toBinaryString(value);
 
-    if (binstr.length() > bitSize)
+    if (binstr.length() > bitSize) {
       return binstr.substring(binstr.length() - bitSize, binstr.length());
+    }
 
     final int count = bitSize - binstr.length();
     return (count > 0) ? String.format("%0" + count + "d", 0) + binstr : binstr;
@@ -69,8 +70,9 @@ public final class TestUtils {
   public static String toBinString(long value, int bitSize) {
     final String binstr = Long.toBinaryString(value);
 
-    if (binstr.length() > bitSize)
+    if (binstr.length() > bitSize) {
       return binstr.substring(binstr.length() - bitSize, binstr.length());
+    }
 
     final int count = bitSize - binstr.length();
     return (count > 0) ? String.format("%0" + count + "d", 0) + binstr : binstr;

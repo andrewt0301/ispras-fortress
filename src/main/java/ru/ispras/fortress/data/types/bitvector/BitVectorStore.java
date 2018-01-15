@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2016 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2018 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -91,10 +91,6 @@ final class BitVectorStore extends BitVector {
     this.bitSize = bitSize;
   }
 
-  private static int getByteSize(final int bitSize) {
-    return bitSize / BITS_IN_BYTE + (0 == (bitSize % BITS_IN_BYTE) ? 0 : 1);
-  }
-
   /**
    * {@inheritDoc}
    */
@@ -109,6 +105,10 @@ final class BitVectorStore extends BitVector {
   @Override
   public int getByteSize() {
     return dataBytes.length;
+  }
+
+  private static int getByteSize(final int bitSize) {
+    return bitSize / BITS_IN_BYTE + (0 == (bitSize % BITS_IN_BYTE) ? 0 : 1);
   }
 
   /**

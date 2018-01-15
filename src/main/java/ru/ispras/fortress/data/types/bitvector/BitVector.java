@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2017 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -41,7 +41,7 @@ public abstract class BitVector implements Comparable<BitVector> {
   /**
    * Number of bits an a byte.
    */
-  public final static int BITS_IN_BYTE = 8;
+  public static final int BITS_IN_BYTE = 8;
 
   /**
    * Returns the size of stored data in bits.
@@ -209,8 +209,8 @@ public abstract class BitVector implements Comparable<BitVector> {
     final Result result = new Result();
     final IAction op = new IAction() {
       @Override
-      public void run(final byte v) {
-        result.value = 31 * result.value + (v & 0xFF);
+      public void run(final byte vByte) {
+        result.value = 31 * result.value + (vByte & 0xFF);
       }
     };
 
@@ -478,20 +478,11 @@ public abstract class BitVector implements Comparable<BitVector> {
    * unnecessary memory allocations because bit vectors representing boolean values are not normally
    * modified.
    *
-   * @param b Boolean value.
+   * @param bValue Boolean value.
    * @return A constant (!) bit vector for the specified boolean value.
    */
-  public static BitVector valueOf(final boolean b) {
-    return b ? TRUE : FALSE;
-  }
-
-  /**
-   * Converts the stored data to a string (binary format).
-   *
-   * @return Textual representation of the stored data (binary format).
-   */
-  public final String toString() {
-    return toBinString();
+  public static BitVector valueOf(final boolean bValue) {
+    return bValue ? TRUE : FALSE;
   }
 
   /**
@@ -514,27 +505,27 @@ public abstract class BitVector implements Comparable<BitVector> {
 
       @Override
       public byte run() {
-        byte v = 0;
+        byte valueByte = 0;
 
         do {
           final int bitIndex = text.length() - bitsRead - 1;
 
           if (bitIndex >= 0) {
-            final char c = text.charAt(bitIndex);
+            final char indexChar = text.charAt(bitIndex);
 
-            if ('0' != c && '1' != c) {
+            if ('0' != indexChar && '1' != indexChar) {
               throw new NumberFormatException(text);
             }
 
-            v |= (byte) (('0' == c ? 0x0 : 0x1) << (bitsRead % BITS_IN_BYTE));
+            valueByte |= (byte) (('0' == indexChar ? 0x0 : 0x1) << (bitsRead % BITS_IN_BYTE));
           }
 
           ++bitsRead;
         } while (bitsRead != bitSize && 0 != (bitsRead % BITS_IN_BYTE));
 
-        return v;
+        return valueByte;
       }
-    };
+    }
 
     final class HexParser implements IOperation {
       private int charIndex = text.length() - 1;
@@ -577,6 +568,15 @@ public abstract class BitVector implements Comparable<BitVector> {
   }
 
   /**
+   * Converts the stored data to a string (binary format).
+   *
+   * @return Textual representation of the stored data (binary format).
+   */
+  public final String toString() {
+    return toBinString();
+  }
+
+  /**
    * Creates a bit vector based on a long value. The data size is specified by a method parameter.
    * If the bit vector size is less that the long value size (64 bits), the value is truncated (high
    * bits of the value are ignored). If the bit vector size exceeds the long value size, high bits
@@ -592,16 +592,16 @@ public abstract class BitVector implements Comparable<BitVector> {
     InvariantChecks.checkGreaterThanZero(bitSize);
 
     final IOperation op = new IOperation() {
-      private long v = value;
+      private long longValue = value;
 
       @Override
       public byte run() {
-        if (0 == v) {
+        if (0 == longValue) {
           return 0;
         }
 
-        final byte result = (byte) (v & 0xFFL);
-        v >>>= BITS_IN_BYTE;
+        final byte result = (byte) (longValue & 0xFFL);
+        longValue >>>= BITS_IN_BYTE;
 
         return result;
       }
@@ -700,19 +700,23 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @return Integer representation of the stored value.
    */
   public final int intValue() {
-    class Result {public int value = 0;}
+
+    class Result {
+      public int value = 0;
+    }
+
     final Result result = new Result();
 
     final IAction op = new IAction() {
       private int bitCount = 0;
 
       @Override
-      public void run(final byte v) {
+      public void run(final byte vByte) {
         if (bitCount >= Integer.SIZE) {
           return;
         }
 
-        result.value |= (v & 0xFF) << bitCount;
+        result.value |= (vByte & 0xFF) << bitCount;
         bitCount += BITS_IN_BYTE;
       }
     };
@@ -728,19 +732,23 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @return Long representation of the stored value.
    */
   public final long longValue() {
-    class Result {public long value = 0;}
+
+    class Result {
+      public long value = 0;
+    }
+
     final Result result = new Result();
 
     final IAction op = new IAction() {
       private int bitCount = 0;
 
       @Override
-      public void run(final byte v) {
+      public void run(final byte vByte) {
         if (bitCount >= Long.SIZE) {
           return;
         }
 
-        result.value |= ((long)(v & 0xFF)) << bitCount;
+        result.value |= ((long)(vByte & 0xFF)) << bitCount;
         bitCount += BITS_IN_BYTE;
       }
     };
@@ -770,8 +778,8 @@ public abstract class BitVector implements Comparable<BitVector> {
     final IAction op = new IAction() {
       private int index = 0;
       @Override
-      public void run(final byte v) {
-        byteArray[index++] = v;
+      public void run(final byte vByte) {
+        byteArray[index++] = vByte;
       }
     };
 
@@ -813,12 +821,12 @@ public abstract class BitVector implements Comparable<BitVector> {
       private int totalBitCount = getBitSize();
 
       @Override
-      public void run(final byte v) {
+      public void run(final byte vByte) {
         final int highBits = totalBitCount % BITS_IN_BYTE;
         final int bitCount = (highBits == 0) ? BITS_IN_BYTE : highBits;
 
         for (int mask = 0x1 << (bitCount - 1); 0 != mask; mask >>>= 1) {
-          sb.append((v & mask) == 0 ? '0' : '1');
+          sb.append((vByte & mask) == 0 ? '0' : '1');
         }
 
         totalBitCount -= bitCount;
@@ -835,16 +843,16 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @return Hexadecimal string.
    */
   public final String toHexString() {
-    final int HEX_CHARS_IN_BYTE = 2;
-    final StringBuilder sb = new StringBuilder(HEX_CHARS_IN_BYTE * getByteSize());
+    final int hexCharsInByte = 2;
+    final StringBuilder sb = new StringBuilder(hexCharsInByte * getByteSize());
 
     final IAction op = new IAction() {
       @Override
-      public void run(final byte v) {
+      public void run(final byte vByte) {
         if (0 != sb.length()) {
-          sb.append(String.format("%0" + HEX_CHARS_IN_BYTE + "X", v));
-        } else if (0 != v){
-          sb.append(String.format("%X", v));
+          sb.append(String.format("%0" + hexCharsInByte + "X", vByte));
+        } else if (0 != vByte) {
+          sb.append(String.format("%X", vByte));
         }
       }
     };
@@ -864,8 +872,8 @@ public abstract class BitVector implements Comparable<BitVector> {
     final IAction op = new IAction() {
       private int index = 0;
       @Override
-      public void run(final byte v) {
-        byteArray[index++] = v;
+      public void run(final byte vByte) {
+        byteArray[index++] = vByte;
       }
     };
 
@@ -890,8 +898,8 @@ public abstract class BitVector implements Comparable<BitVector> {
 
     if (0 == highByteMask) {
       final int incompleteBitsInHighByte = getBitSize() % BITS_IN_BYTE;
-      highByteMask = (0 == incompleteBitsInHighByte) ?
-          (byte) 0xFF : (byte) (0xFF >>> (BITS_IN_BYTE - incompleteBitsInHighByte));
+      highByteMask = (0 == incompleteBitsInHighByte)
+          ? (byte) 0xFF : (byte) (0xFF >>> (BITS_IN_BYTE - incompleteBitsInHighByte));
     }
 
     return highByteMask;

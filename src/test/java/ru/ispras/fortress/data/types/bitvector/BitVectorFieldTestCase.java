@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ISP RAS (http://www.ispras.ru)
+ * Copyright 2017-2018 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -39,7 +39,7 @@ public final class BitVectorFieldTestCase {
               field2Size,
               field2Max,
               field2Min
-              );
+          );
 
           field1Min++;
           field1Max = field1Min + field1Size - 1;
@@ -103,11 +103,11 @@ public final class BitVectorFieldTestCase {
         final BitVector field = BitVector.newMapping(bitVector, fieldStartPos, fieldSize);
         final int fieldEndPos = fieldStartPos + fieldSize;
 
-        final BitVector preField = fieldStartPos > 0 ?
-            BitVector.newMapping(bitVector, 0, fieldStartPos) : null;
+        final BitVector preField = fieldStartPos > 0
+            ? BitVector.newMapping(bitVector, 0, fieldStartPos) : null;
 
-        final BitVector postField = fieldEndPos < size ?
-            BitVector.newMapping(bitVector, fieldEndPos, size - fieldEndPos) : null;
+        final BitVector postField = fieldEndPos < size
+            ? BitVector.newMapping(bitVector, fieldEndPos, size - fieldEndPos) : null;
 
         final BitVector preFieldCopy = null != preField ? preField.copy() : null;
         final BitVector postFieldCopy = null != postField ? postField.copy() : null;
