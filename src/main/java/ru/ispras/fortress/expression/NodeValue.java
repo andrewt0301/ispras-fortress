@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2017 ISP RAS (http://www.ispras.ru)
+ * Copyright 2011-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,11 +14,6 @@
 
 package ru.ispras.fortress.expression;
 
-import java.math.BigInteger;
-
-import javax.xml.bind.annotation.XmlSeeAlso;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.types.bitvector.BitVector;
@@ -26,6 +21,11 @@ import ru.ispras.fortress.data.types.datamap.DataMap;
 import ru.ispras.fortress.jaxb.JaxbNodeValue;
 import ru.ispras.fortress.jaxb.JaxbNodeValueAdapter;
 import ru.ispras.fortress.util.InvariantChecks;
+
+import java.math.BigInteger;
+
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * The {@code NodeValue} class represents a node that stores a constant value.

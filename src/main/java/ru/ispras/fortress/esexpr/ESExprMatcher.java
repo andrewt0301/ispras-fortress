@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -53,37 +53,37 @@ public final class ESExprMatcher {
   /**
    * Returns {@code true} if given expression matches this matcher.
    *
-   * @param e S-expression to be checked for match
+   * @param expr S-expression to be checked for match
    * @return {@code true} if given expression matches
    * @throws IllegalArgumentException if {@code e} is {@code null}
    */
-  public boolean matches(ESExpr e) {
-    InvariantChecks.checkNotNull(e);
-    return matches(e, pattern);
+  public boolean matches(ESExpr expr) {
+    InvariantChecks.checkNotNull(expr);
+    return matches(expr, pattern);
   }
 
   /**
    * Returns {@code true} if given expression matches given pattern.
    *
-   * @param e S-expression to be checked for match
+   * @param expr S-expression to be checked for match
    * @param pattern S-expression denoting pattern
    * @return {@code true} if given expression matches
    */
-  private static boolean matches(ESExpr e, ESExpr pattern) {
+  private static boolean matches(ESExpr expr, ESExpr pattern) {
     if (pattern.getLiteral().equals(SEXPR)) {
       return true;
     }
     if (pattern.getLiteral().equals(ATOM)) {
-      return e.isAtom();
+      return expr.isAtom();
     }
     if (pattern.isAtom()) {
-      return e.isAtom() && e.getLiteral().equals(pattern.getLiteral());
+      return expr.isAtom() && expr.getLiteral().equals(pattern.getLiteral());
     }
-    if (e.getItems().size() != pattern.getItems().size()) {
+    if (expr.getItems().size() != pattern.getItems().size()) {
       return false;
     }
-    for (int i = 0; i < e.getItems().size(); ++i) {
-      if (!matches(e.getItems().get(i), pattern.getItems().get(i))) {
+    for (int i = 0; i < expr.getItems().size(); ++i) {
+      if (!matches(expr.getItems().get(i), pattern.getItems().get(i))) {
         return false;
       }
     }

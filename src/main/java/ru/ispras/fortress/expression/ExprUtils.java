@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,6 +14,14 @@
 
 package ru.ispras.fortress.expression;
 
+import ru.ispras.fortress.data.DataType;
+import ru.ispras.fortress.data.DataTypeId;
+import ru.ispras.fortress.util.TreeVisitor.Status;
+import ru.ispras.fortress.solver.SolverResult;
+import ru.ispras.fortress.solver.constraint.Constraint;
+import ru.ispras.fortress.solver.constraint.ConstraintUtils;
+import ru.ispras.fortress.util.InvariantChecks;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Deque;
@@ -23,14 +31,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
-
-import ru.ispras.fortress.data.DataType;
-import ru.ispras.fortress.data.DataTypeId;
-import ru.ispras.fortress.util.TreeVisitor.Status;
-import ru.ispras.fortress.solver.SolverResult;
-import ru.ispras.fortress.solver.constraint.Constraint;
-import ru.ispras.fortress.solver.constraint.ConstraintUtils;
-import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * The {@link ExprUtils} class provides utility methods to work with logical expressions.
@@ -151,7 +151,9 @@ public final class ExprUtils {
    * @throws IllegalArgumentException if any of the parameters is {@code null};
    *         if the list of operation identifiers is empty.
    */
-  public static <T extends Enum<? extends T>> boolean isOperation(final Node expr, final Collection<T> opIds) {
+  public static <T extends Enum<? extends T>> boolean isOperation(
+      final Node expr,
+      final Collection<T> opIds) {
     InvariantChecks.checkNotEmpty(opIds);
 
     if (isOperation(expr)) {
@@ -404,8 +406,8 @@ public final class ExprUtils {
    * @param exprs Expressions to be combined.
    * @return A logical complement of the specified expressions.
    *
-   * @throws IllegalArgumentException if any argument in the array is {@code null}; if no arguments are
-   *         provided; if an argument is not a logical expression.
+   * @throws IllegalArgumentException if any argument in the array is {@code null};
+   *         if no arguments are provided; if an argument is not a logical expression.
    */
   public static Node getComplement(final Node... exprs) {
     return Nodes.NOT(getDisjunction(exprs));
@@ -435,8 +437,8 @@ public final class ExprUtils {
    * @param exprs Conditions (logical expressions) to be checked.
    * @return {@code true} if the conditions are compatible or {@code false} otherwise.
    *
-   * @throws IllegalArgumentException if any argument in the array is {@code null}; if no arguments are
-   *         provided; if an argument is not a logical expression.
+   * @throws IllegalArgumentException if any argument in the array is {@code null};
+   *         if no arguments are provided; if an argument is not a logical expression.
    */
   public static boolean areCompatible(final Node... exprs) {
     final Node target = getConjunction(exprs);
@@ -509,7 +511,7 @@ public final class ExprUtils {
   public static Collection<NodeVariable> getVariables(final Iterable<Node> exprs) {
     InvariantChecks.checkNotNull(exprs);
 
-    final String ERR_MULTIPLE_VARS =
+    final String errMultipleVars =
         "References to different variables that have the same name %s.";
 
     final Map<String, NodeVariable> variables = new HashMap<String, NodeVariable>();
@@ -522,7 +524,7 @@ public final class ExprUtils {
         if (variables.containsKey(name)) {
           final NodeVariable existingVariable = variables.get(name);
           if (!variable.equals(existingVariable)) {
-            throw new IllegalStateException(String.format(ERR_MULTIPLE_VARS, name));
+            throw new IllegalStateException(String.format(errMultipleVars, name));
           }
         } else {
           variables.put(name, variable);

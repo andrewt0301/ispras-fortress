@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2013-2018 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -102,8 +102,7 @@ public interface ExprTreeVisitor extends TreeVisitor {
   /**
    * Notifies that visiting a bound variable has started. Bound value expression will be visited
    * next as general expression.
-   * 
-   * Bound variables are not visited at all.
+   * <p>Bound variables are not visited at all.</p>
    * 
    * @param node Binding node.
    * @param variable Bound variable reference.

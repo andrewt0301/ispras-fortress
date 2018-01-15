@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2017 ISP RAS (http://www.ispras.ru)
+ * Copyright 2011-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,16 +14,16 @@
 
 package ru.ispras.fortress.expression;
 
+import ru.ispras.fortress.data.Data;
+import ru.ispras.fortress.data.DataType;
+import ru.ispras.fortress.data.DataTypeId;
+import ru.ispras.fortress.util.InvariantChecks;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import ru.ispras.fortress.data.Data;
-import ru.ispras.fortress.data.DataType;
-import ru.ispras.fortress.data.DataTypeId;
-import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * The {@link NodeOperation} class represents an expression node described by an operation
@@ -273,8 +273,8 @@ public final class NodeOperation extends Node {
       }
 
       final BigInteger value = (BigInteger) data.getValue();
-      if (value.compareTo(BigInteger.valueOf(Integer.MIN_VALUE)) < 0 || 
-          value.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) > 0) {
+      if (value.compareTo(BigInteger.valueOf(Integer.MIN_VALUE)) < 0
+          || value.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) > 0) {
         throw new IndexOutOfBoundsException(value + " is out of bounds.");
       }
 

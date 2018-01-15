@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2017 ISP RAS (http://www.ispras.ru)
+ * Copyright 2013-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,15 +14,14 @@
 
 package ru.ispras.fortress.expression;
 
-import javax.xml.bind.annotation.XmlSeeAlso;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.DataTypeId;
+import ru.ispras.fortress.util.InvariantChecks;
 import ru.ispras.fortress.jaxb.JaxbNode;
 import ru.ispras.fortress.jaxb.JaxbNodeAdapter;
 
-import ru.ispras.fortress.util.InvariantChecks;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * The {@link Node} class is a base class for all kinds of classes describing nodes in an expression
@@ -128,7 +127,7 @@ public abstract class Node {
    *
    * @param typeId {@link DataTypeId} object the data type is to be compared to.
    * @return {@code true} if the expression type matches the type specified by
-   * the {@code typeId} argument or {@code false} otherwise.
+   *         the {@code typeId} argument or {@code false} otherwise.
    */
   public final boolean isType(final DataTypeId typeId) {
     return getDataTypeId() == typeId;
@@ -140,7 +139,7 @@ public abstract class Node {
    *
    * @param type {@link DataType} object the data type is to be compared to.
    * @return {@code true} if the expression type matches the type specified by
-   * the {@code type} argument or {@code false} otherwise.
+   *         the {@code type} argument or {@code false} otherwise.
    */
   public final boolean isType(final DataType type) {
     return getDataType().equals(type);

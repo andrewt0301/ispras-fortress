@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -16,8 +16,8 @@ package ru.ispras.fortress.esexpr;
 
 import ru.ispras.fortress.util.InvariantChecks;
 
-import java.io.IOException;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.Reader;
 import java.io.StreamTokenizer;
 import java.io.StringReader;
@@ -143,17 +143,17 @@ public final class ESExprParser {
   /**
    * Creates parser for given string.
    *
-   * @param s string to parse
+   * @param str string to parse
    * @return parser for given string
    * @throws IllegalArgumentException if {@code s} is {@code null}
    */
-  public static ESExprParser stringParser(final String s) {
-    InvariantChecks.checkNotNull(s);
-    return new ESExprParser(new StringReader(s));
+  public static ESExprParser stringParser(final String str) {
+    InvariantChecks.checkNotNull(str);
+    return new ESExprParser(new StringReader(str));
   }
 
   /**
-   * Create and properly set up StreamTokenizer
+   * Create and properly set up StreamTokenizer.
    *
    * @param reader {@code Reader} instance to read input from
    * @return tokenizer for given input reader

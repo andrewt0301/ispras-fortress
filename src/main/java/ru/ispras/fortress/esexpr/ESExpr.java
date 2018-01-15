@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -121,20 +121,20 @@ public final class ESExpr {
   }
 
   @Override
-  public boolean equals(final Object o) {
-    if (o == null) {
+  public boolean equals(final Object obj) {
+    if (obj == null) {
       return false;
     }
-    if (o == this) {
+    if (obj == this) {
       return true;
     }
-    if (this.getClass() != o.getClass()) {
+    if (this.getClass() != obj.getClass()) {
       return false;
     }
-    final ESExpr e = (ESExpr) o;
-    if (e.isNil() || this.isNil() ||
-        e.isAtom() != this.isAtom() ||
-        e.isList() != this.isList()) {
+    final ESExpr e = (ESExpr) obj;
+    if (e.isNil() || this.isNil()
+        || e.isAtom() != this.isAtom()
+        || e.isList() != this.isList()) {
       return false;
     }
     if (e.isAtom()) {

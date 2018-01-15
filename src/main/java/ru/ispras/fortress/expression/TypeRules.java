@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -77,8 +77,8 @@ enum TypeRules implements TypeRule {
     @Override
     public DataType getResultType(final DataType[] operandTypes, final int[] params) {
       if (operandTypes.length > 0) {
-        if (operandTypes[0].getTypeId() == DataTypeId.LOGIC_INTEGER ||
-            operandTypes[0].getTypeId() == DataTypeId.LOGIC_REAL) {
+        if (operandTypes[0].getTypeId() == DataTypeId.LOGIC_INTEGER
+            || operandTypes[0].getTypeId() == DataTypeId.LOGIC_REAL) {
           return operandTypes[0];
         }
       }
@@ -93,8 +93,8 @@ enum TypeRules implements TypeRule {
       DataType result = DataType.UNKNOWN;
 
       for (final DataType dataType : operandTypes) {
-        if (dataType.getTypeId() == DataTypeId.LOGIC_INTEGER ||
-            dataType.getTypeId() == DataTypeId.LOGIC_REAL) {
+        if (dataType.getTypeId() == DataTypeId.LOGIC_INTEGER
+            || dataType.getTypeId() == DataTypeId.LOGIC_REAL) {
           result = dataType;
           break;
         }

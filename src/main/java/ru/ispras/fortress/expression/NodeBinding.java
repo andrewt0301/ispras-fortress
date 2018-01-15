@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,14 +14,14 @@
 
 package ru.ispras.fortress.expression;
 
+import ru.ispras.fortress.data.DataType;
+import ru.ispras.fortress.util.InvariantChecks;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Collections;
-
-import ru.ispras.fortress.data.DataType;
-import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * The {@link NodeBinding} class represents set of substitutions to be considered in underlying
