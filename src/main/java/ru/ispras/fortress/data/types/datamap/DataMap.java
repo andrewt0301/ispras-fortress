@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -80,19 +80,19 @@ public final class DataMap implements Map<Data, Data> {
   }
 
   @Override
-  public boolean containsKey(final Object o) {
-    return isKey(o) && map.containsKey(o);
+  public boolean containsKey(final Object obj) {
+    return isKey(obj) && map.containsKey(obj);
   }
 
   @Override
-  public boolean containsValue(final Object o) {
-    return isValue(o) && map.containsValue(o) || o.equals(constant);
+  public boolean containsValue(final Object obj) {
+    return isValue(obj) && map.containsValue(obj) || obj.equals(constant);
   }
 
   @Override
-  public Data get(final Object o) {
-    if (isKey(o)) {
-      final Data data = map.get(o);
+  public Data get(final Object obj) {
+    if (isKey(obj)) {
+      final Data data = map.get(obj);
       if (data == null) {
         return constant;
       }
@@ -114,15 +114,15 @@ public final class DataMap implements Map<Data, Data> {
   }
 
   @Override
-  public Data remove(final Object o) {
-    if (isKey(o)) {
-      return map.remove(o);
+  public Data remove(final Object obj) {
+    if (isKey(obj)) {
+      return map.remove(obj);
     }
     return null;
   }
 
   @Override
-  public void putAll(final Map<? extends Data, ? extends Data> m) {
+  public void putAll(final Map<? extends Data, ? extends Data> map) {
     throw new UnsupportedOperationException("DataMap doesn't support putAll() method");
   }
 
@@ -147,22 +147,22 @@ public final class DataMap implements Map<Data, Data> {
   }
 
   @Override
-  public boolean equals(final Object o) {
-    if (o == null) {
+  public boolean equals(final Object obj) {
+    if (obj == null) {
       return false;
     }
-    if (o == this) {
+    if (obj == this) {
       return false;
     }
-    if (o.getClass() != this.getClass()) {
+    if (obj.getClass() != this.getClass()) {
       return false;
     }
-    final DataMap rhs = (DataMap) o;
+    final DataMap rhs = (DataMap) obj;
 
-    return rhs.keyType.equals(keyType) &&
-           rhs.valueType.equals(valueType) &&
-           observeEquals(this, rhs) &&
-           observeEquals(rhs, this);
+    return rhs.keyType.equals(keyType)
+        && rhs.valueType.equals(valueType)
+        && observeEquals(this, rhs)
+        && observeEquals(rhs, this);
   }
 
   private static boolean observeEquals(
@@ -215,7 +215,7 @@ public final class DataMap implements Map<Data, Data> {
   /**
    * Read {@link DataMap} from string using type hints.
    *
-   * @param s string representation of {@link DataMap} instance
+   * @param mapStr string representation of {@link DataMap} instance
    * @param keyType expected data type for keys in map
    * @param valueType expected data type for values in map
    * @return {@link DataMap} instance for given string representation
@@ -223,29 +223,29 @@ public final class DataMap implements Map<Data, Data> {
    * @throws IllegalArgumentException if {@code s} is not valid string representation
    */
   public static DataMap valueOf(
-      final String s, 
+      final String mapStr,
       final DataType keyType,
       final DataType valueType) {
-    checkNotNull(s);
+    checkNotNull(mapStr);
     checkNotNull(keyType);
     checkNotNull(valueType);
 
-    final char LPAREN = '(';
-    final char RPAREN = ')';
-    final char DELIM = ':';
+    final char lParen = '(';
+    final char rParen = ')';
+    final char delim = ':';
 
     int depth = -1;
     int start = -1, end = -1;
 
     final DataMap map = new DataMap(keyType, valueType);
-    for (int i = 0; i < s.length(); ++i) {
-      final char c = s.charAt(i);
-      if (c == LPAREN && ++depth == 1) {
+    for (int i = 0; i < mapStr.length(); ++i) {
+      final char c = mapStr.charAt(i);
+      if (c == lParen && ++depth == 1) {
         start = i + 1;
-      } else if (c == RPAREN && --depth == 0) {
-        map.map.put(readData(s.substring(start, end), keyType),
-                    readData(s.substring(end + 1, i), valueType));
-      } else if (c == DELIM && depth == 1) {
+      } else if (c == rParen && --depth == 0) {
+        map.map.put(readData(mapStr.substring(start, end), keyType),
+                    readData(mapStr.substring(end + 1, i), valueType));
+      } else if (c == delim && depth == 1) {
         end = i;
       }
     }
@@ -259,22 +259,22 @@ public final class DataMap implements Map<Data, Data> {
    * Read {@link ru.ispras.fortress.data.Data Data} instance from string
    * using data type hint.
    *
-   * @param s string representation of {@code Data} instance
+   * @param dStr string representation of {@code Data} instance
    * @param type expected data type of value being read
    * @return {@link ru.ispras.fortress.data.Data Data} instance for given string representation
    */
-  private static Data readData(final String s, final DataType type) {
+  private static Data readData(final String dStr, final DataType type) {
     final int radix;
 
-    if (Pattern.compile(SmtRegExp.LINE_START + SmtRegExp.VALUE_BIN).matcher(s).matches()) {
+    if (Pattern.compile(SmtRegExp.LINE_START + SmtRegExp.VALUE_BIN).matcher(dStr).matches()) {
       radix = 2;
-    } else if (Pattern.compile(SmtRegExp.LINE_START + SmtRegExp.VALUE_HEX).matcher(s).matches()) {
+    } else if (Pattern.compile(SmtRegExp.LINE_START + SmtRegExp.VALUE_HEX).matcher(dStr).matches()) {
       radix = 16;
     } else {
       radix = 10; // decimal value by default
     }
 
-    return type.valueOf(s.replaceAll(SmtRegExp.VALUE_TRIM_PTRN, ""), radix);
+    return type.valueOf(dStr.replaceAll(SmtRegExp.VALUE_TRIM_PTRN, ""), radix);
   }
 
   /**
@@ -302,23 +302,23 @@ public final class DataMap implements Map<Data, Data> {
    * Check if object is {@link ru.ispras.fortress.data.Data Data} instance with
    * type conforming to key type of this map.
    */
-  private boolean isKey(final Object o) {
-    return getData(o).getType().equals(keyType);
+  private boolean isKey(final Object obj) {
+    return getData(obj).getType().equals(keyType);
   }
 
   /**
    * Check if object is {@link ru.ispras.fortress.data.Data Data} instance with
    * type conforming to value type of this map.
    */
-  private boolean isValue(final Object o) {
-    return getData(o).getType().equals(valueType);
+  private boolean isValue(final Object obj) {
+    return getData(obj).getType().equals(valueType);
   }
 
   /**
    * Cast from {@code Object} to {@code Data} instance.
    */
-  private static Data getData(final Object o) {
-    checkNotNull(o);
-    return (Data) o;
+  private static Data getData(final Object obj) {
+    checkNotNull(obj);
+    return (Data) obj;
   }
 }
