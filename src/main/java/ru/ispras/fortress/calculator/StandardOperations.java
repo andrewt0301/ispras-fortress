@@ -51,7 +51,8 @@ final class StandardOperations {
           public boolean validTypes(final Data... operands) {
             final DataType arrayType = operands[0].getType();
             return operands[0].isType(DataTypeId.MAP)
-                  && operands[1].isType((DataType) arrayType.getAttribute(DataTypeId.Attribute.KEY));
+                  && operands[1].isType(
+                      (DataType) arrayType.getAttribute(DataTypeId.Attribute.KEY));
           }
       },
 

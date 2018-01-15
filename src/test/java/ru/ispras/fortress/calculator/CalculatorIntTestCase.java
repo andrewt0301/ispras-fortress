@@ -14,12 +14,13 @@
 
 package ru.ispras.fortress.calculator;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.expression.StandardOperation;
 
 import java.math.BigInteger;
-import org.junit.Assert;
-import org.junit.Test;
 
 public final class CalculatorIntTestCase {
   public static Data calculate(Enum<?> operationId, Data... operands) {

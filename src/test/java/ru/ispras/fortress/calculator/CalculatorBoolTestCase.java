@@ -14,11 +14,11 @@
 
 package ru.ispras.fortress.calculator;
 
-import ru.ispras.fortress.data.Data;
-import ru.ispras.fortress.expression.StandardOperation;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import ru.ispras.fortress.data.Data;
+import ru.ispras.fortress.expression.StandardOperation;
 
 public final class CalculatorBoolTestCase {
   private static final Data TRUE = Data.newBoolean(true);

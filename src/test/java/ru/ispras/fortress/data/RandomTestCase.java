@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,8 +14,7 @@
 
 package ru.ispras.fortress.data;
 
-import static org.junit.Assert.*;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 public class RandomTestCase {
@@ -52,8 +51,8 @@ public class RandomTestCase {
     final Data current = Random.newValue(type);
     System.out.println(current);
 
-    assertTrue(String.format("Current: %s, Extected: %s",
-      current.getValue(), expected.getValue()), current.equals(expected));
+    Assert.assertTrue(String.format("Current: %s, Extected: %s",
+        current.getValue(), expected.getValue()), current.equals(expected));
   }
 
   private static void tryToGenerateUnsupported(DataType type) {
@@ -66,8 +65,8 @@ public class RandomTestCase {
       System.out.println(e.getMessage());
     }
 
-    assertTrue(String.format(
-      "An attempt to generate random data for the %s type is supposed to fail.",
-      type.getTypeId()), failed);
+    Assert.assertTrue(String.format(
+        "An attempt to generate random data for the %s type is supposed to fail.",
+        type.getTypeId()), failed);
   }
 }

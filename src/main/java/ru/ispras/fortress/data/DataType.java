@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2016 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -16,9 +16,9 @@ package ru.ispras.fortress.data;
 
 import ru.ispras.fortress.util.InvariantChecks;
 
-import java.util.List;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**

@@ -179,7 +179,7 @@ public final class Data {
   /**
    * Creates a data object of the BIT_VECTOR type from a string.
    *
-   * @param s Textual representation of the bit vector.
+   * @param bitVectorStr Textual representation of the bit vector.
    * @param radix Radix to be used for parsing.
    * @param size Size of the resulting bit vector in bits.
    * @return A new data object.
@@ -187,13 +187,13 @@ public final class Data {
    * @throws IllegalArgumentException if the {@code s} parameter equals {@code null}.
    */
   public static Data newBitVector(
-      final String s,
+      final String bitVectorStr,
       final int radix,
       final int size) {
-    InvariantChecks.checkNotNull(s);
+    InvariantChecks.checkNotNull(bitVectorStr);
 
     final DataType dt = DataType.BIT_VECTOR(size);
-    final Object v = BitVector.unmodifiable(BitVector.valueOf(s, radix, size));
+    final Object v = BitVector.unmodifiable(BitVector.valueOf(bitVectorStr, radix, size));
 
     return new Data(dt, v);
   }
@@ -291,14 +291,14 @@ public final class Data {
   /**
    * Returns an object of given type that holds the data.
    *
-   * @param c Class object that describes the type of the value object.
+   * @param clazz Class object that describes the type of the value object.
    * @param <T> Type of the value object.
    *
    * @return A type-dependent object that stores the data.
    */
-  public <T> T getValue(final Class<T> c) {
-    checkConvertibleTo(c);
-    return c.cast(value);
+  public <T> T getValue(final Class<T> clazz) {
+    checkConvertibleTo(clazz);
+    return clazz.cast(value);
   }
 
   /**
@@ -498,11 +498,11 @@ public final class Data {
     return true;
   }
 
-  private void checkConvertibleTo(final Class<?> c) {
-    if (!c.isAssignableFrom(value.getClass())) {
+  private void checkConvertibleTo(final Class<?> clazz) {
+    if (!clazz.isAssignableFrom(value.getClass())) {
       throw new IllegalStateException(String.format(
           "%s data is not convertible to %s.",
-          value.getClass().getSimpleName(), c.getSimpleName())
+          value.getClass().getSimpleName(), clazz.getSimpleName())
           );
     }
   }

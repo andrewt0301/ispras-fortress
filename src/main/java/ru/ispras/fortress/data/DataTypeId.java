@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2016 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2018 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -34,9 +34,9 @@ public enum DataTypeId {
    * A bit vector type. Represents some data buffer of a specified size.
    */
   BIT_VECTOR(BitVector.class, false) {
-    Object valueOf(final String s, final int radix, final List<Object> params) {
+    Object valueOf(final String str, final int radix, final List<Object> params) {
       final int size = (Integer) params.get(0);
-      return BitVector.unmodifiable(BitVector.valueOf(s, radix, size));
+      return BitVector.unmodifiable(BitVector.valueOf(str, radix, size));
     }
 
     int radix(final int size) {
@@ -59,7 +59,7 @@ public enum DataTypeId {
 
     DataType typeOf(final String text) {
       final Matcher matcher =
-        Pattern.compile(String.format("^\\(%s[ ](\\d+)\\)$", name())).matcher(text);
+          Pattern.compile(String.format("^\\(%s[ ](\\d+)\\)$", name())).matcher(text);
 
       if (!matcher.matches()) {
         return null;
@@ -69,8 +69,8 @@ public enum DataTypeId {
     }
 
     @Override
-    public Object getAttribute(final Attribute a, final List<Object> params) {
-      if (a == Attribute.SIZE) {
+    public Object getAttribute(final Attribute attr, final List<Object> params) {
+      if (attr == Attribute.SIZE) {
         return params.get(0);
       }
 
@@ -84,8 +84,8 @@ public enum DataTypeId {
    * applicable.
    */
   LOGIC_BOOLEAN(Boolean.class, true) {
-    Object valueOf(final String s, final int radix, final List<Object> params) {
-      return Boolean.valueOf(s);
+    Object valueOf(final String str, final int radix, final List<Object> params) {
+      return Boolean.valueOf(str);
     }
 
     int radix(final int size) {
@@ -115,8 +115,8 @@ public enum DataTypeId {
    * representations). The size attribute is not applicable.
    */
   LOGIC_INTEGER(BigInteger.class, true) {
-    Object valueOf(final String s, final int radix, final List<Object> params) {
-      return new BigInteger(s, radix);
+    Object valueOf(final String str, final int radix, final List<Object> params) {
+      return new BigInteger(str, radix);
     }
 
     int radix(final int size) {
@@ -145,8 +145,8 @@ public enum DataTypeId {
    * types used store to floating point numbers. The size attribute is not applicable.
    */
   LOGIC_REAL(Double.class, true) {
-    Object valueOf(final String s, final int radix, final List<Object> params) {
-      return Double.valueOf(s);
+    Object valueOf(final String str, final int radix, final List<Object> params) {
+      return Double.valueOf(str);
     }
 
     int radix(final int size) {
@@ -175,13 +175,21 @@ public enum DataTypeId {
    * machine-dependent types. The size attribute is not applicable.
    */
   LOGIC_STRING(String.class, true) {
-    Object valueOf(final String s, final int radix, final List<Object> params) {
-      return s;
+    Object valueOf(final String str, final int radix, final List<Object> params) {
+      return str;
     }
 
-    int radix(final int size) { return 0; }
-    void validate(final List<Object> params) {}
-    String format(final List<Object> params) { return name(); }
+    int radix(final int size) {
+      return 0;
+    }
+
+    void validate(final List<Object> params) {
+      /* Empty. */
+    }
+
+    String format(final List<Object> params) {
+      return name();
+    }
 
     DataType typeOf(final String text) {
       if (!text.equals(name())) {
@@ -197,10 +205,10 @@ public enum DataTypeId {
    */
 
   MAP(DataMap.class, true) {
-    Object valueOf(final String s, final int radix, final List<Object> params) {
+    Object valueOf(final String str, final int radix, final List<Object> params) {
       final DataType keyType = (DataType) params.get(0);
       final DataType valueType = (DataType) params.get(1);
-      return DataMap.valueOf(s, keyType, valueType);
+      return DataMap.valueOf(str, keyType, valueType);
     }
 
     /** 
@@ -220,7 +228,7 @@ public enum DataTypeId {
 
     DataType typeOf(final String text) {
       final Matcher matcher =
-        Pattern.compile(String.format("^\\(%s[ ](.+)[ ](.+)\\)$", name())).matcher(text);
+          Pattern.compile(String.format("^\\(%s[ ](.+)[ ](.+)\\)$", name())).matcher(text);
 
       if (!matcher.matches()) {
         return null;
@@ -252,12 +260,12 @@ public enum DataTypeId {
     }
 
     @Override
-    public Object getAttribute(final Attribute a, final List<Object> params) {
-      if (a == Attribute.KEY) {
+    public Object getAttribute(final Attribute attr, final List<Object> params) {
+      if (attr == Attribute.KEY) {
         return params.get(0);
       }
 
-      else if (a == Attribute.VALUE) {
+      else if (attr == Attribute.VALUE) {
         return params.get(1);
       }
 
@@ -269,7 +277,7 @@ public enum DataTypeId {
    * Uninterpreted data, that should not be passed to solver.
    */
   UNKNOWN(Object.class, true) {
-    Object valueOf(final String s, final int radix, final List<Object> params) {
+    Object valueOf(final String str, final int radix, final List<Object> params) {
       throw new UnsupportedOperationException("Unable to create a value of an unknown type.");
     }
 
@@ -331,22 +339,22 @@ public enum DataTypeId {
    * Creates a value of the given type (described by the valueClass type) basing on its textual
    * representation.
    * 
-   * @param s Textual representation of the value.
+   * @param str Textual representation of the value.
    * @param radix Radix to be used for conversion.
    * @param size Data size in bits.
    * @return Value of the given type packed into an Object value.
    */
-  Object valueOf(final String s, final int radix, final int size) {
+  Object valueOf(final String str, final int radix, final int size) {
     final List<Object> list = new ArrayList<Object>();
     list.add(size);
-    return valueOf(s, radix, list);
+    return valueOf(str, radix, list);
   }
 
   public static enum Attribute {
     SIZE, KEY, VALUE
   }
 
-  abstract Object valueOf(String s, int radix, List<Object> params);
+  abstract Object valueOf(String str, int radix, List<Object> params);
 
   /**
    * Returns radix to be used to convert data of this type to a string or vice versa.
@@ -378,7 +386,7 @@ public enum DataTypeId {
     }
   }
 
-  public Object getAttribute(final Attribute a, final List<Object> params) {
+  public Object getAttribute(final Attribute attr, final List<Object> params) {
     return null;
   }
 }
