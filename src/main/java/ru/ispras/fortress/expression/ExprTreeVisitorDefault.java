@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2017 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -18,9 +18,9 @@ import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * The {@code ExprTreeVisitorDefault} abstract class provides a default implementation for the
- * {@code ExprTreeVisitor} interface. This implementation does not perform any actions and does not collect
- * any data. It stores the visitor status, which is by default set to {@code Status.OK} and is
- * accessible via the {@code getStatus} and {@code setStatus} methods. All other methods
+ * {@code ExprTreeVisitor} interface. This implementation does not perform any actions and does
+ * not collect any data. It stores the visitor status, which is by default set to {@code Status.OK}
+ * and is accessible via the {@code getStatus} and {@code setStatus} methods. All other methods
  * defined by the {@code ExprTreeVisitor} interface and overridden by the class are empty. The
  * class helps keep the size of other implementations of the {@code ExprTreeVisitor} interface
  * to minimum when it is required to implement only a small number of {@code ExprTreeVisitor}
@@ -55,56 +55,84 @@ public class ExprTreeVisitorDefault implements ExprTreeVisitor {
   }
 
   @Override
-  public void onBegin() { /* Empty */ ; }
+  public void onBegin() {
+    /* Empty */ ;
+  }
 
   @Override
-  public void onEnd() { /* Empty */ ; }
+  public void onEnd() {
+    /* Empty */ ;
+  }
 
   @Override
-  public void onOperationBegin(final NodeOperation node) { /* Empty */ ; }
+  public void onOperationBegin(final NodeOperation node) {
+    /* Empty */ ;
+  }
 
   @Override
-  public void onOperationEnd(final NodeOperation node) { /* Empty */ ; }
+  public void onOperationEnd(final NodeOperation node) {
+    /* Empty */ ;
+  }
 
   @Override
-  public int[] getOperandOrder() { return null; }
+  public int[] getOperandOrder() {
+    return null;
+  }
 
   @Override
   public void onOperandBegin(
       final NodeOperation operation,
       final Node operand,
-      final int index) { /* Empty */ ; }
+      final int index) {
+    /* Empty */ ;
+  }
 
   @Override
   public void onOperandEnd(
       final NodeOperation operation,
       final Node operand,
-      final int index) { /* Empty */ ; }
+      final int index) {
+    /* Empty */ ;
+  }
 
   @Override
-  public void onValue(final NodeValue value) { /* Empty */ ; }
+  public void onValue(final NodeValue value) {
+    /* Empty */ ;
+  }
 
   @Override
-  public void onVariable(final NodeVariable variable) { /* Empty */ ; }
+  public void onVariable(final NodeVariable variable) {
+    /* Empty */ ;
+  }
 
   @Override
-  public void onBindingBegin(final NodeBinding node) { /* Empty */ ; }
+  public void onBindingBegin(final NodeBinding node) {
+    /* Empty */ ;
+  }
 
   @Override
-  public void onBindingListEnd(final NodeBinding node) { /* Empty */ ; }
+  public void onBindingListEnd(final NodeBinding node) {
+    /* Empty */ ;
+  }
 
   @Override
-  public void onBindingEnd(final NodeBinding node) { /* Empty */ ; }
+  public void onBindingEnd(final NodeBinding node) {
+    /* Empty */ ;
+  }
 
   @Override
   public void onBoundVariableBegin(
       final NodeBinding node,
       final NodeVariable variable,
-      final Node value) { /* Empty */ ; }
+      final Node value) { 
+    /* Empty */ ;
+  }
 
   @Override
   public void onBoundVariableEnd(
       final NodeBinding node,
       final NodeVariable variable,
-      final Node value) { /* Empty */ ; }
+      final Node value) {
+    /* Empty */ ;
+  }
 }
