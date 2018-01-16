@@ -78,15 +78,6 @@ public class SimpleTransformTestCase {
     return new NodeOperation(StandardOperation.IMPL, args);
   }
 
-  private static NodeOperation NOT(Node node) {
-    return new NodeOperation(StandardOperation.NOT, node);
-  }
-
-  private static NodeOperation ITE(Node cond, Node ifTrue, Node ifFalse) {
-    final Node[] operands = { cond, ifTrue, ifFalse };
-    return new NodeOperation(StandardOperation.ITE, operands);
-  }
-
   private static NodeBinding singleBinding(NodeVariable variable, Node value, Node expr) {
     final List<NodeBinding.BoundVariable> bindings =
         Collections.singletonList(NodeBinding.bindVariable(variable, value));
@@ -170,7 +161,7 @@ public class SimpleTransformTestCase {
     final Node standardInequality = Transformer.standardize(booleanInequality);
 
     Assert.assertTrue(standardEquality.toString().equals(equality.toString()));
-    Assert.assertTrue(standardInequality.toString().equals(NOT(equality).toString()));
+    Assert.assertTrue(standardInequality.toString().equals(Nodes.not(equality).toString()));
   }
 
   @Test
@@ -188,7 +179,7 @@ public class SimpleTransformTestCase {
     final Node expectedEquality = EQ(z, y, x);
     final Node standardEquality = Transformer.standardize(equalsTrue);
 
-    final Node expectedInequality = AND(NOT(eqxy), NOT(eqxz));
+    final Node expectedInequality = AND(Nodes.not(eqxy), Nodes.not(eqxz));
     final Node standardInequality = Transformer.standardize(equalsFalse);
 
     Assert.assertTrue(standardEquality.toString().equals(expectedEquality.toString()));
@@ -211,9 +202,9 @@ public class SimpleTransformTestCase {
     final Node std2 = Transformer.standardize(impl2);
     final Node std3 = Transformer.standardize(impl3);
 
-    Assert.assertTrue(std2.toString().equals(OR(NOT(eqxy), eqxz).toString()));
+    Assert.assertTrue(std2.toString().equals(OR(Nodes.not(eqxy), eqxz).toString()));
     Assert.assertTrue(std3.toString().equals(
-        OR(NOT(eqxy), NOT(eqxz), eqyz).toString()));
+        OR(Nodes.not(eqxy), Nodes.not(eqxz), eqyz).toString()));
   }
 
   @Test
@@ -348,10 +339,10 @@ public class SimpleTransformTestCase {
     final NodeVariable x = createVariable("x");
     final NodeVariable y = createVariable("y");
 
-    final NodeOperation ifLess = ITE(LESS(x, y), x, y);
+    final NodeOperation ifLess = Nodes.ite(LESS(x, y), x, y);
 
-    Assert.assertTrue(equalNodes(Transformer.standardize(ITE(Nodes.TRUE, x, y)), x));
-    Assert.assertTrue(equalNodes(Transformer.standardize(ITE(Nodes.FALSE, x, y)), y));
+    Assert.assertTrue(equalNodes(Transformer.standardize(Nodes.ite(Nodes.TRUE, x, y)), x));
+    Assert.assertTrue(equalNodes(Transformer.standardize(Nodes.ite(Nodes.FALSE, x, y)), y));
     Assert.assertTrue(equalNodes(Transformer.standardize(ifLess), ifLess));
   }
 
@@ -373,7 +364,7 @@ public class SimpleTransformTestCase {
     final NodeVariable b = new NodeVariable("b", DataType.BIT_VECTOR(2));
     final NodeValue zero = NodeValue.newBitVector(BitVector.valueOf(0, 2));
     
-    final Node expr = AND(EQ(a, zero), NOT(EQ(a, b, zero)));
+    final Node expr = AND(EQ(a, zero), Nodes.not(EQ(a, b, zero)));
     final Node std = Transformer.standardize(expr);
     Assert.assertTrue(ExprUtils.isSAT(expr) == ExprUtils.isSAT(std));
   }
