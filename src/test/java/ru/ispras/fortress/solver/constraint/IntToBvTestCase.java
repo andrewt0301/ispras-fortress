@@ -63,7 +63,7 @@ public class IntToBvTestCase extends GenericSolverTestBase {
 
       formulas.add(
           Nodes.eq(
-              Nodes.INT2BV(
+              Nodes.int2bv(
                   NodeValue.newInteger(BIT_VECTOR_SIZE), x),
                   NodeValue.newBitVector(BitVector.valueOf("11", RADIX, BIT_VECTOR_SIZE))));
 
