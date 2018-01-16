@@ -105,30 +105,38 @@ public final class VariateBiased<T> implements Variate<T> {
   }
 
   /**
-   * Finds an index {@code i} from {@code [a, b]} such that {@code x[i-1] <= v && v < x[i]}.
-   * {@code x[-1]} is assumed to be zero.
+   * Finds an index {@code index} from {@code [low, high]} such that
+   * {@code array[index-1] <= value && value < array[index]}.
+   * {@code array[-1]} is assumed to be zero.
    * 
-   * @param x the ordered array of integer values.
-   * @param a the lower bound of the array indices.
-   * @param b the upper bound of the array indices.
-   * @param v the value being searched.
-   * @return an index {@code i} such that {@code x[i-1] <= v && v < x[i]}.
+   * @param array the ordered array of integer values.
+   * @param low the lower bound of the array indices.
+   * @param high the upper bound of the array indices.
+   * @param value the value being searched.
+   * @return an index {@code index} such that
+   *        {@code array[index-1] <= value && value < array[index]}.
    */
-  private static int binarySearch(final int[] x, final int a, final int b, final int v) {
-    if (a == b) {
-      return a;
+  private static int binarySearch(
+      final int[] array,
+      final int low,
+      final int high,
+      final int value) {
+    if (low == high) {
+      return low;
     }
 
-    if (b == a + 1) {
-      return x[a] <= v ? b : a;
+    if (high == low + 1) {
+      return array[low] <= value ? high : low;
     }
 
-    final int i = (a + b) >> 1;
+    final int index = (low + high) >> 1;
 
-    if (x[i - 1] <= v && v < x[i]) {
-      return i;
+    if (array[index - 1] <= value && value < array[index]) {
+      return index;
     }
 
-    return v < x[i] ? binarySearch(x, a, i - 1, v) : binarySearch(x, i + 1, b, v);
+    return value < array[index] ?
+        binarySearch(array, low, index - 1, value) :
+        binarySearch(array, index + 1, high, value);
   }
 }
