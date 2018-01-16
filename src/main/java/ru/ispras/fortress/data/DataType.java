@@ -221,25 +221,16 @@ public final class DataType {
     return new Data(this, null);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public String toString() {
     return name;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public int hashCode() {
     return name.hashCode();
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public boolean equals(final Object obj) {
     if (this == obj) {
