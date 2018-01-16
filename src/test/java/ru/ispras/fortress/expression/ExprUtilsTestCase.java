@@ -51,8 +51,8 @@ public final class ExprUtilsTestCase {
         ExprUtils.isCondition(Nodes.add(NodeValue.newInteger(1), NodeValue.newInteger(2))));
 
     Assert.assertTrue(ExprUtils.isCondition(Nodes.or(
-        Nodes.GREATEREQ(X, NodeValue.newInteger(0)),
-        Nodes.LESS(X, NodeValue.newInteger(10)))));
+        Nodes.greatereq(X, NodeValue.newInteger(0)),
+        Nodes.less(X, NodeValue.newInteger(10)))));
   }
 
   @Test
@@ -67,8 +67,8 @@ public final class ExprUtilsTestCase {
         Nodes.add(NodeValue.newInteger(1), NodeValue.newInteger(2))));
 
     Assert.assertFalse(ExprUtils.isAtomicCondition(Nodes.or(
-        Nodes.GREATEREQ(X, NodeValue.newInteger(0)),
-        Nodes.LESS(X, NodeValue.newInteger(10)))));
+        Nodes.greatereq(X, NodeValue.newInteger(0)),
+        Nodes.less(X, NodeValue.newInteger(10)))));
   }
 
   @Test
@@ -114,23 +114,23 @@ public final class ExprUtilsTestCase {
   @Test
   public void testAreComplete() {
     Assert.assertTrue(ExprUtils.areComplete(
-        Nodes.GREATEREQ(X, NodeValue.newInteger(0)),
-        Nodes.LESS(X, NodeValue.newInteger(10))));
+        Nodes.greatereq(X, NodeValue.newInteger(0)),
+        Nodes.less(X, NodeValue.newInteger(10))));
 
     Assert.assertFalse(ExprUtils.areComplete(
-        Nodes.LESS(X, NodeValue.newInteger(0)),
-        Nodes.GREATEREQ(X, NodeValue.newInteger(10))));
+        Nodes.less(X, NodeValue.newInteger(0)),
+        Nodes.greatereq(X, NodeValue.newInteger(10))));
   }
 
   @Test
   public void testAreCompatible() {
     Assert.assertTrue(ExprUtils.areCompatible(
-        Nodes.GREATEREQ(X, NodeValue.newInteger(0)),
-        Nodes.LESS(X, NodeValue.newInteger(10))));
+        Nodes.greatereq(X, NodeValue.newInteger(0)),
+        Nodes.less(X, NodeValue.newInteger(10))));
 
     Assert.assertFalse(ExprUtils.areCompatible(
-        Nodes.LESS(X, NodeValue.newInteger(0)),
-        Nodes.GREATEREQ(X, NodeValue.newInteger(10))));
+        Nodes.less(X, NodeValue.newInteger(0)),
+        Nodes.greatereq(X, NodeValue.newInteger(10))));
   }
 
   @Test
@@ -240,6 +240,6 @@ public final class ExprUtilsTestCase {
         Node.Kind.OPERATION,
         Nodes.add(NodeValue.newInteger(10), NodeValue.newInteger(20)),
         Nodes.sub(NodeValue.newInteger(10), NodeValue.newInteger(20)),
-        Nodes.MOD(NodeValue.newInteger(10), NodeValue.newInteger(20))));
+        Nodes.mod(NodeValue.newInteger(10), NodeValue.newInteger(20))));
   }
 }

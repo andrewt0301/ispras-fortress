@@ -75,28 +75,28 @@ public class AbsCustomOperationTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(Nodes.LESS(a, NodeValue.newReal(0)));
-      formulas.add(Nodes.GREATER(b, NodeValue.newReal(0)));
-      formulas.add(Nodes.LESS(c, NodeValue.newInteger(0)));
-      formulas.add(Nodes.GREATER(d, NodeValue.newInteger(0)));
+      formulas.add(Nodes.less(a, NodeValue.newReal(0)));
+      formulas.add(Nodes.greater(b, NodeValue.newReal(0)));
+      formulas.add(Nodes.less(c, NodeValue.newInteger(0)));
+      formulas.add(Nodes.greater(d, NodeValue.newInteger(0)));
 
       formulas.add(Nodes.eq(
-          Nodes.ABS(Nodes.minus(NodeValue.newReal(5.0))), NodeValue.newReal(5.0)));
+          Nodes.abs(Nodes.minus(NodeValue.newReal(5.0))), NodeValue.newReal(5.0)));
 
       formulas.add(Nodes.eq(
-          Nodes.ABS(NodeValue.newReal(5.0)), NodeValue.newReal(5.0)));
+          Nodes.abs(NodeValue.newReal(5.0)), NodeValue.newReal(5.0)));
 
       formulas.add(Nodes.eq(
-          Nodes.ABS(Nodes.minus(a)), NodeValue.newReal(5.0)));
+          Nodes.abs(Nodes.minus(a)), NodeValue.newReal(5.0)));
 
       formulas.add(Nodes.eq(
-          Nodes.ABS(b), NodeValue.newReal(5.0)));
+          Nodes.abs(b), NodeValue.newReal(5.0)));
 
       formulas.add(Nodes.eq(
-          Nodes.ABS(Nodes.minus(c)), NodeValue.newInteger(5)));
+          Nodes.abs(Nodes.minus(c)), NodeValue.newInteger(5)));
 
       formulas.add(Nodes.eq(
-          Nodes.ABS(d), NodeValue.newInteger(5)));
+          Nodes.abs(d), NodeValue.newInteger(5)));
 
       return builder.build();
     }

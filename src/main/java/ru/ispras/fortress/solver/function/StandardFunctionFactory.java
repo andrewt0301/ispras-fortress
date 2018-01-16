@@ -66,7 +66,7 @@ public final class StandardFunctionFactory {
     }
 
     final NodeOperation body = Nodes.ite(
-        Nodes.GREATEREQ(operandNode, new NodeValue(zeroData)),
+        Nodes.greatereq(operandNode, new NodeValue(zeroData)),
         operandNode,
         Nodes.minus(operandNode)
         );
@@ -95,7 +95,7 @@ public final class StandardFunctionFactory {
     final Node rightNode = new NodeVariable(right);
 
     final NodeOperation body = Nodes.ite(
-        Nodes.GREATEREQ(leftNode, rightNode),
+        Nodes.greatereq(leftNode, rightNode),
         rightNode,
         leftNode
         );
@@ -124,7 +124,7 @@ public final class StandardFunctionFactory {
     final Node rightNode = new NodeVariable(right);
 
     final NodeOperation body = Nodes.ite(
-        Nodes.GREATEREQ(leftNode, rightNode),
+        Nodes.greatereq(leftNode, rightNode),
         leftNode,
         rightNode
         );

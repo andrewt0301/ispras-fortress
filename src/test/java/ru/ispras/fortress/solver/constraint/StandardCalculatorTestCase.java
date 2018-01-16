@@ -95,11 +95,11 @@ public class StandardCalculatorTestCase extends GenericSolverTestBase {
               intType.valueOf("12", 10)), new NodeValue(intType.valueOf("5", 10))))));
 
       formulas.add(Nodes.eq(e, Reducer.reduce(
-          ReduceOptions.NEW_INSTANCE, Nodes.REM(new NodeValue(
+          ReduceOptions.NEW_INSTANCE, Nodes.rem(new NodeValue(
               intType.valueOf("10", 10)), new NodeValue(intType.valueOf("3", 10))))));
 
       formulas.add(Nodes.eq(f, Reducer.reduce(
-          ReduceOptions.NEW_INSTANCE, Nodes.MOD(new NodeValue(
+          ReduceOptions.NEW_INSTANCE, Nodes.mod(new NodeValue(
               intType.valueOf("10", 10)), new NodeValue(intType.valueOf("3", 10))))));
 
       return builder.build();

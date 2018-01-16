@@ -59,7 +59,7 @@ public class NoVariableDeclarationTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(Nodes.GREATER(a, Nodes.add(b, new NodeValue(intType.valueOf("2", 10)))));
+      formulas.add(Nodes.greater(a, Nodes.add(b, new NodeValue(intType.valueOf("2", 10)))));
       // main feature of the test - getting variables declaration from syntax tree
       builder.addVariables(formulas.getVariables());
 

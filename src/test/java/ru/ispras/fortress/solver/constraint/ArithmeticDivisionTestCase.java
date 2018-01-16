@@ -78,11 +78,11 @@ public class ArithmeticDivisionTestCase extends GenericSolverTestBase {
       formulas.add(Nodes.eq(a, new NodeValue(intType.valueOf("10", 10))));
 
       formulas.add(Nodes.eq(r1, Nodes.div(a, new NodeValue(intType.valueOf("4", 10)))));
-      formulas.add(Nodes.eq(r2, Nodes.MOD(a, new NodeValue(intType.valueOf("4", 10)))));
-      formulas.add(Nodes.eq(r3, Nodes.REM(a, new NodeValue(intType.valueOf("4", 10)))));
+      formulas.add(Nodes.eq(r2, Nodes.mod(a, new NodeValue(intType.valueOf("4", 10)))));
+      formulas.add(Nodes.eq(r3, Nodes.rem(a, new NodeValue(intType.valueOf("4", 10)))));
       formulas.add(Nodes.eq(r4, Nodes.div(a, new NodeValue(intType.valueOf("-4", 10)))));
-      formulas.add(Nodes.eq(r5, Nodes.MOD(a, new NodeValue(intType.valueOf("-4", 10)))));
-      formulas.add(Nodes.eq(r6, Nodes.REM(a, new NodeValue(intType.valueOf("-4", 10)))));
+      formulas.add(Nodes.eq(r5, Nodes.mod(a, new NodeValue(intType.valueOf("-4", 10)))));
+      formulas.add(Nodes.eq(r6, Nodes.rem(a, new NodeValue(intType.valueOf("-4", 10)))));
 
       return builder.build();
     }

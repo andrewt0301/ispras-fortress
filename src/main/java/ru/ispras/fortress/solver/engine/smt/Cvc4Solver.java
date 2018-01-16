@@ -72,10 +72,10 @@ public final class Cvc4Solver extends SmtTextSolver {
     final Node lhs = new NodeVariable(lvar);
     final Node rhs = new NodeVariable(rvar);
 
-    final NodeOperation mod = Nodes.MOD(Nodes.ABS(lhs), Nodes.ABS(rhs));
+    final NodeOperation mod = Nodes.mod(Nodes.abs(lhs), Nodes.abs(rhs));
     final NodeOperation rem =
         Nodes.ite(
-            Nodes.LESS(rhs, NodeValue.newInteger(0)),
+            Nodes.less(rhs, NodeValue.newInteger(0)),
             Nodes.minus(mod),
             mod);
 

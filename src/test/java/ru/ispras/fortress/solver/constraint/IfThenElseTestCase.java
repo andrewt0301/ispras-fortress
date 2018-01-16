@@ -65,8 +65,8 @@ public class IfThenElseTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(Nodes.GREATER(a, new NodeValue(intType.valueOf("5", 10))));
-      formulas.add(Nodes.LESS(b, new NodeValue(intType.valueOf("7", 10))));
+      formulas.add(Nodes.greater(a, new NodeValue(intType.valueOf("5", 10))));
+      formulas.add(Nodes.less(b, new NodeValue(intType.valueOf("7", 10))));
 
       formulas.add(Nodes.eq(
           Nodes.ite(

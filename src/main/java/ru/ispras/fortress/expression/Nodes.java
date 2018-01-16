@@ -136,35 +136,35 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.MUL, operands);
   }
 
-  public static NodeOperation REM(final Node first, final Node second) {
+  public static NodeOperation rem(final Node first, final Node second) {
     return new NodeOperation(StandardOperation.REM, first, second);
   }
 
-  public static NodeOperation MOD(final Node first, final Node second) {
+  public static NodeOperation mod(final Node first, final Node second) {
     return new NodeOperation(StandardOperation.MOD, first, second);
   }
 
-  public static NodeOperation LESS(final Node lhs, final Node rhs) {
+  public static NodeOperation less(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.LESS, lhs, rhs);
   }
 
-  public static NodeOperation LESSEQ(final Node lhs, final Node rhs) {
+  public static NodeOperation lesseq(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.LESSEQ, lhs, rhs);
   }
 
-  public static NodeOperation GREATER(final Node lhs, final Node rhs) {
+  public static NodeOperation greater(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.GREATER, lhs, rhs);
   }
 
-  public static NodeOperation GREATEREQ(final Node lhs, final Node rhs) {
+  public static NodeOperation greatereq(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.GREATEREQ, lhs, rhs);
   }
 
-  public static NodeOperation POWER(final Node base, final Node exponent) {
+  public static NodeOperation power(final Node base, final Node exponent) {
     return new NodeOperation(StandardOperation.POWER, base, exponent);
   }
 
-  public static NodeOperation ABS(final Node operand) {
+  public static NodeOperation abs(final Node operand) {
     return new NodeOperation(StandardOperation.ABS, operand);
   }
 
