@@ -64,7 +64,7 @@ public final class SimpleBitVectorTestCase extends GenericSolverTestBase {
       builder.setInnerRep(formulas);
 
       formulas.add(Nodes.not(Nodes.eq(a, b)));
-      formulas.add(Nodes.eq(Nodes.BVOR(a, b), new NodeValue(BIT_VECTOR_TYPE.valueOf("111", 2))));
+      formulas.add(Nodes.eq(Nodes.bvor(a, b), new NodeValue(BIT_VECTOR_TYPE.valueOf("111", 2))));
 
       formulas.add(Nodes.eq(
           Nodes.bvlshl(a, new NodeValue(BIT_VECTOR_TYPE.valueOf("3", 10))),

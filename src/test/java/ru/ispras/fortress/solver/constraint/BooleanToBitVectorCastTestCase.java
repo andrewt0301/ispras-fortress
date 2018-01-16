@@ -86,7 +86,7 @@ public class BooleanToBitVectorCastTestCase extends GenericSolverTestBase {
       formulas.add(Nodes.greater(y, NodeValue.newInteger(0)));
 
       formulas.add(Nodes.eq(
-          Nodes.BVOR(Nodes.BOOL2BV(Nodes.eq(x, y)), z),
+          Nodes.bvor(Nodes.BOOL2BV(Nodes.eq(x, y)), z),
           NodeValue.newBitVector(BitVector.valueOf(true))));
 
       return builder.build();

@@ -70,7 +70,7 @@ final class BitVectorExtractionConstraint implements GenericSolverTestBase.Sampl
 
     formulas.add(Nodes.eq(x, new NodeValue(BitVector32.valueOf("257", 10))));
 
-    final Node extraction = Nodes.BVEXTRACT(7, 0, x);
+    final Node extraction = Nodes.bvextract(7, 0, x);
     Assert.assertEquals(DataType.BIT_VECTOR(8), extraction.getDataType());
 
     formulas.add(Nodes.eq(y, extraction));

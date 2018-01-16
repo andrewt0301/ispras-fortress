@@ -259,7 +259,7 @@ public final class StandardFunctionFactory {
         new NodeValue(Data.newBitVector(size - newPartSize, size))
         );
 
-    final Node newSource = Nodes.BVXOR(
+    final Node newSource = Nodes.bvxor(
         Nodes.bvlshr(source, shiftLeftPart),
         Nodes.BVAND(source, maskForRightPart)
         );
