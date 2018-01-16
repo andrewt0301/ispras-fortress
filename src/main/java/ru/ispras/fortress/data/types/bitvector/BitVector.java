@@ -568,15 +568,6 @@ public abstract class BitVector implements Comparable<BitVector> {
   }
 
   /**
-   * Converts the stored data to a string (binary format).
-   *
-   * @return Textual representation of the stored data (binary format).
-   */
-  public final String toString() {
-    return toBinString();
-  }
-
-  /**
    * Creates a bit vector based on a long value. The data size is specified by a method parameter.
    * If the bit vector size is less that the long value size (64 bits), the value is truncated (high
    * bits of the value are ignored). If the bit vector size exceeds the long value size, high bits
@@ -859,6 +850,15 @@ public abstract class BitVector implements Comparable<BitVector> {
 
     BitVectorAlgorithm.forEachReverse(this, op);
     return 0 != sb.length() ? sb.toString() : "0";
+  }
+
+  /**
+   * Converts the stored data to a string (binary format).
+   *
+   * @return Textual representation of the stored data (binary format).
+   */
+  public final String toString() {
+    return toBinString();
   }
 
   /**
