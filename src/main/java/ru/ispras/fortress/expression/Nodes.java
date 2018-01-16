@@ -232,49 +232,49 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.BVSMOD, first, second);
   }
 
-  public static NodeOperation BVLSHL(final Node source, final Node amount) {
+  public static NodeOperation bvlshl(final Node source, final Node amount) {
     return new NodeOperation(StandardOperation.BVLSHL, source, amount);
   }
 
-  public static NodeOperation BVASHL(final Node source, final Node amount) {
+  public static NodeOperation bvashl(final Node source, final Node amount) {
     return new NodeOperation(StandardOperation.BVASHL, source, amount);
   }
 
-  public static NodeOperation BVLSHR(final Node source, final Node amount) {
+  public static NodeOperation bvlshr(final Node source, final Node amount) {
     return new NodeOperation(StandardOperation.BVLSHR, source, amount);
   }
 
-  public static NodeOperation BVASHR(final Node source, final Node amount) {
+  public static NodeOperation bvashr(final Node source, final Node amount) {
     return new NodeOperation(StandardOperation.BVASHR, source, amount);
   }
 
   // Operands: [HIGH, ... , LOW]
-  public static NodeOperation BVCONCAT(final Node... operands) {
+  public static NodeOperation bvconcat(final Node... operands) {
     return new NodeOperation(StandardOperation.BVCONCAT, operands);
   }
 
   // Operands: [HIGH, ... , LOW]
-  public static NodeOperation BVCONCAT(final List<? extends Node> operands) {
+  public static NodeOperation bvconcat(final List<? extends Node> operands) {
     return new NodeOperation(StandardOperation.BVCONCAT, operands);
   }
 
   // Operands: [LOW, ... , HIGH]
-  public static NodeOperation reverseBVCONCAT(final Node... operands) {
-    return reverseBVCONCAT(Arrays.asList(operands));
+  public static NodeOperation reverseBvconcat(final Node... operands) {
+    return reverseBvconcat(Arrays.asList(operands));
   }
 
   // Operands: [LOW, ... , HIGH]
-  public static NodeOperation reverseBVCONCAT(final List<? extends Node> operands) {
+  public static NodeOperation reverseBvconcat(final List<? extends Node> operands) {
     final List<Node> reversedOperands = new ArrayList<>(operands);
     Collections.reverse(reversedOperands);
-    return BVCONCAT(reversedOperands);
+    return bvconcat(reversedOperands);
   }
 
-  public static NodeOperation BVREPEAT(final NodeValue count, final Node source) {
+  public static NodeOperation bvrepeat(final NodeValue count, final Node source) {
     return new NodeOperation(StandardOperation.BVREPEAT, count, source);
   }
 
-  public static NodeOperation BVREPEAT(final int count, final Node source) {
+  public static NodeOperation bvrepeat(final int count, final Node source) {
     return new NodeOperation(StandardOperation.BVREPEAT, NodeValue.newInteger(count), source);
   }
 

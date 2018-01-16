@@ -254,13 +254,13 @@ public final class StandardFunctionFactory {
     final int newPartSize = partSize / 2 + partSize % 2;
     final Node shiftLeftPart = new NodeValue(Data.newBitVector(newPartSize, size));
 
-    final Node maskForRightPart = Nodes.BVLSHR(
+    final Node maskForRightPart = Nodes.bvlshr(
         Nodes.BVNOT(new NodeValue(Data.newBitVector(0, size))),
         new NodeValue(Data.newBitVector(size - newPartSize, size))
         );
 
     final Node newSource = Nodes.BVXOR(
-        Nodes.BVLSHR(source, shiftLeftPart),
+        Nodes.bvlshr(source, shiftLeftPart),
         Nodes.BVAND(source, maskForRightPart)
         );
 

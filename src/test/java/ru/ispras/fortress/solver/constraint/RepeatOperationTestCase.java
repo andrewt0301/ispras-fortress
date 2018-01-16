@@ -72,7 +72,7 @@ public final class RepeatOperationTestCase extends GenericSolverTestBase {
       formulas.add(Nodes.eq(x, new NodeValue(BIT_VECTOR_ARG_TYPE.valueOf("5", HEX_RADIX))));
       formulas.add(Nodes.eq(
           y,
-          Nodes.BVREPEAT(
+          Nodes.bvrepeat(
               (NodeValue) Reducer.reduce(
                   ReduceOptions.NEW_INSTANCE,
                   Nodes.add(new NodeValue(INT_TYPE.valueOf("2", DEC_RADIX)),

@@ -121,7 +121,7 @@ public class CustomOperationsTestCase extends GenericSolverTestBase {
 
   // (define-fun INT_SIGN_MASK () Int_t (bvshl (bvnot INT_ZERO) INT_BASE_SIZE))
   private void registerINT_SIGN_MASK(Solver solver) {
-    final Node body = Nodes.BVLSHL(
+    final Node body = Nodes.bvlshl(
         Nodes.BVNOT(new NodeOperation(ECustomOperation.INT_ZERO)),
         new NodeOperation(ECustomOperation.INT_BASE_SIZE));
 

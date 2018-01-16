@@ -76,7 +76,7 @@ public class IntegerOverflowBitVectorTestCase extends GenericSolverTestBase {
 
     private final NodeValue INT_ZERO = new NodeValue(BIT_VECTOR_TYPE.valueOf("0", 10));
     private final NodeValue INT_BASE_SIZE = new NodeValue(BIT_VECTOR_TYPE.valueOf("32", 10));
-    private final NodeOperation INT_SIGN_MASK = Nodes.BVLSHL(Nodes.BVNOT(INT_ZERO), INT_BASE_SIZE);
+    private final NodeOperation INT_SIGN_MASK = Nodes.bvlshl(Nodes.BVNOT(INT_ZERO), INT_BASE_SIZE);
 
     @Override
     public Constraint getConstraint() {
