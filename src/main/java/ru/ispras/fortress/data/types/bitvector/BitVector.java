@@ -478,11 +478,11 @@ public abstract class BitVector implements Comparable<BitVector> {
    * unnecessary memory allocations because bit vectors representing boolean values are not normally
    * modified.
    *
-   * @param bValue Boolean value.
+   * @param booleanValue Boolean value.
    * @return A constant (!) bit vector for the specified boolean value.
    */
-  public static BitVector valueOf(final boolean bValue) {
-    return bValue ? TRUE : FALSE;
+  public static BitVector valueOf(final boolean booleanValue) {
+    return booleanValue ? TRUE : FALSE;
   }
 
   /**
