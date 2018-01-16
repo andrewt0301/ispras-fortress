@@ -45,6 +45,7 @@ public class BVUGTOperation implements SampleConstraint {
   protected static final int BIT_VECTOR_SIZE = 32;
   protected static final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_SIZE);
 
+  @Override
   public Constraint getConstraint() {
     final ConstraintBuilder builder = new ConstraintBuilder();
 
@@ -61,6 +62,7 @@ public class BVUGTOperation implements SampleConstraint {
     return builder.build();
   }
 
+  @Override
   public Iterable<Variable> getExpectedVariables() {
     final List<Variable> result = new ArrayList<Variable>();
     result.add(new Variable("x", BIT_VECTOR_TYPE.valueOf("112", 10)));
