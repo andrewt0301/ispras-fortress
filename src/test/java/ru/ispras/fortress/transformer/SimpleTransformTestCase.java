@@ -36,6 +36,14 @@ public class SimpleTransformTestCase {
     return new NodeVariable(name, DataType.INTEGER);
   }
 
+  private static NodeBinding singleBinding(
+      final NodeVariable variable,
+      final Node value,
+      final Node expr) {
+    return new NodeBinding(
+        expr, Collections.singletonList(NodeBinding.bindVariable(variable, value)));
+  }
+
   private static NodeOperation PLUS(Node... args) {
     return new NodeOperation(StandardOperation.PLUS, args);
   }
@@ -50,13 +58,6 @@ public class SimpleTransformTestCase {
 
   private static NodeOperation IMPL(Node... args) {
     return new NodeOperation(StandardOperation.IMPL, args);
-  }
-
-  private static NodeBinding singleBinding(NodeVariable variable, Node value, Node expr) {
-    final List<NodeBinding.BoundVariable> bindings =
-        Collections.singletonList(NodeBinding.bindVariable(variable, value));
-
-    return new NodeBinding(expr, bindings);
   }
 
   @Test
