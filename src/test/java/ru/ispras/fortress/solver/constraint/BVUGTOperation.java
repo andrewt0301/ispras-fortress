@@ -57,7 +57,7 @@ public class BVUGTOperation implements SampleConstraint {
     final Formulas formulas = new Formulas();
     builder.setInnerRep(formulas);
 
-    formulas.add(Nodes.BVUGT(x, new NodeValue(BIT_VECTOR_TYPE.valueOf("100", 10))));
+    formulas.add(Nodes.bvugt(x, new NodeValue(BIT_VECTOR_TYPE.valueOf("100", 10))));
     return builder.build();
   }
 

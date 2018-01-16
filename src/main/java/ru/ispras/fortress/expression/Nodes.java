@@ -423,19 +423,19 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.BVULE, lhs, rhs);
   }
 
-  public static NodeOperation BVULT(final Node lhs, final Node rhs) {
+  public static NodeOperation bvult(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.BVULT, lhs, rhs);
   }
 
-  public static NodeOperation BVUGE(final Node lhs, final Node rhs) {
+  public static NodeOperation bvuge(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.BVUGE, lhs, rhs);
   }
 
-  public static NodeOperation BVUGT(final Node lhs, final Node rhs) {
+  public static NodeOperation bvugt(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.BVUGT, lhs, rhs);
   }
 
-  public static NodeOperation BVSLE(final Node lhs, final Node rhs) {
+  public static NodeOperation bvsle(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.BVSLE, lhs, rhs);
   }
 
@@ -443,11 +443,11 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.BVSLT, lhs, rhs);
   }
 
-  public static NodeOperation BVSGE(final Node lhs, final Node rhs) {
+  public static NodeOperation bvsge(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.BVSGE, lhs, rhs);
   }
 
-  public static NodeOperation BVSGT(final Node lhs, final Node rhs) {
+  public static NodeOperation bvsgt(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.BVSGT, lhs, rhs);
   }
 
