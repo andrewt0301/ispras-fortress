@@ -79,7 +79,7 @@ public class ConstCastTestCase extends GenericSolverTestBase {
 
       formulas.add(TypeConversion.castConstants(Nodes.eq( x, bv7)));
       formulas.add(TypeConversion.castConstants(Nodes.eq(Nodes.rem(y, bv3), z)));
-      formulas.add(TypeConversion.castConstants(Nodes.eq(bv7, Nodes.BVADD(w, int2))));
+      formulas.add(TypeConversion.castConstants(Nodes.eq(bv7, Nodes.bvadd(w, int2))));
       formulas.add(TypeConversion.castConstants(Nodes.and(v, int2)));
       formulas.add(TypeConversion.castConstants(Nodes.less(u, bv3)));
       formulas.add(TypeConversion.castConstants(Nodes.eq(Nodes.BVEXTRACT(bv3, int2, t), boolTrue)));

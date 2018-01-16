@@ -184,51 +184,51 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.MAX, operands);
   }
 
-  public static NodeOperation BVADD(final Node... operands) {
+  public static NodeOperation bvadd(final Node... operands) {
     return new NodeOperation(StandardOperation.BVADD, operands);
   }
 
-  public static NodeOperation BVADD(final List<? extends Node> operands) {
+  public static NodeOperation bvadd(final List<? extends Node> operands) {
     return new NodeOperation(StandardOperation.BVADD, operands);
   }
 
-  public static NodeOperation BVSUB(final Node... operands) {
+  public static NodeOperation bvsub(final Node... operands) {
     return new NodeOperation(StandardOperation.BVSUB, operands);
   }
 
-  public static NodeOperation BVSUB(final List<? extends Node> operands) {
+  public static NodeOperation bvsub(final List<? extends Node> operands) {
     return new NodeOperation(StandardOperation.BVSUB, operands);
   }
 
-  public static NodeOperation BVNEG(final Node operand) {
+  public static NodeOperation bvneg(final Node operand) {
     return new NodeOperation(StandardOperation.BVNEG, operand);
   }
 
-  public static NodeOperation BVMUL(final Node... operands) {
+  public static NodeOperation bvmul(final Node... operands) {
     return new NodeOperation(StandardOperation.BVMUL, operands);
   }
 
-  public static NodeOperation BVMUL(final List<? extends Node> operands) {
+  public static NodeOperation bvmul(final List<? extends Node> operands) {
     return new NodeOperation(StandardOperation.BVMUL, operands);
   }
 
-  public static NodeOperation BVUDIV(final Node first, final Node second) {
+  public static NodeOperation bvudiv(final Node first, final Node second) {
     return new NodeOperation(StandardOperation.BVUDIV, first, second);
   }
 
-  public static NodeOperation BVSDIV(final Node first, final Node second) {
+  public static NodeOperation bvsdiv(final Node first, final Node second) {
     return new NodeOperation(StandardOperation.BVSDIV, first, second);
   }
 
-  public static NodeOperation BVUREM(final Node first, final Node second) {
+  public static NodeOperation bvurem(final Node first, final Node second) {
     return new NodeOperation(StandardOperation.BVUREM, first, second);
   }
 
-  public static NodeOperation BVSREM(final Node first, final Node second) {
+  public static NodeOperation bvsrem(final Node first, final Node second) {
     return new NodeOperation(StandardOperation.BVSREM, first, second);
   }
 
-  public static NodeOperation BVSMOD(final Node first, final Node second) {
+  public static NodeOperation bvsmod(final Node first, final Node second) {
     return new NodeOperation(StandardOperation.BVSMOD, first, second);
   }
 

@@ -68,7 +68,7 @@ public final class SimpleBitVectorTestCase extends GenericSolverTestBase {
 
       formulas.add(Nodes.eq(
           Nodes.BVLSHL(a, new NodeValue(BIT_VECTOR_TYPE.valueOf("3", 10))),
-          Nodes.BVSMOD(a, new NodeValue(BIT_VECTOR_TYPE.valueOf("2", 10)))));
+          Nodes.bvsmod(a, new NodeValue(BIT_VECTOR_TYPE.valueOf("2", 10)))));
 
       formulas.add(Nodes.eq(Nodes.BVAND(a, b), new NodeValue(BIT_VECTOR_TYPE.valueOf("0", 2))));
 

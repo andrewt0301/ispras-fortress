@@ -199,7 +199,7 @@ public class CustomOperationsTestCase extends GenericSolverTestBase {
 
       // (assert (not (IsValidSignedInt (bvadd rs rt))))
       formulas.add(Nodes.not(
-          new NodeOperation(ECustomOperation.IS_VALID_SIGNED_INT, Nodes.BVADD(rs, rt))));
+          new NodeOperation(ECustomOperation.IS_VALID_SIGNED_INT, Nodes.bvadd(rs, rt))));
 
       // ; just in case: rs and rt are not equal (to make the results more interesting)
       // (assert (not (= rs rt)))

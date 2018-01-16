@@ -70,7 +70,7 @@ public class InputParametersTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(Nodes.eq(Nodes.BVADD(a, b), c));
+      formulas.add(Nodes.eq(Nodes.bvadd(a, b), c));
 
       final Constraint constraint = builder.build();
 
