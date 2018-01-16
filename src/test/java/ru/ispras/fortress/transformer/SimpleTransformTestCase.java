@@ -18,7 +18,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import ru.ispras.fortress.data.DataType;
-import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.data.types.bitvector.BitVector;
 import ru.ispras.fortress.expression.ExprUtils;
 import ru.ispras.fortress.expression.Node;
@@ -33,9 +32,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class SimpleTransformTestCase {
-  private static NodeVariable createVariable(String name) {
-    final Variable var = new Variable(name, DataType.INTEGER);
-    return new NodeVariable(var);
+  private static NodeVariable newVariable(final String name) {
+    return new NodeVariable(name, DataType.INTEGER);
   }
 
   private static NodeOperation PLUS(Node... args) {
@@ -87,9 +85,9 @@ public class SimpleTransformTestCase {
 
   @Test
   public void substituteSingleVariable() {
-    final Node a = createVariable("a");
-    final Node b = createVariable("b");
-    final Node c = createVariable("c");
+    final Node a = newVariable("a");
+    final Node b = newVariable("b");
+    final Node c = newVariable("c");
 
     // (a = b + c)
     final Node expr = EQ(a, PLUS(b, c));
@@ -104,9 +102,9 @@ public class SimpleTransformTestCase {
 
   @Test
   public void substituteWithinBinding() {
-    final NodeVariable a = createVariable("a");
-    final NodeVariable x = createVariable("x");
-    final NodeVariable y = createVariable("y");
+    final NodeVariable a = newVariable("a");
+    final NodeVariable x = newVariable("x");
+    final NodeVariable y = newVariable("y");
 
     final Node let = singleBinding(a, PLUS(x, y), PLUS(x, a));
     final Node unchanged = Transformer.substitute(let, "a", x);
@@ -121,9 +119,9 @@ public class SimpleTransformTestCase {
 
   @Test
   public void substituteBinding() {
-    final NodeVariable a = createVariable("a");
-    final NodeVariable x = createVariable("x");
-    final NodeVariable y = createVariable("y");
+    final NodeVariable a = newVariable("a");
+    final NodeVariable x = newVariable("x");
+    final NodeVariable y = newVariable("y");
 
     final NodeBinding let = singleBinding(a, PLUS(x, y), PLUS(x, a));
     final Node unrolled = Transformer.substituteBinding(let);
@@ -134,9 +132,9 @@ public class SimpleTransformTestCase {
 
   @Test
   public void substituteAllBindings() {
-    final NodeVariable a = createVariable("a");
-    final NodeVariable x = createVariable("x");
-    final NodeVariable y = createVariable("y");
+    final NodeVariable a = newVariable("a");
+    final NodeVariable x = newVariable("x");
+    final NodeVariable y = newVariable("y");
 
     final NodeBinding letA = singleBinding(a, PLUS(x, y), PLUS(x, a));
     final NodeBinding letY = singleBinding(y, PLUS(x, x), letA);
@@ -149,8 +147,8 @@ public class SimpleTransformTestCase {
 
   @Test
   public void standardizeBooleanEquality() {
-    final NodeVariable x = createVariable("x");
-    final NodeVariable y = createVariable("y");
+    final NodeVariable x = newVariable("x");
+    final NodeVariable y = newVariable("y");
 
     final Node equality = EQ(x, y);
 
@@ -166,9 +164,9 @@ public class SimpleTransformTestCase {
 
   @Test
   public void standardizeChainedBooleanEquality() {
-    final NodeVariable x = createVariable("x");
-    final NodeVariable y = createVariable("y");
-    final NodeVariable z = createVariable("z");
+    final NodeVariable x = newVariable("x");
+    final NodeVariable y = newVariable("y");
+    final NodeVariable z = newVariable("z");
 
     final Node eqxy = EQ(x, y);
     final Node eqxz = EQ(x, z);
@@ -188,9 +186,9 @@ public class SimpleTransformTestCase {
 
   @Test
   public void standardizeImplication() {
-    final NodeVariable x = createVariable("x");
-    final NodeVariable y = createVariable("y");
-    final NodeVariable z = createVariable("z");
+    final NodeVariable x = newVariable("x");
+    final NodeVariable y = newVariable("y");
+    final NodeVariable z = newVariable("z");
 
     final Node eqxy = EQ(x, y);
     final Node eqxz = EQ(x, z);
@@ -209,8 +207,8 @@ public class SimpleTransformTestCase {
 
   @Test
   public void standardizeConjunction() {
-    final NodeVariable x = createVariable("x");
-    final NodeVariable y = createVariable("y");
+    final NodeVariable x = newVariable("x");
+    final NodeVariable y = newVariable("y");
     final Node eqxy = EQ(x, y);
     final Node eqyx = EQ(y, x);
 
@@ -227,8 +225,8 @@ public class SimpleTransformTestCase {
 
   @Test
   public void filterDuplicatedEqualities() {
-    final NodeVariable x = createVariable("x");
-    final NodeVariable y = createVariable("y");
+    final NodeVariable x = newVariable("x");
+    final NodeVariable y = newVariable("y");
     final Node eqxy = EQ(x, y);
     final Node eqyx = EQ(y, x);
 
@@ -240,8 +238,8 @@ public class SimpleTransformTestCase {
 
   @Test
   public void standardizeDisjunction() {
-    final NodeVariable x = createVariable("x");
-    final NodeVariable y = createVariable("y");
+    final NodeVariable x = newVariable("x");
+    final NodeVariable y = newVariable("y");
     final Node eqxy = EQ(x, y);
 
     final Node allFalse = OR(Nodes.FALSE, Nodes.FALSE, Nodes.FALSE);
@@ -258,8 +256,8 @@ public class SimpleTransformTestCase {
 
   @Test
   public void standardizeConjunctionTree() {
-    final NodeVariable x = createVariable("x");
-    final NodeVariable y = createVariable("y");
+    final NodeVariable x = newVariable("x");
+    final NodeVariable y = newVariable("y");
 
     final Node eqxy = EQ(x, y);
     final Node eqyx = EQ(y, x);
@@ -271,8 +269,8 @@ public class SimpleTransformTestCase {
 
   @Test
   public void standardizeDisjunctionTree() {
-    final NodeVariable x = createVariable("x");
-    final NodeVariable y = createVariable("y");
+    final NodeVariable x = newVariable("x");
+    final NodeVariable y = newVariable("y");
     final Node eqxy = EQ(x, y);
 
     final Node tree = OR(Nodes.FALSE, OR(Nodes.FALSE, OR(eqxy, Nodes.FALSE), Nodes.FALSE), Nodes.FALSE);
@@ -288,7 +286,7 @@ public class SimpleTransformTestCase {
     final NodeValue ZERO = NodeValue.newInteger(0);
     final NodeValue ONE = NodeValue.newInteger(1);
 
-    final NodeVariable x = createVariable("x");
+    final NodeVariable x = newVariable("x");
 
     Assert.assertTrue(equalNodes(
         Transformer.standardize(EQ(ZERO, ZERO, ZERO)),
@@ -336,8 +334,8 @@ public class SimpleTransformTestCase {
 
   @Test
   public void standardizeIfThenElse() {
-    final NodeVariable x = createVariable("x");
-    final NodeVariable y = createVariable("y");
+    final NodeVariable x = newVariable("x");
+    final NodeVariable y = newVariable("y");
 
     final NodeOperation ifLess = Nodes.ite(LESS(x, y), x, y);
 
@@ -348,7 +346,7 @@ public class SimpleTransformTestCase {
 
   @Test
   public void equalityResolution() {
-    final NodeVariable x = createVariable("x");
+    final NodeVariable x = newVariable("x");
     final NodeValue eqValue = NodeValue.newInteger(0);
     final NodeValue neqValue = NodeValue.newInteger(-1);
 
