@@ -17,11 +17,11 @@ package ru.ispras.fortress.expression;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.util.InvariantChecks;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * The {@link NodeBinding} class represents set of substitutions to be considered in underlying
@@ -31,7 +31,7 @@ public final class NodeBinding extends Node {
   /**
    * The {@link BoundVariable} class represents key-value binding pair.
    */
-  public final static class BoundVariable {
+  public static final class BoundVariable {
     private final NodeVariable variable;
     private final Node value;
 

@@ -16,9 +16,9 @@ package ru.ispras.fortress.expression;
 
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.DataTypeId;
-import ru.ispras.fortress.util.InvariantChecks;
 import ru.ispras.fortress.jaxb.JaxbNode;
 import ru.ispras.fortress.jaxb.JaxbNodeAdapter;
+import ru.ispras.fortress.util.InvariantChecks;
 
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;

@@ -230,7 +230,7 @@ public class BitVectorMathTestCase {
         0xFFFFFFFFFFFFFFFCL);
 
     checkBitVector(
-      BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64), 32), 0xFFFFFFFF00000000L);
+        BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64), 32), 0xFFFFFFFF00000000L);
     checkBitVector(
         BitVectorMath.shl(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64), -32), 0xFFFFFFFF00000000L);
     checkBitVector(
@@ -947,7 +947,7 @@ public class BitVectorMathTestCase {
     checkBitVector(BitVectorMath.sgt(BitVector.valueOf(0x7FFF, 16), BitVector.valueOf(0x7FFE, 16)),
         BitVector.TRUE);
 
-    // /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // ////////////////////////////////////////////////////////////////////////////////////////////
 
     checkBitVector(
         BitVectorMath.sgt(BitVector.valueOf(0xFFFFFFFF, 32), BitVector.valueOf(0xFFFFFFFF, 32)),

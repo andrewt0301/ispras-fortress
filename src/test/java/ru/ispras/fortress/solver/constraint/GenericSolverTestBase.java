@@ -52,6 +52,7 @@ import java.util.Map;
 public abstract class GenericSolverTestBase {
   public static interface SampleConstraint {
     Constraint getConstraint();
+
     Iterable<Variable> getExpectedVariables();
   }
 

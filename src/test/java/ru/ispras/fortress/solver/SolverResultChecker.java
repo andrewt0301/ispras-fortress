@@ -14,11 +14,12 @@
 
 package ru.ispras.fortress.solver;
 
+import org.junit.Assert;
+
 import ru.ispras.fortress.data.Variable;
 
 import java.util.Iterator;
 import java.util.TreeMap;
-import org.junit.Assert;
 
 public final class SolverResultChecker {
   private SolverResultChecker() {}
