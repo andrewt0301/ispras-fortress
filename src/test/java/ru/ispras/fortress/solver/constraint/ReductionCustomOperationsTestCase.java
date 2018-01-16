@@ -130,23 +130,23 @@ public class ReductionCustomOperationsTestCase extends GenericSolverTestBase {
       formulas.add(Nodes.eq(varBVORR_ODD_BITS,  Nodes.bvorr(ODD_BITS)));
 
       // BVNORR Asserts
-      formulas.add(Nodes.eq(varBVNORR_NO_BITS,   Nodes.BVNORR(NO_BITS)));
-      formulas.add(Nodes.eq(varBVNORR_ALL_BITS,  Nodes.BVNORR(ALL_BITS)));
-      formulas.add(Nodes.eq(varBVNORR_EVEN_BITS, Nodes.BVNORR(EVEN_BITS)));
-      formulas.add(Nodes.eq(varBVNORR_ODD_BITS,  Nodes.BVNORR(ODD_BITS)));
+      formulas.add(Nodes.eq(varBVNORR_NO_BITS,   Nodes.bvnorr(NO_BITS)));
+      formulas.add(Nodes.eq(varBVNORR_ALL_BITS,  Nodes.bvnorr(ALL_BITS)));
+      formulas.add(Nodes.eq(varBVNORR_EVEN_BITS, Nodes.bvnorr(EVEN_BITS)));
+      formulas.add(Nodes.eq(varBVNORR_ODD_BITS,  Nodes.bvnorr(ODD_BITS)));
 
       // BVXORR Asserts
-      formulas.add(Nodes.eq(varBVXORR_NO_BITS,   Nodes.BVXORR(NO_BITS)));
-      formulas.add(Nodes.eq(varBVXORR_ALL_BITS,  Nodes.BVXORR(ALL_BITS)));
-      formulas.add(Nodes.eq(varBVXORR_EVEN_BITS, Nodes.BVXORR(EVEN_BITS)));
-      formulas.add(Nodes.eq(varBVXORR_ODD_BITS,  Nodes.BVXORR(ODD_BITS)));
+      formulas.add(Nodes.eq(varBVXORR_NO_BITS,   Nodes.bvxorr(NO_BITS)));
+      formulas.add(Nodes.eq(varBVXORR_ALL_BITS,  Nodes.bvxorr(ALL_BITS)));
+      formulas.add(Nodes.eq(varBVXORR_EVEN_BITS, Nodes.bvxorr(EVEN_BITS)));
+      formulas.add(Nodes.eq(varBVXORR_ODD_BITS,  Nodes.bvxorr(ODD_BITS)));
 
       // BVXNORR Asserts
 
-      formulas.add(Nodes.eq(varBVXNORR_NO_BITS,   Nodes.BVXNORR(NO_BITS)));
-      formulas.add(Nodes.eq(varBVXNORR_ALL_BITS,  Nodes.BVXNORR(ALL_BITS)));
-      formulas.add(Nodes.eq(varBVXNORR_EVEN_BITS, Nodes.BVXNORR(EVEN_BITS)));
-      formulas.add(Nodes.eq(varBVXNORR_ODD_BITS,  Nodes.BVXNORR(ODD_BITS)));
+      formulas.add(Nodes.eq(varBVXNORR_NO_BITS,   Nodes.bvxnorr(NO_BITS)));
+      formulas.add(Nodes.eq(varBVXNORR_ALL_BITS,  Nodes.bvxnorr(ALL_BITS)));
+      formulas.add(Nodes.eq(varBVXNORR_EVEN_BITS, Nodes.bvxnorr(EVEN_BITS)));
+      formulas.add(Nodes.eq(varBVXNORR_ODD_BITS,  Nodes.bvxnorr(ODD_BITS)));
 
       return builder.build();
     }

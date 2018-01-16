@@ -463,15 +463,15 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.BVORR, operand);
   }
 
-  public static NodeOperation BVNORR(final Node operand) {
+  public static NodeOperation bvnorr(final Node operand) {
     return new NodeOperation(StandardOperation.BVNORR, operand);
   }
 
-  public static NodeOperation BVXORR(final Node operand) {
+  public static NodeOperation bvxorr(final Node operand) {
     return new NodeOperation(StandardOperation.BVXORR, operand);
   }
 
-  public static NodeOperation BVXNORR(final Node operand) {
+  public static NodeOperation bvxnorr(final Node operand) {
     return new NodeOperation(StandardOperation.BVXNORR, operand);
   }
 
