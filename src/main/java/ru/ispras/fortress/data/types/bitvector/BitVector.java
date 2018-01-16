@@ -209,8 +209,8 @@ public abstract class BitVector implements Comparable<BitVector> {
     final Result result = new Result();
     final IAction op = new IAction() {
       @Override
-      public void run(final byte vByte) {
-        result.value = 31 * result.value + (vByte & 0xFF);
+      public void run(final byte byteValue) {
+        result.value = 31 * result.value + (byteValue & 0xFF);
       }
     };
 
@@ -711,12 +711,12 @@ public abstract class BitVector implements Comparable<BitVector> {
       private int bitCount = 0;
 
       @Override
-      public void run(final byte vByte) {
+      public void run(final byte byteValue) {
         if (bitCount >= Integer.SIZE) {
           return;
         }
 
-        result.value |= (vByte & 0xFF) << bitCount;
+        result.value |= (byteValue & 0xFF) << bitCount;
         bitCount += BITS_IN_BYTE;
       }
     };
@@ -743,12 +743,12 @@ public abstract class BitVector implements Comparable<BitVector> {
       private int bitCount = 0;
 
       @Override
-      public void run(final byte vByte) {
+      public void run(final byte byteValue) {
         if (bitCount >= Long.SIZE) {
           return;
         }
 
-        result.value |= ((long)(vByte & 0xFF)) << bitCount;
+        result.value |= ((long)(byteValue & 0xFF)) << bitCount;
         bitCount += BITS_IN_BYTE;
       }
     };
@@ -778,8 +778,8 @@ public abstract class BitVector implements Comparable<BitVector> {
     final IAction op = new IAction() {
       private int index = 0;
       @Override
-      public void run(final byte vByte) {
-        byteArray[index++] = vByte;
+      public void run(final byte byteValue) {
+        byteArray[index++] = byteValue;
       }
     };
 
@@ -821,12 +821,12 @@ public abstract class BitVector implements Comparable<BitVector> {
       private int totalBitCount = getBitSize();
 
       @Override
-      public void run(final byte vByte) {
+      public void run(final byte byteValue) {
         final int highBits = totalBitCount % BITS_IN_BYTE;
         final int bitCount = (highBits == 0) ? BITS_IN_BYTE : highBits;
 
         for (int mask = 0x1 << (bitCount - 1); 0 != mask; mask >>>= 1) {
-          sb.append((vByte & mask) == 0 ? '0' : '1');
+          sb.append((byteValue & mask) == 0 ? '0' : '1');
         }
 
         totalBitCount -= bitCount;
@@ -848,11 +848,11 @@ public abstract class BitVector implements Comparable<BitVector> {
 
     final IAction op = new IAction() {
       @Override
-      public void run(final byte vByte) {
+      public void run(final byte byteValue) {
         if (0 != sb.length()) {
-          sb.append(String.format("%0" + hexCharsInByte + "X", vByte));
-        } else if (0 != vByte) {
-          sb.append(String.format("%X", vByte));
+          sb.append(String.format("%0" + hexCharsInByte + "X", byteValue));
+        } else if (0 != byteValue) {
+          sb.append(String.format("%X", byteValue));
         }
       }
     };
@@ -872,8 +872,8 @@ public abstract class BitVector implements Comparable<BitVector> {
     final IAction op = new IAction() {
       private int index = 0;
       @Override
-      public void run(final byte vByte) {
-        byteArray[index++] = vByte;
+      public void run(final byte byteValue) {
+        byteArray[index++] = byteValue;
       }
     };
 
