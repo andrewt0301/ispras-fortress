@@ -168,19 +168,19 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.ABS, operand);
   }
 
-  public static NodeOperation MIN(final Node... operands) {
+  public static NodeOperation min(final Node... operands) {
     return new NodeOperation(StandardOperation.MIN, operands);
   }
 
-  public static NodeOperation MIN(final List<? extends Node> operands) {
+  public static NodeOperation min(final List<? extends Node> operands) {
     return new NodeOperation(StandardOperation.MIN, operands);
   }
 
-  public static NodeOperation MAX(final Node... operands) {
+  public static NodeOperation max(final Node... operands) {
     return new NodeOperation(StandardOperation.MAX, operands);
   }
 
-  public static NodeOperation MAX(final List<? extends Node> operands) {
+  public static NodeOperation max(final List<? extends Node> operands) {
     return new NodeOperation(StandardOperation.MAX, operands);
   }
 

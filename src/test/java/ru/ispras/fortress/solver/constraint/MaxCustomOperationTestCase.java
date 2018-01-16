@@ -66,10 +66,10 @@ public class MaxCustomOperationTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(Nodes.eq(a, Nodes.MAX(NodeValue.newReal(3), NodeValue.newReal(4))));
-      formulas.add(Nodes.eq(b, Nodes.MAX(a, NodeValue.newReal(5))));
-      formulas.add(Nodes.eq(c, Nodes.MAX(NodeValue.newInteger(3), NodeValue.newInteger(4))));
-      formulas.add(Nodes.eq(d, Nodes.MAX(c, NodeValue.newInteger(5))));
+      formulas.add(Nodes.eq(a, Nodes.max(NodeValue.newReal(3), NodeValue.newReal(4))));
+      formulas.add(Nodes.eq(b, Nodes.max(a, NodeValue.newReal(5))));
+      formulas.add(Nodes.eq(c, Nodes.max(NodeValue.newInteger(3), NodeValue.newInteger(4))));
+      formulas.add(Nodes.eq(d, Nodes.max(c, NodeValue.newInteger(5))));
 
       return builder.build();
     }
