@@ -39,7 +39,7 @@ public class IntegerAddTestCase extends GenericSolverTestBase {
       final NodeVariable a = new NodeVariable(builder.addVariable("a", DataType.INTEGER));
       final NodeValue value = new NodeValue(DataType.INTEGER.valueOf("-1487988057", 10));
 
-      builder.setInnerRep(new Formulas(Nodes.EQ(a, Nodes.ADD(value, value))));
+      builder.setInnerRep(new Formulas(Nodes.eq(a, Nodes.ADD(value, value))));
       return builder.build();
     }
 

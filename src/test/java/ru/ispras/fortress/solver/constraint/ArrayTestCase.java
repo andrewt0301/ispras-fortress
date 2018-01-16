@@ -75,8 +75,8 @@ final class ArrayInvariant implements GenericSolverTestBase.SampleConstraint {
     final Formulas formulas = new Formulas();
     builder.setInnerRep(formulas);
 
-    formulas.add(Nodes.EQ(a, stored));
-    formulas.add(Nodes.EQ(a, array));
+    formulas.add(Nodes.eq(a, stored));
+    formulas.add(Nodes.eq(a, array));
 
     return builder.build();
   }

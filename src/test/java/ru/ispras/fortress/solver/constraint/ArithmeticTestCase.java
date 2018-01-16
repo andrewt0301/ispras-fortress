@@ -71,7 +71,7 @@ public class ArithmeticTestCase extends GenericSolverTestBase {
 
       formulas.add(Nodes.GREATER(a, Nodes.ADD(b, new NodeValue(intType.valueOf("2", 10)))));
 
-      formulas.add(Nodes.EQ(
+      formulas.add(Nodes.eq(
           a,
           Nodes.ADD(
               Nodes.MUL(new NodeValue(intType.valueOf("2", 10)), c),

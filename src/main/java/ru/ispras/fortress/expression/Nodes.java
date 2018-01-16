@@ -32,35 +32,35 @@ public final class Nodes {
   public static final Node TRUE = NodeValue.newBoolean(true);
   public static final Node FALSE = NodeValue.newBoolean(false);
 
-  public static NodeOperation EQ(final Node lhs, final Node rhs) {
+  public static NodeOperation eq(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.EQ, lhs, rhs);
   }
 
-  public static NodeOperation EQ(final Variable lhs, final Node rhs) {
-    return EQ(new NodeVariable(lhs), rhs);
+  public static NodeOperation eq(final Variable lhs, final Node rhs) {
+    return eq(new NodeVariable(lhs), rhs);
   }
 
-  public static NodeOperation EQ(final Node lhs, final Variable rhs) {
-    return EQ(lhs, new NodeVariable(rhs));
+  public static NodeOperation eq(final Node lhs, final Variable rhs) {
+    return eq(lhs, new NodeVariable(rhs));
   }
 
-  public static NodeOperation NOTEQ(final Node lhs, final Node rhs) {
+  public static NodeOperation noteq(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.NOTEQ, lhs, rhs);
   }
 
-  public static NodeOperation NOTEQ(final Variable lhs, final Node rhs) {
-    return NOTEQ(new NodeVariable(lhs), rhs);
+  public static NodeOperation noteq(final Variable lhs, final Node rhs) {
+    return noteq(new NodeVariable(lhs), rhs);
   }
 
-  public static NodeOperation NOTEQ(final Node lhs, final Variable rhs) {
-    return NOTEQ(lhs, new NodeVariable(rhs));
+  public static NodeOperation noteq(final Node lhs, final Variable rhs) {
+    return noteq(lhs, new NodeVariable(rhs));
   }
 
-  public static NodeOperation EQCASE(final Node lhs, final Node rhs) {
+  public static NodeOperation eqcase(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.EQCASE, lhs, rhs);
   }
 
-  public static NodeOperation NOTEQCASE(final Node lhs, final Node rhs) {
+  public static NodeOperation noteqcase(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.NOTEQCASE, lhs, rhs);
   }
 

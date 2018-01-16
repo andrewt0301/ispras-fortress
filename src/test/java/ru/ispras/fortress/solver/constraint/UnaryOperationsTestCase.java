@@ -60,8 +60,8 @@ public class UnaryOperationsTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(Nodes.EQ(Nodes.MINUS(a), new NodeValue(intType.valueOf("5", 10))));
-      formulas.add(Nodes.EQ(Nodes.PLUS(b), new NodeValue(intType.valueOf("1", 10))));
+      formulas.add(Nodes.eq(Nodes.MINUS(a), new NodeValue(intType.valueOf("5", 10))));
+      formulas.add(Nodes.eq(Nodes.PLUS(b), new NodeValue(intType.valueOf("1", 10))));
 
       return builder.build();
     }

@@ -65,7 +65,7 @@ final class BitVectorLiteralConstraint implements GenericSolverTestBase.SampleCo
     builder.setInnerRep(formulas);
 
     final Node bit = Nodes.BVEXTRACT(0, 0, x);
-    formulas.add(Nodes.EQ(y, bit));
+    formulas.add(Nodes.eq(y, bit));
 
     return builder.build();
   }

@@ -80,22 +80,22 @@ public class AbsCustomOperationTestCase extends GenericSolverTestBase {
       formulas.add(Nodes.LESS(c, NodeValue.newInteger(0)));
       formulas.add(Nodes.GREATER(d, NodeValue.newInteger(0)));
 
-      formulas.add(Nodes.EQ(
+      formulas.add(Nodes.eq(
           Nodes.ABS(Nodes.MINUS(NodeValue.newReal(5.0))), NodeValue.newReal(5.0)));
 
-      formulas.add(Nodes.EQ(
+      formulas.add(Nodes.eq(
           Nodes.ABS(NodeValue.newReal(5.0)), NodeValue.newReal(5.0)));
 
-      formulas.add(Nodes.EQ(
+      formulas.add(Nodes.eq(
           Nodes.ABS(Nodes.MINUS(a)), NodeValue.newReal(5.0)));
 
-      formulas.add(Nodes.EQ(
+      formulas.add(Nodes.eq(
           Nodes.ABS(b), NodeValue.newReal(5.0)));
 
-      formulas.add(Nodes.EQ(
+      formulas.add(Nodes.eq(
           Nodes.ABS(Nodes.MINUS(c)), NodeValue.newInteger(5)));
 
-      formulas.add(Nodes.EQ(
+      formulas.add(Nodes.eq(
           Nodes.ABS(d), NodeValue.newInteger(5)));
 
       return builder.build();

@@ -57,7 +57,7 @@ public class NoNameArithmeticTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(Nodes.EQ(
+      formulas.add(Nodes.eq(
           x,
           Nodes.ADD(new NodeValue(intType.valueOf("2", 10)),
                     new NodeValue(intType.valueOf("2", 10)))));

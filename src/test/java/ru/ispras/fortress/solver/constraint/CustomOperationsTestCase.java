@@ -133,7 +133,7 @@ public class CustomOperationsTestCase extends GenericSolverTestBase {
   private void registerIS_VALID_POS(Solver solver) {
     final Variable param = new Variable("x", Int_t);
 
-    final Node body = Nodes.EQ(
+    final Node body = Nodes.eq(
         Nodes.BVAND(new NodeVariable(param), new NodeOperation(ECustomOperation.INT_SIGN_MASK)),
         new NodeOperation(ECustomOperation.INT_ZERO));
 
@@ -146,7 +146,7 @@ public class CustomOperationsTestCase extends GenericSolverTestBase {
   private void registerIS_VALID_NEG(Solver solver) {
     final Variable param = new Variable("x", Int_t);
 
-    final Node body = Nodes.EQ(
+    final Node body = Nodes.eq(
         Nodes.BVAND(new NodeVariable(param), new NodeOperation(ECustomOperation.INT_SIGN_MASK)),
         new NodeOperation(ECustomOperation.INT_SIGN_MASK));
 
@@ -204,7 +204,7 @@ public class CustomOperationsTestCase extends GenericSolverTestBase {
       // ; just in case: rs and rt are not equal (to make the results more interesting)
       // (assert (not (= rs rt)))
 
-      formulas.add(Nodes.NOT(Nodes.EQ(rs, rt)));
+      formulas.add(Nodes.NOT(Nodes.eq(rs, rt)));
       return builder.build();
     }
 

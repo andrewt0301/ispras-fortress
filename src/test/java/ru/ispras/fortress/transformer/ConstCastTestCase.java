@@ -77,15 +77,15 @@ public class ConstCastTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(TypeConversion.castConstants(Nodes.EQ( x, bv7)));
-      formulas.add(TypeConversion.castConstants(Nodes.EQ(Nodes.REM(y, bv3), z)));
-      formulas.add(TypeConversion.castConstants(Nodes.EQ(bv7, Nodes.BVADD(w, int2))));
+      formulas.add(TypeConversion.castConstants(Nodes.eq( x, bv7)));
+      formulas.add(TypeConversion.castConstants(Nodes.eq(Nodes.REM(y, bv3), z)));
+      formulas.add(TypeConversion.castConstants(Nodes.eq(bv7, Nodes.BVADD(w, int2))));
       formulas.add(TypeConversion.castConstants(Nodes.AND(v, int2)));
       formulas.add(TypeConversion.castConstants(Nodes.LESS(u, bv3)));
-      formulas.add(TypeConversion.castConstants(Nodes.EQ(Nodes.BVEXTRACT(bv3, int2, t), boolTrue)));
-      formulas.add(TypeConversion.castConstants(Nodes.EQ( int2, Nodes.ITE(bv3, s, u))));
-      formulas.add(TypeConversion.castConstants(Nodes.EQ(bv63, Nodes.BVREPEAT(bv1, r))));
-      formulas.add(TypeConversion.castConstants(Nodes.EQ(bv63, Nodes.BVCONCAT(p, int7))));
+      formulas.add(TypeConversion.castConstants(Nodes.eq(Nodes.BVEXTRACT(bv3, int2, t), boolTrue)));
+      formulas.add(TypeConversion.castConstants(Nodes.eq( int2, Nodes.ITE(bv3, s, u))));
+      formulas.add(TypeConversion.castConstants(Nodes.eq(bv63, Nodes.BVREPEAT(bv1, r))));
+      formulas.add(TypeConversion.castConstants(Nodes.eq(bv63, Nodes.BVCONCAT(p, int7))));
 
       return builder.build();
     }

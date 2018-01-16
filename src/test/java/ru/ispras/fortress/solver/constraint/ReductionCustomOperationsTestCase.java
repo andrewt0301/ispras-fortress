@@ -112,41 +112,41 @@ public class ReductionCustomOperationsTestCase extends GenericSolverTestBase {
       builder.setInnerRep(formulas);
 
       // BVANDR Asserts
-      formulas.add(Nodes.EQ(varBVANDR_NO_BITS,   Nodes.BVANDR(NO_BITS)));
-      formulas.add(Nodes.EQ(varBVANDR_ALL_BITS,  Nodes.BVANDR(ALL_BITS)));
-      formulas.add(Nodes.EQ(varBVANDR_EVEN_BITS, Nodes.BVANDR(EVEN_BITS)));
-      formulas.add(Nodes.EQ(varBVANDR_ODD_BITS,  Nodes.BVANDR(ODD_BITS)));
+      formulas.add(Nodes.eq(varBVANDR_NO_BITS,   Nodes.BVANDR(NO_BITS)));
+      formulas.add(Nodes.eq(varBVANDR_ALL_BITS,  Nodes.BVANDR(ALL_BITS)));
+      formulas.add(Nodes.eq(varBVANDR_EVEN_BITS, Nodes.BVANDR(EVEN_BITS)));
+      formulas.add(Nodes.eq(varBVANDR_ODD_BITS,  Nodes.BVANDR(ODD_BITS)));
 
       // BVNANDR Asserts
-      formulas.add(Nodes.EQ(varBVNANDR_NO_BITS,   Nodes.BVNANDR(NO_BITS)));
-      formulas.add(Nodes.EQ(varBVNANDR_ALL_BITS,  Nodes.BVNANDR(ALL_BITS)));
-      formulas.add(Nodes.EQ(varBVNANDR_EVEN_BITS, Nodes.BVNANDR(EVEN_BITS)));
-      formulas.add(Nodes.EQ(varBVNANDR_ODD_BITS,  Nodes.BVNANDR(ODD_BITS)));
+      formulas.add(Nodes.eq(varBVNANDR_NO_BITS,   Nodes.BVNANDR(NO_BITS)));
+      formulas.add(Nodes.eq(varBVNANDR_ALL_BITS,  Nodes.BVNANDR(ALL_BITS)));
+      formulas.add(Nodes.eq(varBVNANDR_EVEN_BITS, Nodes.BVNANDR(EVEN_BITS)));
+      formulas.add(Nodes.eq(varBVNANDR_ODD_BITS,  Nodes.BVNANDR(ODD_BITS)));
 
       // BVORR Asserts
-      formulas.add(Nodes.EQ(varBVORR_NO_BITS,   Nodes.BVORR(NO_BITS)));
-      formulas.add(Nodes.EQ(varBVORR_ALL_BITS,  Nodes.BVORR(ALL_BITS)));
-      formulas.add(Nodes.EQ(varBVORR_EVEN_BITS, Nodes.BVORR(EVEN_BITS)));
-      formulas.add(Nodes.EQ(varBVORR_ODD_BITS,  Nodes.BVORR(ODD_BITS)));
+      formulas.add(Nodes.eq(varBVORR_NO_BITS,   Nodes.BVORR(NO_BITS)));
+      formulas.add(Nodes.eq(varBVORR_ALL_BITS,  Nodes.BVORR(ALL_BITS)));
+      formulas.add(Nodes.eq(varBVORR_EVEN_BITS, Nodes.BVORR(EVEN_BITS)));
+      formulas.add(Nodes.eq(varBVORR_ODD_BITS,  Nodes.BVORR(ODD_BITS)));
 
       // BVNORR Asserts
-      formulas.add(Nodes.EQ(varBVNORR_NO_BITS,   Nodes.BVNORR(NO_BITS)));
-      formulas.add(Nodes.EQ(varBVNORR_ALL_BITS,  Nodes.BVNORR(ALL_BITS)));
-      formulas.add(Nodes.EQ(varBVNORR_EVEN_BITS, Nodes.BVNORR(EVEN_BITS)));
-      formulas.add(Nodes.EQ(varBVNORR_ODD_BITS,  Nodes.BVNORR(ODD_BITS)));
+      formulas.add(Nodes.eq(varBVNORR_NO_BITS,   Nodes.BVNORR(NO_BITS)));
+      formulas.add(Nodes.eq(varBVNORR_ALL_BITS,  Nodes.BVNORR(ALL_BITS)));
+      formulas.add(Nodes.eq(varBVNORR_EVEN_BITS, Nodes.BVNORR(EVEN_BITS)));
+      formulas.add(Nodes.eq(varBVNORR_ODD_BITS,  Nodes.BVNORR(ODD_BITS)));
 
       // BVXORR Asserts
-      formulas.add(Nodes.EQ(varBVXORR_NO_BITS,   Nodes.BVXORR(NO_BITS)));
-      formulas.add(Nodes.EQ(varBVXORR_ALL_BITS,  Nodes.BVXORR(ALL_BITS)));
-      formulas.add(Nodes.EQ(varBVXORR_EVEN_BITS, Nodes.BVXORR(EVEN_BITS)));
-      formulas.add(Nodes.EQ(varBVXORR_ODD_BITS,  Nodes.BVXORR(ODD_BITS)));
+      formulas.add(Nodes.eq(varBVXORR_NO_BITS,   Nodes.BVXORR(NO_BITS)));
+      formulas.add(Nodes.eq(varBVXORR_ALL_BITS,  Nodes.BVXORR(ALL_BITS)));
+      formulas.add(Nodes.eq(varBVXORR_EVEN_BITS, Nodes.BVXORR(EVEN_BITS)));
+      formulas.add(Nodes.eq(varBVXORR_ODD_BITS,  Nodes.BVXORR(ODD_BITS)));
 
       // BVXNORR Asserts
 
-      formulas.add(Nodes.EQ(varBVXNORR_NO_BITS,   Nodes.BVXNORR(NO_BITS)));
-      formulas.add(Nodes.EQ(varBVXNORR_ALL_BITS,  Nodes.BVXNORR(ALL_BITS)));
-      formulas.add(Nodes.EQ(varBVXNORR_EVEN_BITS, Nodes.BVXNORR(EVEN_BITS)));
-      formulas.add(Nodes.EQ(varBVXNORR_ODD_BITS,  Nodes.BVXNORR(ODD_BITS)));
+      formulas.add(Nodes.eq(varBVXNORR_NO_BITS,   Nodes.BVXNORR(NO_BITS)));
+      formulas.add(Nodes.eq(varBVXNORR_ALL_BITS,  Nodes.BVXNORR(ALL_BITS)));
+      formulas.add(Nodes.eq(varBVXNORR_EVEN_BITS, Nodes.BVXNORR(EVEN_BITS)));
+      formulas.add(Nodes.eq(varBVXNORR_ODD_BITS,  Nodes.BVXNORR(ODD_BITS)));
 
       return builder.build();
     }

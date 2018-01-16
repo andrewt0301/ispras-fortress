@@ -69,8 +69,8 @@ public final class RepeatOperationTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(Nodes.EQ(x, new NodeValue(BIT_VECTOR_ARG_TYPE.valueOf("5", HEX_RADIX))));
-      formulas.add(Nodes.EQ(
+      formulas.add(Nodes.eq(x, new NodeValue(BIT_VECTOR_ARG_TYPE.valueOf("5", HEX_RADIX))));
+      formulas.add(Nodes.eq(
           y,
           Nodes.BVREPEAT(
               (NodeValue) Reducer.reduce(

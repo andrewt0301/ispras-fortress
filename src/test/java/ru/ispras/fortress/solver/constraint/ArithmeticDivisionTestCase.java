@@ -75,14 +75,14 @@ public class ArithmeticDivisionTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(Nodes.EQ(a, new NodeValue(intType.valueOf("10", 10))));
+      formulas.add(Nodes.eq(a, new NodeValue(intType.valueOf("10", 10))));
 
-      formulas.add(Nodes.EQ(r1, Nodes.DIV(a, new NodeValue(intType.valueOf("4", 10)))));
-      formulas.add(Nodes.EQ(r2, Nodes.MOD(a, new NodeValue(intType.valueOf("4", 10)))));
-      formulas.add(Nodes.EQ(r3, Nodes.REM(a, new NodeValue(intType.valueOf("4", 10)))));
-      formulas.add(Nodes.EQ(r4, Nodes.DIV(a, new NodeValue(intType.valueOf("-4", 10)))));
-      formulas.add(Nodes.EQ(r5, Nodes.MOD(a, new NodeValue(intType.valueOf("-4", 10)))));
-      formulas.add(Nodes.EQ(r6, Nodes.REM(a, new NodeValue(intType.valueOf("-4", 10)))));
+      formulas.add(Nodes.eq(r1, Nodes.DIV(a, new NodeValue(intType.valueOf("4", 10)))));
+      formulas.add(Nodes.eq(r2, Nodes.MOD(a, new NodeValue(intType.valueOf("4", 10)))));
+      formulas.add(Nodes.eq(r3, Nodes.REM(a, new NodeValue(intType.valueOf("4", 10)))));
+      formulas.add(Nodes.eq(r4, Nodes.DIV(a, new NodeValue(intType.valueOf("-4", 10)))));
+      formulas.add(Nodes.eq(r5, Nodes.MOD(a, new NodeValue(intType.valueOf("-4", 10)))));
+      formulas.add(Nodes.eq(r6, Nodes.REM(a, new NodeValue(intType.valueOf("-4", 10)))));
 
       return builder.build();
     }

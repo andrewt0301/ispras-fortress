@@ -303,7 +303,7 @@ public final class TypeConversion {
   }
 
   private static NodeOperation bv2bool(final Node node) {
-    return Nodes.NOTEQ(node, NodeValue.newBitVector(BigInteger.ZERO, node.getDataType().getSize()));
+    return Nodes.noteq(node, NodeValue.newBitVector(BigInteger.ZERO, node.getDataType().getSize()));
   }
 
   private static NodeOperation bool2bv(final Node node, final int size) {
@@ -312,7 +312,7 @@ public final class TypeConversion {
   }
 
   private static NodeOperation int2bool(final Node node) {
-    return Nodes.NOTEQ(node, NodeValue.newInteger(BigInteger.ZERO));
+    return Nodes.noteq(node, NodeValue.newInteger(BigInteger.ZERO));
   }
 
   private static NodeOperation bool2int(final Node node) {

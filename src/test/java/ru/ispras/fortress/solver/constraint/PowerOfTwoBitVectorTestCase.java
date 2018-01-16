@@ -67,7 +67,7 @@ public class PowerOfTwoBitVectorTestCase extends GenericSolverTestBase {
       formulas.add(Nodes.BVULT(x, new NodeValue(BIT_VECTOR_TYPE.valueOf("200", 10))));
 
       formulas.add(
-          Nodes.EQ(
+          Nodes.eq(
               Nodes.BVAND(x, Nodes.BVSUB(x, new NodeValue(BIT_VECTOR_TYPE.valueOf("1", 10)))),
               new NodeValue(BIT_VECTOR_TYPE.valueOf("0", 10))));
 

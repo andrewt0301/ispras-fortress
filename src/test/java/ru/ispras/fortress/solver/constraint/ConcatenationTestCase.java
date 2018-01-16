@@ -72,9 +72,9 @@ public class ConcatenationTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(Nodes.EQ(x, new NodeValue(BIT_VECTOR_ARG_TYPE.valueOf("0000", HEX_RADIX))));
-      formulas.add(Nodes.EQ(y, new NodeValue(BIT_VECTOR_ARG_TYPE.valueOf("ffff", HEX_RADIX))));
-      formulas.add(Nodes.EQ(z, Nodes.BVCONCAT(x, y)));
+      formulas.add(Nodes.eq(x, new NodeValue(BIT_VECTOR_ARG_TYPE.valueOf("0000", HEX_RADIX))));
+      formulas.add(Nodes.eq(y, new NodeValue(BIT_VECTOR_ARG_TYPE.valueOf("ffff", HEX_RADIX))));
+      formulas.add(Nodes.eq(z, Nodes.BVCONCAT(x, y)));
 
       return builder.build();
     }

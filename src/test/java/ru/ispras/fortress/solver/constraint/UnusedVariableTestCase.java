@@ -71,7 +71,7 @@ public class UnusedVariableTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(Nodes.EQ(x, NodeValue.newInteger(7)));
+      formulas.add(Nodes.eq(x, NodeValue.newInteger(7)));
 
       return builder.build();
     }

@@ -29,11 +29,11 @@ public final class ExprUtilsTestCase {
   private static final NodeVariable I = new NodeVariable(new Variable("i", DataType.INTEGER));
   private static final NodeVariable J = new NodeVariable(new Variable("j", DataType.INTEGER));
 
-  private static final Node XEq0 = Nodes.EQ(X, NodeValue.newInteger(0));
-  private static final Node YEq5 = Nodes.EQ(Y, NodeValue.newInteger(5));
-  private static final Node ZEq10 = Nodes.EQ(Z, NodeValue.newInteger(10));
-  private static final Node IEq15 = Nodes.EQ(I, NodeValue.newInteger(15));
-  private static final Node JEq20 = Nodes.EQ(J, NodeValue.newInteger(20));
+  private static final Node XEq0 = Nodes.eq(X, NodeValue.newInteger(0));
+  private static final Node YEq5 = Nodes.eq(Y, NodeValue.newInteger(5));
+  private static final Node ZEq10 = Nodes.eq(Z, NodeValue.newInteger(10));
+  private static final Node IEq15 = Nodes.eq(I, NodeValue.newInteger(15));
+  private static final Node JEq20 = Nodes.eq(J, NodeValue.newInteger(20));
 
   @Test
   public void testIsCondition() {
@@ -46,7 +46,7 @@ public final class ExprUtilsTestCase {
     Assert.assertFalse(
         ExprUtils.isCondition(new NodeVariable(new Variable("y", DataType.INTEGER))));
     Assert.assertTrue(
-        ExprUtils.isCondition(Nodes.EQ(NodeValue.newInteger(1), NodeValue.newInteger(2))));
+        ExprUtils.isCondition(Nodes.eq(NodeValue.newInteger(1), NodeValue.newInteger(2))));
     Assert.assertFalse(
         ExprUtils.isCondition(Nodes.ADD(NodeValue.newInteger(1), NodeValue.newInteger(2))));
 
@@ -61,7 +61,7 @@ public final class ExprUtilsTestCase {
     Assert.assertTrue(ExprUtils.isAtomicCondition(NodeValue.newBoolean(false)));
 
     Assert.assertTrue(ExprUtils.isAtomicCondition(
-        Nodes.EQ(NodeValue.newInteger(1), NodeValue.newInteger(2))));
+        Nodes.eq(NodeValue.newInteger(1), NodeValue.newInteger(2))));
 
     Assert.assertFalse(ExprUtils.isAtomicCondition(
         Nodes.ADD(NodeValue.newInteger(1), NodeValue.newInteger(2))));
@@ -211,12 +211,12 @@ public final class ExprUtilsTestCase {
     Assert.assertFalse(ExprUtils.isSAT(NodeValue.newBoolean(false)));
 
     Assert.assertTrue(ExprUtils.isSAT(
-        Nodes.EQ(
+        Nodes.eq(
             NodeValue.newInteger(5),
             Nodes.ADD(NodeValue.newInteger(2), NodeValue.newInteger(3)))));
 
     Assert.assertFalse(ExprUtils.isSAT(
-        Nodes.EQ(
+        Nodes.eq(
             NodeValue.newInteger(5),
             Nodes.ADD(NodeValue.newInteger(2), NodeValue.newInteger(-3)))));
   }

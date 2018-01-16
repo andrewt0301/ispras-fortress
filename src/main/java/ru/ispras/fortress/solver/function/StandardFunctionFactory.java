@@ -23,7 +23,6 @@ import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.Nodes;
-import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.util.InvariantChecks;
 
 /**
@@ -273,7 +272,7 @@ public final class StandardFunctionFactory {
     final NodeValue TWO_ONES = new NodeValue(DataType.BIT_VECTOR(size).valueOf("11", 2));
 
     return Nodes.ITE(
-        Nodes.OR(Nodes.EQ(source, TWO_ZEROS), Nodes.EQ(source, TWO_ONES)),
+        Nodes.OR(Nodes.eq(source, TWO_ZEROS), Nodes.eq(source, TWO_ONES)),
         BIT_FALSE,
         BIT_TRUE
         );
@@ -285,7 +284,7 @@ public final class StandardFunctionFactory {
     final NodeVariable operandNode = new NodeVariable(operand);
     final NodeValue zeroNode = new NodeValue(Data.newBitVector(0, operandType.getSize()));
 
-    return Nodes.EQ(operandNode, zeroNode);
+    return Nodes.eq(operandNode, zeroNode);
   }
 
   private static Node makeBVEqualsAllOnes(final Variable operand) {
@@ -294,7 +293,7 @@ public final class StandardFunctionFactory {
     final NodeVariable operandNode = new NodeVariable(operand);
     final NodeValue zeroNode = new NodeValue(Data.newBitVector(0, operandType.getSize()));
 
-    return Nodes.EQ(operandNode, Nodes.BVNOT(zeroNode));
+    return Nodes.eq(operandNode, Nodes.BVNOT(zeroNode));
   }
 
   private static final int BIT_BOOL_SIZE = 1;

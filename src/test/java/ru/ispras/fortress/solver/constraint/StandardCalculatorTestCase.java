@@ -78,27 +78,27 @@ public class StandardCalculatorTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(Nodes.EQ(a, Reducer.reduce(
+      formulas.add(Nodes.eq(a, Reducer.reduce(
           ReduceOptions.NEW_INSTANCE, Nodes.ADD(new NodeValue(
               intType.valueOf("2", 10)), new NodeValue(intType.valueOf("3", 10))))));
 
-      formulas.add(Nodes.EQ(b, Reducer.reduce(
+      formulas.add(Nodes.eq(b, Reducer.reduce(
           ReduceOptions.NEW_INSTANCE, Nodes.SUB(new NodeValue(
               intType.valueOf("10", 10)), new NodeValue(intType.valueOf("6", 10))))));
 
-      formulas.add(Nodes.EQ(c, Reducer.reduce(
+      formulas.add(Nodes.eq(c, Reducer.reduce(
           ReduceOptions.NEW_INSTANCE, Nodes.MUL(new NodeValue(
               intType.valueOf("2", 10)), new NodeValue(intType.valueOf("5", 10))))));
 
-      formulas.add(Nodes.EQ(d, Reducer.reduce(
+      formulas.add(Nodes.eq(d, Reducer.reduce(
           ReduceOptions.NEW_INSTANCE, Nodes.DIV(new NodeValue(
               intType.valueOf("12", 10)), new NodeValue(intType.valueOf("5", 10))))));
 
-      formulas.add(Nodes.EQ(e, Reducer.reduce(
+      formulas.add(Nodes.eq(e, Reducer.reduce(
           ReduceOptions.NEW_INSTANCE, Nodes.REM(new NodeValue(
               intType.valueOf("10", 10)), new NodeValue(intType.valueOf("3", 10))))));
 
-      formulas.add(Nodes.EQ(f, Reducer.reduce(
+      formulas.add(Nodes.eq(f, Reducer.reduce(
           ReduceOptions.NEW_INSTANCE, Nodes.MOD(new NodeValue(
               intType.valueOf("10", 10)), new NodeValue(intType.valueOf("3", 10))))));
 

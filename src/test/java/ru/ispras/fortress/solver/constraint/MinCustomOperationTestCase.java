@@ -66,10 +66,10 @@ public class MinCustomOperationTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(Nodes.EQ(a, Nodes.MIN(NodeValue.newReal(3.0), NodeValue.newReal(4.0))));
-      formulas.add(Nodes.EQ(b, Nodes.MIN(a, NodeValue.newReal(2.0))));
-      formulas.add(Nodes.EQ(c, Nodes.MIN(NodeValue.newInteger(3), NodeValue.newInteger(4))));
-      formulas.add(Nodes.EQ(d, Nodes.MIN(c, NodeValue.newInteger(2))));
+      formulas.add(Nodes.eq(a, Nodes.MIN(NodeValue.newReal(3.0), NodeValue.newReal(4.0))));
+      formulas.add(Nodes.eq(b, Nodes.MIN(a, NodeValue.newReal(2.0))));
+      formulas.add(Nodes.eq(c, Nodes.MIN(NodeValue.newInteger(3), NodeValue.newInteger(4))));
+      formulas.add(Nodes.eq(d, Nodes.MIN(c, NodeValue.newInteger(2))));
 
       return builder.build();
     }

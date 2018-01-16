@@ -68,12 +68,12 @@ final class BitVectorExtractionConstraint implements GenericSolverTestBase.Sampl
     final Formulas formulas = new Formulas();
     builder.setInnerRep(formulas);
 
-    formulas.add(Nodes.EQ(x, new NodeValue(BitVector32.valueOf("257", 10))));
+    formulas.add(Nodes.eq(x, new NodeValue(BitVector32.valueOf("257", 10))));
 
     final Node extraction = Nodes.BVEXTRACT(7, 0, x);
     Assert.assertEquals(DataType.BIT_VECTOR(8), extraction.getDataType());
 
-    formulas.add(Nodes.EQ(y, extraction));
+    formulas.add(Nodes.eq(y, extraction));
 
     return builder.build();
   }

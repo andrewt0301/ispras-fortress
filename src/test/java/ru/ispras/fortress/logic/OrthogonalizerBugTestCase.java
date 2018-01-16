@@ -153,7 +153,7 @@ public final class OrthogonalizerBugTestCase {
   }
 
   private static Node equation(final NodeVariable variable, final int value) {
-    return Nodes.EQ(variable, NodeValue.newInteger(value));
+    return Nodes.eq(variable, NodeValue.newInteger(value));
   }
 
   private Set<Clause> getConflicts(final Map<Integer, Node> literalMap) {

@@ -531,7 +531,7 @@ public abstract class SmtTextSolver extends SolverBase {
 
     final Variable xBit = new Variable("x", bit);
     final NodeOperation bv2bool =
-        Nodes.EQ(new NodeVariable(xBit), NodeValue.newBitVector(BitVector.TRUE));
+        Nodes.eq(new NodeVariable(xBit), NodeValue.newBitVector(BitVector.TRUE));
 
     functions.add(new Function(StandardOperation.BV2BOOL, DataType.BOOLEAN, bv2bool, xBit));
 

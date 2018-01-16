@@ -61,8 +61,8 @@ public class BooleanVariablesTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(Nodes.EQ(x, NodeValue.newBoolean(true)));
-      formulas.add(Nodes.EQ(y, NodeValue.newBoolean(false)));
+      formulas.add(Nodes.eq(x, NodeValue.newBoolean(true)));
+      formulas.add(Nodes.eq(y, NodeValue.newBoolean(false)));
 
       return builder.build();
     }

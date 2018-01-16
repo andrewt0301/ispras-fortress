@@ -300,7 +300,7 @@ class EqualityConstraint {
   }
 
   private static NodeOperation NOTEQ(final Node lhs, final Node rhs) {
-    return Nodes.NOT(Nodes.EQ(lhs, rhs));
+    return Nodes.NOT(Nodes.eq(lhs, rhs));
   }
 }
 
