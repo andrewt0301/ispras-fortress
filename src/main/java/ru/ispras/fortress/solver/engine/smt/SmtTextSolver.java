@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2011-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -70,8 +70,8 @@ public abstract class SmtTextSolver extends SolverBase {
       "%s: The path to the external constraint solver executable is not assigned (equals %s).";
 
   private static final String NO_SOLVER_FILE_ERR_FRMT =
-      "%s: The external constraint solver executable (%s) does not exist or " +
-      "the path is not a valid file path.";
+      "%s: The external constraint solver executable (%s) does not exist or "
+          + "the path is not a valid file path.";
 
   private static final String IO_EXCEPTION_ERR =
       "%s: I/O exception in the process of a solving the constraint. Details: %s";
@@ -191,9 +191,9 @@ public abstract class SmtTextSolver extends SolverBase {
       return false;
     }
     final String literal = e.getLiteral();
-    return literal.equals(SmtRegExp.SAT) ||
-           literal.equals(SmtRegExp.UNSAT) ||
-           literal.equals(SmtRegExp.UNKNOWN);
+    return literal.equals(SmtRegExp.SAT)
+        || literal.equals(SmtRegExp.UNSAT)
+        || literal.equals(SmtRegExp.UNKNOWN);
   }
 
   private static void setStatus(
@@ -225,9 +225,9 @@ public abstract class SmtTextSolver extends SolverBase {
   }
 
   private static boolean isModel(final ESExpr e) {
-    return e.isList() &&
-           !e.isNil() &&
-           getLiteral(e, 0).equals("model");
+    return e.isList()
+        && !e.isNil()
+        && getLiteral(e, 0).equals("model");
   }
 
   private static final class Context {
@@ -283,14 +283,14 @@ public abstract class SmtTextSolver extends SolverBase {
       final DataType type,
       final Context ctx) {
     switch (type.getTypeId()) {
-    case BIT_VECTOR:
-      if (ctx.CAST.matches(e)) {
-        return parseAtom(getLiteral(e, 1), type);
-      }
-      return parseAtom(e.getLiteral(), type);
+      case BIT_VECTOR:
+        if (ctx.CAST.matches(e)) {
+          return parseAtom(getLiteral(e, 1), type);
+        }
+        return parseAtom(e.getLiteral(), type);
 
-    case MAP:
-      return parseArray(e, type, ctx);
+      case MAP:
+        return parseArray(e, type, ctx);
     }
     if (ctx.MINUS.matches(e)) {
       return parseAtom("-" + getLiteral(e, 1), type);
@@ -307,7 +307,7 @@ public abstract class SmtTextSolver extends SolverBase {
     }
 
     if (e.isAtom() && ctx.model.containsKey(e.getLiteral())) {
-        return valueReference(e.getLiteral(), type, ctx);
+      return valueReference(e.getLiteral(), type, ctx);
     }
 
     final DataType keyType =
@@ -411,7 +411,8 @@ public abstract class SmtTextSolver extends SolverBase {
     final int radix;
     if (Pattern.compile(SmtRegExp.LINE_START + SmtRegExp.VALUE_BIN).matcher(atom).matches()) {
       radix = 2;
-    } else if (Pattern.compile(SmtRegExp.LINE_START + SmtRegExp.VALUE_HEX).matcher(atom).matches()) {
+    } else if (Pattern.compile(SmtRegExp.LINE_START
+        + SmtRegExp.VALUE_HEX).matcher(atom).matches()) {
       radix = 16;
     } else {
       radix = 10; // decimal value by default

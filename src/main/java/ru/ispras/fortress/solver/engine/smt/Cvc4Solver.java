@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2011-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,14 +14,6 @@
 
 package ru.ispras.fortress.solver.engine.smt;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.SequenceInputStream;
-import java.util.Collections;
-import java.util.List;
-
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.Node;
@@ -32,12 +24,20 @@ import ru.ispras.fortress.expression.Nodes;
 import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.solver.function.Function;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.SequenceInputStream;
+import java.util.Collections;
+import java.util.List;
+
 public final class Cvc4Solver extends SmtTextSolver {
   private static final String NAME = "CVC4 (text-based interface)";
 
   private static final String DESCRIPTION =
-      "Solves constraints using the CVC4 solver. " +
-      "Interacts with the solver via text files and command line.";
+      "Solves constraints using the CVC4 solver. "
+          + "Interacts with the solver via text files and command line.";
 
   private static final String ENV_VAR_NAME = "CVC4_PATH";
 

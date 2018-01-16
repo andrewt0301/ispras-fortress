@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2011-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,36 +13,6 @@
  */
 
 package ru.ispras.fortress.solver.engine.smt;
-
-import static ru.ispras.fortress.solver.engine.smt.SmtStrings.ASSERT;
-import static ru.ispras.fortress.solver.engine.smt.SmtStrings.BRACKET_CLOSE;
-import static ru.ispras.fortress.solver.engine.smt.SmtStrings.BRACKET_OPEN;
-import static ru.ispras.fortress.solver.engine.smt.SmtStrings.CHECK_SAT;
-import static ru.ispras.fortress.solver.engine.smt.SmtStrings.DECLARE_CONST;
-import static ru.ispras.fortress.solver.engine.smt.SmtStrings.DEFAULT_ARRAY;
-import static ru.ispras.fortress.solver.engine.smt.SmtStrings.DEFINE_FUN;
-import static ru.ispras.fortress.solver.engine.smt.SmtStrings.EXIT;
-import static ru.ispras.fortress.solver.engine.smt.SmtStrings.GET_MODEL;
-import static ru.ispras.fortress.solver.engine.smt.SmtStrings.GET_VALUE;
-import static ru.ispras.fortress.solver.engine.smt.SmtStrings.PARAM_DEF;
-import static ru.ispras.fortress.solver.engine.smt.SmtStrings.SPACE;
-import static ru.ispras.fortress.solver.engine.smt.SmtStrings.UNDERLINE;
-import static ru.ispras.fortress.solver.engine.smt.SmtStrings.textForData;
-import static ru.ispras.fortress.solver.engine.smt.SmtStrings.textForType;
-
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
@@ -59,8 +29,23 @@ import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.solver.SolverOperation;
 import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintUtils;
+import ru.ispras.fortress.solver.engine.smt.SmtStrings;
 import ru.ispras.fortress.solver.function.Function;
 import ru.ispras.fortress.solver.function.FunctionTemplate;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * The SMTTextBuilder class implements logic that generates SMT-LIB code from a syntax structure.
@@ -174,7 +159,10 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
 
       int i = 0;
       for (final DataType type : arraysInUse) {
-        out.printf(DECLARE_CONST, String.format(DEFAULT_ARRAY, i++), textForType(type));
+        out.printf(
+            SmtStrings.DECLARE_CONST,
+            String.format(SmtStrings.DEFAULT_ARRAY, i++),
+            SmtStrings.textForType(type));
       }
 
       final StringBuilder variablesListBuilder = new StringBuilder();
@@ -182,7 +170,10 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
         // Variables that have values don't need declarations
         // because their values are used in expression as constants.
         if (!variable.hasValue()) {
-          out.printf(DECLARE_CONST, variable.getName(), textForType(variable.getData().getType()));
+          out.printf(
+              SmtStrings.DECLARE_CONST,
+              variable.getName(),
+              SmtStrings.textForType(variable.getData().getType()));
 
           variablesListBuilder.append(System.lineSeparator());
           variablesListBuilder.append("  ");
@@ -191,21 +182,21 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
       }
 
       for (final StringBuilder builder : functions.getBuilders()) {
-        out.printf(DEFINE_FUN, builder.toString());
+        out.printf(SmtStrings.DEFINE_FUN, builder.toString());
       }
 
       for (final StringBuilder builder : formulas) {
-        out.printf(ASSERT, builder.toString());
+        out.printf(SmtStrings.ASSERT, builder.toString());
       }
 
-      out.println(CHECK_SAT);
+      out.println(SmtStrings.CHECK_SAT);
 
       if (variablesListBuilder.length() > 0) {
-        out.printf(GET_VALUE, variablesListBuilder.toString());
+        out.printf(SmtStrings.GET_VALUE, variablesListBuilder.toString());
       }
 
-      out.println(GET_MODEL);
-      out.println(EXIT);
+      out.println(SmtStrings.GET_MODEL);
+      out.println(SmtStrings.EXIT);
     } finally {
       if (null != out) {
         out.close();
@@ -221,20 +212,20 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
     final StringBuilder builder = new StringBuilder();
 
     builder.append(function.getUniqueName());
-    builder.append(SPACE);
+    builder.append(SmtStrings.SPACE);
 
     // Forms the parameter list.
-    builder.append(BRACKET_OPEN);
+    builder.append(SmtStrings.BRACKET_OPEN);
     for (int index = 0; index < function.getParameterCount(); ++index) {
       final Variable param = function.getParameter(index);
-      builder.append(String.format(PARAM_DEF,
-        param.getName(), textForType(param.getData().getType())));
+      builder.append(String.format(SmtStrings.PARAM_DEF,
+          param.getName(), SmtStrings.textForType(param.getData().getType())));
     }
-    builder.append(BRACKET_CLOSE);
+    builder.append(SmtStrings.BRACKET_CLOSE);
 
     // Appends the return type
-    builder.append(SPACE);
-    builder.append(textForType(function.getReturnType()));
+    builder.append(SmtStrings.SPACE);
+    builder.append(SmtStrings.textForType(function.getReturnType()));
 
     // Forms the function body
     final StringBuilder previousBuilder = getCurrentBuilder();
@@ -320,16 +311,16 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
       }
     }
 
-    appendToCurrent(SPACE);
+    appendToCurrent(SmtStrings.SPACE);
 
     if (expr.getOperandCount() > 0) {
-      appendToCurrent(BRACKET_OPEN);
+      appendToCurrent(SmtStrings.BRACKET_OPEN);
     }
 
     if (StandardOperation.isParametric(op)) {
-      appendToCurrent(BRACKET_OPEN);
-      appendToCurrent(UNDERLINE);
-      appendToCurrent(SPACE);
+      appendToCurrent(SmtStrings.BRACKET_OPEN);
+      appendToCurrent(SmtStrings.UNDERLINE);
+      appendToCurrent(SmtStrings.SPACE);
     }
 
     appendToCurrent(operationText);
@@ -338,7 +329,7 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
   @Override
   public void onOperationEnd(final NodeOperation expr) {
     if (expr.getOperandCount() > 0) {
-      appendToCurrent(BRACKET_CLOSE);
+      appendToCurrent(SmtStrings.BRACKET_CLOSE);
     }
   }
 
@@ -361,7 +352,7 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
       final int index) {
     if (StandardOperation.isParametric(expr.getOperationId())
         && index == StandardOperation.getParameterCount(expr.getOperationId()) - 1) {
-      appendToCurrent(BRACKET_CLOSE);
+      appendToCurrent(SmtStrings.BRACKET_CLOSE);
     }
   }
 
@@ -371,7 +362,7 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
   }
 
   private void onValue(final Data data) {
-    appendToCurrent(SPACE);
+    appendToCurrent(SmtStrings.SPACE);
     if (data.getType().getTypeId() == DataTypeId.MAP) {
       int i = 0;
       final String type = data.getType().toString();
@@ -387,9 +378,9 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
         arraysInUse.add(data.getType());
       }
 
-      appendToCurrent(String.format(textForData(data), i));
+      appendToCurrent(String.format(SmtStrings.textForData(data), i));
     } else {
-      appendToCurrent(textForData(data));
+      appendToCurrent(SmtStrings.textForData(data));
     }
   }
 
@@ -398,7 +389,7 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
     if (variable.getData().hasValue()) {
       onValue(variable.getData());
     } else {
-      appendToCurrent(SPACE);
+      appendToCurrent(SmtStrings.SPACE);
       appendToCurrent(variable.getName());
     }
   }
@@ -410,12 +401,12 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
 
   @Override
   public void onBindingListEnd(final NodeBinding node) {
-    appendToCurrent(BRACKET_CLOSE);
+    appendToCurrent(SmtStrings.BRACKET_CLOSE);
   }
 
   @Override
   public void onBindingEnd(final NodeBinding node) {
-    appendToCurrent(BRACKET_CLOSE);
+    appendToCurrent(SmtStrings.BRACKET_CLOSE);
   }
 
   @Override
@@ -423,9 +414,9 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
       final NodeBinding node,
       final NodeVariable variable,
       final Node value) {
-    appendToCurrent(BRACKET_OPEN);
+    appendToCurrent(SmtStrings.BRACKET_OPEN);
     appendToCurrent(variable.getName());
-    appendToCurrent(SPACE);
+    appendToCurrent(SmtStrings.SPACE);
   }
 
   @Override
@@ -433,10 +424,9 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
       final NodeBinding node,
       final NodeVariable variable,
       final Node value) {
-    appendToCurrent(BRACKET_CLOSE);
+    appendToCurrent(SmtStrings.BRACKET_CLOSE);
   }
 }
-
 
 final class FunctionDefinitionBuilders {
   private final Set<String> names;
@@ -452,9 +442,9 @@ final class FunctionDefinitionBuilders {
   }
 
   public FunctionDefinitionBuilders() {
-    this.names = new HashSet<String>();
-    this.entries = new ArrayList<StringBuilder>();
-    this.queue = new TreeMap<Integer, List<StringBuilder>>(new ReverseComparator());
+    this.names = new HashSet<>();
+    this.entries = new ArrayList<>();
+    this.queue = new TreeMap<>(new ReverseComparator());
   }
 
   public void beginCallTree() {

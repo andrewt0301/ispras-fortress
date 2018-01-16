@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2013-2018 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -66,10 +66,11 @@ public enum StandardFunction implements FunctionTemplate {
    * The unary reduction operators shall perform a bitwise operation on a single operand
    * to produce a single-bit result. For reduction and, reduction or, and reduction xor operators,
    * the first step of the operation shall apply the operator between the first bit of the operand
-   * and the second. The second and subsequent steps shall apply the operator between the 1-bit result
-   * of the prior step and the next bit of the operand using the same logic table. For reduction nand,
-   * reduction nor, and reduction xnor operators, the result shall be computed by inverting the result
-   * of the reduction and, reduction or, and reduction xor operation, respectively.
+   * and the second. The second and subsequent steps shall apply the operator between the 1-bit
+   * result of the prior step and the next bit of the operand using the same logic table. For
+   * reduction nand, reduction nor, and reduction xnor operators, the result shall be computed by
+   * inverting the result of the reduction and, reduction or, and reduction xor operation,
+   * respectively.
    * 
    * See the manual for details.
    * </pre>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2011-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -35,8 +35,8 @@ public final class Z3Solver extends SmtTextSolver {
   private static final String NAME = "Z3 (text-based interface)";
 
   private static final String DESCRIPTION =
-      "Solves constraints using the Z3 solver. " +
-      "Interacts with the solver via text files and command line.";
+      "Solves constraints using the Z3 solver. "
+          + "Interacts with the solver via text files and command line.";
 
   private static final String ENV_VAR_NAME = "Z3_PATH";
 

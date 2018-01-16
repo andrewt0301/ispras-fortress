@@ -14,12 +14,10 @@
 
 package ru.ispras.fortress.solver.function;
 
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
-import static ru.ispras.fortress.util.InvariantChecks.checkBounds;
-
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.Node;
+import ru.ispras.fortress.util.InvariantChecks;
 
 /**
  * The Function class describes a custom function that extends the functionality of a solver. A
@@ -51,10 +49,10 @@ public final class Function {
       final DataType returnType,
       final Node body,
       final Variable... parameters) {
-    checkNotNull(id);
-    checkNotNull(returnType);
-    checkNotNull(body);
-    checkNotNull(parameters);
+    InvariantChecks.checkNotNull(id);
+    InvariantChecks.checkNotNull(returnType);
+    InvariantChecks.checkNotNull(body);
+    InvariantChecks.checkNotNull(parameters);
 
     this.id = id;
     this.returnType = returnType;
@@ -153,7 +151,7 @@ public final class Function {
    */
 
   public Variable getParameter(final int index) {
-    checkBounds(index, parameters.length);
+    InvariantChecks.checkBounds(index, parameters.length);
     return parameters[index];
   }
 }
