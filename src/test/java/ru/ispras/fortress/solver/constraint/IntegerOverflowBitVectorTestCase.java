@@ -74,12 +74,17 @@ public class IntegerOverflowBitVectorTestCase extends GenericSolverTestBase {
    * </pre>
    */
   public static class IntegerOverflow implements SampleConstraint {
-    private final int BIT_VECTOR_LENGTH = 64;
-    private final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_LENGTH);
+    private static final int BIT_VECTOR_LENGTH = 64;
+    private static final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_LENGTH);
 
-    private final NodeValue INT_ZERO = new NodeValue(BIT_VECTOR_TYPE.valueOf("0", 10));
-    private final NodeValue INT_BASE_SIZE = new NodeValue(BIT_VECTOR_TYPE.valueOf("32", 10));
-    private final NodeOperation INT_SIGN_MASK = Nodes.bvlshl(Nodes.bvnot(INT_ZERO), INT_BASE_SIZE);
+    private static final NodeValue INT_ZERO =
+        new NodeValue(BIT_VECTOR_TYPE.valueOf("0", 10));
+
+    private static final NodeValue INT_BASE_SIZE =
+        new NodeValue(BIT_VECTOR_TYPE.valueOf("32", 10));
+
+    private static final NodeOperation INT_SIGN_MASK =
+        Nodes.bvlshl(Nodes.bvnot(INT_ZERO), INT_BASE_SIZE);
 
     @Override
     public Constraint getConstraint() {
