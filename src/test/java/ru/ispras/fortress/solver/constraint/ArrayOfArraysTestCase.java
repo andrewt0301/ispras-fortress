@@ -78,13 +78,13 @@ public class ArrayOfArraysTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(Nodes.eq(x, Nodes.STORE(x, values[0], values[0])));
-      formulas.add(Nodes.eq(y, Nodes.STORE(x, values[1], values[1])));
-      formulas.add(Nodes.eq(z, Nodes.STORE(y, values[2], values[3])));
-      formulas.add(Nodes.eq(w, Nodes.STORE(z, values[4], values[5])));
+      formulas.add(Nodes.eq(x, Nodes.store(x, values[0], values[0])));
+      formulas.add(Nodes.eq(y, Nodes.store(x, values[1], values[1])));
+      formulas.add(Nodes.eq(z, Nodes.store(y, values[2], values[3])));
+      formulas.add(Nodes.eq(w, Nodes.store(z, values[4], values[5])));
 
-      formulas.add(Nodes.eq(u, Nodes.STORE(u, x, y)));
-      formulas.add(Nodes.eq(v, Nodes.STORE(u, z, w)));
+      formulas.add(Nodes.eq(u, Nodes.store(u, x, y)));
+      formulas.add(Nodes.eq(v, Nodes.store(u, z, w)));
 
 
 

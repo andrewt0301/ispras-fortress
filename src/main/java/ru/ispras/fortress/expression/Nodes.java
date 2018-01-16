@@ -495,11 +495,11 @@ public final class Nodes {
     return INT2BV(NodeValue.newInteger(size), source);
   }
 
-  public static NodeOperation STORE(final Node array, final Node key, final Node value) {
+  public static NodeOperation store(final Node array, final Node key, final Node value) {
     return new NodeOperation(StandardOperation.STORE, array, key, value);
   }
 
-  public static NodeOperation SELECT(final Node array, final Node key) {
+  public static NodeOperation select(final Node array, final Node key) {
     return new NodeOperation(StandardOperation.SELECT, array, key);
   }
 }

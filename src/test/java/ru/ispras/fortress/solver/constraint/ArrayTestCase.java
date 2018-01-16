@@ -70,7 +70,7 @@ final class ArrayInvariant implements GenericSolverTestBase.SampleConstraint {
     final NodeValue value = new NodeValue(ival);
     final NodeValue array = new NodeValue(Data.newArray(map));
 
-    final Node stored = Nodes.STORE(v, value, value);
+    final Node stored = Nodes.store(v, value, value);
 
     final Formulas formulas = new Formulas();
     builder.setInnerRep(formulas);
