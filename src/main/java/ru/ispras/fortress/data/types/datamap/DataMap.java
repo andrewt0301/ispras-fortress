@@ -268,7 +268,8 @@ public final class DataMap implements Map<Data, Data> {
 
     if (Pattern.compile(SmtRegExp.LINE_START + SmtRegExp.VALUE_BIN).matcher(dStr).matches()) {
       radix = 2;
-    } else if (Pattern.compile(SmtRegExp.LINE_START + SmtRegExp.VALUE_HEX).matcher(dStr).matches()) {
+    } else if (Pattern.compile(SmtRegExp.LINE_START
+        + SmtRegExp.VALUE_HEX).matcher(dStr).matches()) {
       radix = 16;
     } else {
       radix = 10; // decimal value by default
