@@ -43,10 +43,6 @@ public class SimpleTransformTestCase {
         expr, Collections.singletonList(NodeBinding.bindVariable(variable, value)));
   }
 
-  private static NodeOperation PLUS(Node... args) {
-    return new NodeOperation(StandardOperation.PLUS, args);
-  }
-
   private static NodeOperation NOTEQ(Node... args) {
     return new NodeOperation(StandardOperation.NOTEQ, args);
   }
@@ -62,12 +58,12 @@ public class SimpleTransformTestCase {
     final Node c = newVariable("c");
 
     // (a = b + c)
-    final Node expr = Nodes.eq(a, PLUS(b, c));
-    final Node firstExpected = Nodes.eq(a, PLUS(a, c));
+    final Node expr = Nodes.eq(a, Nodes.add(b, c));
+    final Node firstExpected = Nodes.eq(a, Nodes.add(a, c));
     final Node firstPass = Transformer.substitute(expr, "b", a);
     Assert.assertTrue(firstExpected.toString().equals(firstPass.toString()));
 
-    final Node secondExpected = Nodes.eq(c, PLUS(c, c));
+    final Node secondExpected = Nodes.eq(c, Nodes.add(c, c));
     final Node secondPass = Transformer.substitute(firstPass, "a", c);
     Assert.assertTrue(secondExpected.toString().equals(secondPass.toString()));
   }
@@ -78,13 +74,13 @@ public class SimpleTransformTestCase {
     final NodeVariable x = newVariable("x");
     final NodeVariable y = newVariable("y");
 
-    final Node let = singleBinding(a, PLUS(x, y), PLUS(x, a));
+    final Node let = singleBinding(a, Nodes.add(x, y), Nodes.add(x, a));
     final Node unchanged = Transformer.substitute(let, "a", x);
 
     Assert.assertTrue(unchanged.toString().equals(let.toString()));
 
     final Node changed = Transformer.substitute(let, "x", y);
-    final Node expected = singleBinding(a, PLUS(y, y), PLUS(y, a));
+    final Node expected = singleBinding(a, Nodes.add(y, y), Nodes.add(y, a));
 
     Assert.assertTrue(changed.toString().equals(expected.toString()));
   }
@@ -95,9 +91,9 @@ public class SimpleTransformTestCase {
     final NodeVariable x = newVariable("x");
     final NodeVariable y = newVariable("y");
 
-    final NodeBinding let = singleBinding(a, PLUS(x, y), PLUS(x, a));
+    final NodeBinding let = singleBinding(a, Nodes.add(x, y), Nodes.add(x, a));
     final Node unrolled = Transformer.substituteBinding(let);
-    final Node expected = PLUS(x, PLUS(x, y));
+    final Node expected = Nodes.add(x, Nodes.add(x, y));
 
     Assert.assertTrue(unrolled.toString().equals(expected.toString()));
   }
@@ -108,11 +104,11 @@ public class SimpleTransformTestCase {
     final NodeVariable x = newVariable("x");
     final NodeVariable y = newVariable("y");
 
-    final NodeBinding letA = singleBinding(a, PLUS(x, y), PLUS(x, a));
-    final NodeBinding letY = singleBinding(y, PLUS(x, x), letA);
+    final NodeBinding letA = singleBinding(a, Nodes.add(x, y), Nodes.add(x, a));
+    final NodeBinding letY = singleBinding(y, Nodes.add(x, x), letA);
 
-    final Node unrolled = Transformer.substituteAllBindings(PLUS(y, letY));
-    final Node expected = PLUS(y, PLUS(x, PLUS(x, PLUS(x, x))));
+    final Node unrolled = Transformer.substituteAllBindings(Nodes.add(y, letY));
+    final Node expected = Nodes.add(y, Nodes.add(x, Nodes.add(x, Nodes.add(x, x))));
 
     Assert.assertTrue(unrolled.toString().equals(expected.toString()));
   }
