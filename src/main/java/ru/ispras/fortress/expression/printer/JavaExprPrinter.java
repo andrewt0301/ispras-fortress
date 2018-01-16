@@ -55,7 +55,7 @@ public class JavaExprPrinter extends MapBasedPrinter {
       if (op instanceof StandardOperation) {
         appendText(Nodes.class.getSimpleName());
         appendText(".");
-        appendText(expr.getOperationId().name());
+        appendText(expr.getOperationId().name().toLowerCase());
         appendText("(");
       } else {
         appendText(String.format("new %s(", NodeOperation.class.getSimpleName()));
