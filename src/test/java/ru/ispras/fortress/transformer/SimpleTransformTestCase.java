@@ -29,7 +29,6 @@ import ru.ispras.fortress.expression.Nodes;
 import ru.ispras.fortress.expression.StandardOperation;
 
 import java.util.Collections;
-import java.util.List;
 
 public class SimpleTransformTestCase {
   private static NodeVariable newVariable(final String name) {
