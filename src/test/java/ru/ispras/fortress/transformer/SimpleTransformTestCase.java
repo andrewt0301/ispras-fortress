@@ -52,14 +52,6 @@ public class SimpleTransformTestCase {
     return new NodeOperation(StandardOperation.NOTEQ, args);
   }
 
-  private static NodeOperation GREATEREQ(Node... args) {
-    return new NodeOperation(StandardOperation.GREATEREQ, args);
-  }
-
-  private static NodeOperation LESSEQ(Node... args) {
-    return new NodeOperation(StandardOperation.LESSEQ, args);
-  }
-
   private static NodeOperation OR(Node... args) {
     return new NodeOperation(StandardOperation.OR, args);
   }
@@ -299,7 +291,6 @@ public class SimpleTransformTestCase {
 
   @Test
   public void standardizeValueComparisons() {
-
     /* Integer values */
     final NodeValue ZERO = NodeValue.newInteger(0);
     final NodeValue ONE = NodeValue.newInteger(1);
@@ -312,16 +303,16 @@ public class SimpleTransformTestCase {
     Assert.assertTrue(equalNodes(Transformer.standardize(Nodes.greater(TWO, ONE)), Nodes.TRUE));
 
     /* 1 >= 0 */
-    Assert.assertTrue(equalNodes(Transformer.standardize(GREATEREQ(ONE, ZERO)), Nodes.TRUE));
+    Assert.assertTrue(equalNodes(Transformer.standardize(Nodes.greatereq(ONE, ZERO)), Nodes.TRUE));
 
     /* 0 < 2 */
     Assert.assertTrue(equalNodes(Transformer.standardize(Nodes.less(ZERO, TWO)), Nodes.TRUE));
 
     /* 0 <= 1 */
-    Assert.assertTrue(equalNodes(Transformer.standardize(LESSEQ(ZERO, ONE)), Nodes.TRUE));
+    Assert.assertTrue(equalNodes(Transformer.standardize(Nodes.lesseq(ZERO, ONE)), Nodes.TRUE));
 
     /* (1 >= 2) == false */
-    Assert.assertTrue(equalNodes(Transformer.standardize(GREATEREQ(ONE, TWO)), Nodes.FALSE));
+    Assert.assertTrue(equalNodes(Transformer.standardize(Nodes.greatereq(ONE, TWO)), Nodes.FALSE));
   }
 
   @Test
