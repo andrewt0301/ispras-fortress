@@ -407,19 +407,19 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.BVNOT, operand);
   }
 
-  public static NodeOperation BVNAND(final Node first, final Node second) {
+  public static NodeOperation bvnand(final Node first, final Node second) {
     return new NodeOperation(StandardOperation.BVNAND, first, second);
   }
 
-  public static NodeOperation BVNOR(final Node first, final Node second) {
+  public static NodeOperation bvnor(final Node first, final Node second) {
     return new NodeOperation(StandardOperation.BVNOR, first, second);
   }
 
-  public static NodeOperation BVXNOR(final Node first, final Node second) {
+  public static NodeOperation bvxnor(final Node first, final Node second) {
     return new NodeOperation(StandardOperation.BVXNOR, first, second);
   }
 
-  public static NodeOperation BVULE(final Node lhs, final Node rhs) {
+  public static NodeOperation bvule(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.BVULE, lhs, rhs);
   }
 
@@ -439,7 +439,7 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.BVSLE, lhs, rhs);
   }
 
-  public static NodeOperation BVSLT(final Node lhs, final Node rhs) {
+  public static NodeOperation bvslt(final Node lhs, final Node rhs) {
     return new NodeOperation(StandardOperation.BVSLT, lhs, rhs);
   }
 
