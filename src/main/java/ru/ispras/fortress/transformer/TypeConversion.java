@@ -175,7 +175,7 @@ public final class TypeConversion {
             return bv2bool(node);
           }
         } else if (sizeOf(srcType) < sizeOf(type)) {
-          return Nodes.BVZEROEXT(sizeOf(type) - sizeOf(srcType), node);
+          return Nodes.bvzeroext(sizeOf(type) - sizeOf(srcType), node);
         } else {
           return Nodes.BVEXTRACT(type.getSize(), 0, node);
         }

@@ -278,28 +278,28 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.BVREPEAT, NodeValue.newInteger(count), source);
   }
 
-  public static NodeOperation BVROL(final NodeValue amount, final Node source) {
+  public static NodeOperation bvrol(final NodeValue amount, final Node source) {
     return new NodeOperation(StandardOperation.BVROL, amount, source);
   }
 
-  public static NodeOperation BVROL(final int amount, final Node source) {
-    return BVROL(NodeValue.newInteger(amount), source);
+  public static NodeOperation bvrol(final int amount, final Node source) {
+    return bvrol(NodeValue.newInteger(amount), source);
   }
 
-  public static NodeOperation BVROR(final NodeValue amount, final Node source) {
+  public static NodeOperation bvror(final NodeValue amount, final Node source) {
     return new NodeOperation(StandardOperation.BVROR, amount, source);
   }
 
-  public static NodeOperation BVROR(final int amount, final Node source) {
-    return BVROR(NodeValue.newInteger(amount), source);
+  public static NodeOperation bvror(final int amount, final Node source) {
+    return bvror(NodeValue.newInteger(amount), source);
   }
 
-  public static NodeOperation BVZEROEXT(final NodeValue deltaSize, final Node source) {
+  public static NodeOperation bvzeroext(final NodeValue deltaSize, final Node source) {
     return new NodeOperation(StandardOperation.BVZEROEXT, deltaSize, source);
   }
 
-  public static NodeOperation BVZEROEXT(final int deltaSize, final Node source) {
-    return BVZEROEXT(NodeValue.newInteger(deltaSize), source);
+  public static NodeOperation bvzeroext(final int deltaSize, final Node source) {
+    return bvzeroext(NodeValue.newInteger(deltaSize), source);
   }
 
   public static NodeOperation BVSIGNEXT(final NodeValue deltaSize, final Node source) {
