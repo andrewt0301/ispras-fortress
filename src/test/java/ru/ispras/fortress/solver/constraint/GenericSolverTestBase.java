@@ -51,13 +51,13 @@ import java.util.Map;
 
 public abstract class GenericSolverTestBase {
   public static interface SampleConstraint {
-    public Constraint getConstraint();
-    public Iterable<Variable> getExpectedVariables();
+    Constraint getConstraint()
+    Iterable<Variable> getExpectedVariables()
   }
 
   private final SampleConstraint sample;
 
-  public GenericSolverTestBase(SampleConstraint sample) {
+  public GenericSolverTestBase(final SampleConstraint sample) {
     if (null == sample) {
       throw new NullPointerException();
     }
