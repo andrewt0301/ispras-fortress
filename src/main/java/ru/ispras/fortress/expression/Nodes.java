@@ -64,23 +64,23 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.NOTEQCASE, lhs, rhs);
   }
 
-  public static NodeOperation AND(final Node... operands) {
+  public static NodeOperation and(final Node... operands) {
     return new NodeOperation(StandardOperation.AND, operands);
   }
 
-  public static NodeOperation AND(final List<? extends Node> operands) {
+  public static NodeOperation and(final List<? extends Node> operands) {
     return new NodeOperation(StandardOperation.AND, operands);
   }
 
-  public static NodeOperation OR(final Node... operands) {
+  public static NodeOperation or(final Node... operands) {
     return new NodeOperation(StandardOperation.OR, operands);
   }
 
-  public static NodeOperation OR(final List<? extends Node> operands) {
+  public static NodeOperation or(final List<? extends Node> operands) {
     return new NodeOperation(StandardOperation.OR, operands);
   }
 
-  public static NodeOperation NOT(final Node operand) {
+  public static NodeOperation not(final Node operand) {
     return new NodeOperation(StandardOperation.NOT, operand);
   }
 

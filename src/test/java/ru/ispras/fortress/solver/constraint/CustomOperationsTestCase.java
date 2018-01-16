@@ -159,7 +159,7 @@ public class CustomOperationsTestCase extends GenericSolverTestBase {
   private void registerIS_VALID_SIGNED_INT(Solver solver) {
     final Variable param = new Variable("x", Int_t);
 
-    final Node body = Nodes.OR(
+    final Node body = Nodes.or(
         new NodeOperation(ECustomOperation.IS_VALID_POS, new NodeVariable(param)),
         new NodeOperation(ECustomOperation.IS_VALID_NEG, new NodeVariable(param)));
 
@@ -198,13 +198,13 @@ public class CustomOperationsTestCase extends GenericSolverTestBase {
       // value
 
       // (assert (not (IsValidSignedInt (bvadd rs rt))))
-      formulas.add(Nodes.NOT(
+      formulas.add(Nodes.not(
           new NodeOperation(ECustomOperation.IS_VALID_SIGNED_INT, Nodes.BVADD(rs, rt))));
 
       // ; just in case: rs and rt are not equal (to make the results more interesting)
       // (assert (not (= rs rt)))
 
-      formulas.add(Nodes.NOT(Nodes.eq(rs, rt)));
+      formulas.add(Nodes.not(Nodes.eq(rs, rt)));
       return builder.build();
     }
 

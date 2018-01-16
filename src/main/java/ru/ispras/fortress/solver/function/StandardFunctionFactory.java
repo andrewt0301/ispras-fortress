@@ -272,7 +272,7 @@ public final class StandardFunctionFactory {
     final NodeValue TWO_ONES = new NodeValue(DataType.BIT_VECTOR(size).valueOf("11", 2));
 
     return Nodes.ITE(
-        Nodes.OR(Nodes.eq(source, TWO_ZEROS), Nodes.eq(source, TWO_ONES)),
+        Nodes.or(Nodes.eq(source, TWO_ZEROS), Nodes.eq(source, TWO_ONES)),
         BIT_FALSE,
         BIT_TRUE
         );

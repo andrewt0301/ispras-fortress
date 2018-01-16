@@ -96,8 +96,8 @@ public class IntegerOverflowBitVectorTestCase extends GenericSolverTestBase {
       formulas.add(IsValidSignedInt(rs));
       formulas.add(IsValidSignedInt(rt));
 
-      formulas.add(Nodes.NOT(IsValidSignedInt(Nodes.BVADD(rs, rt))));
-      formulas.add(Nodes.NOT(Nodes.eq(rs, rt)));
+      formulas.add(Nodes.not(IsValidSignedInt(Nodes.BVADD(rs, rt))));
+      formulas.add(Nodes.not(Nodes.eq(rs, rt)));
 
       return builder.build();
     }
@@ -111,7 +111,7 @@ public class IntegerOverflowBitVectorTestCase extends GenericSolverTestBase {
     }
 
     private NodeOperation IsValidSignedInt(Node arg) {
-      return Nodes.OR(IsValidPos(arg), IsValidNeg(arg));
+      return Nodes.or(IsValidPos(arg), IsValidNeg(arg));
     }
 
     @Override

@@ -361,7 +361,7 @@ public final class ExprUtils {
       return exprs[0];
     }
 
-    return Nodes.AND(exprs);
+    return Nodes.and(exprs);
   }
 
   /**
@@ -382,7 +382,7 @@ public final class ExprUtils {
       return exprs[0];
     }
 
-    return Nodes.OR(exprs);
+    return Nodes.or(exprs);
   }
 
   /**
@@ -396,7 +396,7 @@ public final class ExprUtils {
    *         are provided; if an argument is not a logical expression.
    */
   public static Node getNegation(final Node... exprs) {
-    return Nodes.NOT(getConjunction(exprs));
+    return Nodes.not(getConjunction(exprs));
   }
 
   /**
@@ -410,7 +410,7 @@ public final class ExprUtils {
    *         if no arguments are provided; if an argument is not a logical expression.
    */
   public static Node getComplement(final Node... exprs) {
-    return Nodes.NOT(getDisjunction(exprs));
+    return Nodes.not(getDisjunction(exprs));
   }
 
   /**

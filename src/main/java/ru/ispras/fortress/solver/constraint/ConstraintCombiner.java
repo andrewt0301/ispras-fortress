@@ -53,7 +53,7 @@ public final class ConstraintCombiner {
     builder.setInnerRep(formulas);
 
     final Node sourceExpr = ((Formulas) a.getInnerRep()).asSingleExpr();
-    formulas.add(Nodes.NOT(sourceExpr));
+    formulas.add(Nodes.not(sourceExpr));
 
     builder.addVariableCopies(a.getVariables());
     return builder.build();
@@ -116,7 +116,7 @@ public final class ConstraintCombiner {
 
     final Node sourceExprA = ((Formulas) a.getInnerRep()).asSingleExpr();
     final Node sourceExprB = ((Formulas) b.getInnerRep()).asSingleExpr();
-    formulas.add(Nodes.OR(sourceExprA, sourceExprB));
+    formulas.add(Nodes.or(sourceExprA, sourceExprB));
 
     builder.addVariableCopies(a.getVariables());
     builder.addVariableCopies(b.getVariables());

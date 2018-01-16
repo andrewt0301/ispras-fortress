@@ -44,7 +44,7 @@ public class ConstraintConjunctionTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(Nodes.NOT(Nodes.AND(
+      formulas.add(Nodes.not(Nodes.and(
           ((Formulas) conjunction.getInnerRep()).exprs().iterator().next(),
           ((Formulas) conjunction.getInnerRep()).exprs().iterator().next())));
 

@@ -47,13 +47,13 @@ public class ConstraintNegationTestCase extends GenericSolverTestBase {
       builder.setInnerRep(formulas);
 
       // not(= (a not(not(a))))
-      formulas.add(Nodes.NOT(Nodes.eq(formula, Nodes.NOT(negFormula))));
+      formulas.add(Nodes.not(Nodes.eq(formula, Nodes.not(negFormula))));
 
       // (not(a) and a)
-      formulas.add(Nodes.AND(negFormula, formula));
+      formulas.add(Nodes.and(negFormula, formula));
 
       // not((not(a)) or a)
-      formulas.add(Nodes.NOT(Nodes.OR(negFormula, formula)));
+      formulas.add(Nodes.not(Nodes.or(negFormula, formula)));
 
       return ConstraintCombiner.makeNegation(builder.build());
     }

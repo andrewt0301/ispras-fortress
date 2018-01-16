@@ -122,7 +122,7 @@ public final class Formulas {
     Node root = null;
 
     for (final Node item : exprs()) {
-      root = (null == root) ? item : Nodes.AND(root, item);
+      root = (null == root) ? item : Nodes.and(root, item);
     }
 
     return root;

@@ -50,7 +50,7 @@ public final class ExprUtilsTestCase {
     Assert.assertFalse(
         ExprUtils.isCondition(Nodes.ADD(NodeValue.newInteger(1), NodeValue.newInteger(2))));
 
-    Assert.assertTrue(ExprUtils.isCondition(Nodes.OR(
+    Assert.assertTrue(ExprUtils.isCondition(Nodes.or(
         Nodes.GREATEREQ(X, NodeValue.newInteger(0)),
         Nodes.LESS(X, NodeValue.newInteger(10)))));
   }
@@ -66,16 +66,16 @@ public final class ExprUtilsTestCase {
     Assert.assertFalse(ExprUtils.isAtomicCondition(
         Nodes.ADD(NodeValue.newInteger(1), NodeValue.newInteger(2))));
 
-    Assert.assertFalse(ExprUtils.isAtomicCondition(Nodes.OR(
+    Assert.assertFalse(ExprUtils.isAtomicCondition(Nodes.or(
         Nodes.GREATEREQ(X, NodeValue.newInteger(0)),
         Nodes.LESS(X, NodeValue.newInteger(10)))));
   }
 
   @Test
   public void testGetConjunction() {
-    final Node iEq15ORjEq20 = Nodes.OR(IEq15, JEq20);
+    final Node iEq15ORjEq20 = Nodes.or(IEq15, JEq20);
 
-    final Node expected = Nodes.AND(XEq0, YEq5, ZEq10, iEq15ORjEq20);
+    final Node expected = Nodes.and(XEq0, YEq5, ZEq10, iEq15ORjEq20);
     final Node actual = ExprUtils.getConjunction(XEq0, YEq5, ZEq10, iEq15ORjEq20);
 
     Assert.assertEquals(expected, actual);
@@ -83,9 +83,9 @@ public final class ExprUtilsTestCase {
 
   @Test
   public void testGetDisjunction() {
-    final Node iEq15AndjEq20 = Nodes.AND(IEq15, JEq20);
+    final Node iEq15AndjEq20 = Nodes.and(IEq15, JEq20);
 
-    final Node expected = Nodes.OR(XEq0, YEq5, ZEq10, iEq15AndjEq20);
+    final Node expected = Nodes.or(XEq0, YEq5, ZEq10, iEq15AndjEq20);
     final Node actual = ExprUtils.getDisjunction(XEq0, YEq5, ZEq10, iEq15AndjEq20);
 
     Assert.assertEquals(expected, actual);
@@ -93,9 +93,9 @@ public final class ExprUtilsTestCase {
 
   @Test
   public void testGetNegation() {
-    final Node iEq15ORjEq20 = Nodes.OR(IEq15, JEq20);
+    final Node iEq15ORjEq20 = Nodes.or(IEq15, JEq20);
 
-    final Node expected = Nodes.NOT(Nodes.AND(XEq0, YEq5, ZEq10, iEq15ORjEq20));
+    final Node expected = Nodes.not(Nodes.and(XEq0, YEq5, ZEq10, iEq15ORjEq20));
     final Node actual = ExprUtils.getNegation(XEq0, YEq5, ZEq10, iEq15ORjEq20);
 
     Assert.assertEquals(expected, actual);
@@ -103,9 +103,9 @@ public final class ExprUtilsTestCase {
 
   @Test
   public void testGetComplement() {
-    final Node iEq15AndjEq20 = Nodes.AND(IEq15, JEq20);
+    final Node iEq15AndjEq20 = Nodes.and(IEq15, JEq20);
 
-    final Node expected = Nodes.NOT(Nodes.OR(XEq0, YEq5, ZEq10, iEq15AndjEq20));
+    final Node expected = Nodes.not(Nodes.or(XEq0, YEq5, ZEq10, iEq15AndjEq20));
     final Node actual = ExprUtils.getComplement(XEq0, YEq5, ZEq10, iEq15AndjEq20);
 
     Assert.assertEquals(expected, actual);
@@ -135,18 +135,18 @@ public final class ExprUtilsTestCase {
 
   @Test
   public void testHasBindings() {
-    final Node noBindings = Nodes.AND(XEq0, YEq5, ZEq10, Nodes.OR(IEq15, JEq20));
+    final Node noBindings = Nodes.and(XEq0, YEq5, ZEq10, Nodes.or(IEq15, JEq20));
     Assert.assertFalse(ExprUtils.hasBindings(noBindings));
 
     final NodeVariable a = new NodeVariable(new Variable("a", DataType.INTEGER));
     final NodeVariable b = new NodeVariable(new Variable("b", DataType.INTEGER));
 
-    final Node bindings = Nodes.AND(
+    final Node bindings = Nodes.and(
         XEq0,
         YEq5,
         ZEq10,
         new NodeBinding(
-            Nodes.OR(IEq15, JEq20),
+            Nodes.or(IEq15, JEq20),
             NodeBinding.bindVariable(a, NodeValue.newInteger(3)),
             NodeBinding.bindVariable(b, NodeValue.newInteger(4)),
             NodeBinding.bindVariable(I, Nodes.MUL(a, NodeValue.newInteger(5))),
