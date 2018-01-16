@@ -234,8 +234,8 @@ final class UnrollClause extends OperationRule {
     for (int i = 0; i < in.getOperandCount(); ++i) {
       final Node operand = in.getOperand(i);
       if (isBoolean(operand)
-          || ExprUtils.isOperation(operand, this.getOperationId()) ||
-          appliesTo(operand)) {
+          || ExprUtils.isOperation(operand, this.getOperationId())
+          || appliesTo(operand)) {
         return true;
       }
     }

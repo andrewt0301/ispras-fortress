@@ -17,8 +17,8 @@ package ru.ispras.fortress.transformer;
 import org.junit.Assert;
 import org.junit.Test;
 
-import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.data.DataType;
+import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.data.types.bitvector.BitVector;
 import ru.ispras.fortress.expression.ExprUtils;
 import ru.ispras.fortress.expression.Node;
@@ -28,8 +28,8 @@ import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
 
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 
 public class SimpleTransformTestCase {
   private static final NodeValue TRUE = NodeValue.newBoolean(true);
@@ -91,7 +91,7 @@ public class SimpleTransformTestCase {
 
   private static NodeBinding singleBinding(NodeVariable variable, Node value, Node expr) {
     final List<NodeBinding.BoundVariable> bindings =
-      Collections.singletonList(NodeBinding.bindVariable(variable, value));
+        Collections.singletonList(NodeBinding.bindVariable(variable, value));
 
     return new NodeBinding(expr, bindings);
   }
@@ -264,8 +264,7 @@ public class SimpleTransformTestCase {
     Assert.assertTrue(Transformer.standardize(singleExpr).toString().equals(eqxy.toString()));
     Assert.assertTrue(Transformer.standardize(singleTrue).toString().equals(TRUE.toString()));
     Assert.assertTrue(
-      Transformer.standardize(multiExpr).toString().equals(
-        OR(eqxy, eqxy).toString()));
+        Transformer.standardize(multiExpr).toString().equals(OR(eqxy, eqxy).toString()));
   }
 
   @Test

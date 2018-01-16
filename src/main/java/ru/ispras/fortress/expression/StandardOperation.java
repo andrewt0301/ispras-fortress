@@ -14,14 +14,13 @@
 
 package ru.ispras.fortress.expression;
 
+import ru.ispras.fortress.data.DataType;
+import ru.ispras.fortress.util.InvariantChecks;
+
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.Set;
-
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
-
-import ru.ispras.fortress.data.DataType;
 
 /**
  * The StandardOperation.java enumeration contains identifiers that specify particular operations
@@ -44,7 +43,8 @@ public enum StandardOperation implements TypeRule {
   EQCASE(EnumSet.of(Family.LOGIC, Family.BV, Family.ARRAY), TypeRules.BOOLEAN, OperandTypes.SAME),
 
   /** Group: Logic, Operation: Case not equality */
-  NOTEQCASE(EnumSet.of(Family.LOGIC, Family.BV, Family.ARRAY), TypeRules.BOOLEAN, OperandTypes.SAME),
+  NOTEQCASE(EnumSet.of(Family.LOGIC, Family.BV, Family.ARRAY), TypeRules.BOOLEAN,
+      OperandTypes.SAME),
 
   /** Group: Logic, Operation: AND */
   AND(Family.LOGIC, TypeRules.BOOLEAN, OperandTypes.BOOL),
@@ -503,7 +503,7 @@ public enum StandardOperation implements TypeRule {
 
   @Override
   public final DataType getResultType(final DataType[] operandTypes, final int[] params) {
-    checkNotNull(operandTypes);
+    InvariantChecks.checkNotNull(operandTypes);
     return typeRule.getResultType(operandTypes, params);
   }
 }

@@ -14,15 +14,6 @@
 
 package ru.ispras.fortress.transformer;
 
-import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.DataTypeId;
@@ -34,6 +25,15 @@ import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.Nodes;
 import ru.ispras.fortress.util.InvariantChecks;
+
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public final class TypeConversion {
 
@@ -154,8 +154,8 @@ public final class TypeConversion {
 
       case VARIABLE:
       case OPERATION:
-        if (bv2natRequired(srcType, type) ||
-            bv2natRequired(type, srcType)) {
+        if (bv2natRequired(srcType, type)
+            || bv2natRequired(type, srcType)) {
           return null;
         }
 

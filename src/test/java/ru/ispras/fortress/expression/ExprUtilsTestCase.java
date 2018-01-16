@@ -14,13 +14,13 @@
 
 package ru.ispras.fortress.expression;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.data.types.bitvector.BitVector;
-
-import org.junit.Assert;
-import org.junit.Test;
 
 public final class ExprUtilsTestCase {
   private static final NodeVariable X = new NodeVariable(new Variable("x", DataType.INTEGER));

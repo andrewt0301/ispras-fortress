@@ -21,6 +21,7 @@ import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintUtils;
 import ru.ispras.fortress.util.TreeVisitor.Status;
 import ru.ispras.fortress.util.InvariantChecks;
+import ru.ispras.fortress.util.TreeVisitor.Status;
 
 import java.util.Collection;
 import java.util.Collections;
