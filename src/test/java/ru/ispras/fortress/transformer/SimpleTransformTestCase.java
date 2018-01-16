@@ -43,10 +43,6 @@ public class SimpleTransformTestCase {
         expr, Collections.singletonList(NodeBinding.bindVariable(variable, value)));
   }
 
-  private static NodeOperation NOTEQ(Node... args) {
-    return new NodeOperation(StandardOperation.NOTEQ, args);
-  }
-
   private static NodeOperation IMPL(Node... args) {
     return new NodeOperation(StandardOperation.IMPL, args);
   }
@@ -296,7 +292,7 @@ public class SimpleTransformTestCase {
     final NodeValue TWO = NodeValue.newInteger(2);
 
     /* 0 != 1 */
-    Assert.assertTrue(equalNodes(Transformer.standardize(NOTEQ(ZERO, ONE)), Nodes.TRUE));
+    Assert.assertTrue(equalNodes(Transformer.standardize(Nodes.noteq(ZERO, ONE)), Nodes.TRUE));
 
     /* 2 > 1 */
     Assert.assertTrue(equalNodes(Transformer.standardize(Nodes.greater(TWO, ONE)), Nodes.TRUE));
@@ -332,7 +328,7 @@ public class SimpleTransformTestCase {
     final NodeValue eqValue = NodeValue.newInteger(0);
     final NodeValue neqValue = NodeValue.newInteger(-1);
 
-    final Node expr = Nodes.and(Nodes.eq(x, eqValue), NOTEQ(x, neqValue));
+    final Node expr = Nodes.and(Nodes.eq(x, eqValue), Nodes.noteq(x, neqValue));
     final Node std = Transformer.standardize(expr);
 
     Assert.assertTrue(
