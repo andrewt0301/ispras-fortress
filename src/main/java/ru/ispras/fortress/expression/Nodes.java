@@ -395,15 +395,15 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.BVXOR, operands);
   }
 
-  public static NodeOperation BVAND(final Node... operands) {
+  public static NodeOperation bvand(final Node... operands) {
     return new NodeOperation(StandardOperation.BVAND, operands);
   }
 
-  public static NodeOperation BVAND(final List<? extends Node> operands) {
+  public static NodeOperation bvand(final List<? extends Node> operands) {
     return new NodeOperation(StandardOperation.BVAND, operands);
   }
 
-  public static NodeOperation BVNOT(final Node operand) {
+  public static NodeOperation bvnot(final Node operand) {
     return new NodeOperation(StandardOperation.BVNOT, operand);
   }
 

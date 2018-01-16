@@ -79,7 +79,7 @@ public class IntegerOverflowBitVectorTestCase extends GenericSolverTestBase {
 
     private final NodeValue INT_ZERO = new NodeValue(BIT_VECTOR_TYPE.valueOf("0", 10));
     private final NodeValue INT_BASE_SIZE = new NodeValue(BIT_VECTOR_TYPE.valueOf("32", 10));
-    private final NodeOperation INT_SIGN_MASK = Nodes.bvlshl(Nodes.BVNOT(INT_ZERO), INT_BASE_SIZE);
+    private final NodeOperation INT_SIGN_MASK = Nodes.bvlshl(Nodes.bvnot(INT_ZERO), INT_BASE_SIZE);
 
     @Override
     public Constraint getConstraint() {
@@ -106,11 +106,11 @@ public class IntegerOverflowBitVectorTestCase extends GenericSolverTestBase {
     }
 
     private NodeOperation IsValidPos(Node arg) {
-      return Nodes.eq(Nodes.BVAND(arg, INT_SIGN_MASK), INT_ZERO);
+      return Nodes.eq(Nodes.bvand(arg, INT_SIGN_MASK), INT_ZERO);
     }
 
     private NodeOperation IsValidNeg(Node arg) {
-      return Nodes.eq(Nodes.BVAND(arg, INT_SIGN_MASK), INT_SIGN_MASK);
+      return Nodes.eq(Nodes.bvand(arg, INT_SIGN_MASK), INT_SIGN_MASK);
     }
 
     private NodeOperation IsValidSignedInt(Node arg) {

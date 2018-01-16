@@ -86,7 +86,7 @@ public final class PowerOfTwoCustomTestCase extends GenericSolverTestBase {
     final Variable param = new Variable("a", BIT_VECTOR_TYPE);
 
     final Node body = Nodes.eq(
-        Nodes.BVAND(
+        Nodes.bvand(
             new NodeVariable(param),
             Nodes.bvsub(new NodeVariable(param), new NodeValue(BIT_VECTOR_TYPE.valueOf("1", 10)))),
         new NodeValue( BIT_VECTOR_TYPE.valueOf("0", 10))

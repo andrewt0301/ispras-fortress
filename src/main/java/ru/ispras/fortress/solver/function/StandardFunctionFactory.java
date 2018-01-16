@@ -201,7 +201,7 @@ public final class StandardFunctionFactory {
     final Variable operand = new Variable(OPERAND_NAME, operandType);
 
     final int size = operand.getType().getSize();
-    final Node body = Nodes.BVNOT(makeBVRecursizeXOR(new NodeVariable(operand), size, size));
+    final Node body = Nodes.bvnot(makeBVRecursizeXOR(new NodeVariable(operand), size, size));
 
     return new Function(id, BIT_BOOL, body, operand);
   }
@@ -255,13 +255,13 @@ public final class StandardFunctionFactory {
     final Node shiftLeftPart = new NodeValue(Data.newBitVector(newPartSize, size));
 
     final Node maskForRightPart = Nodes.bvlshr(
-        Nodes.BVNOT(new NodeValue(Data.newBitVector(0, size))),
+        Nodes.bvnot(new NodeValue(Data.newBitVector(0, size))),
         new NodeValue(Data.newBitVector(size - newPartSize, size))
         );
 
     final Node newSource = Nodes.bvxor(
         Nodes.bvlshr(source, shiftLeftPart),
-        Nodes.BVAND(source, maskForRightPart)
+        Nodes.bvand(source, maskForRightPart)
         );
 
     return makeBVRecursizeXOR(newSource, size, newPartSize);
@@ -293,7 +293,7 @@ public final class StandardFunctionFactory {
     final NodeVariable operandNode = new NodeVariable(operand);
     final NodeValue zeroNode = new NodeValue(Data.newBitVector(0, operandType.getSize()));
 
-    return Nodes.eq(operandNode, Nodes.BVNOT(zeroNode));
+    return Nodes.eq(operandNode, Nodes.bvnot(zeroNode));
   }
 
   private static final int BIT_BOOL_SIZE = 1;

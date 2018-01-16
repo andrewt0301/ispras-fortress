@@ -125,7 +125,7 @@ public class CustomOperationsTestCase extends GenericSolverTestBase {
   // (define-fun INT_SIGN_MASK () Int_t (bvshl (bvnot INT_ZERO) INT_BASE_SIZE))
   private void registerINT_SIGN_MASK(Solver solver) {
     final Node body = Nodes.bvlshl(
-        Nodes.BVNOT(new NodeOperation(ECustomOperation.INT_ZERO)),
+        Nodes.bvnot(new NodeOperation(ECustomOperation.INT_ZERO)),
         new NodeOperation(ECustomOperation.INT_BASE_SIZE));
 
     solver.addCustomOperation(new Function(ECustomOperation.INT_SIGN_MASK, Int_t, body));
@@ -137,7 +137,7 @@ public class CustomOperationsTestCase extends GenericSolverTestBase {
     final Variable param = new Variable("x", Int_t);
 
     final Node body = Nodes.eq(
-        Nodes.BVAND(new NodeVariable(param), new NodeOperation(ECustomOperation.INT_SIGN_MASK)),
+        Nodes.bvand(new NodeVariable(param), new NodeOperation(ECustomOperation.INT_SIGN_MASK)),
         new NodeOperation(ECustomOperation.INT_ZERO));
 
     solver.addCustomOperation(new Function(
@@ -150,7 +150,7 @@ public class CustomOperationsTestCase extends GenericSolverTestBase {
     final Variable param = new Variable("x", Int_t);
 
     final Node body = Nodes.eq(
-        Nodes.BVAND(new NodeVariable(param), new NodeOperation(ECustomOperation.INT_SIGN_MASK)),
+        Nodes.bvand(new NodeVariable(param), new NodeOperation(ECustomOperation.INT_SIGN_MASK)),
         new NodeOperation(ECustomOperation.INT_SIGN_MASK));
 
     solver.addCustomOperation(
