@@ -79,19 +79,19 @@ public class StandardCalculatorTestCase extends GenericSolverTestBase {
       builder.setInnerRep(formulas);
 
       formulas.add(Nodes.eq(a, Reducer.reduce(
-          ReduceOptions.NEW_INSTANCE, Nodes.ADD(new NodeValue(
+          ReduceOptions.NEW_INSTANCE, Nodes.add(new NodeValue(
               intType.valueOf("2", 10)), new NodeValue(intType.valueOf("3", 10))))));
 
       formulas.add(Nodes.eq(b, Reducer.reduce(
-          ReduceOptions.NEW_INSTANCE, Nodes.SUB(new NodeValue(
+          ReduceOptions.NEW_INSTANCE, Nodes.sub(new NodeValue(
               intType.valueOf("10", 10)), new NodeValue(intType.valueOf("6", 10))))));
 
       formulas.add(Nodes.eq(c, Reducer.reduce(
-          ReduceOptions.NEW_INSTANCE, Nodes.MUL(new NodeValue(
+          ReduceOptions.NEW_INSTANCE, Nodes.mul(new NodeValue(
               intType.valueOf("2", 10)), new NodeValue(intType.valueOf("5", 10))))));
 
       formulas.add(Nodes.eq(d, Reducer.reduce(
-          ReduceOptions.NEW_INSTANCE, Nodes.DIV(new NodeValue(
+          ReduceOptions.NEW_INSTANCE, Nodes.div(new NodeValue(
               intType.valueOf("12", 10)), new NodeValue(intType.valueOf("5", 10))))));
 
       formulas.add(Nodes.eq(e, Reducer.reduce(

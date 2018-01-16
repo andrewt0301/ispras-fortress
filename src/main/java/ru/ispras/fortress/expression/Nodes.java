@@ -84,55 +84,55 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.NOT, operand);
   }
 
-  public static NodeOperation XOR(final Node... operands) {
+  public static NodeOperation xor(final Node... operands) {
     return new NodeOperation(StandardOperation.XOR, operands);
   }
 
-  public static NodeOperation XOR(final List<? extends Node> operands) {
+  public static NodeOperation xor(final List<? extends Node> operands) {
     return new NodeOperation(StandardOperation.XOR, operands);
   }
 
-  public static NodeOperation IMPL(final Node first, final Node second) {
+  public static NodeOperation impl(final Node first, final Node second) {
     return new NodeOperation(StandardOperation.IMPL, first, second);
   }
 
-  public static NodeOperation ITE(final Node condition, final Node first, final Node second) {
+  public static NodeOperation ite(final Node condition, final Node first, final Node second) {
     return new NodeOperation(StandardOperation.ITE, condition, first, second);
   }
 
-  public static NodeOperation MINUS(final Node operand) {
+  public static NodeOperation minus(final Node operand) {
     return new NodeOperation(StandardOperation.MINUS, operand);
   }
 
-  public static NodeOperation PLUS(final Node operand) {
+  public static NodeOperation plus(final Node operand) {
     return new NodeOperation(StandardOperation.PLUS, operand);
   }
 
-  public static NodeOperation ADD(final Node... operands) {
+  public static NodeOperation add(final Node... operands) {
     return new NodeOperation(StandardOperation.ADD, operands);
   }
 
-  public static NodeOperation ADD(final List<? extends Node> operands) {
+  public static NodeOperation add(final List<? extends Node> operands) {
     return new NodeOperation(StandardOperation.ADD, operands);
   }
 
-  public static NodeOperation SUB(final Node... operands) {
+  public static NodeOperation sub(final Node... operands) {
     return new NodeOperation(StandardOperation.SUB, operands);
   }
 
-  public static NodeOperation SUB(final List<? extends Node> operands) {
+  public static NodeOperation sub(final List<? extends Node> operands) {
     return new NodeOperation(StandardOperation.SUB, operands);
   }
 
-  public static NodeOperation DIV(final Node first, final Node second) {
+  public static NodeOperation div(final Node first, final Node second) {
     return new NodeOperation(StandardOperation.DIV, first, second);
   }
 
-  public static NodeOperation MUL(final Node... operands) {
+  public static NodeOperation mul(final Node... operands) {
     return new NodeOperation(StandardOperation.MUL, operands);
   }
 
-  public static NodeOperation MUL(final List<? extends Node> operands) {
+  public static NodeOperation mul(final List<? extends Node> operands) {
     return new NodeOperation(StandardOperation.MUL, operands);
   }
 

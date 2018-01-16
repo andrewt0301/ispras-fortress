@@ -307,7 +307,7 @@ public final class TypeConversion {
   }
 
   private static NodeOperation bool2bv(final Node node, final int size) {
-    return Nodes.ITE(node, NodeValue.newBitVector(BigInteger.ONE, size),
+    return Nodes.ite(node, NodeValue.newBitVector(BigInteger.ONE, size),
                            NodeValue.newBitVector(BigInteger.ZERO, size));
   }
 
@@ -316,7 +316,7 @@ public final class TypeConversion {
   }
 
   private static NodeOperation bool2int(final Node node) {
-    return Nodes.ITE(node, NodeValue.newInteger(BigInteger.ONE),
+    return Nodes.ite(node, NodeValue.newInteger(BigInteger.ONE),
                            NodeValue.newInteger(BigInteger.ZERO));
   }
 }

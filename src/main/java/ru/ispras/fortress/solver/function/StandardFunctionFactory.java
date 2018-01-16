@@ -65,10 +65,10 @@ public final class StandardFunctionFactory {
         assert false;
     }
 
-    final NodeOperation body = Nodes.ITE(
+    final NodeOperation body = Nodes.ite(
         Nodes.GREATEREQ(operandNode, new NodeValue(zeroData)),
         operandNode,
-        Nodes.MINUS(operandNode)
+        Nodes.minus(operandNode)
         );
 
     return new Function(id, returnType, body, operand);
@@ -94,7 +94,7 @@ public final class StandardFunctionFactory {
     final Node leftNode = new NodeVariable(left);
     final Node rightNode = new NodeVariable(right);
 
-    final NodeOperation body = Nodes.ITE(
+    final NodeOperation body = Nodes.ite(
         Nodes.GREATEREQ(leftNode, rightNode),
         rightNode,
         leftNode
@@ -123,7 +123,7 @@ public final class StandardFunctionFactory {
     final Node leftNode = new NodeVariable(left);
     final Node rightNode = new NodeVariable(right);
 
-    final NodeOperation body = Nodes.ITE(
+    final NodeOperation body = Nodes.ite(
         Nodes.GREATEREQ(leftNode, rightNode),
         leftNode,
         rightNode
@@ -139,7 +139,7 @@ public final class StandardFunctionFactory {
     checkBitVector(OPERAND_NAME, operandType);
 
     final Variable operand = new Variable(OPERAND_NAME, operandType);
-    final NodeOperation body = Nodes.ITE(makeBVEqualsAllOnes(operand), BIT_TRUE, BIT_FALSE);
+    final NodeOperation body = Nodes.ite(makeBVEqualsAllOnes(operand), BIT_TRUE, BIT_FALSE);
 
     return new Function(id, BIT_BOOL, body, operand);
   }
@@ -151,7 +151,7 @@ public final class StandardFunctionFactory {
     checkBitVector(OPERAND_NAME, operandType);
 
     final Variable operand = new Variable(OPERAND_NAME, operandType);
-    final NodeOperation body = Nodes.ITE(makeBVEqualsAllOnes(operand), BIT_FALSE, BIT_TRUE);
+    final NodeOperation body = Nodes.ite(makeBVEqualsAllOnes(operand), BIT_FALSE, BIT_TRUE);
 
     return new Function(id, BIT_BOOL, body, operand);
   }
@@ -163,7 +163,7 @@ public final class StandardFunctionFactory {
     checkBitVector(OPERAND_NAME, operandType);
 
     final Variable operand = new Variable(OPERAND_NAME, operandType);
-    final NodeOperation body = Nodes.ITE(makeBVEqualsAllZeros(operand), BIT_FALSE, BIT_TRUE);
+    final NodeOperation body = Nodes.ite(makeBVEqualsAllZeros(operand), BIT_FALSE, BIT_TRUE);
 
     return new Function(id, BIT_BOOL, body, operand);
   }
@@ -175,7 +175,7 @@ public final class StandardFunctionFactory {
     checkBitVector(OPERAND_NAME, operandType);
 
     final Variable operand = new Variable(OPERAND_NAME, operandType);
-    final NodeOperation body = Nodes.ITE(makeBVEqualsAllZeros(operand), BIT_TRUE, BIT_FALSE);
+    final NodeOperation body = Nodes.ite(makeBVEqualsAllZeros(operand), BIT_TRUE, BIT_FALSE);
 
     return new Function(id, BIT_BOOL, body, operand);
   }
@@ -271,7 +271,7 @@ public final class StandardFunctionFactory {
     final NodeValue TWO_ZEROS = new NodeValue(DataType.BIT_VECTOR(size).valueOf("00", 2));
     final NodeValue TWO_ONES = new NodeValue(DataType.BIT_VECTOR(size).valueOf("11", 2));
 
-    return Nodes.ITE(
+    return Nodes.ite(
         Nodes.or(Nodes.eq(source, TWO_ZEROS), Nodes.eq(source, TWO_ONES)),
         BIT_FALSE,
         BIT_TRUE

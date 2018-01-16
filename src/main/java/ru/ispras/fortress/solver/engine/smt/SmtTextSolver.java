@@ -537,7 +537,7 @@ public abstract class SmtTextSolver extends SolverBase {
 
     final Variable xBool = new Variable("x", DataType.BOOLEAN);
     final NodeOperation bool2bv =
-        Nodes.ITE(
+        Nodes.ite(
             new NodeVariable(xBool),
             NodeValue.newBitVector(BitVector.TRUE),
             NodeValue.newBitVector(BitVector.FALSE)

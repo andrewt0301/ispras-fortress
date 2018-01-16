@@ -75,7 +75,7 @@ public final class RepeatOperationTestCase extends GenericSolverTestBase {
           Nodes.BVREPEAT(
               (NodeValue) Reducer.reduce(
                   ReduceOptions.NEW_INSTANCE,
-                  Nodes.ADD(new NodeValue(INT_TYPE.valueOf("2", DEC_RADIX)),
+                  Nodes.add(new NodeValue(INT_TYPE.valueOf("2", DEC_RADIX)),
                             new NodeValue(INT_TYPE.valueOf("2", DEC_RADIX)))),
               x)));
 

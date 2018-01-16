@@ -59,7 +59,7 @@ public class NoNameArithmeticTestCase extends GenericSolverTestBase {
 
       formulas.add(Nodes.eq(
           x,
-          Nodes.ADD(new NodeValue(intType.valueOf("2", 10)),
+          Nodes.add(new NodeValue(intType.valueOf("2", 10)),
                     new NodeValue(intType.valueOf("2", 10)))));
 
       return builder.build();

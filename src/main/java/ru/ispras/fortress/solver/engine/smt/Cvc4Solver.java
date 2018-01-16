@@ -74,9 +74,9 @@ public final class Cvc4Solver extends SmtTextSolver {
 
     final NodeOperation mod = Nodes.MOD(Nodes.ABS(lhs), Nodes.ABS(rhs));
     final NodeOperation rem =
-        Nodes.ITE(
+        Nodes.ite(
             Nodes.LESS(rhs, NodeValue.newInteger(0)),
-            Nodes.MINUS(mod),
+            Nodes.minus(mod),
             mod);
 
     return new Function(StandardOperation.REM, type, rem, lvar, rvar);
@@ -84,7 +84,7 @@ public final class Cvc4Solver extends SmtTextSolver {
 
   public static Function customPlus() {
     final Variable var = new Variable("x", DataType.INTEGER);
-    final NodeOperation plus = Nodes.ADD(new NodeVariable(var), NodeValue.newInteger(0));
+    final NodeOperation plus = Nodes.add(new NodeVariable(var), NodeValue.newInteger(0));
     return new Function(StandardOperation.PLUS, var.getType(), plus, var);
   }
 

@@ -69,15 +69,15 @@ public class ArithmeticTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(Nodes.GREATER(a, Nodes.ADD(b, new NodeValue(intType.valueOf("2", 10)))));
+      formulas.add(Nodes.GREATER(a, Nodes.add(b, new NodeValue(intType.valueOf("2", 10)))));
 
       formulas.add(Nodes.eq(
           a,
-          Nodes.ADD(
-              Nodes.MUL(new NodeValue(intType.valueOf("2", 10)), c),
+          Nodes.add(
+              Nodes.mul(new NodeValue(intType.valueOf("2", 10)), c),
               new NodeValue(intType.valueOf("10", 10)))));
 
-      formulas.add(Nodes.LESSEQ(Nodes.ADD(c, b), new NodeValue(intType.valueOf("1000", 10))));
+      formulas.add(Nodes.LESSEQ(Nodes.add(c, b), new NodeValue(intType.valueOf("1000", 10))));
       formulas.add(Nodes.GREATEREQ(d, e));
 
       return builder.build();
