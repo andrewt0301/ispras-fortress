@@ -64,7 +64,7 @@ public class BvToIntTestCase extends GenericSolverTestBase {
       builder.setInnerRep(formulas);
 
       formulas.add(Nodes.eq(y, NodeValue.newInteger(129)));
-      formulas.add(Nodes.eq(y, Nodes.BV2INT(x)));
+      formulas.add(Nodes.eq(y, Nodes.bv2int(x)));
 
       return builder.build();
     }
