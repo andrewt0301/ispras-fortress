@@ -123,17 +123,13 @@ enum TypeRules implements TypeRule {
 
   /**
    * Semantics of the BVEXTRACT operation as described in the SMT-LIB bit vector theory:
-   * <p>
-   * {@code ((_ extract i j) (_ BitVec m) (_ BitVec n))}
-   * <p>
-   * where
+   * <p>{@code ((_ extract i j) (_ BitVec m) (_ BitVec n))} where
    * <ul>
    * <li>i,j,m,n are numerals
    * <li>m > i >= j >= 0,
    * <li>n = i-j+1
    * </ul>
    */
-
   BVEXTRACT {
     @Override
     public DataType getResultType(final DataType[] operandTypes, final int[] params) {
