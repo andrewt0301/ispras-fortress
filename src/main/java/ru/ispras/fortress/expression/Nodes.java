@@ -475,24 +475,24 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.BVXNORR, operand);
   }
 
-  public static NodeOperation BV2BOOL(final Node operand) {
+  public static NodeOperation bv2bool(final Node operand) {
     return new NodeOperation(StandardOperation.BV2BOOL, operand);
   }
 
-  public static NodeOperation BOOL2BV(final Node operand) {
+  public static NodeOperation bool2bv(final Node operand) {
     return new NodeOperation(StandardOperation.BOOL2BV, operand);
   }
 
-  public static NodeOperation BV2INT(final Node operand) {
+  public static NodeOperation bv2int(final Node operand) {
     return new NodeOperation(StandardOperation.BV2INT, operand);
   }
 
-  public static NodeOperation INT2BV(final NodeValue size, final Node source) {
+  public static NodeOperation int2bv(final NodeValue size, final Node source) {
     return new NodeOperation(StandardOperation.INT2BV, size, source);
   }
 
-  public static NodeOperation INT2BV(final int size, final Node source) {
-    return INT2BV(NodeValue.newInteger(size), source);
+  public static NodeOperation int2bv(final int size, final Node source) {
+    return int2bv(NodeValue.newInteger(size), source);
   }
 
   public static NodeOperation store(final Node array, final Node key, final Node value) {
