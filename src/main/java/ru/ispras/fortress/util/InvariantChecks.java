@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -32,7 +32,7 @@ public final class InvariantChecks {
    * @param condition Condition to be checked.
    * 
    * @throws IllegalArgumentException if the invariant is violated
-   * ({@code condition} is {@code false}).
+   *         ({@code condition} is {@code false}).
    */
   public static void checkTrue(final boolean condition) {
     checkTrue(condition, null);
@@ -46,7 +46,7 @@ public final class InvariantChecks {
    * @param message Exception message.
    *
    * @throws IllegalArgumentException if the invariant is violated
-   * ({@code condition} is {@code false}).
+   *         ({@code condition} is {@code false}).
    */
   public static void checkTrue(final boolean condition, final String message) {
     if (!condition) {
@@ -62,7 +62,7 @@ public final class InvariantChecks {
    * @param condition Condition to be checked.
    *
    * @throws IllegalArgumentException if the invariant is violated
-   * ({@code condition} is {@code true}).
+   *         ({@code condition} is {@code true}).
    */
   public static void checkFalse(final boolean condition) {
     checkTrue(!condition);
@@ -76,7 +76,7 @@ public final class InvariantChecks {
    * @param message Exception message.
    *
    * @throws IllegalArgumentException if the invariant is violated
-   * ({@code condition} is {@code true}).
+   *         ({@code condition} is {@code true}).
    */
   public static void checkFalse(final boolean condition, final String message) {
     checkTrue(!condition, message);
@@ -86,44 +86,44 @@ public final class InvariantChecks {
    * Checks the invariant "Object reference is not null" and
    * throws an exception if it is violated. 
    *
-   * @param o Object reference to be checked.
+   * @param objType Object reference to be checked.
    * @param <T> Object type.
    *
    * @throws IllegalArgumentException if the invariant is violated ({@code o} is {@code null}).
    */
-  public static <T> void checkNotNull(final T o) {
-    checkTrue(null != o);
+  public static <T> void checkNotNull(final T objType) {
+    checkTrue(null != objType);
   }
 
   /**
    * Checks the invariant "Object reference is not null" and
    * throws an exception if it is violated. 
    *
-   * @param o Object reference to be checked.
+   * @param obj Object reference to be checked.
    * @param message Exception message.
    * @param <T> Object type.
    *
    * @throws IllegalArgumentException if the invariant is violated ({@code o} is {@code null}).
    */
-  public static <T> void checkNotNull(final T o, final String message) {
-    checkTrue(null != o, message);
+  public static <T> void checkNotNull(final T obj, final String message) {
+    checkTrue(null != obj, message);
   }
 
   /**
    * Checks the invariants "Object reference is not null" and "Collection is not empty"
    * throws an exception if they are violated. 
    *
-   * @param o Collection to be checked.
+   * @param collection Collection to be checked.
    * @param <T> Collection item type.
    *
    * @throws IllegalArgumentException if the invariant is violated ({@code o} is {@code null});
    *         if the invariant is violated ({@code o.isEmpty}).
    */
-  public static <T> void checkNotEmpty(final Collection<T> o) {
-    checkNotNull(o);
+  public static <T> void checkNotEmpty(final Collection<T> collection) {
+    checkNotNull(collection);
 
-    if (o.isEmpty()) {
-      throw new IllegalArgumentException(String.format("%s must not be empty", o));
+    if (collection.isEmpty()) {
+      throw new IllegalArgumentException(String.format("%s must not be empty", collection));
     }
   }
 
@@ -131,17 +131,17 @@ public final class InvariantChecks {
    * Checks the invariants "Object reference is not null" and "Array is not empty"
    * throws an exception if they are violated. 
    *
-   * @param o Array to be checked.
+   * @param array Array to be checked.
    * @param <T> Array element type.
    *
    * @throws IllegalArgumentException if the invariant is violated ({@code o} is {@code null});
    *         if the invariant is violated ({@code o.length} is 0).
    */
-  public static <T> void checkNotEmpty(final T[] o) {
-    checkNotNull(o);
+  public static <T> void checkNotEmpty(final T[] array) {
+    checkNotNull(array);
 
-    if (o.length == 0) {
-      throw new IllegalArgumentException(String.format("%s must not be empty", o));
+    if (array.length == 0) {
+      throw new IllegalArgumentException(String.format("%s must not be empty", array));
     }
   }
 
@@ -149,14 +149,14 @@ public final class InvariantChecks {
    * Checks the invariant "Integer value is greater than {@code 0}" and
    * throws an exception if it is violated. 
    * 
-   * @param n Integer value to be checked.
+   * @param num Integer value to be checked.
    * 
    * @throws IllegalArgumentException if the invariant is violated ({@code n <= 0}).
    */
-  public static void checkGreaterThanZero(final int n) {
-    if (n <= 0) {
+  public static void checkGreaterThanZero(final int num) {
+    if (num <= 0) {
       throw new IllegalArgumentException(
-          String.format("%d must be > 0", n));
+          String.format("%d must be > 0", num));
     }
   }
 
@@ -164,14 +164,14 @@ public final class InvariantChecks {
    * Checks the invariant "Integer value is greater or equal {@code 0}" and
    * throws an exception if it is violated. 
    *
-   * @param n Integer value to be checked.
+   * @param num Integer value to be checked.
    *
    * @throws IllegalArgumentException if the invariant is violated ({@code n < 0}).
    */
-  public static void checkGreaterOrEqZero(final int n) {
-    if (n < 0) {
+  public static void checkGreaterOrEqZero(final int num) {
+    if (num < 0) {
       throw new IllegalArgumentException(
-          String.format("%d must be >= 0", n));
+          String.format("%d must be >= 0", num));
     }
   }
 

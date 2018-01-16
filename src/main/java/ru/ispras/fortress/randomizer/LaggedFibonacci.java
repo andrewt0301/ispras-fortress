@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2013-2018 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -22,10 +22,10 @@ import java.util.Arrays;
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
 public final class LaggedFibonacci implements RandomGenerator {
-  private final static int J = 24;
-  private final static int K = 55;
+  private static final int J = 24;
+  private static final int K = 55;
 
-  private final static int SEED_MASK = 0xDEADBEAF;
+  private static final int SEED_MASK = 0xDEADBEAF;
 
   private int j = K - J;
   private int k = 0;
@@ -55,7 +55,8 @@ public final class LaggedFibonacci implements RandomGenerator {
 
   @Override
   public void seed(int s) {
-    int i, j, k;
+    int j;
+    int k;
 
     int[] b = new int[(Integer.SIZE - 1) * (K - 1)];
 
@@ -66,6 +67,8 @@ public final class LaggedFibonacci implements RandomGenerator {
     state[(K - 1) - 11] |= 1;
 
     s ^= SEED_MASK;
+
+    int i;
 
     for (i = 0; i < Integer.SIZE; i++) {
       b[i] = (s >> i) & 1;

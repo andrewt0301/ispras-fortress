@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,13 +13,6 @@
  */
 
 package ru.ispras.fortress.solver.xml;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
-import java.util.Collections;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -38,6 +31,13 @@ import ru.ispras.fortress.solver.constraint.ConstraintBuilder;
 import ru.ispras.fortress.solver.constraint.ConstraintKind;
 import ru.ispras.fortress.solver.constraint.Formulas;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
+import java.util.Collections;
+
 /**
  * The XMLConstraintHandler class is handler for SAX parser events that builds a constraint basing
  * on its XML representation.
@@ -54,7 +54,7 @@ final class XMLConstraintHandler extends DefaultHandler {
   private VariableScope nestedScope = VariableScope.EMPTY_SCOPE;
 
   private static class VariableScope {
-    public final static VariableScope EMPTY_SCOPE = new VariableScope() {
+    public static final VariableScope EMPTY_SCOPE = new VariableScope() {
       @Override
       public boolean contains(final String name) {
         return false;
@@ -297,7 +297,7 @@ final class XMLConstraintHandler extends DefaultHandler {
 
   @Override
   public void characters(
-      final char ch[], final int start, final int length) throws SAXException {
+      final char[] ch, final int start, final int length) throws SAXException {
     assert !nodes.empty();
 
     switch (nodes.lastElement()) {
@@ -393,9 +393,9 @@ final class XMLConstraintHandler extends DefaultHandler {
 
     final DataType typeInfo = DataType.typeOf(typeIdString);
 
-    return valueString.isEmpty() ?
-      new Variable(variableName, typeInfo) :
-      new Variable(variableName, typeInfo.valueOf(valueString, typeInfo.getTypeRadix()));
+    return valueString.isEmpty()
+        ? new Variable(variableName, typeInfo)
+        : new Variable(variableName, typeInfo.valueOf(valueString, typeInfo.getTypeRadix()));
   }
 
   // XML representation: <VariableRef name="aaa"/>

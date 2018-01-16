@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,11 +14,11 @@
 
 package ru.ispras.fortress.solver;
 
+import ru.ispras.fortress.data.Variable;
+
 import java.util.Iterator;
 import java.util.TreeMap;
 import org.junit.Assert;
-
-import ru.ispras.fortress.data.Variable;
 
 public final class SolverResultChecker {
   private SolverResultChecker() {}
@@ -27,8 +27,8 @@ public final class SolverResultChecker {
     checkErrors(solverResult.getErrors());
 
     Assert.assertTrue(
-      "Failed to solve the constraint. Status: " + solverResult.getStatus(),
-      solverResult.getStatus() == SolverResult.Status.SAT);
+        "Failed to solve the constraint. Status: " + solverResult.getStatus(),
+        solverResult.getStatus() == SolverResult.Status.SAT);
 
     final TreeMap<String, Variable> results = new TreeMap<String, Variable>();
     for (Variable v : solverResult.getVariables()) {
@@ -48,13 +48,18 @@ public final class SolverResultChecker {
           expectedVariable != null);
 
       Assert.assertTrue(
-        String.format("Unexpected variable type. '%s' vs '%s'", variable.getData().getType()
-              .toString(), expectedVariable.getData().getType().toString()), variable.getData()
-              .getType().equals(expectedVariable.getData().getType()));
+          String.format(
+              "Unexpected variable type. '%s' vs '%s'",
+              variable.getData().getType().toString(),
+              expectedVariable.getData().getType().toString()),
+          variable.getData().getType().equals(expectedVariable.getData().getType()));
 
       Assert.assertTrue(
-          String.format("Unexpected value of the %s variable: '%s', expected: '%s'", variable
-              .getName(), variable.getData().getValue(), expectedVariable.getData().getValue()),
+          String.format(
+              "Unexpected value of the %s variable: '%s', expected: '%s'",
+              variable.getName(),
+              variable.getData().getValue(),
+              expectedVariable.getData().getValue()),
           variable.getData().getValue().equals(expectedVariable.getData().getValue()));
     }
   }

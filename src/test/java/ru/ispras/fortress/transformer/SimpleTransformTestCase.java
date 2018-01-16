@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,15 +14,22 @@
 
 package ru.ispras.fortress.transformer;
 
-import org.junit.*;
-
-import java.util.List;
-import java.util.Collections;
+import org.junit.Assert;
+import org.junit.Test;
 
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.types.bitvector.BitVector;
-import ru.ispras.fortress.expression.*;
+import ru.ispras.fortress.expression.ExprUtils;
+import ru.ispras.fortress.expression.Node;
+import ru.ispras.fortress.expression.NodeBinding;
+import ru.ispras.fortress.expression.NodeOperation;
+import ru.ispras.fortress.expression.NodeValue;
+import ru.ispras.fortress.expression.NodeVariable;
+import ru.ispras.fortress.expression.StandardOperation;
+
+import java.util.List;
+import java.util.Collections;
 
 public class SimpleTransformTestCase {
   private static final NodeValue TRUE = NodeValue.newBoolean(true);

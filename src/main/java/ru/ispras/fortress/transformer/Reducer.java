@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ISP RAS (http://www.ispras.ru)
+ * Copyright 2017-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -80,8 +80,8 @@ public final class Reducer {
       }
 
       final NodeVariable variable = (NodeVariable) node;
-      if (null != valueProvider &&
-          null != valueProvider.getVariableValue(variable.getVariable())) {
+      if (null != valueProvider
+          && null != valueProvider.getVariableValue(variable.getVariable())) {
         return true;
       }
 
@@ -130,9 +130,9 @@ public final class Reducer {
       }
 
       final Enum<?> operatorId = operation.getOperationId();
-      return null != calculatorEngine ?
-          calculatorEngine.isSupported(operatorId, values) :
-          Calculator.isSupported(operatorId, values);
+      return null != calculatorEngine
+          ? calculatorEngine.isSupported(operatorId, values)
+          : Calculator.isSupported(operatorId, values);
     }
 
     @Override
@@ -144,9 +144,9 @@ public final class Reducer {
         values[index] = ((NodeValue) operation.getOperand(index)).getData();
       }
 
-      final Data result = null != calculatorEngine ?
-          calculatorEngine.calculate(operation.getOperationId(), values) :
-          Calculator.calculate(operation.getOperationId(), values);
+      final Data result = null != calculatorEngine
+          ? calculatorEngine.calculate(operation.getOperationId(), values)
+          : Calculator.calculate(operation.getOperationId(), values);
 
       return new NodeValue(result);
     }
@@ -155,10 +155,9 @@ public final class Reducer {
   /**
    * Attempts to reduce the specified expression including to a value. Reduction is performed with
    * the help of the calculator object that performs specific operations with specific data types.
-   *
-   * The operation may be totally reduced (or, so to speak, reduced to a value), partially reduced
-   * or left unchanged. In the last case, the method returns a reference to the current operation
-   * (this).
+   * <p>The operation may be totally reduced (or, so to speak, reduced to a value), partially
+   * reduced or left unchanged. In the last case, the method returns a reference to the current
+   * operation (this).</p>
    *
    * @param engine Calculator engine (if {@code null}, the default engine to be used).
    * @param valueProvider Provider of variable values to be used for expression reduction.
@@ -231,10 +230,9 @@ public final class Reducer {
   /**
    * Attempts to reduce the specified expression including to a value. Reduction is performed with
    * the help of the calculator object that performs specific operations with specific data types.
-   *
-   * The operation may be totally reduced (or, so to speak, reduced to a value), partially reduced
-   * or left unchanged. In the last case, the method returns a reference to the current operation
-   * (this).
+   * <p>The operation may be totally reduced (or, so to speak, reduced to a value), partially
+   * reduced or left unchanged. In the last case, the method returns a reference to the current
+   * operation (this).</p>
    *
    * @param engine Calculator engine (if {@code null}, the default engine to be used).
    * @param options Option flags to tune the reduction strategy.

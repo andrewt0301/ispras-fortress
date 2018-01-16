@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2013-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,17 +14,16 @@
 
 package ru.ispras.fortress.solver;
 
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
+import ru.ispras.fortress.expression.StandardOperation;
+import ru.ispras.fortress.solver.constraint.ConstraintKind;
+import ru.ispras.fortress.solver.function.Function;
+import ru.ispras.fortress.solver.function.FunctionTemplate;
+import ru.ispras.fortress.util.InvariantChecks;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import ru.ispras.fortress.expression.StandardOperation;
-import ru.ispras.fortress.solver.constraint.ConstraintKind;
-import ru.ispras.fortress.solver.function.Function;
-import ru.ispras.fortress.solver.function.FunctionTemplate;
 
 public abstract class SolverBase implements Solver {
   private static final String ERR_ALREADY_REGISTERED = "The %s.%s operation is already registered.";
@@ -45,15 +44,15 @@ public abstract class SolverBase implements Solver {
       final Set<ConstraintKind> supportedKinds,
       final boolean isGeneric,
       final String envVarName) {
-    checkNotNull(name);
-    checkNotNull(description);
-    checkNotNull(supportedKinds);
+    InvariantChecks.checkNotNull(name);
+    InvariantChecks.checkNotNull(description);
+    InvariantChecks.checkNotNull(supportedKinds);
 
     this.name = name;
     this.description = description;
     this.supportedKinds = supportedKinds;
     this.isGeneric = isGeneric;
-    this.operations = new HashMap<Enum<?>, SolverOperation>();
+    this.operations = new HashMap<>();
 
     this.envVarName = envVarName;
     this.solverPath = null;
@@ -92,21 +91,21 @@ public abstract class SolverBase implements Solver {
 
   @Override
   public final boolean addCustomOperation(final Function function) {
-    checkNotNull(function);
+    InvariantChecks.checkNotNull(function);
     return null == operations.put(function.getId(), SolverOperation.newFunction(function));
   }
 
   @Override
   public final boolean addCustomOperation(final FunctionTemplate template) {
-    checkNotNull(template);
+    InvariantChecks.checkNotNull(template);
     return null == operations.put(template.getId(), SolverOperation.newTemplate(template));
   }
 
   protected final void addStandardOperation(
       final StandardOperation id,
       final String text) {
-    checkNotNull(id);
-    checkNotNull(text);
+    InvariantChecks.checkNotNull(id);
+    InvariantChecks.checkNotNull(text);
 
     if (operations.containsKey(id)) {
       throw new IllegalArgumentException(String.format(

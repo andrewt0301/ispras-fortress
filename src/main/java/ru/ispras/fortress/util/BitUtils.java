@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2007-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -67,6 +67,39 @@ public final class BitUtils {
   }
 
   /**
+   * Returns the field of the given value.
+   *
+   * @param value Value.
+   * @param lo Lower bound.
+   * @param hi Higher bound.
+   * @return Value field.
+   */
+  public static long getField(final long value, final int lo, final int hi) {
+    InvariantChecks.checkBounds(lo, Long.SIZE);
+    InvariantChecks.checkBounds(hi, Long.SIZE);
+    InvariantChecks.checkGreaterOrEq(hi, lo);
+
+    return (value & getLongMask(lo, hi)) >>> lo;
+  }
+
+  /**
+   * Returns the field of the given value.
+   *
+   * @param value Value.
+   * @param lo Lower bound.
+   * @param hi Higher bound.
+   * @return Value field.
+   */
+  public static BigInteger getField(final BigInteger value, final int lo, final int hi) {
+    InvariantChecks.checkNotNull(value);
+    InvariantChecks.checkGreaterOrEqZero(lo);
+    InvariantChecks.checkGreaterOrEqZero(hi);
+    InvariantChecks.checkGreaterOrEq(hi, lo);
+
+    return value.and(getBigIntegerMask(lo, hi)).shiftRight(lo);
+  }
+
+  /**
    * Sets the field to the given value.
    *
    * @param value Value.
@@ -81,6 +114,43 @@ public final class BitUtils {
     InvariantChecks.checkGreaterOrEq(hi, lo);
 
     return (value & ~getIntegerMask(lo, hi)) | (field << lo);
+  }
+
+  /**
+   * Sets the field to the given value.
+   *
+   * @param value Value.
+   * @param lo Lower bound.
+   * @param hi Higher bound.
+   * @param field Field.
+   * @return Value with the updated field.
+   */
+  public static long setField(final long value, final int lo, final int hi, final long field) {
+    InvariantChecks.checkBounds(lo, Long.SIZE);
+    InvariantChecks.checkBounds(hi, Long.SIZE);
+    InvariantChecks.checkGreaterOrEq(hi, lo);
+
+    return (value & ~getLongMask(lo, hi)) | (field << lo);
+  }
+
+  /**
+   * Sets the field to the given value.
+   *
+   * @param value Value.
+   * @param lo Lower bound.
+   * @param hi Higher bound.
+   * @param field Field.
+   * @return Value with the updated field.
+   */
+  public static BigInteger setField(
+      final BigInteger value, final int lo, final int hi, final BigInteger field) {
+    InvariantChecks.checkNotNull(value);
+    InvariantChecks.checkNotNull(field);
+    InvariantChecks.checkGreaterOrEqZero(lo);
+    InvariantChecks.checkGreaterOrEqZero(hi);
+    InvariantChecks.checkGreaterOrEq(hi, lo);
+
+    return value.andNot(getBigIntegerMask(lo, hi)).or(field.shiftLeft(lo));
   }
 
   /**
@@ -110,39 +180,6 @@ public final class BitUtils {
   }
 
   /**
-   * Returns the field of the given value.
-   *
-   * @param value Value.
-   * @param lo Lower bound.
-   * @param hi Higher bound.
-   * @return Value field.
-   */
-  public static long getField(final long value, final int lo, final int hi) {
-    InvariantChecks.checkBounds(lo, Long.SIZE);
-    InvariantChecks.checkBounds(hi, Long.SIZE);
-    InvariantChecks.checkGreaterOrEq(hi, lo);
-
-    return (value & getLongMask(lo, hi)) >>> lo;
-  }
-
-  /**
-   * Sets the field to the given value.
-   *
-   * @param value Value.
-   * @param lo Lower bound.
-   * @param hi Higher bound.
-   * @param field Field.
-   * @return Value with the updated field.
-   */
-  public static long setField(final long value, final int lo, final int hi, final long field) {
-    InvariantChecks.checkBounds(lo, Long.SIZE);
-    InvariantChecks.checkBounds(hi, Long.SIZE);
-    InvariantChecks.checkGreaterOrEq(hi, lo);
-
-    return (value & ~getLongMask(lo, hi)) | (field << lo);
-  }
-
-  /**
    * Returns the bit mask for the given width.
    *
    * @param width Mask width.
@@ -166,42 +203,5 @@ public final class BitUtils {
     InvariantChecks.checkGreaterOrEq(hi, lo);
 
     return getBigIntegerMask((hi - lo) + 1).shiftLeft(lo);
-  }
-
-  /**
-   * Returns the field of the given value.
-   * 
-   * @param value Value.
-   * @param lo Lower bound.
-   * @param hi Higher bound.
-   * @return Value field.
-   */
-  public static BigInteger getField(final BigInteger value, final int lo, final int hi) {
-    InvariantChecks.checkNotNull(value);
-    InvariantChecks.checkGreaterOrEqZero(lo);
-    InvariantChecks.checkGreaterOrEqZero(hi);
-    InvariantChecks.checkGreaterOrEq(hi, lo);
-
-    return value.and(getBigIntegerMask(lo, hi)).shiftRight(lo);
-  }
-
-  /**
-   * Sets the field to the given value.
-   *
-   * @param value Value.
-   * @param lo Lower bound.
-   * @param hi Higher bound.
-   * @param field Field.
-   * @return Value with the updated field.
-   */
-  public static BigInteger setField(
-      final BigInteger value, final int lo, final int hi, final BigInteger field) {
-    InvariantChecks.checkNotNull(value);
-    InvariantChecks.checkNotNull(field);
-    InvariantChecks.checkGreaterOrEqZero(lo);
-    InvariantChecks.checkGreaterOrEqZero(hi);
-    InvariantChecks.checkGreaterOrEq(hi, lo);
-
-    return value.andNot(getBigIntegerMask(lo, hi)).or(field.shiftLeft(lo));
   }
 }

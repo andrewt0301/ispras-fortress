@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,12 +14,12 @@
 
 package ru.ispras.fortress.jaxb;
 
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.DataTypeId;
 import ru.ispras.fortress.data.Variable;
+
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
  * The adapter class for JAXB marshalling/unmarshalling of {@link Variable} objects. Performs

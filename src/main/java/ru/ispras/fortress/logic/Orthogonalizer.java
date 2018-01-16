@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -103,8 +103,8 @@ public final class Orthogonalizer {
     final Map<Integer, Integer> branches = new LinkedHashMap<Integer, Integer>(2 * clauses.size());
     branches.put(clauses.size() - 1, -1);
 
-    for (int pre_i, i = next(branches, pre_i = 0); i != -1; i = next(branches, pre_i = i))
-      for (int pre_j, j = next(branches, pre_j = -1); j != i; j = next(branches, pre_j = j)) {
+    for (int preI, i = next(branches, preI = 0); i != -1; i = next(branches, preI = i)) {
+      for (int preJ, j = next(branches, preJ = -1); j != i; j = next(branches, preJ = j)) {
         final NormalForm.Builder splitBuilder = new NormalForm.Builder(NormalForm.Type.DNF);
 
         // Split one of the clauses to make them disjoint.
@@ -112,18 +112,19 @@ public final class Orthogonalizer {
 
         // The left-hand-side clause is rewritten (#0).
         if (index == 0) {
-          if (replace(clauses, branches, pre_j, j, splitBuilder.build())) {
-            j = pre_j;
+          if (replace(clauses, branches, preJ, j, splitBuilder.build())) {
+            j = preJ;
           }
         }
         // The right-hand-side clause is rewritten (#1).
         else if (index == 1) {
-          if (replace(clauses, branches, pre_i, i, splitBuilder.build())) {
-            i = pre_i;
+          if (replace(clauses, branches, preI, i, splitBuilder.build())) {
+            i = preI;
             break;
           }
         }
       }
+    }
 
     return construct(branches, clauses);
   }
@@ -214,7 +215,7 @@ public final class Orthogonalizer {
    * 
    * @param clauses the list of clauses.
    * @param branches the next-index map.
-   * @param pre_i the index of the preceding clause.
+   * @param preI the index of the preceding clause.
    * @param i the index of the clause to be replaced.
    * @param split the set of clauses to be substituted.
    * @return true iff the i-th clause is removed.
@@ -222,13 +223,13 @@ public final class Orthogonalizer {
   private static boolean replace(
       final List<Clause> clauses,
       final Map<Integer, Integer> branches,
-      final int pre_i,
+      final int preI,
       final int i,
       final NormalForm split) {
     // The clause should be removed (because it is equal with another one).
     if (split.isEmpty()) {
       // The map is updated without removing the item from the list.
-      branches.put(pre_i, next(branches, i));
+      branches.put(preI, next(branches, i));
       return true;
     }
 

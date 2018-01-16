@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2017 ISP RAS (http://www.ispras.ru)
+ * Copyright 2015-2018 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -43,14 +43,14 @@ public final class Pair<T, U> {
     }
 
     final Pair<?, ?> other = (Pair<?, ?>) obj;
-    return equals(this.first, other.first) &&
-           equals(this.second, other.second);
+    return equals(this.first, other.first)
+        && equals(this.second, other.second);
   }
 
   private static boolean equals(final Object thisObject, final Object otherObject) {
-    return thisObject == null ?
-           thisObject == otherObject :
-           thisObject.equals(otherObject);
+    return thisObject == null
+        ? thisObject == otherObject
+        : thisObject.equals(otherObject);
   }
 
   @Override

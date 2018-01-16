@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2015-2018 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,9 +14,6 @@
 
 package ru.ispras.fortress.transformer.ruleset;
 
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
-import static ru.ispras.fortress.util.InvariantChecks.checkTrue;
-
 import ru.ispras.fortress.expression.ExprUtils;
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeOperation;
@@ -24,6 +21,7 @@ import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.Nodes;
 import ru.ispras.fortress.expression.StandardOperation;
+import ru.ispras.fortress.util.InvariantChecks;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,8 +55,8 @@ class EqualityConstraint {
   }
 
   public void addEquality(final Node node) {
-    checkNotNull(node);
-    checkTrue(ExprUtils.isOperation(node, StandardOperation.EQ));
+    InvariantChecks.checkNotNull(node);
+    InvariantChecks.checkTrue(ExprUtils.isOperation(node, StandardOperation.EQ));
 
     if (this.hasKnownConflict()) {
       return;
@@ -126,8 +124,8 @@ class EqualityConstraint {
   }
 
   public void addInequality(Node node) {
-    checkNotNull(node);
-    checkTrue(ExprUtils.isOperation(node, StandardOperation.NOTEQ));
+    InvariantChecks.checkNotNull(node);
+    InvariantChecks.checkTrue(ExprUtils.isOperation(node, StandardOperation.NOTEQ));
 
     if (this.hasKnownConflict()) {
       return;
@@ -175,8 +173,8 @@ class EqualityConstraint {
       return true;
     }
     for (final Node node : inequal) {
-      if (equalLinks.get(node) == group ||
-          item.equals(node)) {
+      if (equalLinks.get(node) == group
+          || item.equals(node)) {
         return false;
       }
     }
@@ -267,7 +265,7 @@ class EqualityConstraint {
       final NodeOperation op = filtered.get(i);
       if (ExprUtils.isOperation(op, StandardOperation.NOTEQ)) {
         // inequalities are split pairwise
-        filtered.set(i, NOTEQ(op.getOperand(0), op.getOperand(1)));
+        filtered.set(i, notEq(op.getOperand(0), op.getOperand(1)));
       }
     }
     return filtered;
@@ -284,7 +282,7 @@ class EqualityConstraint {
     splitNotEqualPairwise(operands, output);
     for (final Node node : operands) {
       if (!boundSet.contains(node)) {
-        output.add(NOTEQ(node, constant));
+        output.add(notEq(node, constant));
       }
     }
   }
@@ -294,12 +292,12 @@ class EqualityConstraint {
       final Collection<NodeOperation> output) {
     for (int i = 0; i < operands.size() - 1; ++i) {
       for (int j = i + 1; j < operands.size(); ++j) {
-        output.add(NOTEQ(operands.get(i), operands.get(j)));
+        output.add(notEq(operands.get(i), operands.get(j)));
       }
     }
   }
 
-  private static NodeOperation NOTEQ(final Node lhs, final Node rhs) {
+  private static NodeOperation notEq(final Node lhs, final Node rhs) {
     return Nodes.not(Nodes.eq(lhs, rhs));
   }
 }
@@ -317,14 +315,14 @@ final class EqualityGroup {
 
   public boolean contains(final Node node) {
     switch (node.getKind()) {
-    case VARIABLE:
-      return variables.contains((NodeVariable) node);
+      case VARIABLE:
+        return variables.contains((NodeVariable) node);
 
-    case VALUE:
-      return constants.contains((NodeValue) node);
+      case VALUE:
+        return constants.contains((NodeValue) node);
 
-    default:
-      return remains.contains(node);
+      default:
+        return remains.contains(node);
     }
   }
 
@@ -334,16 +332,16 @@ final class EqualityGroup {
 
   public void add(final Node node) {
     switch (node.getKind()) {
-    case VARIABLE:
-      variables.add((NodeVariable) node);
-      break;
+      case VARIABLE:
+        variables.add((NodeVariable) node);
+        break;
 
-    case VALUE:
-      constants.add((NodeValue) node);
-      break;
+      case VALUE:
+        constants.add((NodeValue) node);
+        break;
 
-    default:
-      remains.add(node);
+      default:
+        remains.add(node);
     }
   }
 

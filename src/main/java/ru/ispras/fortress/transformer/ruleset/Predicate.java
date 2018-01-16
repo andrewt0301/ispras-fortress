@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,14 +14,6 @@
 
 package ru.ispras.fortress.transformer.ruleset;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.IdentityHashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.expression.ExprUtils;
 import ru.ispras.fortress.expression.Node;
@@ -30,6 +22,14 @@ import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.transformer.TransformerRule;
 import ru.ispras.fortress.util.InvariantChecks;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * DependentRule is a base class for rules dedicated for use in set.
@@ -69,8 +69,9 @@ abstract class DependentRule implements TransformerRule {
     return reduce(opId, operands.toArray(new Node[operands.size()]));
   }
 
-  abstract public boolean isApplicable(Node node);
-  abstract public Node apply(Node node);
+  public abstract boolean isApplicable(Node node);
+
+  public abstract Node apply(Node node);
 }
 
 /**
@@ -232,8 +233,8 @@ final class UnrollClause extends OperationRule {
   public boolean isApplicable(final NodeOperation in) {
     for (int i = 0; i < in.getOperandCount(); ++i) {
       final Node operand = in.getOperand(i);
-      if (isBoolean(operand) ||
-          ExprUtils.isOperation(operand, this.getOperationId()) ||
+      if (isBoolean(operand)
+          || ExprUtils.isOperation(operand, this.getOperationId()) ||
           appliesTo(operand)) {
         return true;
       }
@@ -504,8 +505,7 @@ public final class Predicate {
     new OperationRule(StandardOperation.EQ, ruleset) {
       @Override
       public boolean isApplicable(final NodeOperation in) {
-        return countImmediateOperands(in) > 1 ||
-               booleanOperandIndex(in, 0) >= 0;
+        return countImmediateOperands(in) > 1 || booleanOperandIndex(in, 0) >= 0;
       }
 
       @Override

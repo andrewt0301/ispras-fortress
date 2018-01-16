@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -37,8 +37,10 @@ public class AbsCustomOperationTestCase extends GenericSolverTestBase {
    *     (declare-const b Real)
    *     (declare-const c Int)
    *     (declare-const d Int)
-   *     (define-fun StandardOperation_ABS_RET_LOGIC_REAL_PARAMS_LOGIC_REAL ((x Real)) Real (ite (>= x 0.0) x (- x)))
-   *     (define-fun StandardOperation_ABS_RET_LOGIC_INTEGER_PARAMS_LOGIC_INTEGER ((x Int)) Int (ite (>= x 0) x (- x)))
+   *     (define-fun StandardOperation_ABS_RET_LOGIC_REAL_PARAMS_LOGIC_REAL
+   *     ((x Real)) Real (ite (>= x 0.0) x (- x)))
+   *     (define-fun StandardOperation_ABS_RET_LOGIC_INTEGER_PARAMS_LOGIC_INTEGER
+   *     ((x Int)) Int (ite (>= x 0) x (- x)))
    *     (assert  (< a 0.0))
    *     (assert  (> b 0.0))
    *     (assert  (< c 0))

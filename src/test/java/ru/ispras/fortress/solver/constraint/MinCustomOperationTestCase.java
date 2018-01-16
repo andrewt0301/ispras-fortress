@@ -42,7 +42,6 @@ public class MinCustomOperationTestCase extends GenericSolverTestBase {
    * (get-value ( a b))
    * (exit)
    * </pre>
-   *
    * Expected output:
    *
    * <pre>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -52,7 +52,7 @@ public class ArrayOfArraysTestCase extends GenericSolverTestBase {
     super(new ArrayOfArraysConstraint());
   }
 
-  private final static class ArrayOfArraysConstraint implements SampleConstraint {
+  private static final class ArrayOfArraysConstraint implements SampleConstraint {
     private static final DataType ARRAY_INT_INT = DataType.MAP(DataType.INTEGER, DataType.INTEGER);
     private static final DataType ARRAY_COMPOSITE = DataType.MAP(ARRAY_INT_INT, ARRAY_INT_INT);
 

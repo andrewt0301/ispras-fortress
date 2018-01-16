@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2017 ISP RAS (http://www.ispras.ru)
+ * Copyright 2013-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,12 +14,6 @@
 
 package ru.ispras.fortress.transformer;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.ExprUtils;
 import ru.ispras.fortress.expression.Node;
@@ -27,6 +21,12 @@ import ru.ispras.fortress.expression.NodeBinding;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.transformer.ruleset.Predicate;
 import ru.ispras.fortress.util.InvariantChecks;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The {@link Transformer} class contains static methods for common expression transformations.
@@ -37,8 +37,7 @@ public final class Transformer {
   /**
    * Substitute given term for variables with specified name in expression. Substitution considers
    * variable names ignoring types.
-   *
-   * Provided term instance is referenced in resulting expression w/o copying.
+   * <p>Provided term instance is referenced in resulting expression w/o copying.</p>
    *
    * @param expression Expression in which substitution takes place.
    * @param name Name of variables to be substituted.
@@ -128,9 +127,8 @@ public final class Transformer {
   /**
    * Substitute all bindings in given expression. Substitution applies with respect to nested
    * binding scope.
-   *
-   * Substitution applies non-recursively, i.e. any bindings found in bound values are not
-   * substituted.
+   * <p>Substitution applies non-recursively, i.e. any bindings found in bound values are not
+   * substituted.</p>
    *
    * @param expression Expression to be substituted.
    * @return An expression resulting from substitution of all bindings found in initial expression.
@@ -159,8 +157,7 @@ public final class Transformer {
    * Replace operations in expression with standard counterparts. Transforms composite math
    * predicates such as NEQ, GEQ etc. into formula using NOT, EQ, LE, GE and boolean functions.
    * Supports general and bitvector operations.
-   *
-   * Transformation considers only standard predicates.
+   * <p>Transformation considers only standard predicates.</p>
    *
    * @param expression Expression to be transformed.
    * @return Expression with non-standard operations being replaced.

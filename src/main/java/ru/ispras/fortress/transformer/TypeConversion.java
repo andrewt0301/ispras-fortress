@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2015-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,6 +14,15 @@
 
 package ru.ispras.fortress.transformer;
 
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.DataTypeId;
@@ -25,18 +34,6 @@ import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.Nodes;
 import ru.ispras.fortress.util.InvariantChecks;
-
-import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
-import static ru.ispras.fortress.util.InvariantChecks.checkTrue;
 
 public final class TypeConversion {
 
@@ -67,10 +64,10 @@ public final class TypeConversion {
    * @param node Node to be processed.
    * @param constCastKind Constant casting type descriptor (signed, unsigned, etc.).
    *
-   * @throws IllegalArgumentException when node argument is {@code null}.
-   *
    * @return Node every constant sub-..node of that is casted to be a correct operand of
    *         related operation.
+   *
+   * @throws IllegalArgumentException when node argument is {@code null}.
    */
   public static Node castConstants(final Node node, final Enum<?> constCastKind) {
     InvariantChecks.checkNotNull(node);
@@ -118,8 +115,8 @@ public final class TypeConversion {
    * @throws IllegalArgumentException when either node or data type argument is {@code null}.
    */
   public static Node coerce(final Node node, final DataType type, final Enum<?> constCastType) {
-    checkNotNull(node);
-    checkNotNull(type);
+    InvariantChecks.checkNotNull(node);
+    InvariantChecks.checkNotNull(type);
 
     final DataType srcType = node.getDataType();
     if (srcType.equals(type)) {
@@ -252,21 +249,21 @@ public final class TypeConversion {
   }
 
   public static NodeValue valueOf(final BigInteger value, final DataType type) {
-    checkNotNull(value);
-    checkNotNull(type);
-    checkTrue(isIntegral(type));
+    InvariantChecks.checkNotNull(value);
+    InvariantChecks.checkNotNull(type);
+    InvariantChecks.checkTrue(isIntegral(type));
 
     switch (type.getTypeId()) {
-    case BIT_VECTOR: return NodeValue.newBitVector(value, type.getSize());
-    case LOGIC_BOOLEAN: return NodeValue.newBoolean(!value.equals(BigInteger.ZERO));
-    case LOGIC_INTEGER: return NodeValue.newInteger(value);
+      case BIT_VECTOR: return NodeValue.newBitVector(value, type.getSize());
+      case LOGIC_BOOLEAN: return NodeValue.newBoolean(!value.equals(BigInteger.ZERO));
+      case LOGIC_INTEGER: return NodeValue.newInteger(value);
     }
     throw new IllegalStateException();
   }
 
   public static BigInteger integerValue(final NodeValue value, final boolean signed) {
-    checkNotNull(value);
-    checkTrue(isIntegral(value));
+    InvariantChecks.checkNotNull(value);
+    InvariantChecks.checkTrue(isIntegral(value));
 
     if (value.isType(DataTypeId.BIT_VECTOR)) {
       return value.getBitVector().bigIntegerValue(signed);
@@ -278,28 +275,28 @@ public final class TypeConversion {
   }
 
   public static boolean isIntegral(final Node node) {
-    checkNotNull(node);
+    InvariantChecks.checkNotNull(node);
     return isIntegral(node.getDataType());
   }
 
   public static boolean isIntegral(final DataType type) {
-    checkNotNull(type);
+    InvariantChecks.checkNotNull(type);
     return integralTypes.contains(type.getTypeId());
   }
 
   private static int sizeOf(final DataType type) {
     switch (type.getTypeId()) {
-    case BIT_VECTOR: return type.getSize();
-    case LOGIC_BOOLEAN: return 1;
-    case LOGIC_INTEGER: return Integer.MAX_VALUE;
+      case BIT_VECTOR: return type.getSize();
+      case LOGIC_BOOLEAN: return 1;
+      case LOGIC_INTEGER: return Integer.MAX_VALUE;
     }
     return -1;
   }
 
   private static boolean bv2natRequired(final DataType src, final DataType dst) {
-    return src.getTypeId().equals(DataTypeId.BIT_VECTOR) &&
-           src.getSize() > 1 &&
-           dst.getTypeId().equals(DataTypeId.LOGIC_INTEGER);
+    return src.getTypeId().equals(DataTypeId.BIT_VECTOR)
+        && src.getSize() > 1
+        && dst.getTypeId().equals(DataTypeId.LOGIC_INTEGER);
   }
 
   private static NodeOperation bv2bool(final Node node) {

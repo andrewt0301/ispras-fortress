@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2017 ISP RAS (http://www.ispras.ru)
+ * Copyright 2011-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,6 +13,10 @@
  */
 
 package ru.ispras.fortress.solver.constraint;
+
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import ru.ispras.fortress.calculator.Calculator;
 import ru.ispras.fortress.calculator.CalculatorEngine;
@@ -37,10 +41,6 @@ import ru.ispras.fortress.transformer.ReduceOptions;
 import ru.ispras.fortress.transformer.Reducer;
 import ru.ispras.fortress.transformer.Transformer;
 
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,8 +48,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static ru.ispras.fortress.solver.SolverResult.Status;
 
 public abstract class GenericSolverTestBase {
   public static interface SampleConstraint {
@@ -143,14 +141,15 @@ public abstract class GenericSolverTestBase {
       e.printStackTrace();
       Assert.fail(e.getMessage());
     } finally {
-      if (null != tempFile && !Environment.isDebugMode())
+      if (null != tempFile && !Environment.isDebugMode()) {
         tempFile.delete();
+      }
     }
   }
 
   private void solveAndCheckResult(Constraint constraint) {
     String name = "unknown";
-    Status globalStatus = Status.UNKNOWN;
+    SolverResult.Status globalStatus = SolverResult.Status.UNKNOWN;
 
     for (final SolverId id : SolverId.values()) {
       final Solver solver = id.getSolver();
@@ -158,15 +157,15 @@ public abstract class GenericSolverTestBase {
 
       final SolverResult result = solver.solve(constraint);
 
-      final Status localStatus = refineResult(globalStatus, result.getStatus());
+      final SolverResult.Status localStatus = refineResult(globalStatus, result.getStatus());
       final String message =
           String.format("Mismatching solver results: %s returns %s, %s returns %s",
                         name, globalStatus,
                         solver.getName(), localStatus);
 
       Assert.assertTrue(message,
-                        globalStatus == Status.UNKNOWN ||
-                        localStatus == globalStatus);
+                        globalStatus == SolverResult.Status.UNKNOWN
+                            || localStatus == globalStatus);
 
       SolverResultChecker.checkErrors(result.getErrors());
       checkResult(getCalculator(), constraint, result);
@@ -176,8 +175,11 @@ public abstract class GenericSolverTestBase {
     }
   }
 
-  private static Status refineResult(Status known, Status current) {
-    if (current == Status.SAT || current == Status.UNSAT) {
+  private static SolverResult.Status refineResult(
+      SolverResult.Status known,
+      SolverResult.Status current) {
+
+    if (current == SolverResult.Status.SAT || current == SolverResult.Status.UNSAT) {
       return current;
     }
     return known;
@@ -233,9 +235,9 @@ public abstract class GenericSolverTestBase {
   }
 
   private static boolean nodeIsTrue(final Node node) {
-    return ExprUtils.isValue(node) &&
-           ExprUtils.isCondition(node) &&
-           (Boolean) ((NodeValue) node).getValue();
+    return ExprUtils.isValue(node)
+        && ExprUtils.isCondition(node)
+        && (Boolean) ((NodeValue) node).getValue();
   }
 
   protected CalculatorEngine getCalculator() {

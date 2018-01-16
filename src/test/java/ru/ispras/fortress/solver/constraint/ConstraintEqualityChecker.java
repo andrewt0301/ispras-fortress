@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,14 +14,14 @@
 
 package ru.ispras.fortress.solver.constraint;
 
+import org.junit.Assert;
+
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeBinding;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
-
-import org.junit.Assert;
 
 import java.util.Iterator;
 
@@ -33,9 +33,11 @@ public final class ConstraintEqualityChecker {
     Assert.assertNotNull(actual);
     Assert.assertFalse("The same object", expected == actual);
 
-    Assert.assertTrue("Constraint names do not match.", expected.getName().equals(actual.getName()));
+    Assert.assertTrue("Constraint names do not match.",
+        expected.getName().equals(actual.getName()));
     Assert.assertTrue("Constraint kinds.", expected.getKind() == actual.getKind());
-    Assert.assertTrue("Constraint descriptions do not match.", expected.getDescription().equals(actual.getDescription()));
+    Assert.assertTrue("Constraint descriptions do not match.",
+        expected.getDescription().equals(actual.getDescription()));
 
     check((Formulas) expected.getInnerRep(), (Formulas) actual.getInnerRep());
   }
@@ -57,7 +59,8 @@ public final class ConstraintEqualityChecker {
     }
 
     Assert.assertTrue(
-      "The numbers of formulas are different.", expectedIterator.hasNext() == actualIterator.hasNext());
+        "The numbers of formulas are different.",
+        expectedIterator.hasNext() == actualIterator.hasNext());
   }
 
   public static void check(NodeOperation expected, NodeOperation actual) {
@@ -67,7 +70,8 @@ public final class ConstraintEqualityChecker {
 
     Assert.assertTrue("Invalid element ID.", expected.getKind() == Node.Kind.OPERATION);
     Assert.assertTrue("Invalid element ID.", actual.getKind() == Node.Kind.OPERATION);
-    Assert.assertTrue("Different operation IDs.", expected.getOperationId().equals(actual.getOperationId()));
+    Assert.assertTrue("Different operation IDs.",
+        expected.getOperationId().equals(actual.getOperationId()));
 
     // TODO: Temporary requirement. Once the getDataType method is implemented to return a proper
     // value
@@ -77,7 +81,8 @@ public final class ConstraintEqualityChecker {
 
     int operandIndex = 0;
     while (operandIndex < expected.getOperandCount()) {
-      if ((null != expected.getOperand(operandIndex)) && (null != actual.getOperand(operandIndex))) {
+      if ((null != expected.getOperand(operandIndex))
+          && (null != actual.getOperand(operandIndex))) {
         check(expected.getOperand(operandIndex), actual.getOperand(operandIndex));
       }
 
@@ -93,20 +98,13 @@ public final class ConstraintEqualityChecker {
     Assert.assertTrue("Invalid element ID.", expected.getKind() == Node.Kind.BINDING);
     Assert.assertTrue("Invalid element ID.", actual.getKind() == Node.Kind.BINDING);
     Assert.assertTrue("Different number of bound variables.",
-      expected.getBindings().size() == actual.getBindings().size());
+        expected.getBindings().size() == actual.getBindings().size());
 
     for (int i = 0; i < expected.getBindings().size(); ++i) {
-      Assert.assertTrue("Different binding order.", getBoundName(expected, i).equals(getBoundName(actual, i)));
+      Assert.assertTrue("Different binding order.",
+          getBoundName(expected, i).equals(getBoundName(actual, i)));
       check(getBoundValue(expected, i), getBoundValue(actual, i));
     }
-  }
-
-  private static String getBoundName(NodeBinding node, int index) {
-    return node.getBindings().get(index).getVariable().getName();
-  }
-
-  private static Node getBoundValue(NodeBinding node, int index) {
-    return node.getBindings().get(index).getValue();
   }
 
   public static void check(NodeVariable expected, NodeVariable actual) {
@@ -122,7 +120,7 @@ public final class ConstraintEqualityChecker {
     check(expected.getData().getType(), actual.getData().getType());
     if (!((null == expected.getValue()) && (null == actual.getValue()))) {
       Assert.assertTrue(
-        "Variable values do not match.", expected.getValue().equals(actual.getValue()));
+          "Variable values do not match.", expected.getValue().equals(actual.getValue()));
     }
   }
 
@@ -173,5 +171,13 @@ public final class ConstraintEqualityChecker {
 
     Assert.assertTrue("Data type IDs do not match.", expected.getTypeId() == actual.getTypeId());
     Assert.assertTrue("Data type sizes do not match.", expected.getSize() == actual.getSize());
+  }
+
+  private static String getBoundName(NodeBinding node, int index) {
+    return node.getBindings().get(index).getVariable().getName();
+  }
+
+  private static Node getBoundValue(NodeBinding node, int index) {
+    return node.getBindings().get(index).getValue();
   }
 }

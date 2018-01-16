@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -40,9 +40,12 @@ public class IntegerOverflowBitVectorTestCase extends GenericSolverTestBase {
    * (define-fun INT_BASE_SIZE () Int_t (_ bv32 64))
    * (define-fun INT_SIGN_MASK () Int_t (bvshl (bvnot INT_ZERO) INT_BASE_SIZE))
    *
-   * (define-fun IsValidPos ((x!1 Int_t)) Bool (ite (= (bvand x!1 INT_SIGN_MASK) INT_ZERO) true false))
-   * (define-fun IsValidNeg ((x!1 Int_t)) Bool (ite (= (bvand x!1 INT_SIGN_MASK) INT_SIGN_MASK) true false))
-   * (define-fun IsValidSignedInt ((x!1 Int_t)) Bool (ite (or (IsValidPos x!1) (IsValidNeg x!1)) true false))
+   * (define-fun IsValidPos ((x!1 Int_t)) Bool
+   * (ite (= (bvand x!1 INT_SIGN_MASK) INT_ZERO) true false))
+   * (define-fun IsValidNeg ((x!1 Int_t)) Bool
+   * (ite (= (bvand x!1 INT_SIGN_MASK) INT_SIGN_MASK) true false))
+   * (define-fun IsValidSignedInt ((x!1 Int_t))
+   * Bool (ite (or (IsValidPos x!1) (IsValidNeg x!1)) true false))
    *
    * (declare-const rs Int_t)
    * (declare-const rt Int_t)

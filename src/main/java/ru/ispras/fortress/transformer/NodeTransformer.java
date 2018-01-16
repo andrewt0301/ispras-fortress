@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,7 +14,14 @@
 
 package ru.ispras.fortress.transformer;
 
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
+import ru.ispras.fortress.expression.ExprTreeVisitor;
+import ru.ispras.fortress.expression.ExprTreeWalker;
+import ru.ispras.fortress.expression.Node;
+import ru.ispras.fortress.expression.NodeBinding;
+import ru.ispras.fortress.expression.NodeOperation;
+import ru.ispras.fortress.expression.NodeValue;
+import ru.ispras.fortress.expression.NodeVariable;
+import ru.ispras.fortress.util.InvariantChecks;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,14 +30,6 @@ import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
-
-import ru.ispras.fortress.expression.ExprTreeVisitor;
-import ru.ispras.fortress.expression.ExprTreeWalker;
-import ru.ispras.fortress.expression.Node;
-import ru.ispras.fortress.expression.NodeBinding;
-import ru.ispras.fortress.expression.NodeOperation;
-import ru.ispras.fortress.expression.NodeValue;
-import ru.ispras.fortress.expression.NodeVariable;
 
 /**
  * {@link NodeTransformer} is an expression tree visitor with bottom-up substitution policy.
@@ -89,7 +88,7 @@ public class NodeTransformer implements ExprTreeVisitor {
    * @param rules Map of rules. See {@link #addRule addRule()} for details.
    */
   public NodeTransformer(final Map<Enum<?>, TransformerRule> rules) {
-    checkNotNull(rules);
+    InvariantChecks.checkNotNull(rules);
 
     ruleset = new IdentityHashMap<>(rules.size());
     for (final Map.Entry<Enum<?>, TransformerRule> entry : rules.entrySet()) {
@@ -115,8 +114,8 @@ public class NodeTransformer implements ExprTreeVisitor {
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
   public void addRule(final Enum<?> opId, final TransformerRule rule) {
-    checkNotNull(opId);
-    checkNotNull(rule);
+    InvariantChecks.checkNotNull(opId);
+    InvariantChecks.checkNotNull(rule);
 
     getRulesWrite(opId).add(rule);
   }
@@ -210,7 +209,7 @@ public class NodeTransformer implements ExprTreeVisitor {
       return;
     }
 
-    // TODO consequtive rule application
+    // TODO consecutive rule application
     final int pos = operandStack.size() - 1;
     final Node[] operands = operandStack.remove(pos);
     NodeOperation updated = expr;

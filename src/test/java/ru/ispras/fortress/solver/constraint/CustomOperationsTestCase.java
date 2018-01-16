@@ -19,8 +19,8 @@ import ru.ispras.fortress.calculator.Calculator;
 import ru.ispras.fortress.calculator.CalculatorEngine;
 import ru.ispras.fortress.calculator.CalculatorOperation;
 import ru.ispras.fortress.calculator.CompositeCalculator;
-import ru.ispras.fortress.calculator.OperationGroup;
 import ru.ispras.fortress.calculator.Operation;
+import ru.ispras.fortress.calculator.OperationGroup;
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.DataTypeId;
@@ -61,9 +61,12 @@ public class CustomOperationsTestCase extends GenericSolverTestBase {
    * (define-fun INT_BASE_SIZE () Int_t (_ bv32 64))
    * (define-fun INT_SIGN_MASK () Int_t (bvshl (bvnot INT_ZERO) INT_BASE_SIZE))
    *
-   * (define-fun IsValidPos ((x!1 Int_t)) Bool (ite (= (bvand x!1 INT_SIGN_MASK) INT_ZERO) true false))
-   * (define-fun IsValidNeg ((x!1 Int_t)) Bool (ite (= (bvand x!1 INT_SIGN_MASK) INT_SIGN_MASK) true false))
-   * (define-fun IsValidSignedInt ((x!1 Int_t)) Bool (ite (or (IsValidPos x!1) (IsValidNeg x!1)) true false))
+   * (define-fun IsValidPos ((x!1 Int_t)) Bool
+   * (ite (= (bvand x!1 INT_SIGN_MASK) INT_ZERO) true false))
+   * (define-fun IsValidNeg ((x!1 Int_t)) Bool
+   * (ite (= (bvand x!1 INT_SIGN_MASK) INT_SIGN_MASK) true false))
+   * (define-fun IsValidSignedInt ((x!1 Int_t)) Bool
+   * (ite (or (IsValidPos x!1) (IsValidNeg x!1)) true false))
    *
    * (declare-const rs Int_t)
    * (declare-const rt Int_t)
@@ -138,7 +141,7 @@ public class CustomOperationsTestCase extends GenericSolverTestBase {
         new NodeOperation(ECustomOperation.INT_ZERO));
 
     solver.addCustomOperation(new Function(
-      ECustomOperation.IS_VALID_POS, DataType.BOOLEAN, body, param));
+        ECustomOperation.IS_VALID_POS, DataType.BOOLEAN, body, param));
   }
 
   // (define-fun IS_VALID_NEG ((x!1 Int_t)) Bool (ite (= (bvand x!1 INT_SIGN_MASK) INT_SIGN_MASK)
