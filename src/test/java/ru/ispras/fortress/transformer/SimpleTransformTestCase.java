@@ -48,10 +48,6 @@ public class SimpleTransformTestCase {
     return new NodeOperation(StandardOperation.PLUS, args);
   }
 
-  private static NodeOperation EQ(Node... args) {
-    return new NodeOperation(StandardOperation.EQ, args);
-  }
-
   private static NodeOperation NOTEQ(Node... args) {
     return new NodeOperation(StandardOperation.NOTEQ, args);
   }
@@ -67,12 +63,12 @@ public class SimpleTransformTestCase {
     final Node c = newVariable("c");
 
     // (a = b + c)
-    final Node expr = EQ(a, PLUS(b, c));
-    final Node firstExpected = EQ(a, PLUS(a, c));
+    final Node expr = Nodes.eq(a, PLUS(b, c));
+    final Node firstExpected = Nodes.eq(a, PLUS(a, c));
     final Node firstPass = Transformer.substitute(expr, "b", a);
     Assert.assertTrue(firstExpected.toString().equals(firstPass.toString()));
 
-    final Node secondExpected = EQ(c, PLUS(c, c));
+    final Node secondExpected = Nodes.eq(c, PLUS(c, c));
     final Node secondPass = Transformer.substitute(firstPass, "a", c);
     Assert.assertTrue(secondExpected.toString().equals(secondPass.toString()));
   }
@@ -127,10 +123,10 @@ public class SimpleTransformTestCase {
     final NodeVariable x = newVariable("x");
     final NodeVariable y = newVariable("y");
 
-    final Node equality = EQ(x, y);
+    final Node equality = Nodes.eq(x, y);
 
-    final Node booleanEquality = EQ(equality, Nodes.TRUE);
-    final Node booleanInequality = EQ(Nodes.FALSE, EQ(x, y));
+    final Node booleanEquality = Nodes.eq(equality, Nodes.TRUE);
+    final Node booleanInequality = Nodes.eq(Nodes.FALSE, Nodes.eq(x, y));
 
     final Node standardEquality = Transformer.standardize(booleanEquality);
     final Node standardInequality = Transformer.standardize(booleanInequality);
@@ -145,13 +141,13 @@ public class SimpleTransformTestCase {
     final NodeVariable y = newVariable("y");
     final NodeVariable z = newVariable("z");
 
-    final Node eqxy = EQ(x, y);
-    final Node eqxz = EQ(x, z);
+    final Node eqxy = Nodes.eq(x, y);
+    final Node eqxz = Nodes.eq(x, z);
 
-    final Node equalsTrue = EQ(eqxy, Nodes.TRUE, eqxz);
-    final Node equalsFalse = EQ(Nodes.FALSE, eqxy, eqxz);
+    final Node equalsTrue = Nodes.eq(eqxy, Nodes.TRUE, eqxz);
+    final Node equalsFalse = Nodes.eq(Nodes.FALSE, eqxy, eqxz);
 
-    final Node expectedEquality = EQ(z, y, x);
+    final Node expectedEquality = Nodes.eq(z, y, x);
     final Node standardEquality = Transformer.standardize(equalsTrue);
 
     final Node expectedInequality = Nodes.and(Nodes.not(eqxy), Nodes.not(eqxz));
@@ -167,9 +163,9 @@ public class SimpleTransformTestCase {
     final NodeVariable y = newVariable("y");
     final NodeVariable z = newVariable("z");
 
-    final Node eqxy = EQ(x, y);
-    final Node eqxz = EQ(x, z);
-    final Node eqyz = EQ(y, z);
+    final Node eqxy = Nodes.eq(x, y);
+    final Node eqxz = Nodes.eq(x, z);
+    final Node eqyz = Nodes.eq(y, z);
 
     final Node impl2 = IMPL(eqxy, eqxz);
     final Node impl3 = IMPL(eqxy, eqxz, eqyz);
@@ -186,8 +182,8 @@ public class SimpleTransformTestCase {
   public void standardizeConjunction() {
     final NodeVariable x = newVariable("x");
     final NodeVariable y = newVariable("y");
-    final Node eqxy = EQ(x, y);
-    final Node eqyx = EQ(y, x);
+    final Node eqxy = Nodes.eq(x, y);
+    final Node eqyx = Nodes.eq(y, x);
 
     final Node allTrue = Nodes.and(Nodes.TRUE, Nodes.TRUE, Nodes.TRUE);
     final Node singleExpr = Nodes.and(Nodes.TRUE, eqxy, Nodes.TRUE);
@@ -204,8 +200,8 @@ public class SimpleTransformTestCase {
   public void filterDuplicatedEqualities() {
     final NodeVariable x = newVariable("x");
     final NodeVariable y = newVariable("y");
-    final Node eqxy = EQ(x, y);
-    final Node eqyx = EQ(y, x);
+    final Node eqxy = Nodes.eq(x, y);
+    final Node eqyx = Nodes.eq(y, x);
 
     final Node multiExpr = Nodes.and(
         eqxy,
@@ -224,7 +220,7 @@ public class SimpleTransformTestCase {
   public void standardizeDisjunction() {
     final NodeVariable x = newVariable("x");
     final NodeVariable y = newVariable("y");
-    final Node eqxy = EQ(x, y);
+    final Node eqxy = Nodes.eq(x, y);
 
     final Node allFalse = Nodes.or(Nodes.FALSE, Nodes.FALSE, Nodes.FALSE);
     final Node singleExpr = Nodes.or(Nodes.FALSE, eqxy, Nodes.FALSE);
@@ -243,8 +239,8 @@ public class SimpleTransformTestCase {
     final NodeVariable x = newVariable("x");
     final NodeVariable y = newVariable("y");
 
-    final Node eqxy = EQ(x, y);
-    final Node eqyx = EQ(y, x);
+    final Node eqxy = Nodes.eq(x, y);
+    final Node eqyx = Nodes.eq(y, x);
 
     final Node tree = Nodes.and(
         Nodes.TRUE,
@@ -259,7 +255,7 @@ public class SimpleTransformTestCase {
   public void standardizeDisjunctionTree() {
     final NodeVariable x = newVariable("x");
     final NodeVariable y = newVariable("y");
-    final Node eqxy = EQ(x, y);
+    final Node eqxy = Nodes.eq(x, y);
 
     final Node tree = Nodes.or(
         Nodes.FALSE,
@@ -281,19 +277,19 @@ public class SimpleTransformTestCase {
     final NodeVariable x = newVariable("x");
 
     Assert.assertTrue(equalNodes(
-        Transformer.standardize(EQ(ZERO, ZERO, ZERO)),
+        Transformer.standardize(Nodes.eq(ZERO, ZERO, ZERO)),
         Nodes.TRUE));
 
     Assert.assertTrue(equalNodes(
-        Transformer.standardize(EQ(ZERO, ZERO, ONE, ZERO)),
+        Transformer.standardize(Nodes.eq(ZERO, ZERO, ONE, ZERO)),
         Nodes.FALSE));
 
     Assert.assertTrue(equalNodes(
-        Transformer.standardize(EQ(x, ZERO, ZERO, ZERO)),
-        EQ(ZERO, x)));
+        Transformer.standardize(Nodes.eq(x, ZERO, ZERO, ZERO)),
+        Nodes.eq(ZERO, x)));
 
     Assert.assertTrue(equalNodes(
-        Transformer.standardize(EQ(x, ZERO, Nodes.FALSE)),
+        Transformer.standardize(Nodes.eq(x, ZERO, Nodes.FALSE)),
         Nodes.FALSE));
   }
 
@@ -341,10 +337,11 @@ public class SimpleTransformTestCase {
     final NodeValue eqValue = NodeValue.newInteger(0);
     final NodeValue neqValue = NodeValue.newInteger(-1);
 
-    final Node expr = Nodes.and(EQ(x, eqValue), NOTEQ(x, neqValue));
+    final Node expr = Nodes.and(Nodes.eq(x, eqValue), NOTEQ(x, neqValue));
     final Node std = Transformer.standardize(expr);
 
-    Assert.assertTrue(equalNodes(std, EQ(x, eqValue)) || equalNodes(std, EQ(eqValue, x)));
+    Assert.assertTrue(
+        equalNodes(std, Nodes.eq(x, eqValue)) || equalNodes(std, Nodes.eq(eqValue, x)));
   }
 
   @Test
@@ -353,7 +350,7 @@ public class SimpleTransformTestCase {
     final NodeVariable b = new NodeVariable("b", DataType.BIT_VECTOR(2));
     final NodeValue zero = NodeValue.newBitVector(BitVector.valueOf(0, 2));
     
-    final Node expr = Nodes.and(EQ(a, zero), Nodes.not(EQ(a, b, zero)));
+    final Node expr = Nodes.and(Nodes.eq(a, zero), Nodes.not(Nodes.eq(a, b, zero)));
     final Node std = Transformer.standardize(expr);
     Assert.assertTrue(ExprUtils.isSAT(expr) == ExprUtils.isSAT(std));
   }

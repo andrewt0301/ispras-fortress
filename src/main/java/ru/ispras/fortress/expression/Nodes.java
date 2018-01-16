@@ -32,8 +32,12 @@ public final class Nodes {
   public static final Node TRUE = NodeValue.newBoolean(true);
   public static final Node FALSE = NodeValue.newBoolean(false);
 
-  public static NodeOperation eq(final Node lhs, final Node rhs) {
-    return new NodeOperation(StandardOperation.EQ, lhs, rhs);
+  public static NodeOperation eq(final Node... operands) {
+    return new NodeOperation(StandardOperation.EQ, operands);
+  }
+
+  public static NodeOperation eq(final List<? extends Node> operands) {
+    return new NodeOperation(StandardOperation.EQ, operands);
   }
 
   public static NodeOperation eq(final Variable lhs, final Node rhs) {
