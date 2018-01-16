@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -214,11 +214,11 @@ public final class OperationDescription {
    * Returns the {@code i}-th operation infix (string written between {@code i}-th and
    * {@code i+1}-th operands).
    *
-   * @param i Infix index.
+   * @param idx Infix index.
    * @return the {@code i}-th operation infix.
    */
-  public String getInfix(final int i) {
-    return infix.length == 1 ? infix[0] : infix[i];
+  public String getInfix(final int idx) {
+    return infix.length == 1 ? infix[0] : infix[idx];
   }
 
   /**

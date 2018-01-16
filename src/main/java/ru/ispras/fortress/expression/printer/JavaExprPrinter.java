@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ISP RAS (http://www.ispras.ru)
+ * Copyright 2017-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,10 +14,6 @@
 
 package ru.ispras.fortress.expression.printer;
 
-import java.math.BigInteger;
-import java.util.EnumMap;
-import java.util.Map;
-
 import ru.ispras.fortress.data.DataTypeId;
 import ru.ispras.fortress.data.types.bitvector.BitVector;
 import ru.ispras.fortress.expression.Node;
@@ -27,6 +23,10 @@ import ru.ispras.fortress.expression.Nodes;
 import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.util.InvariantChecks;
 
+import java.math.BigInteger;
+import java.util.EnumMap;
+import java.util.Map;
+
 /**
  * This class implements an expression printer that produces Java code.
  *
@@ -34,6 +34,7 @@ import ru.ispras.fortress.util.InvariantChecks;
  */
 public class JavaExprPrinter extends MapBasedPrinter {
   private static final Map<DataTypeId, String> FACTORY_METHODS = new EnumMap<>(DataTypeId.class);
+
   static {
     FACTORY_METHODS.put(DataTypeId.BIT_VECTOR,    "newBitVector");
     FACTORY_METHODS.put(DataTypeId.LOGIC_BOOLEAN, "newBoolean");
