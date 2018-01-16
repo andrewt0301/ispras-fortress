@@ -237,19 +237,19 @@ public abstract class SmtTextSolver extends SolverBase {
     public final Map<String, ESExpr> model;
     public final Map<String, Data> parsed;
 
-    public final ESExprMatcher CAST_ARRAY =
+    public static final ESExprMatcher CAST_ARRAY =
         new ESExprMatcher("(_ as-array %a)");
 
-    public final ESExprMatcher CONST_ARRAY_Z3 =
+    public static final ESExprMatcher CONST_ARRAY_Z3 =
         new ESExprMatcher("((as const (Array %s %s)) %s)");
 
-    public final ESExprMatcher CONST_ARRAY_CVC4 =
+    public static final ESExprMatcher CONST_ARRAY_CVC4 =
         new ESExprMatcher("(__array_store_all__ (Array %s %s) %s)");
 
-    public final ESExprMatcher STORE = new ESExprMatcher("(store %s %s %s)");
-    public final ESExprMatcher MINUS = new ESExprMatcher("(- %a)");
-    public final ESExprMatcher CAST = new ESExprMatcher("(_ %a %a)");
-    public final ESExprMatcher ITE = new ESExprMatcher("(ite (= %a %s) %s %s)");
+    public static final ESExprMatcher STORE = new ESExprMatcher("(store %s %s %s)");
+    public static final ESExprMatcher MINUS = new ESExprMatcher("(- %a)");
+    public static final ESExprMatcher CAST = new ESExprMatcher("(_ %a %a)");
+    public static final ESExprMatcher ITE = new ESExprMatcher("(ite (= %a %s) %s %s)");
 
     public Context(final Map<String, Variable> required) {
       this.required = required;
