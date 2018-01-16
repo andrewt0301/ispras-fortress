@@ -52,16 +52,8 @@ public class SimpleTransformTestCase {
     return new NodeOperation(StandardOperation.NOTEQ, args);
   }
 
-  private static NodeOperation GREATER(Node... args) {
-    return new NodeOperation(StandardOperation.GREATER, args);
-  }
-
   private static NodeOperation GREATEREQ(Node... args) {
     return new NodeOperation(StandardOperation.GREATEREQ, args);
-  }
-
-  private static NodeOperation LESS(Node... args) {
-    return new NodeOperation(StandardOperation.LESS, args);
   }
 
   private static NodeOperation LESSEQ(Node... args) {
@@ -317,13 +309,13 @@ public class SimpleTransformTestCase {
     Assert.assertTrue(equalNodes(Transformer.standardize(NOTEQ(ZERO, ONE)), Nodes.TRUE));
 
     /* 2 > 1 */
-    Assert.assertTrue(equalNodes(Transformer.standardize(GREATER(TWO, ONE)), Nodes.TRUE));
+    Assert.assertTrue(equalNodes(Transformer.standardize(Nodes.greater(TWO, ONE)), Nodes.TRUE));
 
     /* 1 >= 0 */
     Assert.assertTrue(equalNodes(Transformer.standardize(GREATEREQ(ONE, ZERO)), Nodes.TRUE));
 
     /* 0 < 2 */
-    Assert.assertTrue(equalNodes(Transformer.standardize(LESS(ZERO, TWO)), Nodes.TRUE));
+    Assert.assertTrue(equalNodes(Transformer.standardize(Nodes.less(ZERO, TWO)), Nodes.TRUE));
 
     /* 0 <= 1 */
     Assert.assertTrue(equalNodes(Transformer.standardize(LESSEQ(ZERO, ONE)), Nodes.TRUE));
@@ -337,7 +329,7 @@ public class SimpleTransformTestCase {
     final NodeVariable x = newVariable("x");
     final NodeVariable y = newVariable("y");
 
-    final NodeOperation ifLess = Nodes.ite(LESS(x, y), x, y);
+    final NodeOperation ifLess = Nodes.ite(Nodes.less(x, y), x, y);
 
     Assert.assertTrue(equalNodes(Transformer.standardize(Nodes.ite(Nodes.TRUE, x, y)), x));
     Assert.assertTrue(equalNodes(Transformer.standardize(Nodes.ite(Nodes.FALSE, x, y)), y));
