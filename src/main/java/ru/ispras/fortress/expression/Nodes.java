@@ -451,15 +451,15 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.BVSGT, lhs, rhs);
   }
 
-  public static NodeOperation BVANDR(final Node operand) {
+  public static NodeOperation bvandr(final Node operand) {
     return new NodeOperation(StandardOperation.BVANDR, operand);
   }
 
-  public static NodeOperation BVNANDR(final Node operand) {
+  public static NodeOperation bvnandr(final Node operand) {
     return new NodeOperation(StandardOperation.BVNANDR, operand);
   }
 
-  public static NodeOperation BVORR(final Node operand) {
+  public static NodeOperation bvorr(final Node operand) {
     return new NodeOperation(StandardOperation.BVORR, operand);
   }
 

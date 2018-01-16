@@ -112,22 +112,22 @@ public class ReductionCustomOperationsTestCase extends GenericSolverTestBase {
       builder.setInnerRep(formulas);
 
       // BVANDR Asserts
-      formulas.add(Nodes.eq(varBVANDR_NO_BITS,   Nodes.BVANDR(NO_BITS)));
-      formulas.add(Nodes.eq(varBVANDR_ALL_BITS,  Nodes.BVANDR(ALL_BITS)));
-      formulas.add(Nodes.eq(varBVANDR_EVEN_BITS, Nodes.BVANDR(EVEN_BITS)));
-      formulas.add(Nodes.eq(varBVANDR_ODD_BITS,  Nodes.BVANDR(ODD_BITS)));
+      formulas.add(Nodes.eq(varBVANDR_NO_BITS,   Nodes.bvandr(NO_BITS)));
+      formulas.add(Nodes.eq(varBVANDR_ALL_BITS,  Nodes.bvandr(ALL_BITS)));
+      formulas.add(Nodes.eq(varBVANDR_EVEN_BITS, Nodes.bvandr(EVEN_BITS)));
+      formulas.add(Nodes.eq(varBVANDR_ODD_BITS,  Nodes.bvandr(ODD_BITS)));
 
       // BVNANDR Asserts
-      formulas.add(Nodes.eq(varBVNANDR_NO_BITS,   Nodes.BVNANDR(NO_BITS)));
-      formulas.add(Nodes.eq(varBVNANDR_ALL_BITS,  Nodes.BVNANDR(ALL_BITS)));
-      formulas.add(Nodes.eq(varBVNANDR_EVEN_BITS, Nodes.BVNANDR(EVEN_BITS)));
-      formulas.add(Nodes.eq(varBVNANDR_ODD_BITS,  Nodes.BVNANDR(ODD_BITS)));
+      formulas.add(Nodes.eq(varBVNANDR_NO_BITS,   Nodes.bvnandr(NO_BITS)));
+      formulas.add(Nodes.eq(varBVNANDR_ALL_BITS,  Nodes.bvnandr(ALL_BITS)));
+      formulas.add(Nodes.eq(varBVNANDR_EVEN_BITS, Nodes.bvnandr(EVEN_BITS)));
+      formulas.add(Nodes.eq(varBVNANDR_ODD_BITS,  Nodes.bvnandr(ODD_BITS)));
 
       // BVORR Asserts
-      formulas.add(Nodes.eq(varBVORR_NO_BITS,   Nodes.BVORR(NO_BITS)));
-      formulas.add(Nodes.eq(varBVORR_ALL_BITS,  Nodes.BVORR(ALL_BITS)));
-      formulas.add(Nodes.eq(varBVORR_EVEN_BITS, Nodes.BVORR(EVEN_BITS)));
-      formulas.add(Nodes.eq(varBVORR_ODD_BITS,  Nodes.BVORR(ODD_BITS)));
+      formulas.add(Nodes.eq(varBVORR_NO_BITS,   Nodes.bvorr(NO_BITS)));
+      formulas.add(Nodes.eq(varBVORR_ALL_BITS,  Nodes.bvorr(ALL_BITS)));
+      formulas.add(Nodes.eq(varBVORR_EVEN_BITS, Nodes.bvorr(EVEN_BITS)));
+      formulas.add(Nodes.eq(varBVORR_ODD_BITS,  Nodes.bvorr(ODD_BITS)));
 
       // BVNORR Asserts
       formulas.add(Nodes.eq(varBVNORR_NO_BITS,   Nodes.BVNORR(NO_BITS)));
