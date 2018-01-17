@@ -110,14 +110,13 @@ public final class Orthogonalizer {
         // Split one of the clauses to make them disjoint.
         final int index = orthogonalize(clauses.get(j), clauses.get(i), splitBuilder, conflicts);
 
-        // The left-hand-side clause is rewritten (#0).
         if (index == 0) {
+          // The left-hand-side clause is rewritten (#0).
           if (replace(clauses, branches, preJ, j, splitBuilder.build())) {
             j = preJ;
           }
-        }
-        // The right-hand-side clause is rewritten (#1).
-        else if (index == 1) {
+        } else if (index == 1) {
+          // The right-hand-side clause is rewritten (#1).
           if (replace(clauses, branches, preI, i, splitBuilder.build())) {
             i = preI;
             break;
