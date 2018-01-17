@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2013-2018 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,17 +14,17 @@
 
 package ru.ispras.fortress.solver.xml;
 
-public class XMLNotLoadedException extends Exception {
+public class XmlNotLoadedException extends Exception {
   private static final long serialVersionUID = 4850967822331699405L;
 
   private static final String MESSAGE_FILE = "Failed to load data from the '%s' XML document.";
   private static final String MESSAGE_TEXT = "Failed to load data from XML text.";
 
-  public XMLNotLoadedException(final String fileName, final Throwable cause) {
+  public XmlNotLoadedException(final String fileName, final Throwable cause) {
     super(String.format(MESSAGE_FILE, fileName), cause);
   }
 
-  public XMLNotLoadedException(final Throwable cause) {
+  public XmlNotLoadedException(final Throwable cause) {
     super(MESSAGE_TEXT, cause);
   }
 

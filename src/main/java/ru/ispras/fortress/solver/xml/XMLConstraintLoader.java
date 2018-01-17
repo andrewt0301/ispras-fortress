@@ -33,7 +33,6 @@ import javax.xml.parsers.SAXParserFactory;
  * 
  * @author Andrei Tatarnikov
  */
-
 public final class XMLConstraintLoader {
   private XMLConstraintLoader() {}
 
@@ -44,18 +43,17 @@ public final class XMLConstraintLoader {
    * @return A constraint object loaded from the file.
    * 
    * @throws IllegalArgumentException if the parameter equals null.
-   * @throws XMLNotLoadedException if an issue occurred during parsing the XML document.
+   * @throws XmlNotLoadedException if an issue occurred during parsing the XML document.
    */
-
-  public static Constraint loadFromFile(final String fileName) throws XMLNotLoadedException {
+  public static Constraint loadFromFile(final String fileName) throws XmlNotLoadedException {
     InvariantChecks.checkNotNull(fileName);
 
     try {
       final XMLConstraintHandler handler = new XMLConstraintHandler();
       newSAXParser().parse(fileName, handler);
       return handler.getConstraint();
-    } catch (Exception e) {
-      throw new XMLNotLoadedException(fileName, e);
+    } catch (final Exception e) {
+      throw new XmlNotLoadedException(fileName, e);
     }
   }
 
@@ -66,10 +64,9 @@ public final class XMLConstraintLoader {
    * @return A constraint object created from the XML text.
    * 
    * @throws IllegalArgumentException if the parameter equals null.
-   * @throws XMLNotLoadedException if an issue occurred during parsing the XML text.
+   * @throws XmlNotLoadedException if an issue occurred during parsing the XML text.
    */
-
-  public static Constraint loadFromString(final String text) throws XMLNotLoadedException {
+  public static Constraint loadFromString(final String text) throws XmlNotLoadedException {
     InvariantChecks.checkNotNull(text);
 
     try {
@@ -77,22 +74,21 @@ public final class XMLConstraintLoader {
       final XMLConstraintHandler handler = new XMLConstraintHandler();
       newSAXParser().parse(stream, handler);
       return handler.getConstraint();
-    } catch (Exception e) {
-      throw new XMLNotLoadedException(e);
+    } catch (final Exception e) {
+      throw new XmlNotLoadedException(e);
     }
   }
 
   /**
    * Loads a constraint from an XML file pointed by the specified URL.
-   * 
+   *
    * @param url URL that points to an XML file storing the constraint.
    * @return A constraint object loaded from the file.
-   * 
+   *
    * @throws IllegalArgumentException if the parameter equals null.
-   * @throws XMLNotLoadedException if an issue occurred during parsing the XML document.
+   * @throws XmlNotLoadedException if an issue occurred during parsing the XML document.
    */
-
-  public static Constraint loadFromURL(final URL url) throws XMLNotLoadedException {
+  public static Constraint loadFromURL(final URL url) throws XmlNotLoadedException {
     InvariantChecks.checkNotNull(url);
 
     try {
@@ -100,7 +96,7 @@ public final class XMLConstraintLoader {
       newSAXParser().parse(new InputSource(url.openStream()), handler);
       return handler.getConstraint();
     } catch (Exception e) {
-      throw new XMLNotLoadedException(url.toString(), e);
+      throw new XmlNotLoadedException(url.toString(), e);
     }
   }
 
