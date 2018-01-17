@@ -54,128 +54,128 @@ public class ReductionCustomOperationsTestCase extends GenericSolverTestBase {
       builder.setKind(ConstraintKind.FORMULA_BASED);
       builder.setDescription("Constraint to test reduction operations (Verilog-like).");
 
-      final NodeVariable varBVANDR_NO_BITS =
-          new NodeVariable(builder.addVariable("varBVANDR_NO_BITS", BIT_BOOL_TYPE));
-      final NodeVariable varBVANDR_ALL_BITS =
-          new NodeVariable(builder.addVariable("varBVANDR_ALL_BITS", BIT_BOOL_TYPE));
-      final NodeVariable varBVANDR_EVEN_BITS =
-          new NodeVariable(builder.addVariable("varBVANDR_EVEN_BITS", BIT_BOOL_TYPE));
-      final NodeVariable varBVANDR_ODD_BITS =
-          new NodeVariable(builder.addVariable("varBVANDR_ODD_BITS", BIT_BOOL_TYPE));
+      final NodeVariable bvandrNoBits =
+          new NodeVariable(builder.addVariable("bvandrNoBits", BIT_BOOL_TYPE));
+      final NodeVariable bvandrAllBits =
+          new NodeVariable(builder.addVariable("bvandrAllBits", BIT_BOOL_TYPE));
+      final NodeVariable bvandrEvenBits =
+          new NodeVariable(builder.addVariable("bvandrEvenBits", BIT_BOOL_TYPE));
+      final NodeVariable bvandrOddBits =
+          new NodeVariable(builder.addVariable("bvandrOddBits", BIT_BOOL_TYPE));
 
-      final NodeVariable varBVNANDR_NO_BITS =
-          new NodeVariable(builder.addVariable("varBVNANDR_NO_BITS", BIT_BOOL_TYPE));
-      final NodeVariable varBVNANDR_ALL_BITS =
-          new NodeVariable(builder.addVariable("varBVNANDR_ALL_BITS", BIT_BOOL_TYPE));
-      final NodeVariable varBVNANDR_EVEN_BITS =
-          new NodeVariable(builder.addVariable("varBVNANDR_EVEN_BITS", BIT_BOOL_TYPE));
-      final NodeVariable varBVNANDR_ODD_BITS =
-          new NodeVariable(builder.addVariable("varBVNANDR_ODD_BITS", BIT_BOOL_TYPE));
+      final NodeVariable bvnandrNoBits =
+          new NodeVariable(builder.addVariable("bvnandrNoBits", BIT_BOOL_TYPE));
+      final NodeVariable bvnandrAllBits =
+          new NodeVariable(builder.addVariable("bvnandrAllBits", BIT_BOOL_TYPE));
+      final NodeVariable bvnandrEvenBits =
+          new NodeVariable(builder.addVariable("bvnandrEvenBits", BIT_BOOL_TYPE));
+      final NodeVariable bvnandrOddBits =
+          new NodeVariable(builder.addVariable("bvnandrOddBits", BIT_BOOL_TYPE));
 
-      final NodeVariable varBVORR_NO_BITS =
-          new NodeVariable(builder.addVariable("varBVORR_NO_BITS", BIT_BOOL_TYPE));
-      final NodeVariable varBVORR_ALL_BITS =
-          new NodeVariable(builder.addVariable("varBVORR_ALL_BITS", BIT_BOOL_TYPE));
-      final NodeVariable varBVORR_EVEN_BITS =
-          new NodeVariable(builder.addVariable("varBVORR_EVEN_BITS", BIT_BOOL_TYPE));
-      final NodeVariable varBVORR_ODD_BITS =
-          new NodeVariable(builder.addVariable("varBVORR_ODD_BITS", BIT_BOOL_TYPE));
+      final NodeVariable bvorrNoBits =
+          new NodeVariable(builder.addVariable("bvorrNoBits", BIT_BOOL_TYPE));
+      final NodeVariable bvorrAllBits =
+          new NodeVariable(builder.addVariable("bvorrAllBits", BIT_BOOL_TYPE));
+      final NodeVariable bvorrEvenBits =
+          new NodeVariable(builder.addVariable("bvorrEvenBits", BIT_BOOL_TYPE));
+      final NodeVariable bvorrOddBits =
+          new NodeVariable(builder.addVariable("bvorrOddBits", BIT_BOOL_TYPE));
 
-      final NodeVariable varBVNORR_NO_BITS =
-          new NodeVariable(builder.addVariable("varBVNORR_NO_BITS", BIT_BOOL_TYPE));
-      final NodeVariable varBVNORR_ALL_BITS =
-          new NodeVariable(builder.addVariable("varBVNORR_ALL_BITS", BIT_BOOL_TYPE));
-      final NodeVariable varBVNORR_EVEN_BITS =
-          new NodeVariable(builder.addVariable("varBVNORR_EVEN_BITS", BIT_BOOL_TYPE));
-      final NodeVariable varBVNORR_ODD_BITS =
-          new NodeVariable(builder.addVariable("varBVNORR_ODD_BITS", BIT_BOOL_TYPE));
+      final NodeVariable bvnorrNoBits =
+          new NodeVariable(builder.addVariable("bvnorrNoBits", BIT_BOOL_TYPE));
+      final NodeVariable bvnorrAllBits =
+          new NodeVariable(builder.addVariable("bvnorrAllBits", BIT_BOOL_TYPE));
+      final NodeVariable bvnorrEvenBits =
+          new NodeVariable(builder.addVariable("bvnorrEvenBits", BIT_BOOL_TYPE));
+      final NodeVariable bvnorrOddBits =
+          new NodeVariable(builder.addVariable("bvnorrOddBits", BIT_BOOL_TYPE));
 
-      final NodeVariable varBVXORR_NO_BITS =
-          new NodeVariable(builder.addVariable("varBVXORR_NO_BITS", BIT_BOOL_TYPE));
-      final NodeVariable varBVXORR_ALL_BITS =
-          new NodeVariable(builder.addVariable("varBVXORR_ALL_BITS", BIT_BOOL_TYPE));
-      final NodeVariable varBVXORR_EVEN_BITS =
-          new NodeVariable(builder.addVariable("varBVXORR_EVEN_BITS", BIT_BOOL_TYPE));
-      final NodeVariable varBVXORR_ODD_BITS =
-          new NodeVariable(builder.addVariable("varBVXORR_ODD_BITS", BIT_BOOL_TYPE));
+      final NodeVariable bvxorrNoBits =
+          new NodeVariable(builder.addVariable("bvxorrNoBits", BIT_BOOL_TYPE));
+      final NodeVariable bvxorrAllBits =
+          new NodeVariable(builder.addVariable("bvxorrAllBits", BIT_BOOL_TYPE));
+      final NodeVariable bvxorrEvenBits =
+          new NodeVariable(builder.addVariable("bvxorrEvenBits", BIT_BOOL_TYPE));
+      final NodeVariable bvxorrOddBits =
+          new NodeVariable(builder.addVariable("bvxorrOddBits", BIT_BOOL_TYPE));
 
-      final NodeVariable varBVXNORR_NO_BITS =
-          new NodeVariable(builder.addVariable("varBVXNORR_NO_BITS", BIT_BOOL_TYPE));
-      final NodeVariable varBVXNORR_ALL_BITS =
-          new NodeVariable(builder.addVariable("varBVXNORR_ALL_BITS", BIT_BOOL_TYPE));
-      final NodeVariable varBVXNORR_EVEN_BITS =
-          new NodeVariable(builder.addVariable("varBVXNORR_EVEN_BITS", BIT_BOOL_TYPE));
-      final NodeVariable varBVXNORR_ODD_BITS =
-          new NodeVariable(builder.addVariable("varBVXNORR_ODD_BITS", BIT_BOOL_TYPE));
+      final NodeVariable bvxnorrNoBits =
+          new NodeVariable(builder.addVariable("bvxnorrNoBits", BIT_BOOL_TYPE));
+      final NodeVariable bvxnorrAllBits =
+          new NodeVariable(builder.addVariable("bvxnorrAllBits", BIT_BOOL_TYPE));
+      final NodeVariable bvxnorrEvenBits =
+          new NodeVariable(builder.addVariable("bvxnorrEvenBits", BIT_BOOL_TYPE));
+      final NodeVariable bvxnorrOddBits =
+          new NodeVariable(builder.addVariable("bvxnorrOddBits", BIT_BOOL_TYPE));
 
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
       // BVANDR Asserts
-      formulas.add(Nodes.eq(varBVANDR_NO_BITS,   Nodes.bvandr(NO_BITS)));
-      formulas.add(Nodes.eq(varBVANDR_ALL_BITS,  Nodes.bvandr(ALL_BITS)));
-      formulas.add(Nodes.eq(varBVANDR_EVEN_BITS, Nodes.bvandr(EVEN_BITS)));
-      formulas.add(Nodes.eq(varBVANDR_ODD_BITS,  Nodes.bvandr(ODD_BITS)));
+      formulas.add(Nodes.eq(bvandrNoBits,   Nodes.bvandr(NO_BITS)));
+      formulas.add(Nodes.eq(bvandrAllBits,  Nodes.bvandr(ALL_BITS)));
+      formulas.add(Nodes.eq(bvandrEvenBits, Nodes.bvandr(EVEN_BITS)));
+      formulas.add(Nodes.eq(bvandrOddBits,  Nodes.bvandr(ODD_BITS)));
 
       // BVNANDR Asserts
-      formulas.add(Nodes.eq(varBVNANDR_NO_BITS,   Nodes.bvnandr(NO_BITS)));
-      formulas.add(Nodes.eq(varBVNANDR_ALL_BITS,  Nodes.bvnandr(ALL_BITS)));
-      formulas.add(Nodes.eq(varBVNANDR_EVEN_BITS, Nodes.bvnandr(EVEN_BITS)));
-      formulas.add(Nodes.eq(varBVNANDR_ODD_BITS,  Nodes.bvnandr(ODD_BITS)));
+      formulas.add(Nodes.eq(bvnandrNoBits,   Nodes.bvnandr(NO_BITS)));
+      formulas.add(Nodes.eq(bvnandrAllBits,  Nodes.bvnandr(ALL_BITS)));
+      formulas.add(Nodes.eq(bvnandrEvenBits, Nodes.bvnandr(EVEN_BITS)));
+      formulas.add(Nodes.eq(bvnandrOddBits,  Nodes.bvnandr(ODD_BITS)));
 
       // BVORR Asserts
-      formulas.add(Nodes.eq(varBVORR_NO_BITS,   Nodes.bvorr(NO_BITS)));
-      formulas.add(Nodes.eq(varBVORR_ALL_BITS,  Nodes.bvorr(ALL_BITS)));
-      formulas.add(Nodes.eq(varBVORR_EVEN_BITS, Nodes.bvorr(EVEN_BITS)));
-      formulas.add(Nodes.eq(varBVORR_ODD_BITS,  Nodes.bvorr(ODD_BITS)));
+      formulas.add(Nodes.eq(bvorrNoBits,   Nodes.bvorr(NO_BITS)));
+      formulas.add(Nodes.eq(bvorrAllBits,  Nodes.bvorr(ALL_BITS)));
+      formulas.add(Nodes.eq(bvorrEvenBits, Nodes.bvorr(EVEN_BITS)));
+      formulas.add(Nodes.eq(bvorrOddBits,  Nodes.bvorr(ODD_BITS)));
 
       // BVNORR Asserts
-      formulas.add(Nodes.eq(varBVNORR_NO_BITS,   Nodes.bvnorr(NO_BITS)));
-      formulas.add(Nodes.eq(varBVNORR_ALL_BITS,  Nodes.bvnorr(ALL_BITS)));
-      formulas.add(Nodes.eq(varBVNORR_EVEN_BITS, Nodes.bvnorr(EVEN_BITS)));
-      formulas.add(Nodes.eq(varBVNORR_ODD_BITS,  Nodes.bvnorr(ODD_BITS)));
+      formulas.add(Nodes.eq(bvnorrNoBits,   Nodes.bvnorr(NO_BITS)));
+      formulas.add(Nodes.eq(bvnorrAllBits,  Nodes.bvnorr(ALL_BITS)));
+      formulas.add(Nodes.eq(bvnorrEvenBits, Nodes.bvnorr(EVEN_BITS)));
+      formulas.add(Nodes.eq(bvnorrOddBits,  Nodes.bvnorr(ODD_BITS)));
 
       // BVXORR Asserts
-      formulas.add(Nodes.eq(varBVXORR_NO_BITS,   Nodes.bvxorr(NO_BITS)));
-      formulas.add(Nodes.eq(varBVXORR_ALL_BITS,  Nodes.bvxorr(ALL_BITS)));
-      formulas.add(Nodes.eq(varBVXORR_EVEN_BITS, Nodes.bvxorr(EVEN_BITS)));
-      formulas.add(Nodes.eq(varBVXORR_ODD_BITS,  Nodes.bvxorr(ODD_BITS)));
+      formulas.add(Nodes.eq(bvxorrNoBits,   Nodes.bvxorr(NO_BITS)));
+      formulas.add(Nodes.eq(bvxorrAllBits,  Nodes.bvxorr(ALL_BITS)));
+      formulas.add(Nodes.eq(bvxorrEvenBits, Nodes.bvxorr(EVEN_BITS)));
+      formulas.add(Nodes.eq(bvxorrOddBits,  Nodes.bvxorr(ODD_BITS)));
 
       // BVXNORR Asserts
 
-      formulas.add(Nodes.eq(varBVXNORR_NO_BITS,   Nodes.bvxnorr(NO_BITS)));
-      formulas.add(Nodes.eq(varBVXNORR_ALL_BITS,  Nodes.bvxnorr(ALL_BITS)));
-      formulas.add(Nodes.eq(varBVXNORR_EVEN_BITS, Nodes.bvxnorr(EVEN_BITS)));
-      formulas.add(Nodes.eq(varBVXNORR_ODD_BITS,  Nodes.bvxnorr(ODD_BITS)));
+      formulas.add(Nodes.eq(bvxnorrNoBits,   Nodes.bvxnorr(NO_BITS)));
+      formulas.add(Nodes.eq(bvxnorrAllBits,  Nodes.bvxnorr(ALL_BITS)));
+      formulas.add(Nodes.eq(bvxnorrEvenBits, Nodes.bvxnorr(EVEN_BITS)));
+      formulas.add(Nodes.eq(bvxnorrOddBits,  Nodes.bvxnorr(ODD_BITS)));
 
       return builder.build();
     }
 
     @Override
     public Iterable<Variable> getExpectedVariables() {
-      return Arrays.asList(new Variable("varBVANDR_NO_BITS", BIT_FALSE), new Variable(
-          "varBVANDR_ALL_BITS", BIT_TRUE), new Variable("varBVANDR_EVEN_BITS", BIT_FALSE),
-          new Variable("varBVANDR_ODD_BITS", BIT_FALSE),
+      return Arrays.asList(new Variable("bvandrNoBits", BIT_FALSE), new Variable(
+          "bvandrAllBits", BIT_TRUE), new Variable("bvandrEvenBits", BIT_FALSE),
+          new Variable("bvandrOddBits", BIT_FALSE),
 
-          new Variable("varBVNANDR_NO_BITS", BIT_TRUE), new Variable("varBVNANDR_ALL_BITS",
-              BIT_FALSE), new Variable("varBVNANDR_EVEN_BITS", BIT_TRUE), new Variable(
-              "varBVNANDR_ODD_BITS", BIT_TRUE),
+          new Variable("bvnandrNoBits", BIT_TRUE), new Variable("bvnandrAllBits",
+              BIT_FALSE), new Variable("bvnandrEvenBits", BIT_TRUE), new Variable(
+              "bvnandrOddBits", BIT_TRUE),
 
-          new Variable("varBVORR_NO_BITS", BIT_FALSE), new Variable("varBVORR_ALL_BITS", BIT_TRUE),
-          new Variable("varBVORR_EVEN_BITS", BIT_TRUE),
-          new Variable("varBVORR_ODD_BITS", BIT_TRUE),
+          new Variable("bvorrNoBits", BIT_FALSE), new Variable("bvorrAllBits", BIT_TRUE),
+          new Variable("bvorrEvenBits", BIT_TRUE),
+          new Variable("bvorrOddBits", BIT_TRUE),
 
-          new Variable("varBVNORR_NO_BITS", BIT_TRUE),
-          new Variable("varBVNORR_ALL_BITS", BIT_FALSE), new Variable("varBVNORR_EVEN_BITS",
-              BIT_FALSE), new Variable("varBVNORR_ODD_BITS", BIT_FALSE),
+          new Variable("bvnorrNoBits", BIT_TRUE),
+          new Variable("bvnorrAllBits", BIT_FALSE), new Variable("bvnorrEvenBits",
+              BIT_FALSE), new Variable("bvnorrOddBits", BIT_FALSE),
 
-          new Variable("varBVXORR_NO_BITS", BIT_FALSE), new Variable("varBVXORR_ALL_BITS",
-              BIT_FALSE), new Variable("varBVXORR_EVEN_BITS", BIT_FALSE), new Variable(
-              "varBVXORR_ODD_BITS", BIT_TRUE),
+          new Variable("bvxorrNoBits", BIT_FALSE), new Variable("bvxorrAllBits",
+              BIT_FALSE), new Variable("bvxorrEvenBits", BIT_FALSE), new Variable(
+              "bvxorrOddBits", BIT_TRUE),
 
-          new Variable("varBVXNORR_NO_BITS", BIT_TRUE), new Variable("varBVXNORR_ALL_BITS",
-              BIT_TRUE), new Variable("varBVXNORR_EVEN_BITS", BIT_TRUE), new Variable(
-              "varBVXNORR_ODD_BITS", BIT_FALSE));
+          new Variable("bvxnorrNoBits", BIT_TRUE), new Variable("bvxnorrAllBits",
+              BIT_TRUE), new Variable("bvxnorrEvenBits", BIT_TRUE), new Variable(
+              "bvxnorrOddBits", BIT_FALSE));
     }
   }
 }
