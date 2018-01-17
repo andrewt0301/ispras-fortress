@@ -49,7 +49,7 @@ public final class XMLConstraintLoader {
     InvariantChecks.checkNotNull(fileName);
 
     try {
-      final XMLConstraintHandler handler = new XMLConstraintHandler();
+      final XmlConstraintHandler handler = new XmlConstraintHandler();
       newSAXParser().parse(fileName, handler);
       return handler.getConstraint();
     } catch (final Exception e) {
@@ -71,7 +71,7 @@ public final class XMLConstraintLoader {
 
     try {
       final InputStream stream = new ByteArrayInputStream(text.getBytes("UTF-8"));
-      final XMLConstraintHandler handler = new XMLConstraintHandler();
+      final XmlConstraintHandler handler = new XmlConstraintHandler();
       newSAXParser().parse(stream, handler);
       return handler.getConstraint();
     } catch (final Exception e) {
@@ -92,7 +92,7 @@ public final class XMLConstraintLoader {
     InvariantChecks.checkNotNull(url);
 
     try {
-      final XMLConstraintHandler handler = new XMLConstraintHandler();
+      final XmlConstraintHandler handler = new XmlConstraintHandler();
       newSAXParser().parse(new InputSource(url.openStream()), handler);
       return handler.getConstraint();
     } catch (Exception e) {
