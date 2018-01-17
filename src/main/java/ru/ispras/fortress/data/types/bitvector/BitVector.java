@@ -166,7 +166,7 @@ public abstract class BitVector implements Comparable<BitVector> {
     BitVectorAlgorithm.copy(src, this);
   }
 
-  /***
+  /**
    * Checks the equality of bit vectors. Bit vectors are considered equal if their sizes match and
    * they hold equal data (comparison is performed byte by byte from the high end to the low end).
    *
@@ -424,8 +424,8 @@ public abstract class BitVector implements Comparable<BitVector> {
    * the concatenation result is like this:
    * <pre>
    * |HIGH|...|LOW|
-   * M            0</pre>
-   * {@code N} is the number of bit vectors to be concatenated;
+   * M            0
+   * </pre>{@code N} is the number of bit vectors to be concatenated;
    * {@code M} is the total bit size of the concatenation result.<p>
    *
    * @param sources Source bit vectors.
