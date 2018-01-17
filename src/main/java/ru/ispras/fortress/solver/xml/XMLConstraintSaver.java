@@ -54,7 +54,6 @@ import javax.xml.transform.stream.StreamResult;
  * 
  * @author Andrei Tatarnikov
  */
-
 public final class XMLConstraintSaver {
   private final Constraint constraint;
   private Document document;
@@ -70,7 +69,6 @@ public final class XMLConstraintSaver {
    *         FORMULA_BASED). Currently, the possibility of saving other
    *         constraint types is not implemented.
    */
-
   public XMLConstraintSaver(final Constraint constraint) {
     InvariantChecks.checkNotNull(constraint);
 
@@ -184,7 +182,7 @@ public final class XMLConstraintSaver {
     final Element result = document.createElement(XMLConst.NODE_CONSTRAINT);
 
     final String versionText = String.format("%d.%d",
-        XMLFormatVersion.MAJOR, XMLFormatVersion.MINOR);
+        XmlFormatVersion.MAJOR, XmlFormatVersion.MINOR);
 
     result.setAttribute(XMLConst.ATTR_FORMAT_VERSION, versionText);
     return result;

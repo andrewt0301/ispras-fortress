@@ -44,7 +44,6 @@ import java.util.Stack;
  * 
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 final class XMLConstraintHandler extends DefaultHandler {
   private final XMLConstraintBuilder builder = new XMLConstraintBuilder();
   private final Stack<XMLNodeType> nodes = new Stack<>();
@@ -357,9 +356,9 @@ final class XMLConstraintHandler extends DefaultHandler {
     final int majorVersion = Integer.valueOf(versionString.split("[.]")[0]);
     final int minorVersion = Integer.valueOf(versionString.split("[.]")[1]);
 
-    if ((XMLFormatVersion.MAJOR != majorVersion) || (XMLFormatVersion.MINOR != minorVersion)) {
+    if ((XmlFormatVersion.MAJOR != majorVersion) || (XmlFormatVersion.MINOR != minorVersion)) {
       throw new SAXException(String.format(Messages.ERR_XML_BAD_VERSION, majorVersion,
-        minorVersion, XMLFormatVersion.MAJOR, XMLFormatVersion.MINOR));
+        minorVersion, XmlFormatVersion.MAJOR, XmlFormatVersion.MINOR));
     }
   }
 

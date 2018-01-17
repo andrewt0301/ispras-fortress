@@ -15,25 +15,10 @@
 package ru.ispras.fortress.solver.xml;
 
 /**
- * The XMLFormatVersion class stores information about the current version of the storage format.
- * 
- * @author Andrei Tatarnikov
- */
-
-class XMLFormatVersion {
-  private XMLFormatVersion() {}
-
-  public static final int MAJOR = 1;
-  public static final int MINOR = 0;
-}
-
-
-/**
  * The XMLConst class stores string constants related to an XML representation of a constraint.
  * 
  * @author Andrei Tatarnikov
  */
-
 class XMLConst {
   private XMLConst() {}
 
