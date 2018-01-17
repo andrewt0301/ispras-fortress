@@ -97,7 +97,7 @@ public final class InvariantChecks {
 
   /**
    * Checks the invariant "Object reference is not null" and
-   * throws an exception if it is violated. 
+   * throws an exception if it is violated.
    *
    * @param obj Object reference to be checked.
    * @param message Exception message.
@@ -111,7 +111,7 @@ public final class InvariantChecks {
 
   /**
    * Checks the invariants "Object reference is not null" and "Collection is not empty"
-   * throws an exception if they are violated. 
+   * throws an exception if they are violated.
    *
    * @param collection Collection to be checked.
    * @param <T> Collection item type.
@@ -147,7 +147,7 @@ public final class InvariantChecks {
 
   /**
    * Checks the invariant "Integer value is greater than {@code 0}" and
-   * throws an exception if it is violated. 
+   * throws an exception if it is violated.
    * 
    * @param num Integer value to be checked.
    * 
@@ -177,7 +177,7 @@ public final class InvariantChecks {
 
   /**
    * Checks the invariant "{@code 0 <= index < length}" and
-   * throws an exception if it is violated. 
+   * throws an exception if it is violated.
    *
    * @param index Index to be checked.
    * @param length Length of the allowed range.
@@ -194,7 +194,7 @@ public final class InvariantChecks {
 
   /**
    * Checks the invariant "{@code 0 <= index <= length}" and
-   * throws an exception if it is violated. 
+   * throws an exception if it is violated.
    *
    * @param index Index to be checked.
    * @param length Length of the allowed range.
@@ -210,36 +210,40 @@ public final class InvariantChecks {
   }
 
   /**
-   * Checks the invariant "Numeric value {@code a} is greater than {@code b}" and
-   * throws an exception if it is violated. 
+   * Checks the invariant "Numeric value {@code first} is greater than {@code second}"
+   * and throws an exception if it is violated.
    *
-   * @param a Numeric value to be checked.
-   * @param b Numeric value to be checked.
+   * @param first Numeric value to be checked.
+   * @param second Numeric value to be checked.
    * @param <T> Value type.
    *
    * @throws IllegalArgumentException if the invariant is violated ({@code a <= b}).
    */
-  public static <T extends Number & Comparable<T>> void checkGreaterThan(final T a, final T b) {
-    if (a.compareTo(b) <= 0) {
+  public static <T extends Number & Comparable<T>> void checkGreaterThan(
+      final T first,
+      final T second) {
+    if (first.compareTo(second) <= 0) {
       throw new IllegalArgumentException(
-          String.format("%s must be > %s", a, b));
+          String.format("%s must be > %s", first, second));
     }
   }
 
   /**
-   * Checks the invariant "Numeric value {@code a} is greater than or equal to {@code b}" and
-   * throws an exception if it is violated. 
+   * Checks the invariant "Numeric value {@code first} is greater than or equal to {@code second}"
+   * and throws an exception if it is violated.
    *
-   * @param a Numeric value to be checked.
-   * @param b Numeric value to be checked.
+   * @param first Numeric value to be checked.
+   * @param second Numeric value to be checked.
    * @param <T> Value type.
    *
    * @throws IllegalArgumentException if the invariant is violated ({@code a < b}).
    */
-  public static <T extends Number & Comparable<T>> void checkGreaterOrEq(final T a, final T b) {
-    if (a.compareTo(b) < 0) {
+  public static <T extends Number & Comparable<T>> void checkGreaterOrEq(
+      final T first,
+      final T second) {
+    if (first.compareTo(second) < 0) {
       throw new IllegalArgumentException(
-          String.format("%s must be >= %s", a, b));
+          String.format("%s must be >= %s", first, second));
     }
   }
 }
