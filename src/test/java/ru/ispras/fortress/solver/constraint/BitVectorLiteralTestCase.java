@@ -43,35 +43,34 @@ public class BitVectorLiteralTestCase extends GenericSolverTestBase {
   public BitVectorLiteralTestCase() {
     super(new BitVectorLiteralConstraint());
   }
-}
 
+  public static final class BitVectorLiteralConstraint implements SampleConstraint {
+    private static final DataType BitVector32 = DataType.BIT_VECTOR(32);
+    private static final DataType BitVector1 = DataType.BIT_VECTOR(1);
 
-final class BitVectorLiteralConstraint implements GenericSolverTestBase.SampleConstraint {
-  private static final DataType BitVector32 = DataType.BIT_VECTOR(32);
-  private static final DataType BitVector1 = DataType.BIT_VECTOR(1);
+    public Constraint getConstraint() {
+      final ConstraintBuilder builder = new ConstraintBuilder();
 
-  public Constraint getConstraint() {
-    final ConstraintBuilder builder = new ConstraintBuilder();
+      builder.setName("BitVectorLiteral");
+      builder.setKind(ConstraintKind.FORMULA_BASED);
+      builder.setDescription("BitVector solving with different literal radix in output");
 
-    builder.setName("BitVectorLiteral");
-    builder.setKind(ConstraintKind.FORMULA_BASED);
-    builder.setDescription("BitVector solving with different literal radix in output");
+      final NodeVariable x = new NodeVariable(builder.addVariable("x", BitVector32));
+      final NodeVariable y = new NodeVariable(builder.addVariable("y", BitVector1));
 
-    final NodeVariable x = new NodeVariable(builder.addVariable("x", BitVector32));
-    final NodeVariable y = new NodeVariable(builder.addVariable("y", BitVector1));
+      final Formulas formulas = new Formulas();
+      builder.setInnerRep(formulas);
 
-    final Formulas formulas = new Formulas();
-    builder.setInnerRep(formulas);
+      final Node bit = Nodes.bvextract(0, 0, x);
+      formulas.add(Nodes.eq(y, bit));
 
-    final Node bit = Nodes.bvextract(0, 0, x);
-    formulas.add(Nodes.eq(y, bit));
+      return builder.build();
+    }
 
-    return builder.build();
-  }
-
-  public Iterable<Variable> getExpectedVariables() {
-    return Arrays.asList(
-        new Variable("x", BitVector32.valueOf("0", 10)),
-        new Variable("y", BitVector1.valueOf("0", 10)));
+    public Iterable<Variable> getExpectedVariables() {
+      return Arrays.asList(
+          new Variable("x", BitVector32.valueOf("0", 10)),
+          new Variable("y", BitVector1.valueOf("0", 10)));
+    }
   }
 }

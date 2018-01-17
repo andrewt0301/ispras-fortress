@@ -48,7 +48,7 @@ public class BitVectorExtractionTestCase extends GenericSolverTestBase {
     super(new BitVectorExtractionConstraint());
   }
 
-  public static final class BitVectorExtractionConstraint implements GenericSolverTestBase.SampleConstraint {
+  public static final class BitVectorExtractionConstraint implements SampleConstraint {
     private static final DataType BitVector32 = DataType.BIT_VECTOR(32);
     private static final DataType BitVector8 = DataType.BIT_VECTOR(8);
 
