@@ -48,8 +48,7 @@ public final class PowerOfTwoCustomTestCase extends GenericSolverTestBase {
   /**
    * The sample is similar to the PowerOfTwo sample, but the is_pow_of_two function is provided as a
    * custom text-based operation that extends the solver.
-   *
-   * The constraint as described in the SMT-LIB language:
+   * <p><The constraint as described in the SMT-LIB language:
    *
    * <pre>
    * (declare-const x (_ BitVec 32))
@@ -69,7 +68,7 @@ public final class PowerOfTwoCustomTestCase extends GenericSolverTestBase {
    *
    * <pre>
    *     sat ((x #x00000080))
-   * </pre>
+   * </pre>/p>
    */
   private static final int BIT_VECTOR_SIZE = 32;
   private static final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_SIZE);

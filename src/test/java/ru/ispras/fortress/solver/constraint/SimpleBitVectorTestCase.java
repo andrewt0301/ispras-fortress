@@ -42,7 +42,6 @@ public final class SimpleBitVectorTestCase extends GenericSolverTestBase {
    * (get-value (a b))
    * (exit)
    * </pre>
-   *
    * Expected output: sat ((a #b010) (b #b101))
    */
   public static class SimpleBitVector implements SampleConstraint {
