@@ -18,6 +18,7 @@ import ru.ispras.fortress.data.Variable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.EQ, operands);
   }
 
-  public static NodeOperation eq(final List<? extends Node> operands) {
+  public static NodeOperation eq(final Collection<? extends Node> operands) {
     return new NodeOperation(StandardOperation.EQ, operands);
   }
 
@@ -72,7 +73,7 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.AND, operands);
   }
 
-  public static NodeOperation and(final List<? extends Node> operands) {
+  public static NodeOperation and(final Collection<? extends Node> operands) {
     return new NodeOperation(StandardOperation.AND, operands);
   }
 
@@ -80,7 +81,7 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.OR, operands);
   }
 
-  public static NodeOperation or(final List<? extends Node> operands) {
+  public static NodeOperation or(final Collection<? extends Node> operands) {
     return new NodeOperation(StandardOperation.OR, operands);
   }
 
@@ -92,7 +93,7 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.XOR, operands);
   }
 
-  public static NodeOperation xor(final List<? extends Node> operands) {
+  public static NodeOperation xor(final Collection<? extends Node> operands) {
     return new NodeOperation(StandardOperation.XOR, operands);
   }
 
@@ -116,7 +117,7 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.ADD, operands);
   }
 
-  public static NodeOperation add(final List<? extends Node> operands) {
+  public static NodeOperation add(final Collection<? extends Node> operands) {
     return new NodeOperation(StandardOperation.ADD, operands);
   }
 
@@ -124,7 +125,7 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.SUB, operands);
   }
 
-  public static NodeOperation sub(final List<? extends Node> operands) {
+  public static NodeOperation sub(final Collection<? extends Node> operands) {
     return new NodeOperation(StandardOperation.SUB, operands);
   }
 
@@ -136,7 +137,7 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.MUL, operands);
   }
 
-  public static NodeOperation mul(final List<? extends Node> operands) {
+  public static NodeOperation mul(final Collection<? extends Node> operands) {
     return new NodeOperation(StandardOperation.MUL, operands);
   }
 
@@ -176,7 +177,7 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.MIN, operands);
   }
 
-  public static NodeOperation min(final List<? extends Node> operands) {
+  public static NodeOperation min(final Collection<? extends Node> operands) {
     return new NodeOperation(StandardOperation.MIN, operands);
   }
 
@@ -184,7 +185,7 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.MAX, operands);
   }
 
-  public static NodeOperation max(final List<? extends Node> operands) {
+  public static NodeOperation max(final Collection<? extends Node> operands) {
     return new NodeOperation(StandardOperation.MAX, operands);
   }
 
@@ -192,7 +193,7 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.BVADD, operands);
   }
 
-  public static NodeOperation bvadd(final List<? extends Node> operands) {
+  public static NodeOperation bvadd(final Collection<? extends Node> operands) {
     return new NodeOperation(StandardOperation.BVADD, operands);
   }
 
@@ -200,7 +201,7 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.BVSUB, operands);
   }
 
-  public static NodeOperation bvsub(final List<? extends Node> operands) {
+  public static NodeOperation bvsub(final Collection<? extends Node> operands) {
     return new NodeOperation(StandardOperation.BVSUB, operands);
   }
 
@@ -212,7 +213,7 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.BVMUL, operands);
   }
 
-  public static NodeOperation bvmul(final List<? extends Node> operands) {
+  public static NodeOperation bvmul(final Collection<? extends Node> operands) {
     return new NodeOperation(StandardOperation.BVMUL, operands);
   }
 
@@ -258,7 +259,7 @@ public final class Nodes {
   }
 
   // Operands: [HIGH, ... , LOW]
-  public static NodeOperation bvconcat(final List<? extends Node> operands) {
+  public static NodeOperation bvconcat(final Collection<? extends Node> operands) {
     return new NodeOperation(StandardOperation.BVCONCAT, operands);
   }
 
@@ -268,7 +269,7 @@ public final class Nodes {
   }
 
   // Operands: [LOW, ... , HIGH]
-  public static NodeOperation reverseBvconcat(final List<? extends Node> operands) {
+  public static NodeOperation reverseBvconcat(final Collection<? extends Node> operands) {
     final List<Node> reversedOperands = new ArrayList<>(operands);
     Collections.reverse(reversedOperands);
     return bvconcat(reversedOperands);
@@ -387,7 +388,7 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.BVOR, operands);
   }
 
-  public static NodeOperation bvor(final List<? extends Node> operands) {
+  public static NodeOperation bvor(final Collection<? extends Node> operands) {
     return new NodeOperation(StandardOperation.BVOR, operands);
   }
 
@@ -395,7 +396,7 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.BVXOR, operands);
   }
 
-  public static NodeOperation bvxor(final List<? extends Node> operands) {
+  public static NodeOperation bvxor(final Collection<? extends Node> operands) {
     return new NodeOperation(StandardOperation.BVXOR, operands);
   }
 
@@ -403,7 +404,7 @@ public final class Nodes {
     return new NodeOperation(StandardOperation.BVAND, operands);
   }
 
-  public static NodeOperation bvand(final List<? extends Node> operands) {
+  public static NodeOperation bvand(final Collection<? extends Node> operands) {
     return new NodeOperation(StandardOperation.BVAND, operands);
   }
 
