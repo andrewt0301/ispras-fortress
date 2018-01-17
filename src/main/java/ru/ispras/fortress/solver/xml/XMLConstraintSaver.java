@@ -49,10 +49,10 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 /**
- * The XMLConstraintSaver class provides functionality to save a constraint with all its attributes
- * to an XML file.
- * 
- * @author Andrei Tatarnikov
+ * The {@link XMLConstraintSaver} class provides functionality to save a constraint with all
+ * its attributes to an XML file.
+ *
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 public final class XMLConstraintSaver {
   private final Constraint constraint;
@@ -135,7 +135,7 @@ public final class XMLConstraintSaver {
     final Element innerRep = document.createElement(XmlConst.NODE_INNER_REP);
     root.appendChild(innerRep);
 
-    final ExprTreeWalker walker = new ExprTreeWalker(new XMLBuilderForExprs(document, innerRep));
+    final ExprTreeWalker walker = new ExprTreeWalker(new XmlDocumentBuilder(document, innerRep));
 
     walker.visit(((Formulas) constraint.getInnerRep()).exprs());
   }
@@ -213,171 +213,164 @@ public final class XMLConstraintSaver {
 
     return result;
   }
-}
-
-
-/**
- * The XMLBuilderForExprs class provides functionality for translating an expression tree to a XML
- * tree.
- * 
- * @author Andrei Tatarnikov
- */
-
-class XMLBuilderForExprs implements ExprTreeVisitor {
-  private final Document document;
-  private final Deque<Element> elements;
 
   /**
-   * Constructs a builder object that will add needed nodes to the specified document.
-   * 
-   * @param document The document to be built.
-   * @param root The root element of the document to be built.
+   * The {@link XmlDocumentBuilder} class provides functionality for translating
+   * an expression tree to a XML tree.
+   *
+   * @ @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
    */
+  private static final class XmlDocumentBuilder implements ExprTreeVisitor {
+    private final Document document;
+    private final Deque<Element> elements;
 
-  public XMLBuilderForExprs(final Document document, final Element root) {
-    InvariantChecks.checkNotNull(document);
-    InvariantChecks.checkNotNull(root);
+    /**
+     * Constructs a builder object that will add needed nodes to the specified document.
+     *
+     * @param document The document to be built.
+     * @param root The root element of the document to be built.
+     */
+    public XmlDocumentBuilder(final Document document, final Element root) {
+      InvariantChecks.checkNotNull(document);
+      InvariantChecks.checkNotNull(root);
 
-    this.document = document;
-    this.elements = new LinkedList<Element>();
+      this.document = document;
+      this.elements = new LinkedList<Element>();
 
-    this.elements.addLast(root);
-  }
+      this.elements.addLast(root);
+    }
 
-  @Override
-  public Status getStatus() {
-    // We are not going to stop the walker or to skip any subtrees.
-    // Therefore, it is always OK.
-    return Status.OK;
-  }
+    @Override
+    public Status getStatus() {
+      // We are not going to stop the walker or to skip any subtrees.
+      // Therefore, it is always OK.
+      return Status.OK;
+    }
 
-  @Override
-  public void onBegin() {
-    assert !elements.isEmpty();
+    @Override
+    public void onBegin() {
+      InvariantChecks.checkNotEmpty(elements);
 
-    final Element formula = document.createElement(XmlConst.NODE_FORMULA);
-    elements.getLast().appendChild(formula);
-    elements.addLast(formula);
-  }
+      final Element formula = document.createElement(XmlConst.NODE_FORMULA);
+      elements.getLast().appendChild(formula);
+      elements.addLast(formula);
+    }
 
-  @Override
-  public void onEnd() {
-    assert !elements.isEmpty();
+    @Override
+    public void onEnd() {
+      InvariantChecks.checkNotEmpty(elements);
+      elements.removeLast();
+    }
 
-    elements.removeLast();
-  }
+    @Override
+    public void onOperationBegin(final NodeOperation expr) {
+      final Enum<?> op = expr.getOperationId();
+      InvariantChecks.checkNotEmpty(elements);
 
-  @Override
-  public void onOperationBegin(final NodeOperation expr) {
-    final Enum<?> op = expr.getOperationId();
+      final Element operation = document.createElement(XmlConst.NODE_OPERATION);
+      elements.getLast().appendChild(operation);
+      elements.addLast(operation);
 
-    assert !elements.isEmpty();
+      operation.setAttribute(XmlConst.ATTR_OPERATION_ID, op.name());
+      operation.setAttribute(XmlConst.ATTR_OPERATION_FAMILY, op.getClass().getName());
+    }
 
-    final Element operation = document.createElement(XmlConst.NODE_OPERATION);
-    elements.getLast().appendChild(operation);
-    elements.addLast(operation);
+    @Override
+    public void onOperationEnd(final NodeOperation expr) {
+      InvariantChecks.checkNotEmpty(elements);
+      elements.removeLast();
+    }
 
-    operation.setAttribute(XmlConst.ATTR_OPERATION_ID, op.name());
-    operation.setAttribute(XmlConst.ATTR_OPERATION_FAMILY, op.getClass().getName());
-  }
+    @Override
+    public int[] getOperandOrder() {
+      return null;
+    }
 
-  @Override
-  public void onOperationEnd(final NodeOperation expr) {
-    assert !elements.isEmpty();
+    @Override
+    public void onOperandBegin(
+        final NodeOperation expr,
+        final Node node,
+        final int index) {
+      // Do nothing.
+    }
 
-    elements.removeLast();
-  }
+    @Override
+    public void onOperandEnd(
+        final NodeOperation expr,
+        final Node node,
+        final int index) {
+      // Do nothing.
+    }
 
-  @Override
-  public int[] getOperandOrder() {
-    return null;
-  }
+    @Override
+    public void onValue(final NodeValue value) {
+      final Data data = value.getData();
+      InvariantChecks.checkNotEmpty(elements);;
 
-  @Override
-  public void onOperandBegin(
-      final NodeOperation expr,
-      final Node node,
-      final int index) {
-    // Do nothing.
-  }
+      final Element valueElement = document.createElement(XmlConst.NODE_VALUE);
+      elements.getLast().appendChild(valueElement);
 
-  @Override
-  public void onOperandEnd(
-      final NodeOperation expr,
-      final Node node,
-      final int index) {
-    // Do nothing.
-  }
+      valueElement.setAttribute(XmlConst.ATTR_TYPE_ID, data.getType().toString());
+      valueElement.setAttribute(XmlConst.ATTR_VALUE, data.getValue().toString());
+    }
 
-  @Override
-  public void onValue(final NodeValue value) {
-    final Data data = value.getData();
+    @Override
+    public void onVariable(final NodeVariable variable) {
+      InvariantChecks.checkNotEmpty(elements);;
 
-    assert !elements.isEmpty();
+      final Element variableRef = document.createElement(XmlConst.NODE_VARIABLE_REF);
+      elements.getLast().appendChild(variableRef);
 
-    final Element valueElement = document.createElement(XmlConst.NODE_VALUE);
-    elements.getLast().appendChild(valueElement);
+      variableRef.setAttribute(XmlConst.ATTR_VARIABLE_NAME, variable.getName());
+    }
 
-    valueElement.setAttribute(XmlConst.ATTR_TYPE_ID, data.getType().toString());
-    valueElement.setAttribute(XmlConst.ATTR_VALUE, data.getValue().toString());
-  }
+    @Override
+    public void onBindingBegin(final NodeBinding node) {
+      InvariantChecks.checkNotEmpty(elements);
 
-  @Override
-  public void onVariable(final NodeVariable variable) {
-    assert !elements.isEmpty();
+      final Element binding = document.createElement(XmlConst.NODE_BINDING);
+      final Element bindingList = document.createElement(XmlConst.NODE_BINDING_LIST);
 
-    final Element variableRef = document.createElement(XmlConst.NODE_VARIABLE_REF);
-    elements.getLast().appendChild(variableRef);
+      binding.appendChild(bindingList);
+      elements.getLast().appendChild(binding);
 
-    variableRef.setAttribute(XmlConst.ATTR_VARIABLE_NAME, variable.getName());
-  }
+      elements.addLast(binding);
+      elements.addLast(bindingList);
+    }
 
-  @Override
-  public void onBindingBegin(final NodeBinding node) {
-    assert !elements.isEmpty();
+    @Override
+    public void onBindingListEnd(final NodeBinding node) {
+      InvariantChecks.checkNotEmpty(elements);
+      elements.removeLast();
+    }
 
-    final Element binding = document.createElement(XmlConst.NODE_BINDING);
-    final Element bindingList = document.createElement(XmlConst.NODE_BINDING_LIST);
+    @Override
+    public void onBindingEnd(final NodeBinding node) {
+      InvariantChecks.checkNotEmpty(elements);
+      elements.removeLast();
+    }
 
-    binding.appendChild(bindingList);
-    elements.getLast().appendChild(binding);
+    @Override
+    public void onBoundVariableBegin(
+        final NodeBinding node,
+        final NodeVariable variable,
+        final Node value) {
+      InvariantChecks.checkNotEmpty(elements);
 
-    elements.addLast(binding);
-    elements.addLast(bindingList);
-  }
+      final Element binding = document.createElement(XmlConst.NODE_BOUND_VARIABLE);
+      elements.getLast().appendChild(binding);
+      elements.addLast(binding);
 
-  @Override
-  public void onBindingListEnd(final NodeBinding node) {
-    assert !elements.isEmpty();
-    elements.removeLast();
-  }
+      binding.setAttribute(XmlConst.ATTR_VARIABLE_NAME, variable.getName());
+    }
 
-  @Override
-  public void onBindingEnd(final NodeBinding node) {
-    assert !elements.isEmpty();
-    elements.removeLast();
-  }
-
-  @Override
-  public void onBoundVariableBegin(
-      final NodeBinding node,
-      final NodeVariable variable,
-      final Node value) {
-    assert !elements.isEmpty();
-
-    final Element binding = document.createElement(XmlConst.NODE_BOUND_VARIABLE);
-    elements.getLast().appendChild(binding);
-    elements.addLast(binding);
-
-    binding.setAttribute(XmlConst.ATTR_VARIABLE_NAME, variable.getName());
-  }
-
-  @Override
-  public void onBoundVariableEnd(
-      final NodeBinding node,
-      final NodeVariable variable,
-      final Node value) {
-    assert !elements.isEmpty();
-    elements.removeLast();
+    @Override
+    public void onBoundVariableEnd(
+        final NodeBinding node,
+        final NodeVariable variable,
+        final Node value) {
+      InvariantChecks.checkNotEmpty(elements);
+      elements.removeLast();
+    }
   }
 }
