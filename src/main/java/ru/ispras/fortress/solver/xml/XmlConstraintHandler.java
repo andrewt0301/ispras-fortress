@@ -337,7 +337,8 @@ final class XmlConstraintHandler extends DefaultHandler {
     final String attribute = attributes.getValue(attributeName);
 
     if (null == attribute) {
-      throw new SAXException(String.format(XmlMessages.ERR_XML_NO_ATTRIBUTE, attributeName, nodeName));
+      throw new SAXException(
+          String.format(XmlMessages.ERR_XML_NO_ATTRIBUTE, attributeName, nodeName));
     }
 
     return attribute;
