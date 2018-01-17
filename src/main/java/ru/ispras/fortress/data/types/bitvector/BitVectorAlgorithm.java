@@ -20,7 +20,7 @@ public final class BitVectorAlgorithm {
   private BitVectorAlgorithm() {}
 
   public interface IUnaryOperation {
-    byte run(final byte vByte);
+    byte run(final byte byteValue);
   }
 
   public interface IBinaryOperation {
@@ -32,7 +32,7 @@ public final class BitVectorAlgorithm {
   }
 
   public interface IAction {
-    void run(final byte vByte);
+    void run(final byte byteValue);
   }
 
   public interface IBinaryPredicate {
@@ -42,8 +42,8 @@ public final class BitVectorAlgorithm {
   public static enum UnaryOperation implements IUnaryOperation {
     NOT {
       @Override
-      public byte run(final byte vByte) {
-        return (byte) ~vByte;
+      public byte run(final byte byteValue) {
+        return (byte) ~byteValue;
       }
     };
   }
