@@ -502,7 +502,7 @@ final class XmlConstraintBuilder {
       throw new IllegalStateException(XmlMessages.ERR_NO_OPERATION);
     }
 
-    final NodeOperation expr = operations.pop().create();
+    final NodeOperation expr = operations.pop().build();
 
     if (operations.empty()) {
       if (null != formula) {
@@ -524,7 +524,7 @@ final class XmlConstraintBuilder {
       throw new IllegalStateException(XmlMessages.ERR_NO_OPERATION);
     }
 
-    final NodeBinding node = operations.pop().createBinding();
+    final NodeBinding node = operations.pop().buildBinding();
 
     if (operations.empty()) {
       if (null != formula) {
@@ -607,30 +607,31 @@ final class OperationBuilder {
     this.operationId = operationId;
   }
 
-  public void addElement(final Node se) throws Exception {
-    elements.add(se);
+  public void addElement(final Node node) throws Exception {
+    elements.add(node);
   }
 
-  public NodeOperation create() throws Exception {
+  public NodeOperation build() throws Exception {
     if (null == operationId) {
       throw new Exception(XmlMessages.ERR_NO_OPERATION_ID);
     }
 
-    return new NodeOperation(operationId, elements.toArray(new Node[] {}));
+    return new NodeOperation(operationId, elements);
   }
 
-  public NodeBinding createBinding() throws Exception {
+  public NodeBinding buildBinding() throws Exception {
     final Node expr = elements.remove(elements.size() - 1);
-    final List<NodeBinding.BoundVariable> bindings = new ArrayList<NodeBinding.BoundVariable>();
+    final List<NodeBinding.BoundVariable> bindings = new ArrayList<>();
 
-    for (int i = 0; i < elements.size(); i += 2) {
-      if (!(elements.get(i) instanceof NodeVariable)) {
+    for (int index = 0; index < elements.size(); index += 2) {
+      if (!(elements.get(index) instanceof NodeVariable)) {
         throw new Exception("NodeVariable expected");
       }
 
-      final NodeVariable var = (NodeVariable) elements.get(i);
-      bindings.add(NodeBinding.bindVariable(var, elements.get(i + 1)));
+      final NodeVariable var = (NodeVariable) elements.get(index);
+      bindings.add(NodeBinding.bindVariable(var, elements.get(index + 1)));
     }
+
     return new NodeBinding(expr, bindings);
   }
 }
