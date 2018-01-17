@@ -34,7 +34,7 @@ import ru.ispras.fortress.solver.SolverId;
 import ru.ispras.fortress.solver.SolverResult;
 import ru.ispras.fortress.solver.SolverResultChecker;
 import ru.ispras.fortress.solver.xml.XmlConstraintLoader;
-import ru.ispras.fortress.solver.xml.XMLConstraintSaver;
+import ru.ispras.fortress.solver.xml.XmlConstraintSaver;
 import ru.ispras.fortress.solver.xml.XmlNotLoadedException;
 import ru.ispras.fortress.solver.xml.XmlNotSavedException;
 import ru.ispras.fortress.transformer.ReduceOptions;
@@ -110,7 +110,7 @@ public abstract class GenericSolverTestBase {
   @Test
   public final void runSerializerTests() {
     final Constraint constraint = sample.getConstraint();
-    final XMLConstraintSaver saver = new XMLConstraintSaver(constraint);
+    final XmlConstraintSaver saver = new XmlConstraintSaver(constraint);
 
     File tempFile = null;
 

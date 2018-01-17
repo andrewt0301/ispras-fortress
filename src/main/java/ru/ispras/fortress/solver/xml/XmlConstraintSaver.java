@@ -49,12 +49,12 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 /**
- * The {@link XMLConstraintSaver} class provides functionality to save a constraint with all
+ * The {@link XmlConstraintSaver} class provides functionality to save a constraint with all
  * its attributes to an XML file.
  *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-public final class XMLConstraintSaver {
+public final class XmlConstraintSaver {
   private final Constraint constraint;
   private Document document;
 
@@ -69,7 +69,7 @@ public final class XMLConstraintSaver {
    *         FORMULA_BASED). Currently, the possibility of saving other
    *         constraint types is not implemented.
    */
-  public XMLConstraintSaver(final Constraint constraint) {
+  public XmlConstraintSaver(final Constraint constraint) {
     InvariantChecks.checkNotNull(constraint);
 
     if (ConstraintKind.FORMULA_BASED != constraint.getKind()) {
