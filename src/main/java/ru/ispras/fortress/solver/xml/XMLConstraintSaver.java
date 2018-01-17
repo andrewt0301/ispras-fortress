@@ -73,7 +73,8 @@ public final class XMLConstraintSaver {
     InvariantChecks.checkNotNull(constraint);
 
     if (ConstraintKind.FORMULA_BASED != constraint.getKind()) {
-      throw new IllegalArgumentException(Messages.ERR_BAD_CONSTRAINT_KIND + constraint.getKind());
+      throw new IllegalArgumentException(
+          XmlMessages.ERR_BAD_CONSTRAINT_KIND + constraint.getKind());
     }
 
     this.constraint = constraint;

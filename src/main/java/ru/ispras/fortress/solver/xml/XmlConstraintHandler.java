@@ -147,7 +147,7 @@ final class XmlConstraintHandler extends DefaultHandler {
           } else if (variables.containsKey(variableName)) {
             builder.pushElement(new NodeVariable(variables.get(variableName)));
           } else {
-            throw new SAXException(String.format(Messages.ERR_UNDEFINED_VARIABLE, variableName));
+            throw new SAXException(String.format(XmlMessages.ERR_UNDEFINED_VARIABLE, variableName));
           }
 
           break;
@@ -203,7 +203,7 @@ final class XmlConstraintHandler extends DefaultHandler {
     } catch (SAXException e) {
       throw e;
     } catch (Exception e) {
-      throw new SAXException(Messages.ERR_INVALID_CONSTRAINT + e.getMessage(), e);
+      throw new SAXException(XmlMessages.ERR_INVALID_CONSTRAINT + e.getMessage(), e);
     }
 
     // ///////// DEBUG CODE ////////////////////////
@@ -278,7 +278,7 @@ final class XmlConstraintHandler extends DefaultHandler {
     } catch (final SAXException e) {
       throw e;
     } catch (final Exception e) {
-      throw new SAXException(Messages.ERR_INVALID_CONSTRAINT + e.getMessage(), e);
+      throw new SAXException(XmlMessages.ERR_INVALID_CONSTRAINT + e.getMessage(), e);
     }
 
     // ///////// DEBUG CODE ////////////////////////
@@ -324,7 +324,7 @@ final class XmlConstraintHandler extends DefaultHandler {
     final XmlNodeType nodeType = XmlNodeType.fromNodeName(nodeName);
 
     if (null == nodeType) {
-      throw new SAXException(String.format(Messages.ERR_XML_UNKNOWN_NODE, nodeName));
+      throw new SAXException(String.format(XmlMessages.ERR_XML_UNKNOWN_NODE, nodeName));
     }
 
     return nodeType;
@@ -337,7 +337,7 @@ final class XmlConstraintHandler extends DefaultHandler {
     final String attribute = attributes.getValue(attributeName);
 
     if (null == attribute) {
-      throw new SAXException(String.format(Messages.ERR_XML_NO_ATTRIBUTE, attributeName, nodeName));
+      throw new SAXException(String.format(XmlMessages.ERR_XML_NO_ATTRIBUTE, attributeName, nodeName));
     }
 
     return attribute;
@@ -349,7 +349,7 @@ final class XmlConstraintHandler extends DefaultHandler {
     final String versionString = getAttribute(nodeName, attributes, XMLConst.ATTR_FORMAT_VERSION);
 
     if (!versionString.matches("[\\d]+[.][\\d]+")) {
-      throw new SAXException(String.format(Messages.ERR_XML_BAD_ATTIBUTE,
+      throw new SAXException(String.format(XmlMessages.ERR_XML_BAD_ATTIBUTE,
         XMLConst.ATTR_FORMAT_VERSION, versionString, nodeName));
     }
 
@@ -357,7 +357,7 @@ final class XmlConstraintHandler extends DefaultHandler {
     final int minorVersion = Integer.valueOf(versionString.split("[.]")[1]);
 
     if ((XmlFormatVersion.MAJOR != majorVersion) || (XmlFormatVersion.MINOR != minorVersion)) {
-      throw new SAXException(String.format(Messages.ERR_XML_BAD_VERSION, majorVersion,
+      throw new SAXException(String.format(XmlMessages.ERR_XML_BAD_VERSION, majorVersion,
         minorVersion, XmlFormatVersion.MAJOR, XmlFormatVersion.MINOR));
     }
   }
@@ -367,7 +367,7 @@ final class XmlConstraintHandler extends DefaultHandler {
       final XmlNodeType parent) throws SAXException {
     if (!current.isChildOf(parent)) {
       throw new SAXException(String.format(
-        Messages.ERR_XML_BAD_HIERARCHY, current.getNodeName(), parent.getNodeName()));
+        XmlMessages.ERR_XML_BAD_HIERARCHY, current.getNodeName(), parent.getNodeName()));
     }
   }
 
@@ -450,11 +450,11 @@ final class XMLConstraintBuilder {
 
   public void endConstraint() throws Exception {
     if (null == name) {
-      throw new Exception(Messages.ERR_NO_CONSTRAINT_NAME);
+      throw new Exception(XmlMessages.ERR_NO_CONSTRAINT_NAME);
     }
 
     if (null == kind) {
-      throw new Exception(Messages.ERR_NO_CONSTRAINT_KIND);
+      throw new Exception(XmlMessages.ERR_NO_CONSTRAINT_KIND);
     }
   }
 
@@ -469,7 +469,7 @@ final class XMLConstraintBuilder {
   public void beginInnerRep() throws Exception {
     if (null != formulas) {
       throw new IllegalStateException(String.format(
-        Messages.ERR_ALREADY_STARTED, "InnerRep"));
+        XmlMessages.ERR_ALREADY_STARTED, "InnerRep"));
     }
 
     formulas = new Formulas();
@@ -482,7 +482,7 @@ final class XMLConstraintBuilder {
   public void beginFormula() throws Exception {
     if (null != formula) {
       throw new IllegalStateException(String.format(
-        Messages.ERR_ALREADY_STARTED, "Formula"));
+        XmlMessages.ERR_ALREADY_STARTED, "Formula"));
     }
 
     formula = null;
@@ -499,14 +499,14 @@ final class XMLConstraintBuilder {
 
   public void endOperation() throws Exception {
     if (operations.empty()) {
-      throw new IllegalStateException(Messages.ERR_NO_OPERATION);
+      throw new IllegalStateException(XmlMessages.ERR_NO_OPERATION);
     }
 
     final NodeOperation expr = operations.pop().create();
 
     if (operations.empty()) {
       if (null != formula) {
-        throw new IllegalStateException(Messages.ERR_FORMULA_ALREADY_ASSIGNED);
+        throw new IllegalStateException(XmlMessages.ERR_FORMULA_ALREADY_ASSIGNED);
       }
 
       formula = expr;
@@ -521,14 +521,14 @@ final class XMLConstraintBuilder {
 
   public void endBinding() throws Exception {
     if (operations.empty()) {
-      throw new IllegalStateException(Messages.ERR_NO_OPERATION);
+      throw new IllegalStateException(XmlMessages.ERR_NO_OPERATION);
     }
 
     final NodeBinding node = operations.pop().createBinding();
 
     if (operations.empty()) {
       if (null != formula) {
-        throw new IllegalStateException(Messages.ERR_FORMULA_ALREADY_ASSIGNED);
+        throw new IllegalStateException(XmlMessages.ERR_FORMULA_ALREADY_ASSIGNED);
       }
 
       formula = node;
@@ -540,7 +540,7 @@ final class XMLConstraintBuilder {
   public void pushElement(final Node se) throws Exception {
     if (operations.empty()) {
       if (null != formula) {
-        throw new IllegalStateException(Messages.ERR_FORMULA_ALREADY_ASSIGNED);
+        throw new IllegalStateException(XmlMessages.ERR_FORMULA_ALREADY_ASSIGNED);
       }
 
       formula = se;
@@ -552,7 +552,7 @@ final class XMLConstraintBuilder {
   public void pushOperation(final Enum<?> oid) throws Exception {
     if (operations.empty()) {
       throw new IllegalStateException(String.format(
-        Messages.ERR_NO_EXPRESSION_FOR_OP, oid.name()));
+        XmlMessages.ERR_NO_EXPRESSION_FOR_OP, oid.name()));
     }
 
     operations.lastElement().setOperationId(oid);
@@ -601,7 +601,7 @@ final class OperationBuilder {
 
   public void setOperationId(final Enum<?> operationId) throws Exception {
     if (null != this.operationId) {
-      throw new Exception(Messages.ERR_EXTRA_OPERATION_ID);
+      throw new Exception(XmlMessages.ERR_EXTRA_OPERATION_ID);
     }
 
     this.operationId = operationId;
@@ -613,7 +613,7 @@ final class OperationBuilder {
 
   public NodeOperation create() throws Exception {
     if (null == operationId) {
-      throw new Exception(Messages.ERR_NO_OPERATION_ID);
+      throw new Exception(XmlMessages.ERR_NO_OPERATION_ID);
     }
 
     return new NodeOperation(operationId, elements.toArray(new Node[] {}));
