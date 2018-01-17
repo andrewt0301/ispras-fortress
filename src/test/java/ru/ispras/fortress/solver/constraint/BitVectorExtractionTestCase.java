@@ -52,6 +52,7 @@ public class BitVectorExtractionTestCase extends GenericSolverTestBase {
     private static final DataType BitVector32 = DataType.BIT_VECTOR(32);
     private static final DataType BitVector8 = DataType.BIT_VECTOR(8);
 
+    @Override
     public Constraint getConstraint() {
       final ConstraintBuilder builder = new ConstraintBuilder();
 
@@ -75,6 +76,7 @@ public class BitVectorExtractionTestCase extends GenericSolverTestBase {
       return builder.build();
     }
 
+    @Override
     public Iterable<Variable> getExpectedVariables() {
       return Arrays.asList(
           new Variable("x", BitVector32.valueOf("257", 10)),
