@@ -20,7 +20,7 @@ import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.data.types.datamap.DataMap;
-import ru.ispras.fortress.solver.xml.XMLConstraintLoader;
+import ru.ispras.fortress.solver.xml.XmlConstraintLoader;
 import ru.ispras.fortress.solver.xml.XmlNotLoadedException;
 
 import java.util.Arrays;
@@ -38,7 +38,7 @@ final class BitVectorLiteralConstraint2 implements GenericSolverTestBase.SampleC
   public Constraint getConstraint() {
     final String fileName = "./src/test/xml/mips_add_0.xml";
     try {
-      return XMLConstraintLoader.loadFromFile(fileName);
+      return XmlConstraintLoader.loadFromFile(fileName);
     } catch (final XmlNotLoadedException e) {
       e.printStackTrace();
       Assert.fail(e.getMessage());

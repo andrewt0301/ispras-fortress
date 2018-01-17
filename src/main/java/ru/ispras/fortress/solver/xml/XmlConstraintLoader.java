@@ -1,11 +1,11 @@
 /*
  * Copyright 2012-2018 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -28,20 +28,20 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 /**
- * The XMLConstraintLoader class provides functionality that loads a constraint from the specified
- * XML file.
- * 
- * @author Andrei Tatarnikov
+ * The {@link XmlConstraintLoader} class provides functionality that loads a constraint from
+ * the specified XML file.
+ *
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-public final class XMLConstraintLoader {
-  private XMLConstraintLoader() {}
+public final class XmlConstraintLoader {
+  private XmlConstraintLoader() {}
 
   /**
    * Loads a constraint from the specified XML file.
-   * 
+   *
    * @param fileName The full name of an XML file storing the constraint.
    * @return A constraint object loaded from the file.
-   * 
+   *
    * @throws IllegalArgumentException if the parameter equals null.
    * @throws XmlNotLoadedException if an issue occurred during parsing the XML document.
    */
@@ -59,10 +59,10 @@ public final class XMLConstraintLoader {
 
   /**
    * Creates a constraint from the specified XML string.
-   * 
+   *
    * @param text XML text describing a constraint.
    * @return A constraint object created from the XML text.
-   * 
+   *
    * @throws IllegalArgumentException if the parameter equals null.
    * @throws XmlNotLoadedException if an issue occurred during parsing the XML text.
    */

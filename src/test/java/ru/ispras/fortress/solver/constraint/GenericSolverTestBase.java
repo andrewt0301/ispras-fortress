@@ -33,7 +33,7 @@ import ru.ispras.fortress.solver.Solver;
 import ru.ispras.fortress.solver.SolverId;
 import ru.ispras.fortress.solver.SolverResult;
 import ru.ispras.fortress.solver.SolverResultChecker;
-import ru.ispras.fortress.solver.xml.XMLConstraintLoader;
+import ru.ispras.fortress.solver.xml.XmlConstraintLoader;
 import ru.ispras.fortress.solver.xml.XMLConstraintSaver;
 import ru.ispras.fortress.solver.xml.XmlNotLoadedException;
 import ru.ispras.fortress.solver.xml.XmlNotSavedException;
@@ -121,7 +121,7 @@ public abstract class GenericSolverTestBase {
       final String tempFileName = tempFile.getPath();
       saver.saveToFile(tempFileName);
 
-      final Constraint tempFileConstraint = XMLConstraintLoader.loadFromFile(tempFileName);
+      final Constraint tempFileConstraint = XmlConstraintLoader.loadFromFile(tempFileName);
       ConstraintEqualityChecker.check(constraint, tempFileConstraint);
 
       solveAndCheckResult(tempFileConstraint);
@@ -129,7 +129,7 @@ public abstract class GenericSolverTestBase {
       // Saving to and loading from string.
       final String xmlText = saver.saveToString();
 
-      final Constraint xmlTextConstraint = XMLConstraintLoader.loadFromString(xmlText);
+      final Constraint xmlTextConstraint = XmlConstraintLoader.loadFromString(xmlText);
       ConstraintEqualityChecker.check(constraint, xmlTextConstraint);
 
       solveAndCheckResult(xmlTextConstraint);
