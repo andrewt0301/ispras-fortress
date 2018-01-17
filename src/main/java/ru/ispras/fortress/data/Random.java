@@ -141,13 +141,17 @@ public final class Random {
       generators.put(typeId, generator);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setUp() {
       initializer.setUp();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setSeed(final int seed) {
       initializer.setSeed(seed);

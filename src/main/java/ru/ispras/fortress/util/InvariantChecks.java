@@ -183,7 +183,7 @@ public final class InvariantChecks {
    * @param length Length of the allowed range.
    *
    * @throws IndexOutOfBoundsException if the invariant is violated
-   * ({@code index} is not within range {@code [0..length)}).
+   *         ({@code index} is not within range {@code [0..length)}).
    */
   public static void checkBounds(final int index, final int length) {
     if (!(0 <= index && index < length)) {
@@ -200,7 +200,7 @@ public final class InvariantChecks {
    * @param length Length of the allowed range.
    *
    * @throws IndexOutOfBoundsException if the invariant is violated
-   * ({@code index} is not within range {@code [0..length]}).
+   *         ({@code index} is not within range {@code [0..length]}).
    */
   public static void checkBoundsInclusive(final int index, final int length) {
     if (!(0 <= index && index <= length)) {

@@ -308,7 +308,7 @@ public enum DataTypeId {
    * 
    * @param valueClass The type of the object used to store the data (internal representation).
    * @param isLogic Specifies whether the type is logical which means that it is purely
-   * mathematical and is not associated with data types implemented in real hardware.
+   *        mathematical and is not associated with data types implemented in real hardware.
    */
   private DataTypeId(final Class<?> valueClass, final boolean isLogic) {
     this.valueClass = valueClass;

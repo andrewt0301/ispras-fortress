@@ -29,8 +29,7 @@ import java.util.Map;
  * responsible for performing standard operations (StandardOperation) on data objects that hold
  * integers (DataTypeId.LOGIC_INTEGER).
  *
- * <p>
- * Implementation details and conventions common for all operation groups implemented as
+ * <p>Implementation details and conventions common for all operation groups implemented as
  * enumerations:
  *
  * <ol>
@@ -47,7 +46,7 @@ import java.util.Map;
  *
  * <li>The enumeration provides the "dataTypeId" static method that returns the identifier of the
  * data type for which the enumeration provides operations.
- * </ol>
+ * </ol></p>
  *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */

@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2017 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -363,7 +363,7 @@ public final class Data {
    *
    * @param typeId {@link DataTypeId} object the data type is to be compared to.
    * @return {@code true} if the type matches the type specified by the {@code typeId}
-   * argument or {@code false} otherwise.
+   *         argument or {@code false} otherwise.
    */
   public boolean isType(final DataTypeId typeId) {
     return this.type.getTypeId() == typeId;
@@ -375,7 +375,7 @@ public final class Data {
    *
    * @param type {@link DataType} object the data type is to be compared to.
    * @return {@code true} if the type matches the type specified by the {@code type}
-   * argument or {@code false} otherwise.
+   *         argument or {@code false} otherwise.
    */
   public boolean isType(final DataType type) {
     return this.type.equals(type);
