@@ -84,16 +84,16 @@ public final class XMLConstraintSaver {
    * Saves the constraint object to an XML string.
    * 
    * @return XML text for the constraint.
-   * @throws XMLNotSavedException if failed to save the constraint to a string.
+   * @throws XmlNotSavedException if failed to save the constraint to a string.
    */
 
-  public String saveToString() throws XMLNotSavedException {
+  public String saveToString() throws XmlNotSavedException {
     try {
       document = newDocument();
       buildDocument();
       return saveDocumentToString(document);
     } catch (Exception e) {
-      throw new XMLNotSavedException(e);
+      throw new XmlNotSavedException(e);
     } finally {
       document = null;
     }
@@ -105,10 +105,9 @@ public final class XMLConstraintSaver {
    * @param fileName Target XML document file name.
    * 
    * @throws IllegalArgumentException if the parameter equals {@code null}.
-   * @throws XMLNotSavedException if failed to save the constraint to a file.
+   * @throws XmlNotSavedException if failed to save the constraint to a file.
    */
-
-  public void saveToFile(final String fileName) throws XMLNotSavedException {
+  public void saveToFile(final String fileName) throws XmlNotSavedException {
     InvariantChecks.checkNotNull(fileName);
 
     try {
@@ -117,7 +116,7 @@ public final class XMLConstraintSaver {
 
       saveDocumentToFile(document, fileName);
     } catch (Exception e) {
-      throw new XMLNotSavedException(fileName, e);
+      throw new XmlNotSavedException(fileName, e);
     } finally {
       document = null;
     }

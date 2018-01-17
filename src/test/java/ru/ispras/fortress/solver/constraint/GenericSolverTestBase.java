@@ -36,7 +36,7 @@ import ru.ispras.fortress.solver.SolverResultChecker;
 import ru.ispras.fortress.solver.xml.XMLConstraintLoader;
 import ru.ispras.fortress.solver.xml.XMLConstraintSaver;
 import ru.ispras.fortress.solver.xml.XmlNotLoadedException;
-import ru.ispras.fortress.solver.xml.XMLNotSavedException;
+import ru.ispras.fortress.solver.xml.XmlNotSavedException;
 import ru.ispras.fortress.transformer.ReduceOptions;
 import ru.ispras.fortress.transformer.Reducer;
 import ru.ispras.fortress.transformer.Transformer;
@@ -135,7 +135,7 @@ public abstract class GenericSolverTestBase {
       solveAndCheckResult(xmlTextConstraint);
     } catch (final IOException e) {
       Assert.fail("Failed to create a temporary file for constraint " + constraint.getName() + ".");
-    } catch (final XMLNotSavedException e) {
+    } catch (final XmlNotSavedException e) {
       e.printStackTrace();
       Assert.fail(e.getMessage());
     } catch (final XmlNotLoadedException e) {
