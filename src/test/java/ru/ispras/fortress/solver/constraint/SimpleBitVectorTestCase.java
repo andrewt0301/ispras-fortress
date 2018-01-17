@@ -76,7 +76,7 @@ public final class SimpleBitVectorTestCase extends GenericSolverTestBase {
 
     @Override
     public Iterable<Variable> getExpectedVariables() {
-      final List<Variable> result = new ArrayList<Variable>();
+      final List<Variable> result = new ArrayList<>();
 
       result.add(new Variable("a", BIT_VECTOR_TYPE.valueOf("010", 2)));
       result.add(new Variable("b", BIT_VECTOR_TYPE.valueOf("101", 2)));
