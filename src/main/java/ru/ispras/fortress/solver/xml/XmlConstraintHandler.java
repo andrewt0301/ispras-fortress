@@ -33,11 +33,10 @@ import ru.ispras.fortress.solver.constraint.Formulas;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Deque;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 /**
  * The {@link XmlConstraintHandler} class is handler for SAX parser events that builds a constraint
@@ -47,7 +46,7 @@ import java.util.Map;
  */
 final class XmlConstraintHandler extends DefaultHandler {
   private final XmlConstraintBuilder builder = new XmlConstraintBuilder();
-  private final Deque<XmlNodeType> nodes = new LinkedList<>();
+  private final Stack<XmlNodeType> nodes = new Stack<>();
   private final Map<String, Variable> variables = new HashMap<>();
 
   private final Map<String, Variable> incompleteScope = new HashMap<>();
@@ -114,7 +113,7 @@ final class XmlConstraintHandler extends DefaultHandler {
       final Attributes attributes) throws SAXException {
     try {
       final XmlNodeType currentNode = getNodeType(qName);
-      verifyNodeHierarchy(currentNode, nodes.isEmpty() ? null : nodes.getLast());
+      verifyNodeHierarchy(currentNode, nodes.empty() ? null : nodes.lastElement());
 
       switch (currentNode) {
         case CONSTRAINT: {
@@ -225,10 +224,10 @@ final class XmlConstraintHandler extends DefaultHandler {
       final String uri,
       final String localName,
       final String qName) throws SAXException {
-    assert !nodes.isEmpty();
+    assert !nodes.empty();
     try {
       final XmlNodeType currentNode = getNodeType(qName);
-      assert (currentNode == nodes.getLast());
+      assert (currentNode == nodes.lastElement());
 
       switch (currentNode) {
         case CONSTRAINT:
@@ -298,9 +297,9 @@ final class XmlConstraintHandler extends DefaultHandler {
   @Override
   public void characters(
       final char[] ch, final int start, final int length) throws SAXException {
-    assert !nodes.isEmpty();
+    assert !nodes.empty();
 
-    switch (nodes.getLast()) {
+    switch (nodes.lastElement()) {
       case NAME:
         builder.setName(new String(ch, start, length));
         break;
@@ -431,7 +430,7 @@ final class XmlConstraintBuilder {
   private Formulas formulas = null;
   private Node formula = null;
 
-  private final Deque<OperationBuilder> operations = new LinkedList<>();
+  private final Stack<OperationBuilder> operations = new Stack<>();
 
   private void cleanup() {
     constraint = null;
@@ -499,13 +498,13 @@ final class XmlConstraintBuilder {
   }
 
   public void endOperation() throws Exception {
-    if (operations.isEmpty()) {
+    if (operations.empty()) {
       throw new IllegalStateException(XmlMessages.ERR_NO_OPERATION);
     }
 
     final NodeOperation expr = operations.pop().build();
 
-    if (operations.isEmpty()) {
+    if (operations.empty()) {
       if (null != formula) {
         throw new IllegalStateException(XmlMessages.ERR_FORMULA_ALREADY_ASSIGNED);
       }
@@ -521,13 +520,13 @@ final class XmlConstraintBuilder {
   }
 
   public void endBinding() throws Exception {
-    if (operations.isEmpty()) {
+    if (operations.empty()) {
       throw new IllegalStateException(XmlMessages.ERR_NO_OPERATION);
     }
 
     final NodeBinding node = operations.pop().buildBinding();
 
-    if (operations.isEmpty()) {
+    if (operations.empty()) {
       if (null != formula) {
         throw new IllegalStateException(XmlMessages.ERR_FORMULA_ALREADY_ASSIGNED);
       }
@@ -539,24 +538,24 @@ final class XmlConstraintBuilder {
   }
 
   public void pushElement(final Node se) throws Exception {
-    if (operations.isEmpty()) {
+    if (operations.empty()) {
       if (null != formula) {
         throw new IllegalStateException(XmlMessages.ERR_FORMULA_ALREADY_ASSIGNED);
       }
 
       formula = se;
     } else {
-      operations.getLast().addElement(se);
+      operations.lastElement().addElement(se);
     }
   }
 
   public void pushOperation(final Enum<?> oid) throws Exception {
-    if (operations.isEmpty()) {
+    if (operations.empty()) {
       throw new IllegalStateException(String.format(
         XmlMessages.ERR_NO_EXPRESSION_FOR_OP, oid.name()));
     }
 
-    operations.getLast().setOperationId(oid);
+    operations.lastElement().setOperationId(oid);
   }
 
   public void setName(final String name) {
