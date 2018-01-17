@@ -127,12 +127,12 @@ public final class XMLConstraintSaver {
     final Element root = newConstraintElement();
     document.appendChild(root);
 
-    root.appendChild(newTextBasedElement(XMLConst.NODE_NAME, constraint.getName()));
-    root.appendChild(newTextBasedElement(XMLConst.NODE_KIND, constraint.getKind().name()));
-    root.appendChild(newTextBasedElement(XMLConst.NODE_DESCRIPTION, constraint.getDescription()));
+    root.appendChild(newTextBasedElement(XmlConst.NODE_NAME, constraint.getName()));
+    root.appendChild(newTextBasedElement(XmlConst.NODE_KIND, constraint.getKind().name()));
+    root.appendChild(newTextBasedElement(XmlConst.NODE_DESCRIPTION, constraint.getDescription()));
     root.appendChild(newSignatureElement());
 
-    final Element innerRep = document.createElement(XMLConst.NODE_INNER_REP);
+    final Element innerRep = document.createElement(XmlConst.NODE_INNER_REP);
     root.appendChild(innerRep);
 
     final ExprTreeWalker walker = new ExprTreeWalker(new XMLBuilderForExprs(document, innerRep));
@@ -179,12 +179,12 @@ public final class XMLConstraintSaver {
   }
 
   private Element newConstraintElement() {
-    final Element result = document.createElement(XMLConst.NODE_CONSTRAINT);
+    final Element result = document.createElement(XmlConst.NODE_CONSTRAINT);
 
     final String versionText = String.format("%d.%d",
         XmlFormatVersion.MAJOR, XmlFormatVersion.MINOR);
 
-    result.setAttribute(XMLConst.ATTR_FORMAT_VERSION, versionText);
+    result.setAttribute(XmlConst.ATTR_FORMAT_VERSION, versionText);
     return result;
   }
 
@@ -195,7 +195,7 @@ public final class XMLConstraintSaver {
   }
 
   private Element newSignatureElement() {
-    final Element result = document.createElement(XMLConst.NODE_SIGNATURE);
+    final Element result = document.createElement(XmlConst.NODE_SIGNATURE);
 
     for (final Variable variable : constraint.getVariables()) {
       result.appendChild(newVariableElement(variable.getName(), variable.getData()));
@@ -205,11 +205,11 @@ public final class XMLConstraintSaver {
   }
 
   private Element newVariableElement(final String name, final Data data) {
-    final Element result = document.createElement(XMLConst.NODE_VARIABLE);
+    final Element result = document.createElement(XmlConst.NODE_VARIABLE);
 
-    result.setAttribute(XMLConst.ATTR_VARIABLE_NAME, name);
-    result.setAttribute(XMLConst.ATTR_TYPE_ID, data.getType().toString());
-    result.setAttribute(XMLConst.ATTR_VALUE, data.hasValue() ? data.getValue().toString() : "");
+    result.setAttribute(XmlConst.ATTR_VARIABLE_NAME, name);
+    result.setAttribute(XmlConst.ATTR_TYPE_ID, data.getType().toString());
+    result.setAttribute(XmlConst.ATTR_VALUE, data.hasValue() ? data.getValue().toString() : "");
 
     return result;
   }
@@ -255,7 +255,7 @@ class XMLBuilderForExprs implements ExprTreeVisitor {
   public void onBegin() {
     assert !elements.isEmpty();
 
-    final Element formula = document.createElement(XMLConst.NODE_FORMULA);
+    final Element formula = document.createElement(XmlConst.NODE_FORMULA);
     elements.getLast().appendChild(formula);
     elements.addLast(formula);
   }
@@ -273,12 +273,12 @@ class XMLBuilderForExprs implements ExprTreeVisitor {
 
     assert !elements.isEmpty();
 
-    final Element operation = document.createElement(XMLConst.NODE_OPERATION);
+    final Element operation = document.createElement(XmlConst.NODE_OPERATION);
     elements.getLast().appendChild(operation);
     elements.addLast(operation);
 
-    operation.setAttribute(XMLConst.ATTR_OPERATION_ID, op.name());
-    operation.setAttribute(XMLConst.ATTR_OPERATION_FAMILY, op.getClass().getName());
+    operation.setAttribute(XmlConst.ATTR_OPERATION_ID, op.name());
+    operation.setAttribute(XmlConst.ATTR_OPERATION_FAMILY, op.getClass().getName());
   }
 
   @Override
@@ -315,29 +315,29 @@ class XMLBuilderForExprs implements ExprTreeVisitor {
 
     assert !elements.isEmpty();
 
-    final Element valueElement = document.createElement(XMLConst.NODE_VALUE);
+    final Element valueElement = document.createElement(XmlConst.NODE_VALUE);
     elements.getLast().appendChild(valueElement);
 
-    valueElement.setAttribute(XMLConst.ATTR_TYPE_ID, data.getType().toString());
-    valueElement.setAttribute(XMLConst.ATTR_VALUE, data.getValue().toString());
+    valueElement.setAttribute(XmlConst.ATTR_TYPE_ID, data.getType().toString());
+    valueElement.setAttribute(XmlConst.ATTR_VALUE, data.getValue().toString());
   }
 
   @Override
   public void onVariable(final NodeVariable variable) {
     assert !elements.isEmpty();
 
-    final Element variableRef = document.createElement(XMLConst.NODE_VARIABLE_REF);
+    final Element variableRef = document.createElement(XmlConst.NODE_VARIABLE_REF);
     elements.getLast().appendChild(variableRef);
 
-    variableRef.setAttribute(XMLConst.ATTR_VARIABLE_NAME, variable.getName());
+    variableRef.setAttribute(XmlConst.ATTR_VARIABLE_NAME, variable.getName());
   }
 
   @Override
   public void onBindingBegin(final NodeBinding node) {
     assert !elements.isEmpty();
 
-    final Element binding = document.createElement(XMLConst.NODE_BINDING);
-    final Element bindingList = document.createElement(XMLConst.NODE_BINDING_LIST);
+    final Element binding = document.createElement(XmlConst.NODE_BINDING);
+    final Element bindingList = document.createElement(XmlConst.NODE_BINDING_LIST);
 
     binding.appendChild(bindingList);
     elements.getLast().appendChild(binding);
@@ -365,11 +365,11 @@ class XMLBuilderForExprs implements ExprTreeVisitor {
       final Node value) {
     assert !elements.isEmpty();
 
-    final Element binding = document.createElement(XMLConst.NODE_BOUND_VARIABLE);
+    final Element binding = document.createElement(XmlConst.NODE_BOUND_VARIABLE);
     elements.getLast().appendChild(binding);
     elements.addLast(binding);
 
-    binding.setAttribute(XMLConst.ATTR_VARIABLE_NAME, variable.getName());
+    binding.setAttribute(XmlConst.ATTR_VARIABLE_NAME, variable.getName());
   }
 
   @Override

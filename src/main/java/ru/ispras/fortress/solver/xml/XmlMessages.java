@@ -20,6 +20,8 @@ package ru.ispras.fortress.solver.xml;
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 final class XmlMessages {
+  private XmlMessages() {}
+
   public static final String ERR_XML_UNKNOWN_NODE =
       "The \"%s\" node is unexpected in the document.";
   public static final String ERR_XML_NO_ATTRIBUTE =

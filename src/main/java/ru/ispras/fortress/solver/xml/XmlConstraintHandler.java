@@ -346,11 +346,11 @@ final class XmlConstraintHandler extends DefaultHandler {
   // XML representation: <Constraint version="1.0">
   private static void verifyFormatVersion(
       final String nodeName, final Attributes attributes) throws SAXException {
-    final String versionString = getAttribute(nodeName, attributes, XMLConst.ATTR_FORMAT_VERSION);
+    final String versionString = getAttribute(nodeName, attributes, XmlConst.ATTR_FORMAT_VERSION);
 
     if (!versionString.matches("[\\d]+[.][\\d]+")) {
       throw new SAXException(String.format(XmlMessages.ERR_XML_BAD_ATTIBUTE,
-        XMLConst.ATTR_FORMAT_VERSION, versionString, nodeName));
+        XmlConst.ATTR_FORMAT_VERSION, versionString, nodeName));
     }
 
     final int majorVersion = Integer.valueOf(versionString.split("[.]")[0]);
@@ -375,8 +375,8 @@ final class XmlConstraintHandler extends DefaultHandler {
   private static Data getValue(
       final String nodeName,
       final Attributes attributes) throws SAXException {
-    final String typeIdString = getAttribute(nodeName, attributes, XMLConst.ATTR_TYPE_ID);
-    final String valueString = getAttribute(nodeName, attributes, XMLConst.ATTR_VALUE);
+    final String typeIdString = getAttribute(nodeName, attributes, XmlConst.ATTR_TYPE_ID);
+    final String valueString = getAttribute(nodeName, attributes, XmlConst.ATTR_VALUE);
     final DataType typeInfo = DataType.typeOf(typeIdString);
 
     return typeInfo.valueOf(valueString, typeInfo.getTypeRadix());
@@ -386,9 +386,9 @@ final class XmlConstraintHandler extends DefaultHandler {
   private static Variable getVariable(
       final String nodeName,
       final Attributes attributes) throws SAXException {
-    final String variableName = getAttribute(nodeName, attributes, XMLConst.ATTR_VARIABLE_NAME);
-    final String typeIdString = getAttribute(nodeName, attributes, XMLConst.ATTR_TYPE_ID);
-    final String valueString = getAttribute(nodeName, attributes, XMLConst.ATTR_VALUE);
+    final String variableName = getAttribute(nodeName, attributes, XmlConst.ATTR_VARIABLE_NAME);
+    final String typeIdString = getAttribute(nodeName, attributes, XmlConst.ATTR_TYPE_ID);
+    final String valueString = getAttribute(nodeName, attributes, XmlConst.ATTR_VALUE);
 
     final DataType typeInfo = DataType.typeOf(typeIdString);
 
@@ -401,15 +401,15 @@ final class XmlConstraintHandler extends DefaultHandler {
   private static String getVariableRef(
       final String nodeName,
       final Attributes attributes) throws SAXException {
-    return getAttribute(nodeName, attributes, XMLConst.ATTR_VARIABLE_NAME);
+    return getAttribute(nodeName, attributes, XmlConst.ATTR_VARIABLE_NAME);
   }
 
   // XML representation: <Operation id="BVAND"/>
   @SuppressWarnings({"unchecked", "rawtypes"})
   private static Enum<?> getOperationId(
       final String nodeName, final Attributes attributes) throws Exception {
-    final String id = getAttribute(nodeName, attributes, XMLConst.ATTR_OPERATION_ID);
-    final String family = getAttribute(nodeName, attributes, XMLConst.ATTR_OPERATION_FAMILY);
+    final String id = getAttribute(nodeName, attributes, XmlConst.ATTR_OPERATION_ID);
+    final String family = getAttribute(nodeName, attributes, XmlConst.ATTR_OPERATION_FAMILY);
 
     final Class<?> idClass = Class.forName(family);
     return Enum.valueOf((Class<Enum>) idClass, id);

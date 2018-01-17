@@ -31,73 +31,73 @@ enum XmlNodeType {
    * The root node of the document. Contains all information describing a constraint. Specifies the
    * current format version as an attribute. Contains child nodes.
    */
-  CONSTRAINT(XMLConst.NODE_CONSTRAINT),
+  CONSTRAINT(XmlConst.NODE_CONSTRAINT),
 
   /**
    * Specifies the name of a constraint. A child of the Constraint node. Contains text.
    */
-  NAME(XMLConst.NODE_NAME),
+  NAME(XmlConst.NODE_NAME),
 
   /**
    * Stores information about the constraint. A child of the Constraint node. Contains text.
    */
-  KIND(XMLConst.NODE_KIND),
+  KIND(XmlConst.NODE_KIND),
 
   /**
    * Stores the description of a constraint. A child of the Constraint node. Contains text.
    */
-  DESCRIPTION(XMLConst.NODE_DESCRIPTION),
+  DESCRIPTION(XmlConst.NODE_DESCRIPTION),
 
   /**
    * The root node for a tree describing the internal representation of a constraint. For example,
    * it can contain a list of formula expressions that should be satisfied.
    */
-  INNER_REP(XMLConst.NODE_INNER_REP),
+  INNER_REP(XmlConst.NODE_INNER_REP),
 
   /**
    * Specifies a logic formula (or an assertion) describing a condition the constraint must satisfy.
    */
-  FORMULA(XMLConst.NODE_FORMULA),
+  FORMULA(XmlConst.NODE_FORMULA),
 
   /**
    * Specifies the operation performed by operands of an expression.
    */
-  OPERATION(XMLConst.NODE_OPERATION),
+  OPERATION(XmlConst.NODE_OPERATION),
 
   /**
    * Specifies a reference to a global variable which is used in an expression as an operand.
    */
-  VARIABLE_REF(XMLConst.NODE_VARIABLE_REF),
+  VARIABLE_REF(XmlConst.NODE_VARIABLE_REF),
 
   /**
    * Specifies a value used in an expression as an operand.
    */
-  VALUE(XMLConst.NODE_VALUE),
+  VALUE(XmlConst.NODE_VALUE),
 
   /**
    * Describes the signature of a constraint including global variables.
    */
-  SIGNATURE(XMLConst.NODE_SIGNATURE),
+  SIGNATURE(XmlConst.NODE_SIGNATURE),
 
   /**
    * Specifies a global variable.
    */
-  VARIABLE(XMLConst.NODE_VARIABLE),
+  VARIABLE(XmlConst.NODE_VARIABLE),
 
   /**
    * Specifies an expression with bound variables.
    */
-  BINDING(XMLConst.NODE_BINDING),
+  BINDING(XmlConst.NODE_BINDING),
 
   /**
    * Specifies a list of bound variables.
    */
-  BINDING_LIST(XMLConst.NODE_BINDING_LIST),
+  BINDING_LIST(XmlConst.NODE_BINDING_LIST),
 
   /**
    * Specifies a local variable is to be replaced in expression.
    */
-  BOUND_VARIABLE(XMLConst.NODE_BOUND_VARIABLE);
+  BOUND_VARIABLE(XmlConst.NODE_BOUND_VARIABLE);
 
   private static final Map<String, XmlNodeType> NAME_TO_TYPE_MAP;
   static {

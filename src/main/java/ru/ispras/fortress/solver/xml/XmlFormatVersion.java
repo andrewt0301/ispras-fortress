@@ -15,11 +15,14 @@
 package ru.ispras.fortress.solver.xml;
 
 /**
- * The {@link XmlFormatVersion} class stores information about the current version of the storage format.
+ * The {@link XmlFormatVersion} class stores information about
+ * the current version of the storage format.
  *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 final class XmlFormatVersion {
+  private XmlFormatVersion() {}
+
   public static final int MAJOR = 1;
   public static final int MINOR = 0;
 }
