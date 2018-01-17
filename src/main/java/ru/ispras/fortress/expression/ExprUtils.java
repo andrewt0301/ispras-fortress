@@ -22,12 +22,14 @@ import ru.ispras.fortress.solver.constraint.ConstraintUtils;
 import ru.ispras.fortress.util.InvariantChecks;
 import ru.ispras.fortress.util.TreeVisitor.Status;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
@@ -361,7 +363,8 @@ public final class ExprUtils {
       return exprs[0];
     }
 
-    return Nodes.and(exprs);
+    final Collection<Node> exprsNoDuplicates = new LinkedHashSet<Node>(Arrays.asList(exprs));
+    return Nodes.and(exprsNoDuplicates);
   }
 
   /**
@@ -382,7 +385,8 @@ public final class ExprUtils {
       return exprs[0];
     }
 
-    return Nodes.or(exprs);
+    final Collection<Node> exprsNoDuplicates = new LinkedHashSet<Node>(Arrays.asList(exprs));
+    return Nodes.or(exprsNoDuplicates);
   }
 
   /**

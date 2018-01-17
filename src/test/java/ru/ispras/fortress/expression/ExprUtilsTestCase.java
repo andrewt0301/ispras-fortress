@@ -242,4 +242,50 @@ public final class ExprUtilsTestCase {
         Nodes.sub(NodeValue.newInteger(10), NodeValue.newInteger(20)),
         Nodes.mod(NodeValue.newInteger(10), NodeValue.newInteger(20))));
   }
+
+  @Test
+  public void testConjunctionRuplicateRemoval() {
+    final Node expected = ExprUtils.getConjunction(
+        XEq0,
+        YEq5,
+        ZEq10,
+        IEq15,
+        JEq20
+        );
+
+    final Node result = ExprUtils.getConjunction(
+        XEq0,
+        YEq5,
+        ZEq10,
+        Nodes.eq(Z, NodeValue.newInteger(10)),
+        Nodes.eq(I, NodeValue.newInteger(15)),
+        IEq15,
+        JEq20
+        );
+
+    Assert.assertEquals(expected, result);
+  }
+
+  @Test
+  public void testgetDisjunctionRuplicateRemoval() {
+    final Node expected = ExprUtils.getDisjunction(
+        XEq0,
+        YEq5,
+        ZEq10,
+        IEq15,
+        JEq20
+        );
+
+    final Node result = ExprUtils.getDisjunction(
+        XEq0,
+        YEq5,
+        ZEq10,
+        Nodes.eq(Z, NodeValue.newInteger(10)),
+        Nodes.eq(I, NodeValue.newInteger(15)),
+        IEq15,
+        JEq20
+        );
+
+    Assert.assertEquals(expected, result);
+  }
 }
