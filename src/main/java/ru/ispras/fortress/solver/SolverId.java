@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2015 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -18,7 +18,8 @@ import ru.ispras.fortress.solver.engine.smt.Cvc4Solver;
 import ru.ispras.fortress.solver.engine.smt.Z3Solver;
 
 /**
- * The SolverId enumeration specifies which solver should be used to solve a particular constraint.
+ * The {@link SolverId} enumeration specifies which solver should be used to solve
+ * a particular constraint.
  *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
@@ -28,26 +29,31 @@ public enum SolverId {
    * to the output stream.
    */
   Z3_TEXT {
-    protected Solver createSolver() {
+    protected Solver newSolver() {
       return new Z3Solver();
     }
   },
 
   CVC4_TEXT {
-    protected Solver createSolver() {
+    protected Solver newSolver() {
       return new Cvc4Solver();
     }
   };
 
   private Solver solver = null;
 
+  /**
+   * Returns a singleton instance of a corresponding solver.
+   *
+   * @return Solver instance.
+   */
   public final Solver getSolver() {
     if (null == solver) {
-      solver = createSolver();
+      solver = newSolver();
     }
 
     return solver;
   }
 
-  protected abstract Solver createSolver();
+  protected abstract Solver newSolver();
 }
