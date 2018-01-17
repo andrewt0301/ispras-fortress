@@ -1,11 +1,11 @@
 /*
  * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -14,11 +14,10 @@
 
 package ru.ispras.fortress.data.types.datamap;
 
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
-
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.solver.engine.smt.SmtRegExp;
+import ru.ispras.fortress.util.InvariantChecks;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -28,7 +27,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
- * The DataMap class represents mappings using Fortress data types with
+ * The {@link DataMap} class represents mappings using Fortress data types with
  * runtime type checking.
  */
 public final class DataMap implements Map<Data, Data> {
@@ -46,8 +45,8 @@ public final class DataMap implements Map<Data, Data> {
   public DataMap(final DataType keyType, final DataType valueType) {
     this(keyType, valueType, null, new LinkedHashMap<Data, Data>());
 
-    checkNotNull(keyType);
-    checkNotNull(valueType);
+    InvariantChecks.checkNotNull(keyType);
+    InvariantChecks.checkNotNull(valueType);
   }
 
   private DataMap(
@@ -226,16 +225,17 @@ public final class DataMap implements Map<Data, Data> {
       final String mapStr,
       final DataType keyType,
       final DataType valueType) {
-    checkNotNull(mapStr);
-    checkNotNull(keyType);
-    checkNotNull(valueType);
+    InvariantChecks.checkNotNull(mapStr);
+    InvariantChecks.checkNotNull(keyType);
+    InvariantChecks.checkNotNull(valueType);
 
     final char lParen = '(';
     final char rParen = ')';
     final char delim = ':';
 
     int depth = -1;
-    int start = -1, end = -1;
+    int start = -1;
+    int end = -1;
 
     final DataMap map = new DataMap(keyType, valueType);
     for (int i = 0; i < mapStr.length(); ++i) {
