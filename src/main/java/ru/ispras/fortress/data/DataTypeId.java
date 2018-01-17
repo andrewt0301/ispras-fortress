@@ -265,7 +265,7 @@ public enum DataTypeId {
         return params.get(0);
       }
 
-      else if (attr == Attribute.VALUE) {
+      if (attr == Attribute.VALUE) {
         return params.get(1);
       }
 
