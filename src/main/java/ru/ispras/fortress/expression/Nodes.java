@@ -315,8 +315,8 @@ public final class Nodes {
   }
 
   public static NodeOperation bvextract(
-      final NodeValue high,
-      final NodeValue low,
+      final Node high,
+      final Node low,
       final Node source) {
     return new NodeOperation(StandardOperation.BVEXTRACT, high, low, source);
   }
