@@ -88,7 +88,7 @@ public final class XmlConstraintLoader {
    * @throws IllegalArgumentException if the parameter equals null.
    * @throws XmlNotLoadedException if an issue occurred during parsing the XML document.
    */
-  public static Constraint loadFromURL(final URL url) throws XmlNotLoadedException {
+  public static Constraint loadFromUrl(final URL url) throws XmlNotLoadedException {
     InvariantChecks.checkNotNull(url);
 
     try {
