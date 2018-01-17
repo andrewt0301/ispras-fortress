@@ -45,7 +45,7 @@ import java.util.Stack;
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 final class XmlConstraintHandler extends DefaultHandler {
-  private final XMLConstraintBuilder builder = new XMLConstraintBuilder();
+  private final XmlConstraintBuilder builder = new XmlConstraintBuilder();
   private final Stack<XmlNodeType> nodes = new Stack<>();
   private final Map<String, Variable> variables = new HashMap<>();
 
@@ -420,11 +420,10 @@ final class XmlConstraintHandler extends DefaultHandler {
 
 /**
  * The XMLConstraintBuilder class implements functionality that build a constraint.
- * 
+ *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
-final class XMLConstraintBuilder {
+final class XmlConstraintBuilder {
   private ConstraintBuilder constraint = null;
   private String name = null;
   private ConstraintKind kind = null;
