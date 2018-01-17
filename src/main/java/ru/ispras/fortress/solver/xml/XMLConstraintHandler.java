@@ -46,7 +46,7 @@ import java.util.Stack;
  */
 final class XMLConstraintHandler extends DefaultHandler {
   private final XMLConstraintBuilder builder = new XMLConstraintBuilder();
-  private final Stack<XMLNodeType> nodes = new Stack<>();
+  private final Stack<XmlNodeType> nodes = new Stack<>();
   private final Map<String, Variable> variables = new HashMap<>();
 
   private final Map<String, Variable> incompleteScope = new HashMap<>();
@@ -112,7 +112,7 @@ final class XMLConstraintHandler extends DefaultHandler {
       final String qName,
       final Attributes attributes) throws SAXException {
     try {
-      final XMLNodeType currentNode = getNodeType(qName);
+      final XmlNodeType currentNode = getNodeType(qName);
       verifyNodeHierarchy(currentNode, nodes.empty() ? null : nodes.lastElement());
 
       switch (currentNode) {
@@ -226,7 +226,7 @@ final class XMLConstraintHandler extends DefaultHandler {
       final String qName) throws SAXException {
     assert !nodes.empty();
     try {
-      final XMLNodeType currentNode = getNodeType(qName);
+      final XmlNodeType currentNode = getNodeType(qName);
       assert (currentNode == nodes.lastElement());
 
       switch (currentNode) {
@@ -320,8 +320,8 @@ final class XMLConstraintHandler extends DefaultHandler {
     // System.out.print(new String(ch, start, length));
   }
 
-  private static XMLNodeType getNodeType(final String nodeName) throws SAXException {
-    final XMLNodeType nodeType = XMLNodeType.fromNodeName(nodeName);
+  private static XmlNodeType getNodeType(final String nodeName) throws SAXException {
+    final XmlNodeType nodeType = XmlNodeType.fromNodeName(nodeName);
 
     if (null == nodeType) {
       throw new SAXException(String.format(Messages.ERR_XML_UNKNOWN_NODE, nodeName));
@@ -363,8 +363,8 @@ final class XMLConstraintHandler extends DefaultHandler {
   }
 
   private static void verifyNodeHierarchy(
-      final XMLNodeType current,
-      final XMLNodeType parent) throws SAXException {
+      final XmlNodeType current,
+      final XmlNodeType parent) throws SAXException {
     if (!current.isChildOf(parent)) {
       throw new SAXException(String.format(
         Messages.ERR_XML_BAD_HIERARCHY, current.getNodeName(), parent.getNodeName()));
