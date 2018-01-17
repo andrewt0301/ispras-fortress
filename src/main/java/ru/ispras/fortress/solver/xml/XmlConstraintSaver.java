@@ -218,7 +218,7 @@ public final class XmlConstraintSaver {
    * The {@link XmlDocumentBuilder} class provides functionality for translating
    * an expression tree to a XML tree.
    *
-   * @ @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
+   * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
    */
   private static final class XmlDocumentBuilder implements ExprTreeVisitor {
     private final Document document;
