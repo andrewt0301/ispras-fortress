@@ -135,8 +135,8 @@ public final class VariateBiased<T> implements Variate<T> {
       return index;
     }
 
-    return value < array[index] ?
-        binarySearch(array, low, index - 1, value) :
-        binarySearch(array, index + 1, high, value);
+    return value < array[index]
+        ? binarySearch(array, low, index - 1, value)
+        : binarySearch(array, index + 1, high, value);
   }
 }
