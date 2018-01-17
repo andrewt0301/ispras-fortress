@@ -47,39 +47,38 @@ public class BitVectorExtractionTestCase extends GenericSolverTestBase {
   public BitVectorExtractionTestCase() {
     super(new BitVectorExtractionConstraint());
   }
-}
 
+  public static final class BitVectorExtractionConstraint implements GenericSolverTestBase.SampleConstraint {
+    private static final DataType BitVector32 = DataType.BIT_VECTOR(32);
+    private static final DataType BitVector8 = DataType.BIT_VECTOR(8);
 
-final class BitVectorExtractionConstraint implements GenericSolverTestBase.SampleConstraint {
-  private static final DataType BitVector32 = DataType.BIT_VECTOR(32);
-  private static final DataType BitVector8 = DataType.BIT_VECTOR(8);
+    public Constraint getConstraint() {
+      final ConstraintBuilder builder = new ConstraintBuilder();
 
-  public Constraint getConstraint() {
-    final ConstraintBuilder builder = new ConstraintBuilder();
+      builder.setName("BVEXTRACT");
+      builder.setKind(ConstraintKind.FORMULA_BASED);
+      builder.setDescription("Bitvector extraction constraint");
 
-    builder.setName("BVEXTRACT");
-    builder.setKind(ConstraintKind.FORMULA_BASED);
-    builder.setDescription("Bitvector extraction constraint");
+      final NodeVariable x = new NodeVariable(builder.addVariable("x", BitVector32));
+      final NodeVariable y = new NodeVariable(builder.addVariable("y", BitVector8));
 
-    final NodeVariable x = new NodeVariable(builder.addVariable("x", BitVector32));
-    final NodeVariable y = new NodeVariable(builder.addVariable("y", BitVector8));
+      final Formulas formulas = new Formulas();
+      builder.setInnerRep(formulas);
 
-    final Formulas formulas = new Formulas();
-    builder.setInnerRep(formulas);
+      formulas.add(Nodes.eq(x, new NodeValue(BitVector32.valueOf("257", 10))));
 
-    formulas.add(Nodes.eq(x, new NodeValue(BitVector32.valueOf("257", 10))));
+      final Node extraction = Nodes.bvextract(7, 0, x);
+      Assert.assertEquals(DataType.BIT_VECTOR(8), extraction.getDataType());
 
-    final Node extraction = Nodes.bvextract(7, 0, x);
-    Assert.assertEquals(DataType.BIT_VECTOR(8), extraction.getDataType());
+      formulas.add(Nodes.eq(y, extraction));
 
-    formulas.add(Nodes.eq(y, extraction));
+      return builder.build();
+    }
 
-    return builder.build();
-  }
-
-  public Iterable<Variable> getExpectedVariables() {
-    return Arrays.asList(
-        new Variable("x", BitVector32.valueOf("257", 10)),
-        new Variable("y", BitVector8.valueOf("1", 10)));
+    public Iterable<Variable> getExpectedVariables() {
+      return Arrays.asList(
+          new Variable("x", BitVector32.valueOf("257", 10)),
+          new Variable("y", BitVector8.valueOf("1", 10)));
+    }
   }
 }
