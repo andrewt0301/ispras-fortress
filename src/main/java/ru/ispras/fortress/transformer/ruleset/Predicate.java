@@ -526,13 +526,13 @@ public final class Predicate {
       }
 
       private int countImmediateOperands(final NodeOperation node) {
-        int n = 0;
+        int count = 0;
         for (int i = 0; i < node.getOperandCount(); ++i) {
           if (node.getOperand(i).getKind() == Node.Kind.VALUE) {
-            ++n;
+            ++count;
           }
         }
-        return n;
+        return count;
       }
 
       private Node reduceEqualImmediates(final NodeOperation node, final int count) {
