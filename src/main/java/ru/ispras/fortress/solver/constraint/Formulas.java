@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2017 ISP RAS (http://www.ispras.ru)
+ * Copyright 2011-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -39,7 +39,7 @@ public final class Formulas {
    * Constructs an empty formula container.
    */
   public Formulas() {
-    this.exprs = new ArrayList<Node>();
+    this.exprs = new ArrayList<>();
   }
 
   /**
@@ -51,7 +51,7 @@ public final class Formulas {
    */
   public Formulas(final Formulas formulas) {
     InvariantChecks.checkNotNull(formulas);
-    this.exprs = new ArrayList<Node>(formulas.exprs);
+    this.exprs = new ArrayList<>(formulas.exprs);
   }
 
   /**
@@ -104,7 +104,7 @@ public final class Formulas {
   }
 
   /**
-   * Provides access to the list of formula expressions
+   * Provides access to the list of formula expressions.
    *
    * @return List of formula expressions
    */
@@ -140,7 +140,7 @@ public final class Formulas {
    */
   public List<Variable> getVariables() {
     final Collection<NodeVariable> nodeVariables = ExprUtils.getVariables(exprs());
-    final List<Variable> variables = new ArrayList<Variable>(nodeVariables.size());
+    final List<Variable> variables = new ArrayList<>(nodeVariables.size());
 
     for (final NodeVariable nodeVariable : nodeVariables) {
       variables.add(nodeVariable.getVariable());

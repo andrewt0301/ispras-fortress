@@ -65,7 +65,6 @@ public class IntegerOverflowBitVectorTestCase extends GenericSolverTestBase {
    * (echo "Values that lead to an overflow:")
    * (get-value (rs rt))
    * </pre>
-   *
    * Expected output (Values that lead to an overflow):
    *
    * <pre>
@@ -124,7 +123,7 @@ public class IntegerOverflowBitVectorTestCase extends GenericSolverTestBase {
 
     @Override
     public Iterable<Variable> getExpectedVariables() {
-      final List<Variable> result = new ArrayList<Variable>();
+      final List<Variable> result = new ArrayList<>();
 
       result.add(new Variable("rs", BIT_VECTOR_TYPE.valueOf("000000009b91b193", 16)));
       result.add(new Variable("rt", BIT_VECTOR_TYPE.valueOf("000000009b91b1b3", 16)));

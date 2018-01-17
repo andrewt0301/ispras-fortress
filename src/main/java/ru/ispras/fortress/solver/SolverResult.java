@@ -33,13 +33,13 @@ public final class SolverResult extends Result<SolverResult.Status, List<Variabl
    * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
    */
   public static enum Status {
-    /** Solution is found */
+    /** Solution is found. */
     SAT,
-    /** No solution exists */
+    /** No solution exists. */
     UNSAT,
     /** Failed to find a solution (e.g. limitation of the current solver) */
     UNKNOWN,
-    /** An error occurred */
+    /** An error occurred. */
     ERROR
   }
 

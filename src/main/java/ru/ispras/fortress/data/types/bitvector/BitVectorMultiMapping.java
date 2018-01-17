@@ -92,9 +92,6 @@ final class BitVectorMultiMapping extends BitVector {
       this.highPart = highPart;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getBitSize() {
       return lowPart.getBitSize() + highPart.getBitSize();
@@ -216,7 +213,7 @@ final class BitVectorMultiMapping extends BitVector {
    * |HIGH|...|LOW|
    * M            0</pre>
    * {@code N} is the number of bit vectors to be concatenated;
-   * {@code M} is the total bit size of the concatenation result.<p>
+   * {@code M} is the total bit size of the concatenation result.</p>
    *
    * @param bitVectors Array of bit vectors to be concatenated.
    *
@@ -292,25 +289,16 @@ final class BitVectorMultiMapping extends BitVector {
     this.bitSize = processedBitSize;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public int getBitSize() {
     return bitSize;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public int getByteSize() {
     return byteAccessors.size();
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public byte getByte(final int index) {
     InvariantChecks.checkBounds(index, getByteSize());
@@ -319,9 +307,6 @@ final class BitVectorMultiMapping extends BitVector {
     return accessors.getByte();
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setByte(final int index, final byte value) {
     InvariantChecks.checkBounds(index, getByteSize());

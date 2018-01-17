@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -42,7 +42,6 @@ public final class RepeatOperationTestCase extends GenericSolverTestBase {
    * (get-value (x y))
    * (exit)
    * </pre>
-   *
    * Expected output: sat ((x #x5)(y #x5555))
    */
   public static class RepeatOperation implements SampleConstraint {
@@ -84,7 +83,7 @@ public final class RepeatOperationTestCase extends GenericSolverTestBase {
 
     @Override
     public Iterable<Variable> getExpectedVariables() {
-      final List<Variable> result = new ArrayList<Variable>();
+      final List<Variable> result = new ArrayList<>();
 
       result.add(new Variable("x", BIT_VECTOR_ARG_TYPE.valueOf("5", HEX_RADIX)));
       result.add(new Variable("y", BIT_VECTOR_RES_TYPE.valueOf("5555", HEX_RADIX)));

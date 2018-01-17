@@ -91,17 +91,11 @@ final class BitVectorStore extends BitVector {
     this.bitSize = bitSize;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public int getBitSize() {
     return bitSize;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public int getByteSize() {
     return dataBytes.length;
@@ -111,18 +105,12 @@ final class BitVectorStore extends BitVector {
     return bitSize / BITS_IN_BYTE + (0 == (bitSize % BITS_IN_BYTE) ? 0 : 1);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public byte getByte(final int index) {
     InvariantChecks.checkBounds(index, getByteSize());
     return (byte) (dataBytes[index] & getByteBitMask(index));
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setByte(final int index, final byte value) {
     InvariantChecks.checkBounds(index, getByteSize());

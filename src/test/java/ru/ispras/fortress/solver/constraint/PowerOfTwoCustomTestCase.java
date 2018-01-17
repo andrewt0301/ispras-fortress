@@ -65,7 +65,6 @@ public final class PowerOfTwoCustomTestCase extends GenericSolverTestBase {
    * (get-value (x))
    * (exit)
    * </pre>
-   *
    * Expected output:
    *
    * <pre>
@@ -148,7 +147,7 @@ public final class PowerOfTwoCustomTestCase extends GenericSolverTestBase {
     }
 
     public Iterable<Variable> getExpectedVariables() {
-      final List<Variable> result = new ArrayList<Variable>();
+      final List<Variable> result = new ArrayList<>();
 
       result.add(new Variable("x", BIT_VECTOR_TYPE.valueOf("128", 10)));
 

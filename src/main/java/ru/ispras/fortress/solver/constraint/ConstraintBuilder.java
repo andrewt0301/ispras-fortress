@@ -38,8 +38,9 @@ public final class ConstraintBuilder {
   /**
    * Constructs a ConstraintBuilder object with default values.
    *
-   * Default name is a pseudo random UUID (see java.util.UUID.randomUUID()). Default description is
-   * an empty string. Default constraint type is formula-based (ConstraintKind.FORMULA_BASED).
+   * <p>Default name is a pseudo random UUID (see java.util.UUID.randomUUID()). Default description
+   * is an empty string. Default constraint type is formula-based
+   * {@code ConstraintKind.FORMULA_BASED)}.</p>
    */
   public ConstraintBuilder() {
     this(ConstraintKind.FORMULA_BASED);
@@ -48,8 +49,8 @@ public final class ConstraintBuilder {
   /**
    * Constructs a ConstraintBuilder object using the provided constraint type.
    * 
-   * Default name is a pseudo random UUID (see java.util.UUID.randomUUID()). Default description is
-   * an empty string.
+   * <p>Default name is a pseudo random UUID (see java.util.UUID.randomUUID()). Default description
+   * is an empty string.</p>
    * 
    * @param kind Constraint type.
    * 

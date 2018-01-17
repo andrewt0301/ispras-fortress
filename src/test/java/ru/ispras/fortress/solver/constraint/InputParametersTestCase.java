@@ -45,7 +45,6 @@ public class InputParametersTestCase extends GenericSolverTestBase {
    * (get-value (a b c))
    * (exit)
    * </pre>
-   *
    * Expected output:
    *
    * <pre>

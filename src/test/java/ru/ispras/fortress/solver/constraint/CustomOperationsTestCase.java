@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -52,7 +52,7 @@ public class CustomOperationsTestCase extends GenericSolverTestBase {
    * The semantics of SMT code is the same as with the integer overflow example, but in our case we
    * use custom functions.
    *
-   * The constraint as described in the SMT language:
+   * <p>The constraint as described in the SMT language:
    *
    * <pre>
    * (define-sort        Int_t () (_ BitVec 64))
@@ -86,12 +86,11 @@ public class CustomOperationsTestCase extends GenericSolverTestBase {
    * (echo "Values that lead to an overflow:")
    * (get-value (rs rt))
    * </pre>
-   *
    * Expected output (values that lead to an overflow):
    *
    * <pre>
    * sat ((rs #x000000009b91b193) (rt #x000000009b91b1b3))
-   * </pre>
+   * </pre></p>
    */
   private static final int BV_LENGTH = 64;
   private static final DataType Int_t = DataType.BIT_VECTOR(BV_LENGTH);
@@ -213,7 +212,7 @@ public class CustomOperationsTestCase extends GenericSolverTestBase {
 
     @Override
     public Iterable<Variable> getExpectedVariables() {
-      final List<Variable> result = new ArrayList<Variable>();
+      final List<Variable> result = new ArrayList<>();
 
       result.add(new Variable("rs", Int_t.valueOf("000000009b91b193", 16)));
       result.add(new Variable("rt", Int_t.valueOf("000000009b91b1b3", 16)));

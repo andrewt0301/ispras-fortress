@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2017 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -90,25 +90,16 @@ final class BitVectorMapping extends BitVector {
     this.excludedLowBitCount = beginBitPos % BITS_IN_BYTE;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public int getBitSize() {
     return bitSize;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public int getByteSize() {
     return byteSize;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public byte getByte(final int index) {
     InvariantChecks.checkBounds(index, getByteSize());
@@ -136,9 +127,6 @@ final class BitVectorMapping extends BitVector {
     return (byte) ((highByte | lowByte) & byteBitMask);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setByte(final int index, final byte value) {
     InvariantChecks.checkBounds(index, getByteSize());

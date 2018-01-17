@@ -166,9 +166,6 @@ public final class NodeBinding extends Node {
     return expr;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   public Node deepCopy() {
     return new NodeBinding(this.expr, this.bindings, 0);
   }
@@ -201,9 +198,6 @@ public final class NodeBinding extends Node {
     return new BoundVariable(variable, value);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public DataType getDataType() {
     return expr.getDataType();

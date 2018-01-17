@@ -49,7 +49,7 @@ public final class ExprUtils {
    * @param typeId Expected data type identifier.
    * @param exprs Expressions to be checked.
    * @return {@code true} if all expression types match the type specified by
-   * the {@code typeId} argument or {@code false} otherwise.
+   *         the {@code typeId} argument or {@code false} otherwise.
    *
    * @throws IllegalArgumentException if the expression array is empty;
    *         if any expression in the array is {@code null}.
@@ -72,7 +72,7 @@ public final class ExprUtils {
    * @param type Expected data type.
    * @param exprs Expressions to be checked.
    * @return {@code true} if all expression types match the type specified by
-   * the {@code type} argument or {@code false} otherwise.
+   *         the {@code type} argument or {@code false} otherwise.
    *
    * @throws IllegalArgumentException if the expression array is empty;
    *         if any expression in the array is {@code null}.

@@ -34,7 +34,7 @@ public final class Randomizer {
   /** Randomizer instance (singleton). */
   private static Randomizer randomizer = new Randomizer();
 
-  /** {@link BigInteger} for {@link Long#MAX_VALUE} */
+  /* {@link BigInteger} for {@link Long#MAX_VALUE} */
   private static final BigInteger MAX_LONG = BigInteger.valueOf(Long.MAX_VALUE);
 
   /**

@@ -37,7 +37,6 @@ import java.util.Arrays;
  * (get-value (x y))
  * (exit)
  * </pre>
- *
  * Expected output:
  *
  * <pre>

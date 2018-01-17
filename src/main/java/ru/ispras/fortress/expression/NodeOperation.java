@@ -142,9 +142,6 @@ public final class NodeOperation extends Node {
     this.dataType = node.dataType;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Node deepCopy() {
     return new NodeOperation(this);
@@ -188,9 +185,6 @@ public final class NodeOperation extends Node {
     return operation;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public DataType getDataType() {
     if (null != dataType) {

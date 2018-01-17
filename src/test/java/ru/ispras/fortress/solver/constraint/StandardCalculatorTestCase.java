@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2017 ISP RAS (http://www.ispras.ru)
+ * Copyright 2013-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -51,9 +51,7 @@ public class StandardCalculatorTestCase extends GenericSolverTestBase {
    *     (check-sat)
    *     (get-value (a b c d e f))
    * </pre>
-   *
    * Expected output:
-   *
    * sat ((a 5) (b 4) (c 10) (d 2) (e 1) (f 1))
    */
 
@@ -107,7 +105,7 @@ public class StandardCalculatorTestCase extends GenericSolverTestBase {
 
     @Override
     public Iterable<Variable> getExpectedVariables() {
-      final List<Variable> result = new ArrayList<Variable>();
+      final List<Variable> result = new ArrayList<>();
 
       result.add(new Variable("a", intType.valueOf("5", 10)));
       result.add(new Variable("b", intType.valueOf("4", 10)));

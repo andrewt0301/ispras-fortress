@@ -55,7 +55,7 @@ public enum StandardOperation implements TypeRule {
   /** Group: Logic, Operation: NOT. */
   NOT(Family.LOGIC, TypeRules.BOOLEAN, OperandTypes.BOOL),
 
-  /** Group: Logic, Operation: XOR */
+  /** Group: Logic, Operation: XOR. */
   XOR(Family.LOGIC, TypeRules.BOOLEAN, OperandTypes.BOOL),
 
   /** Group: Logic, Operation: Implication. */
@@ -240,7 +240,7 @@ public enum StandardOperation implements TypeRule {
   /**
    * The items below belong to the "Bit Vector Reduction Operations" group.
    *
-   * Operation semantics:
+   * <p>Operation semantics:
    *
    * <pre>
    * From IEEE Standard for Verilog Hardware Description Language:
@@ -255,7 +255,7 @@ public enum StandardOperation implements TypeRule {
    * respectively.
    *
    * See the manual for details.
-   * </pre>
+   * </pre></p>
    */
 
   /** Group: Bit Vector Reduction, Operation: Reduction AND ({@literal &}). */

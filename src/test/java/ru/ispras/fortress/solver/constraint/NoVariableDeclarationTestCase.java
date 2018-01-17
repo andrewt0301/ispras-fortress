@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -39,7 +39,6 @@ public class NoVariableDeclarationTestCase extends GenericSolverTestBase {
    * (get-value (a b))
    * (exit)
    * </pre>
-   *
    * Expected output: sat ((a 1) (b (- 2)))
    */
   public static class NoVariableDeclaration implements SampleConstraint {
@@ -68,7 +67,7 @@ public class NoVariableDeclarationTestCase extends GenericSolverTestBase {
 
     @Override
     public Iterable<Variable> getExpectedVariables() {
-      final List<Variable> result = new ArrayList<Variable>();
+      final List<Variable> result = new ArrayList<>();
 
       result.add(new Variable("a", intType.valueOf("1", 10)));
       result.add(new Variable("b", intType.valueOf("-2", 10)));

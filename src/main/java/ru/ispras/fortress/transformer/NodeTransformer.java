@@ -103,10 +103,9 @@ public class NodeTransformer implements ExprTreeVisitor {
 
   /**
    * Add substitution rule.
-   * 
-   * For rule to be applied to node in expression tree several conditions needs to be hold: 1)
+   * <p>For rule to be applied to node in expression tree several conditions needs to be hold: 1)
    * either node is NodeOperation with opId operation or node is a Node subclass which kind is opId;
-   * 2) rule.isApplicable() should be true for node given.
+   * 2) rule.isApplicable() should be true for node given.</p>
    * 
    * @param opId Target node kind identifier.
    * @param rule Rule to be added.
@@ -306,12 +305,10 @@ public class NodeTransformer implements ExprTreeVisitor {
 
 /**
  * ScopedBindingRule is base class for rules respecting variable binding visibility scope.
- * 
- * Implementors are organized in nesting scopes list with inner scope being responsible for passing
- * request to outer scope if it cannot be satisfied by himself.
- * 
+ * <p>Implementors are organized in nesting scopes list with inner scope being responsible for
+ * passing request to outer scope if it cannot be satisfied by himself.
  * Subclasses are expected to implement TransformRule.isApplicable() method that should set
- * applicableCache member to correct substitution result in case rule is applicable.
+ * applicableCache member to correct substitution result in case rule is applicable.</p>
  */
 abstract class ScopedBindingRule implements TransformerRule {
   protected final List<TransformerRule> shadowed;
@@ -352,10 +349,9 @@ abstract class ScopedBindingRule implements TransformerRule {
 /**
  * RejectBoundVariablesRule works as a filter ignoring any variable nodes considered bound in
  * current nested variable scope.
- * 
- * As described in {@link ScopedBindingRule}, rules are organized in nesting variable scopes list.
- * Therefore first ignoring any variable bound in current scope or delegating check to outer scope
- * otherwise brings requierd result.
+ * <p>As described in {@link ScopedBindingRule}, rules are organized in nesting variable scopes
+ * list. Therefore first ignoring any variable bound in current scope or delegating check to outer
+ * scope otherwise brings requierd result.</p>
  */
 final class RejectBoundVariablesRule extends ScopedBindingRule {
   private final NodeBinding node;

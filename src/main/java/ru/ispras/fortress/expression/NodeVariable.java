@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2017 ISP RAS (http://www.ispras.ru)
+ * Copyright 2011-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -170,9 +170,6 @@ public final class NodeVariable extends Node {
     this.variable = new Variable(nodeVariable.variable);
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Node deepCopy() {
     return new NodeVariable(this);
@@ -230,9 +227,6 @@ public final class NodeVariable extends Node {
     return variable.getData().getValue();
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public DataType getDataType() {
     return variable.getType();

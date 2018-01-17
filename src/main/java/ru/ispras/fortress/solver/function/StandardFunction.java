@@ -26,11 +26,12 @@ import ru.ispras.fortress.util.InvariantChecks;
  */
 
 public enum StandardFunction implements FunctionTemplate {
-  /**
+
+  /*
    * The items below are function templates for operations from the "Logic Arithmetic" group.
    */
 
-  /** Group: Logic, Operation: Absolute value */
+  /** Group: Logic, Operation: Absolute value. */
   ABS(StandardOperation.ABS, 1) {
     @Override
     protected Function newFunction(final DataType[] argTypes) {
@@ -38,7 +39,7 @@ public enum StandardFunction implements FunctionTemplate {
     }
   },
 
-  /** Group: Logic, Operation: Minimum */
+  /** Group: Logic, Operation: Minimum. */
   MIN(StandardOperation.MIN, 2) {
     @Override
     protected Function newFunction(final DataType[] argTypes) {
@@ -46,7 +47,7 @@ public enum StandardFunction implements FunctionTemplate {
     }
   },
 
-  /** Group: Logic, Operation: Maximum */
+  /** Group: Logic, Operation: Maximum. */
   MAX(StandardOperation.MAX, 2) {
     @Override
     protected Function newFunction(final DataType[] argTypes) {
@@ -54,7 +55,7 @@ public enum StandardFunction implements FunctionTemplate {
     }
   },
 
-  /**
+  /*
    * The items below are function templates for operations from the
    * "Bit Vector Reduction Operations" group.
    * 
@@ -76,7 +77,7 @@ public enum StandardFunction implements FunctionTemplate {
    * </pre>
    */
 
-  /** Group: Bit Vector Reduction, Operation: Reduction AND ({@literal &}) */
+  /** Group: Bit Vector Reduction, Operation: Reduction AND ({@literal &}). */
   BVANDR(StandardOperation.BVANDR, 1) {
     @Override
     protected Function newFunction(final DataType[] argTypes) {
@@ -84,7 +85,7 @@ public enum StandardFunction implements FunctionTemplate {
     }
   },
 
-  /** Group: Bit Vector Reduction, Operation: Reduction NAND ({@literal ~&}) */
+  /** Group: Bit Vector Reduction, Operation: Reduction NAND ({@literal ~&}). */
   BVNANDR(StandardOperation.BVNANDR, 1) {
     @Override
     protected Function newFunction(final DataType[] argTypes) {
@@ -92,7 +93,7 @@ public enum StandardFunction implements FunctionTemplate {
     }
   },
 
-  /** Group: Bit Vector Reduction, Operation: Reduction OR (|) */
+  /** Group: Bit Vector Reduction, Operation: Reduction OR (|). */
   BVORR(StandardOperation.BVORR, 1) {
     @Override
     protected Function newFunction(final DataType[] argTypes) {
@@ -100,7 +101,7 @@ public enum StandardFunction implements FunctionTemplate {
     }
   },
 
-  /** Group: Bit Vector Reduction, Operation: Reduction NOR (~|) */
+  /** Group: Bit Vector Reduction, Operation: Reduction NOR (~|). */
   BVNORR(StandardOperation.BVNORR, 1) {
     @Override
     protected Function newFunction(final DataType[] argTypes) {
@@ -108,7 +109,7 @@ public enum StandardFunction implements FunctionTemplate {
     }
   },
 
-  /** Group: Bit Vector Reduction, Operation: Reduction XOR (^) */
+  /** Group: Bit Vector Reduction, Operation: Reduction XOR (^). */
   BVXORR(StandardOperation.BVXORR, 1) {
     @Override
     protected Function newFunction(final DataType[] argTypes) {
@@ -116,7 +117,7 @@ public enum StandardFunction implements FunctionTemplate {
     }
   },
 
-  /** Group: Bit Vector Reduction, Operation: Reduction XNOR (~^) */
+  /** Group: Bit Vector Reduction, Operation: Reduction XNOR (~^). */
   BVXNORR(StandardOperation.BVXNORR, 1) {
     @Override
     protected Function newFunction(final DataType[] argTypes) {

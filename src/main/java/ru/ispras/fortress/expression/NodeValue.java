@@ -166,9 +166,6 @@ public final class NodeValue extends Node {
     this.data = nodeValue.data;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public Node deepCopy() {
     return new NodeValue(this);
@@ -205,9 +202,6 @@ public final class NodeValue extends Node {
     return data.getValue();
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public DataType getDataType() {
     return data.getType();

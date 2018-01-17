@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 ISP RAS (http://www.ispras.ru)
+ * Copyright 2017-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -53,25 +53,16 @@ final class BitVectorMappingAligned extends BitVector {
     this.byteOffset =  beginBitPos / BITS_IN_BYTE;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public int getBitSize() {
     return bitSize;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public int getByteSize() {
     return byteSize;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public byte getByte(final int index) {
     InvariantChecks.checkBounds(index, getByteSize());
@@ -79,9 +70,6 @@ final class BitVectorMappingAligned extends BitVector {
     return (byte) (source.getByte(byteIndex) & getByteBitMask(index));
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void setByte(final int index, final byte value) {
     InvariantChecks.checkBounds(index, getByteSize());

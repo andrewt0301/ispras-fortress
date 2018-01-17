@@ -56,7 +56,6 @@ public class AbsCustomOperationTestCase extends GenericSolverTestBase {
    *     (get-model)
    *     (exit)
    * </pre>
-   *
    * Expected output: sat ((a (- 5.0)) (b 5.0) (c (- 5)) (d 5))
    */
 

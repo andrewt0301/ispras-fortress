@@ -54,7 +54,7 @@ abstract class DependentRule implements TransformerRule {
    * @param operands Operation operands.
    *
    * @return Node instance which is expression resulted from recursively
-   * applying relevant rules in shared set to single operation.
+   *         applying relevant rules in shared set to single operation.
    */
   protected final Node reduce(final Enum<?> opId, final Node ... operands) {
     final Node node = new NodeOperation(opId, operands);
