@@ -319,7 +319,7 @@ public final class DataMap implements Map<Data, Data> {
    * Cast from {@code Object} to {@code Data} instance.
    */
   private static Data getData(final Object obj) {
-    checkNotNull(obj);
+    InvariantChecks.checkNotNull(obj);
     return (Data) obj;
   }
 }
