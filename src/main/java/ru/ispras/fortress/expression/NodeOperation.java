@@ -22,6 +22,7 @@ import ru.ispras.fortress.util.InvariantChecks;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -74,14 +75,14 @@ public final class NodeOperation extends Node {
    * packed into a collection.
    *
    * @param operation Operation identifier.
-   * @param operands List of expression operands.
+   * @param operands Collection of expression operands.
    * @param <T> Operation identifier type.
    *
    * @throws IllegalArgumentException if any parameter (including every operand) is {@code null}.
    */
   public <T extends Enum<? extends T>> NodeOperation(
       final T operation,
-      final List<? extends Node> operands) {
+      final Collection<? extends Node> operands) {
     this(operation, null, operands);
   }
 
@@ -92,7 +93,7 @@ public final class NodeOperation extends Node {
    * @param operation Operation identifier.
    * @param dataType Data type associated with the expression or {@code null} to rely
    *        on automated type calculation.
-   * @param operands List of expression operands.
+   * @param operands Collection of expression operands.
    * @param <T> Operation identifier type.
    *
    * @throws IllegalArgumentException if any parameter (including every operand) is {@code null}.
@@ -100,7 +101,7 @@ public final class NodeOperation extends Node {
   public <T extends Enum<? extends T>> NodeOperation(
       final T operation,
       final DataType dataType,
-      final List<? extends Node> operands) {
+      final Collection<? extends Node> operands) {
     this(operation, dataType, operands != null ? new ArrayList<>(operands) : null, 0);
   }
 
