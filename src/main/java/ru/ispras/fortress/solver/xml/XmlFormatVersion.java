@@ -15,7 +15,8 @@
 package ru.ispras.fortress.solver.xml;
 
 /**
- * The {@link XmlFormatVersion} class stores information about the current version of the storage format.
+ * The {@link XmlFormatVersion} class stores information about the current version
+ * of the storage format.
  *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
