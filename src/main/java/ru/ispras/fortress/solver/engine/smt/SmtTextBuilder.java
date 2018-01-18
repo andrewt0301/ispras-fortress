@@ -426,75 +426,77 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
       final Node value) {
     appendToCurrent(SmtStrings.BRACKET_CLOSE);
   }
-}
 
-final class FunctionDefinitionBuilders {
-  private final Set<String> names;
-  private final List<StringBuilder> entries;
-  private final Map<Integer, List<StringBuilder>> queue;
+  private static final class FunctionDefinitionBuilders {
+    private final Set<String> names;
+    private final List<StringBuilder> entries;
+    private final Map<Integer, List<StringBuilder>> queue;
 
-  private boolean callTreeStarted = false;
+    private boolean callTreeStarted = false;
 
-  private static final class ReverseComparator implements Comparator<Integer> {
-    public int compare(Integer o1, Integer o2) {
-      return -o1.compareTo(o2);
-    }
-  }
-
-  public FunctionDefinitionBuilders() {
-    this.names = new HashSet<>();
-    this.entries = new ArrayList<>();
-    this.queue = new TreeMap<>(new ReverseComparator());
-  }
-
-  public void beginCallTree() {
-    if (callTreeStarted) {
-      throw new IllegalStateException("The call tree is already started.");
-    }
-
-    callTreeStarted = true;
-  }
-
-  public void endCallTree() {
-    assert callTreeStarted;
-
-    for (final List<StringBuilder> level : queue.values()) {
-      for (final StringBuilder entry : level) {
-        entries.add(entry);
+    private static final class ReverseComparator implements Comparator<Integer> {
+      public int compare(Integer o1, Integer o2) {
+        return -o1.compareTo(o2);
       }
     }
 
-    queue.clear();
-    callTreeStarted = false;
-  }
-
-  public boolean isDefined(final String name) {
-    return names.contains(name);
-  }
-
-  public void addEntry(
-      final String name,
-      final Integer depth,
-      final StringBuilder entry) {
-    if (names.contains(name)) {
-      throw new IllegalStateException(String.format(
-        "The function %s function is already defined.", name));
+    public FunctionDefinitionBuilders() {
+      this.names = new HashSet<>();
+      this.entries = new ArrayList<>();
+      this.queue = new TreeMap<>(new ReverseComparator());
     }
 
-    names.add(name);
+    public void beginCallTree() {
+      if (callTreeStarted) {
+        throw new IllegalStateException("The call tree is already started.");
+      }
 
-    final List<StringBuilder> level;
-    if (queue.containsKey(depth)) {
-      level = queue.get(depth);
-    } else {
-      level = new ArrayList<StringBuilder>();
-      queue.put(depth, level);
+      callTreeStarted = true;
     }
 
-    level.add(entry);
-  }
+    public void endCallTree() {
+      assert callTreeStarted;
 
-  public List<StringBuilder> getBuilders() {
-    return Collections.unmodifiableList(entries);
+      for (final List<StringBuilder> level : queue.values()) {
+        for (final StringBuilder entry : level) {
+          entries.add(entry);
+        }
+      }
+
+      queue.clear();
+      callTreeStarted = false;
+    }
+
+    public boolean isDefined(final String name) {
+      return names.contains(name);
+    }
+
+    public void addEntry(
+        final String name,
+        final Integer depth,
+        final StringBuilder entry) {
+      if (names.contains(name)) {
+        throw new IllegalStateException(String.format(
+            "The function %s function is already defined.", name));
+      }
+
+      names.add(name);
+
+      final List<StringBuilder> level;
+      if (queue.containsKey(depth)) {
+        level = queue.get(depth);
+      } else {
+        level = new ArrayList<StringBuilder>();
+        queue.put(depth, level);
+      }
+
+      level.add(entry);
+    }
+
+    public List<StringBuilder> getBuilders() {
+      return Collections.unmodifiableList(entries);
+    }
   }
 }
+
+
