@@ -56,6 +56,7 @@ public class ArrayOfArraysTestCase extends GenericSolverTestBase {
     private static final DataType ARRAY_INT_INT = DataType.MAP(DataType.INTEGER, DataType.INTEGER);
     private static final DataType ARRAY_COMPOSITE = DataType.MAP(ARRAY_INT_INT, ARRAY_INT_INT);
 
+    @Override
     public Constraint getConstraint() {
       final ConstraintBuilder builder = new ConstraintBuilder();
 

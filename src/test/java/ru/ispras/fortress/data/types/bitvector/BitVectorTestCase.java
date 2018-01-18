@@ -22,7 +22,7 @@ import java.math.BigInteger;
 public class BitVectorTestCase {
   @Test
   public void creationTests() {
-    TestUtils.Header("Tests for the createEmpty and valueOf methods.");
+    TestUtils.header("Tests for the createEmpty and valueOf methods.");
 
     // ///////////////////////////////////////////////////////////////////////////////////
     // Tests for createEmpty(int bitSize)
@@ -84,7 +84,7 @@ public class BitVectorTestCase {
     // Some representative test data (with odd length).
     final String sample_35bit = "101" + "10101010" + "10101010" + "10101010" + "10101010";
 
-    TestUtils.Header("Copying Tests");
+    TestUtils.header("Copying Tests");
 
     // ////////////////////////////////////////////////////////
     // Test case 0: creates an empty data array and assigns data to it.
@@ -186,7 +186,7 @@ public class BitVectorTestCase {
 
   @Test
   public void repeatTests() {
-    TestUtils.Header("Repeat tests");
+    TestUtils.header("Repeat tests");
 
     TestUtils.checkBitVector(BitVector.valueOf("101").repeat(3), "101101101");
     TestUtils.checkBitVector(BitVector.valueOf("10100").repeat(3), "101001010010100");
@@ -212,7 +212,7 @@ public class BitVectorTestCase {
 
   @Test
   public void mappingReadingTests() {
-    TestUtils.Header("Mapping Reading Tests");
+    TestUtils.header("Mapping Reading Tests");
 
     // Some representative test data (with odd length).
     final String sample35bitBinStr = "101" + "10101010" + "10101010" + "10101010" + "10101010";
@@ -300,7 +300,7 @@ public class BitVectorTestCase {
 
   @Test
   public void mappingWritingTests() {
-    TestUtils.Header("Mapping Writing Tests");
+    TestUtils.header("Mapping Writing Tests");
 
     // Some representative test data (with odd length).
     final String sample35BitBinStr = "101" + "10101010" + "10101010" + "10101010" + "10101010";
