@@ -256,26 +256,26 @@ public final class DataMap implements Map<Data, Data> {
   }
 
   /**
-   * Read {@link ru.ispras.fortress.data.Data Data} instance from string
+   * Read {@link ru.ispras.fortress.data.Data Data} instance from text
    * using data type hint.
    *
-   * @param dStr string representation of {@code Data} instance
+   * @param dataText textual representation of {@code Data} instance
    * @param type expected data type of value being read
    * @return {@link ru.ispras.fortress.data.Data Data} instance for given string representation
    */
-  private static Data readData(final String dStr, final DataType type) {
+  private static Data readData(final String dataText, final DataType type) {
     final int radix;
 
-    if (Pattern.compile(SmtRegExp.LINE_START + SmtRegExp.VALUE_BIN).matcher(dStr).matches()) {
+    if (Pattern.compile(SmtRegExp.LINE_START + SmtRegExp.VALUE_BIN).matcher(dataText).matches()) {
       radix = 2;
     } else if (Pattern.compile(SmtRegExp.LINE_START
-        + SmtRegExp.VALUE_HEX).matcher(dStr).matches()) {
+        + SmtRegExp.VALUE_HEX).matcher(dataText).matches()) {
       radix = 16;
     } else {
       radix = 10; // decimal value by default
     }
 
-    return type.valueOf(dStr.replaceAll(SmtRegExp.VALUE_TRIM_PTRN, ""), radix);
+    return type.valueOf(dataText.replaceAll(SmtRegExp.VALUE_TRIM_PTRN, ""), radix);
   }
 
   /**
