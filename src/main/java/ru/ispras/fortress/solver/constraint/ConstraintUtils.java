@@ -24,7 +24,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 /**
- * The ConstraintUtils class provides utility methods to deal with constraints.
+ * The {@link ConstraintUtils} class provides utility methods to deal with constraints.
  *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
@@ -34,14 +34,14 @@ public final class ConstraintUtils {
   /**
    * Creates a constraint from the specified expression.
    *
-   * @param e Expression to be used as a source for the constraint.
+   * @param expr Expression to be used as a source for the constraint.
    * @return New formula-based constraint.
    *
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
-  public static Constraint newConstraint(final Node e) {
-    InvariantChecks.checkNotNull(e);
-    return newConstraint(Collections.singleton(e));
+  public static Constraint newConstraint(final Node expr) {
+    InvariantChecks.checkNotNull(expr);
+    return newConstraint(Collections.singleton(expr));
   }
 
   public static Constraint newConstraint(final Collection<? extends Node> formulae) {
