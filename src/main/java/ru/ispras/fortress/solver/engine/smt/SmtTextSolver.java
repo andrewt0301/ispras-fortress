@@ -139,28 +139,28 @@ public abstract class SmtTextSolver extends SolverBase {
           new Context(variablesMap(constraint.getUnknownVariables()));
 
       final ESExprParser parser = new ESExprParser(reader);
-      ESExpr e = parser.next();
-      while (e != null) {
-        if (isStatus(e)) {
+      ESExpr expr = parser.next();
+      while (expr != null) {
+        if (isStatus(expr)) {
           if (!isStatusSet) {
-            setStatus(resultBuilder, e.getLiteral());
+            setStatus(resultBuilder, expr.getLiteral());
             isStatusSet = true;
           }
-        } else if (isError(e)) {
-          resultBuilder.addError(getLiteral(e, 1));
+        } else if (isError(expr)) {
+          resultBuilder.addError(getLiteral(expr, 1));
           if (!isStatusSet) {
             resultBuilder.setStatus(SolverResult.Status.ERROR);
             isStatusSet = true;
           }
-        } else if (isModel(e)) {
-          parseModel(resultBuilder, e, context);
-        } else if (!e.isNil() && e.isList()) {
-          parseVariables(resultBuilder, e, context);
+        } else if (isModel(expr)) {
+          parseModel(resultBuilder, expr, context);
+        } else if (!expr.isNil() && expr.isList()) {
+          parseVariables(resultBuilder, expr, context);
         } else {
-          assert false : String.format(UNK_OUTPUT_ERR_FRMT, getName(), e.toString());
-          resultBuilder.addError(String.format(UNK_OUTPUT_ERR_FRMT, getName(), e.toString()));
+          assert false : String.format(UNK_OUTPUT_ERR_FRMT, getName(), expr.toString());
+          resultBuilder.addError(String.format(UNK_OUTPUT_ERR_FRMT, getName(), expr.toString()));
         }
-        e = parser.next();
+        expr = parser.next();
       }
     } catch (IOException e) {
       resultBuilder.setStatus(SolverResult.Status.ERROR);
