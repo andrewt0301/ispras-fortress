@@ -222,16 +222,16 @@ public class CustomOperationsTestCase extends GenericSolverTestBase {
   }
 
   private static CalculatorEngine customCalculator() {
-    final BitVector ZERO = BitVector.valueOf(0, 64);
-    final BitVector MASK = BitVectorMath.shl(BitVectorMath.not(ZERO), 32);
+    final BitVector zero = BitVector.valueOf(0, 64);
+    final BitVector mask = BitVectorMath.shl(BitVectorMath.not(zero), 32);
 
     final CalculatorOperation<ECustomOperation> validSigned =
         new CalculatorOperation<ECustomOperation>(
             ECustomOperation.IS_VALID_SIGNED_INT, ArityRange.UNARY) {
           @Override
           public Data calculate(final Data... operands) {
-            final BitVector bv = BitVectorMath.and(operands[0].getBitVector(), MASK);
-            return Data.newBoolean(bv.equals(MASK) || bv.equals(ZERO));
+            final BitVector bv = BitVectorMath.and(operands[0].getBitVector(), mask);
+            return Data.newBoolean(bv.equals(mask) || bv.equals(zero));
           }
     };
 
