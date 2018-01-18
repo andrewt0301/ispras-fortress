@@ -31,11 +31,11 @@ import java.util.Map;
  * 
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  * 
- * @param <OperationId> Class of the enumeration that specifies operations included in the operation
+ * @param <OPID> Class of the enumeration that specifies operations included in the operation
  *        group. An operation group object can hold only operations that are members of the same
  *        group and are described as elements of the same enumeration.
  */
-public final class OperationGroup<OperationId extends Enum<OperationId>>
+public final class OperationGroup<OPID extends Enum<OPID>>
     implements CalculatorEngine {
 
   private static final String MSG_UNSUPPORTED_FRMT =
@@ -44,14 +44,14 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
 
   // Key - data type identifier,
   // Value - [map: key - operation identifier, value - operation object]
-  private final Map<DataTypeId, Map<OperationId, Operation<OperationId>>> operations;
+  private final Map<DataTypeId, Map<OPID, Operation<OPID>>> operations;
 
   /**
    * Constructor for an operation group object.
    */
   public OperationGroup() {
     this.operations =
-        new EnumMap<DataTypeId, Map<OperationId, Operation<OperationId>>>(DataTypeId.class);
+        new EnumMap<DataTypeId, Map<OPID, Operation<OPID>>>(DataTypeId.class);
   }
 
   /**
@@ -65,7 +65,7 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
    */
   public final void registerOperations(
       final DataTypeId typeId,
-      final Map<OperationId, Operation<OperationId>> operationsForType) {
+      final Map<OPID, Operation<OPID>> operationsForType) {
     InvariantChecks.checkNotNull(typeId);
     InvariantChecks.checkNotNull(operationsForType);
 
@@ -103,15 +103,16 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
       return false;
     }
 
-    final Map<OperationId, Operation<OperationId>> operationsForType = operations.get(typeId);
+    final Map<OPID, Operation<OPID>> operationsForType = operations.get(typeId);
     if (!operationsForType.containsKey(operationId)) {
       return false;
     }
 
-    final Operation<OperationId> operation = operationsForType.get(operationId);
+    final Operation<OPID> operation = operationsForType.get(operationId);
     if (!operation.getOperationArity().isWithinRange(operands.length)) {
       return false;
     }
+
     return operation.validTypes(operands);
   }
 
@@ -133,12 +134,12 @@ public final class OperationGroup<OperationId extends Enum<OperationId>>
     }
 
     final DataTypeId typeId = operands[0].getType().getTypeId();
-    final Map<OperationId, Operation<OperationId>> operationsForType = operations.get(typeId);
+    final Map<OPID, Operation<OPID>> operationsForType = operations.get(typeId);
     if (operationsForType == null) {
       return evalEquality(operationId, operands);
     }
 
-    final Operation<OperationId> operation = operationsForType.get(operationId);
+    final Operation<OPID> operation = operationsForType.get(operationId);
     if (operation == null) {
       return evalEquality(operationId, operands);
     }
