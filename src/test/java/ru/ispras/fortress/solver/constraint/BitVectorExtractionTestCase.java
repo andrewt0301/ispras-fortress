@@ -26,6 +26,7 @@ import ru.ispras.fortress.expression.Nodes;
 import java.util.Arrays;
 
 /**
+ * This test constructs a constraint, solves it and checks the solution against the expected values.
  * The constraint as described in the SMT-LIB language:
  *
  * <pre>

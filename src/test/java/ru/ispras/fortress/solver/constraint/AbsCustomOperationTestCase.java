@@ -24,40 +24,40 @@ import ru.ispras.fortress.expression.Nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This test constructs a constraint, solves it and checks the solution against the expected values.
+ * The constraint as described in the SMT language:
+ *
+ * <pre>
+ *     (declare-const a Real)
+ *     (declare-const b Real)
+ *     (declare-const c Int)
+ *     (declare-const d Int)
+ *     (define-fun StandardOperation_ABS_RET_LOGIC_REAL_PARAMS_LOGIC_REAL
+ *     ((x Real)) Real (ite (>= x 0.0) x (- x)))
+ *     (define-fun StandardOperation_ABS_RET_LOGIC_INTEGER_PARAMS_LOGIC_INTEGER
+ *     ((x Int)) Int (ite (>= x 0) x (- x)))
+ *     (assert  (< a 0.0))
+ *     (assert  (> b 0.0))
+ *     (assert  (< c 0))
+ *     (assert  (> d 0))
+ *     (assert  (= (StandardOperation_ABS_RET_LOGIC_REAL_PARAMS_LOGIC_REAL (- 5.0)) 5.0))
+ *     (assert  (= (StandardOperation_ABS_RET_LOGIC_REAL_PARAMS_LOGIC_REAL 5.0) 5.0))
+ *     (assert  (= (StandardOperation_ABS_RET_LOGIC_REAL_PARAMS_LOGIC_REAL (- a)) 5.0))
+ *     (assert  (= (StandardOperation_ABS_RET_LOGIC_REAL_PARAMS_LOGIC_REAL b) 5.0))
+ *     (assert  (= (StandardOperation_ABS_RET_LOGIC_INTEGER_PARAMS_LOGIC_INTEGER (- c)) 5))
+ *     (assert  (= (StandardOperation_ABS_RET_LOGIC_INTEGER_PARAMS_LOGIC_INTEGER d) 5))
+ *     (check-sat)
+ *     (get-value ( a b c d))
+ *     (get-model)
+ *     (exit)
+ * </pre>
+ * Expected output: sat ((a (- 5.0)) (b 5.0) (c (- 5)) (d 5))
+ */
 public class AbsCustomOperationTestCase extends GenericSolverTestBase {
   public AbsCustomOperationTestCase() {
     super(new AbsCustomOperation());
   }
-
-  /**
-   * The constraint as described in the SMT language:
-   *
-   * <pre>
-   *     (declare-const a Real)
-   *     (declare-const b Real)
-   *     (declare-const c Int)
-   *     (declare-const d Int)
-   *     (define-fun StandardOperation_ABS_RET_LOGIC_REAL_PARAMS_LOGIC_REAL
-   *     ((x Real)) Real (ite (>= x 0.0) x (- x)))
-   *     (define-fun StandardOperation_ABS_RET_LOGIC_INTEGER_PARAMS_LOGIC_INTEGER
-   *     ((x Int)) Int (ite (>= x 0) x (- x)))
-   *     (assert  (< a 0.0))
-   *     (assert  (> b 0.0))
-   *     (assert  (< c 0))
-   *     (assert  (> d 0))
-   *     (assert  (= (StandardOperation_ABS_RET_LOGIC_REAL_PARAMS_LOGIC_REAL (- 5.0)) 5.0))
-   *     (assert  (= (StandardOperation_ABS_RET_LOGIC_REAL_PARAMS_LOGIC_REAL 5.0) 5.0))
-   *     (assert  (= (StandardOperation_ABS_RET_LOGIC_REAL_PARAMS_LOGIC_REAL (- a)) 5.0))
-   *     (assert  (= (StandardOperation_ABS_RET_LOGIC_REAL_PARAMS_LOGIC_REAL b) 5.0))
-   *     (assert  (= (StandardOperation_ABS_RET_LOGIC_INTEGER_PARAMS_LOGIC_INTEGER (- c)) 5))
-   *     (assert  (= (StandardOperation_ABS_RET_LOGIC_INTEGER_PARAMS_LOGIC_INTEGER d) 5))
-   *     (check-sat)
-   *     (get-value ( a b c d))
-   *     (get-model)
-   *     (exit)
-   * </pre>
-   * Expected output: sat ((a (- 5.0)) (b 5.0) (c (- 5)) (d 5))
-   */
 
   public static class AbsCustomOperation implements SampleConstraint {
     @Override

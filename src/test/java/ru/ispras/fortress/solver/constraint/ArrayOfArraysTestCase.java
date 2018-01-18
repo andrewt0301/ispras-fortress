@@ -23,8 +23,9 @@ import ru.ispras.fortress.expression.Nodes;
 import java.util.ArrayList;
 
 /**
+ * This test constructs a constraint, solves it and checks the solution against the expected values.
  * The constraint as described in the SMT-LIB language:
- * 
+ *
  * <pre>
  * (define-sort ARRAY_INT_INT () (Array Int Int))
  * (define-sort ARRAY_COMPOSITE () (Array ARRAY_INT_INT ARRAY_INT_INT))

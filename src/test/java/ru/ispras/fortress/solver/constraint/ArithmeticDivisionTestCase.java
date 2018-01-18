@@ -23,35 +23,36 @@ import ru.ispras.fortress.expression.Nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This test constructs a constraint, solves it and checks the solution against the expected values.
+ * The constraint as described in the SMT language:
+ *
+ * <pre>
+ * (declare-const a Int)
+ * (declare-const r1 Int)
+ * (declare-const r2 Int)
+ * (declare-const r3 Int)
+ * (declare-const r4 Int)
+ * (declare-const r5 Int)
+ * (declare-const r6 Int)
+ * (assert (= a 10))
+ * (assert (= r1 (div a 4)))
+ * (assert (= r2 (mod a 4)))
+ * (assert (= r3 (rem a 4)))
+ * (assert (= r4 (div a (- 4))))
+ * (assert (= r5 (mod a (- 4))))
+ * (assert (= r6 (rem a (- 4))))
+ * (check-sat)
+ * (get-value (a r1 r2 r3 r4 r5 r6))
+ * (exit)
+ * </pre>
+ * Expected output: sat ((a 10) (r1 2) (r2 2) (r3 2) (r4 (- 2)) (r5 2) (r6 (- 2)))
+ */
 public class ArithmeticDivisionTestCase extends GenericSolverTestBase {
   public ArithmeticDivisionTestCase() {
     super(new ArithmeticDivision());
   }
 
-  /**
-   * The constraint as described in the SMT language:
-   *
-   * <pre>
-   * (declare-const a Int)
-   * (declare-const r1 Int)
-   * (declare-const r2 Int)
-   * (declare-const r3 Int)
-   * (declare-const r4 Int)
-   * (declare-const r5 Int)
-   * (declare-const r6 Int)
-   * (assert (= a 10))
-   * (assert (= r1 (div a 4)))
-   * (assert (= r2 (mod a 4)))
-   * (assert (= r3 (rem a 4)))
-   * (assert (= r4 (div a (- 4))))
-   * (assert (= r5 (mod a (- 4))))
-   * (assert (= r6 (rem a (- 4))))
-   * (check-sat)
-   * (get-value (a r1 r2 r3 r4 r5 r6))
-   * (exit)
-   * </pre>
-   * Expected output: sat ((a 10) (r1 2) (r2 2) (r3 2) (r4 (- 2)) (r5 2) (r6 (- 2)))
-   */
   public static class ArithmeticDivision implements SampleConstraint {
     private static final DataType intType = DataType.INTEGER;
 

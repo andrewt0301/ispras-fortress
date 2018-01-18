@@ -23,30 +23,31 @@ import ru.ispras.fortress.expression.Nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This test constructs a constraint, solves it and checks the solution against the expected values.
+ * The constraint as described in the SMT language:
+ *
+ * <pre>
+ * (declare-const a Int)
+ * (declare-const b Int)
+ * (declare-const c Int)
+ * (declare-const d Real)
+ * (declare-const e Real)
+ * (assert (> a (+ b 2)))
+ * (assert (= a (+ (* 2 c) 10)))
+ * (assert (<= (+ c b) 1000))
+ * (assert (>= d e))
+ * (check-sat)
+ * (get-value (a b c d e))
+ * (exit)
+ * </pre>
+ * Expected output: sat ((a 0) (b (- 3)) (c (- 5)) (d 0.0) (e 0.0))
+ */
 public class ArithmeticTestCase extends GenericSolverTestBase {
   public ArithmeticTestCase() {
     super(new Arithmetic());
   }
 
-  /**
-   * The constraint as described in the SMT language:
-   *
-   * <pre>
-   * (declare-const a Int)
-   * (declare-const b Int)
-   * (declare-const c Int)
-   * (declare-const d Real)
-   * (declare-const e Real)
-   * (assert (> a (+ b 2)))
-   * (assert (= a (+ (* 2 c) 10)))
-   * (assert (<= (+ c b) 1000))
-   * (assert (>= d e))
-   * (check-sat)
-   * (get-value (a b c d e))
-   * (exit)
-   * </pre>
-   * Expected output: sat ((a 0) (b (- 3)) (c (- 5)) (d 0.0) (e 0.0))
-   */
   public static class Arithmetic implements SampleConstraint {
     private static final DataType intType = DataType.INTEGER;
     private static final DataType realType = DataType.REAL;
