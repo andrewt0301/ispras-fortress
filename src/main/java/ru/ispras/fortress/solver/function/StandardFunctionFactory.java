@@ -268,11 +268,11 @@ public final class StandardFunctionFactory {
   }
 
   private static Node newBvTwoBitPartXor(final Node source, final int size) {
-    final NodeValue TWO_ZEROS = new NodeValue(DataType.BIT_VECTOR(size).valueOf("00", 2));
-    final NodeValue TWO_ONES = new NodeValue(DataType.BIT_VECTOR(size).valueOf("11", 2));
+    final NodeValue twoZeros = new NodeValue(DataType.BIT_VECTOR(size).valueOf("00", 2));
+    final NodeValue twoOnes = new NodeValue(DataType.BIT_VECTOR(size).valueOf("11", 2));
 
     return Nodes.ite(
-        Nodes.or(Nodes.eq(source, TWO_ZEROS), Nodes.eq(source, TWO_ONES)),
+        Nodes.or(Nodes.eq(source, twoZeros), Nodes.eq(source, twoOnes)),
         BIT_FALSE,
         BIT_TRUE
         );
