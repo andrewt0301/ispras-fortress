@@ -46,47 +46,48 @@ public class ArrayTestCase extends GenericSolverTestBase {
   public ArrayTestCase() {
     super(new ArrayInvariant());
   }
-}
 
+  public static final class ArrayInvariant implements SampleConstraint {
+    private static final DataType ARRAY_TYPE = DataType.MAP(DataType.INTEGER, DataType.INTEGER);
+    private static final String ARRAY_VALUE = "((37:37))";
 
-final class ArrayInvariant implements GenericSolverTestBase.SampleConstraint {
-  private static final DataType ARRAY_TYPE = DataType.MAP(DataType.INTEGER, DataType.INTEGER);
-  private static final String ARRAY_VALUE = "((37:37))";
+    @Override
+    public Constraint getConstraint() {
+      final ConstraintBuilder builder = new ConstraintBuilder();
 
-  public Constraint getConstraint() {
-    final ConstraintBuilder builder = new ConstraintBuilder();
+      builder.setName("ArrayInvariant");
+      builder.setKind(ConstraintKind.FORMULA_BASED);
+      builder.setDescription("ArrayInvariant constraint");
 
-    builder.setName("ArrayInvariant");
-    builder.setKind(ConstraintKind.FORMULA_BASED);
-    builder.setDescription("ArrayInvariant constraint");
+      final NodeVariable a = new NodeVariable(builder.addVariable("a", ARRAY_TYPE));
+      final NodeVariable v = new NodeVariable(builder.addVariable("v", ARRAY_TYPE));
 
-    final NodeVariable a = new NodeVariable(builder.addVariable("a", ARRAY_TYPE));
-    final NodeVariable v = new NodeVariable(builder.addVariable("v", ARRAY_TYPE));
+      final Data ival = Data.newInteger(37);
+      final DataMap map = new DataMap(DataType.INTEGER, DataType.INTEGER);
+      map.put(ival, ival);
 
-    final Data ival = Data.newInteger(37);
-    final DataMap map = new DataMap(DataType.INTEGER, DataType.INTEGER);
-    map.put(ival, ival);
+      final NodeValue value = new NodeValue(ival);
+      final NodeValue array = new NodeValue(Data.newArray(map));
 
-    final NodeValue value = new NodeValue(ival);
-    final NodeValue array = new NodeValue(Data.newArray(map));
+      final Node stored = Nodes.store(v, value, value);
 
-    final Node stored = Nodes.store(v, value, value);
+      final Formulas formulas = new Formulas();
+      builder.setInnerRep(formulas);
 
-    final Formulas formulas = new Formulas();
-    builder.setInnerRep(formulas);
+      formulas.add(Nodes.eq(a, stored));
+      formulas.add(Nodes.eq(a, array));
 
-    formulas.add(Nodes.eq(a, stored));
-    formulas.add(Nodes.eq(a, array));
+      return builder.build();
+    }
 
-    return builder.build();
-  }
+    @Override
+    public Iterable<Variable> getExpectedVariables() {
+      final List<Variable> result = new ArrayList<Variable>();
 
-  public Iterable<Variable> getExpectedVariables() {
-    final List<Variable> result = new ArrayList<Variable>();
+      result.add(new Variable("a", ARRAY_TYPE.valueOf(ARRAY_VALUE, 10)));
+      result.add(new Variable("v", ARRAY_TYPE.valueOf("()", 10)));
 
-    result.add(new Variable("a", ARRAY_TYPE.valueOf(ARRAY_VALUE, 10)));
-    result.add(new Variable("v", ARRAY_TYPE.valueOf("()", 10)));
-
-    return result;
+      return result;
+    }
   }
 }
