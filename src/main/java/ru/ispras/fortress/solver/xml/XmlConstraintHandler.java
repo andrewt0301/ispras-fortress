@@ -61,16 +61,16 @@ final class XmlConstraintHandler extends DefaultHandler {
   public void startElement(
       final String uri,
       final String localName,
-      final String qName,
+      final String qualifiedName,
       final Attributes attributes) throws SAXException {
     try {
-      final XmlNodeType currentNode = getNodeType(qName);
+      final XmlNodeType currentNode = getNodeType(qualifiedName);
       verifyNodeHierarchy(currentNode, nodes.empty() ? null : nodes.lastElement());
 
       switch (currentNode) {
         case CONSTRAINT: {
           nodes.clear();
-          verifyFormatVersion(qName, attributes);
+          verifyFormatVersion(qualifiedName, attributes);
           builder.beginConstraint();
           break;
         }
@@ -87,12 +87,12 @@ final class XmlConstraintHandler extends DefaultHandler {
 
         case OPERATION: {
           builder.beginOperation();
-          builder.pushOperation(getOperationId(qName, attributes));
+          builder.pushOperation(getOperationId(qualifiedName, attributes));
           break;
         }
 
         case VARIABLE_REF: {
-          final String variableName = getVariableRef(qName, attributes);
+          final String variableName = getVariableRef(qualifiedName, attributes);
 
           if (nestedScope.contains(variableName)) {
             builder.pushElement(new NodeVariable(nestedScope.get(variableName)));
@@ -106,7 +106,7 @@ final class XmlConstraintHandler extends DefaultHandler {
         }
 
         case VALUE: {
-          final Data value = getValue(qName, attributes);
+          final Data value = getValue(qualifiedName, attributes);
           builder.pushElement(new NodeValue(value));
           break;
         }
@@ -117,7 +117,7 @@ final class XmlConstraintHandler extends DefaultHandler {
         }
 
         case VARIABLE: {
-          final Variable variable = builder.addGlobalVariable(getVariable(qName, attributes));
+          final Variable variable = builder.addGlobalVariable(getVariable(qualifiedName, attributes));
           variables.put(variable.getName(), variable);
           break;
         }
@@ -128,7 +128,7 @@ final class XmlConstraintHandler extends DefaultHandler {
         }
 
         case BOUND_VARIABLE: {
-          final String variableName = getVariableRef(qName, attributes);
+          final String variableName = getVariableRef(qualifiedName, attributes);
           final Variable variable = createLocalVariable(variableName);
 
           incompleteScope.put(variableName, variable);
@@ -152,14 +152,14 @@ final class XmlConstraintHandler extends DefaultHandler {
       }
 
       nodes.push(currentNode);
-    } catch (SAXException e) {
+    } catch (final SAXException e) {
       throw e;
-    } catch (Exception e) {
+    } catch (final Exception e) {
       throw new SAXException(XmlMessages.ERR_INVALID_CONSTRAINT + e.getMessage(), e);
     }
 
     // ///////// DEBUG CODE ////////////////////////
-    // System.out.print("<" + qName + ">");
+    // System.out.print("<" + qualifiedName + ">");
     // for (int index = 0; index < attributes.getLength(); ++index)
     // {
     // System.out.print(" " + attributes.getLocalName(index) +
@@ -175,10 +175,10 @@ final class XmlConstraintHandler extends DefaultHandler {
   public void endElement(
       final String uri,
       final String localName,
-      final String qName) throws SAXException {
+      final String qualifiedName) throws SAXException {
     assert !nodes.empty();
     try {
-      final XmlNodeType currentNode = getNodeType(qName);
+      final XmlNodeType currentNode = getNodeType(qualifiedName);
       assert (currentNode == nodes.lastElement());
 
       switch (currentNode) {
@@ -234,7 +234,7 @@ final class XmlConstraintHandler extends DefaultHandler {
     }
 
     // ///////// DEBUG CODE ////////////////////////
-    // System.out.print("</" + qName + ">");
+    // System.out.print("</" + qualifiedName + ">");
   }
 
   private void pushVariableScope() {
