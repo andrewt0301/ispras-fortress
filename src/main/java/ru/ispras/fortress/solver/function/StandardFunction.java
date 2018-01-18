@@ -35,7 +35,7 @@ public enum StandardFunction implements FunctionTemplate {
   ABS(StandardOperation.ABS, 1) {
     @Override
     protected Function newFunction(final DataType[] argTypes) {
-      return StandardFunctionFactory.newAbs(getId(), argTypes[0]);
+      return StandardFunctionFactory.abs(getId(), argTypes[0]);
     }
   },
 
