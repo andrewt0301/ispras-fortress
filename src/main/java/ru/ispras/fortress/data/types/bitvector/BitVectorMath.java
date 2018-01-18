@@ -220,70 +220,70 @@ public final class BitVectorMath {
     ULE(BINARY) {
       @Override
       public BitVector execute(final BitVector lhs, final BitVector rhs) {
-        return ule(lhs, rhs);
+        return BitVector.valueOf(ule(lhs, rhs));
       }
     },
 
     ULT(BINARY) {
       @Override
       public BitVector execute(final BitVector lhs, final BitVector rhs) {
-        return ult(lhs, rhs);
+        return BitVector.valueOf(ult(lhs, rhs));
       }
     },
 
     UGE(BINARY) {
       @Override
       public BitVector execute(final BitVector lhs, final BitVector rhs) {
-        return uge(lhs, rhs);
+        return BitVector.valueOf(uge(lhs, rhs));
       }
     },
 
     UGT(BINARY) {
       @Override
       public BitVector execute(final BitVector lhs, final BitVector rhs) {
-        return ugt(lhs, rhs);
+        return BitVector.valueOf(ugt(lhs, rhs));
       }
     },
 
     SLE(BINARY) {
       @Override
       public BitVector execute(final BitVector lhs, final BitVector rhs) {
-        return sle(lhs, rhs);
+        return BitVector.valueOf(sle(lhs, rhs));
       }
     },
 
     SLT(BINARY) {
       @Override
       public BitVector execute(final BitVector lhs, final BitVector rhs) {
-        return slt(lhs, rhs);
+        return BitVector.valueOf(slt(lhs, rhs));
       }
     },
 
     SGE(BINARY) {
       @Override
       public BitVector execute(final BitVector lhs, final BitVector rhs) {
-        return sge(lhs, rhs);
+        return BitVector.valueOf(sge(lhs, rhs));
       }
     },
 
     SGT(BINARY) {
       @Override
       public BitVector execute(final BitVector lhs, final BitVector rhs) {
-        return sgt(lhs, rhs);
+        return BitVector.valueOf(sgt(lhs, rhs));
       }
     },
 
     EQ(BINARY) {
       @Override
       public BitVector execute(final BitVector lhs, final BitVector rhs) {
-        return eq(lhs, rhs);
+        return BitVector.valueOf(eq(lhs, rhs));
       }
     },
 
     NEQ(BINARY) {
       @Override
       public BitVector execute(final BitVector lhs, final BitVector rhs) {
-        return neq(lhs, rhs);
+        return BitVector.valueOf(neq(lhs, rhs));
       }
     },
 
@@ -771,31 +771,27 @@ public final class BitVectorMath {
     return add(not(bitVector), BitVector.valueOf(1, bitVector.getBitSize()));
   }
 
-  public static BitVector ule(final BitVector lhs, final BitVector rhs) {
+  public static boolean ule(final BitVector lhs, final BitVector rhs) {
     checkEqualSize(lhs, rhs);
-
-    return BitVector.valueOf(lhs.compareTo(rhs) <= 0);
+    return lhs.compareTo(rhs) <= 0;
   }
 
-  public static BitVector ult(final BitVector lhs, final BitVector rhs) {
+  public static boolean ult(final BitVector lhs, final BitVector rhs) {
     checkEqualSize(lhs, rhs);
-
-    return BitVector.valueOf(lhs.compareTo(rhs) < 0);
+    return lhs.compareTo(rhs) < 0;
   }
 
-  public static BitVector uge(final BitVector lhs, final BitVector rhs) {
+  public static boolean uge(final BitVector lhs, final BitVector rhs) {
     checkEqualSize(lhs, rhs);
-
-    return BitVector.valueOf(lhs.compareTo(rhs) >= 0);
+    return lhs.compareTo(rhs) >= 0;
   }
 
-  public static BitVector ugt(final BitVector lhs, final BitVector rhs) {
+  public static boolean ugt(final BitVector lhs, final BitVector rhs) {
     checkEqualSize(lhs, rhs);
-
-    return BitVector.valueOf(lhs.compareTo(rhs) > 0);
+    return lhs.compareTo(rhs) > 0;
   }
 
-  public static BitVector sle(final BitVector lhs, final BitVector rhs) {
+  public static boolean sle(final BitVector lhs, final BitVector rhs) {
     checkEqualSize(lhs, rhs);
 
     final int signBitIndex = lhs.getBitSize() - 1;
@@ -805,13 +801,13 @@ public final class BitVectorMath {
 
     if (isLeftNeg != isRightNeg) {
       // If lhs is negative, it is less. Otherwise, it is greater.
-      return BitVector.valueOf(isLeftNeg);
+      return isLeftNeg;
     }
 
-    return BitVector.valueOf(lhs.compareTo(rhs) <= 0);
+    return lhs.compareTo(rhs) <= 0;
   }
 
-  public static BitVector slt(final BitVector lhs, final BitVector rhs) {
+  public static boolean slt(final BitVector lhs, final BitVector rhs) {
     checkEqualSize(lhs, rhs);
 
     final int signBitIndex = lhs.getBitSize() - 1;
@@ -821,13 +817,13 @@ public final class BitVectorMath {
 
     if (isLeftNeg != isRightNeg) {
       // If lhs is negative, it is less. Otherwise, it is greater.
-      return BitVector.valueOf(isLeftNeg);
+      return isLeftNeg;
     }
 
-    return BitVector.valueOf(lhs.compareTo(rhs) < 0);
+    return lhs.compareTo(rhs) < 0;
   }
 
-  public static BitVector sge(final BitVector lhs, final BitVector rhs) {
+  public static boolean sge(final BitVector lhs, final BitVector rhs) {
     checkEqualSize(lhs, rhs);
 
     final int signBitIndex = lhs.getBitSize() - 1;
@@ -837,13 +833,13 @@ public final class BitVectorMath {
 
     if (isLeftNeg != isRightNeg) {
       // If lhs is positive, it is greater. Otherwise, it is less.
-      return BitVector.valueOf(!isLeftNeg);
+      return !isLeftNeg;
     }
 
-    return BitVector.valueOf(lhs.compareTo(rhs) >= 0);
+    return lhs.compareTo(rhs) >= 0;
   }
 
-  public static BitVector sgt(final BitVector lhs, final BitVector rhs) {
+  public static boolean sgt(final BitVector lhs, final BitVector rhs) {
     checkEqualSize(lhs, rhs);
 
     final int signBitIndex = lhs.getBitSize() - 1;
@@ -853,22 +849,20 @@ public final class BitVectorMath {
 
     if (isLeftNeg != isRightNeg) {
       // If lhs is positive, it is greater. Otherwise, it is less.
-      return BitVector.valueOf(!isLeftNeg);
+      return !isLeftNeg;
     }
 
-    return BitVector.valueOf(lhs.compareTo(rhs) > 0);
+    return lhs.compareTo(rhs) > 0;
   }
 
-  public static BitVector eq(final BitVector lhs, final BitVector rhs) {
+  public static boolean eq(final BitVector lhs, final BitVector rhs) {
     checkEqualSize(lhs, rhs);
-
-    return BitVector.valueOf(lhs.equals(rhs));
+    return lhs.equals(rhs);
   }
 
-  public static BitVector neq(final BitVector lhs, final BitVector rhs) {
+  public static boolean neq(final BitVector lhs, final BitVector rhs) {
     checkEqualSize(lhs, rhs);
-
-    return BitVector.valueOf(!lhs.equals(rhs));
+    return !lhs.equals(rhs);
   }
 
   public static BitVector andr(final BitVector bv) {

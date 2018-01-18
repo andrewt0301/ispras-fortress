@@ -982,23 +982,23 @@ public class BitVectorMathTestCase {
             BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64)), BitVector.TRUE);
   }
 
-  private static void checkBitVector(final BitVector current, final int expected) {
+  private static void checkBitVector(boolean current, BitVector expected) {
+    TestUtils.checkBitVector(BitVector.valueOf(current), expected);
+  }
 
+  private static void checkBitVector(final BitVector current, final int expected) {
     TestUtils.checkBitVector(current, expected);
   }
 
   private static void checkBitVector(final BitVector current, final long expected) {
-
     TestUtils.checkBitVector(current, expected);
   }
 
   private static void checkBitVector(final BitVector current, final BitVector expected) {
-
     TestUtils.checkBitVector(current, expected);
   }
 
   private static void checkBitVector(final BitVector current, final String expected) {
-
     TestUtils.checkBitVector(current, expected);
   }
 }
