@@ -93,7 +93,7 @@ public class CustomOperationsTestCase extends GenericSolverTestBase {
    * </pre></p>
    */
   private static final int BV_LENGTH = 64;
-  private static final DataType Int_t = DataType.BIT_VECTOR(BV_LENGTH);
+  private static final DataType INT_T = DataType.BIT_VECTOR(BV_LENGTH);
 
   enum ECustomOperation {
       INT_ZERO, INT_BASE_SIZE, INT_SIGN_MASK, IS_VALID_POS, IS_VALID_NEG, IS_VALID_SIGNED_INT
@@ -101,39 +101,39 @@ public class CustomOperationsTestCase extends GenericSolverTestBase {
 
   @Override
   protected void registerCustomOperations(final Solver solver) {
-    registerINT_ZERO(solver);
-    registerINT_BASE_SIZE(solver);
-    registerINT_SIGN_MASK(solver);
-    registerIS_VALID_POS(solver);
-    registerIS_VALID_NEG(solver);
-    registerIS_VALID_SIGNED_INT(solver);
+    registerIntZero(solver);
+    registerIntBaseSize(solver);
+    registerIntSignMask(solver);
+    registerIsValidPos(solver);
+    registerIsValidNeg(solver);
+    registerIsValidSignedInt(solver);
   }
 
   // (define-fun INT_ZERO () Int_t (_ bv0 64))
-  private void registerINT_ZERO(Solver solver) {
-    final Node body = new NodeValue(Int_t.valueOf("0", 10));
-    solver.addCustomOperation(new Function(ECustomOperation.INT_ZERO, Int_t, body));
+  private void registerIntZero(final Solver solver) {
+    final Node body = new NodeValue(INT_T.valueOf("0", 10));
+    solver.addCustomOperation(new Function(ECustomOperation.INT_ZERO, INT_T, body));
   }
 
   // (define-fun INT_BASE_SIZE () Int_t (_ bv32 64))
-  private void registerINT_BASE_SIZE(Solver solver) {
-    final Node body = new NodeValue(Int_t.valueOf("32", 10));
-    solver.addCustomOperation(new Function(ECustomOperation.INT_BASE_SIZE, Int_t, body));
+  private void registerIntBaseSize(final Solver solver) {
+    final Node body = new NodeValue(INT_T.valueOf("32", 10));
+    solver.addCustomOperation(new Function(ECustomOperation.INT_BASE_SIZE, INT_T, body));
   }
 
   // (define-fun INT_SIGN_MASK () Int_t (bvshl (bvnot INT_ZERO) INT_BASE_SIZE))
-  private void registerINT_SIGN_MASK(Solver solver) {
+  private void registerIntSignMask(final Solver solver) {
     final Node body = Nodes.bvlshl(
         Nodes.bvnot(new NodeOperation(ECustomOperation.INT_ZERO)),
         new NodeOperation(ECustomOperation.INT_BASE_SIZE));
 
-    solver.addCustomOperation(new Function(ECustomOperation.INT_SIGN_MASK, Int_t, body));
+    solver.addCustomOperation(new Function(ECustomOperation.INT_SIGN_MASK, INT_T, body));
   }
 
   // (define-fun IS_VALID_POS ((x!1 Int_t)) Bool (ite (= (bvand x!1 INT_SIGN_MASK) INT_ZERO) true
   // false))
-  private void registerIS_VALID_POS(Solver solver) {
-    final Variable param = new Variable("x", Int_t);
+  private void registerIsValidPos(final Solver solver) {
+    final Variable param = new Variable("x", INT_T);
 
     final Node body = Nodes.eq(
         Nodes.bvand(new NodeVariable(param), new NodeOperation(ECustomOperation.INT_SIGN_MASK)),
@@ -145,8 +145,8 @@ public class CustomOperationsTestCase extends GenericSolverTestBase {
 
   // (define-fun IS_VALID_NEG ((x!1 Int_t)) Bool (ite (= (bvand x!1 INT_SIGN_MASK) INT_SIGN_MASK)
   // true false))
-  private void registerIS_VALID_NEG(Solver solver) {
-    final Variable param = new Variable("x", Int_t);
+  private void registerIsValidNeg(final Solver solver) {
+    final Variable param = new Variable("x", INT_T);
 
     final Node body = Nodes.eq(
         Nodes.bvand(new NodeVariable(param), new NodeOperation(ECustomOperation.INT_SIGN_MASK)),
@@ -158,8 +158,8 @@ public class CustomOperationsTestCase extends GenericSolverTestBase {
 
   // (define-fun IS_VALID_SIGNED_INT ((x!1 Int_t)) Bool (ite (or (IsValidPos x!1) (IsValidNeg
   // x!1)) true false))
-  private void registerIS_VALID_SIGNED_INT(Solver solver) {
-    final Variable param = new Variable("x", Int_t);
+  private void registerIsValidSignedInt(final Solver solver) {
+    final Variable param = new Variable("x", INT_T);
 
     final Node body = Nodes.or(
         new NodeOperation(ECustomOperation.IS_VALID_POS, new NodeVariable(param)),
@@ -181,9 +181,9 @@ public class CustomOperationsTestCase extends GenericSolverTestBase {
       // Unknown variables
 
       // (declare-const rs Int_t)
-      final NodeVariable rs = new NodeVariable(builder.addVariable("rs", Int_t));
+      final NodeVariable rs = new NodeVariable(builder.addVariable("rs", INT_T));
       // (declare-const rt Int_t)
-      final NodeVariable rt = new NodeVariable(builder.addVariable("rt", Int_t));
+      final NodeVariable rt = new NodeVariable(builder.addVariable("rt", INT_T));
 
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
@@ -214,8 +214,8 @@ public class CustomOperationsTestCase extends GenericSolverTestBase {
     public Iterable<Variable> getExpectedVariables() {
       final List<Variable> result = new ArrayList<>();
 
-      result.add(new Variable("rs", Int_t.valueOf("000000009b91b193", 16)));
-      result.add(new Variable("rt", Int_t.valueOf("000000009b91b1b3", 16)));
+      result.add(new Variable("rs", INT_T.valueOf("000000009b91b193", 16)));
+      result.add(new Variable("rt", INT_T.valueOf("000000009b91b1b3", 16)));
 
       return result;
     }
