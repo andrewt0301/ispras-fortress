@@ -87,11 +87,10 @@ public class ArrayOfArraysTestCase extends GenericSolverTestBase {
       formulas.add(Nodes.eq(u, Nodes.store(u, x, y)));
       formulas.add(Nodes.eq(v, Nodes.store(u, z, w)));
 
-
-
       return builder.build();
     }
 
+    @Override
     public Iterable<Variable> getExpectedVariables() {
       final String xValue = "((-1:-1)(0:8)(1:7)(3:6))";
       final String yValue = "((-1:-1)(0:0)(1:7)(3:6))";
