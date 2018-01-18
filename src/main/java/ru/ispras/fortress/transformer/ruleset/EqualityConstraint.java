@@ -24,7 +24,6 @@ import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.util.InvariantChecks;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -190,9 +189,9 @@ class EqualityConstraint {
 
     for (final EqualityGroup group : equalityGroups) {
       if (group.size() > 1) {
-        final Node[] nodes = group.toArray();
-        nodeSet.addAll(Arrays.asList(nodes));
-        reduced.add(new NodeOperation(StandardOperation.EQ, group.toArray()));
+        final List<Node> nodes = group.getAll();
+        nodeSet.addAll(nodes);
+        reduced.add(Nodes.eq(nodes));
       }
     }
     reduced.addAll(filterInequalities(inequalities));
@@ -351,20 +350,13 @@ final class EqualityGroup {
     }
   }
 
-  public Node[] toArray() {
-    final Node[] nodes = new Node[this.size()];
-    int i = populate(nodes, 0, variables);
-    i = populate(nodes, i, constants);
-    populate(nodes, i, remains);
+  public List<Node> getAll() {
+    final List<Node> nodes = new ArrayList<>(this.size());
+
+    nodes.addAll(variables);
+    nodes.addAll(constants);
+    nodes.addAll(remains);
 
     return nodes;
-  }
-
-  private static int populate(
-      final Node[] nodes, int i, final Collection<? extends Node> collection) {
-    for (final Node node : collection) {
-      nodes[i++] = node;
-    }
-    return i;
   }
 }
