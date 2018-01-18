@@ -26,7 +26,8 @@ public class ConstraintNegationTestCase extends GenericSolverTestBase {
     super(new ConstraintNegation());
   }
 
-  public static class ConstraintNegation extends BVUGTOperation {
+  public static class ConstraintNegation extends BvugtOperation {
+    @Override
     public Constraint getConstraint() {
       final Constraint constraint = super.getConstraint();
       final Node formula = ((Formulas) constraint.getInnerRep()).exprs().iterator().next();

@@ -25,7 +25,7 @@ public class ConstraintConjunctionTestCase extends GenericSolverTestBase {
     super(new ConstraintConjunction());
   }
 
-  public static class ConstraintConjunction extends BVUGTOperation {
+  public static class ConstraintConjunction extends BvugtOperation {
     @Override
     public Constraint getConstraint() {
       final Constraint constraint = super.getConstraint();

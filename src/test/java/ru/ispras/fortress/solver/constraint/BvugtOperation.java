@@ -41,7 +41,7 @@ import java.util.List;
  * sat ((x #x00000070))
  * </pre>
  */
-public class BVUGTOperation implements SampleConstraint {
+public class BvugtOperation implements SampleConstraint {
   protected static final int BIT_VECTOR_SIZE = 32;
   protected static final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_SIZE);
 
