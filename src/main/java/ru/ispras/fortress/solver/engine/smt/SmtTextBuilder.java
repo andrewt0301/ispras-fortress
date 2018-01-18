@@ -29,7 +29,6 @@ import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.solver.SolverOperation;
 import ru.ispras.fortress.solver.constraint.Constraint;
 import ru.ispras.fortress.solver.constraint.ConstraintUtils;
-import ru.ispras.fortress.solver.engine.smt.SmtStrings;
 import ru.ispras.fortress.solver.function.Function;
 import ru.ispras.fortress.solver.function.FunctionTemplate;
 
@@ -85,9 +84,9 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
     return currentBuilder;
   }
 
-  private void appendToCurrent(final String s) {
+  private void appendToCurrent(final String text) {
     assert null != currentBuilder : "The current builder is not assigned.";
-    currentBuilder.append(s);
+    currentBuilder.append(text);
   }
 
   private void setCurrentBuilder(final StringBuilder builder) {
@@ -136,11 +135,11 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
         }
       }
 
-      public void println(final String x) {
-        fileOut.println(x);
+      public void println(final String text) {
+        fileOut.println(text);
         if (null != textOut) {
-          textOut.append(x);
-          textOut.append("\r\n");
+          textOut.append(text);
+          textOut.append(System.lineSeparator());
         }
       }
 
