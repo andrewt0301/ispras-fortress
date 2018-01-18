@@ -117,7 +117,8 @@ final class XmlConstraintHandler extends DefaultHandler {
         }
 
         case VARIABLE: {
-          final Variable variable = builder.addGlobalVariable(getVariable(qualifiedName, attributes));
+          final Variable variable =
+              builder.addGlobalVariable(getVariable(qualifiedName, attributes));
           variables.put(variable.getName(), variable);
           break;
         }
