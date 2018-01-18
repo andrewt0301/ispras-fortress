@@ -23,34 +23,35 @@ import ru.ispras.fortress.expression.Nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This test constructs a constraint, solves it and checks the solution against the expected values.
+ * The constraint as described in the SMT-LIB language:
+ *
+ * <pre>
+ * (declare-const a (_ BitVec 16))
+ * (declare-const b (_ BitVec 16))
+ * (declare-const c (_ BitVec 16))
+ *
+ * (assert (= a #x0003)) ; assumed input value
+ * (assert (= c #x0005)) ; assumed input value
+ *
+ * (assert (= (bvadd a b) c))
+ *
+ * (check-sat)
+ * (get-value (a b c))
+ * (exit)
+ * </pre>
+ * Expected output:
+ *
+ * <pre>
+ * sat ((a #x0003)(b #x0002)(c #x0005))
+ * </pre>
+ */
 public class InputParametersTestCase extends GenericSolverTestBase {
   public InputParametersTestCase() {
     super(new InputParameters());
   }
 
-  /**
-   * The constraint as described in the SMT-LIB language:
-   *
-   * <pre>
-   * (declare-const a (_ BitVec 16))
-   * (declare-const b (_ BitVec 16))
-   * (declare-const c (_ BitVec 16))
-   *
-   * (assert (= a #x0003)) ; assumed input value
-   * (assert (= c #x0005)) ; assumed input value
-   *
-   * (assert (= (bvadd a b) c))
-   *
-   * (check-sat)
-   * (get-value (a b c))
-   * (exit)
-   * </pre>
-   * Expected output:
-   *
-   * <pre>
-   * sat ((a #x0003)(b #x0002)(c #x0005))
-   * </pre>
-   */
   public static class InputParameters implements SampleConstraint {
     private static final int BIT_VECTOR_SIZE = 16;
     private static final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_SIZE);

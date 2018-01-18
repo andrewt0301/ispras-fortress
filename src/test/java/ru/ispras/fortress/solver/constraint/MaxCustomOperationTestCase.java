@@ -24,30 +24,31 @@ import ru.ispras.fortress.expression.Nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This test constructs a constraint, solves it and checks the solution against the expected values.
+ * The constraint as described in the SMT language:
+ *
+ * <pre>
+ *     (declare-const a Real)
+ *     (declare-const b Real)
+ *     (define-fun MAX ((x Real)(y Real)) Real( ite( >= x y) x y))
+ *     (assert( = a( MAX  3.0  4.0)))
+ *     (assert( = b( MAX a  5.0)))
+ *     (check-sat)
+ *     (get-value ( a b))
+ *     (exit)
+ * </pre>
+ * Expected output:
+ *
+ * <pre>
+ *     sat ((a 4.0)(b 5.0))
+ * </pre>
+ */
 public class MaxCustomOperationTestCase extends GenericSolverTestBase {
   public MaxCustomOperationTestCase() {
     super(new MaxCustomOperation());
   }
 
-  /**
-   * The constraint as described in the SMT language:
-   *
-   * <pre>
-   *     (declare-const a Real)
-   *     (declare-const b Real)
-   *     (define-fun MAX ((x Real)(y Real)) Real( ite( >= x y) x y))
-   *     (assert( = a( MAX  3.0  4.0)))
-   *     (assert( = b( MAX a  5.0)))
-   *     (check-sat)
-   *     (get-value ( a b))
-   *     (exit)
-   * </pre>
-   * Expected output:
-   *
-   * <pre>
-   *     sat ((a 4.0)(b 5.0))
-   * </pre>
-   */
   public static class MaxCustomOperation implements SampleConstraint {
     @Override
     public Constraint getConstraint() {

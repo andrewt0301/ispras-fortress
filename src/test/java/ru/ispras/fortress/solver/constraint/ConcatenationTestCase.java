@@ -23,31 +23,32 @@ import ru.ispras.fortress.expression.Nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This test constructs a constraint, solves it and checks the solution against the expected values.
+ * The constraint as described in the SMT language:
+ *
+ * <pre>
+ * (declare-const x (_ BitVec 16))
+ * (declare-const y (_ BitVec 16))
+ * (declare-const z (_ BitVec 32))
+ * (assert (= x #x0000))
+ * (assert (= y #xffff))
+ * (assert (= z (concat x y)))
+ * (check-sat)
+ * (get-value (x y z))
+ * (exit)
+ * </pre>
+ * Expected output:
+ *
+ * <pre>
+ * sat ((x #x0000) (y #xffff) (z #x0000ffff))
+ * </pre>
+ */
 public class ConcatenationTestCase extends GenericSolverTestBase {
   public ConcatenationTestCase() {
     super(new Concatenation());
   }
 
-  /**
-   * The constraint as described in the SMT language:
-   *
-   * <pre>
-   * (declare-const x (_ BitVec 16))
-   * (declare-const y (_ BitVec 16))
-   * (declare-const z (_ BitVec 32))
-   * (assert (= x #x0000))
-   * (assert (= y #xffff))
-   * (assert (= z (concat x y)))
-   * (check-sat)
-   * (get-value (x y z))
-   * (exit)
-   * </pre>
-   * Expected output:
-   *
-   * <pre>
-   * sat ((x #x0000) (y #xffff) (z #x0000ffff))
-   * </pre>
-   */
   public static class Concatenation implements SampleConstraint {
     private static final int BIT_VECTOR_ARG_SIZE = 16;
     private static final DataType BIT_VECTOR_ARG_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_ARG_SIZE);

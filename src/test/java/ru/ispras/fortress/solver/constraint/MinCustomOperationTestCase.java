@@ -24,30 +24,31 @@ import ru.ispras.fortress.expression.Nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This test constructs a constraint, solves it and checks the solution against the expected values.
+ * The constraint as described in the SMT language:
+ *
+ * <pre>
+ * (declare-const a Real)
+ * (declare-const b Real)
+ * (define-fun MIN ((x Real)(y Real)) Real( ite( >= x y) y x))
+ * (assert( = a( MIN  3.0  4.0)))
+ * (assert( = b( MIN a  2.0)))
+ * (check-sat)
+ * (get-value ( a b))
+ * (exit)
+ * </pre>
+ * Expected output:
+ *
+ * <pre>
+ * sat ((a 3.0)(b 2.0))
+ * </pre>
+ */
 public class MinCustomOperationTestCase extends GenericSolverTestBase {
   public MinCustomOperationTestCase() {
     super(new MinCustomOperation());
   }
 
-  /**
-   * The constraint as described in the SMT language:
-   * 
-   * <pre>
-   * (declare-const a Real)
-   * (declare-const b Real)
-   * (define-fun MIN ((x Real)(y Real)) Real( ite( >= x y) y x))
-   * (assert( = a( MIN  3.0  4.0)))
-   * (assert( = b( MIN a  2.0)))
-   * (check-sat)
-   * (get-value ( a b))
-   * (exit)
-   * </pre>
-   * Expected output:
-   *
-   * <pre>
-   * sat ((a 3.0)(b 2.0))
-   * </pre>
-   */
   public static class MinCustomOperation implements SampleConstraint {
     @Override
     public Constraint getConstraint() {

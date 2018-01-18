@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * This test constructs a constraint, solves it and checks the solution against the expected values.
  * The constraint as described in the SMT-LIB language:
  *
  * <pre>

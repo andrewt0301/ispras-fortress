@@ -24,24 +24,25 @@ import ru.ispras.fortress.expression.Nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This test constructs a constraint, solves it and checks the solution against the expected values.
+ * The constraint as described in the SMT language:
+ *
+ * <pre>
+ * (declare-const x Int)
+ * (assert (= ((_ int2bv 2) x) #b11))
+ * (check-sat)
+ * (get-model)
+ * (get-value (x ))
+ * (exit)
+ * </pre>
+ * Expected output: sat (x 3)
+ */
 public class IntToBvTestCase extends GenericSolverTestBase {
   public IntToBvTestCase() {
     super(new IntToBvOperation());
   }
 
-  /**
-   * The constraint as described in the SMT language:
-   *
-   * <pre>
-   * (declare-const x Int)
-   * (assert (= ((_ int2bv 2) x) #b11))
-   * (check-sat)
-   * (get-model)
-   * (get-value (x ))
-   * (exit)
-   * </pre>
-   * Expected output: sat (x 3)
-   */
   public static class IntToBvOperation implements SampleConstraint {
     private static final DataType INT_TYPE = DataType.INTEGER;
     private static final int BIT_VECTOR_SIZE = 2;
