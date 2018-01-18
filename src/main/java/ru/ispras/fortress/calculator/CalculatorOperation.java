@@ -16,18 +16,18 @@ package ru.ispras.fortress.calculator;
 
 import ru.ispras.fortress.data.Data;
 
-public abstract class CalculatorOperation<OperationId extends Enum<OperationId>> 
-    implements Operation<OperationId> {
+public abstract class CalculatorOperation<OperationIdT extends Enum<OperationIdT>>
+    implements Operation<OperationIdT> {
 
-  private final OperationId id;
+  private final OperationIdT id;
   private final ArityRange arity;
 
-  public CalculatorOperation(final OperationId id, final ArityRange arity) {
+  public CalculatorOperation(final OperationIdT id, final ArityRange arity) {
     this.id = id;
     this.arity = arity;
   }
 
-  public OperationId getOperationId() {
+  public OperationIdT getOperationId() {
     return id;
   }
 

@@ -31,9 +31,9 @@ import java.util.Map;
  * 
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  * 
- * @param <OperationIdT> Class of the enumeration that specifies operations included in the operation
- *        group. An operation group object can hold only operations that are members of the same
- *        group and are described as elements of the same enumeration.
+ * @param <OperationIdT> Class of the enumeration that specifies operations included in the
+ *        operation group. An operation group object can hold only operations that are members of
+ *        the same group and are described as elements of the same enumeration.
  */
 public final class OperationGroup<OperationIdT extends Enum<OperationIdT>>
     implements CalculatorEngine {
