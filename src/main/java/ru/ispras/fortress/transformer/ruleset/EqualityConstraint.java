@@ -204,7 +204,7 @@ class EqualityConstraint {
 
     public final Map<NodeValue, List<NodeOperation>> constantMap;
 
-    public InequalityCache(Collection<NodeOperation> inequalities) {
+    public InequalityCache(final Collection<NodeOperation> inequalities) {
       this.origin = inequalities;
       this.filtered = new ArrayList<>();
       this.constantMap = new HashMap<>();
@@ -260,11 +260,11 @@ class EqualityConstraint {
     }
 
     final List<NodeOperation> filtered = cache.filtered;
-    for (int i = 0; i < filtered.size(); ++i) {
-      final NodeOperation op = filtered.get(i);
+    for (int index = 0; index < filtered.size(); ++index) {
+      final NodeOperation op = filtered.get(index);
       if (ExprUtils.isOperation(op, StandardOperation.NOTEQ)) {
         // inequalities are split pairwise
-        filtered.set(i, notEq(op.getOperand(0), op.getOperand(1)));
+        filtered.set(index, notEq(op.getOperand(0), op.getOperand(1)));
       }
     }
     return filtered;
@@ -299,64 +299,64 @@ class EqualityConstraint {
   private static NodeOperation notEq(final Node lhs, final Node rhs) {
     return Nodes.not(Nodes.eq(lhs, rhs));
   }
-}
 
-final class EqualityGroup {
-  public final Set<NodeValue> constants;
-  public final Set<NodeVariable> variables;
-  public final Set<Node> remains;
+  private static final class EqualityGroup {
+    public final Set<NodeValue> constants;
+    public final Set<NodeVariable> variables;
+    public final Set<Node> remains;
 
-  public EqualityGroup() {
-    this.constants = new HashSet<>();
-    this.variables = new HashSet<>();
-    this.remains = new HashSet<>();
-  }
-
-  public boolean contains(final Node node) {
-    switch (node.getKind()) {
-      case VARIABLE:
-        return variables.contains((NodeVariable) node);
-
-      case VALUE:
-        return constants.contains((NodeValue) node);
-
-      default:
-        return remains.contains(node);
+    public EqualityGroup() {
+      this.constants = new HashSet<>();
+      this.variables = new HashSet<>();
+      this.remains = new HashSet<>();
     }
-  }
 
-  public int size() {
-    return constants.size() + variables.size() + remains.size();
-  }
+    public boolean contains(final Node node) {
+      switch (node.getKind()) {
+        case VARIABLE:
+          return variables.contains((NodeVariable) node);
 
-  public void add(final Node node) {
-    switch (node.getKind()) {
-      case VARIABLE:
-        variables.add((NodeVariable) node);
-        break;
+        case VALUE:
+          return constants.contains((NodeValue) node);
 
-      case VALUE:
-        constants.add((NodeValue) node);
-        break;
-
-      default:
-        remains.add(node);
+        default:
+          return remains.contains(node);
+      }
     }
-  }
 
-  public void addAll(final Collection<? extends Node> nodes) {
-    for (final Node node : nodes) {
-      this.add(node);
+    public int size() {
+      return constants.size() + variables.size() + remains.size();
     }
-  }
 
-  public List<Node> getAll() {
-    final List<Node> nodes = new ArrayList<>(this.size());
+    public void add(final Node node) {
+      switch (node.getKind()) {
+        case VARIABLE:
+          variables.add((NodeVariable) node);
+          break;
 
-    nodes.addAll(variables);
-    nodes.addAll(constants);
-    nodes.addAll(remains);
+        case VALUE:
+          constants.add((NodeValue) node);
+          break;
 
-    return nodes;
+        default:
+          remains.add(node);
+      }
+    }
+
+    public void addAll(final Collection<? extends Node> nodes) {
+      for (final Node node : nodes) {
+        this.add(node);
+      }
+    }
+
+    public List<Node> getAll() {
+      final List<Node> nodes = new ArrayList<>(this.size());
+
+      nodes.addAll(variables);
+      nodes.addAll(constants);
+      nodes.addAll(remains);
+
+      return nodes;
+    }
   }
 }
