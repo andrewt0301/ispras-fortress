@@ -25,6 +25,7 @@ public class ConstraintDisjunctionTestCase extends GenericSolverTestBase {
   }
 
   public static class ConstraintDisjunction extends BVUGTOperation {
+    @Override
     public Constraint getConstraint() {
       final Constraint constraint = super.getConstraint();
       final Constraint neg = ConstraintCombiner.makeNegation(constraint);

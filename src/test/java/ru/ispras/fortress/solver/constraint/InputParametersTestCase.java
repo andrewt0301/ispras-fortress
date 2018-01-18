@@ -55,6 +55,7 @@ public class InputParametersTestCase extends GenericSolverTestBase {
     private static final int BIT_VECTOR_SIZE = 16;
     private static final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_SIZE);
 
+    @Override
     public Constraint getConstraint() {
       final ConstraintBuilder builder = new ConstraintBuilder();
 
@@ -79,6 +80,7 @@ public class InputParametersTestCase extends GenericSolverTestBase {
       return constraint;
     }
 
+    @Override
     public Iterable<Variable> getExpectedVariables() {
       final List<Variable> result = new ArrayList<Variable>();
 
