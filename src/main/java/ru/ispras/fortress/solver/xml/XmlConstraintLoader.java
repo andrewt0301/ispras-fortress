@@ -50,7 +50,7 @@ public final class XmlConstraintLoader {
 
     try {
       final XmlConstraintHandler handler = new XmlConstraintHandler();
-      newSAXParser().parse(fileName, handler);
+      newSaxParser().parse(fileName, handler);
       return handler.getConstraint();
     } catch (final Exception e) {
       throw new XmlNotLoadedException(fileName, e);
@@ -72,7 +72,7 @@ public final class XmlConstraintLoader {
     try {
       final InputStream stream = new ByteArrayInputStream(text.getBytes("UTF-8"));
       final XmlConstraintHandler handler = new XmlConstraintHandler();
-      newSAXParser().parse(stream, handler);
+      newSaxParser().parse(stream, handler);
       return handler.getConstraint();
     } catch (final Exception e) {
       throw new XmlNotLoadedException(e);
@@ -93,14 +93,14 @@ public final class XmlConstraintLoader {
 
     try {
       final XmlConstraintHandler handler = new XmlConstraintHandler();
-      newSAXParser().parse(new InputSource(url.openStream()), handler);
+      newSaxParser().parse(new InputSource(url.openStream()), handler);
       return handler.getConstraint();
     } catch (Exception e) {
       throw new XmlNotLoadedException(url.toString(), e);
     }
   }
 
-  private static SAXParser newSAXParser() throws ParserConfigurationException, SAXException {
+  private static SAXParser newSaxParser() throws ParserConfigurationException, SAXException {
     final SAXParserFactory factory = SAXParserFactory.newInstance();
     return factory.newSAXParser();
   }
