@@ -25,14 +25,14 @@ public final class TestUtils {
       + "******************************************************************" + "%n* %-64s*%n"
       + "*******************************************************************" + "/";
 
-  public static void Trace(String text) {
+  public static void trace(final String text) {
     if (OUTPUT_DEBUG_STRINGS) {
       System.out.println(text);
     }
   }
 
-  public static void Header(String title) {
-    Trace(String.format(SEPARATOR, title));
+  public static void header(final String title) {
+    trace(String.format(SEPARATOR, title));
   }
 
   public static void checkBitVector(BitVector current, BitVector expected) {
@@ -41,7 +41,7 @@ public final class TestUtils {
 
   public static void checkBitVector(BitVector current, String expected) {
     final String dataString = current.toBinString();
-    Trace(String.format("Data:     %32s%nExpected: %32s", dataString, expected));
+    trace(String.format("Data:     %32s%nExpected: %32s", dataString, expected));
 
     Assert.assertTrue(
         String.format("Values do not match. %s (data) != %s (expected)", dataString, expected),
@@ -95,7 +95,7 @@ public final class TestUtils {
   public static void checkComparison(BitVector lhs, BitVector rhs, int expected) {
     final String lstr = lhs.toBinString();
     final String rstr = rhs.toBinString();
-    Trace(String.format("Comparison lhs: %32s%nComparison rhs: %32s", lstr, rstr));
+    trace(String.format("Comparison lhs: %32s%nComparison rhs: %32s", lstr, rstr));
 
     int actual = lhs.compareTo(rhs);
 

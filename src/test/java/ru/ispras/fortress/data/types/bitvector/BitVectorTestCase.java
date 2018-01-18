@@ -217,8 +217,8 @@ public class BitVectorTestCase {
     // Some representative test data (with odd length).
     final String sample35bitBinStr = "101" + "10101010" + "10101010" + "10101010" + "10101010";
 
-    TestUtils.Trace(BitVector.valueOf(0xFF, 32).toBinString());
-    TestUtils.Trace(BitVector.valueOf(0xFF00FF00, 32).toBinString());
+    TestUtils.trace(BitVector.valueOf(0xFF, 32).toBinString());
+    TestUtils.trace(BitVector.valueOf(0xFF00FF00, 32).toBinString());
 
     TestUtils.checkBitVector(BitVector.newMapping(BitVector.valueOf(-1, 32), 0, 32), -1);
 
