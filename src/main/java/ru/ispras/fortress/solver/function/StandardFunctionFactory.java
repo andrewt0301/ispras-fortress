@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2017 ISP RAS (http://www.ispras.ru)
+ * Copyright 2013-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -40,7 +40,7 @@ public final class StandardFunctionFactory {
   private static final String LEFT_NAME = "x";
   private static final String RIGHT_NAME = "y";
 
-  public static Function newAbs(final Enum<?> id, final DataType operandType) {
+  public static Function abs(final Enum<?> id, final DataType operandType) {
     InvariantChecks.checkNotNull(id);
     InvariantChecks.checkNotNull(operandType);
 
@@ -74,7 +74,7 @@ public final class StandardFunctionFactory {
     return new Function(id, returnType, body, operand);
   }
 
-  public static Function newMin(
+  public static Function min(
       final Enum<?> id,
       final DataType leftType,
       final DataType rightType) {
@@ -103,7 +103,7 @@ public final class StandardFunctionFactory {
     return new Function(id, returnType, body, left, right);
   }
 
-  public static Function newMax(
+  public static Function max(
       final Enum<?> id,
       final DataType leftType,
       final DataType rightType) {
@@ -132,55 +132,55 @@ public final class StandardFunctionFactory {
     return new Function(id, returnType, body, left, right);
   }
 
-  public static Function newBVANDR(final Enum<?> id, final DataType operandType) {
+  public static Function bvandr(final Enum<?> id, final DataType operandType) {
     InvariantChecks.checkNotNull(id);
     InvariantChecks.checkNotNull(operandType);
 
     checkBitVector(OPERAND_NAME, operandType);
 
     final Variable operand = new Variable(OPERAND_NAME, operandType);
-    final NodeOperation body = Nodes.ite(newBVEqualsAllOnes(operand), BIT_TRUE, BIT_FALSE);
+    final NodeOperation body = Nodes.ite(newBvEqualsAllOnes(operand), BIT_TRUE, BIT_FALSE);
 
     return new Function(id, BIT_BOOL, body, operand);
   }
 
-  public static Function newBVNANDR(final Enum<?> id, final DataType operandType) {
+  public static Function bvnandr(final Enum<?> id, final DataType operandType) {
     InvariantChecks.checkNotNull(id);
     InvariantChecks.checkNotNull(operandType);
 
     checkBitVector(OPERAND_NAME, operandType);
 
     final Variable operand = new Variable(OPERAND_NAME, operandType);
-    final NodeOperation body = Nodes.ite(newBVEqualsAllOnes(operand), BIT_FALSE, BIT_TRUE);
+    final NodeOperation body = Nodes.ite(newBvEqualsAllOnes(operand), BIT_FALSE, BIT_TRUE);
 
     return new Function(id, BIT_BOOL, body, operand);
   }
 
-  public static Function newBVORR(final Enum<?> id, final DataType operandType) {
+  public static Function bvorr(final Enum<?> id, final DataType operandType) {
     InvariantChecks.checkNotNull(id);
     InvariantChecks.checkNotNull(operandType);
 
     checkBitVector(OPERAND_NAME, operandType);
 
     final Variable operand = new Variable(OPERAND_NAME, operandType);
-    final NodeOperation body = Nodes.ite(newBVEqualsAllZeros(operand), BIT_FALSE, BIT_TRUE);
+    final NodeOperation body = Nodes.ite(newBvEqualsAllZeros(operand), BIT_FALSE, BIT_TRUE);
 
     return new Function(id, BIT_BOOL, body, operand);
   }
 
-  public static Function newBVNORR(final Enum<?> id, final DataType operandType) {
+  public static Function bvnorr(final Enum<?> id, final DataType operandType) {
     InvariantChecks.checkNotNull(id);
     InvariantChecks.checkNotNull(operandType);
 
     checkBitVector(OPERAND_NAME, operandType);
 
     final Variable operand = new Variable(OPERAND_NAME, operandType);
-    final NodeOperation body = Nodes.ite(newBVEqualsAllZeros(operand), BIT_TRUE, BIT_FALSE);
+    final NodeOperation body = Nodes.ite(newBvEqualsAllZeros(operand), BIT_TRUE, BIT_FALSE);
 
     return new Function(id, BIT_BOOL, body, operand);
   }
 
-  public static Function newBVXORR(final Enum<?> id, final DataType operandType) {
+  public static Function bvxorr(final Enum<?> id, final DataType operandType) {
     InvariantChecks.checkNotNull(id);
     InvariantChecks.checkNotNull(operandType);
     checkBitVector(OPERAND_NAME, operandType);
@@ -188,12 +188,12 @@ public final class StandardFunctionFactory {
     final Variable operand = new Variable(OPERAND_NAME, operandType);
 
     final int size = operand.getType().getSize();
-    final Node body = newBVRecursizeXOR(new NodeVariable(operand), size, size);
+    final Node body = newBvRecursizeXor(new NodeVariable(operand), size, size);
 
     return new Function(id, BIT_BOOL, body, operand);
   }
 
-  public static Function newBVXNORR(final Enum<?> id, final DataType operandType) {
+  public static Function bvxnorr(final Enum<?> id, final DataType operandType) {
     InvariantChecks.checkNotNull(id);
     InvariantChecks.checkNotNull(operandType);
     checkBitVector(OPERAND_NAME, operandType);
@@ -201,7 +201,7 @@ public final class StandardFunctionFactory {
     final Variable operand = new Variable(OPERAND_NAME, operandType);
 
     final int size = operand.getType().getSize();
-    final Node body = Nodes.bvnot(newBVRecursizeXOR(new NodeVariable(operand), size, size));
+    final Node body = Nodes.bvnot(newBvRecursizeXor(new NodeVariable(operand), size, size));
 
     return new Function(id, BIT_BOOL, body, operand);
   }
@@ -236,7 +236,7 @@ public final class StandardFunctionFactory {
         String.format(ERR_UNSUPPORTED_ARG_TYPE, name, type, DataTypeId.BIT_VECTOR));
   }
 
-  private static Node newBVRecursizeXOR(
+  private static Node newBvRecursizeXor(
       final Node source, 
       final int size, 
       final int partSize) {
@@ -248,7 +248,7 @@ public final class StandardFunctionFactory {
       String.format("Invalid part size: %s. Minimal part size is 2 bits.", partSize);
 
     if (2 == partSize) {
-      return newBVTwoBitPartXOR(source, size);
+      return newBvTwoBitPartXor(source, size);
     }
 
     final int newPartSize = partSize / 2 + partSize % 2;
@@ -264,10 +264,10 @@ public final class StandardFunctionFactory {
         Nodes.bvand(source, maskForRightPart)
         );
 
-    return newBVRecursizeXOR(newSource, size, newPartSize);
+    return newBvRecursizeXor(newSource, size, newPartSize);
   }
 
-  private static Node newBVTwoBitPartXOR(final Node source, final int size) {
+  private static Node newBvTwoBitPartXor(final Node source, final int size) {
     final NodeValue TWO_ZEROS = new NodeValue(DataType.BIT_VECTOR(size).valueOf("00", 2));
     final NodeValue TWO_ONES = new NodeValue(DataType.BIT_VECTOR(size).valueOf("11", 2));
 
@@ -278,7 +278,7 @@ public final class StandardFunctionFactory {
         );
   }
 
-  private static Node newBVEqualsAllZeros(final Variable operand) {
+  private static Node newBvEqualsAllZeros(final Variable operand) {
     final DataType operandType = operand.getType();
 
     final NodeVariable operandNode = new NodeVariable(operand);
@@ -287,7 +287,7 @@ public final class StandardFunctionFactory {
     return Nodes.eq(operandNode, zeroNode);
   }
 
-  private static Node newBVEqualsAllOnes(final Variable operand) {
+  private static Node newBvEqualsAllOnes(final Variable operand) {
     final DataType operandType = operand.getType();
 
     final NodeVariable operandNode = new NodeVariable(operand);
