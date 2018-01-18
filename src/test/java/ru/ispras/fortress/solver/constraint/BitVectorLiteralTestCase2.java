@@ -35,6 +35,7 @@ public class BitVectorLiteralTestCase2 { //extends GenericSolverTestBase {
   public static final class BitVectorLiteralConstraint2
       implements GenericSolverTestBase.SampleConstraint {
 
+    @Override
     public Constraint getConstraint() {
       final String fileName = "./src/test/xml/mips_add_0.xml";
       try {
@@ -47,6 +48,7 @@ public class BitVectorLiteralTestCase2 { //extends GenericSolverTestBase {
       return null;
     }
 
+    @Override
     public Iterable<Variable> getExpectedVariables() {
       final DataMap gpr1 = new DataMap(DataType.BIT_VECTOR(32), DataType.BIT_VECTOR(32));
       gpr1.put(
