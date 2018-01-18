@@ -119,6 +119,9 @@ public final class OperationDescription {
       case SUFFIX:
         suffix = sign;
         break;
+
+      default:
+        throw new IllegalArgumentException("Unsupported operation type: " + type);
     }
   }
 
