@@ -45,61 +45,13 @@ import java.util.Stack;
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 final class XmlConstraintHandler extends DefaultHandler {
+
   private final XmlConstraintBuilder builder = new XmlConstraintBuilder();
   private final Stack<XmlNodeType> nodes = new Stack<>();
   private final Map<String, Variable> variables = new HashMap<>();
 
   private final Map<String, Variable> incompleteScope = new HashMap<>();
   private VariableScope nestedScope = VariableScope.EMPTY_SCOPE;
-
-  private static class VariableScope {
-    public static final VariableScope EMPTY_SCOPE = new VariableScope() {
-      @Override
-      public boolean contains(final String name) {
-        return false;
-      }
-
-      @Override
-      public Variable get(final String name) {
-        return null;
-      }
-    };
-
-    private final Map<String, Variable> variables;
-    private final VariableScope hidden;
-
-    private VariableScope() {
-      this.variables = Collections.emptyMap();
-      this.hidden = null;
-    }
-
-    public VariableScope(
-        final VariableScope previous,
-        final Map<String, Variable> variables) {
-      this.variables = variables;
-      this.hidden = previous;
-    }
-
-    public VariableScope getHiddenScope() {
-      return hidden;
-    }
-
-    public boolean contains(final String name) {
-      if (variables.containsKey(name)) {
-        return true;
-      }
-
-      return hidden.contains(name);
-    }
-
-    public Variable get(final String name) {
-      if (variables.containsKey(name)) {
-        return variables.get(name);
-      }
-
-      return hidden.get(name);
-    }
-  }
 
   public Constraint getConstraint() {
     return builder.getConstraint();
@@ -351,7 +303,7 @@ final class XmlConstraintHandler extends DefaultHandler {
 
     if (!versionString.matches("[\\d]+[.][\\d]+")) {
       throw new SAXException(String.format(XmlMessages.ERR_XML_BAD_ATTIBUTE,
-        XmlConst.ATTR_FORMAT_VERSION, versionString, nodeName));
+          XmlConst.ATTR_FORMAT_VERSION, versionString, nodeName));
     }
 
     final int majorVersion = Integer.valueOf(versionString.split("[.]")[0]);
@@ -359,7 +311,7 @@ final class XmlConstraintHandler extends DefaultHandler {
 
     if ((XmlFormatVersion.MAJOR != majorVersion) || (XmlFormatVersion.MINOR != minorVersion)) {
       throw new SAXException(String.format(XmlMessages.ERR_XML_BAD_VERSION, majorVersion,
-        minorVersion, XmlFormatVersion.MAJOR, XmlFormatVersion.MINOR));
+          minorVersion, XmlFormatVersion.MAJOR, XmlFormatVersion.MINOR));
     }
   }
 
@@ -368,7 +320,7 @@ final class XmlConstraintHandler extends DefaultHandler {
       final XmlNodeType parent) throws SAXException {
     if (!current.isChildOf(parent)) {
       throw new SAXException(String.format(
-        XmlMessages.ERR_XML_BAD_HIERARCHY, current.getNodeName(), parent.getNodeName()));
+          XmlMessages.ERR_XML_BAD_HIERARCHY, current.getNodeName(), parent.getNodeName()));
     }
   }
 
@@ -415,223 +367,270 @@ final class XmlConstraintHandler extends DefaultHandler {
     final Class<?> idClass = Class.forName(family);
     return Enum.valueOf((Class<Enum>) idClass, id);
   }
-}
 
+  private static class VariableScope {
 
-/**
- * The XMLConstraintBuilder class implements functionality that build a constraint.
- *
- * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
- */
-final class XmlConstraintBuilder {
-  private ConstraintBuilder constraint = null;
-  private String name = null;
-  private ConstraintKind kind = null;
-  private Formulas formulas = null;
-  private Node formula = null;
+    public static final VariableScope EMPTY_SCOPE = new VariableScope() {
+      @Override
+      public boolean contains(final String name) {
+        return false;
+      }
 
-  private final Stack<OperationBuilder> operations = new Stack<>();
+      @Override
+      public Variable get(final String name) {
+        return null;
+      }
+    };
 
-  private void cleanup() {
-    constraint = null;
-    kind = null;
-    name = null;
+    private final Map<String, Variable> variables;
+    private final VariableScope hidden;
 
-    formulas = null;
-    formula = null;
-
-    operations.clear();
-  }
-
-  public void beginConstraint() throws Exception {
-    cleanup();
-    constraint = new ConstraintBuilder();
-  }
-
-  public void endConstraint() throws Exception {
-    if (null == name) {
-      throw new Exception(XmlMessages.ERR_NO_CONSTRAINT_NAME);
+    private VariableScope() {
+      this.variables = Collections.emptyMap();
+      this.hidden = null;
     }
 
-    if (null == kind) {
-      throw new Exception(XmlMessages.ERR_NO_CONSTRAINT_KIND);
+    public VariableScope(
+        final VariableScope previous,
+        final Map<String, Variable> variables) {
+      this.variables = variables;
+      this.hidden = previous;
+    }
+
+    public VariableScope getHiddenScope() {
+      return hidden;
+    }
+
+    public boolean contains(final String name) {
+      if (variables.containsKey(name)) {
+        return true;
+      }
+
+      return hidden.contains(name);
+    }
+
+    public Variable get(final String name) {
+      if (variables.containsKey(name)) {
+        return variables.get(name);
+      }
+
+      return hidden.get(name);
     }
   }
 
-  public void beginSignature() throws Exception {
-    //
-  }
+  /**
+   * The {@link XmlConstraintBuilder} class implements functionality that build a constraint.
+   *
+   * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
+   */
+  private static final class XmlConstraintBuilder {
+    private ConstraintBuilder constraint = null;
+    private String name = null;
+    private ConstraintKind kind = null;
+    private Formulas formulas = null;
+    private Node formula = null;
 
-  public void endSignature() throws Exception {
-    //
-  }
+    private final Stack<OperationBuilder> operations = new Stack<>();
 
-  public void beginInnerRep() throws Exception {
-    if (null != formulas) {
-      throw new IllegalStateException(String.format(
-        XmlMessages.ERR_ALREADY_STARTED, "InnerRep"));
+    private void cleanup() {
+      constraint = null;
+      kind = null;
+      name = null;
+
+      formulas = null;
+      formula = null;
+
+      operations.clear();
     }
 
-    formulas = new Formulas();
-  }
-
-  public void endInnerRep() throws Exception {
-    // Nothing
-  }
-
-  public void beginFormula() throws Exception {
-    if (null != formula) {
-      throw new IllegalStateException(String.format(
-        XmlMessages.ERR_ALREADY_STARTED, "Formula"));
+    public void beginConstraint() throws Exception {
+      cleanup();
+      constraint = new ConstraintBuilder();
     }
 
-    formula = null;
-  }
+    public void endConstraint() throws Exception {
+      if (null == name) {
+        throw new Exception(XmlMessages.ERR_NO_CONSTRAINT_NAME);
+      }
 
-  public void endFormula() throws Exception {
-    formulas.add(formula);
-    formula = null;
-  }
-
-  public void beginOperation() throws Exception {
-    operations.push(new OperationBuilder());
-  }
-
-  public void endOperation() throws Exception {
-    if (operations.empty()) {
-      throw new IllegalStateException(XmlMessages.ERR_NO_OPERATION);
+      if (null == kind) {
+        throw new Exception(XmlMessages.ERR_NO_CONSTRAINT_KIND);
+      }
     }
 
-    final NodeOperation expr = operations.pop().build();
+    public void beginSignature() throws Exception {
+      //
+    }
 
-    if (operations.empty()) {
+    public void endSignature() throws Exception {
+      //
+    }
+
+    public void beginInnerRep() throws Exception {
+      if (null != formulas) {
+        throw new IllegalStateException(String.format(
+            XmlMessages.ERR_ALREADY_STARTED, "InnerRep"));
+      }
+
+      formulas = new Formulas();
+    }
+
+    public void endInnerRep() throws Exception {
+      // Nothing
+    }
+
+    public void beginFormula() throws Exception {
       if (null != formula) {
-        throw new IllegalStateException(XmlMessages.ERR_FORMULA_ALREADY_ASSIGNED);
+        throw new IllegalStateException(String.format(
+            XmlMessages.ERR_ALREADY_STARTED, "Formula"));
       }
 
-      formula = expr;
-    } else {
-      pushElement(expr);
-    }
-  }
-
-  public void beginBinding() throws Exception {
-    operations.push(new OperationBuilder());
-  }
-
-  public void endBinding() throws Exception {
-    if (operations.empty()) {
-      throw new IllegalStateException(XmlMessages.ERR_NO_OPERATION);
+      formula = null;
     }
 
-    final NodeBinding node = operations.pop().buildBinding();
+    public void endFormula() throws Exception {
+      formulas.add(formula);
+      formula = null;
+    }
 
-    if (operations.empty()) {
-      if (null != formula) {
-        throw new IllegalStateException(XmlMessages.ERR_FORMULA_ALREADY_ASSIGNED);
+    public void beginOperation() throws Exception {
+      operations.push(new OperationBuilder());
+    }
+
+    public void endOperation() throws Exception {
+      if (operations.empty()) {
+        throw new IllegalStateException(XmlMessages.ERR_NO_OPERATION);
       }
 
-      formula = node;
-    } else {
-      pushElement(node);
-    }
-  }
+      final NodeOperation expr = operations.pop().build();
 
-  public void pushElement(final Node se) throws Exception {
-    if (operations.empty()) {
-      if (null != formula) {
-        throw new IllegalStateException(XmlMessages.ERR_FORMULA_ALREADY_ASSIGNED);
+      if (operations.empty()) {
+        if (null != formula) {
+          throw new IllegalStateException(XmlMessages.ERR_FORMULA_ALREADY_ASSIGNED);
+        }
+
+        formula = expr;
+      } else {
+        pushElement(expr);
+      }
+    }
+
+    public void beginBinding() throws Exception {
+      operations.push(new OperationBuilder());
+    }
+
+    public void endBinding() throws Exception {
+      if (operations.empty()) {
+        throw new IllegalStateException(XmlMessages.ERR_NO_OPERATION);
       }
 
-      formula = se;
-    } else {
-      operations.lastElement().addElement(se);
-    }
-  }
+      final NodeBinding node = operations.pop().buildBinding();
 
-  public void pushOperation(final Enum<?> oid) throws Exception {
-    if (operations.empty()) {
-      throw new IllegalStateException(String.format(
-        XmlMessages.ERR_NO_EXPRESSION_FOR_OP, oid.name()));
-    }
+      if (operations.empty()) {
+        if (null != formula) {
+          throw new IllegalStateException(XmlMessages.ERR_FORMULA_ALREADY_ASSIGNED);
+        }
 
-    operations.lastElement().setOperationId(oid);
-  }
-
-  public void setName(final String name) {
-    this.name = name;
-  }
-
-  public void setDescription(final String description) {
-    this.constraint.setDescription(description);
-  }
-
-  public void setKind(final ConstraintKind kind) {
-    this.kind = kind;
-  }
-
-  public Variable addGlobalVariable(final Variable variable) {
-    return constraint.addVariable(variable.getName(), variable.getData());
-  }
-
-  public Constraint getConstraint() {
-    constraint.setName(name);
-    constraint.setKind(kind);
-    constraint.setInnerRep(formulas);
-    return constraint.build();
-  }
-}
-
-
-/**
- * The OperationBuilder class is aimed to build an operation expression from its attributes
- * (operation and operands).
- * 
- * @author Andrei Tatarnikov
- */
-
-final class OperationBuilder {
-  private Enum<?> operationId;
-  private final List<Node> elements;
-
-  public OperationBuilder() {
-    this.operationId = null;
-    this.elements = new ArrayList<>();
-  }
-
-  public void setOperationId(final Enum<?> operationId) throws Exception {
-    if (null != this.operationId) {
-      throw new Exception(XmlMessages.ERR_EXTRA_OPERATION_ID);
+        formula = node;
+      } else {
+        pushElement(node);
+      }
     }
 
-    this.operationId = operationId;
-  }
+    public void pushElement(final Node se) throws Exception {
+      if (operations.empty()) {
+        if (null != formula) {
+          throw new IllegalStateException(XmlMessages.ERR_FORMULA_ALREADY_ASSIGNED);
+        }
 
-  public void addElement(final Node node) throws Exception {
-    elements.add(node);
-  }
-
-  public NodeOperation build() throws Exception {
-    if (null == operationId) {
-      throw new Exception(XmlMessages.ERR_NO_OPERATION_ID);
+        formula = se;
+      } else {
+        operations.lastElement().addElement(se);
+      }
     }
 
-    return new NodeOperation(operationId, elements);
-  }
-
-  public NodeBinding buildBinding() throws Exception {
-    final Node expr = elements.remove(elements.size() - 1);
-    final List<NodeBinding.BoundVariable> bindings = new ArrayList<>();
-
-    for (int index = 0; index < elements.size(); index += 2) {
-      if (!(elements.get(index) instanceof NodeVariable)) {
-        throw new Exception("NodeVariable expected");
+    public void pushOperation(final Enum<?> oid) throws Exception {
+      if (operations.empty()) {
+        throw new IllegalStateException(String.format(
+            XmlMessages.ERR_NO_EXPRESSION_FOR_OP, oid.name()));
       }
 
-      final NodeVariable var = (NodeVariable) elements.get(index);
-      bindings.add(NodeBinding.bindVariable(var, elements.get(index + 1)));
+      operations.lastElement().setOperationId(oid);
     }
 
-    return new NodeBinding(expr, bindings);
+    public void setName(final String name) {
+      this.name = name;
+    }
+
+    public void setDescription(final String description) {
+      this.constraint.setDescription(description);
+    }
+
+    public void setKind(final ConstraintKind kind) {
+      this.kind = kind;
+    }
+
+    public Variable addGlobalVariable(final Variable variable) {
+      return constraint.addVariable(variable.getName(), variable.getData());
+    }
+
+    public Constraint getConstraint() {
+      constraint.setName(name);
+      constraint.setKind(kind);
+      constraint.setInnerRep(formulas);
+      return constraint.build();
+    }
+  }
+
+  /**
+   * The {@link OperationBuilder} class is aimed to build an operation expression from its
+   * attributes (operation and operands).
+   *
+   * @author Andrei Tatarnikov
+   */
+  private static final class OperationBuilder {
+    private Enum<?> operationId;
+    private final List<Node> elements;
+
+    public OperationBuilder() {
+      this.operationId = null;
+      this.elements = new ArrayList<>();
+    }
+
+    public void setOperationId(final Enum<?> operationId) throws Exception {
+      if (null != this.operationId) {
+        throw new Exception(XmlMessages.ERR_EXTRA_OPERATION_ID);
+      }
+
+      this.operationId = operationId;
+    }
+
+    public void addElement(final Node node) throws Exception {
+      elements.add(node);
+    }
+
+    public NodeOperation build() throws Exception {
+      if (null == operationId) {
+        throw new Exception(XmlMessages.ERR_NO_OPERATION_ID);
+      }
+
+      return new NodeOperation(operationId, elements);
+    }
+
+    public NodeBinding buildBinding() throws Exception {
+      final Node expr = elements.remove(elements.size() - 1);
+      final List<NodeBinding.BoundVariable> bindings = new ArrayList<>();
+
+      for (int index = 0; index < elements.size(); index += 2) {
+        if (!(elements.get(index) instanceof NodeVariable)) {
+          throw new Exception("NodeVariable expected");
+        }
+
+        final NodeVariable var = (NodeVariable) elements.get(index);
+        bindings.add(NodeBinding.bindVariable(var, elements.get(index + 1)));
+      }
+
+      return new NodeBinding(expr, bindings);
+    }
   }
 }
