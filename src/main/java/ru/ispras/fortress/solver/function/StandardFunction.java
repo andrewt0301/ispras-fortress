@@ -35,7 +35,7 @@ public enum StandardFunction implements FunctionTemplate {
   ABS(StandardOperation.ABS, 1) {
     @Override
     protected Function newFunction(final DataType[] argTypes) {
-      return StandardFunctionFactory.makeAbs(getId(), argTypes[0]);
+      return StandardFunctionFactory.newAbs(getId(), argTypes[0]);
     }
   },
 
@@ -43,7 +43,7 @@ public enum StandardFunction implements FunctionTemplate {
   MIN(StandardOperation.MIN, 2) {
     @Override
     protected Function newFunction(final DataType[] argTypes) {
-      return StandardFunctionFactory.makeMin(getId(), argTypes[0], argTypes[1]);
+      return StandardFunctionFactory.newMin(getId(), argTypes[0], argTypes[1]);
     }
   },
 
@@ -51,7 +51,7 @@ public enum StandardFunction implements FunctionTemplate {
   MAX(StandardOperation.MAX, 2) {
     @Override
     protected Function newFunction(final DataType[] argTypes) {
-      return StandardFunctionFactory.makeMax(getId(), argTypes[0], argTypes[1]);
+      return StandardFunctionFactory.newMax(getId(), argTypes[0], argTypes[1]);
     }
   },
 
@@ -81,7 +81,7 @@ public enum StandardFunction implements FunctionTemplate {
   BVANDR(StandardOperation.BVANDR, 1) {
     @Override
     protected Function newFunction(final DataType[] argTypes) {
-      return StandardFunctionFactory.makeBVANDR(getId(), argTypes[0]);
+      return StandardFunctionFactory.newBVANDR(getId(), argTypes[0]);
     }
   },
 
@@ -89,7 +89,7 @@ public enum StandardFunction implements FunctionTemplate {
   BVNANDR(StandardOperation.BVNANDR, 1) {
     @Override
     protected Function newFunction(final DataType[] argTypes) {
-      return StandardFunctionFactory.makeBVNANDR(getId(), argTypes[0]);
+      return StandardFunctionFactory.newBVNANDR(getId(), argTypes[0]);
     }
   },
 
@@ -97,7 +97,7 @@ public enum StandardFunction implements FunctionTemplate {
   BVORR(StandardOperation.BVORR, 1) {
     @Override
     protected Function newFunction(final DataType[] argTypes) {
-      return StandardFunctionFactory.makeBVORR(getId(), argTypes[0]);
+      return StandardFunctionFactory.newBVORR(getId(), argTypes[0]);
     }
   },
 
@@ -105,7 +105,7 @@ public enum StandardFunction implements FunctionTemplate {
   BVNORR(StandardOperation.BVNORR, 1) {
     @Override
     protected Function newFunction(final DataType[] argTypes) {
-      return StandardFunctionFactory.makeBVNORR(getId(), argTypes[0]);
+      return StandardFunctionFactory.newBVNORR(getId(), argTypes[0]);
     }
   },
 
@@ -113,7 +113,7 @@ public enum StandardFunction implements FunctionTemplate {
   BVXORR(StandardOperation.BVXORR, 1) {
     @Override
     protected Function newFunction(final DataType[] argTypes) {
-      return StandardFunctionFactory.makeBVXORR(getId(), argTypes[0]);
+      return StandardFunctionFactory.newBVXORR(getId(), argTypes[0]);
     }
   },
 
@@ -121,7 +121,7 @@ public enum StandardFunction implements FunctionTemplate {
   BVXNORR(StandardOperation.BVXNORR, 1) {
     @Override
     protected Function newFunction(final DataType[] argTypes) {
-      return StandardFunctionFactory.makeBVXNORR(getId(), argTypes[0]);
+      return StandardFunctionFactory.newBVXNORR(getId(), argTypes[0]);
     }
   };
 
