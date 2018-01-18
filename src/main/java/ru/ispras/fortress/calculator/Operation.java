@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2013-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -17,19 +17,20 @@ package ru.ispras.fortress.calculator;
 import ru.ispras.fortress.data.Data;
 
 /**
- * The Operation interface is a contract for objects implementing operations on data objects.
+ * The {@link Operation} interface is a contract for objects implementing
+ * operations on data objects.
  *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  *
- * @param <OperationId> Type of the enumeration that describes a group of operations.
+ * @param <OperationIdT> Type of the enumeration that describes a group of operations.
  */
-public interface Operation<OperationId extends Enum<OperationId>> {
+public interface Operation<OperationIdT extends Enum<OperationIdT>> {
   /**
    * Returns the identifier of the operation.
    *
    * @return Operation identifier.
    */
-  OperationId getOperationId();
+  OperationIdT getOperationId();
 
   /**
    * Returns the range that describes the allowed arity of the operation.
