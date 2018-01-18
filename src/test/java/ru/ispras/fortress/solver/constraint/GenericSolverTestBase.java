@@ -77,11 +77,11 @@ public abstract class GenericSolverTestBase {
         z3Solver.setSolverPath(z3Path + "z3/bin/z3");
       } else if (Environment.isWindows()) {
         z3Solver.setSolverPath(z3Path + "z3/bin/z3.exe");
-      } else if (Environment.isOSX()) {
+      } else if (Environment.isOsX()) {
         z3Solver.setSolverPath(z3Path + "z3/bin/z3");
       } else {
         throw new UnsupportedOperationException(String.format(
-          "Unsupported platform: %s.", Environment.getOSName()));
+          "Unsupported platform: %s.", Environment.getOsName()));
       }
     }
 
@@ -96,7 +96,7 @@ public abstract class GenericSolverTestBase {
         cvc4Solver.setSolverPath(cvc4Path + "cvc4-windows.exe");
       } else {
         throw new UnsupportedOperationException(String.format(
-          "Unsupported platform: %s.", Environment.getOSName()));
+          "Unsupported platform: %s.", Environment.getOsName()));
       }
     }
   }

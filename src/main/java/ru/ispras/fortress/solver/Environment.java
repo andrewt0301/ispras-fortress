@@ -30,7 +30,7 @@ public final class Environment {
    *
    * @return Operating system name.
    */
-  public static String getOSName() {
+  public static String getOsName() {
     return System.getProperty(PRP_OS_NAME);
   }
 
@@ -40,7 +40,7 @@ public final class Environment {
    * @return true if the tool is running in a Windows computer.
    */
   public static boolean isWindows() {
-    final String os = getOSName().toLowerCase();
+    final String os = getOsName().toLowerCase();
     return os.contains("win");
   }
 
@@ -50,7 +50,7 @@ public final class Environment {
    * @return true if the tool is running in a Unix or Linux computer.
    */
   public static boolean isUnix() {
-    final String os = getOSName().toLowerCase();
+    final String os = getOsName().toLowerCase();
     return os.contains("nix") || os.contains("nux");
   }
 
@@ -59,8 +59,8 @@ public final class Environment {
    *
    * @return true if the tool is running in a Macintosh computer (under OS X).
    */
-  public static boolean isOSX() {
-    final String os = getOSName().toLowerCase();
+  public static boolean isOsX() {
+    final String os = getOsName().toLowerCase();
     return os.contains("os x") || os.contains("mac");
   }
 
