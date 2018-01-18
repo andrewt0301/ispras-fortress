@@ -43,7 +43,7 @@ public class SimpleTransformTestCase {
         expr, Collections.singletonList(NodeBinding.bindVariable(variable, value)));
   }
 
-  private static NodeOperation IMPL(Node... args) {
+  private static NodeOperation impl(final Node... args) {
     return new NodeOperation(StandardOperation.IMPL, args);
   }
 
@@ -158,8 +158,8 @@ public class SimpleTransformTestCase {
     final Node eqxz = Nodes.eq(x, z);
     final Node eqyz = Nodes.eq(y, z);
 
-    final Node impl2 = IMPL(eqxy, eqxz);
-    final Node impl3 = IMPL(eqxy, eqxz, eqyz);
+    final Node impl2 = impl(eqxy, eqxz);
+    final Node impl3 = impl(eqxy, eqxz, eqyz);
 
     final Node std2 = Transformer.standardize(impl2);
     final Node std3 = Transformer.standardize(impl3);
@@ -262,52 +262,52 @@ public class SimpleTransformTestCase {
 
   @Test
   public void standardizeEqualityWithImmediates() {
-    final NodeValue ZERO = NodeValue.newInteger(0);
-    final NodeValue ONE = NodeValue.newInteger(1);
+    final NodeValue zero = NodeValue.newInteger(0);
+    final NodeValue one = NodeValue.newInteger(1);
 
     final NodeVariable x = newVariable("x");
 
     Assert.assertTrue(equalNodes(
-        Transformer.standardize(Nodes.eq(ZERO, ZERO, ZERO)),
+        Transformer.standardize(Nodes.eq(zero, zero, zero)),
         Nodes.TRUE));
 
     Assert.assertTrue(equalNodes(
-        Transformer.standardize(Nodes.eq(ZERO, ZERO, ONE, ZERO)),
+        Transformer.standardize(Nodes.eq(zero, zero, one, zero)),
         Nodes.FALSE));
 
     Assert.assertTrue(equalNodes(
-        Transformer.standardize(Nodes.eq(x, ZERO, ZERO, ZERO)),
-        Nodes.eq(ZERO, x)));
+        Transformer.standardize(Nodes.eq(x, zero, zero, zero)),
+        Nodes.eq(zero, x)));
 
     Assert.assertTrue(equalNodes(
-        Transformer.standardize(Nodes.eq(x, ZERO, Nodes.FALSE)),
+        Transformer.standardize(Nodes.eq(x, zero, Nodes.FALSE)),
         Nodes.FALSE));
   }
 
   @Test
   public void standardizeValueComparisons() {
     /* Integer values */
-    final NodeValue ZERO = NodeValue.newInteger(0);
-    final NodeValue ONE = NodeValue.newInteger(1);
-    final NodeValue TWO = NodeValue.newInteger(2);
+    final NodeValue zero = NodeValue.newInteger(0);
+    final NodeValue one = NodeValue.newInteger(1);
+    final NodeValue two = NodeValue.newInteger(2);
 
     /* 0 != 1 */
-    Assert.assertTrue(equalNodes(Transformer.standardize(Nodes.noteq(ZERO, ONE)), Nodes.TRUE));
+    Assert.assertTrue(equalNodes(Transformer.standardize(Nodes.noteq(zero, one)), Nodes.TRUE));
 
     /* 2 > 1 */
-    Assert.assertTrue(equalNodes(Transformer.standardize(Nodes.greater(TWO, ONE)), Nodes.TRUE));
+    Assert.assertTrue(equalNodes(Transformer.standardize(Nodes.greater(two, one)), Nodes.TRUE));
 
     /* 1 >= 0 */
-    Assert.assertTrue(equalNodes(Transformer.standardize(Nodes.greatereq(ONE, ZERO)), Nodes.TRUE));
+    Assert.assertTrue(equalNodes(Transformer.standardize(Nodes.greatereq(one, zero)), Nodes.TRUE));
 
     /* 0 < 2 */
-    Assert.assertTrue(equalNodes(Transformer.standardize(Nodes.less(ZERO, TWO)), Nodes.TRUE));
+    Assert.assertTrue(equalNodes(Transformer.standardize(Nodes.less(zero, two)), Nodes.TRUE));
 
     /* 0 <= 1 */
-    Assert.assertTrue(equalNodes(Transformer.standardize(Nodes.lesseq(ZERO, ONE)), Nodes.TRUE));
+    Assert.assertTrue(equalNodes(Transformer.standardize(Nodes.lesseq(zero, one)), Nodes.TRUE));
 
     /* (1 >= 2) == false */
-    Assert.assertTrue(equalNodes(Transformer.standardize(Nodes.greatereq(ONE, TWO)), Nodes.FALSE));
+    Assert.assertTrue(equalNodes(Transformer.standardize(Nodes.greatereq(one, two)), Nodes.FALSE));
   }
 
   @Test
