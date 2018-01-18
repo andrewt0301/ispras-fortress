@@ -68,10 +68,6 @@ abstract class DependentRule implements TransformerRule {
   protected final Node reduce(final Enum<?> opId, final Collection<? extends Node> operands) {
     return reduce(opId, operands.toArray(new Node[operands.size()]));
   }
-
-  public abstract boolean isApplicable(Node node);
-
-  public abstract Node apply(Node node);
 }
 
 /**
