@@ -72,6 +72,13 @@ public final class PowerOfTwoCustomTestCase extends GenericSolverTestBase {
    */
   private static final int BIT_VECTOR_SIZE = 32;
   private static final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_SIZE);
+
+  private static final BitVector ZERO =
+      BitVector.unmodifiable(BitVector.valueOf(0, BIT_VECTOR_SIZE));
+
+  private static final BitVector ONE =
+      BitVector.unmodifiable(BitVector.valueOf(1, BIT_VECTOR_SIZE));
+
   private static final CalculatorEngine CALCULATOR =
       new CompositeCalculator(Arrays.asList(customCalculator(), Calculator.STANDARD));
 
@@ -100,9 +107,6 @@ public final class PowerOfTwoCustomTestCase extends GenericSolverTestBase {
   }
 
   private static CalculatorEngine customCalculator() {
-    final BitVector ZERO = BitVector.valueOf(0, BIT_VECTOR_SIZE);
-    final BitVector ONE = BitVector.valueOf(1, BIT_VECTOR_SIZE);
-
     final CalculatorOperation<ECustomOperation> ispot =
         new CalculatorOperation<ECustomOperation>(
             ECustomOperation.ISPOWOFTWO, ArityRange.UNARY) {
