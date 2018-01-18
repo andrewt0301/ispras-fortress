@@ -343,6 +343,6 @@ public class SimpleTransformTestCase {
     
     final Node expr = Nodes.and(Nodes.eq(a, zero), Nodes.not(Nodes.eq(a, b, zero)));
     final Node std = Transformer.standardize(expr);
-    Assert.assertTrue(ExprUtils.isSAT(expr) == ExprUtils.isSAT(std));
+    Assert.assertTrue(ExprUtils.isSat(expr) == ExprUtils.isSat(std));
   }
 }

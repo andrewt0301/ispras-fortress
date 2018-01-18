@@ -430,7 +430,7 @@ public final class ExprUtils {
    */
   public static boolean areComplete(final Node... exprs) {
     final Node target = getComplement(exprs);
-    return !isSAT(target);
+    return !isSat(target);
   }
 
   /**
@@ -446,7 +446,7 @@ public final class ExprUtils {
    */
   public static boolean areCompatible(final Node... exprs) {
     final Node target = getConjunction(exprs);
-    return isSAT(target);
+    return isSat(target);
   }
 
   /**
@@ -462,7 +462,7 @@ public final class ExprUtils {
    *         expression due to limitations of its implementation.
    * @throws IllegalStateException if the solver engine returned results with an unknown status.
    */
-  public static boolean isSAT(final Node expr) {
+  public static boolean isSat(final Node expr) {
     final Constraint constraint = ConstraintUtils.newConstraint(expr);
     final SolverResult result = ConstraintUtils.solve(constraint);
 

@@ -207,15 +207,15 @@ public final class ExprUtilsTestCase {
 
   @Test
   public void testIsSat() {
-    Assert.assertTrue(ExprUtils.isSAT(NodeValue.newBoolean(true)));
-    Assert.assertFalse(ExprUtils.isSAT(NodeValue.newBoolean(false)));
+    Assert.assertTrue(ExprUtils.isSat(NodeValue.newBoolean(true)));
+    Assert.assertFalse(ExprUtils.isSat(NodeValue.newBoolean(false)));
 
-    Assert.assertTrue(ExprUtils.isSAT(
+    Assert.assertTrue(ExprUtils.isSat(
         Nodes.eq(
             NodeValue.newInteger(5),
             Nodes.add(NodeValue.newInteger(2), NodeValue.newInteger(3)))));
 
-    Assert.assertFalse(ExprUtils.isSAT(
+    Assert.assertFalse(ExprUtils.isSat(
         Nodes.eq(
             NodeValue.newInteger(5),
             Nodes.add(NodeValue.newInteger(2), NodeValue.newInteger(-3)))));
