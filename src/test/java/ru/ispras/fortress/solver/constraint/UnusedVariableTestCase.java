@@ -32,12 +32,12 @@ import java.util.List;
  * @author <a href="mailto:smolov@ispras.ru">Sergey Smolov</a>
  */
 public class UnusedVariableTestCase extends GenericSolverTestBase {
-
   public UnusedVariableTestCase() {
     super(new UnusedVariable());
   }
 
   /**
+   * This class constructs a constraint and provides expected values.
    * The constraint as described in the SMT language:
    *
    * <pre>
@@ -50,22 +50,21 @@ public class UnusedVariableTestCase extends GenericSolverTestBase {
    * </pre>
    * Expected output: sat ((x 7) (y 0))
    */
-  private static final DataType intType = DataType.INTEGER;
-
   public static class UnusedVariable implements SampleConstraint {
+    private static final DataType INT_TYPE = DataType.INTEGER;
+
     @Override
     public Constraint getConstraint() {
-
       final ConstraintBuilder builder = new ConstraintBuilder();
 
       builder.setName("UnusedVariable");
       builder.setKind(ConstraintKind.FORMULA_BASED);
       builder.setDescription("UnusedVariable constraint");
 
-      final NodeVariable x = new NodeVariable(builder.addVariable("x", intType));
+      final NodeVariable x = new NodeVariable(builder.addVariable("x", INT_TYPE));
 
       /* Here 'y' is a redundant unused variable. */
-      builder.addVariable("y", intType);
+      builder.addVariable("y", INT_TYPE);
 
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
@@ -79,8 +78,8 @@ public class UnusedVariableTestCase extends GenericSolverTestBase {
     public Iterable<Variable> getExpectedVariables() {
       final List<Variable> result = new ArrayList<>();
 
-      result.add(new Variable("x", intType.valueOf("7", 10)));
-      result.add(new Variable("y", intType.valueOf("0", 10)));
+      result.add(new Variable("x", INT_TYPE.valueOf("7", 10)));
+      result.add(new Variable("y", INT_TYPE.valueOf("0", 10)));
 
       return result;
     }

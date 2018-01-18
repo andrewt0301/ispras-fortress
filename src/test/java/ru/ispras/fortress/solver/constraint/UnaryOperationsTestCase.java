@@ -23,27 +23,28 @@ import ru.ispras.fortress.expression.Nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This test constructs a constraint, solves it and checks the solution against the expected values.
+ * The constraint as described in the SMT-LIB language:
+ *
+ * <pre>
+ * (declare-const a Int)
+ * (declare-const b Int)
+ * (assert (= (~ a) 5))
+ * (assert (= (+ b) 1))
+ * (check-sat)
+ * (get-value (a b))
+ * (exit)
+ * </pre>
+ * Expected output: sat ((x (- 5)) (y 1))
+ */
 public class UnaryOperationsTestCase extends GenericSolverTestBase {
   public UnaryOperationsTestCase() {
     super(new UnaryOperations());
   }
 
-  /**
-   * The constraint as described in the SMT-LIB language:
-   *
-   * <pre>
-   * (declare-const a Int)
-   * (declare-const b Int)
-   * (assert (= (~ a) 5))
-   * (assert (= (+ b) 1))
-   * (check-sat)
-   * (get-value (a b))
-   * (exit)
-   * </pre>
-   * Expected output: sat ((x (- 5)) (y 1))
-   */
   public static class UnaryOperations implements SampleConstraint {
-    private static final DataType intType = DataType.INTEGER;
+    private static final DataType INT_TYPE = DataType.INTEGER;
 
     @Override
     public Constraint getConstraint() {
@@ -53,14 +54,14 @@ public class UnaryOperationsTestCase extends GenericSolverTestBase {
       builder.setKind(ConstraintKind.FORMULA_BASED);
       builder.setDescription("Unary Operations constraint");
 
-      final NodeVariable a = new NodeVariable(builder.addVariable("a", intType));
-      final NodeVariable b = new NodeVariable(builder.addVariable("b", intType));
+      final NodeVariable a = new NodeVariable(builder.addVariable("a", INT_TYPE));
+      final NodeVariable b = new NodeVariable(builder.addVariable("b", INT_TYPE));
 
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(Nodes.eq(Nodes.minus(a), new NodeValue(intType.valueOf("5", 10))));
-      formulas.add(Nodes.eq(Nodes.plus(b), new NodeValue(intType.valueOf("1", 10))));
+      formulas.add(Nodes.eq(Nodes.minus(a), new NodeValue(INT_TYPE.valueOf("5", 10))));
+      formulas.add(Nodes.eq(Nodes.plus(b), new NodeValue(INT_TYPE.valueOf("1", 10))));
 
       return builder.build();
     }
@@ -69,8 +70,8 @@ public class UnaryOperationsTestCase extends GenericSolverTestBase {
     public Iterable<Variable> getExpectedVariables() {
       final List<Variable> result = new ArrayList<>();
 
-      result.add(new Variable("a", intType.valueOf("-5", 10)));
-      result.add(new Variable("b", intType.valueOf("1", 10)));
+      result.add(new Variable("a", INT_TYPE.valueOf("-5", 10)));
+      result.add(new Variable("b", INT_TYPE.valueOf("1", 10)));
 
       return result;
     }
