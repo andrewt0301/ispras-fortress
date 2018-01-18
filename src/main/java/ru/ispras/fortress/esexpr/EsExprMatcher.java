@@ -17,18 +17,18 @@ package ru.ispras.fortress.esexpr;
 import ru.ispras.fortress.util.InvariantChecks;
 
 /**
- * The ESExprMatcher is expression structure matcher for {@link ESExpr}.
+ * The {@link EsExprMatcher} is expression structure matcher for {@link EsExpr}.
  * Matches expressions with patterns as-is, i.e. without normalization,
  * respecting expression structure.
  * Uses same Lisp-syntax notation for pattern specification, supports
  * several wildcards: {@code %a} matches any atom including {@code NIL},
  * {@code %s} matches any S-expression.
  */
-public final class ESExprMatcher {
+public final class EsExprMatcher {
   private static final String ATOM = "%a";
   private static final String SEXPR = "%s";
 
-  private final ESExpr pattern;
+  private final EsExpr pattern;
 
   /**
    * Create new matcher for given pattern.
@@ -36,12 +36,12 @@ public final class ESExprMatcher {
    * @param pattern Lisp-syntax S-expression denoting pattern to match
    * @throws IllegalArgumentException if {@code pattern} is {@code null}
    */
-  public ESExprMatcher(String pattern) {
+  public EsExprMatcher(String pattern) {
     InvariantChecks.checkNotNull(pattern);
 
-    ESExpr sexpr = ESExpr.NIL;
+    EsExpr sexpr = EsExpr.NIL;
     try {
-      final ESExprParser parser = ESExprParser.stringParser(pattern);
+      final EsExprParser parser = EsExprParser.stringParser(pattern);
       sexpr = parser.next();
     } catch (java.io.IOException e) {
       System.err.println(e.getMessage());
@@ -57,7 +57,7 @@ public final class ESExprMatcher {
    * @return {@code true} if given expression matches
    * @throws IllegalArgumentException if {@code e} is {@code null}
    */
-  public boolean matches(ESExpr expr) {
+  public boolean matches(EsExpr expr) {
     InvariantChecks.checkNotNull(expr);
     return matches(expr, pattern);
   }
@@ -69,7 +69,7 @@ public final class ESExprMatcher {
    * @param pattern S-expression denoting pattern
    * @return {@code true} if given expression matches
    */
-  private static boolean matches(ESExpr expr, ESExpr pattern) {
+  private static boolean matches(EsExpr expr, EsExpr pattern) {
     if (pattern.getLiteral().equals(SEXPR)) {
       return true;
     }

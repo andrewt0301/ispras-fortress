@@ -22,24 +22,24 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * The {@link ESExpr} class represents Lisp-like S-expressions using tuple notation.
- * ESExpr can be atom, i.e. string literal, or expression of form (a . b . c ...)
+ * The {@link EsExpr} class represents Lisp-like S-expressions using tuple notation.
+ * EsExpr can be atom, i.e. string literal, or expression of form (a . b . c ...)
  * which is equivalent for traditional dotted-pair sequence (a . (b . (c . ...))).
  * This kind of expressions is called tuples. Tuples with special atom NIL
  * at the last position are called lists. NIL is a predefined atom which
  * is considered as an empty tuple or list.
  */
-public final class ESExpr {
-  public static final ESExpr NIL =
-      new ESExpr("NIL", Collections.<ESExpr>emptyList());
+public final class EsExpr {
+  public static final EsExpr NIL =
+      new EsExpr("NIL", Collections.<EsExpr>emptyList());
 
   private static final String LIST_LITERAL = "<list>";
   private static final String TUPLE_LITERAL = "<tuple>";
 
   private final String literal;
-  private final List<ESExpr> items;
+  private final List<EsExpr> items;
 
-  private ESExpr(final String literal, final List<ESExpr> items) {
+  private EsExpr(final String literal, final List<EsExpr> items) {
     this.literal = literal;
     this.items = items;
   }
@@ -100,7 +100,7 @@ public final class ESExpr {
    *
    * @return list of contained expressions, empty list for atoms
    */
-  public List<ESExpr> getItems() {
+  public List<EsExpr> getItems() {
     return Collections.unmodifiableList(items);
   }
 
@@ -110,7 +110,7 @@ public final class ESExpr {
    * @return list of contained expressions excluding last {@code NIL}
    * @throws UnsupportedOperationException if this expression is not list
    */
-  public List<ESExpr> getListItems() {
+  public List<EsExpr> getListItems() {
     if (!this.isList()) {
       throw new UnsupportedOperationException("getListItems is defined only for S-lists");
     }
@@ -131,7 +131,7 @@ public final class ESExpr {
     if (this.getClass() != obj.getClass()) {
       return false;
     }
-    final ESExpr e = (ESExpr) obj;
+    final EsExpr e = (EsExpr) obj;
     if (e.isNil() || this.isNil()
         || e.isAtom() != this.isAtom()
         || e.isList() != this.isList()) {
@@ -206,7 +206,7 @@ public final class ESExpr {
    */
   private void printTuple(final StringBuilder builder) {
     final String delim = " . ";
-    for (final ESExpr e : items) {
+    for (final EsExpr e : items) {
       e.toString(builder);
       builder.append(delim);
     }
@@ -219,18 +219,18 @@ public final class ESExpr {
    *
    * @return shallowest equivalent of this expression.
    */
-  public ESExpr normalizeTuples() {
+  public EsExpr normalizeTuples() {
     if (this.isAtom()) {
       return this;
     }
-    final ArrayList<ESExpr> normItems = new ArrayList<>(items.size());
+    final ArrayList<EsExpr> normItems = new ArrayList<>(items.size());
     boolean update = false;
-    for (final ESExpr e : items) {
-      final ESExpr norm = e.normalizeTuples();
+    for (final EsExpr e : items) {
+      final EsExpr norm = e.normalizeTuples();
       normItems.add(norm);
       update = update || norm != e;
     }
-    final ESExpr last = normItems.get(normItems.size() - 1);
+    final EsExpr last = normItems.get(normItems.size() - 1);
     if (this.isTuple() && last.isTuple() && !last.isNil()) {
       normItems.remove(normItems.size() - 1);
       normItems.addAll(last.getItems());
@@ -240,7 +240,7 @@ public final class ESExpr {
       return this;
     }
     normItems.trimToSize();
-    return new ESExpr(TUPLE_LITERAL, normItems);
+    return new EsExpr(TUPLE_LITERAL, normItems);
   }
 
   /**
@@ -249,19 +249,19 @@ public final class ESExpr {
    *
    * @return deepest equivalent of this expression.
    */
-  public ESExpr normalizePairs() {
+  public EsExpr normalizePairs() {
     if (this.isAtom()) {
       return this;
     }
     if (this.items.size() == 2) {
-      final ESExpr lhs = items.get(0).normalizePairs();
-      final ESExpr rhs = items.get(1).normalizePairs();
+      final EsExpr lhs = items.get(0).normalizePairs();
+      final EsExpr rhs = items.get(1).normalizePairs();
       if (lhs == items.get(0) && rhs == items.get(1)) {
         return this;
       }
       return cons(lhs, rhs);
     }
-    ESExpr last = items.get(items.size() - 1).normalizePairs();
+    EsExpr last = items.get(items.size() - 1).normalizePairs();
     for (int i = items.size() - 2; i >= 0; --i) {
       last = cons(items.get(i).normalizePairs(), last);
     }
@@ -275,12 +275,12 @@ public final class ESExpr {
    * @return atom for given string literal
    * @throws IllegalArgumentException if {@code literal} is {@code null}
    */
-  public static ESExpr createAtom(final String literal) {
+  public static EsExpr createAtom(final String literal) {
     InvariantChecks.checkNotNull(literal);
     if (literal.equalsIgnoreCase(NIL.getLiteral())) {
       return NIL;
     }
-    return new ESExpr(literal, Collections.<ESExpr>emptyList());
+    return new EsExpr(literal, Collections.<EsExpr>emptyList());
   }
 
   /**
@@ -291,15 +291,15 @@ public final class ESExpr {
    * @return list containing all expressions from {@code items} list
    * @throws IllegalArgumentException if {@code items} list is {@code null}
    */
-  public static ESExpr createList(final List<ESExpr> items) {
+  public static EsExpr createList(final List<EsExpr> items) {
     InvariantChecks.checkNotNull(items);
     if (items.isEmpty()) {
       return NIL;
     }
-    final ArrayList<ESExpr> list = new ArrayList<>(items.size() + 1);
+    final ArrayList<EsExpr> list = new ArrayList<>(items.size() + 1);
     list.addAll(items);
     list.add(NIL);
-    return new ESExpr(LIST_LITERAL, list);
+    return new EsExpr(LIST_LITERAL, list);
   }
 
   /**
@@ -309,7 +309,7 @@ public final class ESExpr {
    * @return tuple containing all expressions from {@code items} list
    * @throws IllegalArgumentException if {@code items} list is {@code null}
    */
-  public static ESExpr createTuple(final List<ESExpr> items) {
+  public static EsExpr createTuple(final List<EsExpr> items) {
     InvariantChecks.checkNotNull(items);
     if (items.isEmpty()) {
       return NIL;
@@ -317,8 +317,8 @@ public final class ESExpr {
     if (items.size() == 1) {
       return items.get(0);
     }
-    final ArrayList<ESExpr> tuple = new ArrayList<>(items);
-    return new ESExpr(TUPLE_LITERAL, tuple);
+    final ArrayList<EsExpr> tuple = new ArrayList<>(items);
+    return new EsExpr(TUPLE_LITERAL, tuple);
   }
 
   /**
@@ -329,10 +329,10 @@ public final class ESExpr {
    * @return tuple containing {@code lhs} and {@code rhs} expressions
    * @throws IllegalArgumentException if any of given expressions is {@code null}
    */
-  public static ESExpr cons(final ESExpr lhs, final ESExpr rhs) {
+  public static EsExpr cons(final EsExpr lhs, final EsExpr rhs) {
     InvariantChecks.checkNotNull(lhs);
     InvariantChecks.checkNotNull(rhs);
 
-    return new ESExpr(TUPLE_LITERAL, Arrays.asList(lhs, rhs));
+    return new EsExpr(TUPLE_LITERAL, Arrays.asList(lhs, rhs));
   }
 }

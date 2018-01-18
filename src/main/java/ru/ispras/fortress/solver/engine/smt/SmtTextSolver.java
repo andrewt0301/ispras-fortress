@@ -20,9 +20,9 @@ import ru.ispras.fortress.data.DataTypeId;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.data.types.bitvector.BitVector;
 import ru.ispras.fortress.data.types.datamap.DataMap;
-import ru.ispras.fortress.esexpr.ESExpr;
-import ru.ispras.fortress.esexpr.ESExprMatcher;
-import ru.ispras.fortress.esexpr.ESExprParser;
+import ru.ispras.fortress.esexpr.EsExpr;
+import ru.ispras.fortress.esexpr.EsExprMatcher;
+import ru.ispras.fortress.esexpr.EsExprParser;
 import ru.ispras.fortress.expression.ExprTreeWalker;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.expression.NodeValue;
@@ -138,8 +138,8 @@ public abstract class SmtTextSolver extends SolverBase {
       final Context context =
           new Context(variablesMap(constraint.getUnknownVariables()));
 
-      final ESExprParser parser = new ESExprParser(reader);
-      ESExpr expr = parser.next();
+      final EsExprParser parser = new EsExprParser(reader);
+      EsExpr expr = parser.next();
       while (expr != null) {
         if (isStatus(expr)) {
           if (!isStatusSet) {
@@ -186,7 +186,7 @@ public abstract class SmtTextSolver extends SolverBase {
     return map;
   }
 
-  private static boolean isStatus(final ESExpr e) {
+  private static boolean isStatus(final EsExpr e) {
     if (!e.isAtom()) {
       return false;
     }
@@ -215,16 +215,16 @@ public abstract class SmtTextSolver extends SolverBase {
     builder.setStatus(status);
   }
 
-  private static boolean isError(final ESExpr e) {
-    final ESExprMatcher matcher = new ESExprMatcher("(error %a)");
+  private static boolean isError(final EsExpr e) {
+    final EsExprMatcher matcher = new EsExprMatcher("(error %a)");
     return matcher.matches(e);
   }
 
-  private static String getLiteral(final ESExpr e, final int n) {
+  private static String getLiteral(final EsExpr e, final int n) {
     return e.getItems().get(n).getLiteral();
   }
 
-  private static boolean isModel(final ESExpr e) {
+  private static boolean isModel(final EsExpr e) {
     return e.isList()
         && !e.isNil()
         && getLiteral(e, 0).equals("model");
@@ -234,22 +234,22 @@ public abstract class SmtTextSolver extends SolverBase {
     public final Map<String, Variable> required;
     public final Map<String, Variable> deferred;
 
-    public final Map<String, ESExpr> model;
+    public final Map<String, EsExpr> model;
     public final Map<String, Data> parsed;
 
-    public static final ESExprMatcher CAST_ARRAY =
-        new ESExprMatcher("(_ as-array %a)");
+    public static final EsExprMatcher CAST_ARRAY =
+        new EsExprMatcher("(_ as-array %a)");
 
-    public static final ESExprMatcher CONST_ARRAY_Z3 =
-        new ESExprMatcher("((as const (Array %s %s)) %s)");
+    public static final EsExprMatcher CONST_ARRAY_Z3 =
+        new EsExprMatcher("((as const (Array %s %s)) %s)");
 
-    public static final ESExprMatcher CONST_ARRAY_CVC4 =
-        new ESExprMatcher("(__array_store_all__ (Array %s %s) %s)");
+    public static final EsExprMatcher CONST_ARRAY_CVC4 =
+        new EsExprMatcher("(__array_store_all__ (Array %s %s) %s)");
 
-    public static final ESExprMatcher STORE = new ESExprMatcher("(store %s %s %s)");
-    public static final ESExprMatcher MINUS = new ESExprMatcher("(- %a)");
-    public static final ESExprMatcher CAST = new ESExprMatcher("(_ %a %a)");
-    public static final ESExprMatcher ITE = new ESExprMatcher("(ite (= %a %s) %s %s)");
+    public static final EsExprMatcher STORE = new EsExprMatcher("(store %s %s %s)");
+    public static final EsExprMatcher MINUS = new EsExprMatcher("(- %a)");
+    public static final EsExprMatcher CAST = new EsExprMatcher("(_ %a %a)");
+    public static final EsExprMatcher ITE = new EsExprMatcher("(ite (= %a %s) %s %s)");
 
     public Context(final Map<String, Variable> required) {
       this.required = required;
@@ -261,10 +261,10 @@ public abstract class SmtTextSolver extends SolverBase {
 
   private static void parseVariables(
       final SolverResultBuilder builder,
-      final ESExpr results,
+      final EsExpr results,
       final Context ctx) {
-    for (final ESExpr e : results.getListItems()) {
-      final ESExpr value = e.getItems().get(1);
+    for (final EsExpr e : results.getListItems()) {
+      final EsExpr value = e.getItems().get(1);
       final String reqName = getLiteral(e, 0);
 
       if (ctx.CAST_ARRAY.matches(value)) {
@@ -279,7 +279,7 @@ public abstract class SmtTextSolver extends SolverBase {
   }
 
   private static Data parseValueExpr(
-      final ESExpr e,
+      final EsExpr e,
       final DataType type,
       final Context ctx) {
     switch (type.getTypeId()) {
@@ -299,7 +299,7 @@ public abstract class SmtTextSolver extends SolverBase {
   }
 
   private static Data parseArray(
-      final ESExpr e,
+      final EsExpr e,
       final DataType type,
       final Context ctx) {
     if (ctx.CAST_ARRAY.matches(e)) {
@@ -338,7 +338,7 @@ public abstract class SmtTextSolver extends SolverBase {
   }
 
   private static DataMap parseIteArray(
-      ESExpr e,
+      EsExpr e,
       final DataType type,
       final Context ctx) {
     final DataType keyType =
@@ -348,8 +348,8 @@ public abstract class SmtTextSolver extends SolverBase {
 
     final DataMap map = new DataMap(keyType, valueType);
     while (ctx.ITE.matches(e)) {
-      final ESExpr key = e.getItems().get(1).getItems().get(2);
-      final ESExpr value = e.getItems().get(2);
+      final EsExpr key = e.getItems().get(1).getItems().get(2);
+      final EsExpr value = e.getItems().get(2);
 
       map.put(parseValueExpr(key, keyType, ctx),
               parseValueExpr(value, valueType, ctx));
@@ -362,7 +362,7 @@ public abstract class SmtTextSolver extends SolverBase {
   }
 
   private static DataMap parseStoreArray(
-      ESExpr e,
+      EsExpr e,
       final DataType type,
       final Context ctx) {
     final DataType keyType =
@@ -372,8 +372,8 @@ public abstract class SmtTextSolver extends SolverBase {
 
     final ArrayList<Pair<Data, Data>> pairs = new ArrayList<>();
     while (ctx.STORE.matches(e)) {
-      final ESExpr key = e.getItems().get(2);
-      final ESExpr value = e.getItems().get(3);
+      final EsExpr key = e.getItems().get(2);
+      final EsExpr value = e.getItems().get(3);
 
       pairs.add(new Pair<>(parseValueExpr(key, keyType, ctx),
                          parseValueExpr(value, valueType, ctx)));
@@ -422,10 +422,10 @@ public abstract class SmtTextSolver extends SolverBase {
 
   private static void parseModel(
       final SolverResultBuilder builder,
-      final ESExpr model,
+      final EsExpr model,
       final Context ctx) {
-    final ESExprMatcher define = new ESExprMatcher("(define-fun %a %s %s %s)");
-    for (final ESExpr e : model.getListItems()) {
+    final EsExprMatcher define = new EsExprMatcher("(define-fun %a %s %s %s)");
+    for (final EsExpr e : model.getListItems()) {
       if (!define.matches(e)) {
         continue;
       }

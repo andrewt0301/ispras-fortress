@@ -27,20 +27,20 @@ import java.util.Deque;
 import java.util.List;
 
 /**
- * ESExprParser translates Lisp-like syntax into {@link ESExpr}.
+ * {@link EsExprParser} translates Lisp-like syntax into {@link EsExpr}.
  * Supports only ASCII characters, treats ';' as start of one-line comment,
  * does not support multiline symbols and treats them as sequence of expressions.
  */
-public final class ESExprParser {
+public final class EsExprParser {
   private final StreamTokenizer tokenizer;
-  private final Deque<List<ESExpr>> stack;
+  private final Deque<List<EsExpr>> stack;
 
   /**
    * Create new parser for given reader.
    *
    * @param reader {@code Reader} instance to read input from
    */
-  public ESExprParser(final Reader reader) {
+  public EsExprParser(final Reader reader) {
     InvariantChecks.checkNotNull(reader);
 
     final BufferedReader buf = new BufferedReader(reader);
@@ -64,19 +64,19 @@ public final class ESExprParser {
    * @return complete S-expression.
    * @throws IOException if an I/O error occurs.
    */
-  public ESExpr next() throws IOException {
+  public EsExpr next() throws IOException {
     final int token = nextToken();
     switch (token) {
       case '"':
       case StreamTokenizer.TT_WORD:
-        return ESExpr.createAtom(tokenizer.sval);
+        return EsExpr.createAtom(tokenizer.sval);
 
       case '(':
-        stack.push(new ArrayList<ESExpr>());
+        stack.push(new ArrayList<EsExpr>());
         if (!readItems()) {
-          return ESExpr.createList(stack.pop());
+          return EsExpr.createList(stack.pop());
         }
-        return ESExpr.createTuple(stack.pop());
+        return EsExpr.createTuple(stack.pop());
 
       case StreamTokenizer.TT_EOF:
         return null;
@@ -147,9 +147,9 @@ public final class ESExprParser {
    * @return parser for given string
    * @throws IllegalArgumentException if {@code s} is {@code null}
    */
-  public static ESExprParser stringParser(final String str) {
+  public static EsExprParser stringParser(final String str) {
     InvariantChecks.checkNotNull(str);
-    return new ESExprParser(new StringReader(str));
+    return new EsExprParser(new StringReader(str));
   }
 
   /**
