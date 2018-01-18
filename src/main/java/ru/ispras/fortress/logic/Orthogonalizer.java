@@ -214,21 +214,21 @@ public final class Orthogonalizer {
    * 
    * @param clauses the list of clauses.
    * @param branches the next-index map.
-   * @param preI the index of the preceding clause.
-   * @param i the index of the clause to be replaced.
+   * @param preIndex the index of the preceding clause.
+   * @param index the index of the clause to be replaced.
    * @param split the set of clauses to be substituted.
    * @return true iff the i-th clause is removed.
    */
   private static boolean replace(
       final List<Clause> clauses,
       final Map<Integer, Integer> branches,
-      final int preI,
-      final int i,
+      final int preIndex,
+      final int index,
       final NormalForm split) {
     // The clause should be removed (because it is equal with another one).
     if (split.isEmpty()) {
       // The map is updated without removing the item from the list.
-      branches.put(preI, next(branches, i));
+      branches.put(preIndex, next(branches, index));
       return true;
     }
 
@@ -238,21 +238,21 @@ public final class Orthogonalizer {
     // The clause should be replaced with one clause.
     if (size == 1) {
       // The list item is simply updated.
-      clauses.set(i, list.get(0));
+      clauses.set(index, list.get(0));
       return false;
     }
 
     // The clause should be replaced with two or more clauses.
-    final int return_i = next(branches, i);
+    final int return_i = next(branches, index);
     final int branch_i = clauses.size();
 
     // One of the clauses overrides the clause under processing.
-    clauses.set(i, list.get(0));
+    clauses.set(index, list.get(0));
     // The others are added to the end of the list.
     clauses.addAll(list.subList(1, size));
 
     // The map is correspondingly updated.
-    branches.put(i, branch_i);
+    branches.put(index, branch_i);
     branches.put(clauses.size() - 1, return_i);
 
     return false;
@@ -262,18 +262,18 @@ public final class Orthogonalizer {
    * Returns the index of the successive clause.
    * 
    * @param branches the next-index map.
-   * @param i the index of the clause.
+   * @param index the index of the clause.
    * @return the successive clause index.
    */
   private static int next(
       final Map<Integer, Integer> branches,
-      final int i) {
-    if (i == -1) {
+      final int index) {
+    if (index == -1) {
       return 0;
     }
 
-    final Integer j = branches.get(i);
-    return (j == null ? i + 1 : j);
+    final Integer j = branches.get(index);
+    return (j == null ? index + 1 : j);
   }
 
   /**
