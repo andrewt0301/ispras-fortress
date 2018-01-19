@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2012-2018 ISP RAS (http://www.ispras.ru)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -19,9 +19,9 @@ import ru.ispras.fortress.solver.function.FunctionTemplate;
 import ru.ispras.fortress.util.InvariantChecks;
 
 /**
- * The SolverOperation class stores information about a solver operation. The information explains
- * how the operation should be translated to solver-specific representation. The SolverOperation
- * class describes both built-in and custom solver operation.
+ * The {@link SolverOperation} class stores information about a solver operation. The information
+ * explains how the operation should be translated to solver-specific representation.
+ * The {@link SolverOperation} class describes both built-in and custom solver operation.
  * 
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
@@ -38,6 +38,16 @@ public abstract class SolverOperation {
   private final Kind kind;
   private final Enum<?> id;
 
+  /**
+   * Constructs a solver operation from the specified operation identifier and
+   * the textual representation of the operation.
+   *
+   * @param id Operation identifier.
+   * @param text Textual representation of the operation.
+   * @return {@link SolverOperation} object.
+   *
+   * @throws IllegalArgumentException if any of the arguments is {@code null}.
+   */
   public static final SolverOperation newText(final Enum<?> id, final String text) {
     InvariantChecks.checkNotNull(id);
     InvariantChecks.checkNotNull(text);
@@ -45,58 +55,72 @@ public abstract class SolverOperation {
     return new TextOperation(id, text);
   }
 
+  /**
+   * Constructs a solver operation on the basis of the given function.
+   *
+   * @param function Function object.
+   * @return {@link SolverOperation} object.
+   *
+   * @throws IllegalArgumentException if the argument is {@code null}.
+   */
   public static final SolverOperation newFunction(final Function function) {
     InvariantChecks.checkNotNull(function);
     return new FunctionOperation(function);
   }
 
+  /**
+   * Constructs a solver operation on the basis of the given function template.
+   *
+   * @param template Function template object.
+   * @return {@link SolverOperation} object.
+   *
+   * @throws IllegalArgumentException if the argument is {@code null}.
+   */
   public static final SolverOperation newTemplate(final FunctionTemplate template) {
     InvariantChecks.checkNotNull(template);
     return new TemplateOperation(template);
   }
 
-  /**
-   * Creates a solver operation object (a custom operation).
-   * 
-   * @param text Textual representation of the operation.
-   * @param function Definition of the operation (including its parameters and underlying
-   *        expression).
-   */
   private SolverOperation(final Kind kind, final Enum<?> id) {
     this.kind = kind;
     this.id = id;
   }
 
   /**
-   * Returns information of the type of the operation.
-   * 
-   * @return Operation kind.
+   * Returns operation kind identifier.
+   *
+   * @return Operation kind identifier.
    */
   public final Kind getKind() {
     return kind;
   }
 
   /**
-   * Returns the textual representation of the operation.
-   * 
-   * @return Textual representation of the operation.
+   * Returns the operation identifier.
+   *
+   * @return Operation identifier.
    */
   public final Enum<?> getOperationId() {
     return id;
   }
 
+  /**
+   * Returns the textual representation of the operation.
+   *
+   * @return Textual representation of the operation.
+   */
   public abstract String getText();
 
   /**
    * Returns the underlying function.
-   * 
+   *
    * @return Underlying function.
    */
   public abstract Function getFunction();
 
   /**
    * Returns the underlying function template.
-   * 
+   *
    * @return Underlying function template.
    */
   public abstract FunctionTemplate getTemplate();
