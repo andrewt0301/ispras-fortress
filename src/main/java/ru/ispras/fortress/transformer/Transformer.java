@@ -66,9 +66,9 @@ public final class Transformer {
     return transform(expression, Node.Kind.VARIABLE, rule);
   }
 
-  public static Node substitute(final Node e, final VariableProvider vp) {
-    InvariantChecks.checkNotNull(e);
-    InvariantChecks.checkNotNull(vp);
+  public static Node substitute(final Node expression, final VariableProvider variableProvider) {
+    InvariantChecks.checkNotNull(expression);
+    InvariantChecks.checkNotNull(variableProvider);
 
     final TransformerRule rule = new TransformerRule() {
       @Override
@@ -79,7 +79,7 @@ public final class Transformer {
       @Override
       public Node apply(final Node node) {
         final Variable prev = ((NodeVariable) node).getVariable();
-        final Variable next = vp.getVariable(prev);
+        final Variable next = variableProvider.getVariable(prev);
         if (next != null) {
           return new NodeVariable(next);
         }
@@ -87,7 +87,7 @@ public final class Transformer {
       }
     };
 
-    return transform(e, Node.Kind.VARIABLE, rule);
+    return transform(expression, Node.Kind.VARIABLE, rule);
   }
 
   /**
