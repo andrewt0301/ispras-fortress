@@ -35,9 +35,9 @@ public final class DataType {
   private static final Object[] EMPTY_PARAMETERS_LIST = new Object[0];
 
   /**
-   * The LOGIC_TYPE_SIZE constant specifies the size of logic data types. Such types are not related
-   * with machine-dependent types and can have any size. For this reason, we specify it as zero to
-   * distinguish from types that describe real data.
+   * The {@link DataType#LOGIC_TYPE_SIZE} constant specifies the size of logic data types.
+   * Such types are not related with machine-dependent types and can have any size.
+   * For this reason, we specify it as zero to distinguish from types that describe real data.
    */
   public static final int LOGIC_TYPE_SIZE = 0;
 
@@ -62,15 +62,24 @@ public final class DataType {
 
   /**
    * Returns a type describing a bit vector of the specified size.
+   * For bit vectors of the same size the same instances are returned.
    *
-   * @param size Bit vector size in bits
-   * @return Bit vector type
+   * @param size Bit vector size in bits.
+   * @return Bit vector type.
    */
   public static DataType bitVector(final int size) {
     InvariantChecks.checkGreaterThanZero(size);
     return newDataType(DataTypeId.BIT_VECTOR, size);
   }
 
+  /**
+   * Returns a type describing a map that uses key and values of the specified type.
+   * For maps with matching key and value types the same instances are returned.
+   *
+   * @param keyType Key type.
+   * @param valueType Value type.
+   * @return Map type.
+   */
   public static DataType map(
       final DataType keyType,
       final DataType valueType) {
@@ -195,21 +204,28 @@ public final class DataType {
     return new Data(this, typeId.valueOf(cleanValue, radix, parameters));
   }
 
-  public static DataType typeOf(final String value) {
-    InvariantChecks.checkNotNull(value);
+  /**
+   * Creates an instance of a data type from the its textual representation.
+   * If such type has already been registered the existing instance will be returned.
+   *
+   * @param text Textual representation of the data type.
+   * @return Data type.
+   */
+  public static DataType typeOf(final String text) {
+    InvariantChecks.checkNotNull(text);
 
-    if (DATA_TYPES.containsKey(value)) {
-      return DATA_TYPES.get(value);
+    if (DATA_TYPES.containsKey(text)) {
+      return DATA_TYPES.get(text);
     }
 
     DataType type;
     for (final DataTypeId tid : DataTypeId.values()) {
-      if ((type = tid.typeOf(value)) != null) {
+      if ((type = tid.typeOf(text)) != null) {
         return type;
       }
     }
 
-    throw new IllegalArgumentException("Invalid DataType text representation: " + value);
+    throw new IllegalArgumentException("Invalid DataType text representation: " + text);
   }
 
   /**

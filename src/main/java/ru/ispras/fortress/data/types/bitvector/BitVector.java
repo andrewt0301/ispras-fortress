@@ -426,7 +426,7 @@ public abstract class BitVector implements Comparable<BitVector> {
    * |HIGH|...|LOW|
    * M            0</pre>
    * {@code N} is the number of bit vectors to be concatenated;
-   * {@code M} is the total bit size of the concatenation result.</p>
+   * {@code M} is the total bit size of the concatenation result.
    *
    * @param sources Source bit vectors.
    * @return A bit vector mapping.
