@@ -55,6 +55,7 @@ public class BooleanToBitVectorCastTestCase extends GenericSolverTestBase {
    * </pre>
    * and produces an error (Z3 v 3.1):
    * (error "line 6 column 23: operator is applied to arguments of the wrong sort")
+   *
    * <p>The library converts this into correct one:
    * <pre>
    * (declare-const x Int)
