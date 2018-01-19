@@ -282,19 +282,21 @@ public abstract class SmtTextSolver extends SolverBase {
       final EsExpr expr,
       final DataType type,
       final Context ctx) {
-    switch (type.getTypeId()) {
-      case BIT_VECTOR:
-        if (ctx.CAST.matches(expr)) {
-          return parseAtom(getLiteral(expr, 1), type);
-        }
-        return parseAtom(expr.getLiteral(), type);
-
-      case MAP:
-        return parseArray(expr, type, ctx);
+    if (type.getTypeId() == DataTypeId.BIT_VECTOR) {
+      if (ctx.CAST.matches(expr)) {
+        return parseAtom(getLiteral(expr, 1), type);
+      }
+      return parseAtom(expr.getLiteral(), type);
     }
+
+    if (type.getTypeId() == DataTypeId.MAP) {
+      return parseArray(expr, type, ctx);
+    }
+
     if (ctx.MINUS.matches(expr)) {
       return parseAtom("-" + getLiteral(expr, 1), type);
     }
+
     return parseAtom(expr.getLiteral(), type);
   }
 
