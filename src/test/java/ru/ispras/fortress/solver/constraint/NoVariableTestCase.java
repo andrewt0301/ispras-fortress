@@ -19,25 +19,25 @@ import ru.ispras.fortress.expression.NodeValue;
 
 import java.util.Collections;
 
+/**
+ * This test constructs a constraint, solves it and checks the solution against the expected output.
+ * The constraint as described in the SMT language:
+ *
+ * <pre>
+ *      (assert true)
+ *      (check-sat)
+ *      (exit)
+ * </pre>
+ * Expected output:
+ *
+ * <pre>
+ * sat
+ * </pre>
+ */
 public class NoVariableTestCase extends GenericSolverTestBase {
   public NoVariableTestCase() {
     super(new NoVariable());
   }
-
-  /**
-   * The constraint as described in the SMT language:
-   * 
-   * <pre>
-   *      (assert true)
-   *      (check-sat)
-   *      (exit)
-   * </pre>
-   * Expected output:
-   * 
-   * <pre>
-   * sat
-   * </pre>
-   */
 
   public static class NoVariable implements SampleConstraint {
     @Override

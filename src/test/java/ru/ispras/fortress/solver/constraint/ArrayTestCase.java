@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This test constructs a constraint, solves it and checks the solution against the expected values.
+ * This test constructs a constraint, solves it and checks the solution against the expected output.
  * The constraint as described in pseudo language similar to SMT-LIB:
  *
  * <pre>
@@ -83,7 +83,7 @@ public class ArrayTestCase extends GenericSolverTestBase {
 
     @Override
     public Iterable<Variable> getExpectedVariables() {
-      final List<Variable> result = new ArrayList<Variable>();
+      final List<Variable> result = new ArrayList<>();
 
       result.add(new Variable("a", ARRAY_TYPE.valueOf(ARRAY_VALUE, 10)));
       result.add(new Variable("v", ARRAY_TYPE.valueOf("()", 10)));

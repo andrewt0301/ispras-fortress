@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This test constructs a constraint, solves it and checks the solution against the expected values.
+ * This test constructs a constraint, solves it and checks the solution against the expected output.
  * The constraint as described in the SMT-LIB language:
  *
  * <pre>
@@ -83,7 +83,7 @@ public class InputParametersTestCase extends GenericSolverTestBase {
 
     @Override
     public Iterable<Variable> getExpectedVariables() {
-      final List<Variable> result = new ArrayList<Variable>();
+      final List<Variable> result = new ArrayList<>();
 
       result.add(new Variable("a", BIT_VECTOR_TYPE.valueOf("3", 16)));
 

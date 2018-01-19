@@ -23,7 +23,7 @@ import ru.ispras.fortress.expression.Nodes;
 import java.util.ArrayList;
 
 /**
- * This test constructs a constraint, solves it and checks the solution against the expected values.
+ * This test constructs a constraint, solves it and checks the solution against the expected output.
  * The constraint as described in the SMT-LIB language:
  *
  * <pre>
@@ -100,7 +100,7 @@ public class ArrayOfArraysTestCase extends GenericSolverTestBase {
       final String uValue = String.format("((%s:%s))", xValue, yValue);
       final String vValue = String.format("((%s:%s)(%s:%s))", xValue, yValue, zValue, wValue);
 
-      final ArrayList<Variable> list = new ArrayList<Variable>(6);
+      final ArrayList<Variable> list = new ArrayList<>(6);
 
       list.add(new Variable("x", ARRAY_INT_INT.valueOf(xValue, 10)));
       list.add(new Variable("y", ARRAY_INT_INT.valueOf(yValue, 10)));

@@ -25,25 +25,26 @@ import ru.ispras.fortress.transformer.Reducer;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This test constructs a constraint, solves it and checks the solution against the expected values.
+ * The constraint as described in the SMT language:
+ *
+ * <pre>
+ * (declare-const x (_ BitVec 4))
+ * (declare-const y (_ BitVec 16))
+ * (assert (= x #x5))
+ * (assert (= y ((_ repeat 4) x)))
+ * (check-sat)
+ * (get-value (x y))
+ * (exit)
+ * </pre>
+ * Expected output: sat ((x #x5)(y #x5555))
+ */
 public final class RepeatOperationTestCase extends GenericSolverTestBase {
   public RepeatOperationTestCase() {
     super(new RepeatOperation());
   }
 
-  /**
-   * The constraint as described in the SMT language:
-   *
-   * <pre>
-   * (declare-const x (_ BitVec 4))
-   * (declare-const y (_ BitVec 16))
-   * (assert (= x #x5))
-   * (assert (= y ((_ repeat 4) x)))
-   * (check-sat)
-   * (get-value (x y))
-   * (exit)
-   * </pre>
-   * Expected output: sat ((x #x5)(y #x5555))
-   */
   public static class RepeatOperation implements SampleConstraint {
     private static final int BIT_VECTOR_ARG_SIZE = 4;
     private static final DataType BIT_VECTOR_ARG_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_ARG_SIZE);

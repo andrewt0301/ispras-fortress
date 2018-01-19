@@ -39,7 +39,8 @@ public class BooleanToBitVectorCastTestCase extends GenericSolverTestBase {
     super(new BooleanToBitVectorCast());
   }
 
-  /*
+  /**
+   * This class constructs a constraint and provides expected output.
    * The following SMT-LIB code is incorrect:
    * 
    * (declare-const x Int)

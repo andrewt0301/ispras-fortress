@@ -37,7 +37,7 @@ public class UnusedVariableTestCase extends GenericSolverTestBase {
   }
 
   /**
-   * This class constructs a constraint and provides expected values.
+   * This class constructs a constraint and provides expected output.
    * The constraint as described in the SMT language:
    *
    * <pre>

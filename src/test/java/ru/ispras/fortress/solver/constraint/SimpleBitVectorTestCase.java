@@ -23,27 +23,28 @@ import ru.ispras.fortress.expression.Nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This test constructs a constraint, solves it and checks the solution against the expected values.
+ * The constraint as described in the SMT language:
+ *
+ * <pre>
+ * (declare-const a (_ BitVec 3))
+ * (declare-const b (_ BitVec 3))
+ * (assert (not (= a b)))
+ * (assert (= (bvor a b) #b111))
+ * (assert (= (bvand a b) #b000))
+ * (assert (= (bvshl a (_ bv3 3))(bvsmod a (_ bv2 3))))
+ * (check-sat)
+ * (get-value (a b))
+ * (exit)
+ * </pre>
+ * Expected output: sat ((a #b010) (b #b101))
+ */
 public final class SimpleBitVectorTestCase extends GenericSolverTestBase {
   public SimpleBitVectorTestCase() {
     super(new SimpleBitVector());
   }
 
-  /**
-   * The constraint as described in the SMT language:
-   *
-   * <pre>
-   * (declare-const a (_ BitVec 3))
-   * (declare-const b (_ BitVec 3))
-   * (assert (not (= a b)))
-   * (assert (= (bvor a b) #b111))
-   * (assert (= (bvand a b) #b000))
-   * (assert (= (bvshl a (_ bv3 3))(bvsmod a (_ bv2 3))))
-   * (check-sat)
-   * (get-value (a b))
-   * (exit)
-   * </pre>
-   * Expected output: sat ((a #b010) (b #b101))
-   */
   public static class SimpleBitVector implements SampleConstraint {
     private static final int BIT_VECTOR_SIZE = 3;
     private static final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_SIZE);

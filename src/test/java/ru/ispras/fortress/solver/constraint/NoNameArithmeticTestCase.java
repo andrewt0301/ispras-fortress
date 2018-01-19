@@ -23,27 +23,28 @@ import ru.ispras.fortress.expression.Nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This test constructs a constraint, solves it and checks the solution against the expected output.
+ * The constraint as described in the SMT language:
+ *
+ * <pre>
+ * (declare-const x Int)
+ * (assert (= x (+ 2 2)))
+ * (check-sat)
+ * (get-value (x))
+ * (exit)
+ * </pre>
+ * Expected output:
+ *
+ * <pre>
+ * sat ((x 4))
+ * </pre>
+ */
 public class NoNameArithmeticTestCase extends GenericSolverTestBase {
   public NoNameArithmeticTestCase() {
     super(new NoNameArithmetic());
   }
 
-  /**
-   * The constraint as described in the SMT language:
-   *
-   * <pre>
-   * (declare-const x Int)
-   * (assert (= x (+ 2 2)))
-   * (check-sat)
-   * (get-value (x))
-   * (exit)
-   * </pre>
-   * Expected output:
-   *
-   * <pre>
-   * sat ((x 4))
-   * </pre>
-   */
   public static class NoNameArithmetic implements SampleConstraint {
     private static final DataType intType = DataType.INTEGER;
 

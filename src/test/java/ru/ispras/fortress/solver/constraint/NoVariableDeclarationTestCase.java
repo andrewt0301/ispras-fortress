@@ -23,24 +23,25 @@ import ru.ispras.fortress.expression.Nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This test constructs a constraint, solves it and checks the solution against the expected output.
+ * The constraint as described in the SMT language:
+ *
+ * <pre>
+ * (declare-const a Int)
+ * (declare-const b Int)
+ * (assert (> a (+ b 2)))
+ * (check-sat)
+ * (get-value (a b))
+ * (exit)
+ * </pre>
+ * Expected output: sat ((a 1) (b (- 2)))
+ */
 public class NoVariableDeclarationTestCase extends GenericSolverTestBase {
   public NoVariableDeclarationTestCase() {
     super(new NoVariableDeclaration());
   }
 
-  /**
-   * The constraint as described in the SMT language:
-   *
-   * <pre>
-   * (declare-const a Int)
-   * (declare-const b Int)
-   * (assert (> a (+ b 2)))
-   * (check-sat)
-   * (get-value (a b))
-   * (exit)
-   * </pre>
-   * Expected output: sat ((a 1) (b (- 2)))
-   */
   public static class NoVariableDeclaration implements SampleConstraint {
     private static final DataType intType = DataType.INTEGER;
 

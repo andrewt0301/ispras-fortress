@@ -23,30 +23,31 @@ import ru.ispras.fortress.expression.Nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This test constructs a constraint, solves it and checks the solution against the expected output.
+ * The constraint as described in the SMT language:
+ *
+ * <pre>
+ * (declare-const a Int)
+ * (declare-const b Int)
+ * (assert (> a 5))
+ * (assert (< b 7))
+ * (assert (= (ite (= a b) 1 0) 1))
+ * (check-sat)
+ * (get-value (a b))
+ * (exit)
+ * </pre>
+ * Expected output:
+ *
+ * <pre>
+ * sat ((a 6)(b 6))
+ * </pre>
+ */
 public class IfThenElseTestCase extends GenericSolverTestBase {
   public IfThenElseTestCase() {
     super(new IfThenElse());
   }
 
-  /**
-   * The constraint as described in the SMT language:
-   *
-   * <pre>
-   * (declare-const a Int)
-   * (declare-const b Int)
-   * (assert (> a 5))
-   * (assert (< b 7))
-   * (assert (= (ite (= a b) 1 0) 1))
-   * (check-sat)
-   * (get-value (a b))
-   * (exit)
-   * </pre>
-   * Expected output:
-   *
-   * <pre>
-   * sat ((a 6)(b 6))
-   * </pre>
-   */
   public static class IfThenElse implements SampleConstraint {
     private static final DataType intType = DataType.INTEGER;
 

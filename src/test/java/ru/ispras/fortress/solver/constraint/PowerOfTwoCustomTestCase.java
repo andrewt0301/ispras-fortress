@@ -40,36 +40,36 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * The sample is similar to the PowerOfTwo sample, but the is_pow_of_two function is provided as a
+ * custom text-based operation that extends the solver.
+ * <p>The constraint as described in the SMT-LIB language:
+ *
+ * <pre>
+ * (declare-const x (_ BitVec 32))
+ *
+ * (define-fun is_pow_of_two((a (_ BitVec 32))) Bool
+ * (= (bvand a (bvsub a (_ bv1 32))) (_ bv0 32)))
+ * (assert (is_pow_of_two x))
+ *
+ * (assert (bvugt x (_ bv100 32)))
+ * (assert (bvult x (_ bv200 32)))
+ *
+ * (check-sat)
+ * (get-value (x))
+ * (exit)
+ * </pre>
+ * Expected output:
+ *
+ * <pre>
+ *     sat ((x #x00000080))
+ * </pre></p>
+ */
 public final class PowerOfTwoCustomTestCase extends GenericSolverTestBase {
   public PowerOfTwoCustomTestCase() {
     super(new PowerOfTwoCustom());
   }
 
-  /**
-   * The sample is similar to the PowerOfTwo sample, but the is_pow_of_two function is provided as a
-   * custom text-based operation that extends the solver.
-   * <p>The constraint as described in the SMT-LIB language:
-   *
-   * <pre>
-   * (declare-const x (_ BitVec 32))
-   *
-   * (define-fun is_pow_of_two((a (_ BitVec 32))) Bool
-   * (= (bvand a (bvsub a (_ bv1 32))) (_ bv0 32)))
-   * (assert (is_pow_of_two x))
-   * 
-   * (assert (bvugt x (_ bv100 32)))
-   * (assert (bvult x (_ bv200 32)))
-   * 
-   * (check-sat)
-   * (get-value (x))
-   * (exit)
-   * </pre>
-   * Expected output:
-   *
-   * <pre>
-   *     sat ((x #x00000080))
-   * </pre></p>
-   */
   private static final int BIT_VECTOR_SIZE = 32;
   private static final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_SIZE);
 
@@ -82,7 +82,7 @@ public final class PowerOfTwoCustomTestCase extends GenericSolverTestBase {
   private static final CalculatorEngine CALCULATOR =
       new CompositeCalculator(Arrays.asList(customCalculator(), Calculator.STANDARD));
 
-  public static enum ECustomOperation {
+  public enum ECustomOperation {
     ISPOWOFTWO
   }
 
@@ -108,8 +108,7 @@ public final class PowerOfTwoCustomTestCase extends GenericSolverTestBase {
 
   private static CalculatorEngine customCalculator() {
     final CalculatorOperation<ECustomOperation> ispot =
-        new CalculatorOperation<ECustomOperation>(
-            ECustomOperation.ISPOWOFTWO, ArityRange.UNARY) {
+        new CalculatorOperation<>(ECustomOperation.ISPOWOFTWO, ArityRange.UNARY) {
           @Override
           public Data calculate(final Data... operands) {
             final BitVector x = operands[0].getBitVector();

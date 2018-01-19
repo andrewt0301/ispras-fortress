@@ -23,29 +23,30 @@ import ru.ispras.fortress.expression.Nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This test constructs a constraint, solves it and checks the solution against the expected values.
+ * The constraint as described in the SMT-LIB language:
+ *
+ * <pre>
+ * (declare-const x (_ BitVec 32))
+ * (assert (bvugt x (_ bv100 32)))
+ * (assert (bvult x (_ bv200 32)))
+ * (assert (= (bvand x (bvsub x (_ bv1 32))) (_ bv0 32)))
+ * (check-sat)
+ * (get-value (x))
+ * (exit)
+ * </pre>
+ * Expected output:
+ *
+ * <pre>
+ * sat ((x #x00000080))
+ * </pre>
+ */
 public class PowerOfTwoBitVectorTestCase extends GenericSolverTestBase {
   public PowerOfTwoBitVectorTestCase() {
     super(new PowerOfTwo());
   }
 
-  /**
-   * The constraint as described in the SMT-LIB language:
-   *
-   * <pre>
-   * (declare-const x (_ BitVec 32))
-   * (assert (bvugt x (_ bv100 32)))
-   * (assert (bvult x (_ bv200 32)))
-   * (assert (= (bvand x (bvsub x (_ bv1 32))) (_ bv0 32)))
-   * (check-sat)
-   * (get-value (x))
-   * (exit)
-   * </pre>
-   * Expected output:
-   *
-   * <pre>
-   * sat ((x #x00000080))
-   * </pre>
-   */
   public static class PowerOfTwo implements SampleConstraint {
     private static final int BIT_VECTOR_SIZE = 32;
     private static final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_SIZE);

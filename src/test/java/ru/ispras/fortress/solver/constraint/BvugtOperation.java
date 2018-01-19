@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This test constructs a constraint, solves it and checks the solution against the expected values.
+ * This test constructs a constraint, solves it and checks the solution against the expected output.
  * The constraint as described in the SMT-LIB language:
  *
  * <pre>
@@ -64,7 +64,7 @@ public class BvugtOperation implements SampleConstraint {
 
   @Override
   public Iterable<Variable> getExpectedVariables() {
-    final List<Variable> result = new ArrayList<Variable>();
+    final List<Variable> result = new ArrayList<>();
     result.add(new Variable("x", BIT_VECTOR_TYPE.valueOf("112", 10)));
     return result;
   }
