@@ -300,99 +300,98 @@ public class NodeTransformer implements ExprTreeVisitor {
     final Node updatedValue = exprStack.remove(exprStack.size() - 1);
     boundStack.add(NodeBinding.bindVariable(variable, updatedValue));
   }
-}
-
-
-/**
- * ScopedBindingRule is base class for rules respecting variable binding visibility scope.
- * <p>Implementors are organized in nesting scopes list with inner scope being responsible for
- * passing request to outer scope if it cannot be satisfied by himself.
- * Subclasses are expected to implement TransformRule.isApplicable() method that should set
- * applicableCache member to correct substitution result in case rule is applicable.</p>
- */
-abstract class ScopedBindingRule implements TransformerRule {
-  protected final List<TransformerRule> shadowed;
-  protected final Map<String, Node> bindings;
-  protected Node applicableCache;
 
   /**
-   * Create rule for nested variable scope.
-   * 
-   * @param previous Rule representing outer scope.
-   * @param bindingList List of bound variables in current scope.
+   * ScopedBindingRule is base class for rules respecting variable binding visibility scope.
+   * <p>Implementors are organized in nesting scopes list with inner scope being responsible for
+   * passing request to outer scope if it cannot be satisfied by himself.
+   * Subclasses are expected to implement TransformRule.isApplicable() method that should set
+   * applicableCache member to correct substitution result in case rule is applicable.</p>
    */
-  public ScopedBindingRule(
-      final List<TransformerRule> previous,
-      final List<NodeBinding.BoundVariable> bindingList) {
-    this.shadowed = previous;
-    this.bindings = new HashMap<>();
-    for (final NodeBinding.BoundVariable bound : bindingList) {
-      bindings.put(bound.getVariable().getName(), bound.getValue());
-    }
-    this.applicableCache = null;
-  }
+  private static abstract class ScopedBindingRule implements TransformerRule {
+    protected final List<TransformerRule> shadowed;
+    protected final Map<String, Node> bindings;
+    protected Node applicableCache;
 
-  @Override
-  public Node apply(final Node node) {
-    return applicableCache;
-  }
-
-  /**
-   * Get rule being shadowed by current scope.
-   */
-  public List<TransformerRule> getShadowedRules() {
-    return shadowed;
-  }
-}
-
-
-/**
- * RejectBoundVariablesRule works as a filter ignoring any variable nodes considered bound in
- * current nested variable scope.
- * <p>As described in {@link ScopedBindingRule}, rules are organized in nesting variable scopes
- * list. Therefore first ignoring any variable bound in current scope or delegating check to outer
- * scope otherwise brings requierd result.</p>
- */
-final class RejectBoundVariablesRule extends ScopedBindingRule {
-  private final NodeBinding node;
-
-  /**
-   * Create filter wrapper for existing rule.
-   * 
-   * @param previous Rule representing outer scope.
-   * @param node NodeBinding instance is to check for.
-   */
-  public RejectBoundVariablesRule(final List<TransformerRule> previous, final NodeBinding node) {
-    super(previous, node.getBindings());
-    this.node = node;
-  }
-
-  /**
-   * Get binding being ignored by this rule.
-   */
-  public NodeBinding getBinding() {
-    return node;
-  }
-
-  @Override
-  public boolean isApplicable(final Node node) {
-    if (node.getKind() != Node.Kind.VARIABLE) {
-      return false;
-    }
-
-    final NodeVariable variable = (NodeVariable) node;
-
-    // variable is bound
-    if (bindings.containsKey(variable.getName())) {
-      return false;
-    }
-
-    for (final TransformerRule rule : getShadowedRules()) {
-      if (rule.isApplicable(node)) {
-        applicableCache = rule.apply(node);
-        return true;
+    /**
+     * Create rule for nested variable scope.
+     *
+     * @param previous Rule representing outer scope.
+     * @param bindingList List of bound variables in current scope.
+     */
+    public ScopedBindingRule(
+        final List<TransformerRule> previous,
+        final List<NodeBinding.BoundVariable> bindingList) {
+      this.shadowed = previous;
+      this.bindings = new HashMap<>();
+      for (final NodeBinding.BoundVariable bound : bindingList) {
+        bindings.put(bound.getVariable().getName(), bound.getValue());
       }
+      this.applicableCache = null;
     }
-    return false;
+
+    @Override
+    public Node apply(final Node node) {
+      return applicableCache;
+    }
+
+    /**
+     * Get rule being shadowed by current scope.
+     */
+    public List<TransformerRule> getShadowedRules() {
+      return shadowed;
+    }
+  }
+
+
+  /**
+   * RejectBoundVariablesRule works as a filter ignoring any variable nodes considered bound in
+   * current nested variable scope.
+   * <p>As described in {@link ScopedBindingRule}, rules are organized in nesting variable scopes
+   * list. Therefore first ignoring any variable bound in current scope or delegating check to outer
+   * scope otherwise brings requierd result.</p>
+   */
+  private static final class RejectBoundVariablesRule extends ScopedBindingRule {
+    private final NodeBinding node;
+
+    /**
+     * Create filter wrapper for existing rule.
+     *
+     * @param previous Rule representing outer scope.
+     * @param node NodeBinding instance is to check for.
+     */
+    public RejectBoundVariablesRule(final List<TransformerRule> previous, final NodeBinding node) {
+      super(previous, node.getBindings());
+      this.node = node;
+    }
+
+    /**
+     * Get binding being ignored by this rule.
+     */
+    public NodeBinding getBinding() {
+      return node;
+    }
+
+    @Override
+    public boolean isApplicable(final Node node) {
+      if (node.getKind() != Node.Kind.VARIABLE) {
+        return false;
+      }
+
+      final NodeVariable variable = (NodeVariable) node;
+
+      // variable is bound
+      if (bindings.containsKey(variable.getName())) {
+        return false;
+      }
+
+      for (final TransformerRule rule : getShadowedRules()) {
+        if (rule.isApplicable(node)) {
+          applicableCache = rule.apply(node);
+          return true;
+        }
+      }
+      return false;
+    }
   }
 }
