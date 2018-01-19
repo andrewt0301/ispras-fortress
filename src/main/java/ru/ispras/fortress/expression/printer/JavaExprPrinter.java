@@ -113,6 +113,14 @@ public class JavaExprPrinter extends MapBasedPrinter {
     }
   }
 
+  /**
+   * Converts the specified bit vector into a Java-format textual representation.
+   *
+   * @param value {@link BitVector} object to be converted.
+   * @return Java-format textual representation of the bit vector.
+   *
+   * @throws IllegalArgumentException if the argument is {@code null}.
+   */
   public static String bitVectorToString(final BitVector value) {
     InvariantChecks.checkNotNull(value);
 
@@ -136,6 +144,16 @@ public class JavaExprPrinter extends MapBasedPrinter {
     return sb.toString();
   }
 
+  /**
+   * Converts the specified integer value into a Java-format textual representation.
+   * The exact format of the result depends on the size of the integer value.
+   * It can be printed as {@code int}, {@code long} or {@link BigInteger}.
+   *
+   * @param value {@link BigInteger} object to be converted.
+   * @return Java-format textual representation of the integer value.
+   *
+   * @throws IllegalArgumentException if the argument is {@code null}.
+   */
   public static String integerToString(final BigInteger value) {
     InvariantChecks.checkNotNull(value);
 
@@ -149,6 +167,15 @@ public class JavaExprPrinter extends MapBasedPrinter {
     }
   }
 
+  /**
+   * Converts the specified integer value into a Java-format textual representation.
+   * The result is represented by a decimal {@link BigInteger} object.
+   *
+   * @param value {@link BigInteger} object to be converted.
+   * @return Java-format textual representation of the {@link BigInteger} object.
+   *
+   * @throws IllegalArgumentException if the argument is {@code null}.
+   */
   public static String bigIntegerToString(final BigInteger value) {
     InvariantChecks.checkNotNull(value);
     return String.format("new %s(\"%d\", 10)", BigInteger.class.getSimpleName(), value);
