@@ -308,7 +308,7 @@ public class NodeTransformer implements ExprTreeVisitor {
    * Subclasses are expected to implement TransformRule.isApplicable() method that should set
    * applicableCache member to correct substitution result in case rule is applicable.</p>
    */
-  private static abstract class ScopedBindingRule implements TransformerRule {
+  private abstract static class ScopedBindingRule implements TransformerRule {
     protected final List<TransformerRule> shadowed;
     protected final Map<String, Node> bindings;
     protected Node applicableCache;
