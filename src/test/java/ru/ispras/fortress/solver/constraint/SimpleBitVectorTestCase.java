@@ -47,7 +47,7 @@ public final class SimpleBitVectorTestCase extends GenericSolverTestBase {
 
   public static class SimpleBitVector implements SampleConstraint {
     private static final int BIT_VECTOR_SIZE = 3;
-    private static final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_SIZE);
+    private static final DataType BIT_VECTOR_TYPE = DataType.bitVector(BIT_VECTOR_SIZE);
 
     @Override
     public Constraint getConstraint() {

@@ -292,7 +292,7 @@ final class ConstCastRuleSet {
       if (operand instanceof NodeValue && !operand.isType(DataTypeId.BIT_VECTOR)) {
         final int size = getBvSize((NodeValue) operand, constCastType);
         final Node castToBv =
-            TypeConversion.coerce(operand, DataType.BIT_VECTOR(size), constCastType);
+            TypeConversion.coerce(operand, DataType.bitVector(size), constCastType);
         wrongOpMap.put(operand, castToBv);
       }
     }

@@ -50,8 +50,8 @@ public class BitVectorExtractionTestCase extends GenericSolverTestBase {
   }
 
   public static final class BitVectorExtractionConstraint implements SampleConstraint {
-    private static final DataType BitVector32 = DataType.BIT_VECTOR(32);
-    private static final DataType BitVector8 = DataType.BIT_VECTOR(8);
+    private static final DataType BitVector32 = DataType.bitVector(32);
+    private static final DataType BitVector8 = DataType.bitVector(8);
 
     @Override
     public Constraint getConstraint() {
@@ -70,7 +70,7 @@ public class BitVectorExtractionTestCase extends GenericSolverTestBase {
       formulas.add(Nodes.eq(x, new NodeValue(BitVector32.valueOf("257", 10))));
 
       final Node extraction = Nodes.bvextract(7, 0, x);
-      Assert.assertEquals(DataType.BIT_VECTOR(8), extraction.getDataType());
+      Assert.assertEquals(DataType.bitVector(8), extraction.getDataType());
 
       formulas.add(Nodes.eq(y, extraction));
 

@@ -528,7 +528,7 @@ public abstract class SmtTextSolver extends SolverBase {
   private static Collection<Function> standardFunctions() {
     final Collection<Function> functions = new ArrayList<>();
 
-    final DataType bit = DataType.BIT_VECTOR(1);
+    final DataType bit = DataType.bitVector(1);
 
     final Variable xBit = new Variable("x", bit);
     final NodeOperation bv2bool =

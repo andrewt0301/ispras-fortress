@@ -35,7 +35,7 @@ enum TypeRules implements TypeRule {
   BIT_BOOLEAN {
     @Override
     public DataType getResultType(final DataType[] operandTypes, final int[] params) {
-      return DataType.BIT_VECTOR(1);
+      return DataType.bitVector(1);
     }
   },
 
@@ -151,7 +151,7 @@ enum TypeRules implements TypeRule {
       }
 
       final int n = i - j + 1;
-      return DataType.BIT_VECTOR(n);
+      return DataType.bitVector(n);
     }
   },
 
@@ -166,27 +166,27 @@ enum TypeRules implements TypeRule {
         totalSize += operandType.getSize();
       }
 
-      return DataType.BIT_VECTOR(totalSize);
+      return DataType.bitVector(totalSize);
     }
   },
 
   BVREPEAT {
     @Override
     public DataType getResultType(final DataType[] operandTypes, final int[] params) {
-      return DataType.BIT_VECTOR(operandTypes[1].getSize() * params[0]);
+      return DataType.bitVector(operandTypes[1].getSize() * params[0]);
     }
   },
 
   INT2BV {
     @Override
     public DataType getResultType(final DataType[] operandTypes, final int[] params) {
-      return DataType.BIT_VECTOR(params[0]);
+      return DataType.bitVector(params[0]);
     }
   },
 
   BVEXTEND {
     public DataType getResultType(final DataType[] operandTypes, final int[] params) {
-      return DataType.BIT_VECTOR(operandTypes[1].getSize() + params[0]);
+      return DataType.bitVector(operandTypes[1].getSize() + params[0]);
     }
   },
 

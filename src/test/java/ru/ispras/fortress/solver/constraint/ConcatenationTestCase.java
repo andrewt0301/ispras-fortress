@@ -51,9 +51,9 @@ public class ConcatenationTestCase extends GenericSolverTestBase {
 
   public static class Concatenation implements SampleConstraint {
     private static final int BIT_VECTOR_ARG_SIZE = 16;
-    private static final DataType BIT_VECTOR_ARG_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_ARG_SIZE);
+    private static final DataType BIT_VECTOR_ARG_TYPE = DataType.bitVector(BIT_VECTOR_ARG_SIZE);
     private static final int BIT_VECTOR_RES_SIZE = 32;
-    private static final DataType BIT_VECTOR_RES_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_RES_SIZE);
+    private static final DataType BIT_VECTOR_RES_TYPE = DataType.bitVector(BIT_VECTOR_RES_SIZE);
 
     private static final int HEX_RADIX = 16;
 

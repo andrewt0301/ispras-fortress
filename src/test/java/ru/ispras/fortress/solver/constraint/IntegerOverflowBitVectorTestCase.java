@@ -75,7 +75,7 @@ public class IntegerOverflowBitVectorTestCase extends GenericSolverTestBase {
 
   public static class IntegerOverflow implements SampleConstraint {
     private static final int BIT_VECTOR_LENGTH = 64;
-    private static final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_LENGTH);
+    private static final DataType BIT_VECTOR_TYPE = DataType.bitVector(BIT_VECTOR_LENGTH);
 
     private static final NodeValue INT_ZERO =
         new NodeValue(BIT_VECTOR_TYPE.valueOf("0", 10));

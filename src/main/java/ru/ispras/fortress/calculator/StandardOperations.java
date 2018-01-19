@@ -203,7 +203,7 @@ final class StandardOperations {
 
           @Override
           public boolean validTypes(final Data... operands) {
-            return operands[0].isType(DataType.BIT_VECTOR(1));
+            return operands[0].isType(DataType.bitVector(1));
           }
         });
 

@@ -93,7 +93,7 @@ public class CustomOperationsTestCase extends GenericSolverTestBase {
    * </pre></p>
    */
   private static final int BV_LENGTH = 64;
-  private static final DataType INT_T = DataType.BIT_VECTOR(BV_LENGTH);
+  private static final DataType INT_T = DataType.bitVector(BV_LENGTH);
 
   enum ECustomOperation {
       INT_ZERO, INT_BASE_SIZE, INT_SIGN_MASK, IS_VALID_POS, IS_VALID_NEG, IS_VALID_SIGNED_INT

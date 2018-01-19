@@ -80,7 +80,7 @@ public class BooleanToBitVectorCastTestCase extends GenericSolverTestBase {
 
       final NodeVariable x = new NodeVariable(builder.addVariable("x", DataType.INTEGER));
       final NodeVariable y = new NodeVariable(builder.addVariable("y", DataType.INTEGER));
-      final NodeVariable z = new NodeVariable(builder.addVariable("z", DataType.BIT_VECTOR(1)));
+      final NodeVariable z = new NodeVariable(builder.addVariable("z", DataType.bitVector(1)));
 
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);

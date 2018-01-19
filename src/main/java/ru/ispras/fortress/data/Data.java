@@ -153,7 +153,7 @@ public final class Data {
       final int size) {
     InvariantChecks.checkNotNull(value);
 
-    final DataType dt = DataType.BIT_VECTOR(size);
+    final DataType dt = DataType.bitVector(size);
     final Object v = BitVector.unmodifiable(BitVector.valueOf(value, size));
 
     return new Data(dt, v);
@@ -170,7 +170,7 @@ public final class Data {
   public static Data newBitVector(final BitVector value) {
     InvariantChecks.checkNotNull(value);
 
-    final DataType dt = DataType.BIT_VECTOR(value.getBitSize());
+    final DataType dt = DataType.bitVector(value.getBitSize());
     final Object v = BitVector.unmodifiable(value);
 
     return new Data(dt, v);
@@ -192,7 +192,7 @@ public final class Data {
       final int size) {
     InvariantChecks.checkNotNull(bitVectorStr);
 
-    final DataType dt = DataType.BIT_VECTOR(size);
+    final DataType dt = DataType.bitVector(size);
     final Object v = BitVector.unmodifiable(BitVector.valueOf(bitVectorStr, radix, size));
 
     return new Data(dt, v);
@@ -217,7 +217,7 @@ public final class Data {
    * @return A new data object.
    */
   public static Data newBitVector(final long value, final int size) {
-    final DataType dt = DataType.BIT_VECTOR(size);
+    final DataType dt = DataType.bitVector(size);
     final Object v = BitVector.unmodifiable(BitVector.valueOf(value, size));
 
     return new Data(dt, v);
@@ -233,7 +233,7 @@ public final class Data {
    */
   public static Data newArray(final DataMap map) {
     InvariantChecks.checkNotNull(map);
-    return new Data(DataType.MAP(
+    return new Data(DataType.map(
         map.getKeyType(), map.getValueType()), map.copy());
   }
 

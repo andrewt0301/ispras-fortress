@@ -54,7 +54,7 @@ public class InputParametersTestCase extends GenericSolverTestBase {
 
   public static class InputParameters implements SampleConstraint {
     private static final int BIT_VECTOR_SIZE = 16;
-    private static final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_SIZE);
+    private static final DataType BIT_VECTOR_TYPE = DataType.bitVector(BIT_VECTOR_SIZE);
 
     @Override
     public Constraint getConstraint() {

@@ -98,7 +98,7 @@ public final class NodeVariable extends Node {
    *         if the {@code size} argument is {@code <= 0}.
    */
   public static NodeVariable newBitVector(final String name, final int size) {
-    return new NodeVariable(name, DataType.BIT_VECTOR(size));
+    return new NodeVariable(name, DataType.bitVector(size));
   }
 
   /**
@@ -113,7 +113,7 @@ public final class NodeVariable extends Node {
    */
   public static NodeVariable newMap(
       final String name, final DataType keyType, final DataType valueType) {
-    return new NodeVariable(name, DataType.MAP(keyType, valueType));
+    return new NodeVariable(name, DataType.map(keyType, valueType));
   }
 
   private final Variable variable;

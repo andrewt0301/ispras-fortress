@@ -44,8 +44,8 @@ public class ConstCastTestCase extends GenericSolverTestBase {
 
     private static final DataType intType = DataType.INTEGER;
     private static final DataType boolType = DataType.BOOLEAN;
-    private static final DataType bitVector3 = DataType.BIT_VECTOR(3);
-    private static final DataType bitVector6 = DataType.BIT_VECTOR(6);
+    private static final DataType bitVector3 = DataType.bitVector(3);
+    private static final DataType bitVector6 = DataType.bitVector(6);
 
     private static final NodeValue boolTrue = NodeValue.newBoolean(true);
     private static final NodeValue int2 = NodeValue.newInteger(2);

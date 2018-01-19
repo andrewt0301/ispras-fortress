@@ -32,10 +32,10 @@ public class ReductionCustomOperationsTestCase extends GenericSolverTestBase {
   public static class ReductionCustomOperations implements SampleConstraint {
     // Data Types and Constants
     private static final int BIT_VECTOR_SIZE = 8;
-    private static final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_SIZE);
+    private static final DataType BIT_VECTOR_TYPE = DataType.bitVector(BIT_VECTOR_SIZE);
 
     private static final int BIT_BOOL_SIZE = 1;
-    private static final DataType BIT_BOOL_TYPE = DataType.BIT_VECTOR(BIT_BOOL_SIZE);
+    private static final DataType BIT_BOOL_TYPE = DataType.bitVector(BIT_BOOL_SIZE);
 
     private static final Data BIT_TRUE = Data.newBitVector(1, BIT_BOOL_SIZE);
     private static final Data BIT_FALSE = Data.newBitVector(0, BIT_BOOL_SIZE);

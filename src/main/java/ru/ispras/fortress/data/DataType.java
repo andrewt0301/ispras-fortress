@@ -66,12 +66,12 @@ public final class DataType {
    * @param size Bit vector size in bits
    * @return Bit vector type
    */
-  public static DataType BIT_VECTOR(final int size) {
+  public static DataType bitVector(final int size) {
     InvariantChecks.checkGreaterThanZero(size);
     return newDataType(DataTypeId.BIT_VECTOR, size);
   }
 
-  public static DataType MAP(
+  public static DataType map(
       final DataType keyType,
       final DataType valueType) {
     InvariantChecks.checkNotNull(keyType);

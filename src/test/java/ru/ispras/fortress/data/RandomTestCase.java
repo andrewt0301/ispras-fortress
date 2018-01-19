@@ -30,9 +30,9 @@ public class RandomTestCase {
     generateAndCheck(DataType.INTEGER, Data.newInteger(73219576));
     generateAndCheck(DataType.INTEGER, Data.newInteger(799334993));
 
-    generateAndCheck(DataType.BIT_VECTOR(16), Data.newBitVector("1000101000101111", 2, 16));
-    generateAndCheck(DataType.BIT_VECTOR(16), Data.newBitVector("0100011111011111", 2, 16));
-    generateAndCheck(DataType.BIT_VECTOR(16), Data.newBitVector("1011101111000000", 2, 16));
+    generateAndCheck(DataType.bitVector(16), Data.newBitVector("1000101000101111", 2, 16));
+    generateAndCheck(DataType.bitVector(16), Data.newBitVector("0100011111011111", 2, 16));
+    generateAndCheck(DataType.bitVector(16), Data.newBitVector("1011101111000000", 2, 16));
 
     tryToGenerateUnsupported(DataType.UNKNOWN);
     tryToGenerateUnsupported(DataType.REAL);

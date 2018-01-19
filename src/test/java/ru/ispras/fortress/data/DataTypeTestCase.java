@@ -26,7 +26,7 @@ public class DataTypeTestCase {
   @SuppressWarnings("unchecked")
   public void parseKeyValue() {
     final String strval = "((1:2)(2:3)(3:4))";
-    final DataType type = DataType.MAP(DataType.INTEGER, DataType.INTEGER);
+    final DataType type = DataType.map(DataType.INTEGER, DataType.INTEGER);
     final Data data = type.valueOf(strval, 10);
 
     Assert.assertTrue(data.getValue() instanceof Map);

@@ -43,7 +43,7 @@ import java.util.List;
  */
 public class BvugtOperation implements SampleConstraint {
   protected static final int BIT_VECTOR_SIZE = 32;
-  protected static final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_SIZE);
+  protected static final DataType BIT_VECTOR_TYPE = DataType.bitVector(BIT_VECTOR_SIZE);
 
   @Override
   public Constraint getConstraint() {

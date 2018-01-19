@@ -337,8 +337,8 @@ public class SimpleTransformTestCase {
 
   @Test
   public void equalNotEqual() {
-    final NodeVariable a = new NodeVariable("a", DataType.BIT_VECTOR(2));
-    final NodeVariable b = new NodeVariable("b", DataType.BIT_VECTOR(2));
+    final NodeVariable a = new NodeVariable("a", DataType.bitVector(2));
+    final NodeVariable b = new NodeVariable("b", DataType.bitVector(2));
     final NodeValue zero = NodeValue.newBitVector(BitVector.valueOf(0, 2));
     
     final Node expr = Nodes.and(Nodes.eq(a, zero), Nodes.not(Nodes.eq(a, b, zero)));

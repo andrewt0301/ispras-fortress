@@ -50,13 +50,13 @@ public class BitVectorLiteralTestCase2 { //extends GenericSolverTestBase {
 
     @Override
     public Iterable<Variable> getExpectedVariables() {
-      final DataMap gpr1 = new DataMap(DataType.BIT_VECTOR(32), DataType.BIT_VECTOR(32));
+      final DataMap gpr1 = new DataMap(DataType.bitVector(32), DataType.bitVector(32));
       gpr1.put(
           Data.newBitVector("00000000000000000000000000000001", 2, 32),
           Data.newBitVector("00000000000000000000000000010000", 2, 32)
       );
 
-      final DataMap gpr2 = new DataMap(DataType.BIT_VECTOR(32), DataType.BIT_VECTOR(32));
+      final DataMap gpr2 = new DataMap(DataType.bitVector(32), DataType.bitVector(32));
       gpr2.put(
           Data.newBitVector("00000000000000000000000000000000", 2, 32),
           Data.newBitVector("00000000000000000000000000000000", 2, 32)
@@ -66,7 +66,7 @@ public class BitVectorLiteralTestCase2 { //extends GenericSolverTestBase {
           Data.newBitVector("00000000000000000000000000010000", 2, 32)
       );
 
-      final DataMap gpr4 = new DataMap(DataType.BIT_VECTOR(32), DataType.BIT_VECTOR(32));
+      final DataMap gpr4 = new DataMap(DataType.bitVector(32), DataType.bitVector(32));
       gpr4.put(
           Data.newBitVector("00000000000000000000000000000000", 2, 32),
           Data.newBitVector("00000000000000000000000000000000", 2, 32)

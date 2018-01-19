@@ -58,13 +58,13 @@ public class MapToBitVectorCoerceTestCase {
 
     Assert.assertEquals(
         zeroStartBitVector,
-        TypeConversion.coerce(newArray(zeroStartMap), DataType.BIT_VECTOR(4)));
+        TypeConversion.coerce(newArray(zeroStartMap), DataType.bitVector(4)));
   }
 
   @Test
   public void oneStartMapTest() {
     /* Convert int-to-"bit vector" map (starting from 1 index) to bit vector. */
-    final DataMap oneStartMap = new DataMap(DataType.INTEGER, DataType.BIT_VECTOR(2));
+    final DataMap oneStartMap = new DataMap(DataType.INTEGER, DataType.bitVector(2));
     oneStartMap.put(INT_1, BV2_0);
     oneStartMap.put(INT_2, BV2_1);
     oneStartMap.put(INT_3, BV2_2);
@@ -72,14 +72,14 @@ public class MapToBitVectorCoerceTestCase {
 
     Assert.assertEquals(
         ONE_START_BV,
-        TypeConversion.coerce(newArray(oneStartMap), DataType.BIT_VECTOR(8)));
+        TypeConversion.coerce(newArray(oneStartMap), DataType.bitVector(8)));
   }
 
   @Test
   public void bvToBvMapTest() {
 
     /* Convert "bit vector"-to-"bit vector" map to bit vector. */
-    final DataMap bvToBvMap = new DataMap(DataType.BIT_VECTOR(2), DataType.BIT_VECTOR(2));
+    final DataMap bvToBvMap = new DataMap(DataType.bitVector(2), DataType.bitVector(2));
     bvToBvMap.put(BV2_0, BV2_0);
     bvToBvMap.put(BV2_1, BV2_1);
     bvToBvMap.put(BV2_2, BV2_2);
@@ -87,7 +87,7 @@ public class MapToBitVectorCoerceTestCase {
 
     Assert.assertEquals(
         ONE_START_BV,
-        TypeConversion.coerce(newArray(bvToBvMap), DataType.BIT_VECTOR(8)));
+        TypeConversion.coerce(newArray(bvToBvMap), DataType.bitVector(8)));
   }
 
   private static NodeValue newArray(final DataMap map) {

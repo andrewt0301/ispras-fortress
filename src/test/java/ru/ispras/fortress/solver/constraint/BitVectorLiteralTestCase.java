@@ -46,8 +46,8 @@ public class BitVectorLiteralTestCase extends GenericSolverTestBase {
   }
 
   public static final class BitVectorLiteralConstraint implements SampleConstraint {
-    private static final DataType BitVector32 = DataType.BIT_VECTOR(32);
-    private static final DataType BitVector1 = DataType.BIT_VECTOR(1);
+    private static final DataType BitVector32 = DataType.bitVector(32);
+    private static final DataType BitVector1 = DataType.bitVector(1);
 
     @Override
     public Constraint getConstraint() {

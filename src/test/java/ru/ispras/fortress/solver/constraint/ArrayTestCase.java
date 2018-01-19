@@ -49,7 +49,7 @@ public class ArrayTestCase extends GenericSolverTestBase {
   }
 
   public static final class ArrayInvariant implements SampleConstraint {
-    private static final DataType ARRAY_TYPE = DataType.MAP(DataType.INTEGER, DataType.INTEGER);
+    private static final DataType ARRAY_TYPE = DataType.map(DataType.INTEGER, DataType.INTEGER);
     private static final String ARRAY_VALUE = "((37:37))";
 
     @Override
