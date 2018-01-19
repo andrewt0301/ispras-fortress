@@ -156,11 +156,11 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
         out.println(headerLine);
       }
 
-      int i = 0;
+      int index = 0;
       for (final DataType type : arraysInUse) {
         out.printf(
             SmtStrings.DECLARE_CONST,
-            String.format(SmtStrings.DEFAULT_ARRAY, i++),
+            String.format(SmtStrings.DEFAULT_ARRAY, index++),
             SmtStrings.textForType(type));
       }
 
@@ -362,22 +362,22 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
 
   private void onValue(final Data data) {
     appendToCurrent(SmtStrings.SPACE);
-    if (data.getType().getTypeId() == DataTypeId.MAP) {
-      int i = 0;
+    if (data.isType(DataTypeId.MAP)) {
+      int index = 0;
       final String type = data.getType().toString();
 
       for (final DataType arrayType : arraysInUse) {
         if (arrayType.toString().equals(type)) {
           break;
         }
-        ++i;
+        ++index;
       }
 
-      if (i >= arraysInUse.size()) {
+      if (index >= arraysInUse.size()) {
         arraysInUse.add(data.getType());
       }
 
-      appendToCurrent(String.format(SmtStrings.textForData(data), i));
+      appendToCurrent(String.format(SmtStrings.textForData(data), index));
     } else {
       appendToCurrent(SmtStrings.textForData(data));
     }
