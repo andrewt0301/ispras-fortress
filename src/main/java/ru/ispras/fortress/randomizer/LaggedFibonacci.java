@@ -58,7 +58,7 @@ public final class LaggedFibonacci implements RandomGenerator {
     int j;
     int k;
 
-    int[] b = new int[(Integer.SIZE - 1) * (K - 1)];
+    final int[] b = new int[(Integer.SIZE - 1) * (K - 1)];
 
     Arrays.fill(state, 0);
 
