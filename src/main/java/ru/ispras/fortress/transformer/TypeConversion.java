@@ -176,8 +176,10 @@ public final class TypeConversion {
         } else {
           return Nodes.bvextract(type.getSize(), 0, node);
         }
+
+      default:
+        return null;
     }
-    return null;
   }
 
   private static String map2BitString(
@@ -189,7 +191,6 @@ public final class TypeConversion {
 
       @Override
       public int compare(final Data obj, final Data arg) {
-
         final DataTypeId keyTypeId = keyType.getTypeId();
 
         switch (keyTypeId) {
@@ -197,6 +198,7 @@ public final class TypeConversion {
             final BitVector objVector = obj.getBitVector();
             final BitVector argVector = arg.getBitVector();
             return objVector.compareTo(argVector);
+
           case LOGIC_BOOLEAN:
             final boolean objBool = obj.getBoolean();
             final boolean argBool = arg.getBoolean();
@@ -209,10 +211,12 @@ public final class TypeConversion {
             } else {
               return 0;
             }
+
           case LOGIC_INTEGER:
             final BigInteger objInt = obj.getInteger();
             final BigInteger argInt = arg.getInteger();
             return objInt.compareTo(argInt);
+
           default:
             throw new UnsupportedOperationException(
                 "Unable to convert map with key type id: " + keyTypeId);
@@ -257,8 +261,8 @@ public final class TypeConversion {
       case BIT_VECTOR: return NodeValue.newBitVector(value, type.getSize());
       case LOGIC_BOOLEAN: return NodeValue.newBoolean(!value.equals(BigInteger.ZERO));
       case LOGIC_INTEGER: return NodeValue.newInteger(value);
+      default: throw new IllegalStateException();
     }
-    throw new IllegalStateException();
   }
 
   public static BigInteger integerValue(final NodeValue value, final boolean signed) {
@@ -289,8 +293,8 @@ public final class TypeConversion {
       case BIT_VECTOR: return type.getSize();
       case LOGIC_BOOLEAN: return 1;
       case LOGIC_INTEGER: return Integer.MAX_VALUE;
+      default: return -1;
     }
-    return -1;
   }
 
   private static boolean bv2natRequired(final DataType src, final DataType dst) {
