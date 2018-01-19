@@ -130,6 +130,7 @@ public final class PowerOfTwoCustomTestCase extends GenericSolverTestBase {
   }
 
   public static class PowerOfTwoCustom implements SampleConstraint {
+    @Override
     public Constraint getConstraint() {
       final ConstraintBuilder builder = new ConstraintBuilder();
 
@@ -149,6 +150,7 @@ public final class PowerOfTwoCustomTestCase extends GenericSolverTestBase {
       return builder.build();
     }
 
+    @Override
     public Iterable<Variable> getExpectedVariables() {
       final List<Variable> result = new ArrayList<>();
 
