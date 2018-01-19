@@ -34,59 +34,59 @@ public final class ConstraintCombiner {
   /**
    * Creates a new constraint by performing logical negation on the specified constraint.
    *
-   * @param a A constraint object.
+   * @param constraint A constraint object.
    * @return A new constraint object.
    *
    * @throws IllegalArgumentException if the parameter equals {@code null};
    *         if the parameter is not a formula-based constraint (its type
    *         is not ConstraintKind.FORMULA_BASED).
    */
-  public static Constraint makeNegation(final Constraint a) {
-    formulaBasedCheck(a);
+  public static Constraint makeNegation(final Constraint constraint) {
+    formulaBasedCheck(constraint);
 
-    final ConstraintBuilder builder = new ConstraintBuilder(a.getKind());
+    final ConstraintBuilder builder = new ConstraintBuilder(constraint.getKind());
 
-    final String name = String.format(NEGATION, a.getName());
+    final String name = String.format(NEGATION, constraint.getName());
     builder.setName(name);
 
     final Formulas formulas = new Formulas();
     builder.setInnerRep(formulas);
 
-    final Node sourceExpr = ((Formulas) a.getInnerRep()).asSingleExpr();
+    final Node sourceExpr = ((Formulas) constraint.getInnerRep()).asSingleExpr();
     formulas.add(Nodes.not(sourceExpr));
 
-    builder.addVariableCopies(a.getVariables());
+    builder.addVariableCopies(constraint.getVariables());
     return builder.build();
   }
 
   /**
    * Creates a new constraint by performing logical conjunction on the specified constraints.
    *
-   * @param a A constraint object.
-   * @param b A constraint object.
+   * @param first A constraint object.
+   * @param second A constraint object.
    * @return A new constraint object.
    *
    * @throws IllegalArgumentException if any of the parameters equals {@code null};
    *         if any of the parameters is not a formula-based constraint
    *         (its type is not ConstraintKind.FORMULA_BASED).
    */
-  public static Constraint makeConjunction(final Constraint a, final Constraint b) {
-    formulaBasedCheck(a);
-    formulaBasedCheck(b);
+  public static Constraint makeConjunction(final Constraint first, final Constraint second) {
+    formulaBasedCheck(first);
+    formulaBasedCheck(second);
 
-    final ConstraintBuilder builder = new ConstraintBuilder(a.getKind());
+    final ConstraintBuilder builder = new ConstraintBuilder(first.getKind());
 
-    final String name = String.format(CONJUNCTION, a.getName(), b.getName());
+    final String name = String.format(CONJUNCTION, first.getName(), second.getName());
     builder.setName(name);
 
     final Formulas formulas = new Formulas();
     builder.setInnerRep(formulas);
 
-    formulas.addAll((Formulas) a.getInnerRep());
-    formulas.addAll((Formulas) b.getInnerRep());
+    formulas.addAll((Formulas) first.getInnerRep());
+    formulas.addAll((Formulas) second.getInnerRep());
 
-    builder.addVariableCopies(a.getVariables());
-    builder.addVariableCopies(b.getVariables());
+    builder.addVariableCopies(first.getVariables());
+    builder.addVariableCopies(second.getVariables());
 
     return builder.build();
   }
@@ -94,41 +94,41 @@ public final class ConstraintCombiner {
   /**
    * Creates a new constraint by performing logical disjunction on the specified constraints.
    *
-   * @param a A constraint object.
-   * @param b A constraint object.
+   * @param first A constraint object.
+   * @param second A constraint object.
    * @return A new constraint object.
    *
    * @throws IllegalArgumentException if any of the parameters equals {@code null};
    *         if any of the parameters is not a formula-based constraint
    *         (its type is not ConstraintKind.FORMULA_BASED).
    */
-  public static Constraint makeDisjunction(final Constraint a, final Constraint b) {
-    formulaBasedCheck(a);
-    formulaBasedCheck(b);
+  public static Constraint makeDisjunction(final Constraint first, final Constraint second) {
+    formulaBasedCheck(first);
+    formulaBasedCheck(second);
 
-    final ConstraintBuilder builder = new ConstraintBuilder(a.getKind());
+    final ConstraintBuilder builder = new ConstraintBuilder(first.getKind());
 
-    final String name = String.format(DISJUNCTION, a.getName(), b.getName());
+    final String name = String.format(DISJUNCTION, first.getName(), second.getName());
     builder.setName(name);
 
     final Formulas formulas = new Formulas();
     builder.setInnerRep(formulas);
 
-    final Node sourceExprA = ((Formulas) a.getInnerRep()).asSingleExpr();
-    final Node sourceExprB = ((Formulas) b.getInnerRep()).asSingleExpr();
+    final Node sourceExprA = ((Formulas) first.getInnerRep()).asSingleExpr();
+    final Node sourceExprB = ((Formulas) second.getInnerRep()).asSingleExpr();
     formulas.add(Nodes.or(sourceExprA, sourceExprB));
 
-    builder.addVariableCopies(a.getVariables());
-    builder.addVariableCopies(b.getVariables());
+    builder.addVariableCopies(first.getVariables());
+    builder.addVariableCopies(second.getVariables());
 
     return builder.build();
   }
 
-  private static void formulaBasedCheck(final Constraint c) {
-    InvariantChecks.checkNotNull(c);
-    if (ConstraintKind.FORMULA_BASED != c.getKind()) {
+  private static void formulaBasedCheck(final Constraint constraint) {
+    InvariantChecks.checkNotNull(constraint);
+    if (ConstraintKind.FORMULA_BASED != constraint.getKind()) {
       throw new IllegalArgumentException(String.format(
-        "The %s constraint is not formula based.", c.getName()));
+          "The %s constraint is not formula based.", constraint.getName()));
     }
   }
 }
