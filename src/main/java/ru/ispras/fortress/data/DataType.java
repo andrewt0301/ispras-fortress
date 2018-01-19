@@ -41,19 +41,19 @@ public final class DataType {
    */
   public static final int LOGIC_TYPE_SIZE = 0;
 
-  /** Predefined logic integer type. */
+  /** Predefined logic integer data type. */
   public static final DataType INTEGER = newDataType(DataTypeId.LOGIC_INTEGER);
 
-  /** Predefined logic real type. */
+  /** Predefined logic real data type. */
   public static final DataType REAL = newDataType(DataTypeId.LOGIC_REAL);
 
-  /** Predefined logic string type. */
+  /** Predefined logic string data type. */
   public static final DataType STRING = newDataType(DataTypeId.LOGIC_STRING);
 
-  /** Predefined logic boolean type. */
+  /** Predefined logic boolean data type. */
   public static final DataType BOOLEAN = newDataType(DataTypeId.LOGIC_BOOLEAN);
 
-  /** Predefined unknown type. */
+  /** Predefined unknown data type. */
   public static final DataType UNKNOWN = newDataType(DataTypeId.UNKNOWN);
 
   private final DataTypeId typeId;
@@ -61,11 +61,11 @@ public final class DataType {
   private final List<Object> parameters;
 
   /**
-   * Returns a type describing a bit vector of the specified size.
-   * For bit vectors of the same size the same instances are returned.
+   * Returns a data type describing a bit vector of the specified size.
+   * For bit vectors of the same size, the same instances are returned.
    *
    * @param size Bit vector size in bits.
-   * @return Bit vector type.
+   * @return Bit vector data type.
    */
   public static DataType bitVector(final int size) {
     InvariantChecks.checkGreaterThanZero(size);
@@ -73,12 +73,12 @@ public final class DataType {
   }
 
   /**
-   * Returns a type describing a map that uses key and values of the specified type.
-   * For maps with matching key and value types the same instances are returned.
+   * Returns a data type describing a map that uses key and values of the specified data type.
+   * For maps with matching key and value data types, the same instances are returned.
    *
    * @param keyType Key type.
    * @param valueType Value type.
-   * @return Map type.
+   * @return Map data type.
    */
   public static DataType map(
       final DataType keyType,
@@ -89,6 +89,14 @@ public final class DataType {
     return newDataType(DataTypeId.MAP, keyType, valueType);
   }
 
+  /**
+   * Returns a data type for the specified data type identifier and data size.
+   * For the same identifier and data size, the same instances are returned.
+   *
+   * @param typeId Data type identifier.
+   * @param size Data size in bits.
+   * @return Data type object.
+   */
   public static DataType newDataType(
       final DataTypeId typeId,
       final int size) {
@@ -103,9 +111,9 @@ public final class DataType {
    * Returns an instance of a data type object based on its attributes. For objects of the same type
    * (type identifier and sizes are equal), the same instance is returned.
    *
-   * @param typeId A type identifier
-   * @param parameters The list of type parameters
-   * @return A data type object
+   * @param typeId Type identifier.
+   * @param parameters List of type parameters.
+   * @return Data type object.
    */
   public static DataType newDataType(
       final DataTypeId typeId,
@@ -152,7 +160,8 @@ public final class DataType {
   }
 
   /**
-   * Returns the size of binary data in bits. Returns LOGIC_TYPE_SIZE for logic types.
+   * Returns the size of binary data in bits. Returns {@link DataType#LOGIC_TYPE_SIZE}
+   * for logic data types.
    *
    * @return Data size in bits.
    */
