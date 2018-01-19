@@ -108,7 +108,8 @@ public final class PowerOfTwoCustomTestCase extends GenericSolverTestBase {
 
   private static CalculatorEngine customCalculator() {
     final CalculatorOperation<ECustomOperation> ispot =
-        new CalculatorOperation<>(ECustomOperation.ISPOWOFTWO, ArityRange.UNARY) {
+        new CalculatorOperation<ECustomOperation>(
+            ECustomOperation.ISPOWOFTWO, ArityRange.UNARY) {
           @Override
           public Data calculate(final Data... operands) {
             final BitVector x = operands[0].getBitVector();
