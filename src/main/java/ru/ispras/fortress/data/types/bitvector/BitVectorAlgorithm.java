@@ -97,6 +97,14 @@ public final class BitVectorAlgorithm {
     };
   }
 
+  /**
+   * Fills the specified bit vector with the specified byte value.
+   *
+   * @param dest Bit vector to be filled.
+   * @param value Byte value.
+   *
+   * @throws IllegalArgumentException if the {@code dest} argument is {@code null}.
+   */
   public static void fill(final BitVector dest, final byte value) {
     InvariantChecks.checkNotNull(dest);
 
@@ -105,14 +113,33 @@ public final class BitVectorAlgorithm {
     }
   }
 
+  /**
+   * Fills the specified bit vector with the byte values produced by the specified
+   * {@link IOperation} object.
+   *
+   * @param dest Bit vector to be filled.
+   * @param op Operation object that produces byte values.
+   *
+   * @throws IllegalArgumentException if any of the arguments is {@code null}.
+   */
   public static void generate(final BitVector dest, final IOperation op) {
     InvariantChecks.checkNotNull(dest);
+    InvariantChecks.checkNotNull(op);
 
     for (int index = 0; index < dest.getByteSize(); ++index) {
       dest.setByte(index, op.run());
     }
   }
 
+  /**
+   * Copies the contents of one bit vector into another bit vector. The source is shorter
+   * than the destination, the high bytes of the destination are filled with zeros.
+   *
+   * @param src Source bit vector.
+   * @param dest Destination bit vector.
+   *
+   * @throws IllegalArgumentException if any of the arguments is {@code null}.
+   */
   public static void copy(final BitVector src, final BitVector dest) {
     InvariantChecks.checkNotNull(src);
     InvariantChecks.checkNotNull(dest);
