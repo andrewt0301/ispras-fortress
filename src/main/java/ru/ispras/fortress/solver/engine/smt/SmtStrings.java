@@ -24,7 +24,7 @@ import java.math.BigInteger;
 import java.util.EnumMap;
 import java.util.Map;
 
-public final class SmtStrings {
+final class SmtStrings {
   private SmtStrings() {}
 
   public static final String SPACE = " ";

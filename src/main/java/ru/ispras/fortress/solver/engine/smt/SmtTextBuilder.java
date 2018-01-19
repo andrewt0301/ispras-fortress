@@ -52,7 +52,7 @@ import java.util.TreeMap;
  *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-public final class SmtTextBuilder implements ExprTreeVisitor {
+final class SmtTextBuilder implements ExprTreeVisitor {
   private final List<String> header;
   private final Map<Enum<?>, SolverOperation> operations;
   private final Iterable<Variable> variables;

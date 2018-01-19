@@ -59,7 +59,7 @@ import java.util.regex.Pattern;
  *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-public abstract class SmtTextSolver extends SolverBase {
+abstract class SmtTextSolver extends SolverBase {
   private static final String TEMP_FILE = "ispras_z3_temp";
   private static final String TEMP_FILE_SUFFIX = ".smt2";
 
