@@ -25,35 +25,35 @@ import ru.ispras.fortress.transformer.Reducer;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This test constructs a constraint, solves it and checks the solution against the expected values.
+ * The constraint as described in the SMT language:
+ *
+ * <pre>
+ *     (declare-const a Int)
+ *     (declare-const b Int)
+ *     (declare-const c Int)
+ *     (declare-const d Int)
+ *     (declare-const e Int)
+ *     (declare-const f Int)
+ *
+ *     (assert (= a (+ 2 3)))
+ *     (assert (= b (- 10 6)))
+ *     (assert (= c (* 2 5)))
+ *     (assert (= d (div 12 5)))
+ *     (assert (= e (rem 10 3)))
+ *     (assert (= f (mod 10 3)))
+ *
+ *     (check-sat)
+ *     (get-value (a b c d e f))
+ * </pre>
+ * Expected output:
+ * sat ((a 5) (b 4) (c 10) (d 2) (e 1) (f 1))
+ */
 public class StandardCalculatorTestCase extends GenericSolverTestBase {
   public StandardCalculatorTestCase() {
     super(new StandardCalculator());
   }
-
-  /**
-   * The constraint as described in the SMT language:
-   *
-   * <pre>
-   *     (declare-const a Int)
-   *     (declare-const b Int)
-   *     (declare-const c Int)
-   *     (declare-const d Int)
-   *     (declare-const e Int)
-   *     (declare-const f Int)
-   *
-   *     (assert (= a (+ 2 3)))
-   *     (assert (= b (- 10 6)))
-   *     (assert (= c (* 2 5)))
-   *     (assert (= d (div 12 5)))
-   *     (assert (= e (rem 10 3)))
-   *     (assert (= f (mod 10 3)))
-   *
-   *     (check-sat)
-   *     (get-value (a b c d e f))
-   * </pre>
-   * Expected output:
-   * sat ((a 5) (b 4) (c 10) (d 2) (e 1) (f 1))
-   */
 
   public static class StandardCalculator implements SampleConstraint {
     private static final DataType intType = DataType.INTEGER;
