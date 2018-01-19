@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2017 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -37,13 +37,21 @@ public final class ConstraintUtils {
    * @param expr Expression to be used as a source for the constraint.
    * @return New formula-based constraint.
    *
-   * @throws IllegalArgumentException if the parameter equals {@code null}.
+   * @throws IllegalArgumentException if the argument is {@code null}.
    */
   public static Constraint newConstraint(final Node expr) {
     InvariantChecks.checkNotNull(expr);
     return newConstraint(Collections.singleton(expr));
   }
 
+  /**
+   * Creates a constraint from the specified collection of formula expressions.
+   *
+   * @param formulae Collection of formula expressions.
+   * @return New formula-based constraint.
+   *
+   * @throws IllegalArgumentException if the argument is {@code null}.
+   */
   public static Constraint newConstraint(final Collection<? extends Node> formulae) {
     InvariantChecks.checkNotNull(formulae);
 
@@ -66,7 +74,7 @@ public final class ConstraintUtils {
    * @param constraint Constraint to be solved.
    * @return Result of solving the constraint.
    *
-   * @throws IllegalArgumentException if the parameter equals {@code null}.
+   * @throws IllegalArgumentException if the argument is {@code null}.
    */
   public static SolverResult solve(final Constraint constraint) {
     InvariantChecks.checkNotNull(constraint);
