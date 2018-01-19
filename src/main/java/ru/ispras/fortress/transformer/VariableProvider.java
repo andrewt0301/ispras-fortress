@@ -20,10 +20,10 @@ public interface VariableProvider {
   /**
    * Substitutes one variable for another.
    *
-   * @param v Variable to be substituted.
+   * @param variable Variable to be substituted.
    * @return Variable substitution or {@code null} if no substitution is provided for this variable.
    *
    * @throws IllegalArgumentException if the argument is {@code null}.
    */
-  Variable getVariable(final Variable v);
+  Variable getVariable(final Variable variable);
 }
