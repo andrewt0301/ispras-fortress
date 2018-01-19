@@ -18,11 +18,31 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * The {@link Result} class is base class for describing results of some complex calculations.
+ * Includes status enumeration, result object and a list of error messages.
+ *
+ * @param <E> Type of the status enumeration.
+ * @param <T> Type of the result object.
+ *
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
+ */
 public class Result<E extends Enum<E>, T> {
   private final E status;
   private final T result;
   private final List<String> errors;
 
+  /**
+   * Constructs a {@link Result} object on the basis of status, object representing the result
+   * and the list of error messages.
+   *
+   * @param status Status enumeration item.
+   * @param result Result object.
+   * @param errors List of error messages.
+   *
+   * @throws IllegalArgumentException if the {@code status} or {@code errors} argument
+   *         is {@code null}.
+   */
   public Result(final E status, final T result, final List<String> errors) {
     InvariantChecks.checkNotNull(status);
     InvariantChecks.checkNotNull(errors);
