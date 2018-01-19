@@ -23,9 +23,9 @@ public interface RandomGenerator {
   /**
    * Sets the seed of the random number generator.
    * 
-   * @param s the seed to be set.
+   * @param seed the seed to be set.
    */
-  void seed(int s);
+  void seed(int seed);
 
   /**
    * Returns the next random integer number.

@@ -35,18 +35,18 @@ public final class ModifiedLaggedFibonacci implements RandomGenerator {
   /**
    * Constructs a modified additive lagged Fibonacci random number generator with the given seed.
    * 
-   * @param s the seed to be set.
+   * @param seed the seed to be set.
    */
-  public ModifiedLaggedFibonacci(final int s) {
-    first = new LaggedFibonacci(s);
-    second = new LaggedFibonacci(s + 1);
+  public ModifiedLaggedFibonacci(final int seed) {
+    first = new LaggedFibonacci(seed);
+    second = new LaggedFibonacci(seed + 1);
   }
 
   @Override
-  public void seed(final int s) {
+  public void seed(final int seed) {
     // Two consequent seeds are used.
-    first.seed(s);
-    second.seed(s + 1);
+    first.seed(seed);
+    second.seed(seed + 1);
   }
 
   @Override
