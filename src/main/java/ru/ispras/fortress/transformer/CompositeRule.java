@@ -40,6 +40,7 @@ public class CompositeRule implements TransformerRule {
     }
   }
 
+  @Override
   public boolean isApplicable(final Node node) {
     InvariantChecks.checkNotNull(node);
     final TransformerRule rule = findRule(node);
@@ -51,6 +52,7 @@ public class CompositeRule implements TransformerRule {
     return false;
   }
 
+  @Override
   public Node apply(final Node node) {
     InvariantChecks.checkNotNull(node);
     final TransformerRule rule = (nodeCache == node) ? ruleCache : findRule(node);
