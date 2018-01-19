@@ -42,7 +42,7 @@ public class BooleanToBitVectorCastTestCase extends GenericSolverTestBase {
   /**
    * This class constructs a constraint and provides expected output.
    * The following SMT-LIB code is incorrect:
-   *
+   * <pre>
    * (declare-const x Int)
    * (declare-const y Int)
    * (declare-const z (_ BitVec 1))
@@ -52,12 +52,11 @@ public class BooleanToBitVectorCastTestCase extends GenericSolverTestBase {
    * (check-sat)
    * (get-value (x y z))
    * (exit)
-   *
+   * </pre>
    * and produces an error (Z3 v 3.1):
    * (error "line 6 column 23: operator is applied to arguments of the wrong sort")
-   *
-   * The library converts this into correct one:
-   *
+   * <p>The library converts this into correct one:
+   * <pre>
    * (declare-const x Int)
    * (declare-const y Int)
    * (declare-const z (_ BitVec 1))
@@ -68,6 +67,7 @@ public class BooleanToBitVectorCastTestCase extends GenericSolverTestBase {
    * (get-value ( x y z))
    * (get-model)
    * (exit)
+   * </pre>
    */
   public static class BooleanToBitVectorCast implements SampleConstraint {
     @Override
