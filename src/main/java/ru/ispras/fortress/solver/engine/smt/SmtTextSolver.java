@@ -220,8 +220,8 @@ public abstract class SmtTextSolver extends SolverBase {
     return matcher.matches(expr);
   }
 
-  private static String getLiteral(final EsExpr expr, final int n) {
-    return expr.getItems().get(n).getLiteral();
+  private static String getLiteral(final EsExpr expr, final int index) {
+    return expr.getItems().get(index).getLiteral();
   }
 
   private static boolean isModel(final EsExpr expr) {
