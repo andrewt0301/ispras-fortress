@@ -186,11 +186,11 @@ public abstract class SmtTextSolver extends SolverBase {
     return map;
   }
 
-  private static boolean isStatus(final EsExpr e) {
-    if (!e.isAtom()) {
+  private static boolean isStatus(final EsExpr expr) {
+    if (!expr.isAtom()) {
       return false;
     }
-    final String literal = e.getLiteral();
+    final String literal = expr.getLiteral();
     return literal.equals(SmtRegExp.SAT)
         || literal.equals(SmtRegExp.UNSAT)
         || literal.equals(SmtRegExp.UNKNOWN);
@@ -215,19 +215,19 @@ public abstract class SmtTextSolver extends SolverBase {
     builder.setStatus(status);
   }
 
-  private static boolean isError(final EsExpr e) {
+  private static boolean isError(final EsExpr expr) {
     final EsExprMatcher matcher = new EsExprMatcher("(error %a)");
-    return matcher.matches(e);
+    return matcher.matches(expr);
   }
 
-  private static String getLiteral(final EsExpr e, final int n) {
-    return e.getItems().get(n).getLiteral();
+  private static String getLiteral(final EsExpr expr, final int n) {
+    return expr.getItems().get(n).getLiteral();
   }
 
-  private static boolean isModel(final EsExpr e) {
-    return e.isList()
-        && !e.isNil()
-        && getLiteral(e, 0).equals("model");
+  private static boolean isModel(final EsExpr expr) {
+    return expr.isList()
+        && !expr.isNil()
+        && getLiteral(expr, 0).equals("model");
   }
 
   private static final class Context {
@@ -279,35 +279,35 @@ public abstract class SmtTextSolver extends SolverBase {
   }
 
   private static Data parseValueExpr(
-      final EsExpr e,
+      final EsExpr expr,
       final DataType type,
       final Context ctx) {
     switch (type.getTypeId()) {
       case BIT_VECTOR:
-        if (ctx.CAST.matches(e)) {
-          return parseAtom(getLiteral(e, 1), type);
+        if (ctx.CAST.matches(expr)) {
+          return parseAtom(getLiteral(expr, 1), type);
         }
-        return parseAtom(e.getLiteral(), type);
+        return parseAtom(expr.getLiteral(), type);
 
       case MAP:
-        return parseArray(e, type, ctx);
+        return parseArray(expr, type, ctx);
     }
-    if (ctx.MINUS.matches(e)) {
-      return parseAtom("-" + getLiteral(e, 1), type);
+    if (ctx.MINUS.matches(expr)) {
+      return parseAtom("-" + getLiteral(expr, 1), type);
     }
-    return parseAtom(e.getLiteral(), type);
+    return parseAtom(expr.getLiteral(), type);
   }
 
   private static Data parseArray(
-      final EsExpr e,
+      final EsExpr expr,
       final DataType type,
       final Context ctx) {
-    if (ctx.CAST_ARRAY.matches(e)) {
-      return valueReference(getLiteral(e, 2), type, ctx);
+    if (ctx.CAST_ARRAY.matches(expr)) {
+      return valueReference(getLiteral(expr, 2), type, ctx);
     }
 
-    if (e.isAtom() && ctx.model.containsKey(e.getLiteral())) {
-      return valueReference(e.getLiteral(), type, ctx);
+    if (expr.isAtom() && ctx.model.containsKey(expr.getLiteral())) {
+      return valueReference(expr.getLiteral(), type, ctx);
     }
 
     final DataType keyType =
@@ -315,30 +315,30 @@ public abstract class SmtTextSolver extends SolverBase {
     final DataType valueType =
         (DataType) type.getAttribute(DataTypeId.Attribute.VALUE);
 
-    if (ctx.CONST_ARRAY_Z3.matches(e)) {
-      final Data constant = parseValueExpr(e.getItems().get(1), valueType, ctx);
+    if (ctx.CONST_ARRAY_Z3.matches(expr)) {
+      final Data constant = parseValueExpr(expr.getItems().get(1), valueType, ctx);
       return Data.newArray(constantArray(keyType, constant));
     }
 
-    if (ctx.CONST_ARRAY_CVC4.matches(e)) {
-      final Data constant = parseValueExpr(e.getItems().get(2), valueType, ctx);
+    if (ctx.CONST_ARRAY_CVC4.matches(expr)) {
+      final Data constant = parseValueExpr(expr.getItems().get(2), valueType, ctx);
       return Data.newArray(constantArray(keyType, constant));
     }
 
-    if (ctx.ITE.matches(e)) {
-      return Data.newArray(parseIteArray(e, type, ctx));
+    if (ctx.ITE.matches(expr)) {
+      return Data.newArray(parseIteArray(expr, type, ctx));
     }
 
-    if (ctx.STORE.matches(e)) {
-      return Data.newArray(parseStoreArray(e, type, ctx));
+    if (ctx.STORE.matches(expr)) {
+      return Data.newArray(parseStoreArray(expr, type, ctx));
     }
 
-    final Data constant = parseValueExpr(e, valueType, ctx);
+    final Data constant = parseValueExpr(expr, valueType, ctx);
     return Data.newArray(constantArray(keyType, constant));
   }
 
   private static DataMap parseIteArray(
-      EsExpr e,
+      EsExpr expr,
       final DataType type,
       final Context ctx) {
     final DataType keyType =
@@ -347,22 +347,22 @@ public abstract class SmtTextSolver extends SolverBase {
         (DataType) type.getAttribute(DataTypeId.Attribute.VALUE);
 
     final DataMap map = new DataMap(keyType, valueType);
-    while (ctx.ITE.matches(e)) {
-      final EsExpr key = e.getItems().get(1).getItems().get(2);
-      final EsExpr value = e.getItems().get(2);
+    while (ctx.ITE.matches(expr)) {
+      final EsExpr key = expr.getItems().get(1).getItems().get(2);
+      final EsExpr value = expr.getItems().get(2);
 
       map.put(parseValueExpr(key, keyType, ctx),
               parseValueExpr(value, valueType, ctx));
 
-      e = e.getItems().get(3);
+      expr = expr.getItems().get(3);
     }
-    map.setConstant(parseValueExpr(e, valueType, ctx));
+    map.setConstant(parseValueExpr(expr, valueType, ctx));
 
     return map;
   }
 
   private static DataMap parseStoreArray(
-      EsExpr e,
+      EsExpr expr,
       final DataType type,
       final Context ctx) {
     final DataType keyType =
@@ -371,16 +371,16 @@ public abstract class SmtTextSolver extends SolverBase {
         (DataType) type.getAttribute(DataTypeId.Attribute.VALUE);
 
     final ArrayList<Pair<Data, Data>> pairs = new ArrayList<>();
-    while (ctx.STORE.matches(e)) {
-      final EsExpr key = e.getItems().get(2);
-      final EsExpr value = e.getItems().get(3);
+    while (ctx.STORE.matches(expr)) {
+      final EsExpr key = expr.getItems().get(2);
+      final EsExpr value = expr.getItems().get(3);
 
       pairs.add(new Pair<>(parseValueExpr(key, keyType, ctx),
                          parseValueExpr(value, valueType, ctx)));
 
-      e = e.getItems().get(1);
+      expr = expr.getItems().get(1);
     }
-    final DataMap map = ((DataMap) parseArray(e, type, ctx).getValue()).copy();
+    final DataMap map = ((DataMap) parseArray(expr, type, ctx).getValue()).copy();
     for (final Pair<Data, Data> pair : pairs) {
       map.put(pair.first, pair.second);
     }
@@ -425,11 +425,11 @@ public abstract class SmtTextSolver extends SolverBase {
       final EsExpr model,
       final Context ctx) {
     final EsExprMatcher define = new EsExprMatcher("(define-fun %a %s %s %s)");
-    for (final EsExpr e : model.getListItems()) {
-      if (!define.matches(e)) {
+    for (final EsExpr expr : model.getListItems()) {
+      if (!define.matches(expr)) {
         continue;
       }
-      ctx.model.put(getLiteral(e, 1), e.getItems().get(4));
+      ctx.model.put(getLiteral(expr, 1), expr.getItems().get(4));
     }
 
     for (final Map.Entry<String, Variable> entry : ctx.deferred.entrySet()) {
