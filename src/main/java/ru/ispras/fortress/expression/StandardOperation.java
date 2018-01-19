@@ -351,20 +351,43 @@ public enum StandardOperation implements TypeRule {
     this.numParams = numParams;
   }
 
-  public static boolean isParametric(final Enum<?> id) {
-    return getParameterCount(id) != 0;
+  /**
+   * Checks whether the specified enumeration item represents a parametric operation.
+   *
+   * @param operationId Operation identifier.
+   * @return {@code true} is the specified enumeration item represents a parametric operation or
+   *         {@code false} otherwise.
+   */
+  public static boolean isParametric(final Enum<?> operationId) {
+    return getParameterCount(operationId) != 0;
   }
 
-  public static int getParameterCount(final Enum<?> id) {
-    if (!(id instanceof StandardOperation)) {
+  /**
+   * Returns the parameter number for the specified operation or {@code 0} if it is not parametric.
+   *
+   * @param operationId Operation identifier.
+   * @return Parameter number for the specified operation or {@code 0} if it is not parametric.
+   */
+  public static int getParameterCount(final Enum<?> operationId) {
+    if (!(operationId instanceof StandardOperation)) {
       return 0;
     }
 
-    return ((StandardOperation) id).numParams;
+    return ((StandardOperation) operationId).numParams;
   }
 
-  public static boolean isFamily(final Enum<?> id, final Family family) {
-    return id instanceof StandardOperation && ((StandardOperation) id).family.contains(family);
+  /**
+   * Checks whether the specified operation manipulates with operands belonging to
+   * the specified family.
+   *
+   * @param operationId Operation identifier.
+   * @param family Family identifier.
+   * @return {@code true} if the specified operation manipulates with operands belonging to
+   *         the specified family or {@code false} otherwise.
+   */
+  public static boolean isFamily(final Enum<?> operationId, final Family family) {
+    return operationId instanceof StandardOperation
+        && ((StandardOperation) operationId).family.contains(family);
   }
 
   /**
@@ -477,7 +500,6 @@ public enum StandardOperation implements TypeRule {
     final Collection<Enum<?>> operations = new LinkedList<>();
 
     for (int i = 0; i < StandardOperation.values().length; i++) {
-
       final StandardOperation operation = StandardOperation.values()[i];
       if (StandardOperation.isParametric(operation)) {
         operations.add(operation);
@@ -491,7 +513,6 @@ public enum StandardOperation implements TypeRule {
     final Collection<Enum<?>> operations = new LinkedList<>();
 
     for (int i = 0; i < StandardOperation.values().length; i++) {
-
       final StandardOperation operation = StandardOperation.values()[i];
       if (operation.operandTypes == operandTypesId) {
         operations.add(operation);
