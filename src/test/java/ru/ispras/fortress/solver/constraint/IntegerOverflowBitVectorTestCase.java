@@ -25,53 +25,54 @@ import ru.ispras.fortress.expression.Nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This test constructs a constraint, solves it and checks the solution against the expected values.
+ * The constraint as described in the SMT language:
+ *
+ * <pre>
+ * (define-sort        Int_t () (_ BitVec 64))
+ *
+ * (define-fun      INT_ZERO () Int_t (_ bv0 64))
+ * (define-fun INT_BASE_SIZE () Int_t (_ bv32 64))
+ * (define-fun INT_SIGN_MASK () Int_t (bvshl (bvnot INT_ZERO) INT_BASE_SIZE))
+ *
+ * (define-fun IsValidPos ((x!1 Int_t)) Bool
+ * (ite (= (bvand x!1 INT_SIGN_MASK) INT_ZERO) true false))
+ * (define-fun IsValidNeg ((x!1 Int_t)) Bool
+ * (ite (= (bvand x!1 INT_SIGN_MASK) INT_SIGN_MASK) true false))
+ * (define-fun IsValidSignedInt ((x!1 Int_t))
+ * Bool (ite (or (IsValidPos x!1) (IsValidNeg x!1)) true false))
+ *
+ * (declare-const rs Int_t)
+ * (declare-const rt Int_t)
+ *
+ * ; rt and rs must contain valid sign-extended 32-bit values (bits 63..31 equal)
+ * (assert (IsValidSignedInt rs))
+ * (assert (IsValidSignedInt rt))
+ *
+ * ; the condition for an overflow: the summation result is not a valid sign-extended 32-bit value
+ * (assert (not (IsValidSignedInt (bvadd rs rt))))
+ *
+ * ; just in case: rs and rt are not equal (to make the results more interesting)
+ * (assert (not (= rs rt)))
+ *
+ * (check-sat)
+ *
+ * (echo "Values that lead to an overflow:")
+ * (get-value (rs rt))
+ * </pre>
+ * Expected output (Values that lead to an overflow):
+ *
+ * <pre>
+ * sat ((rs #x000000009b91b193)
+ *     (rt #x000000009b91b1b3))
+ * </pre>
+ */
 public class IntegerOverflowBitVectorTestCase extends GenericSolverTestBase {
   public IntegerOverflowBitVectorTestCase() {
     super(new IntegerOverflow());
   }
 
-  /**
-   * The constraint as described in the SMT language:
-   *
-   * <pre>
-   * (define-sort        Int_t () (_ BitVec 64))
-   *
-   * (define-fun      INT_ZERO () Int_t (_ bv0 64))
-   * (define-fun INT_BASE_SIZE () Int_t (_ bv32 64))
-   * (define-fun INT_SIGN_MASK () Int_t (bvshl (bvnot INT_ZERO) INT_BASE_SIZE))
-   *
-   * (define-fun IsValidPos ((x!1 Int_t)) Bool
-   * (ite (= (bvand x!1 INT_SIGN_MASK) INT_ZERO) true false))
-   * (define-fun IsValidNeg ((x!1 Int_t)) Bool
-   * (ite (= (bvand x!1 INT_SIGN_MASK) INT_SIGN_MASK) true false))
-   * (define-fun IsValidSignedInt ((x!1 Int_t))
-   * Bool (ite (or (IsValidPos x!1) (IsValidNeg x!1)) true false))
-   *
-   * (declare-const rs Int_t)
-   * (declare-const rt Int_t)
-   *
-   * ; rt and rs must contain valid sign-extended 32-bit values (bits 63..31 equal)
-   * (assert (IsValidSignedInt rs))
-   * (assert (IsValidSignedInt rt))
-   *
-   * ; the condition for an overflow: the summation result is not a valid sign-extended 32-bit value
-   * (assert (not (IsValidSignedInt (bvadd rs rt))))
-   *
-   * ; just in case: rs and rt are not equal (to make the results more interesting)
-   * (assert (not (= rs rt)))
-   * 
-   * (check-sat)
-   *
-   * (echo "Values that lead to an overflow:")
-   * (get-value (rs rt))
-   * </pre>
-   * Expected output (Values that lead to an overflow):
-   *
-   * <pre>
-   * sat ((rs #x000000009b91b193)
-   *     (rt #x000000009b91b1b3))
-   * </pre>
-   */
   public static class IntegerOverflow implements SampleConstraint {
     private static final int BIT_VECTOR_LENGTH = 64;
     private static final DataType BIT_VECTOR_TYPE = DataType.BIT_VECTOR(BIT_VECTOR_LENGTH);
@@ -100,25 +101,25 @@ public class IntegerOverflowBitVectorTestCase extends GenericSolverTestBase {
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
 
-      formulas.add(IsValidSignedInt(rs));
-      formulas.add(IsValidSignedInt(rt));
+      formulas.add(newIsValidSignedInt(rs));
+      formulas.add(newIsValidSignedInt(rt));
 
-      formulas.add(Nodes.not(IsValidSignedInt(Nodes.bvadd(rs, rt))));
+      formulas.add(Nodes.not(newIsValidSignedInt(Nodes.bvadd(rs, rt))));
       formulas.add(Nodes.not(Nodes.eq(rs, rt)));
 
       return builder.build();
     }
 
-    private NodeOperation IsValidPos(Node arg) {
+    private NodeOperation newIsValidPos(final Node arg) {
       return Nodes.eq(Nodes.bvand(arg, INT_SIGN_MASK), INT_ZERO);
     }
 
-    private NodeOperation IsValidNeg(Node arg) {
+    private NodeOperation newIsValidNeg(final Node arg) {
       return Nodes.eq(Nodes.bvand(arg, INT_SIGN_MASK), INT_SIGN_MASK);
     }
 
-    private NodeOperation IsValidSignedInt(Node arg) {
-      return Nodes.or(IsValidPos(arg), IsValidNeg(arg));
+    private NodeOperation newIsValidSignedInt(final Node arg) {
+      return Nodes.or(newIsValidPos(arg), newIsValidNeg(arg));
     }
 
     @Override
