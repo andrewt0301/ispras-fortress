@@ -28,9 +28,9 @@ import java.util.Map;
  * collection of objects that implement specific operations. Operation objects are grouped by the
  * data type they perform operations on. That is, there may be several implementations of the same
  * operation for different data types.
- * 
+ *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
- * 
+ *
  * @param <OperationIdT> Class of the enumeration that specifies operations included in the
  *        operation group. An operation group object can hold only operations that are members of
  *        the same group and are described as elements of the same enumeration.
@@ -56,7 +56,7 @@ public final class OperationGroup<OperationIdT extends Enum<OperationIdT>>
 
   /**
    * Registers a group of operators that perform calculations on a specific data type.
-   * 
+   *
    * @param typeId Data type identifier.
    * @param operationsForType A map of operation on the specified data type. Key is the operation
    *        identifier and value is the operation implementation.
@@ -74,7 +74,7 @@ public final class OperationGroup<OperationIdT extends Enum<OperationIdT>>
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @throws IllegalArgumentException if any of the parameters equals {@code null}.
    */
   @Override
@@ -87,14 +87,12 @@ public final class OperationGroup<OperationIdT extends Enum<OperationIdT>>
     }
 
     if (operationId instanceof StandardOperation) {
-      switch ((StandardOperation) operationId) {
-        case EQ:
-        case NOTEQ:
-          return true;
+      if (operationId == StandardOperation.EQ || operationId == StandardOperation.NOTEQ) {
+        return true;
+      }
 
-        case SELECT:
-        case STORE:
-          return false;
+      if (operationId == StandardOperation.SELECT || operationId == StandardOperation.STORE) {
+        return false;
       }
     }
 
@@ -118,7 +116,7 @@ public final class OperationGroup<OperationIdT extends Enum<OperationIdT>>
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @throws IllegalArgumentException if any of the parameters equals {@code null}.
    * @throws UnsupportedOperationException if the specified operation is not supported for the
    *         provided operands.
