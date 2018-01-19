@@ -63,7 +63,7 @@ public final class Cvc4Solver extends SmtTextSolver {
             new SequenceInputStream(process.getInputStream(), process.getErrorStream())));
   }
 
-  public static Function customRem() {
+  private static Function customRem() {
     final DataType type = DataType.INTEGER;
 
     final Variable lvar = new Variable("x", type);
@@ -82,7 +82,7 @@ public final class Cvc4Solver extends SmtTextSolver {
     return new Function(StandardOperation.REM, type, rem, lvar, rvar);
   }
 
-  public static Function customPlus() {
+  private static Function customPlus() {
     final Variable var = new Variable("x", DataType.INTEGER);
     final NodeOperation plus = Nodes.add(new NodeVariable(var), NodeValue.newInteger(0));
     return new Function(StandardOperation.PLUS, var.getType(), plus, var);
