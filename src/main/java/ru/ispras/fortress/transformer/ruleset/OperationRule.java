@@ -14,9 +14,6 @@
 
 package ru.ispras.fortress.transformer.ruleset;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.expression.ExprUtils;
 import ru.ispras.fortress.expression.Node;
@@ -25,6 +22,10 @@ import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.StandardOperation;
 import ru.ispras.fortress.transformer.TransformerRule;
 import ru.ispras.fortress.util.InvariantChecks;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * OperationRule is a base class for rules applicable to single operation type.

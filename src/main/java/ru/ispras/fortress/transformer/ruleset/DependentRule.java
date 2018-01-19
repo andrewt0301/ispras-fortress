@@ -14,12 +14,13 @@
 
 package ru.ispras.fortress.transformer.ruleset;
 
-import java.util.Collection;
-import java.util.Map;
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeOperation;
 import ru.ispras.fortress.transformer.TransformerRule;
 import ru.ispras.fortress.util.InvariantChecks;
+
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * DependentRule is a base class for rules dedicated for use in set.
