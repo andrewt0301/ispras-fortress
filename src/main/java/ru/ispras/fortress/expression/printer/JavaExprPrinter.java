@@ -34,6 +34,7 @@ import java.util.Map;
  */
 public class JavaExprPrinter extends MapBasedPrinter {
   private static final Map<DataTypeId, String> FACTORY_METHODS = new EnumMap<>(DataTypeId.class);
+  private boolean isParametricOperand = false;
 
   static {
     FACTORY_METHODS.put(DataTypeId.BIT_VECTOR,    "newBitVector");
@@ -78,6 +79,7 @@ public class JavaExprPrinter extends MapBasedPrinter {
     @Override
     public void onOperandBegin(final NodeOperation expr, final Node operand, final int index) {
       final Enum<?> op = expr.getOperationId();
+      isParametricOperand = index < StandardOperation.getParameterCount(op);
       if (0 != index || !(op instanceof StandardOperation)) {
         appendText(", ");
       }
@@ -85,11 +87,16 @@ public class JavaExprPrinter extends MapBasedPrinter {
 
     @Override
     public void onOperandEnd(final NodeOperation operation, final Node operand, final int index) {
-      // Nothing
+      isParametricOperand = false;
     }
 
     @Override
     public void onValue(final NodeValue value) {
+      if (isParametricOperand && value.isType(DataTypeId.LOGIC_INTEGER)) {
+        appendText(integerToString(value.getInteger()));
+        return;
+      }
+
       appendText(NodeValue.class.getSimpleName());
       appendText(".");
 
