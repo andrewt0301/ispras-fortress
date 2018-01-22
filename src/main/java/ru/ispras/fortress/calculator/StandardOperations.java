@@ -73,7 +73,7 @@ final class StandardOperations {
         }
       });
 
-    return OperationGroup.operationMap(StandardOperation.class, operations);
+    return OperationGroup.newOperationMap(StandardOperation.class, operations);
   }
 
   private static class BitVectorOp extends StdOperation {
@@ -207,7 +207,7 @@ final class StandardOperations {
           }
         });
 
-    return OperationGroup.operationMap(StandardOperation.class, operations);
+    return OperationGroup.newOperationMap(StandardOperation.class, operations);
   }
 
   private static BitVector bvarg(final Data[] operands, final int num) {
@@ -287,7 +287,7 @@ final class StandardOperations {
         }));
     operations.addAll(ordered(Double.class));
 
-    return OperationGroup.operationMap(StandardOperation.class, operations);
+    return OperationGroup.newOperationMap(StandardOperation.class, operations);
   }
 
   public static <T extends Comparable<T>>

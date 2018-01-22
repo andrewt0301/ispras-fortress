@@ -154,7 +154,17 @@ public final class OperationGroup<OperationIdT extends Enum<OperationIdT>>
     throw new IllegalArgumentException();
   }
 
-  public static <T extends Enum<T>> Map<T, Operation<T>> operationMap(
+  /**
+   * Puts operations from the specified collection to a map where key corresponds to
+   * operation identifier and value corresponds to operation implementation.
+   *
+   * @param clazz Class describing the enumeration that defines operation identifiers.
+   * @param operations Collection of operations.
+   * @param <T> Operation identifier type.
+   *
+   * @return New operation map.
+   */
+  public static <T extends Enum<T>> Map<T, Operation<T>> newOperationMap(
       final Class<T> clazz,
       final Collection<? extends Operation<T>> operations) {
     final Map<T, Operation<T>> map = new EnumMap<>(clazz);

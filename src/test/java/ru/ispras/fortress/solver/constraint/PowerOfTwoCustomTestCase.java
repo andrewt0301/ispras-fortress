@@ -124,7 +124,7 @@ public final class PowerOfTwoCustomTestCase extends GenericSolverTestBase {
 
     group.registerOperations(
         DataTypeId.BIT_VECTOR,
-        OperationGroup.operationMap(ECustomOperation.class, operations));
+        OperationGroup.newOperationMap(ECustomOperation.class, operations));
 
     return group;
   }
