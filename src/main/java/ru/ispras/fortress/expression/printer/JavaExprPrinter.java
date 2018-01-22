@@ -100,7 +100,7 @@ public class JavaExprPrinter extends MapBasedPrinter {
       appendText("(");
 
       if (value.isType(DataTypeId.BIT_VECTOR)) {
-        appendText(bitVectorToString(value.getBitVector()));
+        appendText(bitVectorToHexText(value.getBitVector()));
       } else if (value.isType(DataTypeId.LOGIC_INTEGER)) {
         appendText(integerToString(value.getInteger()));
       } else if (value.isType(DataTypeId.LOGIC_STRING)) {
@@ -123,14 +123,15 @@ public class JavaExprPrinter extends MapBasedPrinter {
    */
   public static String bitVectorToString(final BitVector value) {
     InvariantChecks.checkNotNull(value);
+    return String.format(
+        "%s.valueOf(%s)", BitVector.class.getSimpleName(), bitVectorToHexText(value));
+  }
+
+  private static String bitVectorToHexText(final BitVector value) {
+    final StringBuilder sb = new StringBuilder();
 
     final int bitSize = value.getBitSize();
     final String hexValue = value.toHexString();
-
-    final StringBuilder sb = new StringBuilder();
-
-    sb.append(BitVector.class.getSimpleName());
-    sb.append(".valueOf(");
 
     if (bitSize <= Integer.SIZE) {
       sb.append(String.format("0x%s", hexValue));
@@ -140,7 +141,7 @@ public class JavaExprPrinter extends MapBasedPrinter {
       sb.append(String.format("\"%s\", 16", hexValue));
     }
 
-    sb.append(String.format(", %d)", bitSize));
+    sb.append(String.format(", %d", bitSize));
     return sb.toString();
   }
 
