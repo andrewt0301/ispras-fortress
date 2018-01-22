@@ -103,7 +103,7 @@ public class JavaExprPrinter extends MapBasedPrinter {
         appendText(bitVectorToString(value.getBitVector()));
       } else if (value.isType(DataTypeId.LOGIC_INTEGER)) {
         appendText(integerToString(value.getInteger()));
-      } else if (value.isType(DataTypeId.LOGIC_STRING)) { 
+      } else if (value.isType(DataTypeId.LOGIC_STRING)) {
         appendText("\"" + value.toString() + "\"");
       } else {
         appendText(value.toString());
