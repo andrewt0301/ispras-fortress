@@ -14,8 +14,8 @@
 
 package ru.ispras.fortress.expression.printer;
 
+import ru.ispras.fortress.expression.ExprUtils;
 import ru.ispras.fortress.expression.Node;
-import ru.ispras.fortress.expression.Node.Kind;
 import ru.ispras.fortress.expression.NodeOperation;
 
 import java.util.ArrayDeque;
@@ -39,7 +39,7 @@ public class TextExprPrinter extends MapBasedPrinter {
 
       boolean isMultiline = false;
       for (final Node node : expr.getOperands()) {
-        if (node.getKind() == Kind.OPERATION) {
+        if (ExprUtils.isOperation(node)) {
           isMultiline = true;
           break;
         }
