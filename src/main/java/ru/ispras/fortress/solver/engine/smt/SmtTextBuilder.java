@@ -118,36 +118,6 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
   public void saveToFile(
       final String fileName,
       final StringBuilder textBuilder) throws IOException {
-    class TextWriter {
-      private final PrintWriter fileOut;
-      private final StringBuilder textOut;
-
-      TextWriter(final String fileName, final StringBuilder textBuilder) throws IOException {
-        final FileWriter file = new FileWriter(fileName);
-        this.fileOut = new PrintWriter(file);
-        this.textOut = textBuilder;
-      }
-
-      public void printf(final String format, final Object ... args) {
-        fileOut.printf(format, args);
-        if (null != textOut) {
-          textOut.append(String.format(format, args));
-        }
-      }
-
-      public void println(final String text) {
-        fileOut.println(text);
-        if (null != textOut) {
-          textOut.append(text);
-          textOut.append(System.lineSeparator());
-        }
-      }
-
-      public void close() {
-        fileOut.close();
-      }
-    }
-
     TextWriter out = null;
     try {
       out = new TextWriter(fileName, textBuilder);
@@ -494,6 +464,36 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
 
     public List<StringBuilder> getBuilders() {
       return Collections.unmodifiableList(entries);
+    }
+  }
+
+  private final static class TextWriter {
+    private final PrintWriter fileOut;
+    private final StringBuilder textOut;
+
+    TextWriter(final String fileName, final StringBuilder textBuilder) throws IOException {
+      final FileWriter file = new FileWriter(fileName);
+      this.fileOut = new PrintWriter(file);
+      this.textOut = textBuilder;
+    }
+
+    public void printf(final String format, final Object ... args) {
+      fileOut.printf(format, args);
+      if (null != textOut) {
+        textOut.append(String.format(format, args));
+      }
+    }
+
+    public void println(final String text) {
+      fileOut.println(text);
+      if (null != textOut) {
+        textOut.append(text);
+        textOut.append(System.lineSeparator());
+      }
+    }
+
+    public void close() {
+      fileOut.close();
     }
   }
 }
