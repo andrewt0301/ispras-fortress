@@ -127,13 +127,58 @@ public final class NodeValue extends Node {
   }
 
   /**
-   * Creates a new value node based on a bit vector constructed from the specified integer value.
+   * Creates a new value node based on a bit vector of the specified size constructed from
+   * a textual representation.
    *
-   * @param value A BigInteger object that stores binary data for a bit vector.
+   * @param text Textual representation of the bit vector.
+   * @param radix Radix to be used for text parsing.
+   * @param size Size of the resulting bit vector in bits.
+   * @return New value node.
+   *
+   * @throws IllegalArgumentException if the {@code s} argument is {@code null};
+   *         if the {@code size} argument is zero or negative.
+   */
+  public static NodeValue newBitVector(final String text, final int radix, final int size) {
+    return new NodeValue(Data.newBitVector(text, radix, size));
+  }
+
+  /**
+   * Creates a new value node based on a bit vector of the specified size constructed
+   * from the specified integer value.
+   *
+   * @param value An integer value that represents binary data of the bit vector.
    * @param size The bit vector size (in bits).
    * @return New value node.
    *
-   * @throws IllegalArgumentException if the {@code value} parameter equals {@code null}.
+   * @throws IllegalArgumentException if the {@code size} argument is zero or negative.
+   */
+  public static NodeValue newBitVector(final int value, final int size) {
+    return new NodeValue(Data.newBitVector(value, size));
+  }
+
+  /**
+   * Creates a new value node based on a bit vector of the specified size constructed
+   * from the specified long value.
+   *
+   * @param value An long value that represents binary data of the bit vector.
+   * @param size The bit vector size (in bits).
+   * @return New value node.
+   *
+   * @throws IllegalArgumentException if the {@code size} argument is zero or negative.
+   */
+  public static NodeValue newBitVector(final long value, final int size) {
+    return new NodeValue(Data.newBitVector(value, size));
+  }
+
+  /**
+   * Creates a new value node based on a bit vector of the specified size constructed
+   * from the specified {@link BigInteger} value.
+   *
+   * @param value A {@link BigInteger} object that stores binary data for a bit vector.
+   * @param size The bit vector size (in bits).
+   * @return New value node.
+   *
+   * @throws IllegalArgumentException if the {@code value} argument equals {@code null}.
    */
   public static NodeValue newBitVector(final BigInteger value, final int size) {
     return new NodeValue(Data.newBitVector(value, size));
