@@ -21,6 +21,11 @@ import ru.ispras.fortress.expression.NodeValue;
 import ru.ispras.fortress.expression.NodeVariable;
 import ru.ispras.fortress.expression.StandardOperation;
 
+/**
+ * This class implements an expression printer that produces SMT code.
+ *
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
+ */
 public class SmtExprPrinter extends MapBasedPrinter {
   public SmtExprPrinter() {
     setVisitor(new Visitor());
