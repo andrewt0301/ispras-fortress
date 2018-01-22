@@ -18,6 +18,7 @@ import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.util.InvariantChecks;
+import ru.ispras.fortress.util.Value;
 
 /**
  * The {@link NodeVariable} class represents a node that refers to a variable which is specified
@@ -117,6 +118,19 @@ public final class NodeVariable extends Node {
   }
 
   private final Variable variable;
+
+  /**
+   * Constructs a node variable from its name and associated dynamic data.
+   * Used for creating context-dependent variables.
+   *
+   * @param name Variable name.
+   * @param data Dynamic value.
+   *
+   * @throws IllegalArgumentException if any of the arguments is {@code null}.
+   */
+  public NodeVariable(final String name, final Value<Data> data) {
+    this(new Variable(name, data));
+  }
 
   /**
    * Constructs a node for an uninitialized variable of the specified type.
