@@ -522,7 +522,7 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
     }
   }
 
-  private final static class TextWriter {
+  private static final class TextWriter {
     private final PrintWriter fileOut;
     private final StringBuilder textOut;
 
