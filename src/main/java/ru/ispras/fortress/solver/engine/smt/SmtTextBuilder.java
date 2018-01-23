@@ -14,8 +14,6 @@
 
 package ru.ispras.fortress.solver.engine.smt;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.DataTypeId;
@@ -38,10 +36,12 @@ import ru.ispras.fortress.solver.function.FunctionTemplate;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
