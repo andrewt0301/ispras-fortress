@@ -54,7 +54,7 @@ final class SmtStrings {
   public static final String DECLARE_CONST = "(declare-const %s %s)%n";
   public static final String DEFINE_FUN = "(define-fun %s)%n";
   public static final String CHECK_SAT = "(check-sat)";
-  public static final String GET_VALUE = "(get-value (%s%n))%n";
+  public static final String GET_VALUE = "(get-value (%s%n  ))%n";
   public static final String GET_MODEL = "(get-model)";
   public static final String EXIT = "(exit)";
 

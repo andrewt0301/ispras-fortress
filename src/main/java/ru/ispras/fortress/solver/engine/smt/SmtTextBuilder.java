@@ -14,12 +14,15 @@
 
 package ru.ispras.fortress.solver.engine.smt;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.DataTypeId;
 import ru.ispras.fortress.data.Variable;
 import ru.ispras.fortress.expression.ExprTreeVisitor;
 import ru.ispras.fortress.expression.ExprTreeWalker;
+import ru.ispras.fortress.expression.ExprUtils;
 import ru.ispras.fortress.expression.Node;
 import ru.ispras.fortress.expression.NodeBinding;
 import ru.ispras.fortress.expression.NodeOperation;
@@ -64,6 +67,10 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
   private int functionCallDepth = 0;
 
   private final List<DataType> arraysInUse = new ArrayList<DataType>();
+
+  private static final int INDENT = 2;
+  private int depth = 0;
+  private final Deque<Boolean> multiline = new ArrayDeque<>();
 
   /**
    * Creates an instance of a SMT text builder.
@@ -232,11 +239,15 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
     final StringBuilder builder = new StringBuilder();
     formulas.add(builder);
     setCurrentBuilder(builder);
+
+    depth++;
+    indent();
   }
 
   @Override
   public void onEnd() {
     setCurrentBuilder(null);
+    depth--;
   }
 
   @Override
@@ -293,10 +304,24 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
     }
 
     appendToCurrent(operationText);
+
+    boolean isMultiline = false;
+    for (final Node node : expr.getOperands()) {
+      if (ExprUtils.isOperation(node)) {
+        isMultiline = true;
+        break;
+      }
+    }
+
+    pushMultiline(isMultiline);
   }
 
   @Override
   public void onOperationEnd(final NodeOperation expr) {
+    if (popMultiline()) {
+      indent();
+    }
+
     if (expr.getOperandCount() > 0) {
       appendToCurrent(SmtStrings.BRACKET_CLOSE);
     }
@@ -312,6 +337,9 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
       final NodeOperation expr,
       final Node node,
       final int index) {
+    if (isMultiline()) {
+      indent();
+    }
   }
 
   @Override
@@ -394,6 +422,33 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
       final NodeVariable variable,
       final Node value) {
     appendToCurrent(SmtStrings.BRACKET_CLOSE);
+  }
+
+  private boolean isMultiline() {
+    return multiline.peek();
+  }
+
+  private void pushMultiline(final boolean isMultiline) {
+    if (isMultiline) {
+      depth++;
+    }
+    multiline.push(isMultiline);
+  }
+
+  private boolean popMultiline() {
+    final boolean isMultiline = multiline.peek();
+    if (isMultiline) {
+      depth--;
+    }
+    multiline.pop();
+    return isMultiline;
+  }
+
+  private void indent() {
+    appendToCurrent(System.lineSeparator());
+    for (int index = 0; index < depth * INDENT; ++index) {
+      appendToCurrent(" ");
+    }
   }
 
   private static final class FunctionDefinitionBuilders {
