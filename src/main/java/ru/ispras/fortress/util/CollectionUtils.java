@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,8 +14,6 @@
 
 package ru.ispras.fortress.util;
 
-import static ru.ispras.fortress.util.InvariantChecks.checkNotNull;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -28,7 +26,6 @@ import java.util.Set;
  * <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 public final class CollectionUtils {
-  
   private CollectionUtils() {}
 
   /**
@@ -42,8 +39,8 @@ public final class CollectionUtils {
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
   public static <E> Set<E> uniteSets(final Set<E> lhs, final Set<E> rhs) {
-    checkNotNull(lhs);
-    checkNotNull(rhs);
+    InvariantChecks.checkNotNull(lhs);
+    InvariantChecks.checkNotNull(rhs);
 
     if (lhs.isEmpty()) {
       return rhs;
@@ -70,8 +67,8 @@ public final class CollectionUtils {
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
   public static <E> Set<E> intersectSets(final Set<E> lhs, final Set<E> rhs) {
-    checkNotNull(lhs);
-    checkNotNull(rhs);
+    InvariantChecks.checkNotNull(lhs);
+    InvariantChecks.checkNotNull(rhs);
 
     if (lhs.isEmpty() || rhs.isEmpty()) {
       return Collections.emptySet();
@@ -108,8 +105,8 @@ public final class CollectionUtils {
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
   public static <E> Set<E> complementSets(final Set<E> lhs, final Set<E> rhs) {
-    checkNotNull(lhs);
-    checkNotNull(rhs);
+    InvariantChecks.checkNotNull(lhs);
+    InvariantChecks.checkNotNull(rhs);
 
     if (lhs.isEmpty() || rhs.isEmpty()) {
       return lhs;
@@ -133,8 +130,8 @@ public final class CollectionUtils {
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
   public static <T> List<T> appendToList(final List<T> lhs, final List<T> rhs) {
-    checkNotNull(lhs);
-    checkNotNull(rhs);
+    InvariantChecks.checkNotNull(lhs);
+    InvariantChecks.checkNotNull(rhs);
 
     if (rhs.isEmpty()) {
       return lhs;
@@ -160,7 +157,7 @@ public final class CollectionUtils {
    * @throws IllegalArgumentException if the {@code lhs} parameter is {@code null}.
    */
   public static <T> List<T> appendToList(final List<T> lhs, final T elem) {
-    checkNotNull(lhs);
+    InvariantChecks.checkNotNull(lhs);
 
     final List<T> result = lhs.isEmpty() ? new ArrayList<T>() : lhs;
     result.add(elem);
