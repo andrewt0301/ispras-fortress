@@ -122,8 +122,8 @@ public class SimpleTransformTestCase {
     final Node standardEquality = Transformer.standardize(booleanEquality);
     final Node standardInequality = Transformer.standardize(booleanInequality);
 
-    Assert.assertTrue(standardEquality.toString().equals(equality.toString()));
-    Assert.assertTrue(standardInequality.toString().equals(Nodes.not(equality).toString()));
+    Assert.assertEquals(standardEquality, equality);
+    Assert.assertEquals(standardInequality, Nodes.not(equality));
   }
 
   @Test
@@ -317,9 +317,9 @@ public class SimpleTransformTestCase {
 
     final NodeOperation ifLess = Nodes.ite(Nodes.less(x, y), x, y);
 
-    Assert.assertTrue(equalNodes(Transformer.standardize(Nodes.ite(Nodes.TRUE, x, y)), x));
-    Assert.assertTrue(equalNodes(Transformer.standardize(Nodes.ite(Nodes.FALSE, x, y)), y));
-    Assert.assertTrue(equalNodes(Transformer.standardize(ifLess), ifLess));
+    Assert.assertEquals(Transformer.standardize(Nodes.ite(Nodes.TRUE, x, y)), x);
+    Assert.assertEquals(Transformer.standardize(Nodes.ite(Nodes.FALSE, x, y)), y);
+    Assert.assertEquals(Transformer.standardize(ifLess), ifLess);
   }
 
   @Test
