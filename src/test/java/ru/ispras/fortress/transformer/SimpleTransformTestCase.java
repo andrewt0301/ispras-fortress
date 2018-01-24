@@ -253,7 +253,7 @@ public class SimpleTransformTestCase {
         Nodes.or(Nodes.FALSE, Nodes.or(eqxy, Nodes.FALSE), Nodes.FALSE),
         Nodes.FALSE);
 
-    Assert.assertTrue(equalNodes(Transformer.standardize(tree), eqxy));
+    Assert.assertEquals(eqxy, Transformer.standardize(tree));
   }
 
   private static boolean equalNodes(final Node lhs, final Node rhs) {
