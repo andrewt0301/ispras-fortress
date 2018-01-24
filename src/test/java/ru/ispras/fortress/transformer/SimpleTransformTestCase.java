@@ -57,11 +57,11 @@ public class SimpleTransformTestCase {
     final Node expr = Nodes.eq(a, Nodes.add(b, c));
     final Node firstExpected = Nodes.eq(a, Nodes.add(a, c));
     final Node firstPass = Transformer.substitute(expr, "b", a);
-    Assert.assertTrue(firstExpected.toString().equals(firstPass.toString()));
+    Assert.assertEquals(firstExpected, firstPass);
 
     final Node secondExpected = Nodes.eq(c, Nodes.add(c, c));
     final Node secondPass = Transformer.substitute(firstPass, "a", c);
-    Assert.assertTrue(secondExpected.toString().equals(secondPass.toString()));
+    Assert.assertEquals(secondExpected, secondPass);
   }
 
   @Test
@@ -73,12 +73,12 @@ public class SimpleTransformTestCase {
     final Node let = singleBinding(a, Nodes.add(x, y), Nodes.add(x, a));
     final Node unchanged = Transformer.substitute(let, "a", x);
 
-    Assert.assertTrue(unchanged.toString().equals(let.toString()));
+    Assert.assertEquals(unchanged, let);
 
     final Node changed = Transformer.substitute(let, "x", y);
     final Node expected = singleBinding(a, Nodes.add(y, y), Nodes.add(y, a));
 
-    Assert.assertTrue(changed.toString().equals(expected.toString()));
+    Assert.assertEquals(expected, changed);
   }
 
   @Test
@@ -91,7 +91,7 @@ public class SimpleTransformTestCase {
     final Node unrolled = Transformer.substituteBinding(let);
     final Node expected = Nodes.add(x, Nodes.add(x, y));
 
-    Assert.assertTrue(unrolled.toString().equals(expected.toString()));
+    Assert.assertEquals(expected, unrolled);
   }
 
   @Test
@@ -106,7 +106,7 @@ public class SimpleTransformTestCase {
     final Node unrolled = Transformer.substituteAllBindings(Nodes.add(y, letY));
     final Node expected = Nodes.add(y, Nodes.add(x, Nodes.add(x, Nodes.add(x, x))));
 
-    Assert.assertTrue(unrolled.toString().equals(expected.toString()));
+    Assert.assertEquals(unrolled, expected);
   }
 
   @Test
@@ -144,8 +144,8 @@ public class SimpleTransformTestCase {
     final Node expectedInequality = Nodes.and(Nodes.not(eqxy), Nodes.not(eqxz));
     final Node standardInequality = Transformer.standardize(equalsFalse);
 
-    Assert.assertTrue(standardEquality.toString().equals(expectedEquality.toString()));
-    Assert.assertTrue(standardInequality.toString().equals(expectedInequality.toString()));
+    Assert.assertEquals(expectedEquality, standardEquality);
+    Assert.assertEquals(expectedInequality, standardInequality);
   }
 
   @Test
@@ -256,8 +256,8 @@ public class SimpleTransformTestCase {
     Assert.assertTrue(equalNodes(Transformer.standardize(tree), eqxy));
   }
 
-  private static boolean equalNodes(Node lhs, Node rhs) {
-    return lhs.toString().equals(rhs.toString());
+  private static boolean equalNodes(final Node lhs, final Node rhs) {
+    return lhs.equals(rhs);
   }
 
   @Test
