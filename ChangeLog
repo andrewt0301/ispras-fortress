@@ -12,6 +12,14 @@
  (like Yices, Z3, CVC4, etc.)
 --------------------------------------------------------------------------------
 
+ 2018/02/02 Fortress 0.4.29 beta
+
+  - Pretty printing of SMT code
+  - Improvements in the Java printer
+  - New convenience methods for NodeValue.newBitVector
+  - Additional NodeVariable constructor that takes a dynamic data object
+
+--------------------------------------------------------------------------------
  2018/01/22 Fortress 0.4.28 beta
 
   - Utility class Nodes that provides shortcuts for constructing operation nodes
