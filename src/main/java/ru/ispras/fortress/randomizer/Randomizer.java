@@ -15,7 +15,6 @@
 package ru.ispras.fortress.randomizer;
 
 import ru.ispras.fortress.data.types.bitvector.BitVector;
-import ru.ispras.fortress.data.types.bitvector.BitVectorAlgorithm;
 import ru.ispras.fortress.util.BitUtils;
 import ru.ispras.fortress.util.InvariantChecks;
 
@@ -442,11 +441,8 @@ public final class Randomizer {
    * @param data the raw data storage to be randomized.
    */
   public void fill(final BitVector data) {
-    BitVectorAlgorithm.generate(data, new BitVectorAlgorithm.IOperation() {
-      @Override
-      public byte run() {
-        return nextByte();
-      }
-    });
+    for (int index = 0; index < data.getByteSize(); ++index) {
+      data.setByte(index, nextByte());
+    }
   }
 }

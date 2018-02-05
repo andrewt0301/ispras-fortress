@@ -16,7 +16,7 @@ package ru.ispras.fortress.data.types.bitvector;
 
 import ru.ispras.fortress.util.InvariantChecks;
 
-public final class BitVectorAlgorithm {
+final class BitVectorAlgorithm {
   private BitVectorAlgorithm() {}
 
   public interface IUnaryOperation {
