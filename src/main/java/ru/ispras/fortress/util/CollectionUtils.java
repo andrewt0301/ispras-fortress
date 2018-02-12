@@ -122,45 +122,76 @@ public final class CollectionUtils {
    * Appends all elements from the specified list to another list and
    * returns the updated list with the appended elements.
    *
-   * @param lhs List to which the elements will be appended.
-   * @param rhs List which contains elements to be appended.
+   * @param first List to which the elements will be appended.
+   * @param second List which contains elements to be appended.
    * @param <T> List element type.
    * @return Updated list that contains the appended elements.
    *
-   * @throws IllegalArgumentException if any of the parameters is {@code null}.
+   * @throws IllegalArgumentException if any of the arguments is {@code null}.
    */
-  public static <T> List<T> appendToList(final List<T> lhs, final List<T> rhs) {
-    InvariantChecks.checkNotNull(lhs);
-    InvariantChecks.checkNotNull(rhs);
+  public static <T> List<T> appendToList(final List<T> first, final List<T> second) {
+    InvariantChecks.checkNotNull(first);
+    InvariantChecks.checkNotNull(second);
 
-    if (rhs.isEmpty()) {
-      return lhs;
+    if (second.isEmpty()) {
+      return first;
     }
 
-    if (lhs.isEmpty()) {
-      return new ArrayList<T>(rhs);
+    if (first.isEmpty()) {
+      return new ArrayList<T>(second);
     }
 
-    lhs.addAll(rhs);
-    return lhs;
+    first.addAll(second);
+    return first;
   }
 
   /**
    * Appends the specified element to the specified list and returns
    * the updated list with the appended element.
    *
-   * @param lhs List to which the element will be appended.
-   * @param elem Element to be added.
+   * @param list List to which the element will be appended.
+   * @param element Element to be added.
    * @param <T> List element type.
    * @return Updated list that contains the appended element.
    *
-   * @throws IllegalArgumentException if the {@code lhs} parameter is {@code null}.
+   * @throws IllegalArgumentException if the {@code list} argument is {@code null}.
    */
-  public static <T> List<T> appendToList(final List<T> lhs, final T elem) {
-    InvariantChecks.checkNotNull(lhs);
+  public static <T> List<T> appendToList(final List<T> list, final T element) {
+    InvariantChecks.checkNotNull(list);
 
-    final List<T> result = lhs.isEmpty() ? new ArrayList<T>() : lhs;
-    result.add(elem);
+    final List<T> result = list.isEmpty() ? new ArrayList<T>() : list;
+    result.add(element);
+
+    return result;
+  }
+
+  /**
+   * Merges two lists two lists. Returns a new list that contains elements of both lists.
+   * If any of the lists is empty, returns the other list.
+   *
+   * @param first First list to be merged.
+   * @param second Second list to be merged.
+   * @param <T> List element type.
+   * @return Merged list.
+   *
+   * @throws IllegalArgumentException if any of the arguments is {@code null}.
+   */
+  public static <T> List<T> mergeLists(final List<T> first, final List<T> second) {
+    InvariantChecks.checkNotNull(first);
+    InvariantChecks.checkNotNull(second);
+
+    if (first.isEmpty()) {
+      return second;
+    }
+
+    if (second.isEmpty()) {
+      return first;
+    }
+
+    final List<T> result = new ArrayList<>(first.size() + second.size());
+
+    result.addAll(first);
+    result.addAll(second);
 
     return result;
   }
