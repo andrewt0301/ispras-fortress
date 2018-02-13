@@ -90,6 +90,27 @@ public final class Transformer {
     return transform(expression, Node.Kind.VARIABLE, rule);
   }
 
+  public static Node substitute(final Node expression, final NodeProvider nodeProvider) {
+    InvariantChecks.checkNotNull(expression);
+    InvariantChecks.checkNotNull(nodeProvider);
+
+    final TransformerRule rule = new TransformerRule() {
+      @Override
+      public boolean isApplicable(final Node node) {
+        return ExprUtils.isVariable(node);
+      }
+
+      @Override
+      public Node apply(final Node node) {
+        final Variable variable = ((NodeVariable) node).getVariable();
+        final Node substitution = nodeProvider.getNode(variable);
+        return null != substitution ? substitution : node;
+      }
+    };
+
+    return transform(expression, Node.Kind.VARIABLE, rule);
+  }
+
   /**
    * Apply given binding substitutions to underlying expression. Substitution applies to single
    * binding provided, ignoring additional bindings in expression. However, nested binding scope is
