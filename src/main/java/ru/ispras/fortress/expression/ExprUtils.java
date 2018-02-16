@@ -171,6 +171,25 @@ public final class ExprUtils {
   }
 
   /**
+   * Checks whether the expression is represented by one of the specified operations.
+   *
+   * @param expr Expression to be checked.
+   * @param opIds List of operation identifiers.
+   * @param <T> Operation identifier type.
+   * @return {@code true} if the expression is represented by one of the specified operations
+   *         or {@code false} otherwise.
+   *
+   * @throws IllegalArgumentException if any of the parameters is {@code null};
+   *         if the list of operation identifiers is empty.
+   */
+  public static <T extends Enum<? extends T>> boolean isOperation(
+      final Node expr,
+      final T... opIds) {
+    InvariantChecks.checkNotEmpty(opIds);
+    return isOperation(expr, Arrays.asList(opIds));
+  }
+
+  /**
    * Checks whether the specified expression is represented by a constant value.
    *
    * @param expr Expression to be checked.
