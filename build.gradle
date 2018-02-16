@@ -34,7 +34,7 @@ buildscript {
 plugins {
   id 'net.saliman.properties' version '1.4.4'
   id 'net.researchgate.release' version '2.3.5'
-//  id "org.sonarqube" version "1.0"
+  id "org.sonarqube" version "1.0"
 }
 
 apply plugin: 'os'
@@ -210,7 +210,6 @@ jacocoTestReport {
   }
 }
 
-/*
 sonarqube {
   properties {
     property "sonar.host.url", "http://forge.ispras.ru:9000"
@@ -220,7 +219,6 @@ sonarqube {
     property "sonar.jdbc.password", "sonar"
   }
 }
-*/
 
 jar {
   archiveName = projectName + '.jar'
