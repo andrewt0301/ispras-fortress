@@ -1,11 +1,11 @@
 /*
  * Copyright 2013-2018 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -21,10 +21,9 @@ import ru.ispras.fortress.util.InvariantChecks;
 /**
  * The StandardFunction enumeration describes function templates describing functions that perform
  * the job of corresponding standard operations (see {@link StandardOperation}).
- * 
- * @author Andrei Tatarnikov
+ *
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public enum StandardFunction implements FunctionTemplate {
 
   /*
@@ -58,12 +57,12 @@ public enum StandardFunction implements FunctionTemplate {
   /*
    * The items below are function templates for operations from the
    * "Bit Vector Reduction Operations" group.
-   * 
+   *
    * Operation semantics:
-   * 
+   *
    * <pre>
    * From IEEE Standard for Verilog Hardware Description Language:
-   * 
+   *
    * The unary reduction operators shall perform a bitwise operation on a single operand
    * to produce a single-bit result. For reduction and, reduction or, and reduction xor operators,
    * the first step of the operation shall apply the operator between the first bit of the operand
@@ -72,7 +71,7 @@ public enum StandardFunction implements FunctionTemplate {
    * reduction nand, reduction nor, and reduction xnor operators, the result shall be computed by
    * inverting the result of the reduction and, reduction or, and reduction xor operation,
    * respectively.
-   * 
+   *
    * See the manual for details.
    * </pre>
    */

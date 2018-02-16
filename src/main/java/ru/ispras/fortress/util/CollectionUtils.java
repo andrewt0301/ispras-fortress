@@ -82,12 +82,12 @@ public final class CollectionUtils {
 
   /**
    * Checks whether two sets are intersected (have as non-empty intersection).
-   * 
+   *
    * @param lhs First set (left hand).
    * @param rhs Second set (right hand).
    * @param <E> Set element type.
    * @return {@code true} if the sets are intersected, {@code false} otherwise.
-   * 
+   *
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
   public static <E> boolean areIntersectedSets(final Set<E> lhs, final Set<E> rhs) {

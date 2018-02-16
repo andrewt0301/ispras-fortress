@@ -210,7 +210,7 @@ public enum DataTypeId {
       return DataMap.valueOf(str, keyType, valueType);
     }
 
-    /** 
+    /**
      * {@inheritDoc} Radix for composite types like MAP is undefined.
      */
     int radix(final int size) {
@@ -300,7 +300,7 @@ public enum DataTypeId {
   };
 
   private final Class<?> valueClass;
-  private final boolean isLogic; 
+  private final boolean isLogic;
 
   /**
    * Creates a description of a data type.

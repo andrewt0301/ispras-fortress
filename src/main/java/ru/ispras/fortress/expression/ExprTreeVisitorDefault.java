@@ -124,7 +124,7 @@ public class ExprTreeVisitorDefault implements ExprTreeVisitor {
   public void onBoundVariableBegin(
       final NodeBinding node,
       final NodeVariable variable,
-      final Node value) { 
+      final Node value) {
     /* Empty */ ;
   }
 

@@ -28,21 +28,21 @@ import ru.ispras.fortress.solver.function.FunctionTemplate;
 public interface Solver {
   /**
    * Returns the name of the solver.
-   * 
+   *
    * @return Solver name.
    */
   String getName();
 
   /**
    * Returns the description of the solver.
-   * 
+   *
    * @return solver description.
    */
   String getDescription();
 
   /**
    * Check whether the specified constraint kind is supported by the solver.
-   * 
+   *
    * @param kind Constraint kind.
    * @return true if the constraint kind is supported or false otherwise.
    */
@@ -50,14 +50,14 @@ public interface Solver {
 
   /**
    * Returns true if the solver is generic and false if it is custom.
-   * 
+   *
    * @return true for generic solvers or false for custom ones.
    */
   boolean isGeneric();
 
   /**
    * Solves the specified constraint.
-   * 
+   *
    * @param constraint A constraint object.
    * @return Result of solving the constraint.
    */
@@ -88,7 +88,7 @@ public interface Solver {
   /**
    * Returns the path to the external constraint solver executable used
    * by the current solver object.
-   * 
+   *
    * @return Path
    */
   String getSolverPath();
@@ -96,7 +96,7 @@ public interface Solver {
   /**
    * Sets the path to the external constraint solver executable used
    * by the current solver object.
-   * 
+   *
    * @param value Path
    */
   void setSolverPath(String value);

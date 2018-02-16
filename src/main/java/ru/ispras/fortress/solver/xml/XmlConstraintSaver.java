@@ -1,11 +1,11 @@
 /*
  * Copyright 2012-2018 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -61,9 +61,9 @@ public final class XmlConstraintSaver {
   /**
    * Constructs an XMLConstraintSaver object that saves the specified constraint to the specified
    * XML document.
-   * 
+   *
    * @param constraint Constraint to be save.
-   * 
+   *
    * @throws IllegalArgumentException if the parameter equals {@code null};
    *         if the constraint is not formula-based (its type is not
    *         FORMULA_BASED). Currently, the possibility of saving other
@@ -83,7 +83,7 @@ public final class XmlConstraintSaver {
 
   /**
    * Saves the constraint object to an XML string.
-   * 
+   *
    * @return XML text for the constraint.
    * @throws XmlNotSavedException if failed to save the constraint to a string.
    */
@@ -102,9 +102,9 @@ public final class XmlConstraintSaver {
 
   /**
    * Saves the constraint object to an XML file.
-   * 
+   *
    * @param fileName Target XML document file name.
-   * 
+   *
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    * @throws XmlNotSavedException if failed to save the constraint to a file.
    */

@@ -1,11 +1,11 @@
 /*
  * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -46,7 +46,7 @@ public class NodeTransformer implements ExprTreeVisitor {
   /**
    * Traverse and apply substitutions to single expression tree. Resulting expression can be
    * acquired via {@link #getResult()}.
-   * 
+   *
    * @param root Root of a tree to be traversed.
    */
   public void walk(final Node root) {
@@ -57,7 +57,7 @@ public class NodeTransformer implements ExprTreeVisitor {
   /**
    * Traverse and apply substitutions to expression forest. Resulting expression can be acquired via
    * {@link #getResult()}.
-   * 
+   *
    * @param trees Collection of root nodes of trees to be traversed.
    */
   public void walk(final Collection<? extends Node> trees) {
@@ -84,7 +84,7 @@ public class NodeTransformer implements ExprTreeVisitor {
 
   /**
    * Create new transformer instance with given substitutions rules.
-   * 
+   *
    * @param rules Map of rules. See {@link #addRule addRule()} for details.
    */
   public NodeTransformer(final Map<Enum<?>, TransformerRule> rules) {
@@ -106,10 +106,10 @@ public class NodeTransformer implements ExprTreeVisitor {
    * <p>For rule to be applied to node in expression tree several conditions needs to be hold: 1)
    * either node is NodeOperation with opId operation or node is a Node subclass which kind is opId;
    * 2) rule.isApplicable() should be true for node given.</p>
-   * 
+   *
    * @param opId Target node kind identifier.
    * @param rule Rule to be added.
-   * 
+   *
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
   public void addRule(final Enum<?> opId, final TransformerRule rule) {
@@ -154,10 +154,10 @@ public class NodeTransformer implements ExprTreeVisitor {
 
   /**
    * Helper method to conditionally apply rule to node given.
-   * 
+   *
    * @param id Rule search identifier
    * @param node Node to be substituted
-   * 
+   *
    * @return Transformed expression or node itself if no applicable rule can be found.
    */
   private Node applyRule(final Enum<?> id, final Node node) {

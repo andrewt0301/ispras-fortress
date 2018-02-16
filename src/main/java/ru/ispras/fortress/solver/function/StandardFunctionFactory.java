@@ -237,14 +237,14 @@ public final class StandardFunctionFactory {
   }
 
   private static Node newBvRecursizeXor(
-      final Node source, 
-      final int size, 
+      final Node source,
+      final int size,
       final int partSize) {
     if (1 == size) {
       return source;
     }
 
-    assert 2 <= partSize : 
+    assert 2 <= partSize :
       String.format("Invalid part size: %s. Minimal part size is 2 bits.", partSize);
 
     if (2 == partSize) {

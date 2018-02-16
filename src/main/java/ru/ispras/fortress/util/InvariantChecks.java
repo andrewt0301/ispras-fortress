@@ -28,9 +28,9 @@ public final class InvariantChecks {
   /**
    * Checks the invariant "Condition is true" and throws an exception
    * if it is violated.
-   * 
+   *
    * @param condition Condition to be checked.
-   * 
+   *
    * @throws IllegalArgumentException if the invariant is violated
    *         ({@code condition} is {@code false}).
    */
@@ -84,7 +84,7 @@ public final class InvariantChecks {
 
   /**
    * Checks the invariant "Object reference is not null" and
-   * throws an exception if it is violated. 
+   * throws an exception if it is violated.
    *
    * @param objType Object reference to be checked.
    * @param <T> Object type.
@@ -129,7 +129,7 @@ public final class InvariantChecks {
 
   /**
    * Checks the invariants "Object reference is not null" and "Array is not empty"
-   * throws an exception if they are violated. 
+   * throws an exception if they are violated.
    *
    * @param array Array to be checked.
    * @param <T> Array element type.
@@ -148,9 +148,9 @@ public final class InvariantChecks {
   /**
    * Checks the invariant "Integer value is greater than {@code 0}" and
    * throws an exception if it is violated.
-   * 
+   *
    * @param num Integer value to be checked.
-   * 
+   *
    * @throws IllegalArgumentException if the invariant is violated ({@code n <= 0}).
    */
   public static void checkGreaterThanZero(final int num) {
@@ -162,7 +162,7 @@ public final class InvariantChecks {
 
   /**
    * Checks the invariant "Integer value is greater or equal {@code 0}" and
-   * throws an exception if it is violated. 
+   * throws an exception if it is violated.
    *
    * @param num Integer value to be checked.
    *

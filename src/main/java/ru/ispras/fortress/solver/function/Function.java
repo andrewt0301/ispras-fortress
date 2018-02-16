@@ -1,11 +1,11 @@
 /*
- * Copyright 2012-2014 ISP RAS (http://www.ispras.ru)
- * 
+ * Copyright 2012-2018 ISP RAS (http://www.ispras.ru)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -23,10 +23,9 @@ import ru.ispras.fortress.util.InvariantChecks;
  * The Function class describes a custom function that extends the functionality of a solver. A
  * function represents an operation described in terms of expressions that use existing solver
  * operations.
- * 
+ *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
-
 public final class Function {
   private final Enum<?> id;
   private final DataType returnType;
@@ -35,15 +34,14 @@ public final class Function {
 
   /**
    * Creates a function with a variable number of parameters.
-   * 
+   *
    * @param id The identifier of the operator the function is associated with.
    * @param returnType The function return type.
    * @param body The body of the function (underlying expression).
    * @param parameters An variable-length list of parameters.
-   * 
+   *
    * @throws IllegalArgumentException if any of the parameters is {@code null}.
    */
-
   public Function(
       final Enum<?> id,
       final DataType returnType,
@@ -62,10 +60,9 @@ public final class Function {
 
   /**
    * Returns the identifier of the operation associated with the function.
-   * 
+   *
    * @return Operation identifier for the function.
    */
-
   public Enum<?> getId() {
     return id;
   }
@@ -74,10 +71,9 @@ public final class Function {
    * Returns a unique name for the function. The name is based on the function's identifier, return
    * value type and parameter types. It helps distinguish overloaded functions that use the same
    * identifier but have different parameter type and return types.
-   * 
+   *
    * @return Unique name of the function.
    */
-
   public String getUniqueName() {
     final StringBuilder sb = new StringBuilder();
 
@@ -112,44 +108,40 @@ public final class Function {
 
   /**
    * Returns the function return type.
-   * 
+   *
    * @return The function return type.
    */
-
   public DataType getReturnType() {
     return returnType;
   }
 
   /**
    * Returns the body of the function (underlying expression).
-   * 
+   *
    * @return The syntax element describing the body of the function.
    */
-
   public Node getBody() {
     return body;
   }
 
   /**
    * Returns the parameter count.
-   * 
+   *
    * @return The number of parameters.
    */
-
   public int getParameterCount() {
     return parameters.length;
   }
 
   /**
    * Returns function parameters by their index.
-   * 
+   *
    * @param index The index of the needed parameter.
    * @return A function parameter.
-   * 
+   *
    * @throws IndexOutOfBoundsException if the parameter index is out of bounds of the parameter
    *         array.
    */
-
   public Variable getParameter(final int index) {
     InvariantChecks.checkBounds(index, parameters.length);
     return parameters[index];

@@ -115,7 +115,7 @@ public final class Predicate {
       @Override
       public Node apply(final NodeOperation in) {
         final Node[] operands = extractOperands(in);
-        return reduce(StandardOperation.OR, 
+        return reduce(StandardOperation.OR,
                       reduce(StandardOperation.BVULT, operands),
                       reduce(StandardOperation.EQ, operands));
       }
@@ -133,7 +133,7 @@ public final class Predicate {
       @Override
       public Node apply(final NodeOperation in) {
         final Node[] operands = extractOperands(in);
-        return reduce(StandardOperation.AND, 
+        return reduce(StandardOperation.AND,
                       reduce(StandardOperation.NOT, reduce(StandardOperation.BVULT, operands)),
                       reduce(StandardOperation.NOT, reduce(StandardOperation.EQ, operands)));
       }

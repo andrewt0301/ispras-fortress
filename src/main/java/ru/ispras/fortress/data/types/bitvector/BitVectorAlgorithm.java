@@ -252,7 +252,7 @@ final class BitVectorAlgorithm {
   }
 
   public static int mismatchReverse(
-      final BitVector src1, 
+      final BitVector src1,
       final BitVector src2,
       final IBinaryPredicate op) {
     InvariantChecks.checkNotNull(src1);

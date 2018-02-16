@@ -1,11 +1,11 @@
 /*
- * Copyright 2012-2015 ISP RAS (http://www.ispras.ru)
- * 
+ * Copyright 2012-2018 ISP RAS (http://www.ispras.ru)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -25,12 +25,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The Constraint class stores a description of a constraint and provides facilities to perform
- * manipulations with it. The Constraint class allows describing various constraint types. Depending
- * on the constraint type (described by the kind field), its internal representation (see the
- * representation field) can use a different class to store the information.
- * 
- * @author Andrei Tatarnikov, Sergey Smolov
+ * The {@link Constraint} class stores a description of a constraint and provides facilities to
+ * perform manipulations with it. The Constraint class allows describing various constraint types.
+ * Depending on the constraint type (described by the kind field), its internal representation
+ * (see the representation field) can use a different class to store the information.
+ *
+ * @author <a href="mailto:smolov@ispras.ru">Sergey Smolov</a>
+ * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 public final class Constraint {
   private final String name;
@@ -40,15 +41,15 @@ public final class Constraint {
   private final Object representation;
 
   /**
-   * Constructs a <code>Constraint</code> object.
-   * 
+   * Constructs a Constraint object.
+   *
    * @param name Constraint name (uniquely identifies the constraint).
    * @param kind Constraint type (gives information about its internal representation format).
    * @param description Constraint description.
    * @param variables Table of constraint variables.
    * @param representation Description of the constraint internals (internal representation) in a
    *        format that depends on the type of the constraint.
-   * 
+   *
    * @throws IllegalArgumentException if any of the parameters equals null.
    * @throws IllegalArgumentException if the internal representation class does not match the class
    *         required by the constraint type.
@@ -79,7 +80,7 @@ public final class Constraint {
 
   /**
    * Returns the name that uniquely identifies a constraint.
-   * 
+   *
    * @return Name identifier for the constraint
    */
   public String getName() {
@@ -88,7 +89,7 @@ public final class Constraint {
 
   /**
    * Returns information on the constraint type (including the format of its internals).
-   * 
+   *
    * @return Constraint type information.
    */
   public ConstraintKind getKind() {
@@ -97,7 +98,7 @@ public final class Constraint {
 
   /**
    * Returns the description of the constraint (some additional information).
-   * 
+   *
    * @return Textual description of the constraint.
    */
   public String getDescription() {
@@ -107,7 +108,7 @@ public final class Constraint {
   /**
    * Returns an object that holds internal description of the constraint. The exact type of the
    * object depends on the constraint type.
-   * 
+   *
    * @return Internal representation of the constraint.
    */
   public Object getInnerRep() {
@@ -116,10 +117,10 @@ public final class Constraint {
 
   /**
    * Assigns a value to a constraint variable (makes it an input variable).
-   * 
+   *
    * @param name The name of the variable.
    * @param value The data object that stores the variable value.
-   * 
+   *
    * @throws IllegalArgumentException if any of the parameters equals null.
    * @throws IllegalArgumentException (1) if a variable with such name is not defined; (2) if the
    *         value type does not match the type of the variable.
@@ -143,10 +144,10 @@ public final class Constraint {
 
   /**
    * Finds a constraint variable by its name. If no such variable is found, null is returned.
-   * 
+   *
    * @param name The name of the variable to be searched for.
    * @return variable Variable object or null if the variable is not defined.
-   * 
+   *
    * @throws IllegalArgumentException if the name parameter equals null.
    */
   public Variable findVariable(final String name) {
@@ -156,7 +157,7 @@ public final class Constraint {
 
   /**
    * Returns a collection of constraint variables.
-   * 
+   *
    * @return variables A collection of constraint variables.
    */
   public Collection<Variable> getVariables() {
@@ -165,7 +166,7 @@ public final class Constraint {
 
   /**
    * Returns a collection of unknown constraint variables (that have no assigned value).
-   * 
+   *
    * @return A collection of constraint variables.
    */
   public Collection<Variable> getUnknownVariables() {

@@ -1,11 +1,11 @@
 /*
  * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -27,7 +27,7 @@ import java.util.EnumMap;
 
 /**
  * This class implements an abstract map-based expression printer.
- * 
+ *
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
 public abstract class MapBasedPrinter implements ExprTreePrinter {
@@ -52,7 +52,7 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
 
     /**
      * Appends text to the string representation of the expression tree.
-     * 
+     *
      * @param text Text to be appended.
      */
     protected final void appendText(final String text) {
@@ -62,7 +62,7 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
 
     /**
      * Returns the string representation of the expression tree.
-     * 
+     *
      * @return the string representation of the expression tree.
      */
     public final String toString() {
@@ -145,7 +145,7 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
 
   /**
    * Returns operation description for the specified operation expression.
-   * 
+   *
    * @param expr Operation expression.
    * @return {@link OperationDescription} object or {@code null} if the operation
    *         is not registered.
@@ -155,8 +155,8 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
   }
 
   /**
-   * Customizes printer behavior by setting a customized visitor. 
-   * 
+   * Customizes printer behavior by setting a customized visitor.
+   *
    * @param visitor Custom visitor implementation.
    */
   protected void setVisitor(final ExprTreeVisitor visitor) {
@@ -166,7 +166,7 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
 
   /**
    * Adds a mapping between the operation identifier and the operation description.
-   * 
+   *
    * @param op the operation identifier.
    * @param prefix the operation prefix.
    * @param infix the operation infixes.
@@ -182,7 +182,7 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
 
   /**
    * Adds a mapping between the operation identifier and the operation description.
-   * 
+   *
    * @param op the operation identifier.
    * @param prefix the operation prefix.
    * @param infix the operation infixes.
@@ -200,7 +200,7 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
 
   /**
    * Adds a mapping between the operation identifier and the operation description.
-   * 
+   *
    * @param op the operation identifier.
    * @param prefix the operation prefix.
    * @param infix the operation infix.
@@ -216,7 +216,7 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
 
   /**
    * Adds a mapping between the operation identifier and the operation description.
-   * 
+   *
    * @param op the operation identifier.
    * @param sign the operation sign.
    * @param type the operation type.
@@ -233,7 +233,7 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
 
   /**
    * Adds a mapping between the operation identifier and the operation description.
-   * 
+   *
    * @param op the operation identifier.
    * @param sign the operation sign.
    * @param type the operation type.
@@ -247,7 +247,7 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
 
   /**
    * Adds a mapping between the operation identifier and the operation description.
-   * 
+   *
    * @param op the operation identifier.
    * @param sign the operation signs.
    * @param addSpaces the flag indicating whether spaces before and after the operation sign are
@@ -264,7 +264,7 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
 
   /**
    * Adds a mapping between the operation identifier and the operation description.
-   * 
+   *
    * @param op the operation identifier.
    * @param sign the operation signs.
    * @param addSpaces the flag indicating whether spaces before and after the operation sign are
@@ -279,7 +279,7 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
 
   /**
    * Adds a mapping between the operation identifier and the operation description.
-   * 
+   *
    * @param op the operation identifier.
    * @param sign the operation signs.
    * @param order the order of operands.
@@ -291,7 +291,7 @@ public abstract class MapBasedPrinter implements ExprTreePrinter {
 
   /**
    * Adds a mapping between the operation identifier and the operation description.
-   * 
+   *
    * @param op the operation identifier.
    * @param sign the operation signs.
    */

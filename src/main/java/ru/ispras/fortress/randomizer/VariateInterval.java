@@ -1,11 +1,11 @@
 /*
  * Copyright 2015-2017 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -23,9 +23,9 @@ import java.util.Map;
 /**
  * This class represents an interval {@code T}-type random variate, where {@code T} is an integer
  * type ({@code Integer}, {@code Long} or {@code BigInteger}).
- * 
- * @param <T> the type of the random variate values. 
- * 
+ *
+ * @param <T> the type of the random variate values.
+ *
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
@@ -84,7 +84,7 @@ public final class VariateInterval<T> implements Variate<T> {
 
     /**
      * Checks whether {@code lhs} is less than or equal to {@code rhs}.
-     * 
+     *
      * @param lhs the left-hand-side operand.
      * @param rhs the right-hand-side operand.
      * @return {@code true} if {@code lhs <= rhs}; {@code false} otherwise.
@@ -93,7 +93,7 @@ public final class VariateInterval<T> implements Variate<T> {
 
     /**
      * Choose a random number from the specified range.
-     * 
+     *
      * @param min the lower bound of the range.
      * @param max the upper bound of the range.
      * @return a random number from {@code [min, max]}.
@@ -111,10 +111,10 @@ public final class VariateInterval<T> implements Variate<T> {
 
   /**
    * Constructs an interval random variate.
-   * 
+   *
    * @param min the lower bound of the interval.
    * @param max the upper bound of the interval.
-   * 
+   *
    * @throws IllegalArgumentException (1) if {@code min == null} or {@code max == null};
    *         (2) if min and max have incompatible types;
    *         (3) if {@code min > max};

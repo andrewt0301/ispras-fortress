@@ -42,7 +42,7 @@ public final class NodeBinding extends Node {
 
     /**
      * Returns object representing bound variable.
-     * 
+     *
      * @return A bound variable object reference.
      */
     public NodeVariable getVariable() {
@@ -51,7 +51,7 @@ public final class NodeBinding extends Node {
 
     /**
      * Returns bound value object.
-     * 
+     *
      * @return A bound value.
      */
     public Node getValue() {
@@ -90,7 +90,7 @@ public final class NodeBinding extends Node {
    * Creates a node based on expression and list of bindings. List of bound variables considered
    * immutable therefore incurring need for copying input list. List is sorted because equality
    * comparison relies on order of bindings.
-   * 
+   *
    * @param expression Expression subtree.
    * @param bindings List of bound variables.
    */

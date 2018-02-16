@@ -1,11 +1,11 @@
 /*
  * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -22,16 +22,16 @@ import java.util.Set;
 
 /**
  * {@link Orthogonalizer} contains a set of utils dealing with disjunctive normal forms.
- * 
+ *
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
 public final class Orthogonalizer {
   private Orthogonalizer() {}
-  
+
   /**
    * Checks whether two clauses (conjuncts), <code>lhs</code> and <code>rhs</code>, are disjoint
    * (mutually exclusive, or orthogonal).
-   * 
+   *
    * @param lhs the left-hand-side clause.
    * @param rhs the right-hand-side clause.
    * @return <code>true</code> if the clauses are disjoint; <code>false</code> otherwise.
@@ -53,7 +53,7 @@ public final class Orthogonalizer {
   /**
    * Checks whether two clauses (conjuncts), <code>lhs</code> and <code>rhs</code>, are disjoint
    * (mutually exclusive, or orthogonal) w.r.t. the given set of conflicts.
-   * 
+   *
    * @param lhs the left-hand-side clause.
    * @param rhs the right-hand-side clause.
    * @param conflicts the set of conflicts.
@@ -88,7 +88,7 @@ public final class Orthogonalizer {
   /**
    * Orthogonalizes the specified DNF, i.e. constructs an equivalent DNF consisting of disjoint
    * clauses.
-   * 
+   *
    * @param form the DNF to be orthogonalized.
    * @param conflicts the set of conflicts.
    * @return the orthogonal DNF equivalent to the specified one.
@@ -131,7 +131,7 @@ public final class Orthogonalizer {
   /**
    * Orthogonalizes the specified DNF, i.e. constructs an equivalent DNF consisting of disjoint
    * clauses.
-   * 
+   *
    * @param form the DNF to be orthogonalized.
    * @return the orthogonal DNF equivalent to the specified one.
    */
@@ -141,7 +141,7 @@ public final class Orthogonalizer {
 
   /**
    * Splits one of the clauses, <code>lhs</code> or <code>rhs</code>, so as to make them disjoint.
-   * 
+   *
    * @param lhs the left-hand-side clause.
    * @param rhs the right-hand-side clause.
    * @param res the splitting result.
@@ -211,7 +211,7 @@ public final class Orthogonalizer {
 
   /**
    * Replaces the i-th clause of the list with the specified set of clauses.
-   * 
+   *
    * @param clauses the list of clauses.
    * @param branches the next-index map.
    * @param preIndex the index of the preceding clause.
@@ -260,7 +260,7 @@ public final class Orthogonalizer {
 
   /**
    * Returns the index of the successive clause.
-   * 
+   *
    * @param branches the next-index map.
    * @param index the index of the clause.
    * @return the successive clause index.
@@ -278,7 +278,7 @@ public final class Orthogonalizer {
 
   /**
    * Traverses the list of clauses and constructs the DNF.
-   * 
+   *
    * @param branches the next-index map.
    * @param clauses the list of clauses.
    * @return the DNF.

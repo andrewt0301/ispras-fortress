@@ -48,12 +48,12 @@ public final class ConstraintBuilder {
 
   /**
    * Constructs a ConstraintBuilder object using the provided constraint type.
-   * 
+   *
    * <p>Default name is a pseudo random UUID (see java.util.UUID.randomUUID()). Default description
    * is an empty string.</p>
-   * 
+   *
    * @param kind Constraint type.
-   * 
+   *
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
   public ConstraintBuilder(final ConstraintKind kind) {
@@ -69,9 +69,9 @@ public final class ConstraintBuilder {
   /**
    * Constructs a ConstraintBuilder object object using information from an existing Constraint
    * object.
-   * 
+   *
    * @param constraint An existing constraint.
-   * 
+   *
    * @throws IllegalArgumentException if the parameter is {@code null}.
    */
   public ConstraintBuilder(final Constraint constraint) {
@@ -96,9 +96,9 @@ public final class ConstraintBuilder {
 
   /**
    * Sets the name of the constraint to be created.
-   * 
+   *
    * @param name Constraint name.
-   * 
+   *
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
   public void setName(final String name) {
@@ -108,9 +108,9 @@ public final class ConstraintBuilder {
 
   /**
    * Sets the description of the constraint to be created.
-   * 
+   *
    * @param description Constraint description.
-   * 
+   *
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
   public void setDescription(final String description) {
@@ -120,9 +120,9 @@ public final class ConstraintBuilder {
 
   /**
    * Sets the type of the constraint to be created.
-   * 
+   *
    * @param kind Constraint type.
-   * 
+   *
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
   public void setKind(final ConstraintKind kind) {
@@ -132,9 +132,9 @@ public final class ConstraintBuilder {
 
   /**
    * Sets the internal representation of the constraint to be created.
-   * 
+   *
    * @param value Internal representation of the constraint.
-   * 
+   *
    * @throws IllegalArgumentException if the parameter equals {@code null}.
    */
   public void setInnerRep(final Object value) {
@@ -145,9 +145,9 @@ public final class ConstraintBuilder {
   /**
    * Adds variables in the specified collection to the constraint to be created. Variables are added
    * directly (no copies are created).
-   * 
+   *
    * @param variables A collection of variables.
-   * 
+   *
    * @throws IllegalArgumentException if the parameter is {@code null};
    *         if the specified variable name has already been use to define
    *         a variable that has different type or value (an illegal attempt
@@ -163,9 +163,9 @@ public final class ConstraintBuilder {
 
   /**
    * Adds copies of variables in the specified collection to the constraint to be created.
-   * 
+   *
    * @param variables A collection of variables.
-   * 
+   *
    * @throws IllegalArgumentException if the parameter is {@code null}; if the specified variable
    *         name has already been use to define a variable that has different type or value
    *         (an illegal attempt to redefine the variable). See the internal addVariable method.
@@ -181,11 +181,11 @@ public final class ConstraintBuilder {
   /**
    * Creates a variable that has the specified name and type, adds it to the constraint to be
    * created and returns a reference to it.
-   * 
+   *
    * @param name Variable name.
    * @param type Variable type.
    * @return A reference to the created variable.
-   * 
+   *
    * @throws IllegalArgumentException if any of the parameters is {@code null};
    *         if the specified variable name has already been use to define
    *         a variable that has different type or value (an illegal attempt to
@@ -201,11 +201,11 @@ public final class ConstraintBuilder {
   /**
    * Creates a variable that has the specified name and type, adds it to the constraint to be
    * created and returns a reference to it.
-   * 
+   *
    * @param name Variable name.
    * @param data Data object that specifies the type and the value of the variable.
    * @return A reference to the created variable.
-   * 
+   *
    * @throws IllegalArgumentException if any of the parameters equals {@code null};
    *         if the specified variable name has already been use to define
    *         a variable that has different type or value (an illegal attempt to redefine the
@@ -224,10 +224,10 @@ public final class ConstraintBuilder {
    * value is present in the variable table) the new variable is ignored and the method returns a
    * reference to an existing one. If the existing variable has a different type or value, it is
    * considered as an illegal attempt to redefine the variable and an exception is thrown.
-   * 
+   *
    * @param variable Variable object.
    * @return A referent to the variable in the variable table.
-   * 
+   *
    * @throws IllegalArgumentException if the parameter equals {@code null};
    *         if the specified variable name has already been use to define
    *         a variable that has different type or value (an illegal attempt to redefine the
@@ -253,9 +253,9 @@ public final class ConstraintBuilder {
 
   /**
    * Builds the Constraint object basing on the specified attributes and returns it.
-   * 
+   *
    * @return A new constraint.
-   * 
+   *
    * @throws IllegalArgumentException see the invariants
    *         of the {@link Constraint} class constructor.
    */

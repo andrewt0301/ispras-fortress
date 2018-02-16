@@ -1,11 +1,11 @@
 /*
  * Copyright 2013-2018 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -23,9 +23,9 @@ import java.util.List;
 /**
  * This class represents a biased {@code T}-type random variate (a discrete probability
  * distribution).
- * 
- * @param <T> the type of the random variate values. 
- * 
+ *
+ * @param <T> the type of the random variate values.
+ *
  * @author <a href="mailto:kamkin@ispras.ru">Alexander Kamkin</a>
  */
 public final class VariateBiased<T> implements Variate<T> {
@@ -41,10 +41,10 @@ public final class VariateBiased<T> implements Variate<T> {
 
   /**
    * Constructs a biased random variate.
-   * 
+   *
    * @param values the value area of the random variate.
    * @param biases the random biases of the values.
-   * 
+   *
    * @throws IllegalArgumentException if {@code values == null} or {@code biases == null};
    *         if the {@code values} and {@code biases} arrays have different sizes
    *         or they are empty or the {@code biases} array contains negative numbers.
@@ -74,10 +74,10 @@ public final class VariateBiased<T> implements Variate<T> {
 
   /**
    * Constructs a biased random variate.
-   * 
+   *
    * @param values the value area of the random variate.
    * @param biases the random biases of the values.
-   * 
+   *
    * @throws IllegalArgumentException if {@code values == null} or {@code biases == null};
    *         if the {@code values} and {@code biases} arrays have different sizes
    *         or they are empty or the {@code biases} array contains negative numbers.
@@ -108,7 +108,7 @@ public final class VariateBiased<T> implements Variate<T> {
    * Finds an index {@code index} from {@code [low, high]} such that
    * {@code array[index-1] <= value && value < array[index]}.
    * {@code array[-1]} is assumed to be zero.
-   * 
+   *
    * @param array the ordered array of integer values.
    * @param low the lower bound of the array indices.
    * @param high the upper bound of the array indices.

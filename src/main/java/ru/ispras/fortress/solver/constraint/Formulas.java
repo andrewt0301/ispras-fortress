@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * The {@link Formulas} class serves as a container for formula expressions (assertions) that
  * specify the invariants for a taken constraint.
- * 
+ *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 public final class Formulas {

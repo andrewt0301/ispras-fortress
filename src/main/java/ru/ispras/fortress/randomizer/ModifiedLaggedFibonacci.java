@@ -34,7 +34,7 @@ public final class ModifiedLaggedFibonacci implements RandomGenerator {
 
   /**
    * Constructs a modified additive lagged Fibonacci random number generator with the given seed.
-   * 
+   *
    * @param seed the seed to be set.
    */
   public ModifiedLaggedFibonacci(final int seed) {

@@ -38,7 +38,7 @@ import ru.ispras.fortress.util.InvariantChecks;
  *
  * Mapped view:
  *
- * Bits: 
+ * Bits:
  * 15   10  8 7       0
  * ___________________
  * |      |  |        |
