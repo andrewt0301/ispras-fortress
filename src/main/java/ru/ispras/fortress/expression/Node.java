@@ -134,6 +134,26 @@ public abstract class Node {
   }
 
   /**
+   * Checks whether the expression has one of the specified types
+   * (types are compared on the {@link DataTypeId} level).
+   *
+   * @param  typeIds List of type identifiers ({@link DataTypeId} objects) the expression type
+   *         is to be compared to.
+   * @return {@code true} if the expression type matches one of the type identifiers specified
+   *         by the {@code typeIds} argument or {@code false} otherwise.
+   * @throws IllegalArgumentException if the type identifier collection is empty.
+   */
+  public final boolean isType(final DataTypeId... typeIds) {
+    InvariantChecks.checkNotEmpty(typeIds);
+    for (final DataTypeId typeId: typeIds) {
+      if (isType(typeId)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
    * Checks whether the stored value has the specified type
    * (types are compared on the {@link DataType} level).
    *
@@ -143,6 +163,26 @@ public abstract class Node {
    */
   public final boolean isType(final DataType type) {
     return getDataType().equals(type);
+  }
+
+  /**
+   * Checks whether the expression has one of the specified types
+   * (types are compared on the {@link DataType} level).
+   *
+   * @param  types List of types ({@link DataType} objects) the expression type
+   *         is to be compared to.
+   * @return {@code true} if the expression type matches one of the types specified by
+   *         the {@code types} argument or {@code false} otherwise.
+   * @throws IllegalArgumentException if the type collection is empty.
+   */
+  public final boolean isType(final DataType... types) {
+    InvariantChecks.checkNotEmpty(types);
+    for (final DataType type: types) {
+      if (isType(type)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
