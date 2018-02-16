@@ -1,11 +1,11 @@
 /*
  * Copyright 2013-2014 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -17,17 +17,18 @@ package ru.ispras.fortress.calculator;
 import static ru.ispras.fortress.util.InvariantChecks.checkGreaterThanZero;
 
 /**
- * The ArityRange class is used to specify a possible arity of an operator (unary, binary, etc.). It
- * is possible for an operator to be unary and binary at the same time or to have an unlimited
- * number of operands. The Range class allows specifying a range for the allowed number of operands.
- * 
+ * The {@link ArityRange} class is used to specify a possible arity of an operator (unary, binary,
+ * etc.). It is possible for an operator to be unary and binary at the same time or to have an
+ * unlimited number of operands. The Range class allows specifying a range for the allowed number
+ * of operands.
+ *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 public final class ArityRange {
   /**
    * The Bound enumeration contains constants for specifying most common bounds for the range of
    * allowed operand numbers.
-   * 
+   *
    * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
    */
   public static enum Bound {
@@ -51,7 +52,7 @@ public final class ArityRange {
 
     /**
      * Returns the number that corresponds to the given bound constant.
-     * 
+     *
      * @return Numeric value for the bound.
      */
     public int value() {
@@ -82,7 +83,7 @@ public final class ArityRange {
 
   /**
    * Creates a range basing on the specified bounds.
-   * 
+   *
    * @param min Lower bound.
    * @param max Upper bound.
    */
@@ -92,10 +93,10 @@ public final class ArityRange {
 
   /**
    * Creates a range basing on the specified boundary values.
-   * 
+   *
    * @param min Lower boundary value.
    * @param max Upper boundary value.
-   * 
+   *
    * @throws IllegalArgumentException if the range is specified incorrectly.
    */
   public ArityRange(final int min, final int max) {
@@ -111,7 +112,7 @@ public final class ArityRange {
 
   /**
    * Checks whether the specified value falls within the range of allowed values.
-   * 
+   *
    * @param value Number of operands.
    * @return {@code true} if value is in the range or {@code false} otherwise.
    */

@@ -56,7 +56,7 @@ public final class Data {
 
   /**
    * Creates a data object of the INTEGER type from an integer value.
-   * 
+   *
    * @param value An integer value.
    * @return New data object.
    */
@@ -72,7 +72,7 @@ public final class Data {
    * @return New data object.
    *
    * @throws IllegalArgumentException if the {@code text} parameter equals {@code null}.
-   * @throws NumberFormatException if failed to parse the string. 
+   * @throws NumberFormatException if failed to parse the string.
    */
   public static Data newInteger(final String text, final int radix) {
     InvariantChecks.checkNotNull(text);
@@ -396,7 +396,7 @@ public final class Data {
   /**
    * Returns a BitVector value stored in the data object. Applicable to data objects
    * of type {@link DataTypeId#BIT_VECTOR}.
-   * 
+   *
    * @return Stored value represented by a {@link BitVector}.
    * @throws IllegalStateException if the stored data is not convertible to {@link BitVector}.
    */
@@ -420,7 +420,7 @@ public final class Data {
   /**
    * Returns a Double value stored in the data object. Applicable to data objects
    * of type {@link DataTypeId#LOGIC_REAL}.
-   * 
+   *
    * @return Stored value represented by a Double.
    * @throws IllegalStateException if the stored data is not convertible to {@code Double}.
    */

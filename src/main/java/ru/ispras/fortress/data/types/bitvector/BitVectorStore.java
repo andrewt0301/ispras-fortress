@@ -1,11 +1,11 @@
 /*
  * Copyright 2012-2018 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -17,18 +17,18 @@ package ru.ispras.fortress.data.types.bitvector;
 import ru.ispras.fortress.util.InvariantChecks;
 
 /**
- * The BitVectorStore class represents a data array that stores binary data of a bit vector. Data
- * can be accessed by bytes. If the number of bits is not multiple of 8 (number of bits in a byte)
- * the highest byte is truncated (its highest bits are excluded).
- * 
+ * The {@link BitVectorStore} class represents a data array that stores binary data of a bit vector.
+ * Data can be accessed by bytes. If the number of bits is not multiple of 8 (number of bits in
+ * a byte) the highest byte is truncated (its highest bits are excluded).
+ *
  * <pre>
  * Example:
- * 
+ *
  * Data representation for a 29-bit long data array. The highest 3 bits are "cut off" by a bit mask.
- * 
+ *
  * Byte:
  * 4        3        2        1        0
- * 
+ *
  * Bit:
  * 32  29!  24       16       8        0
  * _____________________________________
@@ -36,12 +36,12 @@ import ru.ispras.fortress.util.InvariantChecks;
  * |%%%!    |        |        |        |
  * |%%%!    |        |        |        |
  * |___!____|________|________|________|
- * 
+ *
  * Bit size:       29
  * Byte size:      4
  * High byte mask: 00011111 (binary)
  * </pre>
- * 
+ *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 final class BitVectorStore extends BitVector {
@@ -50,7 +50,7 @@ final class BitVectorStore extends BitVector {
 
   /**
    * Allocates a bit vector.
-   * 
+   *
    * @param bitSize Data size in bits.
    */
   public BitVectorStore(final int bitSize) {
@@ -64,7 +64,7 @@ final class BitVectorStore extends BitVector {
 
   /**
    * Creates a copy of existing an bit vector.
-   * 
+   *
    * @param src An existing bit vector to be copied.
    */
   public BitVectorStore(final BitVector src) {
@@ -78,7 +78,7 @@ final class BitVectorStore extends BitVector {
 
   /**
    * Constructs a bit vector from an array of bytes.
-   * 
+   *
    * @param data Array of bytes.
    * @param bitSize Data size in bits.
    */

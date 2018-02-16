@@ -48,7 +48,7 @@ public final class Random {
 
     /**
      * Sets a new seed of the random data generation engine.
-     * 
+     *
      * @param seed The seed to be set.
      */
     void setSeed(int seed);
@@ -59,7 +59,7 @@ public final class Random {
      * @param typeId Data type identifier.
      * @param size Data type size (in bits).
      * @return A random data.
-     * 
+     *
      * @throws UnsupportedOperationException if random data generation is not supported by the given
      *         data type.
      */

@@ -226,11 +226,11 @@ public final class NodeValue extends Node {
   }
 
   /**
-   * Changes the data value associated with the node. 
+   * Changes the data value associated with the node.
    *
    * @param data New data value to be associated with the node.
    *
-   * @throws IllegalArgumentException if the argument is {@code null}. 
+   * @throws IllegalArgumentException if the argument is {@code null}.
    */
   public void setData(final Data data) {
     InvariantChecks.checkNotNull(data);
@@ -274,7 +274,7 @@ public final class NodeValue extends Node {
     final NodeValue other = (NodeValue) obj;
     return data.equals(other.data);
   }
-  
+
   @Override
   public String toString() {
     return data.getValue().toString();

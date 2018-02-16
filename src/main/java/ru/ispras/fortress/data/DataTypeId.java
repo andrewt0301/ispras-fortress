@@ -1,11 +1,11 @@
 /*
  * Copyright 2012-2018 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -203,7 +203,6 @@ public enum DataTypeId {
   /**
    * A mapping type. Represents mappings from values of one type to another.
    */
-
   MAP(DataMap.class, true) {
     Object valueOf(final String str, final int radix, final List<Object> params) {
       final DataType keyType = (DataType) params.get(0);
@@ -305,7 +304,7 @@ public enum DataTypeId {
 
   /**
    * Creates a description of a data type.
-   * 
+   *
    * @param valueClass The type of the object used to store the data (internal representation).
    * @param isLogic Specifies whether the type is logical which means that it is purely
    *        mathematical and is not associated with data types implemented in real hardware.
@@ -317,7 +316,7 @@ public enum DataTypeId {
 
   /**
    * Returns information on the type used to store the data (internal representation).
-   * 
+   *
    * @return Value type.
    */
   Class<?> getValueClass() {
@@ -327,7 +326,7 @@ public enum DataTypeId {
   /**
    * Checks whether the specified type is logical which means that it is purely
    * mathematical and is not associated with data types implemented in real hardware.
-   * 
+   *
    * @return {@code true} if the type is logic or {@code false} otherwise.
    */
 
@@ -338,7 +337,7 @@ public enum DataTypeId {
   /**
    * Creates a value of the given type (described by the valueClass type) basing on its textual
    * representation.
-   * 
+   *
    * @param str Textual representation of the value.
    * @param radix Radix to be used for conversion.
    * @param size Data size in bits.
@@ -358,7 +357,7 @@ public enum DataTypeId {
 
   /**
    * Returns radix to be used to convert data of this type to a string or vice versa.
-   * 
+   *
    * @param size Data size in bits (needed where applicable).
    * @return Radix value.
    */
