@@ -17,8 +17,8 @@ package ru.ispras.fortress.expression;
 import ru.ispras.fortress.util.InvariantChecks;
 
 /**
- * The {@code ExprTreeVisitorDefault} abstract class provides a default implementation for the
- * {@code ExprTreeVisitor} interface. This implementation does not perform any actions and does
+ * The {@link ExprTreeVisitorDefault} abstract class provides a default implementation for the
+ * {@link ExprTreeVisitor} interface. This implementation does not perform any actions and does
  * not collect any data. It stores the visitor status, which is by default set to {@code Status.OK}
  * and is accessible via the {@code getStatus} and {@code setStatus} methods. All other methods
  * defined by the {@code ExprTreeVisitor} interface and overridden by the class are empty. The
@@ -45,7 +45,7 @@ public class ExprTreeVisitorDefault implements ExprTreeVisitor {
 
   /**
    * Sets the current visitor status.
-   * 
+   *
    * @param status New visitor status.
    * @throws IllegalArgumentException if the parameter is {@code null}.
    */

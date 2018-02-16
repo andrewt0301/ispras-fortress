@@ -1,11 +1,11 @@
 /*
  * Copyright 2013-2018 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -23,7 +23,7 @@ import ru.ispras.fortress.util.TreeVisitor.Status;
  * The {@code ExprTreeWalker} class provides methods that traverse an expression tree
  * and apply a visitor to its nodes. The protocol used for traversal is explained
  * {@linkplain TreeVisitor here}.
- * 
+ *
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 public final class ExprTreeWalker {
@@ -31,9 +31,9 @@ public final class ExprTreeWalker {
 
   /**
    * Constructs an ExprTreeWalker object.
-   * 
+   *
    * @param visitor Visitor to be applied to tree nodes.
-   * 
+   *
    * @throws IllegalArgumentException if the visitor parameter is null.
    */
   public ExprTreeWalker(final ExprTreeVisitor visitor) {
@@ -43,7 +43,7 @@ public final class ExprTreeWalker {
 
   /**
    * Checks whether the current status of the visitor equals the specified status.
-   * 
+   *
    * @param status Status to be checked for equality with the current status of the visitor.
    * @return {@code true} if the visitor status equals the specified status, or
    *         {@code false} otherwise.
@@ -56,9 +56,9 @@ public final class ExprTreeWalker {
    * Visits a sequence of expression trees. Each node in the sequence is considered a root of an
    * expression tree and the visitor is notified about it by calls to the onRootBegin and onRootEnd
    * methods.
-   * 
+   *
    * @param trees A sequence of expression trees to be visited.
-   * 
+   *
    * @throws IllegalArgumentException if the parameter equals null; if any of
    *         the child nodes of the expression nodes in the sequence has a unknown type.
    */
@@ -75,9 +75,9 @@ public final class ExprTreeWalker {
   /**
    * Visits the specified expression node. The visited node is considered a root of an expression
    * tree and the visitor is notified about it by calls to the onRootBegin and onRootEnd methods.
-   * 
+   *
    * @param tree Expression tree to be visited.
-   * 
+   *
    * @throws IllegalArgumentException if the parameter equals null;
    *         if any of the expression tree nodes has a unknown type.
    */
@@ -101,9 +101,9 @@ public final class ExprTreeWalker {
 
   /**
    * Visits the specified node.
-   * 
+   *
    * @param node Node to be visited.
-   * 
+   *
    * @throws IllegalArgumentException if the parameter equals null;
    *         if the node or any of its child nodes has a unknown type.
    */
