@@ -11,7 +11,14 @@
  supports constraint solving using built-in solvers as well as external ones
  (like Yices, Z3, CVC4, etc.)
 --------------------------------------------------------------------------------
+ 2018/02/16 Fortress 0.4.30 beta
 
+  - New utility methods ExprUtils.isOperation, Node.isType,
+    and CollectionUtils.mergeLists
+  - New method Transformer.substitute(Node, NodeProvider) that facilitates
+    node substitution
+
+--------------------------------------------------------------------------------
  2018/02/02 Fortress 0.4.29 beta
 
   - Pretty printing of SMT code
