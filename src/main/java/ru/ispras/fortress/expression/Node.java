@@ -145,7 +145,7 @@ public abstract class Node {
    */
   public final boolean isType(final DataTypeId... typeIds) {
     InvariantChecks.checkNotEmpty(typeIds);
-    for (final DataTypeId typeId: typeIds) {
+    for (final DataTypeId typeId : typeIds) {
       if (isType(typeId)) {
         return true;
       }
@@ -177,7 +177,7 @@ public abstract class Node {
    */
   public final boolean isType(final DataType... types) {
     InvariantChecks.checkNotEmpty(types);
-    for (final DataType type: types) {
+    for (final DataType type : types) {
       if (isType(type)) {
         return true;
       }
