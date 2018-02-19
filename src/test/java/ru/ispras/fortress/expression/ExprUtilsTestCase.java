@@ -307,5 +307,25 @@ public final class ExprUtilsTestCase {
             StandardOperation.AND,
             StandardOperation.MUL
         ));
+
+    Assert.assertTrue(
+        ExprUtils.isOperation(
+            node,
+            new StandardOperation[] {
+                StandardOperation.SUB,
+                StandardOperation.AND,
+                StandardOperation.ADD
+            }
+        ));
+
+    Assert.assertFalse(
+        ExprUtils.isOperation(
+            node,
+            new StandardOperation[] {
+                StandardOperation.SUB,
+                StandardOperation.AND,
+                StandardOperation.MUL
+            }
+        ));
   }
 }
