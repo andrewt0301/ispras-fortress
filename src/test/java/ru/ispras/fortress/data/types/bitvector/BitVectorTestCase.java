@@ -169,17 +169,17 @@ public class BitVectorTestCase {
 
     /*
      * final RawData rd31 = new RawDataStore(27);
-     * 
+     *
      * checkRawData( rd31, 0 );
-     * 
+     *
      * final RawData rd32 = new Int(Long.valueOf(SAMPLE_35BIT, 2), 35).getRawData();
-     * 
+     *
      * checkRawData( rd32, SAMPLE_35BIT );
-     * 
+     *
      * rd31.assign(rd32);
-     * 
+     *
      * checkRawData( rd31, "010"+"10101010"+"10101010"+"10101010" );
-     * 
+     *
      * checkRawData( rd32, SAMPLE_35BIT );
      */
   }
@@ -427,11 +427,11 @@ public class BitVectorTestCase {
 
     /*
      * rdm31.reset();
-     * 
+     *
      * checkRawData( rd31, "10110101010101010101000000000000010" );
-     * 
+     *
      * checkRawData( rd32, "11111111111" );
-     * 
+     *
      * checkRawData( rdm31, 0 );
      */
 
@@ -525,7 +525,7 @@ public class BitVectorTestCase {
 
     TestUtils.checkBitVector(BitVector.valueOf(-1, 16), "1111111111111111");
     Assert.assertEquals(0xFFFF, BitVector.valueOf(-1, 16).intValue());
-    
+
     // Size > 32 (36)
 
     TestUtils.checkBitVector(BitVector.valueOf(0,  36), "000000000000000000000000000000000000");
@@ -649,7 +649,7 @@ public class BitVectorTestCase {
   @Test
   public void toByteArrayTests() {
     final byte[] byte_array = new byte[] {1, 2, 3, 4};
-    
+
     final BitVector bv = BitVector.valueOf(byte_array, 32);
     System.out.println(bv.toHexString());
 

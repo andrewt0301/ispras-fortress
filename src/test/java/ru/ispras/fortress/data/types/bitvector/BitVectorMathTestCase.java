@@ -1,11 +1,11 @@
 /*
  * Copyright 2014-2018 ISP RAS (http://www.ispras.ru)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under the License
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
@@ -375,8 +375,8 @@ public class BitVectorMathTestCase {
     checkBitVector(BitVectorMath.ashr(BitVector.valueOf("1111"), -2), "1111");
     checkBitVector(BitVectorMath.ashr(BitVector.valueOf("1111"), -3), "1111");
     checkBitVector(BitVectorMath.ashr(BitVector.valueOf("1111"), -1), "1111");
-    
-    
+
+
     checkBitVector(BitVectorMath.ashr(BitVector.valueOf("01111"), 2), "00011");
     checkBitVector(BitVectorMath.ashr(BitVector.valueOf("10111111111111"), 2), "11101111111111");
     checkBitVector(BitVectorMath.ashr(BitVector.valueOf("00101111111111"), 2), "00001011111111");
@@ -511,7 +511,7 @@ public class BitVectorMathTestCase {
     checkBitVector(
         BitVectorMath.ule(BitVector.valueOf(0xFFFFFFFFFFFFFFFEL, 64),
         BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64)), BitVector.TRUE);
-    
+
     checkBitVector(
         BitVectorMath.ule(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64),
         BitVector.valueOf(0xFFFFFFFFFFFFFFFEL, 64)), BitVector.FALSE);
@@ -530,7 +530,7 @@ public class BitVectorMathTestCase {
     checkBitVector(
         BitVectorMath.ult(BitVector.newEmpty(16), BitVector.newEmpty(16)),
         BitVector.FALSE);
-    
+
     checkBitVector(
         BitVectorMath.ult(BitVector.valueOf(-1, 16), BitVector.valueOf(0, 16)),
         BitVector.FALSE);
@@ -542,7 +542,7 @@ public class BitVectorMathTestCase {
     checkBitVector(
         BitVectorMath.ult(BitVector.valueOf(0xF98A, 16), BitVector.valueOf(0xF98A, 16)),
         BitVector.FALSE);
-    
+
     checkBitVector(
         BitVectorMath.ult(BitVector.valueOf(0xFFFF, 16), BitVector.valueOf(0xFF0F, 16)),
         BitVector.FALSE);
@@ -554,7 +554,7 @@ public class BitVectorMathTestCase {
     checkBitVector(
         BitVectorMath.ult(BitVector.valueOf(0x7FFE, 16), BitVector.valueOf(0x7FFF, 16)),
         BitVector.TRUE);
-    
+
     checkBitVector(
         BitVectorMath.ult(BitVector.valueOf(0x7FFF, 16), BitVector.valueOf(0x7FFE, 16)),
         BitVector.FALSE);
@@ -564,11 +564,11 @@ public class BitVectorMathTestCase {
     checkBitVector(
         BitVectorMath.ult(BitVector.valueOf(0xFFFFFFFF, 32), BitVector.valueOf(0xFFFFFFFF, 32)),
         BitVector.FALSE);
-    
+
     checkBitVector(
         BitVectorMath.ult(BitVector.valueOf(0xFFFFFFFE, 32), BitVector.valueOf(0xFFFFFFFF, 32)),
         BitVector.TRUE);
-    
+
     checkBitVector(
         BitVectorMath.ult(BitVector.valueOf(0xFFFFFFFF, 32), BitVector.valueOf(0xFFFFFFFE, 32)),
         BitVector.FALSE);
@@ -576,7 +576,7 @@ public class BitVectorMathTestCase {
     checkBitVector(
         BitVectorMath.ult(BitVector.valueOf(0xFFFFFFFF, 32), BitVector.valueOf(0x7FFFFFFF, 32)),
         BitVector.FALSE);
-    
+
     checkBitVector(
         BitVectorMath.ult(BitVector.valueOf(0x7FFFFFFF, 32), BitVector.valueOf(0xFFFFFFFF, 32)),
         BitVector.TRUE);
@@ -584,7 +584,7 @@ public class BitVectorMathTestCase {
     checkBitVector(
         BitVectorMath.ult(BitVector.valueOf(0xFFFFFFFFFFFFFFFEL, 64),
         BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64)), BitVector.TRUE);
-    
+
     checkBitVector(
         BitVectorMath.ult(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64),
         BitVector.valueOf(0xFFFFFFFFFFFFFFFEL, 64)), BitVector.FALSE);
@@ -592,7 +592,7 @@ public class BitVectorMathTestCase {
     checkBitVector(
         BitVectorMath.ult(BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64),
         BitVector.valueOf(0x7FFFFFFFFFFFFFFFL, 64)), BitVector.FALSE);
-    
+
     checkBitVector(
         BitVectorMath.ult(BitVector.valueOf(0x7FFFFFFFFFFFFFFFL, 64),
         BitVector.valueOf(0xFFFFFFFFFFFFFFFFL, 64)), BitVector.TRUE);
@@ -603,7 +603,7 @@ public class BitVectorMathTestCase {
     checkBitVector(
         BitVectorMath.uge(BitVector.newEmpty(16), BitVector.newEmpty(16)),
         BitVector.TRUE);
-    
+
     checkBitVector(
         BitVectorMath.uge(BitVector.valueOf(-1, 16), BitVector.valueOf(0, 16)),
         BitVector.TRUE);
