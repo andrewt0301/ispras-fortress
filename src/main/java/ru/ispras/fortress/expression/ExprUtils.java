@@ -146,20 +146,21 @@ public final class ExprUtils {
    *
    * @param expr Expression to be checked.
    * @param opIds Collection of operation identifiers.
+   * @param <T> Operation identifier type.
    * @return {@code true} if the expression is represented by one of the specified operations
    *         or {@code false} otherwise.
    *
    * @throws IllegalArgumentException if any of the parameters is {@code null};
    *         if the list of operation identifiers is empty.
    */
-  public static boolean isOperation(
+  public static <T extends Enum<? extends T>>  boolean isOperation(
       final Node expr,
-      final Collection<Enum<?>> opIds) {
+      final Collection<T> opIds) {
     InvariantChecks.checkNotEmpty(opIds);
 
     if (isOperation(expr)) {
       final Enum<?> exprOpId = ((NodeOperation) expr).getOperationId();
-      for (final Enum<?> opId : opIds) {
+      for (final T opId : opIds) {
         if (exprOpId == opId) {
           return true;
         }
