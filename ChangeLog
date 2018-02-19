@@ -11,7 +11,7 @@
  supports constraint solving using built-in solvers as well as external ones
  (like Yices, Z3, CVC4, etc.)
 --------------------------------------------------------------------------------
- 2018/02/16 Fortress 0.4.30 beta
+ 2018/02/19 Fortress 0.4.30 beta
 
   - New utility methods ExprUtils.isOperation, Node.isType,
     and CollectionUtils.mergeLists
