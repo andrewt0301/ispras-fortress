@@ -288,4 +288,24 @@ public final class ExprUtilsTestCase {
 
     Assert.assertEquals(expected, result);
   }
+
+  @Test
+  public void testIsOperation() {
+    final Node node = Nodes.add(NodeValue.newInteger(1), NodeValue.newInteger(1));
+    Assert.assertTrue(
+        ExprUtils.isOperation(
+            node,
+            StandardOperation.SUB,
+            StandardOperation.AND,
+            StandardOperation.ADD
+        ));
+
+    Assert.assertFalse(
+        ExprUtils.isOperation(
+            node,
+            StandardOperation.SUB,
+            StandardOperation.AND,
+            StandardOperation.MUL
+        ));
+  }
 }
