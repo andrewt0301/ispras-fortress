@@ -79,8 +79,8 @@ public final class Calculator {
    * @param operationIdClass Class of the enumeration that identifies operations implemented by the
    *        given calculator engine.
    * @param engine Calculator engine to be registered.
-   * @return <code>true</code> if the engine was successfully registered and it had not been
-   *         previously registered or <code>false</code> if an engine identified by the specified
+   * @return {@code true} if the engine was successfully registered and it had not been
+   *         previously registered or {@code false} if an engine identified by the specified
    *         class had already been registered (in this case, it is replaced with a new engine).
    *
    * @throws IllegalArgumentException if any of the parameters equals {@code null}.
@@ -98,11 +98,11 @@ public final class Calculator {
   /**
    * Returns the engine that performs calculations using a specific group of operations. Operations
    * that belong to a single group are identified with a corresponding enumeration. The class of the
-   * enumeration serves as a key. If no such engine is registered <code>null</code> is returned.
+   * enumeration serves as a key. If no such engine is registered {@code null} is returned.
    *
    * @param operationIdClass Class of the enumeration that identifies operations implemented by the
    *        given engine.
-   * @return Engine responsible for performing a specific group of operations or <code>null</code>
+   * @return Engine responsible for performing a specific group of operations or {@code null}
    *         if no such engine is registered.
    *
    * @throws IllegalArgumentException if the parameter equals {@code null}.
@@ -118,8 +118,8 @@ public final class Calculator {
    *
    * @param operationId Operation identifier. Identifies an operation within a group.
    * @param operands A variable number of operands.
-   * @return <code>true</code> if the operation is supported for the given operand types or
-   *         <code>false</code> otherwise.
+   * @return {@code true} if the operation is supported for the given operand types or
+   *         {@code false} otherwise.
    *
    * @throws IllegalArgumentException if any of the parameters equals {@code null}.
    */

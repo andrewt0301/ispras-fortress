@@ -29,12 +29,12 @@ public final class Orthogonalizer {
   private Orthogonalizer() {}
 
   /**
-   * Checks whether two clauses (conjuncts), <code>lhs</code> and <code>rhs</code>, are disjoint
+   * Checks whether two clauses (conjuncts), {@code lhs} and {@code rhs}, are disjoint
    * (mutually exclusive, or orthogonal).
    *
    * @param lhs the left-hand-side clause.
    * @param rhs the right-hand-side clause.
-   * @return <code>true</code> if the clauses are disjoint; <code>false</code> otherwise.
+   * @return {@code true} if the clauses are disjoint; {@code false} otherwise.
    */
   public static boolean areDisjoint(final Clause lhs, final Clause rhs) {
     final Set<Integer> common = lhs.getCommonVars(rhs);
@@ -51,13 +51,13 @@ public final class Orthogonalizer {
   }
 
   /**
-   * Checks whether two clauses (conjuncts), <code>lhs</code> and <code>rhs</code>, are disjoint
+   * Checks whether two clauses (conjuncts), {@code lhs} and {@code rhs}, are disjoint
    * (mutually exclusive, or orthogonal) w.r.t. the given set of conflicts.
    *
    * @param lhs the left-hand-side clause.
    * @param rhs the right-hand-side clause.
    * @param conflicts the set of conflicts.
-   * @return <code>true</code> if the clauses are disjoint; <code>false</code> otherwise.
+   * @return {@code true} if the clauses are disjoint; {@code false} otherwise.
    */
   public static boolean areDisjoint(
       final Clause lhs,
@@ -140,7 +140,7 @@ public final class Orthogonalizer {
   }
 
   /**
-   * Splits one of the clauses, <code>lhs</code> or <code>rhs</code>, so as to make them disjoint.
+   * Splits one of the clauses, {@code lhs} or {@code rhs}, so as to make them disjoint.
    *
    * @param lhs the left-hand-side clause.
    * @param rhs the right-hand-side clause.

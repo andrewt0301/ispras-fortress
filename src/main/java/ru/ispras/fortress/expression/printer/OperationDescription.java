@@ -236,7 +236,7 @@ public final class OperationDescription {
   /**
    * Returns the order of operands.
    *
-   * @return the array specifying the order of operands or <code>null</code> for the standard order.
+   * @return the array specifying the order of operands or {@code null} for the standard order.
    */
   public int[] getOrder() {
     return order;
