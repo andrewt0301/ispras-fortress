@@ -664,6 +664,21 @@ public class BitVectorTestCase {
       Assert.assertTrue(byte_array[i] == bv_byte_array[i]);
     }
 
+    Assert.assertEquals(
+        "100000000110000001000000001",
+        BitVector.valueOf(byte_array, 27).toString()
+    );
+
+    Assert.assertEquals(
+        "00000100000000110000001000000001",
+        BitVector.valueOf(byte_array, 32).toString()
+    );
+
+    Assert.assertEquals(
+        "000000000000100000000110000001000000001",
+        BitVector.valueOf(byte_array, 39).toString()
+    );
+
     // TODO: MORE COMPLEX TESTS!!!
   }
 

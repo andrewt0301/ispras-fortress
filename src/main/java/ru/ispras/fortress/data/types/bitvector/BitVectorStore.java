@@ -16,6 +16,8 @@ package ru.ispras.fortress.data.types.bitvector;
 
 import ru.ispras.fortress.util.InvariantChecks;
 
+import java.util.Arrays;
+
 /**
  * The {@link BitVectorStore} class represents a data array that stores binary data of a bit vector.
  * Data can be accessed by bytes. If the number of bits is not multiple of 8 (number of bits in
@@ -85,9 +87,9 @@ final class BitVectorStore extends BitVector {
   public BitVectorStore(final byte[] data, final int bitSize) {
     InvariantChecks.checkNotNull(data);
     InvariantChecks.checkGreaterThanZero(bitSize);
-    InvariantChecks.checkTrue(data.length == getByteSize(bitSize));
 
-    this.dataBytes = data;
+    final int byteSize = getByteSize(bitSize);
+    this.dataBytes = Arrays.copyOf(data, byteSize);
     this.bitSize = bitSize;
   }
 
