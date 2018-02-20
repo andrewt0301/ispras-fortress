@@ -184,6 +184,16 @@ public final class NodeValue extends Node {
     return new NodeValue(Data.newBitVector(value, size));
   }
 
+  /**
+   * Creates a new value node based on a bit vector constructed from the specified boolean value.
+   *
+   * @param value Boolean value to be converted to a bit vector.
+   * @return New value node.
+   */
+  public static NodeValue newBitVector(final boolean value) {
+    return new NodeValue(Data.newBitVector(value));
+  }
+
   private Data data;
 
   /**

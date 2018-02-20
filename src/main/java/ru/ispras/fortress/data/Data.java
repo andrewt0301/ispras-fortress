@@ -224,6 +224,19 @@ public final class Data {
   }
 
   /**
+   * Creates a data object of the BIT_VECTOR type from a boolean value.
+   *
+   * @param value Boolean value to be converted.
+   * @return A new data object.
+   */
+  public static Data newBitVector(final boolean value) {
+    final BitVector bitVector = BitVector.unmodifiable(BitVector.valueOf(value));
+    final DataType dataType = DataType.bitVector(bitVector.getBitSize());
+
+    return new Data(dataType, bitVector);
+  }
+
+  /**
    * Creates a data object of the MAP type from the specified {@link DataMap} object.
    *
    * @param map A {@link DataMap} object.
