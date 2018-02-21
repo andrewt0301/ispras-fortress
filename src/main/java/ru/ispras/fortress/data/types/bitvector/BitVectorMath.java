@@ -297,7 +297,7 @@ public final class BitVectorMath {
     NANDR(UNARY) {
       @Override
       public BitVector execute(final BitVector bitVector) {
-        return not(andr(bitVector));
+        return nandr(bitVector);
       }
     },
 
@@ -311,7 +311,7 @@ public final class BitVectorMath {
     NORR(UNARY) {
       @Override
       public BitVector execute(final BitVector bitVector) {
-        return not(orr(bitVector));
+        return norr(bitVector);
       }
     },
 
@@ -325,7 +325,7 @@ public final class BitVectorMath {
     XNORR(UNARY) {
       @Override
       public BitVector execute(final BitVector bitVector) {
-        return not(xorr(bitVector));
+        return xnorr(bitVector);
       }
     };
 
@@ -874,6 +874,10 @@ public final class BitVectorMath {
     return BitVector.FALSE;
   }
 
+  public static BitVector nandr(final BitVector bv) {
+    return not(andr(bv));
+  }
+
   public static BitVector orr(final BitVector bv) {
     InvariantChecks.checkNotNull(bv);
 
@@ -881,6 +885,10 @@ public final class BitVectorMath {
       return BitVector.FALSE;
     }
     return BitVector.TRUE;
+  }
+
+  public static BitVector norr(final BitVector bv) {
+    return not(orr(bv));
   }
 
   public static BitVector xorr(final BitVector bv) {
@@ -893,6 +901,10 @@ public final class BitVectorMath {
       }
     }
     return (ones % 2 == 0) ? BitVector.FALSE : BitVector.TRUE;
+  }
+
+  public static BitVector xnorr(final BitVector bv) {
+    return not(xorr(bv));
   }
 
   private static BitVector transform(
