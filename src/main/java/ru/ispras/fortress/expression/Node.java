@@ -89,6 +89,18 @@ public abstract class Node {
   }
 
   /**
+   * Creates a deep copy of the current object referencing user data. All
+   * aggregated objects that are not readonly must be cloned.
+   *
+   * @return Full copy of the current node object.
+   */
+  public Node deepestCopy() {
+    final Node node = deepCopy();
+    node.setUserData(getUserData());
+    return node;
+  }
+
+  /**
    * Creates a deep copy of the current objects. All aggregated objects that are not readonly must
    * be cloned. This excludes user data as its type is unknown.
    *
