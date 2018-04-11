@@ -200,17 +200,7 @@ public final class TypeConversion {
             return objVector.compareTo(argVector);
 
           case LOGIC_BOOLEAN:
-            final boolean objBool = obj.getBoolean();
-            final boolean argBool = arg.getBoolean();
-            if (objBool ^ argBool) {
-              if (objBool) {
-                return 1;
-              } else {
-                return -1;
-              }
-            } else {
-              return 0;
-            }
+            return Boolean.compare(obj.getBoolean(), arg.getBoolean());
 
           case LOGIC_INTEGER:
             final BigInteger objInt = obj.getInteger();
