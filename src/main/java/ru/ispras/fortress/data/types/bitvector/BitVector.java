@@ -834,13 +834,23 @@ public abstract class BitVector implements Comparable<BitVector> {
    * @return Hexadecimal string.
    */
   public final String toHexString() {
+    return toHexString(false);
+  }
+
+  /**
+   * Converts the stored binary data to a hexadecimal string.
+   *
+   * @param trailingZeros Flag that specifies whether trailing zeros should be included.
+   * @return Hexadecimal string.
+   */
+  public final String toHexString(final boolean trailingZeros) {
     final int hexCharsInByte = 2;
     final StringBuilder sb = new StringBuilder(hexCharsInByte * getByteSize());
 
     final IAction op = new IAction() {
       @Override
       public void run(final byte byteValue) {
-        if (0 != sb.length()) {
+        if (0 != sb.length() || trailingZeros) {
           sb.append(String.format("%0" + hexCharsInByte + "X", byteValue));
         } else if (0 != byteValue) {
           sb.append(String.format("%X", byteValue));

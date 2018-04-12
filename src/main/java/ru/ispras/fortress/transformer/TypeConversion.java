@@ -174,7 +174,7 @@ public final class TypeConversion {
         } else if (sizeOf(srcType) < sizeOf(type)) {
           return Nodes.bvzeroext(sizeOf(type) - sizeOf(srcType), node);
         } else {
-          return Nodes.bvextract(type.getSize(), 0, node);
+          return Nodes.bvextract(type.getSize() - 1, 0, node);
         }
 
       default:
@@ -200,17 +200,7 @@ public final class TypeConversion {
             return objVector.compareTo(argVector);
 
           case LOGIC_BOOLEAN:
-            final boolean objBool = obj.getBoolean();
-            final boolean argBool = arg.getBoolean();
-            if (objBool ^ argBool) {
-              if (objBool) {
-                return 1;
-              } else {
-                return -1;
-              }
-            } else {
-              return 0;
-            }
+            return Boolean.compare(obj.getBoolean(), arg.getBoolean());
 
           case LOGIC_INTEGER:
             final BigInteger objInt = obj.getInteger();
