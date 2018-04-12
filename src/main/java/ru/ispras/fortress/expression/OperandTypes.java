@@ -22,6 +22,8 @@ package ru.ispras.fortress.expression;
  * @author <a href="mailto:smolov@ispras.ru">Sergey Smolov</a>
  */
 enum OperandTypes {
+  /* No restrictions. */
+  ANY,
 
   /* Operands are of same type. */
   SAME,

@@ -39,8 +39,8 @@ final class VerilogExprPrinter extends MapBasedPrinter {
     addMapping(StandardOperation.MUL, "*", Type.INFIX);
     addMapping(StandardOperation.BVMUL, "*", Type.INFIX); // BVMUL = MUL
     addMapping(StandardOperation.DIV, "/", Type.INFIX);
-    addMapping(StandardOperation.BVSDIV, "/", Type.INFIX);
-    addMapping(StandardOperation.BVUDIV, "/", Type.INFIX);
+    addMapping(StandardOperation.BVSDIV, "/", Type.INFIX); // BVSDIV = DIV
+    addMapping(StandardOperation.BVUDIV, "/", Type.INFIX); // BVUDIV = DIV
     addMapping(StandardOperation.MOD, "%", Type.INFIX);
     addMapping(StandardOperation.BVSMOD, "%", Type.INFIX); // BVSMOD = MOD
     addMapping(StandardOperation.ADD, "+", Type.INFIX);
@@ -81,6 +81,9 @@ final class VerilogExprPrinter extends MapBasedPrinter {
     addMapping(StandardOperation.BVREPEAT, "{", "{", "}}");
     addMapping(StandardOperation.ITE, new String[] {"?", ":"});
     addMapping(StandardOperation.BVEXTRACT, "", new String[] {"[", ":"}, "]", new int[] {2, 0, 1});
+
+    // FIXME: There should be function name.
+    addMapping(StandardOperation.FUNCTION, "f(", ", ", ")");
 
     // Unsupported operations.
     addMapping(StandardOperation.BVROL, "BVROL(", ", ", ")");

@@ -30,6 +30,13 @@ import java.util.Set;
  */
 public enum StandardOperation implements TypeRule {
   /**
+   * The items below belong to the "Function Call" group.
+   */
+
+  /** Group: Function Call. */
+  FUNCTION(Family.FUNCTION, TypeRules.UNKNOWN, OperandTypes.ANY),
+
+  /**
    * The items below belong to the "Logic Operations" group.
    */
 
@@ -306,7 +313,7 @@ public enum StandardOperation implements TypeRule {
    * Describes the family of operands the operation manipulates with.
    */
   public enum Family {
-    LOGIC, BV, ARRAY
+    LOGIC, BV, ARRAY, FUNCTION
   }
 
   private final Set<Family> family;

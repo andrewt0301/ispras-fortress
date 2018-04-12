@@ -33,8 +33,8 @@ final class VhdlExprPrinter extends MapBasedPrinter {
     addMapping(StandardOperation.MUL, "*", Type.INFIX);
     addMapping(StandardOperation.BVMUL, "*", Type.INFIX); // BVMUL = MUL
     addMapping(StandardOperation.DIV, "/", Type.INFIX);
-    addMapping(StandardOperation.BVSDIV, "/", Type.INFIX);
-    addMapping(StandardOperation.BVUDIV, "/", Type.INFIX);
+    addMapping(StandardOperation.BVSDIV, "/", Type.INFIX); // BVSDIV = DIV
+    addMapping(StandardOperation.BVUDIV, "/", Type.INFIX); // BVUDIV = DIV
     addMapping(StandardOperation.MOD, "MOD", Type.INFIX);
     addMapping(StandardOperation.BVSMOD, "MOD", Type.INFIX); // BVSMOD = MOD
     addMapping(StandardOperation.ADD, "+", Type.INFIX);
@@ -75,6 +75,9 @@ final class VhdlExprPrinter extends MapBasedPrinter {
     addMapping(StandardOperation.MIN, "MINIMUM(", ", ", ")");
     addMapping(StandardOperation.MAX, "MAXIMUM(", ", ", ")");
     addMapping(StandardOperation.ITE, new String[] {"?", ":"});
+
+    // FIXME: There should be function name.
+    addMapping(StandardOperation.FUNCTION, "f(", ", ", ")");
 
     // Unsupported operations.
     addMapping(StandardOperation.BVNAND, "BVNAND(", ", ", ")");
