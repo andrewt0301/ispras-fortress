@@ -26,6 +26,7 @@ final class VhdlExprPrinter extends MapBasedPrinter {
   public VhdlExprPrinter() {
     // Supported operations.
     addMapping(StandardOperation.MINUS, "-", Type.PREFIX);
+    addMapping(StandardOperation.BVNEG, "-", Type.PREFIX); // BVNEG = MINUS
     addMapping(StandardOperation.PLUS, "+", Type.PREFIX);
     addMapping(StandardOperation.NOT, "NOT", Type.PREFIX);
     addMapping(StandardOperation.BVNOT, "NOT", Type.PREFIX); // BVNOT = NOT

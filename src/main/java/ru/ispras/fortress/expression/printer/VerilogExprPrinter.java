@@ -26,6 +26,7 @@ final class VerilogExprPrinter extends MapBasedPrinter {
   public VerilogExprPrinter() {
     // Supported operations.
     addMapping(StandardOperation.MINUS, "-", Type.PREFIX);
+    addMapping(StandardOperation.BVNEG, "-", Type.PREFIX); // BVNEG = MINUS
     addMapping(StandardOperation.PLUS, "+", Type.PREFIX);
     addMapping(StandardOperation.NOT, "!", Type.PREFIX);
     addMapping(StandardOperation.BVNOT, "~", Type.PREFIX);
