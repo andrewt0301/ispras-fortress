@@ -33,6 +33,8 @@ final class VhdlExprPrinter extends MapBasedPrinter {
     addMapping(StandardOperation.MUL, "*", Type.INFIX);
     addMapping(StandardOperation.BVMUL, "*", Type.INFIX); // BVMUL = MUL
     addMapping(StandardOperation.DIV, "/", Type.INFIX);
+    addMapping(StandardOperation.BVSDIV, "/", Type.INFIX);
+    addMapping(StandardOperation.BVUDIV, "/", Type.INFIX);
     addMapping(StandardOperation.MOD, "MOD", Type.INFIX);
     addMapping(StandardOperation.BVSMOD, "MOD", Type.INFIX); // BVSMOD = MOD
     addMapping(StandardOperation.ADD, "+", Type.INFIX);

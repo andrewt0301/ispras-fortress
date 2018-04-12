@@ -39,6 +39,8 @@ final class VerilogExprPrinter extends MapBasedPrinter {
     addMapping(StandardOperation.MUL, "*", Type.INFIX);
     addMapping(StandardOperation.BVMUL, "*", Type.INFIX); // BVMUL = MUL
     addMapping(StandardOperation.DIV, "/", Type.INFIX);
+    addMapping(StandardOperation.BVSDIV, "/", Type.INFIX);
+    addMapping(StandardOperation.BVUDIV, "/", Type.INFIX);
     addMapping(StandardOperation.MOD, "%", Type.INFIX);
     addMapping(StandardOperation.BVSMOD, "%", Type.INFIX); // BVSMOD = MOD
     addMapping(StandardOperation.ADD, "+", Type.INFIX);
