@@ -100,6 +100,26 @@ public final class XmlConstraintLoader {
     }
   }
 
+  /**
+   * Loads a constraint from an {@code InputStream}.
+   *
+   * @param input {@link java.io.InputStream InputStream} containing constraint in XML form.
+   * @return A constraint object loaded from the file.
+   *
+   * @throws IllegalArgumentException if the parameter equals null.
+   * @throws XmlNotLoadedException if an issue occurred during parsing the XML document.
+   */
+  public static Constraint load(final InputStream input) throws XmlNotLoadedException {
+    InvariantChecks.checkNotNull(input);
+    try {
+      final XmlConstraintHandler handler = new XmlConstraintHandler();
+      newSaxParser().parse(input, handler);
+      return handler.getConstraint();
+    } catch (Exception e) {
+      throw new XmlNotLoadedException(e);
+    }
+  }
+
   private static SAXParser newSaxParser() throws ParserConfigurationException, SAXException {
     final SAXParserFactory factory = SAXParserFactory.newInstance();
     return factory.newSAXParser();

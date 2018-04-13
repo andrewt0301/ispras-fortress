@@ -318,9 +318,12 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
 
   @Override
   public void onOperationEnd(final NodeOperation expr) {
+    /*
     if (popMultiline()) {
       indent();
     }
+    */
+    popMultiline();
 
     if (expr.getOperandCount() > 0) {
       appendToCurrent(SmtStrings.BRACKET_CLOSE);

@@ -123,6 +123,27 @@ public final class XmlConstraintSaver {
     }
   }
 
+  /**
+   * Saves the constraint object to an {@code OutputStream}.
+   *
+   * @param output {@link java.io.OutputStream OutputStream} to store constraint.
+   *
+   * @throws IllegalArgumentException if the parameter equals {@code null}.
+   * @throws XmlNotSavedException if failed to save the constraint to a file.
+   */
+  public void save(final OutputStream output) throws XmlNotSavedException {
+    InvariantChecks.checkNotNull(output);
+    try {
+      document = newDocument();
+      buildDocument();
+      newTransformer().transform(new DOMSource(document), new StreamResult(output));
+    } catch (final Exception e) {
+      throw new XmlNotSavedException(e);
+    } finally {
+      document = null;
+    }
+  }
+
   private void buildDocument() {
     final Element root = newConstraintElement();
     document.appendChild(root);
