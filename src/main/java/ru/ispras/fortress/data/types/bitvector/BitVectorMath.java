@@ -696,8 +696,6 @@ public final class BitVectorMath {
   }
 
   public static BitVector mul(final BitVector lhs, final BitVector rhs) {
-    checkEqualSize(lhs, rhs);
-
     final BigInteger result =
         lhs.bigIntegerValue(false).multiply(rhs.bigIntegerValue(false));
 
@@ -705,8 +703,6 @@ public final class BitVectorMath {
   }
 
   public static BitVector udiv(final BitVector lhs, final BitVector rhs) {
-    checkEqualSize(lhs, rhs);
-
     final BigInteger result =
         lhs.bigIntegerValue(false).divide(rhs.bigIntegerValue(false));
 
@@ -714,8 +710,6 @@ public final class BitVectorMath {
   }
 
   public static BitVector sdiv(final BitVector lhs, final BitVector rhs) {
-    checkEqualSize(lhs, rhs);
-
     final BigInteger result =
         lhs.bigIntegerValue().divide(rhs.bigIntegerValue());
 
@@ -723,8 +717,6 @@ public final class BitVectorMath {
   }
 
   public static BitVector urem(final BitVector lhs, final BitVector rhs) {
-    checkEqualSize(lhs, rhs);
-
     final BigInteger lint = lhs.bigIntegerValue(false);
     final BigInteger rint = rhs.bigIntegerValue(false);
 
@@ -732,8 +724,6 @@ public final class BitVectorMath {
   }
 
   public static BitVector srem(final BitVector lhs, final BitVector rhs) {
-    checkEqualSize(lhs, rhs);
-
     final BigInteger lint = lhs.bigIntegerValue();
     final BigInteger rint = rhs.bigIntegerValue();
 
@@ -741,8 +731,6 @@ public final class BitVectorMath {
   }
 
   public static BitVector smod(final BitVector lhs, final BitVector rhs) {
-    checkEqualSize(lhs, rhs);
-
     final BigInteger lint = lhs.bigIntegerValue();
     final BigInteger rint = rhs.bigIntegerValue();
 
