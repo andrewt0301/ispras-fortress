@@ -10,6 +10,21 @@
  SMT-LIB, etc.), evaluating them and doing symbolic simplification. It also
  supports constraint solving using built-in solvers as well as external ones
  (like Yices, Z3, CVC4, etc.)
+
+--------------------------------------------------------------------------------
+ 2018/05/04 Fortress 0.4.31 beta
+
+  - New standard operation FUNCTION
+  - Support for new operations in VerilogExprPrinter and VhdlExprPrinter
+  - Support for IO streams in XmlConstraintLoader/XmlConstraintSaver
+  - New utility method Node.deepestCopy to preserve user data
+  - New convenience method NodeValue.newBitVector(boolean)
+  - New BitVectorMath methods: nandr, norr, and xnorr
+  - Removed redundant size checks for multiplication and division
+    from BitVectorMath
+  - Bug fix in BitVector valueOf(byte[], bitSize)
+  - Other bug fixes and code improvements
+
 --------------------------------------------------------------------------------
  2018/02/19 Fortress 0.4.30 beta
 
