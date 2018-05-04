@@ -16,13 +16,13 @@
 
   - New standard operation FUNCTION
   - Support for new operations in VerilogExprPrinter and VhdlExprPrinter
-  - Support for IO streams in XmlConstraintLoader/XmlConstraintSaver
+  - Support for IO streams in XmlConstraintLoader and XmlConstraintSaver
   - New utility method Node.deepestCopy to preserve user data
   - New convenience method NodeValue.newBitVector(boolean)
   - New BitVectorMath methods: nandr, norr, and xnorr
   - Removed redundant size checks for multiplication and division
     from BitVectorMath
-  - Bug fix in BitVector valueOf(byte[], bitSize)
+  - Bug fix in BitVector.valueOf(byte[], int)
   - Other bug fixes and code improvements
 
 --------------------------------------------------------------------------------
