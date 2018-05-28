@@ -193,7 +193,9 @@ enum TypeRules implements TypeRule {
   SELECT {
     @Override
     public DataType getResultType(final DataType[] operandTypes, final int[] params) {
-      return (DataType) operandTypes[0].getAttribute(DataTypeId.Attribute.VALUE);
+      final DataType mapDataType = operandTypes[0];
+      final DataType itemDataType = (DataType) mapDataType.getAttribute(DataTypeId.Attribute.VALUE);
+      return itemDataType != null ? itemDataType : DataType.UNKNOWN;
     }
   },
 
