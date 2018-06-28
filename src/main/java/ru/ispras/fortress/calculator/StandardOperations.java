@@ -43,7 +43,7 @@ final class StandardOperations {
         new StdOperation(StandardOperation.SELECT, ArityRange.BINARY) {
           @Override
           public Data calculate(final Data... operands) {
-            final DataMap map = operands[0].getArray();
+            final DataMap map = operands[0].getMap();
             return map.get(operands[1]);
           }
 
@@ -59,7 +59,7 @@ final class StandardOperations {
       new StdOperation(StandardOperation.STORE, ArityRange.TERNARY) {
         @Override
         public Data calculate(final Data... operands) {
-          final DataMap map = operands[0].getArray().copy();
+          final DataMap map = operands[0].getMap().copy();
           map.put(operands[1], operands[2]);
           return Data.newMap(map);
         }

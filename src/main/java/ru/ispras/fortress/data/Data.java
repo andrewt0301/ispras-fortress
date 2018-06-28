@@ -449,7 +449,7 @@ public final class Data {
    * @return Stored value represented by a {@code DataMap}.
    * @throws IllegalStateException if the stored data is not convertible to {@link DataMap}.
    */
-  public DataMap getArray() {
+  public DataMap getMap() {
     checkConvertibleTo(DataMap.class);
     return (DataMap) value;
   }

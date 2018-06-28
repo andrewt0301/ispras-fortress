@@ -135,7 +135,7 @@ public final class TypeConversion {
 
       switch (type.getTypeId()) {
         case BIT_VECTOR:
-          final DataMap array = ((NodeValue) node).getArray();
+          final DataMap array = ((NodeValue) node).getMap();
           final String bitString = map2BitString(array, keyType, sizeOf(type));
 
           return NodeValue.newBitVector(BitVector.valueOf(bitString));

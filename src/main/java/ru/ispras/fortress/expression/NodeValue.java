@@ -350,7 +350,7 @@ public final class NodeValue extends Node {
    * @return Stored value represented by a {@code DataMap}.
    * @throws IllegalStateException if the stored data is not convertible to {@link DataMap}.
    */
-  public DataMap getArray() {
-    return getData().getArray();
+  public DataMap getMap() {
+    return getData().getMap();
   }
 }
