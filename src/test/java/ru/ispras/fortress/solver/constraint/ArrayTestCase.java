@@ -68,7 +68,7 @@ public class ArrayTestCase extends GenericSolverTestBase {
       map.put(ival, ival);
 
       final NodeValue value = new NodeValue(ival);
-      final NodeValue array = new NodeValue(Data.newArray(map));
+      final NodeValue array = NodeValue.newMap(map);
 
       final Node stored = Nodes.store(v, value, value);
 

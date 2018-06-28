@@ -1,23 +1,22 @@
 /*
- * Copyright 2016 ISP RAS (http://www.ispras.ru), UniTESK Lab (http://www.unitesk.com)
+ * Copyright 2016-2018 ISP RAS (http://www.ispras.ru)
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package ru.ispras.fortress.transformer;
 
 import org.junit.Assert;
 import org.junit.Test;
+
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.types.bitvector.BitVector;
@@ -29,7 +28,6 @@ import ru.ispras.fortress.expression.NodeValue;
  * @author <a href="mailto:smolov@ispras.ru">Sergey Smolov</a>
  */
 public class MapToBitVectorCoerceTestCase {
-
   private static final Data INT_0 = Data.newInteger(0);
   private static final Data INT_1 = Data.newInteger(1);
   private static final Data INT_2 = Data.newInteger(2);
@@ -49,6 +47,7 @@ public class MapToBitVectorCoerceTestCase {
 
     /* Convert int-to-int map (starting from 0 index) to bit vector. */
     final DataMap zeroStartMap = new DataMap(DataType.INTEGER, DataType.INTEGER);
+
     zeroStartMap.put(INT_0, INT_0);
     zeroStartMap.put(INT_1, INT_1);
     zeroStartMap.put(INT_2, INT_0);
@@ -58,13 +57,14 @@ public class MapToBitVectorCoerceTestCase {
 
     Assert.assertEquals(
         zeroStartBitVector,
-        TypeConversion.coerce(newArray(zeroStartMap), DataType.bitVector(4)));
+        TypeConversion.coerce(NodeValue.newMap(zeroStartMap), DataType.bitVector(4)));
   }
 
   @Test
   public void oneStartMapTest() {
     /* Convert int-to-"bit vector" map (starting from 1 index) to bit vector. */
     final DataMap oneStartMap = new DataMap(DataType.INTEGER, DataType.bitVector(2));
+
     oneStartMap.put(INT_1, BV2_0);
     oneStartMap.put(INT_2, BV2_1);
     oneStartMap.put(INT_3, BV2_2);
@@ -72,14 +72,14 @@ public class MapToBitVectorCoerceTestCase {
 
     Assert.assertEquals(
         ONE_START_BV,
-        TypeConversion.coerce(newArray(oneStartMap), DataType.bitVector(8)));
+        TypeConversion.coerce(NodeValue.newMap(oneStartMap), DataType.bitVector(8)));
   }
 
   @Test
   public void bvToBvMapTest() {
-
     /* Convert "bit vector"-to-"bit vector" map to bit vector. */
     final DataMap bvToBvMap = new DataMap(DataType.bitVector(2), DataType.bitVector(2));
+
     bvToBvMap.put(BV2_0, BV2_0);
     bvToBvMap.put(BV2_1, BV2_1);
     bvToBvMap.put(BV2_2, BV2_2);
@@ -87,10 +87,6 @@ public class MapToBitVectorCoerceTestCase {
 
     Assert.assertEquals(
         ONE_START_BV,
-        TypeConversion.coerce(newArray(bvToBvMap), DataType.bitVector(8)));
-  }
-
-  private static NodeValue newArray(final DataMap map) {
-    return new NodeValue(Data.newArray(map));
+        TypeConversion.coerce(NodeValue.newMap(bvToBvMap), DataType.bitVector(8)));
   }
 }

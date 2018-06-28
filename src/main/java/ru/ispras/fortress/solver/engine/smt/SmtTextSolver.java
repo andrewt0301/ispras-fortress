@@ -319,24 +319,24 @@ abstract class SmtTextSolver extends SolverBase {
 
     if (ctx.CONST_ARRAY_Z3.matches(expr)) {
       final Data constant = parseValueExpr(expr.getItems().get(1), valueType, ctx);
-      return Data.newArray(constantArray(keyType, constant));
+      return Data.newMap(constantArray(keyType, constant));
     }
 
     if (ctx.CONST_ARRAY_CVC4.matches(expr)) {
       final Data constant = parseValueExpr(expr.getItems().get(2), valueType, ctx);
-      return Data.newArray(constantArray(keyType, constant));
+      return Data.newMap(constantArray(keyType, constant));
     }
 
     if (ctx.ITE.matches(expr)) {
-      return Data.newArray(parseIteArray(expr, type, ctx));
+      return Data.newMap(parseIteArray(expr, type, ctx));
     }
 
     if (ctx.STORE.matches(expr)) {
-      return Data.newArray(parseStoreArray(expr, type, ctx));
+      return Data.newMap(parseStoreArray(expr, type, ctx));
     }
 
     final Data constant = parseValueExpr(expr, valueType, ctx);
-    return Data.newArray(constantArray(keyType, constant));
+    return Data.newMap(constantArray(keyType, constant));
   }
 
   private static DataMap parseIteArray(

@@ -194,6 +194,18 @@ public final class NodeValue extends Node {
     return new NodeValue(Data.newBitVector(value));
   }
 
+  /**
+   * Creates a new value node of the MAP type from the specified {@link DataMap} object.
+   *
+   * @param value A {@link DataMap} object.
+   * @return A New value node.
+   *
+   * @throws IllegalArgumentException if the {@code map} parameter equals {@code null}.
+   */
+  public static NodeValue newMap(final DataMap value) {
+    return new NodeValue(Data.newMap(value));
+  }
+
   private Data data;
 
   /**

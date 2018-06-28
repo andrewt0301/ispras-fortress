@@ -61,7 +61,7 @@ final class StandardOperations {
         public Data calculate(final Data... operands) {
           final DataMap map = operands[0].getArray().copy();
           map.put(operands[1], operands[2]);
-          return Data.newArray(map);
+          return Data.newMap(map);
         }
 
         @Override

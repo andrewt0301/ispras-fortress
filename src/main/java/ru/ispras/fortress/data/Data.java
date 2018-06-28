@@ -244,7 +244,7 @@ public final class Data {
    *
    * @throws IllegalArgumentException if the {@code map} parameter equals {@code null}.
    */
-  public static Data newArray(final DataMap map) {
+  public static Data newMap(final DataMap map) {
     InvariantChecks.checkNotNull(map);
     return new Data(DataType.map(
         map.getKeyType(), map.getValueType()), map.copy());
@@ -443,7 +443,7 @@ public final class Data {
   }
 
   /**
-   * Returns a DataMap value stored in the data object. Applicable to data objects
+   * Returns a {@link DataMap} value stored in the data object. Applicable to data objects
    * of type {@link DataTypeId#MAP}.
    *
    * @return Stored value represented by a {@code DataMap}.

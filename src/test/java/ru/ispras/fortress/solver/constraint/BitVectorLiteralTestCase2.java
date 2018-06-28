@@ -84,9 +84,9 @@ public class BitVectorLiteralTestCase2 { //extends GenericSolverTestBase {
           new Variable("CIA!3", Data.newBitVector("00100000000000000000000000000000", 2, 32)),
           new Variable("CIA!4", Data.newBitVector("00100000000000000000000000000000", 2, 32)),
 
-          new Variable("GPR!1", Data.newArray(gpr1)),
-          new Variable("GPR!2", Data.newArray(gpr2)),
-          new Variable("GPR!4", Data.newArray(gpr4)),
+          new Variable("GPR!1", Data.newMap(gpr1)),
+          new Variable("GPR!2", Data.newMap(gpr2)),
+          new Variable("GPR!4", Data.newMap(gpr4)),
 
           new Variable("JMPADDR!1", Data.newBitVector(0, 32)),
           new Variable("JMPADDR!2", Data.newBitVector(0, 32)),
