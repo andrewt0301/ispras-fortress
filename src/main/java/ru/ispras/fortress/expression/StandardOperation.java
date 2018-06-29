@@ -403,7 +403,11 @@ public enum StandardOperation implements TypeRule {
    * @return The collection of operations are defined on same type operands.
    */
   public static Collection<Enum<?>> getSameOperandOperations() {
-    return getOperations(OperandTypes.SAME);
+
+    final Collection<Enum<?>> sameOpOperations = getOperations(OperandTypes.SAME);
+    sameOpOperations.addAll(getOperations(OperandTypes.LOGIC_NUMERIC));
+
+    return sameOpOperations;
   }
 
   /**
