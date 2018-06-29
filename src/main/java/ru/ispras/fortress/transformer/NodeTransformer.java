@@ -161,12 +161,15 @@ public class NodeTransformer implements ExprTreeVisitor {
    * @return Transformed expression or node itself if no applicable rule can be found.
    */
   private Node applyRule(final Enum<?> id, final Node node) {
+
+    Node result = node;
+
     for (final TransformerRule rule : getRulesRead(id)) {
-      if (rule.isApplicable(node)) {
-        return rule.apply(node);
+      if (rule.isApplicable(result)) {
+        result = rule.apply(result);
       }
     }
-    return node;
+    return result;
   }
 
   /**
