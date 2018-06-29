@@ -406,6 +406,7 @@ public enum StandardOperation implements TypeRule {
 
     final Collection<Enum<?>> sameOpOperations = getOperations(OperandTypes.SAME);
     sameOpOperations.addAll(getOperations(OperandTypes.LOGIC_NUMERIC));
+    sameOpOperations.addAll(getOperations(OperandTypes.SAME_BV));
 
     return sameOpOperations;
   }
