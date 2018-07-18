@@ -160,6 +160,15 @@ public final class DataType {
   }
 
   /**
+   * Checks whether the specified data type identifier is used.
+   *
+   * @return {@code true} is the specified data type identifier is used or {@code false} otherwise.
+   */
+  public boolean isTypeId(final DataTypeId typeId) {
+    return this.typeId == typeId;
+  }
+
+  /**
    * Returns the size of binary data in bits. Returns {@link DataType#LOGIC_TYPE_SIZE}
    * for logic data types.
    *
