@@ -104,6 +104,6 @@ public final class CalculatorBoolTestCase {
         newTestCase(StandardOperation.IMPL, FALSE, TRUE,  FALSE),
         newTestCase(StandardOperation.IMPL, TRUE,  FALSE, TRUE),
         newTestCase(StandardOperation.IMPL, TRUE,  TRUE,  TRUE)
-        );
+    );
   }
 }
