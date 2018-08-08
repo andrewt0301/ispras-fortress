@@ -16,81 +16,94 @@ package ru.ispras.fortress.calculator;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.expression.StandardOperation;
 
+import java.util.Arrays;
+import java.util.Collection;
+
+@RunWith(Parameterized.class)
 public final class CalculatorBoolTestCase {
   private static final Data TRUE = Data.newBoolean(true);
   private static final Data FALSE = Data.newBoolean(false);
 
-  public static boolean calculate(final Enum<?> operationId, final Data... operands) {
-    final Data data = Calculator.calculate(operationId, operands);
-    return ((Boolean) data.getValue()).booleanValue();
-  }
+  @Parameterized.Parameter()
+  public Enum<?> operationId;
+
+  @Parameterized.Parameter(1)
+  public Data expected;
+
+  @Parameterized.Parameter(2)
+  public Data[] operands;
 
   @Test
-  public void testNotOperation() {
-    Assert.assertFalse(calculate(StandardOperation.NOT, TRUE));
-    Assert.assertTrue(calculate(StandardOperation.NOT, FALSE));
+  public void test() {
+    final Data actual = Calculator.calculate(operationId, operands);
+    Assert.assertEquals(expected, actual);
   }
 
-  @Test
-  public void testAndOperation() {
-    Assert.assertFalse(calculate(StandardOperation.AND, FALSE, FALSE));
-    Assert.assertFalse(calculate(StandardOperation.AND, TRUE, FALSE));
-    Assert.assertFalse(calculate(StandardOperation.AND, FALSE, TRUE));
-    Assert.assertTrue(calculate(StandardOperation.AND, TRUE, TRUE));
-
-    Assert.assertTrue(calculate(StandardOperation.AND, TRUE, TRUE, TRUE));
-    Assert.assertFalse(calculate(StandardOperation.AND, TRUE, TRUE, FALSE));
-    Assert.assertFalse(calculate(StandardOperation.AND, TRUE, FALSE, TRUE));
-    Assert.assertFalse(calculate(StandardOperation.AND, TRUE, FALSE, FALSE));
-    Assert.assertFalse(calculate(StandardOperation.AND, FALSE, TRUE, TRUE));
-    Assert.assertFalse(calculate(StandardOperation.AND, FALSE, TRUE, FALSE));
-    Assert.assertFalse(calculate(StandardOperation.AND, FALSE, FALSE, TRUE));
-    Assert.assertFalse(calculate(StandardOperation.AND, FALSE, FALSE, FALSE));
+  private static Object[] newTestCase(
+      final Enum<?> operationId,
+      final Data expected,
+      final Data... operands) {
+    return new Object[] { operationId, expected, operands };
   }
 
-  @Test
-  public void testOrOperation() {
-    Assert.assertFalse(calculate(StandardOperation.OR, FALSE, FALSE));
-    Assert.assertTrue(calculate(StandardOperation.OR, TRUE, FALSE));
-    Assert.assertTrue(calculate(StandardOperation.OR, FALSE, TRUE));
-    Assert.assertTrue(calculate(StandardOperation.OR, TRUE, TRUE));
+  @Parameterized.Parameters(name = "{index}: {0}")
+  public static Collection<Object[]> testCases() {
+    return Arrays.asList(
+        newTestCase(StandardOperation.NOT, FALSE, TRUE),
+        newTestCase(StandardOperation.NOT, TRUE,  FALSE),
 
-    Assert.assertTrue(calculate(StandardOperation.OR, TRUE, TRUE, TRUE));
-    Assert.assertTrue(calculate(StandardOperation.OR, TRUE, TRUE, FALSE));
-    Assert.assertTrue(calculate(StandardOperation.OR, TRUE, FALSE, TRUE));
-    Assert.assertTrue(calculate(StandardOperation.OR, TRUE, FALSE, FALSE));
-    Assert.assertTrue(calculate(StandardOperation.OR, FALSE, TRUE, TRUE));
-    Assert.assertTrue(calculate(StandardOperation.OR, FALSE, TRUE, FALSE));
-    Assert.assertTrue(calculate(StandardOperation.OR, FALSE, FALSE, TRUE));
-    Assert.assertFalse(calculate(StandardOperation.OR, FALSE, FALSE, FALSE));
-  }
+        newTestCase(StandardOperation.AND, FALSE, FALSE, FALSE),
+        newTestCase(StandardOperation.AND, FALSE, TRUE,  FALSE),
+        newTestCase(StandardOperation.AND, FALSE, FALSE, TRUE),
+        newTestCase(StandardOperation.AND, TRUE,  TRUE,  TRUE),
 
-  @Test
-  public void testXorOperation() {
-    Assert.assertFalse(calculate(StandardOperation.XOR, FALSE, FALSE));
-    Assert.assertTrue(calculate(StandardOperation.XOR, TRUE, FALSE));
-    Assert.assertTrue(calculate(StandardOperation.XOR, FALSE, TRUE));
-    Assert.assertFalse(calculate(StandardOperation.XOR, TRUE, TRUE));
+        newTestCase(StandardOperation.AND, TRUE,  TRUE,  TRUE,  TRUE),
+        newTestCase(StandardOperation.AND, FALSE, TRUE,  TRUE,  FALSE),
+        newTestCase(StandardOperation.AND, FALSE, TRUE,  FALSE, TRUE),
+        newTestCase(StandardOperation.AND, FALSE, TRUE,  FALSE, FALSE),
+        newTestCase(StandardOperation.AND, FALSE, FALSE, TRUE,  TRUE),
+        newTestCase(StandardOperation.AND, FALSE, FALSE, TRUE,  FALSE),
+        newTestCase(StandardOperation.AND, FALSE, FALSE, FALSE, TRUE),
+        newTestCase(StandardOperation.AND, FALSE, FALSE, FALSE, FALSE),
 
-    Assert.assertTrue(calculate(StandardOperation.XOR, TRUE, TRUE, TRUE));
-    Assert.assertFalse(calculate(StandardOperation.XOR, TRUE, TRUE, FALSE));
-    Assert.assertFalse(calculate(StandardOperation.XOR, TRUE, FALSE, TRUE));
-    Assert.assertTrue(calculate(StandardOperation.XOR, TRUE, FALSE, FALSE));
-    Assert.assertFalse(calculate(StandardOperation.XOR, FALSE, TRUE, TRUE));
-    Assert.assertTrue(calculate(StandardOperation.XOR, FALSE, TRUE, FALSE));
-    Assert.assertTrue(calculate(StandardOperation.XOR, FALSE, FALSE, TRUE));
-    Assert.assertFalse(calculate(StandardOperation.XOR, FALSE, FALSE, FALSE));
-  }
+        newTestCase(StandardOperation.OR,  FALSE, FALSE, FALSE),
+        newTestCase(StandardOperation.OR,  TRUE,  TRUE,  FALSE),
+        newTestCase(StandardOperation.OR,  TRUE,  FALSE, TRUE),
+        newTestCase(StandardOperation.OR,  TRUE,  TRUE,  TRUE),
 
-  @Test
-  public void testImplOperation() {
-    Assert.assertTrue(calculate(StandardOperation.IMPL, FALSE, FALSE));
-    Assert.assertFalse(calculate(StandardOperation.IMPL, TRUE, FALSE));
-    Assert.assertTrue(calculate(StandardOperation.IMPL, FALSE, TRUE));
-    Assert.assertTrue(calculate(StandardOperation.IMPL, TRUE, TRUE));
+        newTestCase(StandardOperation.OR,  TRUE,  TRUE,  TRUE,  TRUE),
+        newTestCase(StandardOperation.OR,  TRUE,  TRUE,  TRUE,  FALSE),
+        newTestCase(StandardOperation.OR,  TRUE,  TRUE,  FALSE, TRUE),
+        newTestCase(StandardOperation.OR,  TRUE,  TRUE,  FALSE, FALSE),
+        newTestCase(StandardOperation.OR,  TRUE,  FALSE, TRUE,  TRUE),
+        newTestCase(StandardOperation.OR,  TRUE,  FALSE, TRUE,  FALSE),
+        newTestCase(StandardOperation.OR,  TRUE,  FALSE, FALSE, TRUE),
+        newTestCase(StandardOperation.OR,  FALSE, FALSE, FALSE, FALSE),
+
+        newTestCase(StandardOperation.XOR, FALSE, FALSE, FALSE),
+        newTestCase(StandardOperation.XOR, TRUE,  TRUE,  FALSE),
+        newTestCase(StandardOperation.XOR, TRUE,  FALSE, TRUE),
+        newTestCase(StandardOperation.XOR, FALSE, TRUE,  TRUE),
+
+        newTestCase(StandardOperation.XOR, TRUE,  TRUE,  TRUE,  TRUE),
+        newTestCase(StandardOperation.XOR, FALSE, TRUE,  TRUE,  FALSE),
+        newTestCase(StandardOperation.XOR, FALSE, TRUE,  FALSE, TRUE),
+        newTestCase(StandardOperation.XOR, TRUE,  TRUE,  FALSE, FALSE),
+        newTestCase(StandardOperation.XOR, FALSE, FALSE, TRUE,  TRUE),
+        newTestCase(StandardOperation.XOR, TRUE,  FALSE, TRUE,  FALSE),
+        newTestCase(StandardOperation.XOR, TRUE,  FALSE, FALSE, TRUE),
+        newTestCase(StandardOperation.XOR, FALSE, FALSE, FALSE, FALSE),
+
+        newTestCase(StandardOperation.IMPL, TRUE,  FALSE, FALSE),
+        newTestCase(StandardOperation.IMPL, FALSE, TRUE,  FALSE),
+        newTestCase(StandardOperation.IMPL, TRUE,  FALSE, TRUE),
+        newTestCase(StandardOperation.IMPL, TRUE,  TRUE,  TRUE)
+        );
   }
 }
