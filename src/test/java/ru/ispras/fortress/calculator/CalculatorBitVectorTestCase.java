@@ -14,56 +14,80 @@
 
 package ru.ispras.fortress.calculator;
 
-import static org.junit.Assert.assertEquals;
-
+import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.expression.StandardOperation;
 
-public final class CalculatorBitVectorTestCase {
-  public static Data calculate(
-      final Enum<?> operationId,
-      final Data... operands) {
-    return Calculator.calculate(operationId, operands);
-  }
+import java.util.Arrays;
+import java.util.Collection;
 
-  public static void testEquals(
-      final Data expected,
-      final Enum<?> operationId,
-      final Data... operands) {
-    assertEquals(expected, calculate(operationId, operands));
-  }
+@RunWith(Parameterized.class)
+public final class CalculatorBitVectorTestCase {
+  @Parameterized.Parameter()
+  public Enum<?> operationId;
+
+  @Parameterized.Parameter(1)
+  public Data expected;
+
+  @Parameterized.Parameter(2)
+  public Data[] operands;
 
   @Test
   public void test() {
-    testEquals(
-        Data.newBitVector(0, 1),
-        StandardOperation.BVAND, Data.newBitVector(1, 1), Data.newBitVector(0, 1)
-    );
-
-    testEquals(
-        Data.newBitVector(1, 1),
-        StandardOperation.BVOR, Data.newBitVector(1, 1), Data.newBitVector(0, 1)
-    );
-/*
-    testEquals(
-        Data.newBitVector(0, 1),
-        StandardOperation.BVAND, Data.newBitVector(1, 1), Data.newBoolean(false)
-        );
-
-    testEquals(
-        Data.newBitVector(1, 1),
-        StandardOperation.BVOR, Data.newBitVector(1, 1), Data.newBoolean(false)
-        );
-*/
+    final Data actual = Calculator.calculate(operationId, operands);
+    Assert.assertEquals(expected, actual);
   }
 
-  @Test
-  public void testConcat() {
-    testEquals(
-        Data.newBitVector(0xDEADBEEF, 32),
-        StandardOperation.BVCONCAT, Data.newBitVector(0xDEAD, 16), Data.newBitVector(0xBEEF, 16)
+  private static Object[] newTestCase(
+      final Enum<?> operationId,
+      final Data expected,
+      final Data... operands) {
+    return new Object[] { operationId, expected, operands };
+  }
+
+  @Parameterized.Parameters(name = "{index}: {0}")
+  public static Collection<Object[]> testCases() {
+    return Arrays.asList(
+        newTestCase(
+            StandardOperation.BVAND,
+            Data.newBitVector(0, 1),
+            Data.newBitVector(1, 1),
+            Data.newBitVector(0, 1)
+        ),
+
+        newTestCase(
+            StandardOperation.BVOR,
+            Data.newBitVector(1, 1),
+            Data.newBitVector(1, 1),
+            Data.newBitVector(0, 1)
+        ),
+
+        /*
+        newTestCase(
+            StandardOperation.BVAND,
+            Data.newBitVector(0, 1),
+            Data.newBitVector(1, 1),
+            Data.newBoolean(false)
+        ),
+
+        newTestCase(
+            StandardOperation.BVOR,
+            Data.newBitVector(1, 1),
+            Data.newBitVector(1, 1),
+            Data.newBoolean(false)
+        ),
+        */
+
+        newTestCase(
+            StandardOperation.BVCONCAT,
+            Data.newBitVector(0xDEADBEEF, 32),
+            Data.newBitVector(0xDEAD, 16),
+            Data.newBitVector(0xBEEF, 16)
+        )
     );
   }
 }
