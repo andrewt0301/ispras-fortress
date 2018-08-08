@@ -443,6 +443,18 @@ public final class Data {
   }
 
   /**
+   * Returns a String value stored in the data object. Applicable to data objects
+   * of type {@link DataTypeId#LOGIC_STRING}.
+   *
+   * @return Stored value represented by a String.
+   * @throws IllegalStateException if the stored data is not convertible to {@code String}.
+   */
+  public String getString() {
+    checkConvertibleTo(String.class);
+    return (String) value;
+  }
+
+  /**
    * Returns a {@link DataMap} value stored in the data object. Applicable to data objects
    * of type {@link DataTypeId#MAP}.
    *

@@ -345,6 +345,16 @@ public final class NodeValue extends Node {
   }
 
   /**
+   * Returns stored String value and throws an exception if the stored value has a different type.
+   *
+   * @return Stored value represented by a String.
+   * @throws IllegalStateException if the stored data is not convertible to {@code String}.
+   */
+  public String getString() {
+    return getData().getString();
+  }
+
+  /**
    * Returns stored DataMap value and throws an exception if the stored value has a different type.
    *
    * @return Stored value represented by a {@code DataMap}.
