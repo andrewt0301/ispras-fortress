@@ -253,7 +253,7 @@ final class ConstCastRuleSet {
           }
         }
 
-        if (varAltType != null && constAltType != null && !varAltType.equals(constAltType)) {
+        if (defined(varAltType) && constAltType != null && !varAltType.equals(constAltType)) {
 
           final Node oldOperand = typeMap.get(constAltType).get(0);
 
@@ -280,6 +280,11 @@ final class ConstCastRuleSet {
     transformer.addRule(StandardOperation.STORE, storeRule);
 
     return transformer;
+  }
+
+  private static boolean defined(final DataType type) {
+
+    return type != null && !type.equals(DataType.UNKNOWN);
   }
 
   private static Map<Node, Node> castWrongBvOperands(
@@ -350,13 +355,13 @@ final class ConstCastRuleSet {
 
       final Map<DataType, Collection<Node>> typeMap = opTypeMap.getMap();
       for (final Map.Entry<DataType, Collection<Node>> typeNodes : typeMap.entrySet()) {
-        if (typeNodes.getKey() != opTypeMap.getTypeToCast()
-            && opTypeMap.getTypeToCast() != DataType.UNKNOWN) {
+
+        final DataType typeToCast = opTypeMap.getTypeToCast();
+        if (!typeNodes.getKey().equals(typeToCast) && defined(typeToCast)) {
           for (final Node typeNode : typeNodes.getValue()) {
             if (typeNode instanceof NodeValue) {
 
-              final Node casted =
-                  TypeConversion.coerce(typeNode, opTypeMap.getTypeToCast(), constCastType);
+              final Node casted = TypeConversion.coerce(typeNode, typeToCast, constCastType);
               wrongOpMap.put(typeNode, casted);
             }
           }
@@ -386,7 +391,7 @@ final class ConstCastRuleSet {
         if (typeNodes.getKey() != varType || nodeType.getTypeId() != typeId) {
           for (final Node typeNode : typeNodes.getValue()) {
 
-            if (typeNode instanceof NodeValue && varType != DataType.UNKNOWN) {
+            if (typeNode instanceof NodeValue && defined(varType)) {
               wrongOpMap.put(typeNode, TypeConversion.coerce(typeNode, varType, constCastType));
             }
           }
@@ -405,7 +410,9 @@ final class ConstCastRuleSet {
     final Map<Node, Node> wrongOpMap = new LinkedHashMap<>();
 
     for (final Node operand : node.getOperands()) {
-      if (operand instanceof NodeValue && operand.getDataType() != dataType) {
+      if (operand instanceof NodeValue
+          && !operand.getDataType().equals(dataType)
+          && defined(dataType)) {
         wrongOpMap.put(operand, TypeConversion.coerce(operand, dataType, constCastType));
       }
     }
