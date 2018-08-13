@@ -254,6 +254,27 @@ public final class NodeOperation extends Node {
     final int paramCount = StandardOperation.getParameterCount(operation);
     final int[] params = new int[paramCount];
 
+    /* If parameters are non-constant but equal, treat them as zeros. */
+    final Node firstParam = operands.get(0);
+
+    if (Kind.VALUE != firstParam.getKind()) {
+
+      boolean equalParams = true;
+
+      for (int index = 0; index < paramCount; index++) {
+
+        final Node param = operands.get(index);
+        if (Kind.VALUE != param.getKind() && !param.equals(firstParam)) {
+          equalParams = false;
+          break;
+        }
+      }
+
+      if (equalParams) {
+        Arrays.fill(params, 0);
+      }
+    }
+
     for (int index = 0; index < paramCount; ++index) {
       final Node operand = operands.get(index);
       if (Node.Kind.VALUE != operand.getKind()) {
