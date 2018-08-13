@@ -272,6 +272,7 @@ public final class NodeOperation extends Node {
 
       if (equalParams) {
         Arrays.fill(params, 0);
+        return params;
       }
     }
 
