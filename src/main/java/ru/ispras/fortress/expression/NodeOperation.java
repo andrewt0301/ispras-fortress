@@ -254,6 +254,10 @@ public final class NodeOperation extends Node {
     final int paramCount = StandardOperation.getParameterCount(operation);
     final int[] params = new int[paramCount];
 
+    if (paramCount == 0) {
+      return params;
+    }
+
     /* If parameters are non-constant but equal, treat them as zeros. */
     final Node firstParam = operands.get(0);
 
