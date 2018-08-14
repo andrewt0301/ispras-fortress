@@ -17,6 +17,7 @@ package ru.ispras.fortress.expression;
 import ru.ispras.fortress.data.Data;
 import ru.ispras.fortress.data.DataType;
 import ru.ispras.fortress.data.DataTypeId;
+import ru.ispras.fortress.transformer.TypeConversion;
 import ru.ispras.fortress.util.InvariantChecks;
 
 import java.math.BigInteger;
@@ -287,10 +288,16 @@ public final class NodeOperation extends Node {
             "Parameter is not a value: " + operand);
       }
 
-      final Data data = ((NodeValue) operand).getData();
+      Data data = ((NodeValue) operand).getData();
       if (!data.isType(DataTypeId.LOGIC_INTEGER)) {
-        throw new IllegalStateException(
-            "Parameter is not a constant integer value: " + operand);
+
+        final Node toInt = TypeConversion.coerce(operand, DataType.INTEGER);
+
+        if (toInt == null || Kind.VALUE != toInt.getKind()) {
+          throw new IllegalStateException(
+              "Can't cast parameter to a constant integer value: " + operand);
+        }
+        data = ((NodeValue)toInt).getData();
       }
 
       final BigInteger value = (BigInteger) data.getValue();
