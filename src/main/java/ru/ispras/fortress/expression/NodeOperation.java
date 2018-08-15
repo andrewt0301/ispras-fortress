@@ -262,7 +262,9 @@ public final class NodeOperation extends Node {
     /* If parameters are non-constant but equal, treat them as zeros. */
     final Node firstParam = operands.get(0);
 
-    if (Kind.VALUE != firstParam.getKind() && paramCount > 1) {
+    if (Kind.VALUE != firstParam.getKind()
+        && (getOperationId() == StandardOperation.BVEXTRACT
+          || getOperationId() == StandardOperation.SELECT)) {
 
       boolean equalParams = true;
 
