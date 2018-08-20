@@ -18,10 +18,10 @@
 
  Preparing the project:
 
- To check out the project from the Subversion repository, execute
+ To check out the project from the Git repository, execute
  the following command:
 
-    svn checkout http://forge.ispras.ru/svn/solver-api
+    git clone --recursive https://forge.ispras.ru/git/solver-api.git
 
 ----------------------------------------------------------------
  
@@ -29,11 +29,11 @@
 
  1. To build the JAR file, execute the following command:
 
-    gradle build
+    gradlew assemble
 
  2. To run unit tests, execute the following command:
 
-    gradle test
+    gradlew test
 
 ----------------------------------------------------------------
  
@@ -42,23 +42,6 @@
  The the project can be built on the build server using the Jenkins
  continuous integration tool. To do this, visit the following link:
 
- http://forge.ispras.ru:8080/job/Fortress/
-
-----------------------------------------------------------------
- 
- Working with the project in the Eclipse IDE:
-
- 1. Create a workspace located in the "<solver-api>/trunk" directory.
-
-    Use the menu item "File/Switch Workspace...".
-    Browse the directory.
-
- 2. Import an existing project called "fortress" into the workspace.
-
-    - Use the menu item "File/Import...".
-    - Choose "General/Existing Project into Workspace".
-    - Select the "<solver-api>/trunk/fortress" folder as the root directory.
-    - Select the "fortress" project located in this directory.
-    - The project will be opened in the Eclipse IDE.
+ https://forge.ispras.ru/jenkins/job/Fortress/
 
 ----------------------------------------------------------------

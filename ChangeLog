@@ -12,6 +12,15 @@
  (like Yices, Z3, CVC4, etc.)
 
 --------------------------------------------------------------------------------
+ 2018/08/20 Fortress 0.4.32 beta
+
+  - Enhancements in type calculation logic
+  - New method DataType.isTypeId
+  - New methods Data.getString and NodeValue.getString
+  - Methods Data.newArray and NodeValue.newArray were renamed to newMap
+  - Other bug fixes and code improvements
+
+--------------------------------------------------------------------------------
  2018/05/04 Fortress 0.4.31 beta
 
   - New standard operation FUNCTION
