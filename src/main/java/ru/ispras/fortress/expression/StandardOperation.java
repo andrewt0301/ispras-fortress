@@ -29,14 +29,15 @@ import java.util.Set;
  * @author <a href="mailto:andrewt@ispras.ru">Andrei Tatarnikov</a>
  */
 public enum StandardOperation implements TypeRule {
-  /**
+
+  /*
    * The items below belong to the "Function Call" group.
    */
 
   /** Group: Function Call. */
   FUNCTION(Family.FUNCTION, TypeRules.UNKNOWN, OperandTypes.ANY),
 
-  /**
+  /*
    * The items below belong to the "Logic Operations" group.
    */
 
@@ -71,7 +72,7 @@ public enum StandardOperation implements TypeRule {
   /** Group: Logic, Operation: Conditional expression aka if-then-else. */
   ITE(Family.LOGIC, TypeRules.ITE, OperandTypes.ITE),
 
-  /**
+  /*
    * The items below belong to the "Logic Arithmetic" group.
    */
 
@@ -114,7 +115,7 @@ public enum StandardOperation implements TypeRule {
   /** Group: Logic, Operation: Power. */
   POWER(Family.LOGIC, TypeRules.FIRST_NUM_ARG, OperandTypes.INT),
 
-  /**
+  /*
    * The items below belong to the "Logic Arithmetic (Additional)" group.
    */
 
@@ -127,7 +128,7 @@ public enum StandardOperation implements TypeRule {
   /** Group: Logic, Operation: Maximum. */
   MAX(Family.LOGIC, TypeRules.FIRST_KNOWN_NUM_ARG, OperandTypes.SAME),
 
-  /**
+  /*
    * The items below belong to the "Basic Bitvector Arithmetic" group.
    */
 
@@ -191,7 +192,7 @@ public enum StandardOperation implements TypeRule {
   /** Group: Bitvector, Operation: Extraction of subvector. */
   BVEXTRACT(Family.BV, TypeRules.BVEXTRACT, 2, OperandTypes.TWO_INT_PARAM_BV),
 
-  /**
+  /*
    * The items below belong to the "Bitwise Operations" group.
    */
 
@@ -216,7 +217,7 @@ public enum StandardOperation implements TypeRule {
   /** Group: Bitvector, Operation: Bitwise XNOR. */
   BVXNOR(Family.BV, TypeRules.FIRST_KNOWN_BV_ARG, OperandTypes.SAME_BV),
 
-  /**
+  /*
    * The items below belong to the "Predicates over Bitvectors" group.
    */
 
@@ -244,7 +245,7 @@ public enum StandardOperation implements TypeRule {
   /** Group: Bitvector, Operation: Signed greater than. */
   BVSGT(Family.BV, TypeRules.BOOLEAN, OperandTypes.SAME_BV),
 
-  /**
+  /*
    * The items below belong to the "Bit Vector Reduction Operations" group.
    *
    * <p>Operation semantics:
@@ -283,7 +284,7 @@ public enum StandardOperation implements TypeRule {
   /** Group: Bit Vector Reduction, Operation: Reduction XNOR (~^). */
   BVXNORR(Family.BV, TypeRules.BIT_BOOLEAN, OperandTypes.SAME_BV),
 
-  /**
+  /*
    * The items below belong to the "Bit Vector Cast Operations" group.
    */
 
@@ -299,7 +300,7 @@ public enum StandardOperation implements TypeRule {
   /** Group: Bit Vector Cast, Operation: Conversion to integer. */
   INT2BV(Family.BV, TypeRules.INT2BV, 1, OperandTypes.INT),
 
-  /**
+  /*
    * The items below belong to the "Array Operations" group.
    */
 
