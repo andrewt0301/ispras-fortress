@@ -254,7 +254,8 @@ public final class SmtTextBuilder implements ExprTreeVisitor {
   public void onOperationBegin(final NodeOperation expr) {
     final Enum<?> op = expr.getOperationId();
     if (!operations.containsKey(op)) {
-      throw new IllegalArgumentException("Unsupported operation: " + op);
+      throw new IllegalArgumentException(
+          String.format("Unsupported operation '%s' with user data: %s", op, expr.getUserData()));
     }
 
     final SolverOperation operation = operations.get(op);
