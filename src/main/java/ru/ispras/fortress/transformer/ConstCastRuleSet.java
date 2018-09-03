@@ -327,11 +327,21 @@ final class ConstCastRuleSet {
       final NodeOperation operation,
       final Enum<?> constCastType) {
 
+    final Node array = operation.getOperand(0);
+
+    final DataType arrayType = array.getDataType();
+    final DataType keyType = (DataType) arrayType.getAttribute(DataTypeId.Attribute.KEY);
+
     final Node index = operation.getOperand(1);
-    final Node toInt = TypeConversion.coerce(index, DataType.INTEGER, constCastType);
-    return index instanceof NodeValue && !index.isType(DataType.INTEGER)
-        ? Collections.singletonMap(index, toInt)
-        : new LinkedHashMap<Node, Node>();
+
+    if (index.getKind() != Node.Kind.VALUE || keyType.equals(index.getDataType()))
+
+      return new LinkedHashMap<>();
+
+    else {
+
+      return Collections.singletonMap(index, TypeConversion.coerce(index, keyType, constCastType));
+    }
   }
 
   private static void addRules(
