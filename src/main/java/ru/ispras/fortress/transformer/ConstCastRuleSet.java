@@ -61,7 +61,7 @@ final class ConstCastRuleSet {
 
   abstract static class CastConstRule implements TransformerRule {
 
-    protected Map<Node, Node> oldNewMap;
+    protected Map<Integer, Node> oldNewMap;
     protected Enum<?> operationId;
 
     public abstract boolean isApplicable(final NodeOperation operation);
@@ -83,7 +83,7 @@ final class ConstCastRuleSet {
 
       final List<Node> casted = new LinkedList<>();
       for (final Node operand : ((NodeOperation) node).getOperands()) {
-        casted.add(this.oldNewMap.containsKey(operand) ? this.oldNewMap.get(operand) : operand);
+        casted.add(this.oldNewMap.getOrDefault(System.identityHashCode(operand), operand));
       }
       return new NodeOperation(((NodeOperation)node).getOperationId(), casted);
     }
@@ -221,8 +221,8 @@ final class ConstCastRuleSet {
         return ((NodeOperation) node).getOperationId() == StandardOperation.ITE;
       }
 
-      private Map<Node, Node> getIfThenElseWrongCond(final NodeOperation node) {
-        final Map<Node, Node> map = new LinkedHashMap<>();
+      private Map<Integer, Node> getIfThenElseWrongCond(final NodeOperation node) {
+        final Map<Integer, Node> map = new LinkedHashMap<>();
 
         DataType varAltType = null;
         DataType constAltType = null;
@@ -234,7 +234,9 @@ final class ConstCastRuleSet {
           final DataType opType = operand.getDataType();
 
           if (i == 0 && !opType.equals(DataType.BOOLEAN) && operand instanceof NodeValue) {
-            map.put(operand, TypeConversion.coerce(operand, DataType.BOOLEAN, constCastType));
+            map.put(
+                System.identityHashCode(operand),
+                TypeConversion.coerce(operand, DataType.BOOLEAN, constCastType));
           } else if (i != 0) {
 
             if (typeMap.containsKey(opType)) {
@@ -257,7 +259,8 @@ final class ConstCastRuleSet {
 
           final Node oldOperand = typeMap.get(constAltType).get(0);
 
-          map.put(oldOperand, TypeConversion.coerce(oldOperand, varAltType, constCastType));
+          map.put(System.identityHashCode(oldOperand),
+              TypeConversion.coerce(oldOperand, varAltType, constCastType));
         }
         return map;
       }
@@ -287,18 +290,18 @@ final class ConstCastRuleSet {
     return type != null && !type.equals(DataType.UNKNOWN);
   }
 
-  private static Map<Node, Node> castWrongBvOperands(
+  private static Map<Integer, Node> castWrongBvOperands(
       final NodeOperation operation,
       final Enum<?> constCastType) {
 
-    final Map<Node, Node> wrongOpMap = new LinkedHashMap<>();
+    final Map<Integer, Node> wrongOpMap = new LinkedHashMap<>();
 
     for (final Node operand : operation.getOperands()) {
       if (operand instanceof NodeValue && !operand.isType(DataTypeId.BIT_VECTOR)) {
         final int size = getBvSize((NodeValue) operand, constCastType);
         final Node castToBv =
             TypeConversion.coerce(operand, DataType.bitVector(size), constCastType);
-        wrongOpMap.put(operand, castToBv);
+        wrongOpMap.put(System.identityHashCode(operand), castToBv);
       }
     }
 
@@ -323,7 +326,7 @@ final class ConstCastRuleSet {
     }
   }
 
-  private static Map<Node, Node> castWrongArrayOperands(
+  private static Map<Integer, Node> castWrongArrayOperands(
       final NodeOperation operation,
       final Enum<?> constCastType) {
 
@@ -340,7 +343,9 @@ final class ConstCastRuleSet {
 
     else {
 
-      return Collections.singletonMap(index, TypeConversion.coerce(index, keyType, constCastType));
+      return Collections.singletonMap(
+          System.identityHashCode(index),
+          TypeConversion.coerce(index, keyType, constCastType));
     }
   }
 
@@ -353,11 +358,11 @@ final class ConstCastRuleSet {
     }
   }
 
-  private static Map<Node, Node> castWrongSameOperands(
+  private static Map<Integer, Node> castWrongSameOperands(
       final NodeOperation node,
       final Enum<?> constCastType) {
 
-    final Map<Node, Node> wrongOpMap = new LinkedHashMap<>();
+    final Map<Integer, Node> wrongOpMap = new LinkedHashMap<>();
 
     final OperandTypeMap opTypeMap = createOperandTypeMap(node);
 
@@ -372,7 +377,7 @@ final class ConstCastRuleSet {
             if (typeNode instanceof NodeValue) {
 
               final Node casted = TypeConversion.coerce(typeNode, typeToCast, constCastType);
-              wrongOpMap.put(typeNode, casted);
+              wrongOpMap.put(System.identityHashCode(typeNode), casted);
             }
           }
         }
@@ -381,12 +386,12 @@ final class ConstCastRuleSet {
     return wrongOpMap;
   }
 
-  private static Map<Node, Node> castWrongOperands(
+  private static Map<Integer, Node> castWrongOperands(
       final NodeOperation node,
       final DataTypeId typeId,
       final Enum<?> constCastType) {
 
-    final Map<Node, Node> wrongOpMap = new LinkedHashMap<>();
+    final Map<Integer, Node> wrongOpMap = new LinkedHashMap<>();
 
     final OperandTypeMap opTypeMap = createOperandTypeMap(node);
     if (!allOperandsOfSameType(opTypeMap)) {
@@ -402,7 +407,9 @@ final class ConstCastRuleSet {
           for (final Node typeNode : typeNodes.getValue()) {
 
             if (typeNode instanceof NodeValue && defined(varType)) {
-              wrongOpMap.put(typeNode, TypeConversion.coerce(typeNode, varType, constCastType));
+              wrongOpMap.put(
+                  System.identityHashCode(typeNode),
+                  TypeConversion.coerce(typeNode, varType, constCastType));
             }
           }
         }
@@ -412,18 +419,19 @@ final class ConstCastRuleSet {
     return wrongOpMap;
   }
 
-  private static Map<Node, Node> castWrongOperands(
+  private static Map<Integer, Node> castWrongOperands(
       final NodeOperation node,
       final DataType dataType,
       final Enum<?> constCastType) {
 
-    final Map<Node, Node> wrongOpMap = new LinkedHashMap<>();
+    final Map<Integer, Node> wrongOpMap = new LinkedHashMap<>();
 
     for (final Node operand : node.getOperands()) {
       if (operand instanceof NodeValue
           && !operand.getDataType().equals(dataType)
           && defined(dataType)) {
-        wrongOpMap.put(operand, TypeConversion.coerce(operand, dataType, constCastType));
+        wrongOpMap.put(System.identityHashCode(operand),
+            TypeConversion.coerce(operand, dataType, constCastType));
       }
     }
 
@@ -470,12 +478,12 @@ final class ConstCastRuleSet {
     return operandTypeMap.getMap().size() == 1;
   }
 
-  private static Map<Node, Node> castWrongParamBvOperands(
+  private static Map<Integer, Node> castWrongParamBvOperands(
       final NodeOperation node,
       final int paramNum,
       final Enum<?> constCastType) {
 
-    final Map<Node, Node> map = new LinkedHashMap<>();
+    final Map<Integer, Node> map = new LinkedHashMap<>();
 
     for (int i = 0; i < node.getOperandCount(); i++) {
 
@@ -483,7 +491,8 @@ final class ConstCastRuleSet {
       if (operand instanceof NodeValue
           && i < paramNum
           && !operand.getDataType().equals(DataType.INTEGER)) {
-        map.put(operand, TypeConversion.coerce(operand, DataType.INTEGER, constCastType));
+        map.put(System.identityHashCode(operand),
+            TypeConversion.coerce(operand, DataType.INTEGER, constCastType));
       }
     }
 

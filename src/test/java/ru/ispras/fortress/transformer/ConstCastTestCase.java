@@ -44,6 +44,7 @@ public class ConstCastTestCase extends GenericSolverTestBase {
 
     private static final DataType intType = DataType.INTEGER;
     private static final DataType boolType = DataType.BOOLEAN;
+    private static final DataType bitVector1 = DataType.bitVector(1);
     private static final DataType bitVector3 = DataType.bitVector(3);
     private static final DataType bitVector6 = DataType.bitVector(6);
 
@@ -54,6 +55,7 @@ public class ConstCastTestCase extends GenericSolverTestBase {
     private static final NodeValue bv3 = NodeValue.newBitVector(BitVector.valueOf("11", 2, 2));
     private static final NodeValue bv7 = NodeValue.newBitVector(BitVector.valueOf("111", 2, 3));
     private static final NodeValue bv63 = NodeValue.newBitVector(BitVector.valueOf("111111", 2, 6));
+    private static final NodeValue bv0_8 = NodeValue.newBitVector(0, 1);
 
     @Override
     public Constraint getConstraint() {
@@ -73,6 +75,7 @@ public class ConstCastTestCase extends GenericSolverTestBase {
       final NodeVariable s = new NodeVariable(builder.addVariable("s", intType));
       final NodeVariable r = new NodeVariable(builder.addVariable("r", bitVector3));
       final NodeVariable p = new NodeVariable(builder.addVariable("p", bitVector3));
+      final NodeVariable q = new NodeVariable(builder.addVariable("q", bitVector1));
 
       final Formulas formulas = new Formulas();
       builder.setInnerRep(formulas);
@@ -86,6 +89,7 @@ public class ConstCastTestCase extends GenericSolverTestBase {
       formulas.add(TypeConversion.castConstants(Nodes.eq( int2, Nodes.ite(bv3, s, u))));
       formulas.add(TypeConversion.castConstants(Nodes.eq(bv63, Nodes.bvrepeat(bv1, r))));
       formulas.add(TypeConversion.castConstants(Nodes.eq(bv63, Nodes.bvconcat(p, int7))));
+      formulas.add(TypeConversion.castConstants(Nodes.eq(q, Nodes.bvextract(bv0_8, bv0_8, bv0_8))));
 
       return builder.build();
     }
@@ -103,7 +107,8 @@ public class ConstCastTestCase extends GenericSolverTestBase {
           new Variable("t", bitVector6.valueOf("001100", 2)),
           new Variable("s", intType.valueOf("2", 10)),
           new Variable("r", bitVector3.valueOf("111", 2)),
-          new Variable("p", bitVector3.valueOf("111", 2)));
+          new Variable("p", bitVector3.valueOf("111", 2)),
+          new Variable("q", bitVector3.valueOf("0", 2)));
     }
   }
 }
