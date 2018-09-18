@@ -267,13 +267,14 @@ abstract class SmtTextSolver extends SolverBase {
       final EsExpr value = e.getItems().get(1);
       final String reqName = getLiteral(e, 0);
 
-      if (ctx.CAST_ARRAY.matches(value)) {
-        ctx.deferred.put(getLiteral(value, 2),
-                         ctx.required.get(getLiteral(e, 0)));
+      final Variable image = ctx.required.get(reqName);
+      if (image.getType().getTypeId().equals(DataTypeId.MAP)) {
+        ctx.deferred.put(reqName, image);
       } else {
-        final Variable image = ctx.required.remove(reqName);
         final Data data = parseValueExpr(value, image.getType(), ctx);
         builder.addVariable(new Variable(image.getName(), data));
+
+        ctx.required.remove(reqName);
       }
     }
   }
