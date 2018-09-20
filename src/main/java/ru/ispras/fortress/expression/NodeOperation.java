@@ -284,10 +284,14 @@ public final class NodeOperation extends Node {
     }
 
     for (int index = 0; index < paramCount; ++index) {
+
       final Node operand = operands.get(index);
+
       if (Node.Kind.VALUE != operand.getKind()) {
-        throw new IllegalStateException(
-            "Parameter is not a value: " + operand);
+
+        return params;
+        /*throw new IllegalStateException(
+            "Parameter is not a value: " + operand);*/
       }
 
       Data data = ((NodeValue) operand).getData();

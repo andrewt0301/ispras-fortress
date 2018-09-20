@@ -173,6 +173,11 @@ enum TypeRules implements TypeRule {
   BVREPEAT {
     @Override
     public DataType getResultType(final DataType[] operandTypes, final int[] params) {
+
+      if (params.length != 1) {
+        return DataType.UNKNOWN;
+      }
+
       return DataType.bitVector(operandTypes[1].getSize() * params[0]);
     }
   },
@@ -180,12 +185,22 @@ enum TypeRules implements TypeRule {
   INT2BV {
     @Override
     public DataType getResultType(final DataType[] operandTypes, final int[] params) {
+
+      if (params.length != 1) {
+        return DataType.UNKNOWN;
+      }
+
       return DataType.bitVector(params[0]);
     }
   },
 
   BVEXTEND {
     public DataType getResultType(final DataType[] operandTypes, final int[] params) {
+
+      if (params.length != 1) {
+        return DataType.UNKNOWN;
+      }
+
       return DataType.bitVector(operandTypes[1].getSize() + params[0]);
     }
   },
