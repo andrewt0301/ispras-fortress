@@ -31,76 +31,80 @@ public class SmtExprPrinter extends MapBasedPrinter {
     setVisitor(new Visitor());
 
      /* Logic Operations */
-    addMapping(StandardOperation.EQ, "=");
-    addMapping(StandardOperation.NOTEQ, "distinct");
-    addMapping(StandardOperation.EQCASE, "=");
-    addMapping(StandardOperation.NOTEQCASE, "distinct");
-    addMapping(StandardOperation.AND, "and");
-    addMapping(StandardOperation.OR, "or");
-    addMapping(StandardOperation.NOT, "not");
-    addMapping(StandardOperation.XOR, "xor");
-    addMapping(StandardOperation.IMPL, "=>");
-    addMapping(StandardOperation.ITE, "ite");
+    addMapping(StandardOperation.EQ, SmtKeyword.EQ);
+    addMapping(StandardOperation.NOTEQ, SmtKeyword.NOTEQ);
+    addMapping(StandardOperation.EQCASE, SmtKeyword.EQCASE);
+    addMapping(StandardOperation.NOTEQCASE, SmtKeyword.NOTEQCASE);
+    addMapping(StandardOperation.AND, SmtKeyword.AND);
+    addMapping(StandardOperation.OR, SmtKeyword.OR);
+    addMapping(StandardOperation.NOT, SmtKeyword.NOT);
+    addMapping(StandardOperation.XOR, SmtKeyword.XOR);
+    addMapping(StandardOperation.IMPL, SmtKeyword.IMPL);
+    addMapping(StandardOperation.ITE, SmtKeyword.IMPL);
 
     // Logic arithmetic
-    addMapping(StandardOperation.MINUS, "-");
-    addMapping(StandardOperation.PLUS, "+");
-    addMapping(StandardOperation.ADD, "+");
-    addMapping(StandardOperation.SUB, "-");
-    addMapping(StandardOperation.MUL, "*");
-    addMapping(StandardOperation.DIV, "div");
-    addMapping(StandardOperation.MOD, "mod");
-    addMapping(StandardOperation.GREATER, ">");
-    addMapping(StandardOperation.GREATEREQ, ">=");
-    addMapping(StandardOperation.LESS, "<");
-    addMapping(StandardOperation.LESSEQ, "<=");
-    addMapping(StandardOperation.POWER, "^");
+    addMapping(StandardOperation.MINUS, SmtKeyword.MINUS);
+    addMapping(StandardOperation.PLUS, SmtKeyword.PLUS);
+    addMapping(StandardOperation.ADD, SmtKeyword.ADD);
+    addMapping(StandardOperation.SUB, SmtKeyword.SUB);
+    addMapping(StandardOperation.MUL, SmtKeyword.MUL);
+    addMapping(StandardOperation.DIV, SmtKeyword.DIV);
+    addMapping(StandardOperation.MOD, SmtKeyword.MOD);
+    addMapping(StandardOperation.GREATER, SmtKeyword.GREATER);
+    addMapping(StandardOperation.GREATEREQ, SmtKeyword.GREATEREQ);
+    addMapping(StandardOperation.LESS, SmtKeyword.LESS);
+    addMapping(StandardOperation.LESSEQ, SmtKeyword.LESSEQ);
+    addMapping(StandardOperation.POWER, SmtKeyword.POWER);
 
     // Basic Bitvector Arithmetic
-    addMapping(StandardOperation.BVADD, "bvadd");
-    addMapping(StandardOperation.BVSUB, "bvsub");
-    addMapping(StandardOperation.BVNEG, "bvneg");
-    addMapping(StandardOperation.BVMUL, "bvmul");
-    addMapping(StandardOperation.BVUDIV, "bvudiv");
-    addMapping(StandardOperation.BVSDIV, "bvsdiv");
-    addMapping(StandardOperation.BVUREM, "bvurem");
-    addMapping(StandardOperation.BVSREM, "bvsrem");
-    addMapping(StandardOperation.BVSMOD, "bvsmod");
-    addMapping(StandardOperation.BVLSHL, "bvshl");
-    addMapping(StandardOperation.BVASHL, "bvshl");
-    addMapping(StandardOperation.BVLSHR, "bvlshr");
-    addMapping(StandardOperation.BVASHR, "bvashr");
-    addMapping(StandardOperation.INT2BV, "int2bv");
-    addMapping(StandardOperation.BVCONCAT, "concat");
-    addMapping(StandardOperation.BVREPEAT, "repeat");
-    addMapping(StandardOperation.BVEXTRACT, "extract");
-    addMapping(StandardOperation.BVROL, "rotate_left");
-    addMapping(StandardOperation.BVROR, "rotate_right");
-    addMapping(StandardOperation.BVZEROEXT, "zero_extend");
-    addMapping(StandardOperation.BVSIGNEXT, "sign_extend");
+    addMapping(StandardOperation.BVADD, SmtKeyword.BVADD);
+    addMapping(StandardOperation.BVSUB, SmtKeyword.BVSUB);
+    addMapping(StandardOperation.BVNEG, SmtKeyword.BVNEG);
+    addMapping(StandardOperation.BVMUL, SmtKeyword.BVMUL);
+    addMapping(StandardOperation.BVUDIV, SmtKeyword.BVUDIV);
+    addMapping(StandardOperation.BVSDIV, SmtKeyword.BVSDIV);
+    addMapping(StandardOperation.BVUREM, SmtKeyword.BVUREM);
+    addMapping(StandardOperation.BVSREM, SmtKeyword.BVSREM);
+    addMapping(StandardOperation.BVSMOD, SmtKeyword.BVSMOD);
+    addMapping(StandardOperation.BVLSHL, SmtKeyword.BVLSHL);
+    addMapping(StandardOperation.BVASHL, SmtKeyword.BVASHL);
+    addMapping(StandardOperation.BVLSHR, SmtKeyword.BVLSHR);
+    addMapping(StandardOperation.BVASHR, SmtKeyword.BVASHR);
+    addMapping(StandardOperation.INT2BV, SmtKeyword.INT2BV);
+    addMapping(StandardOperation.BVCONCAT, SmtKeyword.BVCONCAT);
+    addMapping(StandardOperation.BVREPEAT, SmtKeyword.BVREPEAT);
+    addMapping(StandardOperation.BVEXTRACT, SmtKeyword.BVEXTRACT);
+    addMapping(StandardOperation.BVROL, SmtKeyword.BVROL);
+    addMapping(StandardOperation.BVROR, SmtKeyword.BVROR);
+    addMapping(StandardOperation.BVZEROEXT, SmtKeyword.BVZEROEXT);
+    addMapping(StandardOperation.BVSIGNEXT, SmtKeyword.BVSIGNEXT);
 
     // Bitwise Operations
-    addMapping(StandardOperation.BVOR, "bvor");
-    addMapping(StandardOperation.BVXOR, "bvxor");
-    addMapping(StandardOperation.BVAND, "bvand");
-    addMapping(StandardOperation.BVNOT, "bvnot");
-    addMapping(StandardOperation.BVNAND, "bvnand");
-    addMapping(StandardOperation.BVNOR, "bvnor");
-    addMapping(StandardOperation.BVXNOR, "bvxnor");
+    addMapping(StandardOperation.BVOR, SmtKeyword.BVOR);
+    addMapping(StandardOperation.BVXOR, SmtKeyword.BVXOR);
+    addMapping(StandardOperation.BVAND, SmtKeyword.BVAND);
+    addMapping(StandardOperation.BVNOT, SmtKeyword.BVNOT);
+    addMapping(StandardOperation.BVNAND, SmtKeyword.BVNAND);
+    addMapping(StandardOperation.BVNOR, SmtKeyword.BVNOR);
+    addMapping(StandardOperation.BVXNOR, SmtKeyword.BVXNOR);
 
     // Predicates over Bitvectors
-    addMapping(StandardOperation.BVULE, "bvule");
-    addMapping(StandardOperation.BVULT, "bvult");
-    addMapping(StandardOperation.BVUGE, "bvuge");
-    addMapping(StandardOperation.BVUGT, "bvugt");
-    addMapping(StandardOperation.BVSLE, "bvsle");
-    addMapping(StandardOperation.BVSLT, "bvslt");
-    addMapping(StandardOperation.BVSGE, "bvsge");
-    addMapping(StandardOperation.BVSGT, "bvsgt");
+    addMapping(StandardOperation.BVULE, SmtKeyword.BVULE);
+    addMapping(StandardOperation.BVULT, SmtKeyword.BVULT);
+    addMapping(StandardOperation.BVUGE, SmtKeyword.BVUGE);
+    addMapping(StandardOperation.BVUGT, SmtKeyword.BVUGT);
+    addMapping(StandardOperation.BVSLE, SmtKeyword.BVSLE);
+    addMapping(StandardOperation.BVSLT, SmtKeyword.BVSLT);
+    addMapping(StandardOperation.BVSGE, SmtKeyword.BVSGE);
+    addMapping(StandardOperation.BVSGT, SmtKeyword.BVSGT);
 
     /* Array operations */
-    addMapping(StandardOperation.SELECT, "select");
-    addMapping(StandardOperation.STORE, "store");
+    addMapping(StandardOperation.SELECT, SmtKeyword.SELECT);
+    addMapping(StandardOperation.STORE, SmtKeyword.STORE);
+  }
+
+  protected final void addMapping(final StandardOperation op, final SmtKeyword id) {
+    addMapping(op, id.getName());
   }
 
   protected final void addMapping(final StandardOperation op, final String sign) {
