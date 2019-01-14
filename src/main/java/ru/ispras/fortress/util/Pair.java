@@ -15,6 +15,8 @@
 package ru.ispras.fortress.util;
 
 public final class Pair<T, U> {
+  private static final Pair<?, ?> EMPTY = create(null, null);
+
   public final T first;
   public final U second;
 
@@ -45,6 +47,15 @@ public final class Pair<T, U> {
     final Pair<?, ?> other = (Pair<?, ?>) obj;
     return equals(this.first, other.first)
         && equals(this.second, other.second);
+  }
+
+  public static <T, U> Pair<T, U> create(final T first, final U second) {
+    return new Pair<T, U>(first, second);
+  }
+
+  @SuppressWarnings("unchecked")
+  public static <T, U> Pair<T, U> empty() {
+    return (Pair<T, U>) EMPTY;
   }
 
   private static boolean equals(final Object thisObject, final Object otherObject) {
